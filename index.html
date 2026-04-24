@@ -14,25 +14,40 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 
-<title>문법 룰렛 v2.15 · PWA</title>
+<title>문법Garden · Chess</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #1a1410;
-    --paper: #f4ede0;
-    --paper-warm: #ebe0cc;
-    --paper-deep: #e0d4bc;
-    --red: #a8201a;
-    --red-deep: #7a1612;
-    --indigo: #2a3a5f;
-    --gold: #c9a961;
-    --jade: #4a6b52;
-    --muted: #6b5d4f;
-    --seedling: #8ba888;
-    --plant: #c9a961;
-    --tree: #4a6b52;
+    /* === Nuevo sistema dark Chess.com-inspired === */
+    /* Los nombres de variables se mantienen para minimizar cambios;
+       los valores son los nuevos colores dark-warm */
+
+    /* "paper" ahora representa fondos (antes eran cremas claros) */
+    --paper: #1a1f1a;           /* fondo base, verde bosque muy oscuro */
+    --paper-warm: #232a23;      /* cards elevadas */
+    --paper-deep: #2d362d;      /* hover states */
+
+    /* "ink" ahora es el texto principal claro */
+    --ink: #ebe6d7;             /* texto principal, blanco roto cálido */
+    --muted: #8a9189;           /* texto secundario/muted, gris verdoso */
+
+    /* Acentos y colores funcionales */
+    --red: #c23e3e;             /* rojo identitario (para 문법 y danger) */
+    --red-deep: #9d2e2e;        /* rojo más oscuro */
+    --indigo: #5890d4;          /* azul info */
+    --gold: #d4a04a;            /* oro mostaza (para 🌿 cultivando) */
+    --jade: #7da653;            /* verde accent Chess.com-like (success, CTAs) */
+
+    /* Mastery levels */
+    --seedling: #8a9189;        /* 🌱 nuevas, gris neutro */
+    --plant: #d4a04a;           /* 🌿 cultivando, oro */
+    --tree: #7da653;            /* 🌳 dominadas, verde brillante */
+
+    /* Bordes */
+    --border: #313a31;          /* borde sutil */
+    --border-strong: #465048;   /* borde definido */
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,7 +55,7 @@
   html, body {
     background: var(--paper);
     color: var(--ink);
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', 'Noto Sans KR', system-ui, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
   }
@@ -78,8 +93,7 @@
   }
 
   .brand-title {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 400;
     font-size: 22px;
     color: var(--muted);
@@ -111,33 +125,49 @@
   }
 
   .tabs {
-    display: flex;
-    gap: 0;
-    margin-bottom: 32px;
-    border-bottom: 1px solid rgba(26, 20, 16, 0.15);
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    margin-bottom: 28px;
+    padding: 4px;
+    background: var(--paper-warm);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  @media (min-width: 640px) {
+    .tabs {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   .tab {
-    padding: 14px 24px;
-    background: none;
+    padding: 10px 12px;
+    background: transparent;
     border: none;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--muted);
     cursor: pointer;
-    letter-spacing: 0.05em;
-    border-bottom: 3px solid transparent;
-    margin-bottom: -1px;
-    transition: all 0.2s;
+    letter-spacing: 0;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
 
-  .tab:hover { color: var(--ink); }
+  .tab:hover {
+    background: var(--paper-deep);
+    color: var(--ink);
+  }
 
   .tab.active {
-    color: var(--ink);
-    border-bottom-color: var(--red);
+    background: var(--jade);
+    color: var(--paper);
+    font-weight: 700;
   }
 
   .tab-badge {
@@ -216,29 +246,27 @@
   }
 
   .spin-btn {
-    padding: 18px 48px;
-    background: var(--ink);
+    padding: 16px 48px;
+    background: var(--jade);
     color: var(--paper);
     border: none;
-    font-family: 'Noto Sans KR', sans-serif;
+    border-radius: 8px;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 700;
-    font-size: 16px;
-    letter-spacing: 0.15em;
+    font-size: 14px;
+    letter-spacing: 0.1em;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s;
+    transition: all 0.2s;
   }
 
-  .spin-btn::before {
-    content: '';
-    position: absolute;
-    inset: 3px;
-    border: 1px solid var(--gold);
-    pointer-events: none;
-  }
+  .spin-btn::before { display: none; }
 
-  .spin-btn:hover:not(:disabled) { transform: translateY(-2px); }
+  .spin-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: #8fb862;
+  }
   .spin-btn:active:not(:disabled) { transform: translateY(0); }
   .spin-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
@@ -295,8 +323,7 @@
   }
 
   .result-empty {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 18px;
     color: var(--muted);
     line-height: 1.5;
@@ -321,8 +348,10 @@
 
   .grammar-card {
     background: var(--paper-warm);
-    border-left: 4px solid var(--red);
-    padding: 22px 24px;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 10px;
+    padding: 20px 22px;
     position: relative;
     animation: slideIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
   }
@@ -366,8 +395,7 @@
   .mastery-tree { background: rgba(74, 107, 82, 0.2); color: var(--tree); }
 
   .card-meaning {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 15px;
     color: var(--muted);
     margin-bottom: 12px;
@@ -383,11 +411,10 @@
   }
 
   .card-example-trans {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 13px;
     color: var(--muted);
     margin-top: 4px;
-    font-style: italic;
   }
 
   .sentence-block {
@@ -482,8 +509,7 @@
   }
 
   .context-scene {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 13px;
     color: var(--muted);
     line-height: 1.4;
@@ -518,7 +544,9 @@
   .context-chip {
     padding: 12px 14px;
     background: var(--paper-warm);
+    border: 1px solid var(--border);
     border-left: 3px solid var(--indigo);
+    border-radius: 6px;
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 10px;
@@ -546,8 +574,7 @@
   }
 
   .context-chip-scene {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 12px;
     color: var(--muted);
     display: block;
@@ -590,7 +617,7 @@
   }
 
   .contexts-section-chevron {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 14px;
     color: var(--muted);
     transition: transform 0.35s cubic-bezier(0.5, 0, 0.3, 1.4);
@@ -675,8 +702,9 @@
     width: 100%;
     min-height: 60px;
     padding: 10px 12px;
-    border: 1px solid rgba(26, 20, 16, 0.2);
+    border: 1px solid var(--border);
     background: var(--paper);
+    border-radius: 6px;
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 15px;
     color: var(--ink);
@@ -685,7 +713,7 @@
     transition: border-color 0.2s;
   }
 
-  .sentence-input:focus { border-color: var(--ink); }
+  .sentence-input:focus { border-color: var(--jade); }
 
   .feedback-row {
     display: flex;
@@ -697,18 +725,24 @@
 
   .fb-btn {
     padding: 8px 16px;
-    background: transparent;
-    border: 1px solid rgba(26, 20, 16, 0.25);
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 6px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     cursor: pointer;
     color: var(--muted);
-    transition: all 0.2s;
+    transition: all 0.15s ease;
+    font-weight: 600;
   }
 
-  .fb-btn:hover { color: var(--ink); border-color: var(--ink); }
+  .fb-btn:hover {
+    color: var(--ink);
+    border-color: var(--border-strong);
+    background: var(--paper-deep);
+  }
 
   .fb-btn.fb-easy.active {
     background: var(--jade);
@@ -758,7 +792,9 @@
 
   .completion-banner {
     background: var(--paper-warm);
-    border-left: 4px solid var(--jade);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--jade);
+    border-radius: 10px;
     padding: 20px 24px;
     margin-top: 20px;
     text-align: center;
@@ -782,33 +818,37 @@
   }
 
   .completion-banner-text {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 15px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
     color: var(--muted);
     margin-bottom: 14px;
   }
 
   .next-spin-btn {
-    padding: 12px 32px;
-    background: var(--ink);
+    padding: 11px 28px;
+    background: var(--jade);
     color: var(--paper);
     border: none;
-    font-family: 'Noto Sans KR', sans-serif;
+    border-radius: 6px;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 700;
     font-size: 13px;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.08em;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: all 0.15s ease;
   }
 
-  .next-spin-btn:hover { transform: translateY(-2px); }
+  .next-spin-btn:hover {
+    transform: translateY(-2px);
+    background: #8fb862;
+  }
 
   .error-note-block {
     margin-top: 14px;
     padding: 14px;
-    background: rgba(168, 32, 26, 0.06);
+    background: rgba(194, 62, 62, 0.08);
     border-left: 3px solid var(--red);
+    border-radius: 6px;
     animation: errorSlide 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -821,9 +861,10 @@
     width: 100%;
     min-height: 50px;
     padding: 10px 12px;
-    border: 1px solid rgba(168, 32, 26, 0.25);
+    border: 1px solid rgba(194, 62, 62, 0.3);
     background: var(--paper);
-    font-family: 'Fraunces', serif;
+    border-radius: 6px;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 14px;
     color: var(--ink);
     resize: vertical;
@@ -850,8 +891,7 @@
     padding: 10px 14px;
     background: rgba(168, 32, 26, 0.08);
     border-left: 2px solid var(--red);
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 13px;
     color: var(--red-deep);
     line-height: 1.4;
@@ -928,16 +968,18 @@
 
   .stat-card {
     background: var(--paper-warm);
-    padding: 24px;
-    border-top: 3px solid var(--red);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    border-left: 3px solid var(--red);
   }
 
-  .stat-card:nth-child(2) { border-top-color: var(--indigo); }
-  .stat-card:nth-child(3) { border-top-color: var(--jade); }
-  .stat-card:nth-child(4) { border-top-color: var(--gold); }
+  .stat-card:nth-child(2) { border-left-color: var(--indigo); }
+  .stat-card:nth-child(3) { border-left-color: var(--jade); }
+  .stat-card:nth-child(4) { border-left-color: var(--gold); }
 
   .stat-value {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 800;
     font-size: 42px;
     color: var(--ink);
@@ -978,7 +1020,7 @@
   }
 
   .mastery-chunk .num {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 800;
     font-size: 32px;
     line-height: 1;
@@ -1051,8 +1093,10 @@
 
   .collection-section {
     background: var(--paper-warm);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--section-color, var(--muted));
+    border-radius: 10px;
     overflow: hidden;
-    border-left: 5px solid var(--section-color, var(--muted));
     animation: sectionEnter 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
   }
 
@@ -1085,7 +1129,7 @@
   }
 
   .collection-chevron {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 14px;
     color: var(--muted);
     transition: transform 0.35s cubic-bezier(0.5, 0, 0.3, 1.4);
@@ -1110,7 +1154,7 @@
   }
 
   .collection-section-name {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 700;
     font-size: 18px;
     color: var(--ink);
@@ -1149,14 +1193,17 @@
     align-items: center;
     padding: 12px 14px;
     background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 6px;
     cursor: pointer;
-    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.2s;
+    transition: all 0.15s ease;
     position: relative;
   }
 
   .collection-item:hover {
     transform: translateX(4px);
-    background: var(--paper-warm);
+    background: var(--paper-deep);
+    border-color: var(--border-strong);
   }
 
   .collection-item-text {
@@ -1172,8 +1219,7 @@
   }
 
   .collection-item-meaning {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 12px;
     color: var(--muted);
     display: block;
@@ -1228,7 +1274,6 @@
     font-size: 14px;
     color: var(--ink);
     line-height: 1.5;
-    font-style: italic;
   }
 
   .collection-first-sentence-date {
@@ -1239,8 +1284,7 @@
   }
 
   .collection-first-sentence-empty {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 13px;
     color: var(--muted);
   }
@@ -1248,8 +1292,7 @@
   .collection-empty {
     padding: 20px;
     text-align: center;
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 13px;
     color: var(--muted);
   }
@@ -1292,7 +1335,7 @@
     outline: none;
     appearance: none;
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%236b5d4f' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%238a9189' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
     background-repeat: no-repeat;
     background-position: right 10px center;
     transition: all 0.2s;
@@ -1309,9 +1352,11 @@
 
   .log-entry {
     background: var(--paper-warm);
-    padding: 16px 20px;
-    margin-bottom: 12px;
+    border: 1px solid var(--border);
     border-left: 3px solid var(--indigo);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
     position: relative;
   }
 
@@ -1340,6 +1385,142 @@
 
   .log-entry.fb-easy { border-left-color: var(--jade); }
   .log-entry.fb-hard { border-left-color: var(--red); }
+
+  /* ========== SISTEMA DE REVISIÓN ✅/❌/🟡 ========== */
+  .log-entry.rev-correct { border-left-color: var(--jade); border-left-width: 4px; }
+  .log-entry.rev-incorrect { border-left-color: var(--red); border-left-width: 4px; }
+
+  .review-state-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .review-state-badge.unreviewed {
+    background: var(--paper);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .review-state-badge.correct {
+    background: rgba(125, 166, 83, 0.15);
+    color: var(--jade);
+    border: 1px solid rgba(125, 166, 83, 0.3);
+  }
+
+  .review-state-badge.incorrect {
+    background: rgba(194, 62, 62, 0.15);
+    color: var(--red);
+    border: 1px solid rgba(194, 62, 62, 0.3);
+  }
+
+  .review-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .review-btn {
+    padding: 6px 12px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .review-btn:hover {
+    background: var(--paper-deep);
+    color: var(--ink);
+    border-color: var(--border-strong);
+  }
+
+  .review-btn.correct:hover {
+    border-color: var(--jade);
+    color: var(--jade);
+  }
+
+  .review-btn.incorrect:hover {
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .review-btn.reset:hover {
+    border-color: var(--muted);
+  }
+
+  .review-note-block {
+    margin-top: 10px;
+    padding: 12px;
+    background: rgba(194, 62, 62, 0.06);
+    border: 1px solid rgba(194, 62, 62, 0.2);
+    border-left: 3px solid var(--red);
+    border-radius: 6px;
+    display: none;
+  }
+
+  .log-entry.adding-note .review-note-block {
+    display: block;
+  }
+
+  .review-note-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .review-note-input {
+    width: 100%;
+    min-height: 50px;
+    padding: 8px 10px;
+    border: 1px solid rgba(194, 62, 62, 0.25);
+    background: var(--paper);
+    border-radius: 5px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .review-note-input:focus { border-color: var(--red); }
+
+  .review-note-display {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: rgba(194, 62, 62, 0.06);
+    border-left: 3px solid var(--red);
+    border-radius: 0 6px 6px 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    font-style: normal;
+  }
+
+  .review-note-display::before {
+    content: '💭 ';
+    margin-right: 4px;
+  }
 
   .log-entry-header {
     display: flex;
@@ -1393,8 +1574,7 @@
   .log-empty {
     text-align: center;
     padding: 60px 20px;
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     color: var(--muted);
   }
 
@@ -1452,8 +1632,7 @@
   }
 
   .grammar-item-meaning {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 12px;
     color: var(--muted);
     display: block;
@@ -1542,23 +1721,25 @@
   }
 
   .backup-btn {
-    padding: 10px 18px;
-    background: transparent;
+    padding: 10px 16px;
+    background: var(--paper-warm);
     color: var(--muted);
-    border: 1px solid rgba(26, 20, 16, 0.2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.15s ease;
     display: inline-block;
+    font-weight: 600;
   }
 
   .backup-btn:hover {
-    background: var(--ink);
-    color: var(--paper);
-    border-color: var(--ink);
+    background: var(--paper-deep);
+    color: var(--ink);
+    border-color: var(--border-strong);
   }
 
   .toast {
@@ -1566,10 +1747,13 @@
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background: var(--ink);
-    color: var(--paper);
-    padding: 12px 24px;
-    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--paper-warm);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    color: var(--ink);
+    padding: 12px 22px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 500;
     font-size: 14px;
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -1592,7 +1776,9 @@
 
   .deck {
     background: var(--paper-warm);
-    border-left: 5px solid var(--deck-color, var(--indigo));
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--deck-color, var(--indigo));
+    border-radius: 10px;
     overflow: hidden;
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
                 box-shadow 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -1606,7 +1792,7 @@
 
   .deck:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(26, 20, 16, 0.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   }
 
   .deck-header {
@@ -1620,7 +1806,7 @@
   }
 
   .deck-chevron {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 14px;
     color: var(--muted);
     transition: transform 0.35s cubic-bezier(0.5, 0, 0.3, 1.4);
@@ -1655,7 +1841,7 @@
   }
 
   .deck-name {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 700;
     font-size: 19px;
     color: var(--ink);
@@ -1737,7 +1923,9 @@
     align-items: center;
     padding: 10px 14px;
     background: var(--paper);
-    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.15s ease;
     animation: itemSlideIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
   }
 
@@ -1755,6 +1943,7 @@
 
   .deck-item:hover {
     transform: translateX(4px);
+    background: var(--paper-deep);
   }
 
   .deck-item .mastery-dot {
@@ -1778,8 +1967,7 @@
   }
 
   .deck-item-meaning {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 12px;
     color: var(--muted);
     display: block;
@@ -1830,7 +2018,7 @@
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%236b5d4f' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%238a9189' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
     background-repeat: no-repeat;
     background-position: right 8px center;
     outline: none;
@@ -1847,8 +2035,7 @@
   .deck-empty {
     padding: 20px;
     text-align: center;
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 14px;
     color: var(--muted);
     animation: emptyFloat 3s ease-in-out infinite;
@@ -1896,22 +2083,23 @@
   .new-deck-btn {
     width: 100%;
     padding: 16px;
-    background: transparent;
-    border: 2px dashed rgba(26, 20, 16, 0.2);
+    background: var(--paper);
+    border: 2px dashed var(--border-strong);
+    border-radius: 10px;
     color: var(--muted);
     cursor: pointer;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 600;
     font-size: 14px;
-    letter-spacing: 0.05em;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    letter-spacing: 0;
+    transition: all 0.15s ease;
     margin-bottom: 24px;
   }
 
   .new-deck-btn:hover {
     background: var(--paper-warm);
     color: var(--ink);
-    border-color: var(--ink);
+    border-color: var(--jade);
     border-style: solid;
     transform: translateY(-2px);
   }
@@ -1932,7 +2120,7 @@
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(26, 20, 16, 0.5);
+    background: rgba(0, 0, 0, 0.65);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1941,7 +2129,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(4px);
   }
 
   .modal-overlay.show {
@@ -1950,14 +2138,16 @@
   }
 
   .modal {
-    background: var(--paper);
-    padding: 32px;
+    background: var(--paper-warm);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
     max-width: 440px;
     width: 100%;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     transform: scale(0.9) translateY(10px);
     transition: transform 0.3s cubic-bezier(0.3, 1.3, 0.5, 1);
-    border-top: 5px solid var(--ink);
+    border-top: 3px solid var(--jade);
   }
 
   .modal-overlay.show .modal {
@@ -1965,17 +2155,17 @@
   }
 
   .modal-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 800;
-    font-size: 24px;
+    font-size: 22px;
     color: var(--ink);
     margin-bottom: 4px;
+    letter-spacing: -0.02em;
   }
 
   .modal-subtitle {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 14px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
     color: var(--muted);
     margin-bottom: 20px;
   }
@@ -1984,20 +2174,22 @@
     display: block;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--muted);
     margin-top: 16px;
     margin-bottom: 6px;
+    font-weight: 600;
   }
 
   .modal-input {
     width: 100%;
-    padding: 12px 14px;
-    border: 1px solid rgba(26, 20, 16, 0.2);
+    padding: 11px 14px;
+    border: 1px solid var(--border);
     background: var(--paper);
+    border-radius: 6px;
     font-family: inherit;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--ink);
     outline: none;
     transition: border-color 0.2s;
@@ -2008,7 +2200,7 @@
     font-weight: 600;
   }
 
-  .modal-input:focus { border-color: var(--ink); }
+  .modal-input:focus { border-color: var(--jade); }
 
   .color-picker {
     display: grid;
@@ -2056,38 +2248,41 @@
   }
 
   .modal-btn {
-    padding: 10px 20px;
+    padding: 10px 18px;
     border: none;
-    font-family: 'Noto Sans KR', sans-serif;
+    border-radius: 6px;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
-    letter-spacing: 0.05em;
-    transition: all 0.2s;
+    letter-spacing: 0;
+    transition: all 0.15s ease;
   }
 
   .modal-btn-secondary {
     background: transparent;
     color: var(--muted);
-    border: 1px solid rgba(26, 20, 16, 0.2);
+    border: 1px solid var(--border);
   }
 
   .modal-btn-secondary:hover {
     color: var(--ink);
-    border-color: var(--ink);
+    background: var(--paper-deep);
+    border-color: var(--border-strong);
   }
 
   .modal-btn-primary {
-    background: var(--ink);
+    background: var(--jade);
     color: var(--paper);
+    font-weight: 700;
   }
 
   .modal-btn-primary:hover {
-    background: var(--red);
+    background: #8fb862;
   }
 
   .modal-btn-primary:disabled {
-    opacity: 0.3;
+    opacity: 0.35;
     cursor: not-allowed;
     background: var(--muted);
   }
@@ -2106,21 +2301,23 @@
 
   .export-format-card {
     padding: 16px;
-    background: var(--paper-warm);
-    border: 2px solid transparent;
+    background: var(--paper);
+    border: 2px solid var(--border);
+    border-radius: 8px;
     cursor: pointer;
     text-align: center;
-    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: all 0.15s ease;
   }
 
   .export-format-card:hover {
     background: var(--paper-deep);
+    border-color: var(--border-strong);
     transform: translateY(-2px);
   }
 
   .export-format-card.selected {
-    border-color: var(--indigo);
-    background: rgba(42, 58, 95, 0.08);
+    border-color: var(--jade);
+    background: rgba(125, 166, 83, 0.08);
   }
 
   .export-format-icon {
@@ -2138,8 +2335,7 @@
   }
 
   .export-format-desc {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 11px;
     color: var(--muted);
     line-height: 1.3;
@@ -2148,16 +2344,17 @@
   .export-preview {
     margin-top: 20px;
     padding: 14px;
-    background: var(--paper-warm);
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 6px;
     text-align: center;
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 14px;
     color: var(--muted);
   }
 
   .export-preview-count {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 800;
     font-style: normal;
     font-size: 22px;
@@ -2172,20 +2369,22 @@
   /* Opciones del modal de eliminar deck */
   .delete-option {
     padding: 16px;
-    background: var(--paper-warm);
-    border: 2px solid transparent;
+    background: var(--paper);
+    border: 2px solid var(--border);
+    border-radius: 8px;
     margin-top: 12px;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: all 0.15s ease;
   }
 
   .delete-option:hover {
     background: var(--paper-deep);
+    border-color: var(--border-strong);
   }
 
   .delete-option.selected {
     border-color: var(--red);
-    background: rgba(168, 32, 26, 0.08);
+    background: rgba(194, 62, 62, 0.08);
   }
 
   .delete-option-header {
@@ -2207,8 +2406,7 @@
   }
 
   .delete-option-desc {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 13px;
     color: var(--muted);
     line-height: 1.4;
@@ -2291,7 +2489,7 @@
 
   <header>
     <div class="brand-mark">문법</div>
-    <div class="brand-title"><em>Ruleta</em> de gramática coreana<sup>v2.15 · PWA</sup></div>
+    <div class="brand-title"><em>Garden</em> · cultivating 문법<sup>v2.16 · CHESS</sup></div>
     <div class="date-mark" id="dateMark">—</div>
   </header>
 
@@ -2640,6 +2838,46 @@ function ensureSrs(ko) {
   return srs[ko];
 }
 
+// v2.16: Recalcula contadores y mastery basado SOLO en oraciones ✅ correctas o 🟡 sin revisar.
+// Las ❌ con errores NO suman para ascender de nivel.
+function recalculateMastery(ko) {
+  const entries = log.filter(e => e.ko === ko);
+  const s = ensureSrs(ko);
+
+  // Contar: fácil/difícil SOLO de oraciones que NO estén marcadas como incorrectas
+  let easyCount = 0;
+  let hardCount = 0;
+  entries.forEach(e => {
+    const revState = e.reviewState || 'unreviewed';
+    if (revState === 'incorrect') return; // las ❌ no cuentan
+    if (e.feedback === 'easy') easyCount++;
+    else if (e.feedback === 'hard') hardCount++;
+  });
+
+  s.easyCount = easyCount;
+  s.hardCount = hardCount;
+
+  // Recalcular mastery desde cero según los nuevos contadores
+  const total = easyCount + hardCount;
+  let newMastery = 'seedling';
+  if (total >= 60 && easyCount >= hardCount * 2.5) {
+    newMastery = 'tree';
+  } else if (total >= 20 && easyCount >= hardCount * 1.5) {
+    newMastery = 'plant';
+  }
+
+  const wasMastery = s.mastery;
+  s.mastery = newMastery;
+  lsSet(K_SRS, srs);
+
+  // Si bajó de nivel, notificar sutilmente
+  const order = { seedling: 0, plant: 1, tree: 2 };
+  if (order[newMastery] < order[wasMastery]) {
+    const emoji = newMastery === 'seedling' ? '🌱' : '🌿';
+    toast(`${emoji} "${ko}" volvió a ${newMastery === 'seedling' ? '새싹' : '성장'}`);
+  }
+}
+
 function getMasteryInfo(ko) {
   const s = ensureSrs(ko);
   const labels = {
@@ -2696,7 +2934,7 @@ function drawWheel() {
   const n = activeIndices.length;
 
   if (n === 0) {
-    svg.innerHTML = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#ebe0cc" stroke="#1a1410" stroke-width="2"/><text x="${cx}" y="${cy}" text-anchor="middle" font-family="Noto Sans KR" font-size="16" fill="#6b5d4f">activa un deck</text>`;
+    svg.innerHTML = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#232a23" stroke="#465048" stroke-width="2"/><text x="${cx}" y="${cy}" text-anchor="middle" font-family="Noto Sans KR" font-size="16" fill="#8a9189">activa un deck</text>`;
     return;
   }
 
@@ -2707,7 +2945,7 @@ function drawWheel() {
     const gIdx = activeIndices[i];
     const g = grammar[gIdx];
     const deck = decks.find(d => d.id === g.deckId);
-    const sliceColor = deck ? getDeckColor(deck) : '#6b5d4f';
+    const sliceColor = deck ? getDeckColor(deck) : '#8a9189';
 
     const startA = i * anglePer - Math.PI / 2;
     const endA = (i + 1) * anglePer - Math.PI / 2;
@@ -2719,7 +2957,7 @@ function drawWheel() {
     const path = document.createElementNS(svgNS, 'path');
     path.setAttribute('d', `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`);
     path.setAttribute('fill', sliceColor);
-    path.setAttribute('stroke', '#f4ede0');
+    path.setAttribute('stroke', '#1a1f1a');
     path.setAttribute('stroke-width', '2');
     svg.appendChild(path);
 
@@ -2732,8 +2970,8 @@ function drawWheel() {
     dot.setAttribute('cx', dx);
     dot.setAttribute('cy', dy);
     dot.setAttribute('r', 5);
-    dot.setAttribute('fill', info.key === 'seedling' ? '#8ba888' : info.key === 'plant' ? '#c9a961' : '#4a6b52');
-    dot.setAttribute('stroke', '#f4ede0');
+    dot.setAttribute('fill', info.key === 'seedling' ? '#8a9189' : info.key === 'plant' ? '#d4a04a' : '#7da653');
+    dot.setAttribute('stroke', '#1a1f1a');
     dot.setAttribute('stroke-width', '1.5');
     svg.appendChild(dot);
 
@@ -2747,7 +2985,7 @@ function drawWheel() {
     text.setAttribute('y', ty);
     text.setAttribute('text-anchor', 'middle');
     text.setAttribute('dominant-baseline', 'middle');
-    text.setAttribute('fill', '#f4ede0');
+    text.setAttribute('fill', '#ebe6d7');
     text.setAttribute('font-family', 'Noto Sans KR, sans-serif');
     text.setAttribute('font-weight', '700');
     text.setAttribute('font-size', n > 12 ? '11' : n > 8 ? '13' : '15');
@@ -2760,16 +2998,16 @@ function drawWheel() {
 
   const centerBg = document.createElementNS(svgNS, 'circle');
   centerBg.setAttribute('cx', cx); centerBg.setAttribute('cy', cy); centerBg.setAttribute('r', 32);
-  centerBg.setAttribute('fill', '#1a1410');
+  centerBg.setAttribute('fill', '#1a1f1a');
   svg.appendChild(centerBg);
   const centerRing = document.createElementNS(svgNS, 'circle');
   centerRing.setAttribute('cx', cx); centerRing.setAttribute('cy', cy); centerRing.setAttribute('r', 28);
-  centerRing.setAttribute('fill', 'none'); centerRing.setAttribute('stroke', '#c9a961'); centerRing.setAttribute('stroke-width', '1');
+  centerRing.setAttribute('fill', 'none'); centerRing.setAttribute('stroke', '#7da653'); centerRing.setAttribute('stroke-width', '1.5');
   svg.appendChild(centerRing);
   const centerText = document.createElementNS(svgNS, 'text');
   centerText.setAttribute('x', cx); centerText.setAttribute('y', cy + 1);
   centerText.setAttribute('text-anchor', 'middle'); centerText.setAttribute('dominant-baseline', 'middle');
-  centerText.setAttribute('fill', '#c9a961'); centerText.setAttribute('font-family', 'Noto Sans KR, sans-serif');
+  centerText.setAttribute('fill', '#c23e3e'); centerText.setAttribute('font-family', 'Noto Sans KR, sans-serif');
   centerText.setAttribute('font-weight', '900'); centerText.setAttribute('font-size', '18');
   centerText.textContent = '문법';
   svg.appendChild(centerText);
@@ -2969,6 +3207,7 @@ function attachCardListeners(card, pickIdx) {
       id: Date.now() + Math.random(),
       ko, sentence, feedback,
       errorNote: errorNote || null,
+      reviewState: 'unreviewed',
       contextId: currentCtx.id,
       contextName: currentCtx.name,
       date: new Date().toISOString()
@@ -3531,12 +3770,58 @@ function renderLog() {
                     d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
     const fbCls = entry.feedback === 'easy' ? 'fb-easy' : 'fb-hard';
     const fbLabel = entry.feedback === 'easy' ? '✨ FÁCIL' : '😤 DIFÍCIL';
+
+    // Estado de revisión (nuevo en v2.16)
+    const reviewState = entry.reviewState || 'unreviewed';
+    const revCls = reviewState === 'correct' ? 'rev-correct' : reviewState === 'incorrect' ? 'rev-incorrect' : '';
+    const reviewBadge =
+      reviewState === 'correct'
+        ? '<span class="review-state-badge correct">✓ Revisada</span>'
+        : reviewState === 'incorrect'
+        ? '<span class="review-state-badge incorrect">✗ Con errores</span>'
+        : '<span class="review-state-badge unreviewed">• Sin revisar</span>';
+
     const hasNote = entry.errorNote && entry.errorNote.trim();
     const contextBadge = entry.contextName
       ? `<span class="log-entry-context-badge">${escapeHtml(entry.contextName)}</span>`
       : '';
+
+    // Acciones según el estado actual
+    let reviewActionsHTML = '';
+    if (reviewState === 'unreviewed') {
+      reviewActionsHTML = `
+        <div class="review-actions">
+          <button class="review-btn correct" data-review-action="correct" data-id="${entry.id}">✓ Marcar correcta</button>
+          <button class="review-btn incorrect" data-review-action="incorrect" data-id="${entry.id}">✗ Marcar con errores</button>
+        </div>
+      `;
+    } else {
+      reviewActionsHTML = `
+        <div class="review-actions">
+          <button class="review-btn reset" data-review-action="reset" data-id="${entry.id}">↺ Cambiar estado</button>
+        </div>
+      `;
+    }
+
+    // Note display (cuando hay nota guardada y está marcada como incorrecta)
+    const noteDisplayHTML = hasNote && reviewState === 'incorrect'
+      ? `<div class="review-note-display">${escapeHtml(entry.errorNote)}</div>`
+      : '';
+
+    // Note input block (oculto por defecto, se muestra al marcar incorrect)
+    const noteInputHTML = `
+      <div class="review-note-block">
+        <div class="review-note-label">💭 ¿Qué estaba mal?</div>
+        <textarea class="review-note-input" data-id="${entry.id}" placeholder="Escribe qué estaba mal (opcional)...">${hasNote ? escapeHtml(entry.errorNote) : ''}</textarea>
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <button class="review-btn correct" data-note-action="save" data-id="${entry.id}" style="background: var(--red); color: var(--paper); border-color: var(--red);">Guardar nota</button>
+          <button class="review-btn reset" data-note-action="cancel" data-id="${entry.id}">Cancelar</button>
+        </div>
+      </div>
+    `;
+
     return `
-      <div class="log-entry ${fbCls}${hasNote ? ' has-note' : ''}" data-id="${entry.id}">
+      <div class="log-entry ${fbCls} ${revCls}" data-id="${entry.id}">
         <button class="log-delete-btn" data-id="${entry.id}" title="Eliminar oración">✕</button>
         <div class="log-entry-header">
           <span class="log-entry-ko">${escapeHtml(entry.ko)}</span>
@@ -3546,46 +3831,98 @@ function renderLog() {
         <div class="log-entry-footer">
           ${contextBadge}
           <span class="log-entry-feedback ${entry.feedback === 'easy' ? 'easy' : 'hard'}">${fbLabel}</span>
-          ${hasNote ? `<span class="note-indicator" data-note-toggle="${entry.id}">💭 Ver nota <span class="chevron">▾</span></span>` : ''}
+          ${reviewBadge}
         </div>
-        ${hasNote ? `<div class="log-entry-error-note">${escapeHtml(entry.errorNote)}</div>` : ''}
+        ${noteDisplayHTML}
+        ${reviewActionsHTML}
+        ${noteInputHTML}
       </div>
     `;
   }).join('');
 
-  // Listeners de toggle de nota
-  area.querySelectorAll('.log-entry.has-note').forEach(entryEl => {
-    entryEl.addEventListener('click', (e) => {
-      // Ignorar si se clickó el botón de eliminar
-      if (e.target.closest('.log-delete-btn')) return;
-      entryEl.classList.toggle('note-expanded');
-      // Actualizar texto del indicador
-      const indicator = entryEl.querySelector('.note-indicator');
-      if (indicator) {
-        const chevron = indicator.querySelector('.chevron');
-        const chevronHTML = chevron ? chevron.outerHTML : '';
-        if (entryEl.classList.contains('note-expanded')) {
-          indicator.innerHTML = '💭 Ocultar ' + chevronHTML;
-        } else {
-          indicator.innerHTML = '💭 Ver nota ' + chevronHTML;
-        }
+  // Listeners de acciones de revisión
+  area.querySelectorAll('[data-review-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = parseFloat(e.currentTarget.dataset.id);
+      const action = e.currentTarget.dataset.reviewAction;
+      const entry = log.find(x => x.id === id);
+      if (!entry) return;
+
+      if (action === 'correct') {
+        entry.reviewState = 'correct';
+        lsSet(K_LOG, log);
+        recalculateMastery(entry.ko);
+        renderLog();
+        renderStats();
+        toast('✓ Marcada como correcta');
+      } else if (action === 'incorrect') {
+        // Mostrar el bloque de nota
+        const entryEl = document.querySelector(`.log-entry[data-id="${id}"]`);
+        if (entryEl) entryEl.classList.add('adding-note');
+        const noteInput = entryEl.querySelector('.review-note-input');
+        if (noteInput) noteInput.focus();
+      } else if (action === 'reset') {
+        entry.reviewState = 'unreviewed';
+        // No borramos la nota — se queda por si quiere volver a marcar
+        lsSet(K_LOG, log);
+        recalculateMastery(entry.ko);
+        renderLog();
+        renderStats();
+        toast('↺ Vuelta a sin revisar');
       }
     });
+  });
+
+  // Listeners de guardar/cancelar nota
+  area.querySelectorAll('[data-note-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = parseFloat(e.currentTarget.dataset.id);
+      const action = e.currentTarget.dataset.noteAction;
+      const entry = log.find(x => x.id === id);
+      if (!entry) return;
+
+      if (action === 'save') {
+        const entryEl = document.querySelector(`.log-entry[data-id="${id}"]`);
+        const noteInput = entryEl.querySelector('.review-note-input');
+        const noteText = noteInput ? noteInput.value.trim() : '';
+        entry.errorNote = noteText;
+        entry.reviewState = 'incorrect';
+        lsSet(K_LOG, log);
+        recalculateMastery(entry.ko);
+        renderLog();
+        renderStats();
+        toast('✗ Marcada con errores');
+      } else if (action === 'cancel') {
+        const entryEl = document.querySelector(`.log-entry[data-id="${id}"]`);
+        if (entryEl) entryEl.classList.remove('adding-note');
+      }
+    });
+  });
+
+  // Evitar que el click en review-actions/note-block colapse la entry
+  area.querySelectorAll('.review-actions, .review-note-block').forEach(el => {
+    el.addEventListener('click', e => e.stopPropagation());
   });
 
   // Listeners de eliminar
   area.querySelectorAll('.log-delete-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       const id = parseFloat(e.currentTarget.dataset.id);
       const entry = log.find(x => x.id === id);
       if (!entry) return;
       const preview = entry.sentence.length > 40 ? entry.sentence.substring(0, 40) + '...' : entry.sentence;
-      if (confirm(`¿Eliminar esta oración?\n\n"${preview}"\n\nEsto NO revierte el contador fácil/difícil del SRS.`)) {
+      if (confirm(`¿Eliminar esta oración?\n\n"${preview}"\n\nEsto recalculará el progreso de esta gramática.`)) {
+        const ko = entry.ko;
         log = log.filter(x => x.id !== id);
         lsSet(K_LOG, log);
+        recalculateMastery(ko);
         updateLogBadge();
         updateLogGrammarDropdown();
         renderLog();
+        renderStats();
         toast('Oración eliminada');
       }
     });
@@ -4162,7 +4499,7 @@ function generatePDFHTML(entries) {
 <style>
   @page { margin: 2cm; }
   body {
-    font-family: 'Fraunces', Georgia, serif;
+    font-family: 'Inter', Georgia, serif;
     color: #1a1410;
     background: #f4ede0;
     max-width: 720px;
@@ -4187,7 +4524,6 @@ function generatePDFHTML(entries) {
     margin-right: 12px;
   }
   .header .meta {
-    font-style: italic;
     font-size: 14px;
     color: #6b5d4f;
   }
@@ -4246,7 +4582,6 @@ function generatePDFHTML(entries) {
     margin-top: 8px;
     padding: 6px 10px;
     background: rgba(168, 32, 26, 0.08);
-    font-style: italic;
     font-size: 13px;
     color: #7a1612;
     border-left: 2px solid #a8201a;
@@ -4594,6 +4929,17 @@ function refreshAll() {
   }
   srs = lsGet(K_SRS, {});
   log = lsGet(K_LOG, []);
+
+  // Migración v2.16: asegurar que cada entry del log tenga reviewState
+  let logNeedsSave = false;
+  log.forEach(entry => {
+    if (!entry.reviewState) {
+      entry.reviewState = 'unreviewed';
+      logNeedsSave = true;
+    }
+  });
+  if (logNeedsSave) lsSet(K_LOG, log);
+
   customContexts = lsGet(K_CUSTOM_CONTEXTS, []);
   inactiveContextIds = new Set(lsGet(K_INACTIVE_CONTEXTS, []));
   decks = lsGet(K_DECKS, null);
