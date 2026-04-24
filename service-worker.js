@@ -1,7 +1,7 @@
 // 문법Garden Service Worker
-// Estrategia: cache-first para assets propios, network-first para nada (no tenemos API)
+// v2 — Mejor manejo de actualizaciones
 
-const CACHE_NAME = 'munbeop-garden-v1';
+const CACHE_NAME = 'munbeop-garden-v2-16';
 const ASSETS = [
   './',
   './index.html',
@@ -13,7 +13,7 @@ const ASSETS = [
   './favicon-16.png'
 ];
 
-// Al instalar: cachear todos los assets
+// Al instalar: cachear assets y activar inmediatamente (skipWaiting)
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -22,7 +22,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Al activar: limpiar caches antiguos
+// Al activar: limpiar caches antiguos y tomar control de todos los clients
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((names) => {
@@ -34,27 +34,51 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Al hacer fetch: intenta cache primero, fallback a network
+// Al hacer fetch: network-first para HTML (para recibir actualizaciones)
+// cache-first para assets estáticos (iconos, manifest)
 self.addEventListener('fetch', (event) => {
-  // Solo interceptar GET
   if (event.request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        // Cachear respuestas exitosas de nuestro origen
-        if (response.ok && event.request.url.startsWith(self.location.origin)) {
+  const url = new URL(event.request.url);
+  const isNavigation = event.request.mode === 'navigate' ||
+                       url.pathname.endsWith('.html') ||
+                       url.pathname === '/' ||
+                       url.pathname.endsWith('/');
+
+  if (isNavigation) {
+    // Network-first para navegación (HTML) — siempre busca la última versión
+    event.respondWith(
+      fetch(event.request).then((response) => {
+        if (response.ok) {
           const cloned = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
         }
         return response;
       }).catch(() => {
-        // Si falla todo, intenta devolver el index.html del cache (para navegación offline)
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-      });
-    })
-  );
+        // Si falla red, intenta cache
+        return caches.match(event.request).then(cached => cached || caches.match('./index.html'));
+      })
+    );
+  } else {
+    // Cache-first para assets estáticos (iconos, manifest)
+    event.respondWith(
+      caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(event.request).then((response) => {
+          if (response.ok && event.request.url.startsWith(self.location.origin)) {
+            const cloned = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
+          }
+          return response;
+        });
+      })
+    );
+  }
+});
+
+// Mensaje para forzar skipWaiting (desde el client)
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
