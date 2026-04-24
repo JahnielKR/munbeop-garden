@@ -6,7 +6,7 @@
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#a8201a">
+<meta name="theme-color" content="#1a1f1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="문법Garden">
@@ -14,7 +14,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 
-<title>문법Garden · Chess</title>
+<title>문법Garden</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -74,54 +74,53 @@
   }
 
   header {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: baseline;
-    gap: 20px;
-    padding-bottom: 24px;
-    border-bottom: 2px solid var(--ink);
-    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+    text-align: center;
+    position: relative;
   }
 
   .brand-mark {
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 900;
-    font-size: 42px;
-    color: var(--red);
+    font-size: 56px;
+    color: var(--jade);
     letter-spacing: -0.02em;
-    line-height: 1;
+    line-height: 0.9;
   }
 
   .brand-title {
     font-family: 'Inter', system-ui, sans-serif;
-    font-weight: 400;
-    font-size: 22px;
-    color: var(--muted);
-  }
-
-  .brand-title em {
-    font-style: normal;
     font-weight: 800;
+    font-size: 28px;
     color: var(--ink);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-top: 4px;
   }
 
   .brand-title sup {
     font-family: 'JetBrains Mono', monospace;
-    font-style: normal;
     font-weight: 500;
-    font-size: 10px;
-    color: var(--red);
-    margin-left: 4px;
-    letter-spacing: 0.1em;
+    font-size: 9px;
+    color: var(--muted);
+    margin-left: 6px;
+    letter-spacing: 0.12em;
+    vertical-align: super;
   }
 
   .date-mark {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
-    text-align: right;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
+    margin-top: 8px;
   }
 
   .tabs {
@@ -2444,30 +2443,33 @@
   }
 
   .deck-pill {
-    padding: 5px 12px;
+    padding: 6px 14px;
     background: var(--paper-warm);
-    border: 1.5px solid transparent;
+    border: 1.5px solid var(--border);
     border-radius: 14px;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 12px;
     font-weight: 600;
-    color: var(--muted);
+    color: var(--ink);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    transition: all 0.25s cubic-bezier(0.3, 1.3, 0.5, 1);
+    gap: 6px;
+    transition: all 0.2s ease;
     user-select: none;
   }
 
   .deck-pill:hover {
     transform: translateY(-1px);
+    background: var(--paper-deep);
+    border-color: var(--border-strong);
   }
 
   .deck-pill.active {
-    background: var(--pill-color, var(--indigo));
+    background: var(--pill-color, var(--jade));
     color: var(--paper);
-    border-color: var(--pill-color, var(--indigo));
+    border-color: var(--pill-color, var(--jade));
+    font-weight: 700;
   }
 
   .deck-pill.active .deck-pill-dot {
@@ -2478,7 +2480,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--pill-color, var(--indigo));
+    background: var(--pill-color, var(--jade));
     transition: background 0.2s;
   }
 </style>
@@ -2489,7 +2491,7 @@
 
   <header>
     <div class="brand-mark">문법</div>
-    <div class="brand-title"><em>Garden</em> · cultivating 문법<sup>v2.16 · CHESS</sup></div>
+    <div class="brand-title">Garden<sup>v2.17 · JADE</sup></div>
     <div class="date-mark" id="dateMark">—</div>
   </header>
 
@@ -3187,19 +3189,28 @@ function attachCardListeners(card, pickIdx) {
     const currentCtx = pick.contexts[pick.progress];
     const sentence = textarea.value.trim();
 
-    const s = ensureSrs(ko);
-    if (feedback === 'easy') s.easyCount++; else s.hardCount++;
+    // v2.17: si marcaste 'hard' Y escribiste una nota, queda automáticamente como 'incorrect'.
+    // Las oraciones marcadas incorrect NO cuentan para mastery (igual que en recalculateMastery).
+    const hasNote = errorNote && errorNote.trim();
+    const autoIncorrect = feedback === 'hard' && hasNote;
+    const initialReviewState = autoIncorrect ? 'incorrect' : 'unreviewed';
 
-    const totalReviews = s.easyCount + s.hardCount;
-    // v2.7: umbrales nuevos con ratio fácil/difícil
-    // 🌱 → 🌿: ≥20 oraciones + easy ≥ hard × 1.5
-    // 🌿 → 🌳: ≥60 oraciones + easy ≥ hard × 2.5
-    if (totalReviews >= 20 && s.easyCount >= s.hardCount * 1.5 && s.mastery === 'seedling') {
-      s.mastery = 'plant';
-      toast(`🌿 "${ko}" ascendió a 성장!`);
-    } else if (totalReviews >= 60 && s.easyCount >= s.hardCount * 2.5 && s.mastery === 'plant') {
-      s.mastery = 'tree';
-      toast(`🌳 "${ko}" ¡DOMINADA! 축하해!`);
+    const s = ensureSrs(ko);
+
+    // Solo incrementar contadores si NO va a contar como ❌
+    if (!autoIncorrect) {
+      if (feedback === 'easy') s.easyCount++; else s.hardCount++;
+
+      const totalReviews = s.easyCount + s.hardCount;
+      // 🌱 → 🌿: ≥20 oraciones + easy ≥ hard × 1.5
+      // 🌿 → 🌳: ≥60 oraciones + easy ≥ hard × 2.5
+      if (totalReviews >= 20 && s.easyCount >= s.hardCount * 1.5 && s.mastery === 'seedling') {
+        s.mastery = 'plant';
+        toast(`🌿 "${ko}" ascendió a 성장!`);
+      } else if (totalReviews >= 60 && s.easyCount >= s.hardCount * 2.5 && s.mastery === 'plant') {
+        s.mastery = 'tree';
+        toast(`🌳 "${ko}" ¡DOMINADA! 축하해!`);
+      }
     }
     lsSet(K_SRS, srs);
 
@@ -3207,7 +3218,7 @@ function attachCardListeners(card, pickIdx) {
       id: Date.now() + Math.random(),
       ko, sentence, feedback,
       errorNote: errorNote || null,
-      reviewState: 'unreviewed',
+      reviewState: initialReviewState,
       contextId: currentCtx.id,
       contextName: currentCtx.name,
       date: new Date().toISOString()

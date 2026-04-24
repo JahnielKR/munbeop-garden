@@ -1,7 +1,7 @@
 // 문법Garden Service Worker
 // v2 — Mejor manejo de actualizaciones
 
-const CACHE_NAME = 'munbeop-garden-v2-16';
+const CACHE_NAME = 'munbeop-garden-v2-17';
 const ASSETS = [
   './',
   './index.html',

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#f4ede0"/>
-  <rect x="32" y="32" width="448" height="448" rx="64" fill="none" stroke="#a8201a" stroke-width="16"/>
-  <text x="256" y="340" font-family="Noto Sans KR, sans-serif" font-size="320" font-weight="900" fill="#a8201a" text-anchor="middle">문</text>
+  <rect width="512" height="512" rx="100" fill="#1a1f1a"/>
+  <rect x="32" y="32" width="448" height="448" rx="68" fill="none" stroke="#7da653" stroke-width="14"/>
+  <text x="256" y="350" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif" font-size="280" font-weight="900" fill="#7da653" text-anchor="middle">문</text>
 </svg>
