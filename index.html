@@ -104,23 +104,26 @@
     margin-top: 4px;
   }
 
-  .brand-version {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 500;
-    font-size: 9px;
-    color: var(--muted);
-    letter-spacing: 0.12em;
-    margin-top: 6px;
-    text-transform: uppercase;
-  }
-
-  .date-mark {
+  /* === FOOTER === */
+  .app-footer {
+    margin-top: 60px;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     color: var(--muted);
-    text-transform: uppercase;
     letter-spacing: 0.15em;
-    margin-top: 8px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .footer-sep {
+    opacity: 0.4;
   }
 
   .tabs {
@@ -2492,8 +2495,6 @@
   <header>
     <div class="brand-mark">문법</div>
     <div class="brand-title">Garden</div>
-    <div class="brand-version">v2.18 · JADE</div>
-    <div class="date-mark" id="dateMark">—</div>
   </header>
 
   <div class="tabs">
@@ -2734,6 +2735,12 @@
   </div>
 
 </div>
+
+<footer class="app-footer">
+  <span class="footer-date" id="dateMark">—</span>
+  <span class="footer-sep">·</span>
+  <span class="footer-version">v2.18 · JADE</span>
+</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -4450,8 +4457,8 @@ function generateMarkdown(entries) {
   const now = new Date();
   const dateStr = now.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
 
-  let md = `# Oraciones — Ruleta de gramática\n\n`;
-  md += `**Exportado:** ${dateStr}  \n`;
+  let md = `# 문법Garden — Oraciones\n\n`;
+  md += `*Exportado de [문법Garden](https://jahnielkr.github.io/munbeop-garden/) — ${dateStr}*\n\n`;
   md += `**Total:** ${entries.length} oraciones\n\n`;
   md += `---\n\n`;
 
@@ -4479,6 +4486,7 @@ function generateMarkdown(entries) {
     });
   });
 
+  md += `---\n*문법Garden · cultivating 문법*\n`;
   return md;
 }
 
@@ -4516,7 +4524,7 @@ function generatePDFHTML(entries) {
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Oraciones - Ruleta de gramática</title>
+<title>문법Garden — Oraciones</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,800;1,400&family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   @page { margin: 2cm; }
@@ -4533,21 +4541,42 @@ function generatePDFHTML(entries) {
     border-bottom: 2px solid #1a1410;
     padding-bottom: 16px;
     margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .header-icon {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+  }
+  .header-text {
+    flex: 1;
   }
   .header h1 {
     font-weight: 800;
-    font-size: 32px;
-    margin: 0 0 8px;
+    font-size: 28px;
+    margin: 0 0 4px;
     letter-spacing: -0.02em;
+    color: #1a1410;
   }
   .header h1 .ko {
     font-family: 'Noto Sans KR', sans-serif;
-    color: #a8201a;
-    margin-right: 12px;
+    color: #4a6b52;
+    margin-right: 6px;
   }
   .header .meta {
-    font-size: 14px;
+    font-size: 13px;
     color: #6b5d4f;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  .header .footer-attrib {
+    font-size: 10px;
+    color: #8a8175;
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
   }
   h2 {
     font-family: 'Noto Sans KR', sans-serif;
@@ -4616,8 +4645,16 @@ function generatePDFHTML(entries) {
 </head>
 <body>
 <div class="header">
-  <h1><span class="ko">문법</span>Oraciones</h1>
-  <div class="meta">${dateStr} · ${entries.length} oraciones</div>
+  <svg class="header-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <rect width="512" height="512" rx="100" fill="#1a1f1a"/>
+    <rect x="32" y="32" width="448" height="448" rx="68" fill="none" stroke="#7da653" stroke-width="14"/>
+    <text x="256" y="350" font-family="Noto Sans KR" font-size="280" font-weight="900" fill="#7da653" text-anchor="middle">문</text>
+  </svg>
+  <div class="header-text">
+    <h1><span class="ko">문법</span>Garden</h1>
+    <div class="meta">${dateStr} · ${entries.length} oraciones</div>
+    <div class="footer-attrib">munbeop-garden · jahnielkr.github.io</div>
+  </div>
 </div>
 ${body}
 </body>
@@ -4759,16 +4796,20 @@ document.getElementById('grammarMeaningInput').addEventListener('keydown', (e) =
 
 function exportData() {
   const data = {
-    version: 2.7,
+    __app: '문법Garden',
+    __version: '2.18',
+    __url: 'https://jahnielkr.github.io/munbeop-garden/',
+    __exportedAt: new Date().toISOString(),
+    __note: 'Backup completo · importable desde 문법Garden',
+    schemaVersion: 2.7,
     grammar, srs, log, decks, customContexts,
-    inactiveContextIds: Array.from(inactiveContextIds),
-    exportedAt: new Date().toISOString()
+    inactiveContextIds: Array.from(inactiveContextIds)
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `ruleta_v2_backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.download = `munbeop-garden_backup_${new Date().toISOString().slice(0,10)}.json`;
   a.click();
   URL.revokeObjectURL(url);
   toast('Backup descargado 💾');
