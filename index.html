@@ -4,6 +4,38 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
+<!-- CSS crítico inline: pintar fondo dark INMEDIATAMENTE para evitar parpadeo -->
+<style>
+  html, body {
+    background: #1a1f1a !important;
+    margin: 0;
+    padding: 0;
+    color: #ebe6d7;
+  }
+  body {
+    min-height: 100vh;
+  }
+  /* Splash inicial visible desde el primer pixel — antes de que cualquier otro CSS cargue */
+  #appSplash {
+    position: fixed;
+    inset: 0;
+    background: #1a1f1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  #appSplash .app-splash-mark {
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    font-size: 64px;
+    color: #7da653;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    font-weight: 300;
+  }
+</style>
+
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1a1f1a">
@@ -82,7 +114,7 @@
     gap: 4px;
     z-index: 9999;
     opacity: 1;
-    transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
   }
 
   .app-splash.hidden {
@@ -2975,7 +3007,7 @@
 <footer class="app-footer">
   <span class="footer-date" id="dateMark">—</span>
   <span class="footer-sep">·</span>
-  <span class="footer-version">v2.21 · JADE</span>
+  <span class="footer-version">v2.22 · JADE</span>
 </footer>
 
 <div class="toast" id="toast"></div>
