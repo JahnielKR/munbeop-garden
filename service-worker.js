@@ -1,7 +1,7 @@
 // 문법Garden Service Worker
 // v2 — Mejor manejo de actualizaciones
 
-const CACHE_NAME = 'munbeop-garden-v2-19b';
+const CACHE_NAME = 'munbeop-garden-v2-20';
 const ASSETS = [
   './',
   './index.html',
@@ -10,7 +10,15 @@ const ASSETS = [
   './icon-512.png',
   './apple-touch-icon.png',
   './favicon-32.png',
-  './favicon-16.png'
+  './favicon-16.png',
+  './splash-1170x2532.png',
+  './splash-1284x2778.png',
+  './splash-1179x2556.png',
+  './splash-1290x2796.png',
+  './splash-828x1792.png',
+  './splash-1125x2436.png',
+  './splash-750x1334.png',
+  './splash-640x1136.png'
 ];
 
 // Al instalar: cachear assets y activar inmediatamente (skipWaiting)

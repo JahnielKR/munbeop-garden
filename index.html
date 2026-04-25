@@ -11,6 +11,24 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="문법Garden">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<!-- iOS Splash Screens (Apple Touch Startup Images) -->
+<!-- iPhone 14/15/16 Pro Max -->
+<link rel="apple-touch-startup-image" href="splash-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<!-- iPhone 14/15/16 Pro -->
+<link rel="apple-touch-startup-image" href="splash-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<!-- iPhone 12/13/14 Pro Max -->
+<link rel="apple-touch-startup-image" href="splash-1284x2778.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<!-- iPhone 12/13/14 Pro -->
+<link rel="apple-touch-startup-image" href="splash-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<!-- iPhone X, XS, 11 Pro -->
+<link rel="apple-touch-startup-image" href="splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<!-- iPhone XR, 11 -->
+<link rel="apple-touch-startup-image" href="splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<!-- iPhone 8, SE 2/3 -->
+<link rel="apple-touch-startup-image" href="splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<!-- iPhone SE 1 -->
+<link rel="apple-touch-startup-image" href="splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 
@@ -51,6 +69,45 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* === Splash de carga (se desvanece al estar la app lista) === */
+  .app-splash {
+    position: fixed;
+    inset: 0;
+    background: #1a1f1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+  }
+
+  .app-splash.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .app-splash-mark {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 900;
+    font-size: 64px;
+    color: #7da653;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+  }
+
+  .app-splash-title {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    color: #ebe6d7;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-top: 4px;
+  }
 
   html, body {
     background: var(--paper);
@@ -2601,6 +2658,12 @@
 </head>
 <body>
 
+<!-- Splash de carga (se oculta al cargar el JS) -->
+<div id="appSplash" class="app-splash">
+  <div class="app-splash-mark">문법</div>
+  <div class="app-splash-title">Garden</div>
+</div>
+
 <div class="container">
 
   <header>
@@ -2874,7 +2937,7 @@
 <footer class="app-footer">
   <span class="footer-date" id="dateMark">—</span>
   <span class="footer-sep">·</span>
-  <span class="footer-version">v2.19b · JADE</span>
+  <span class="footer-version">v2.20 · JADE</span>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -5320,6 +5383,12 @@ function refreshAll() {
     const section = document.getElementById('contextsSection');
     if (section) section.classList.add('expanded');
   }
+
+  // Ocultar splash de carga (mínimo 400ms para que se aprecie el logo)
+  setTimeout(() => {
+    const splash = document.getElementById('appSplash');
+    if (splash) splash.classList.add('hidden');
+  }, 400);
 })();
 
 // ========== PWA: registrar service worker ==========
