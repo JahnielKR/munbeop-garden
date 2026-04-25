@@ -70,7 +70,7 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* === Splash de carga (se desvanece al estar la app lista) === */
+  /* === Splash de carga animado === */
   .app-splash {
     position: fixed;
     inset: 0;
@@ -92,11 +92,33 @@
 
   .app-splash-mark {
     font-family: 'Noto Sans KR', sans-serif;
-    font-weight: 900;
     font-size: 64px;
     color: #7da653;
     letter-spacing: -0.02em;
     line-height: 0.9;
+    /* Animación: weight fino → bold + opacity */
+    font-weight: 300;
+    opacity: 0.8;
+    transform: scale(0.95);
+    animation: splashMarkBold 0.9s cubic-bezier(0.2, 0.6, 0.3, 1) forwards;
+  }
+
+  @keyframes splashMarkBold {
+    0% {
+      font-weight: 300;
+      opacity: 0.8;
+      transform: scale(0.95);
+    }
+    60% {
+      font-weight: 700;
+      opacity: 1;
+      transform: scale(1.02);
+    }
+    100% {
+      font-weight: 900;
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 
   .app-splash-title {
@@ -107,6 +129,22 @@
     letter-spacing: -0.03em;
     line-height: 1;
     margin-top: 4px;
+    /* Aparece DESPUÉS del 문법 */
+    opacity: 0;
+    transform: translateY(8px);
+    animation: splashTitleAppear 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    animation-delay: 0.65s;
+  }
+
+  @keyframes splashTitleAppear {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   html, body {
@@ -2937,7 +2975,7 @@
 <footer class="app-footer">
   <span class="footer-date" id="dateMark">—</span>
   <span class="footer-sep">·</span>
-  <span class="footer-version">v2.20 · JADE</span>
+  <span class="footer-version">v2.21 · JADE</span>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -5384,11 +5422,11 @@ function refreshAll() {
     if (section) section.classList.add('expanded');
   }
 
-  // Ocultar splash de carga (mínimo 400ms para que se aprecie el logo)
+  // Ocultar splash de carga (1200ms para que la animación se complete)
   setTimeout(() => {
     const splash = document.getElementById('appSplash');
     if (splash) splash.classList.add('hidden');
-  }, 400);
+  }, 1200);
 })();
 
 // ========== PWA: registrar service worker ==========
