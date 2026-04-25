@@ -104,14 +104,14 @@
     margin-top: 4px;
   }
 
-  .brand-title sup {
+  .brand-version {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 500;
     font-size: 9px;
     color: var(--muted);
-    margin-left: 6px;
     letter-spacing: 0.12em;
-    vertical-align: super;
+    margin-top: 6px;
+    text-transform: uppercase;
   }
 
   .date-mark {
@@ -2467,13 +2467,13 @@
 
   .deck-pill.active {
     background: var(--pill-color, var(--jade));
-    color: var(--paper);
+    color: var(--ink);
     border-color: var(--pill-color, var(--jade));
     font-weight: 700;
   }
 
   .deck-pill.active .deck-pill-dot {
-    background: var(--paper);
+    display: none;
   }
 
   .deck-pill-dot {
@@ -2491,7 +2491,8 @@
 
   <header>
     <div class="brand-mark">문법</div>
-    <div class="brand-title">Garden<sup>v2.17 · JADE</sup></div>
+    <div class="brand-title">Garden</div>
+    <div class="brand-version">v2.18 · JADE</div>
     <div class="date-mark" id="dateMark">—</div>
   </header>
 
@@ -2777,14 +2778,14 @@ const DEFAULT_CONTEXTS = [
 
 // Paleta de colores disponibles para decks
 const DECK_COLORS = [
-  { id: 'red', name: 'Rojo', value: '#a8201a' },
-  { id: 'indigo', name: 'Índigo', value: '#2a3a5f' },
-  { id: 'jade', name: 'Jade', value: '#4a6b52' },
-  { id: 'gold', name: 'Dorado', value: '#c9a961' },
-  { id: 'plum', name: 'Ciruela', value: '#6b3a5c' },
-  { id: 'teal', name: 'Turquesa', value: '#2d6b6b' },
-  { id: 'rust', name: 'Óxido', value: '#b5651d' },
-  { id: 'slate', name: 'Pizarra', value: '#5a6470' }
+  { id: 'red', name: 'Rojo', value: '#e85d4f' },
+  { id: 'indigo', name: 'Índigo', value: '#5890d4' },
+  { id: 'jade', name: 'Jade', value: '#7da653' },
+  { id: 'gold', name: 'Dorado', value: '#d4a04a' },
+  { id: 'plum', name: 'Ciruela', value: '#b574a3' },
+  { id: 'teal', name: 'Turquesa', value: '#4dadad' },
+  { id: 'rust', name: 'Óxido', value: '#d68c4a' },
+  { id: 'slate', name: 'Pizarra', value: '#9ca8b3' }
 ];
 
 function defaultDeckColor(idx) {
@@ -3076,6 +3077,16 @@ function spin() {
     renderResults();
     updateSpinStats();
     drawWheel();
+
+    // Móvil: scroll a la primera card (en desktop la rueda está al lado, no hace falta)
+    if (window.innerWidth < 980) {
+      setTimeout(() => {
+        const firstCard = document.querySelector('.grammar-card');
+        if (firstCard) {
+          firstCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 300);
+    }
   }, 5100);
 }
 
