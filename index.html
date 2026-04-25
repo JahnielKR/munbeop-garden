@@ -1524,6 +1524,65 @@
     margin-right: 4px;
   }
 
+  /* Botón "Ver nota" + bloque colapsable */
+  .note-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.15s ease;
+  }
+
+  .note-toggle-btn:hover {
+    color: var(--ink);
+    border-color: var(--border-strong);
+    background: var(--paper-deep);
+  }
+
+  .note-toggle-btn .chevron {
+    font-size: 9px;
+    transition: transform 0.25s cubic-bezier(0.3, 0.9, 0.3, 1.2);
+    display: inline-block;
+  }
+
+  .log-entry.note-open .note-toggle-btn .chevron {
+    transform: rotate(180deg);
+  }
+
+  .note-collapsible {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .log-entry.note-open .note-collapsible {
+    max-height: 400px;
+  }
+
+  .note-collapsible-inner {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: rgba(194, 62, 62, 0.06);
+    border-left: 3px solid var(--red);
+    border-radius: 0 6px 6px 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+  }
+
+  .note-collapsible-inner::before {
+    content: '💭 ';
+    margin-right: 4px;
+  }
+
   .log-entry-header {
     display: flex;
     justify-content: space-between;
@@ -2293,6 +2352,58 @@
     background: var(--muted);
   }
 
+  /* ========== DECK ACTIONS MODAL ========== */
+  .deck-actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .deck-actions-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    width: 100%;
+    text-align: left;
+  }
+
+  .deck-actions-item:hover {
+    background: var(--paper-deep);
+    border-color: var(--border-strong);
+    transform: translateX(2px);
+  }
+
+  .deck-actions-item.danger {
+    color: var(--red);
+  }
+
+  .deck-actions-item.danger:hover {
+    background: rgba(194, 62, 62, 0.08);
+    border-color: var(--red);
+  }
+
+  .deck-actions-icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .deck-actions-label {
+    flex: 1;
+  }
+
   /* ========== EXPORT MODAL ========== */
   .export-format-grid {
     display: grid;
@@ -2601,6 +2712,30 @@
     </div>
   </div>
 
+  <!-- Modal: acciones del deck -->
+  <div class="modal-overlay" id="deckActionsModal">
+    <div class="modal" style="max-width: 360px;">
+      <div class="modal-title" id="deckActionsTitle">Acciones</div>
+      <div class="deck-actions-list">
+        <button class="deck-actions-item" id="deckActionEdit">
+          <span class="deck-actions-icon">✎</span>
+          <span class="deck-actions-label">Editar</span>
+        </button>
+        <button class="deck-actions-item" id="deckActionExport">
+          <span class="deck-actions-icon">📤</span>
+          <span class="deck-actions-label">Exportar</span>
+        </button>
+        <button class="deck-actions-item danger" id="deckActionDelete">
+          <span class="deck-actions-icon">✕</span>
+          <span class="deck-actions-label">Eliminar</span>
+        </button>
+      </div>
+      <div class="modal-actions" style="margin-top: 16px;">
+        <button class="modal-btn modal-btn-secondary" id="deckActionsCancel" style="width: 100%;">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal: crear/editar deck -->
   <div class="modal-overlay" id="deckModal">
     <div class="modal">
@@ -2739,7 +2874,7 @@
 <footer class="app-footer">
   <span class="footer-date" id="dateMark">—</span>
   <span class="footer-sep">·</span>
-  <span class="footer-version">v2.18 · JADE</span>
+  <span class="footer-version">v2.19b · JADE</span>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -3832,9 +3967,12 @@ function renderLog() {
       `;
     }
 
-    // Note display (cuando hay nota guardada y está marcada como incorrecta)
-    const noteDisplayHTML = hasNote && reviewState === 'incorrect'
-      ? `<div class="review-note-display">${escapeHtml(entry.errorNote)}</div>`
+    // Botón "Ver nota" + bloque colapsable (visible siempre que haya nota guardada)
+    const noteToggleHTML = hasNote
+      ? `<button class="note-toggle-btn" data-note-toggle="${entry.id}">💭 Ver nota <span class="chevron">▾</span></button>`
+      : '';
+    const noteDisplayHTML = hasNote
+      ? `<div class="note-collapsible" data-note-content="${entry.id}"><div class="note-collapsible-inner">${escapeHtml(entry.errorNote)}</div></div>`
       : '';
 
     // Note input block (oculto por defecto, se muestra al marcar incorrect)
@@ -3861,6 +3999,7 @@ function renderLog() {
           ${contextBadge}
           <span class="log-entry-feedback ${entry.feedback === 'easy' ? 'easy' : 'hard'}">${fbLabel}</span>
           ${reviewBadge}
+          ${noteToggleHTML}
         </div>
         ${noteDisplayHTML}
         ${reviewActionsHTML}
@@ -3933,6 +4072,15 @@ function renderLog() {
   // Evitar que el click en review-actions/note-block colapse la entry
   area.querySelectorAll('.review-actions, .review-note-block').forEach(el => {
     el.addEventListener('click', e => e.stopPropagation());
+  });
+
+  // Toggle nota colapsable
+  area.querySelectorAll('.note-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const entryEl = btn.closest('.log-entry');
+      if (entryEl) entryEl.classList.toggle('note-open');
+    });
   });
 
   // Listeners de eliminar
@@ -4020,8 +4168,7 @@ function renderDecks() {
             <span class="deck-name">${escapeHtml(deck.name)}</span>
           </div>
           <span class="deck-count">${items.length}</span>
-          <button class="deck-action-btn edit-deck-btn" data-deck-id="${escapeAttr(deck.id)}" title="Editar deck">✎</button>
-          <button class="deck-action-btn danger delete-deck-btn" data-deck-id="${escapeAttr(deck.id)}" title="Eliminar deck">✕</button>
+          <button class="deck-action-btn deck-actions-btn" data-deck-id="${escapeAttr(deck.id)}" title="Acciones del deck">⚙</button>
         </div>
         <div class="deck-body">
           <div class="deck-items">
@@ -4077,38 +4224,11 @@ function attachDeckListeners() {
     });
   });
 
-  // Editar deck
-  container.querySelectorAll('.edit-deck-btn').forEach(btn => {
+  // Acciones del deck (modal con editar/exportar/eliminar)
+  container.querySelectorAll('.deck-actions-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      openDeckModal(btn.dataset.deckId);
-    });
-  });
-
-  // Eliminar deck
-  container.querySelectorAll('.delete-deck-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const deckId = btn.dataset.deckId;
-      const deck = decks.find(d => d.id === deckId);
-      if (!deck) return;
-      const itemsInDeck = countGrammarInDeck(deckId);
-
-      if (decks.length === 1) {
-        toast('No puedes eliminar el último deck');
-        return;
-      }
-
-      // Si el deck está vacío, confirmación simple
-      if (itemsInDeck === 0) {
-        if (confirm(`¿Eliminar el deck "${deck.name}"?`)) {
-          performDeckDeletion(deckId, 'empty');
-        }
-        return;
-      }
-
-      // Si tiene gramáticas, abrir modal con opciones
-      openDeleteDeckModal(deckId);
+      openDeckActionsModal(btn.dataset.deckId);
     });
   });
 
@@ -4192,6 +4312,42 @@ let addingToDeckId = null;
 let selectedColorId = 'red';
 let deletingDeckId = null;
 let deleteAction = null; // 'move' | 'delete'
+
+// ========== MODAL DE ACCIONES DEL DECK ==========
+let deckActionsCurrentId = null;
+
+function openDeckActionsModal(deckId) {
+  const deck = decks.find(d => d.id === deckId);
+  if (!deck) return;
+  deckActionsCurrentId = deckId;
+  document.getElementById('deckActionsTitle').textContent = deck.name;
+  document.getElementById('deckActionsModal').classList.add('show');
+}
+
+function closeDeckActionsModal() {
+  document.getElementById('deckActionsModal').classList.remove('show');
+  deckActionsCurrentId = null;
+}
+
+function handleDeckDeleteRequest(deckId) {
+  const deck = decks.find(d => d.id === deckId);
+  if (!deck) return;
+  const itemsInDeck = countGrammarInDeck(deckId);
+
+  if (decks.length === 1) {
+    toast('No puedes eliminar el último deck');
+    return;
+  }
+
+  if (itemsInDeck === 0) {
+    if (confirm(`¿Eliminar el deck "${deck.name}"?`)) {
+      performDeckDeletion(deckId, 'empty');
+    }
+    return;
+  }
+
+  openDeleteDeckModal(deckId);
+}
 
 function openDeleteDeckModal(deckId) {
   deletingDeckId = deckId;
@@ -4732,6 +4888,24 @@ document.getElementById('deckModalSave').addEventListener('click', saveDeck);
 document.getElementById('grammarModalCancel').addEventListener('click', closeGrammarModal);
 document.getElementById('grammarModalSave').addEventListener('click', saveGrammarFromModal);
 
+// Modal de acciones del deck
+document.getElementById('deckActionsCancel').addEventListener('click', closeDeckActionsModal);
+document.getElementById('deckActionEdit').addEventListener('click', () => {
+  const id = deckActionsCurrentId;
+  closeDeckActionsModal();
+  if (id) openDeckModal(id);
+});
+document.getElementById('deckActionExport').addEventListener('click', () => {
+  const id = deckActionsCurrentId;
+  closeDeckActionsModal();
+  if (id) exportDeckTemplate(id);
+});
+document.getElementById('deckActionDelete').addEventListener('click', () => {
+  const id = deckActionsCurrentId;
+  closeDeckActionsModal();
+  if (id) handleDeckDeleteRequest(id);
+});
+
 // Contextos propios
 document.getElementById('openNewContextBtn').addEventListener('click', openContextModal);
 document.getElementById('contextModalCancel').addEventListener('click', closeContextModal);
@@ -4797,7 +4971,7 @@ document.getElementById('grammarMeaningInput').addEventListener('keydown', (e) =
 function exportData() {
   const data = {
     __app: '문법Garden',
-    __version: '2.18',
+    __version: '2.19',
     __url: 'https://jahnielkr.github.io/munbeop-garden/',
     __exportedAt: new Date().toISOString(),
     __note: 'Backup completo · importable desde 문법Garden',
@@ -4815,11 +4989,63 @@ function exportData() {
   toast('Backup descargado 💾');
 }
 
+// Exportar plantilla de un deck — solo estructura, sin progreso/oraciones
+function exportDeckTemplate(deckId) {
+  const deck = decks.find(d => d.id === deckId);
+  if (!deck) return;
+
+  const grammarItems = grammar
+    .filter(g => g.deckId === deckId)
+    .map(g => ({
+      ko: g.ko,
+      meaning: g.meaning,
+      example: g.example || null,
+      trans: g.trans || null
+    }));
+
+  if (grammarItems.length === 0) {
+    toast('Este deck está vacío');
+    return;
+  }
+
+  const template = {
+    __app: '문법Garden',
+    __version: '2.19',
+    __type: 'deck-template',
+    __url: 'https://jahnielkr.github.io/munbeop-garden/',
+    __exportedAt: new Date().toISOString(),
+    __note: 'Plantilla de deck · solo estructura, sin progreso ni oraciones',
+    deck: {
+      name: deck.name,
+      colorId: deck.colorId
+    },
+    grammar: grammarItems
+  };
+
+  const safeName = deck.name.replace(/[^a-zA-Z0-9가-힣]/g, '-').toLowerCase();
+  const blob = new Blob([JSON.stringify(template, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `munbeop-garden_deck_${safeName}_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast(`📤 Plantilla "${deck.name}" descargada (${grammarItems.length} gramáticas)`);
+}
+
 function importData(file) {
   const reader = new FileReader();
   reader.onload = (e) => {
     try {
       const data = JSON.parse(e.target.result);
+
+      // Detectar tipo: plantilla de deck o backup completo
+      if (data.__type === 'deck-template') {
+        importDeckTemplate(data);
+        return;
+      }
+
+      // Backup completo
       if (!Array.isArray(data.grammar)) { toast('Archivo inválido'); return; }
       grammar = data.grammar;
       srs = data.srs || {};
@@ -4843,6 +5069,65 @@ function importData(file) {
     } catch(err) { toast('Error al leer el archivo'); }
   };
   reader.readAsText(file);
+}
+
+// Importar plantilla de deck — añade un deck nuevo sin tocar el resto
+function importDeckTemplate(data) {
+  if (!data.deck || !Array.isArray(data.grammar) || data.grammar.length === 0) {
+    toast('Plantilla de deck inválida');
+    return;
+  }
+
+  // Crear nuevo deck con ID único
+  const baseName = data.deck.name || 'Deck importado';
+  let finalName = baseName;
+  let suffix = 2;
+  while (decks.some(d => d.name === finalName)) {
+    finalName = `${baseName} (${suffix})`;
+    suffix++;
+  }
+
+  const newDeckId = 'deck_' + Date.now();
+  const validColorIds = DECK_COLORS.map(c => c.id);
+  const newDeck = {
+    id: newDeckId,
+    name: finalName,
+    colorId: validColorIds.includes(data.deck.colorId) ? data.deck.colorId : 'indigo',
+    order: decks.length,
+    collapsed: false
+  };
+
+  // Añadir gramáticas con SRS limpio (mastery seedling, sin progreso)
+  const newGrammar = data.grammar
+    .filter(g => g.ko && g.meaning)
+    .map(g => ({
+      ko: g.ko,
+      meaning: g.meaning,
+      example: g.example || null,
+      trans: g.trans || null,
+      deckId: newDeckId
+    }));
+
+  if (newGrammar.length === 0) {
+    toast('La plantilla no tiene gramáticas válidas');
+    return;
+  }
+
+  decks.push(newDeck);
+  grammar = grammar.concat(newGrammar);
+
+  // SRS: asegurarse de que las nuevas gramáticas empiezan limpias
+  newGrammar.forEach(g => {
+    if (!srs[g.ko]) {
+      srs[g.ko] = { lastSeen: null, easyCount: 0, hardCount: 0, mastery: 'seedling' };
+    }
+  });
+
+  lsSet(K_DECKS, decks);
+  lsSet(K_GRAMMAR, grammar);
+  lsSet(K_SRS, srs);
+  refreshAll();
+  toast(`📥 Deck "${finalName}" importado (${newGrammar.length} gramáticas)`);
 }
 
 function escapeHtml(s) {
