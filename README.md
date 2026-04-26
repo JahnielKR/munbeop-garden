@@ -18,4 +18,4 @@ Open `index.html` in any modern browser, or visit the GitHub Pages URL above.
 
 ## Version
 
-v2.14
+v2.22
