@@ -7,11 +7,12 @@ const storage = new LocalStorageAdapter()
 
 export const useContextsStore = defineStore('contexts', () => {
   const custom = ref<Context[]>([])
-  const inactiveIds = ref<Set<string>>(new Set())
+  // Plain array (not Set) — see grammar.ts excludedDeckIds for the same reason.
+  const inactiveIds = ref<string[]>([])
 
   const all = computed<Context[]>(() => [...DEFAULT_CONTEXTS, ...custom.value])
   const active = computed<Context[]>(() =>
-    all.value.filter((c) => !inactiveIds.value.has(c.id)),
+    all.value.filter((c) => !inactiveIds.value.includes(c.id)),
   )
 
   function byId(id: string): Context | undefined {
@@ -20,16 +21,16 @@ export const useContextsStore = defineStore('contexts', () => {
 
   function hydrate() {
     custom.value = storage.read(STORAGE_KEYS.customContexts, [] as Context[])
-    const inactive = storage.read(STORAGE_KEYS.inactiveContextIds, [] as string[])
-    inactiveIds.value = new Set(inactive)
+    inactiveIds.value = storage.read(STORAGE_KEYS.inactiveContextIds, [] as string[])
   }
 
   function toggleActive(id: string) {
-    const newSet = new Set(inactiveIds.value)
-    if (newSet.has(id)) newSet.delete(id)
-    else newSet.add(id)
-    inactiveIds.value = newSet
-    storage.write(STORAGE_KEYS.inactiveContextIds, [...newSet])
+    if (inactiveIds.value.includes(id)) {
+      inactiveIds.value = inactiveIds.value.filter((x) => x !== id)
+    } else {
+      inactiveIds.value = [...inactiveIds.value, id]
+    }
+    storage.write(STORAGE_KEYS.inactiveContextIds, inactiveIds.value)
   }
 
   function addCustom(name: string, scene: LocalizedString): Context | null {

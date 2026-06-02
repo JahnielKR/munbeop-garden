@@ -8,12 +8,14 @@ const storage = new LocalStorageAdapter()
 export const useGrammarStore = defineStore('grammar', () => {
   const items = ref<Grammar[]>([])
   const decks = ref<Deck[]>([])
-  const excludedDeckIds = ref<Set<string>>(new Set())
+  // Plain array (not Set) — Set is not consistently serializable across SSR/CSR
+  // payload boundaries and was causing devalue parse failures on hydration.
+  const excludedDeckIds = ref<string[]>([])
 
   const activeIndices = computed(() =>
     items.value
       .map((g, idx) => ({ g, idx }))
-      .filter(({ g }) => !excludedDeckIds.value.has(g.deckId))
+      .filter(({ g }) => !excludedDeckIds.value.includes(g.deckId))
       .map(({ idx }) => idx),
   )
 
@@ -35,10 +37,11 @@ export const useGrammarStore = defineStore('grammar', () => {
   }
 
   function toggleDeck(deckId: string) {
-    const newSet = new Set(excludedDeckIds.value)
-    if (newSet.has(deckId)) newSet.delete(deckId)
-    else newSet.add(deckId)
-    excludedDeckIds.value = newSet
+    if (excludedDeckIds.value.includes(deckId)) {
+      excludedDeckIds.value = excludedDeckIds.value.filter((id) => id !== deckId)
+    } else {
+      excludedDeckIds.value = [...excludedDeckIds.value, deckId]
+    }
   }
 
   return { items, decks, excludedDeckIds, activeIndices, grammarByKo, hydrate, toggleDeck }
