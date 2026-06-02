@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import type { LocaleCode } from '~/lib/domain'
+import { useLocaleStore } from '~/stores/locale'
 
 const { locale, locales, setLocale, t } = useI18n()
+const localeStore = useLocaleStore()
 
 const options = computed(() => locales.value as Array<{ code: string; name: string }>)
 
+// Persist locale changes alongside vue-i18n updates. We write through the
+// localeStore so the next page load (handled in layouts/default.vue's
+// onMounted) restores the same value.
 function onChange(e: Event) {
   const code = (e.target as HTMLSelectElement).value as LocaleCode
   void setLocale(code)
+  localeStore.set(code)
 }
 </script>
 
