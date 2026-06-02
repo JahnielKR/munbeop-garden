@@ -17,7 +17,14 @@ interface Props {
 }
 const props = defineProps<Props>()
 const emit = defineEmits<{
-  submit: [{ pickIndex: number; feedback: 'easy' | 'hard'; errorNote: string | null }]
+  submit: [
+    {
+      pickIndex: number
+      sentence: string
+      feedback: 'easy' | 'hard'
+      errorNote: string | null
+    },
+  ]
 }>()
 
 const srs = useSrsStore()
@@ -36,8 +43,14 @@ function reset() {
 }
 
 function onEasy() {
-  if (!sentence.value.trim()) return
-  emit('submit', { pickIndex: props.pickIndex, feedback: 'easy', errorNote: null })
+  const text = sentence.value.trim()
+  if (!text) return
+  emit('submit', {
+    pickIndex: props.pickIndex,
+    sentence: text,
+    feedback: 'easy',
+    errorNote: null,
+  })
   reset()
 }
 function onHard() {
@@ -45,15 +58,25 @@ function onHard() {
   showErrorBlock.value = true
 }
 function onSaveWithNote() {
+  const text = sentence.value.trim()
+  if (!text) return
   emit('submit', {
     pickIndex: props.pickIndex,
+    sentence: text,
     feedback: 'hard',
     errorNote: errorNote.value.trim(),
   })
   reset()
 }
 function onSkipNote() {
-  emit('submit', { pickIndex: props.pickIndex, feedback: 'hard', errorNote: null })
+  const text = sentence.value.trim()
+  if (!text) return
+  emit('submit', {
+    pickIndex: props.pickIndex,
+    sentence: text,
+    feedback: 'hard',
+    errorNote: null,
+  })
   reset()
 }
 </script>

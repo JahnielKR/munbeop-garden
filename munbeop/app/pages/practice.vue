@@ -15,6 +15,7 @@ function onStart() {
 
 function onSubmit(payload: {
   pickIndex: number
+  sentence: string
   feedback: 'easy' | 'hard'
   errorNote: string | null
 }) {
