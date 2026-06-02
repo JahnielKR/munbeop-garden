@@ -42,7 +42,7 @@
     "vue-tsc": "^2.2.0"
   },
   "engines": {
-    "node": "20.x"
+    "node": ">=20.0.0"
   },
   "packageManager": "pnpm@9.15.9"
 }

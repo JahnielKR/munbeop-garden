@@ -8,18 +8,18 @@ function isValid(code: string): code is LocaleCode {
   return (LOCALE_CODES as readonly string[]).includes(code)
 }
 
-export const useLocaleStore = defineStore('locale', {
-  state: () => ({
-    current: DEFAULT_LOCALE as LocaleCode,
-  }),
-  actions: {
-    hydrate() {
-      const stored = storage.read<string>(STORAGE_KEYS.locale, DEFAULT_LOCALE)
-      this.current = isValid(stored) ? stored : DEFAULT_LOCALE
-    },
-    set(code: LocaleCode) {
-      this.current = code
-      storage.write(STORAGE_KEYS.locale, code)
-    },
-  },
+export const useLocaleStore = defineStore('locale', () => {
+  const current = ref<LocaleCode>(DEFAULT_LOCALE)
+
+  function hydrate() {
+    const stored = storage.read<string>(STORAGE_KEYS.locale, DEFAULT_LOCALE)
+    current.value = isValid(stored) ? stored : DEFAULT_LOCALE
+  }
+
+  function set(code: LocaleCode) {
+    current.value = code
+    storage.write(STORAGE_KEYS.locale, code)
+  }
+
+  return { current, hydrate, set }
 })
