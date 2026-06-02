@@ -1,75 +1,66 @@
-# Nuxt Minimal Starter
+# munbeop-garden-app
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Nueva app **Nuxt 4** de Munbeop Garden. Reemplaza progresivamente el legacy `../index.html` v2.22.
 
-## Setup
+## Stack
 
-Make sure to install dependencies:
+- Nuxt 4.4 + Vue 3.5 + TypeScript strict
+- Pinia 3 (state) + composables (reactividad de dominio)
+- **@nuxtjs/i18n 9.5 (vue-i18n 9) — 8 idiomas baked-in**
+- Tailwind 3 + design tokens CSS para pixel art
+- Vitest 3 + happy-dom + @vue/test-utils
 
-```bash
-# npm
-npm install
+## Idiomas
 
-# pnpm
-pnpm install
+`en` · `es` · `fr` · `pt-BR` · `th` · `id` · `vi` · `ja`
 
-# yarn
-yarn install
+Default: detección de browser, fallback a `en`. Cambio en caliente vía LocaleSwitcher (sidebar + settings). Persistencia en `localStorage` bajo `munbeop.v1.locale` (y cookie i18n).
 
-# bun
-bun install
+## Arquitectura
+
+```
+app/                              # Nuxt 4 srcDir
+├── app.vue                       # root
+├── assets/styles/                # tokens.css, pixel.css, main.css
+├── components/
+│   ├── layout/{AppShell,AppSidebar,MobileNavbar,LocaleSwitcher}.vue
+│   ├── practice/{GrammarCard,ContextDisplay,SentenceInput,...}.vue
+│   └── ui/{PixelButton,PixelCard,PixelInput,Toast}.vue
+├── composables/{usePractice,useLocalized,useToast}.ts
+├── layouts/default.vue
+├── lib/                          # pura lógica de dominio (sin Vue)
+│   ├── domain/{i18n,grammar,context,mastery,log}.ts
+│   ├── practice/session.ts
+│   ├── srs/{thresholds,weight,pick,mastery}.ts
+│   └── storage/{adapter,localStorage,keys}.ts
+├── pages/{index,practice,library,stats,log,settings}.vue
+├── plugins/i18n-persist.client.ts
+├── seed/{grammars,contexts}.ts
+└── stores/{grammar,contexts,locale,srs,log}.ts   # Pinia
+i18n/locales/{en,es,fr,pt-BR,th,id,vi,ja}.json   # @nuxtjs/i18n loaded from rootDir
+tests/unit/{srs,storage,practice,domain}/*.test.ts  # Vitest
 ```
 
-## Development Server
+**Reglas:**
+- ≤200 LOC por componente Vue, ≤150 por `app/lib/`
+- Ningún string visible hardcoded — `$t()` siempre
+- Contenido de dominio (meaning/trans/scene): `LocalizedString` + `useLocalized().tl()`
+- Coreano (`ko`, `name`, `example`) NO se traduce — es contenido didáctico
 
-Start the development server on `http://localhost:3000`:
+## Scripts
 
-```bash
-# npm
-npm run dev
+| Script | Qué hace |
+|---|---|
+| `pnpm dev` | Dev server HMR (http://localhost:3000) |
+| `pnpm test` | Vitest una vez (46 tests) |
+| `pnpm test:watch` | Vitest watch |
+| `pnpm test:ui` | Vitest UI interactivo |
+| `pnpm lint` | ESLint |
+| `pnpm format` | Prettier write |
+| `pnpm typecheck` | nuxt typecheck (vue-tsc) |
+| `pnpm build` | Producción |
+| `pnpm preview` | Sirve build |
 
-# pnpm
-pnpm dev
+## Calidad de traducciones
 
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+UI y contenido seed traducidos a 8 idiomas. Las traducciones a `th/id/vi` son best-effort de IA — backlog para revisión por hablante nativo antes de producción.

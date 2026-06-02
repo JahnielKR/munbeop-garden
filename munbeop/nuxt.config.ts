@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-06-01',
   devtools: { enabled: true },
   modules: ['@pinia/nuxt', '@nuxt/eslint', '@nuxtjs/i18n', '@nuxtjs/tailwindcss'],
-  css: ['~/app/assets/styles/main.css'],
+  css: ['~/assets/styles/main.css'],
   typescript: {
     strict: true,
     typeCheck: false,
@@ -26,6 +26,9 @@ export default defineNuxtConfig({
       cookieKey: 'munbeop.v1.locale',
       redirectOn: 'root',
       fallbackLocale: 'en',
+    },
+    bundle: {
+      optimizeTranslationDirective: false,
     },
     lazy: false,
   },

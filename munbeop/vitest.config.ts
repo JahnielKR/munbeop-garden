@@ -10,13 +10,19 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
-      include: ['lib/**/*.ts', 'app/composables/**/*.ts', 'app/stores/**/*.ts'],
+      include: [
+        'app/lib/**/*.ts',
+        'app/composables/**/*.ts',
+        'app/stores/**/*.ts',
+      ],
     },
   },
   resolve: {
     alias: {
-      '~': fileURLToPath(new URL('./', import.meta.url)),
-      '@': fileURLToPath(new URL('./', import.meta.url)),
+      // '~' mirrors Nuxt 4 convention: points to the srcDir (app/), so '~/lib/domain'
+      // resolves consistently in source files and tests.
+      '~': fileURLToPath(new URL('./app', import.meta.url)),
+      '@': fileURLToPath(new URL('./app', import.meta.url)),
     },
   },
 })
