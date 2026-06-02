@@ -21,12 +21,12 @@ export default defineNuxtConfig({
       { code: 'vi', name: 'Tiếng Việt', file: 'vi.json' },
       { code: 'ja', name: '日本語', file: 'ja.json' },
     ],
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: 'munbeop.v1.locale',
-      redirectOn: 'root',
-      fallbackLocale: 'en',
-    },
+    // detectBrowserLanguage disabled: with strategy: 'no_prefix' the
+    // 'redirectOn: root' rewrite was producing a malformed SSR path
+    // ('/?%2F' decodes to '/?/'), which broke devalue's payload parser
+    // on hydration (SyntaxError: 26). LocaleSwitcher + the i18n-persist
+    // client plugin handle locale selection without needing this.
+    detectBrowserLanguage: false,
     bundle: {
       optimizeTranslationDirective: false,
     },
