@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "garden": "Kebunku",
+    "practice": "Latihan",
+    "library": "Perpustakaan",
+    "stats": "Statistik",
+    "log": "Jurnal",
+    "settings": "Pengaturan"
+  },
+  "title": {
+    "garden": "Kebunku",
+    "practice": "Latihan",
+    "library": "Perpustakaan",
+    "stats": "Statistik",
+    "log": "Jurnal",
+    "settings": "Pengaturan"
+  },
+  "practice": {
+    "intro_lead": "Tekan PUTAR dan kamu dapat 3 tata bahasa × 3 konteks = 9 kalimat untuk ditulis. 화이팅! 💪",
+    "spin": "🎲 PUTAR",
+    "fb_easy": "✨ MUDAH",
+    "fb_hard": "😤 SULIT",
+    "error_note_label": "Apa yang sulit? · 뭐가 어려웠어요?",
+    "error_note_placeholder": "contoh: ragu antara 이 atau 가…",
+    "save_with_note": "💾 Simpan dengan catatan",
+    "skip_note": "Lewati catatan",
+    "completion_ko": "수고했어요! 🎉",
+    "completion_text": "9 kalimat tersimpan — 3 tata bahasa × 3 konteks. Putaran lagi?",
+    "completion_restart": "🎲 PUTARAN BARU",
+    "context_label": "Konteks · 상황",
+    "sentence_placeholder": "Tulis kalimatmu di sini…",
+    "no_grammars": "Tata bahasa di deck aktif tidak cukup.",
+    "no_contexts": "Kamu butuh minimal 3 konteks aktif.",
+    "toast_saved_easy": "✨ Tersimpan",
+    "toast_saved_hard": "😤 Tersimpan",
+    "no_sentence": "Tulis kalimat dulu"
+  },
+  "library": {
+    "lead": "Semua tata bahasa yang muncul di rodamu. Masing-masing tumbuh seiring latihanmu."
+  },
+  "mastery": {
+    "seedling": "새싹 · Baru",
+    "plant": "성장 · Bertumbuh",
+    "tree": "나무 · Dikuasai"
+  },
+  "empty": {
+    "garden": "Peta Kebunku (peta 2D ala Stardew dengan zona TOPIK dan tanaman tata bahasamu tumbuh) hadir di rencana selanjutnya. Sementara itu, ke Latihan untuk mulai berkebun.",
+    "stats": "Statistik detail hadir di rencana selanjutnya.",
+    "log": "Belum ada kalimat. Pergi ke Latihan.",
+    "settings": "Pengaturan akun hadir di rencana selanjutnya."
+  },
+  "common": {
+    "language": "Bahasa",
+    "go_to_practice": "Latihan"
+  }
+}

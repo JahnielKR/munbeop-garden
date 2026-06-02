@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "garden": "Meu Jardim",
+    "practice": "Prática",
+    "library": "Herbário",
+    "stats": "Análise",
+    "log": "Diário",
+    "settings": "Estufa"
+  },
+  "title": {
+    "garden": "Meu Jardim",
+    "practice": "Prática",
+    "library": "Herbário",
+    "stats": "Análise",
+    "log": "Diário",
+    "settings": "Estufa"
+  },
+  "practice": {
+    "intro_lead": "Clica em GIRAR e vai receber 3 pontos de gramática × 3 contextos = 9 frases pra escrever. 화이팅! 💪",
+    "spin": "🎲 GIRAR",
+    "fb_easy": "✨ FÁCIL",
+    "fb_hard": "😤 DIFÍCIL",
+    "error_note_label": "O que foi difícil? · 뭐가 어려웠어요?",
+    "error_note_placeholder": "ex: fiquei na dúvida entre 이 e 가…",
+    "save_with_note": "💾 Salvar com nota",
+    "skip_note": "Pular nota",
+    "completion_ko": "수고했어요! 🎉",
+    "completion_text": "9 frases salvas — 3 gramáticas × 3 contextos. Outra rodada?",
+    "completion_restart": "🎲 NOVA RODADA",
+    "context_label": "Contexto · 상황",
+    "sentence_placeholder": "Escreve tua frase aqui…",
+    "no_grammars": "Não há gramáticas suficientes nos decks ativos.",
+    "no_contexts": "Você precisa de pelo menos 3 contextos ativos.",
+    "toast_saved_easy": "✨ Salva",
+    "toast_saved_hard": "😤 Salva",
+    "no_sentence": "Escreve uma frase primeiro"
+  },
+  "library": {
+    "lead": "Todas as gramáticas que aparecem na sua roleta. Cada uma cresce conforme você pratica."
+  },
+  "mastery": {
+    "seedling": "새싹 · Nova",
+    "plant": "성장 · Cultivando",
+    "tree": "나무 · Dominada"
+  },
+  "empty": {
+    "garden": "O mapa Meu Jardim (mapa 2D estilo Stardew com zonas TOPIK e suas plantas gramaticais crescendo) chega num plano futuro. Por enquanto, vai pra Prática começar a cultivar.",
+    "stats": "Estatísticas detalhadas chegam num plano futuro.",
+    "log": "Ainda não há frases. Vai pra Prática.",
+    "settings": "Configurações e conta chegam em planos futuros."
+  },
+  "common": {
+    "language": "Idioma",
+    "go_to_practice": "Prática"
+  }
+}

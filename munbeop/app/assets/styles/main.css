@@ -1,0 +1,6 @@
+@import './tokens.css';
+@import './pixel.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
