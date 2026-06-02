@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "garden": "Vườn của tôi",
+    "practice": "Luyện tập",
+    "library": "Thư viện",
+    "stats": "Thống kê",
+    "log": "Nhật ký",
+    "settings": "Cài đặt"
+  },
+  "title": {
+    "garden": "Vườn của tôi",
+    "practice": "Luyện tập",
+    "library": "Thư viện",
+    "stats": "Thống kê",
+    "log": "Nhật ký",
+    "settings": "Cài đặt"
+  },
+  "practice": {
+    "intro_lead": "Nhấn QUAY và bạn sẽ nhận 3 ngữ pháp × 3 ngữ cảnh = 9 câu để viết. 화이팅! 💪",
+    "spin": "🎲 QUAY",
+    "fb_easy": "✨ DỄ",
+    "fb_hard": "😤 KHÓ",
+    "error_note_label": "Cái gì khó? · 뭐가 어려웠어요?",
+    "error_note_placeholder": "ví dụ: phân vân giữa 이 và 가…",
+    "save_with_note": "💾 Lưu với ghi chú",
+    "skip_note": "Bỏ qua ghi chú",
+    "completion_ko": "수고했어요! 🎉",
+    "completion_text": "9 câu đã lưu — 3 ngữ pháp × 3 ngữ cảnh. Vòng nữa không?",
+    "completion_restart": "🎲 VÒNG MỚI",
+    "context_label": "Ngữ cảnh · 상황",
+    "sentence_placeholder": "Viết câu của bạn ở đây…",
+    "no_grammars": "Không đủ ngữ pháp trong các deck đang hoạt động.",
+    "no_contexts": "Bạn cần ít nhất 3 ngữ cảnh đang hoạt động.",
+    "toast_saved_easy": "✨ Đã lưu",
+    "toast_saved_hard": "😤 Đã lưu",
+    "no_sentence": "Viết câu trước đã"
+  },
+  "library": {
+    "lead": "Tất cả các ngữ pháp xuất hiện trong vòng quay. Mỗi cái lớn lên khi bạn luyện tập."
+  },
+  "mastery": {
+    "seedling": "새싹 · Mới",
+    "plant": "성장 · Đang lớn",
+    "tree": "나무 · Đã thuộc"
+  },
+  "empty": {
+    "garden": "Bản đồ Vườn của tôi (bản đồ 2D kiểu Stardew với các vùng TOPIK và các cây ngữ pháp đang lớn) sẽ có trong kế hoạch sau. Trong khi đó, vào Luyện tập để bắt đầu trồng.",
+    "stats": "Thống kê chi tiết sẽ có trong kế hoạch sau.",
+    "log": "Chưa có câu nào. Vào Luyện tập.",
+    "settings": "Cài đặt tài khoản sẽ có trong kế hoạch sau."
+  },
+  "common": {
+    "language": "Ngôn ngữ",
+    "go_to_practice": "Luyện tập"
+  }
+}

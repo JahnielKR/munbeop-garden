@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "garden": "Mon Jardin",
+    "practice": "Pratique",
+    "library": "Herboristerie",
+    "stats": "Analyse",
+    "log": "Journal",
+    "settings": "Serre"
+  },
+  "title": {
+    "garden": "Mon Jardin",
+    "practice": "Pratique",
+    "library": "Herboristerie",
+    "stats": "Analyse",
+    "log": "Journal",
+    "settings": "Serre"
+  },
+  "practice": {
+    "intro_lead": "Appuie sur TOURNER et tu auras 3 points de grammaire × 3 contextes = 9 phrases à écrire. 화이팅! 💪",
+    "spin": "🎲 TOURNER",
+    "fb_easy": "✨ FACILE",
+    "fb_hard": "😤 DIFFICILE",
+    "error_note_label": "Qu'est-ce qui était difficile ? · 뭐가 어려웠어요?",
+    "error_note_placeholder": "ex : j'hésitais entre 이 et 가…",
+    "save_with_note": "💾 Sauver avec note",
+    "skip_note": "Sauter la note",
+    "completion_ko": "수고했어요! 🎉",
+    "completion_text": "9 phrases sauvegardées — 3 grammaires × 3 contextes. Encore un tour ?",
+    "completion_restart": "🎲 NOUVEAU TOUR",
+    "context_label": "Contexte · 상황",
+    "sentence_placeholder": "Écris ta phrase ici…",
+    "no_grammars": "Pas assez de grammaires dans les decks actifs.",
+    "no_contexts": "Tu as besoin d'au moins 3 contextes actifs.",
+    "toast_saved_easy": "✨ Sauvegardée",
+    "toast_saved_hard": "😤 Sauvegardée",
+    "no_sentence": "Écris d'abord une phrase"
+  },
+  "library": {
+    "lead": "Toutes les grammaires qui apparaîtront dans ta roue. Chacune grandit selon ta pratique."
+  },
+  "mastery": {
+    "seedling": "새싹 · Nouvelle",
+    "plant": "성장 · En cultivation",
+    "tree": "나무 · Maîtrisée"
+  },
+  "empty": {
+    "garden": "La carte Mon Jardin (carte 2D style Stardew avec zones TOPIK et tes plantes grammaticales qui grandissent) arrive dans un prochain plan. En attendant, va à Pratique pour commencer à cultiver.",
+    "stats": "Les statistiques détaillées arrivent dans un plan ultérieur.",
+    "log": "Aucune phrase pour l'instant. Va à Pratique.",
+    "settings": "Réglages et compte arrivent dans des plans ultérieurs."
+  },
+  "common": {
+    "language": "Langue",
+    "go_to_practice": "Pratique"
+  }
+}

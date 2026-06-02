@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "garden": "私の庭",
+    "practice": "練習",
+    "library": "図書館",
+    "stats": "統計",
+    "log": "日記",
+    "settings": "設定"
+  },
+  "title": {
+    "garden": "私の庭",
+    "practice": "練習",
+    "library": "図書館",
+    "stats": "統計",
+    "log": "日記",
+    "settings": "設定"
+  },
+  "practice": {
+    "intro_lead": "回すを押すと文法3つ×文脈3つ=9文を書くことになります。화이팅! 💪",
+    "spin": "🎲 回す",
+    "fb_easy": "✨ かんたん",
+    "fb_hard": "😤 むずかしい",
+    "error_note_label": "何が難しかった? · 뭐가 어려웠어요?",
+    "error_note_placeholder": "例:이か가か迷った…",
+    "save_with_note": "💾 メモ付きで保存",
+    "skip_note": "メモなし",
+    "completion_ko": "수고했어요! 🎉",
+    "completion_text": "9文保存しました — 文法3 × 文脈3。もう一回?",
+    "completion_restart": "🎲 もう一回",
+    "context_label": "文脈 · 상황",
+    "sentence_placeholder": "ここに文を書いて…",
+    "no_grammars": "アクティブなデッキの文法が足りません。",
+    "no_contexts": "アクティブな文脈が3つ以上必要です。",
+    "toast_saved_easy": "✨ 保存しました",
+    "toast_saved_hard": "😤 保存しました",
+    "no_sentence": "先に文を書いてください"
+  },
+  "library": {
+    "lead": "ルーレットに出る全文法。練習するたびに育ちます。"
+  },
+  "mastery": {
+    "seedling": "새싹 · 新規",
+    "plant": "성장 · 育成中",
+    "tree": "나무 · マスター"
+  },
+  "empty": {
+    "garden": "私の庭マップ(StardewスタイルのTOPIKゾーン2Dマップで文法の植物が育つ)は次の計画で実装します。今は練習に行って栽培を始めてください。",
+    "stats": "詳細統計は今後の計画で実装します。",
+    "log": "まだ文がありません。練習へ。",
+    "settings": "アカウント設定は今後の計画で実装します。"
+  },
+  "common": {
+    "language": "言語",
+    "go_to_practice": "練習"
+  }
+}

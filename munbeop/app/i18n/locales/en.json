@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "garden": "My Garden",
+    "practice": "Practice",
+    "library": "Library",
+    "stats": "Stats",
+    "log": "Journal",
+    "settings": "Settings"
+  },
+  "title": {
+    "garden": "My Garden",
+    "practice": "Practice",
+    "library": "Library",
+    "stats": "Stats",
+    "log": "Journal",
+    "settings": "Settings"
+  },
+  "practice": {
+    "intro_lead": "Hit GO and you'll get 3 grammar points × 3 contexts = 9 sentences to write. 화이팅! 💪",
+    "spin": "🎲 GO",
+    "fb_easy": "✨ EASY",
+    "fb_hard": "😤 HARD",
+    "error_note_label": "What was tricky? · 뭐가 어려웠어요?",
+    "error_note_placeholder": "e.g. unsure whether to use 이 or 가...",
+    "save_with_note": "💾 Save with note",
+    "skip_note": "Skip note",
+    "completion_ko": "수고했어요! 🎉",
+    "completion_text": "9 sentences saved — 3 grammar × 3 contexts. Another round?",
+    "completion_restart": "🎲 NEW ROUND",
+    "context_label": "Context · 상황",
+    "sentence_placeholder": "Write your sentence here…",
+    "no_grammars": "Not enough grammar items in the active decks.",
+    "no_contexts": "You need at least 3 active contexts.",
+    "toast_saved_easy": "✨ Saved",
+    "toast_saved_hard": "😤 Saved",
+    "no_sentence": "Write a sentence first"
+  },
+  "library": {
+    "lead": "All the grammar points that show up in your wheel. Each one grows as you practice."
+  },
+  "mastery": {
+    "seedling": "Sprout · 새싹",
+    "plant": "Growing · 성장",
+    "tree": "Mastered · 나무"
+  },
+  "empty": {
+    "garden": "The Garden map (Stardew-style 2D map with TOPIK zones and your grammar plants growing) ships in a later plan. Meanwhile, head to Practice to start cultivating.",
+    "stats": "Detailed stats land in a later plan.",
+    "log": "No sentences yet. Head to Practice.",
+    "settings": "Account settings and customization land in later plans."
+  },
+  "common": {
+    "language": "Language",
+    "go_to_practice": "Practice"
+  }
+}

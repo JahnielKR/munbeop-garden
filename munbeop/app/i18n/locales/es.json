@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "garden": "Mi Jardín",
+    "practice": "Práctica",
+    "library": "Herbolario",
+    "stats": "Analítica",
+    "log": "Diario",
+    "settings": "Invernadero"
+  },
+  "title": {
+    "garden": "Mi Jardín",
+    "practice": "Práctica",
+    "library": "Herbolario",
+    "stats": "Analítica",
+    "log": "Diario",
+    "settings": "Invernadero"
+  },
+  "practice": {
+    "intro_lead": "Dale a GIRAR y te tocarán 3 gramáticas × 3 contextos = 9 oraciones para escribir. 화이팅! 💪",
+    "spin": "🎲 GIRAR",
+    "fb_easy": "✨ FÁCIL",
+    "fb_hard": "😤 DIFÍCIL",
+    "error_note_label": "¿Qué te costó? · 뭐가 어려웠어요?",
+    "error_note_placeholder": "ej: dudé entre 이 y 가…",
+    "save_with_note": "💾 Guardar con nota",
+    "skip_note": "Saltar nota",
+    "completion_ko": "수고했어요! 🎉",
+    "completion_text": "9 oraciones guardadas — 3 gramáticas × 3 contextos. ¿Otro giro?",
+    "completion_restart": "🎲 NUEVO GIRO",
+    "context_label": "Contexto · 상황",
+    "sentence_placeholder": "Escribe tu oración aquí…",
+    "no_grammars": "No hay suficientes gramáticas en los decks activos.",
+    "no_contexts": "Necesitas al menos 3 contextos activos.",
+    "toast_saved_easy": "✨ Guardada",
+    "toast_saved_hard": "😤 Guardada",
+    "no_sentence": "Escribe una oración primero"
+  },
+  "library": {
+    "lead": "Todas las gramáticas que aparecerán en tu ruleta. Cada una crece según las practicas."
+  },
+  "mastery": {
+    "seedling": "새싹 · Nueva",
+    "plant": "성장 · Cultivando",
+    "tree": "나무 · Dominada"
+  },
+  "empty": {
+    "garden": "El mapa de Mi Jardín (mapa 2D estilo Stardew con zonas TOPIK y tus plantas gramaticales creciendo) llegará en un próximo plan. Mientras tanto, ve a Práctica para empezar a cultivar.",
+    "stats": "Estadísticas detalladas llegan en un plan posterior.",
+    "log": "Aún no has escrito ninguna oración. Ve a Práctica.",
+    "settings": "Ajustes y gestión de cuenta llegan en planes posteriores."
+  },
+  "common": {
+    "language": "Idioma",
+    "go_to_practice": "Práctica"
+  }
+}
