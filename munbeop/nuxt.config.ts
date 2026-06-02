@@ -2,6 +2,14 @@
 export default defineNuxtConfig({
   compatibilityDate: '2026-06-01',
   devtools: { enabled: true },
+  // SPA mode: the app is a learning game that stores everything in
+  // localStorage on the client. SSR + hydration with Nuxt 4 + @nuxtjs/i18n v9
+  // was producing 'SyntaxError: 26' in devalue's payload parser on the
+  // client during hydration, blocking the whole app from initializing.
+  // SPA mode eliminates hydration entirely. SEO/first-paint trade-off
+  // is acceptable for a logged-in app behind auth; we can re-enable SSR
+  // in a later plan once a known-good config is confirmed.
+  ssr: false,
   modules: ['@pinia/nuxt', '@nuxt/eslint', '@nuxtjs/i18n', '@nuxtjs/tailwindcss'],
   css: ['~/assets/styles/main.css'],
   typescript: {
