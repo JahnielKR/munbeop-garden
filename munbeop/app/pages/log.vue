@@ -54,7 +54,7 @@ const { t } = useI18n()
   border: 2px solid var(--border);
   padding: 32px;
   font-family: 'Inter', sans-serif;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 .list {
   list-style: none;
@@ -65,7 +65,7 @@ const { t } = useI18n()
 }
 .entry {
   background: var(--paper-warm);
-  border-left: 3px solid var(--indigo);
+  border-left: 3px solid var(--sky);
   padding: 12px 16px;
 }
 .entry__head {
@@ -83,7 +83,7 @@ const { t } = useI18n()
 .entry__date {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 .entry__sentence {
   font-family: 'Noto Sans KR', sans-serif;
@@ -92,7 +92,7 @@ const { t } = useI18n()
 .entry__meta {
   font-family: 'Inter', sans-serif;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin-top: 4px;
 }
 </style>

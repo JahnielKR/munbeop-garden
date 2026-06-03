@@ -36,6 +36,6 @@ onMounted(async () => {
   margin: 80px auto;
   text-align: center;
   font-family: 'Inter', sans-serif;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 </style>

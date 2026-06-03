@@ -39,6 +39,6 @@ const { t } = useI18n()
   border: 2px solid var(--border);
   padding: 32px;
   font-family: 'Inter', sans-serif;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 </style>

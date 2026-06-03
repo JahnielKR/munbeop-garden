@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth'
-import PixelButton from '~/components/ui/PixelButton.vue'
+import Button from '~/components/ui/Button.vue'
 
 const auth = useAuthStore()
 const { signOut } = useAuth()
@@ -24,15 +24,15 @@ function onSignIn() {
         <span class="email__label">{{ t('auth.signed_in_as') }}</span>
         <span class="email__addr">{{ auth.user.email }}</span>
       </div>
-      <PixelButton variant="secondary" @click="onSignOut">
+      <Button variant="secondary" @click="onSignOut">
         {{ t('auth.sign_out') }}
-      </PixelButton>
+      </Button>
     </template>
     <template v-else>
       <div class="anon">{{ t('auth.anonymous_banner') }}</div>
-      <PixelButton variant="primary" @click="onSignIn">
+      <Button variant="primary" @click="onSignIn">
         {{ t('auth.sign_in_title') }}
-      </PixelButton>
+      </Button>
     </template>
   </div>
 </template>
@@ -55,7 +55,7 @@ function onSignIn() {
   font-size: 8px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 .email__addr {
   font-family: 'JetBrains Mono', monospace;
@@ -66,7 +66,7 @@ function onSignIn() {
 .anon {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
-  color: var(--muted);
+  color: var(--ink-soft);
   line-height: 1.4;
 }
 </style>

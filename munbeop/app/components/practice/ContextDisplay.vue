@@ -23,7 +23,7 @@ const { tl } = useLocalized()
 .ctx {
   padding: 12px 14px;
   background: rgba(88, 144, 212, 0.08);
-  border-left: 3px solid var(--indigo);
+  border-left: 3px solid var(--sky);
   margin-bottom: 12px;
 }
 .ctx__row {
@@ -35,18 +35,18 @@ const { tl } = useLocalized()
 .ctx__label {
   font-family: 'Press Start 2P', monospace;
   font-size: 8px;
-  color: var(--muted);
+  color: var(--ink-soft);
   letter-spacing: 0.15em;
 }
 .ctx__name {
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 700;
   font-size: 17px;
-  color: var(--indigo);
+  color: var(--sky);
 }
 .ctx__scene {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 </style>

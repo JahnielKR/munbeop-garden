@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import Mascota from './Mascota.vue'
-import PixelButton from '~/components/ui/PixelButton.vue'
-import PixelCard from '~/components/ui/PixelCard.vue'
+import Button from '~/components/ui/Button.vue'
+import Card from '~/components/ui/Card.vue'
 defineEmits<{ restart: [] }>()
 const { t } = useI18n()
 </script>
 
 <template>
-  <PixelCard accent="jade">
+  <Card accent="jade">
     <div class="banner">
       <Mascota class="banner__mascota" :size="64" />
       <div class="banner__ko">{{ t('practice.completion_ko') }}</div>
       <div class="banner__txt">{{ t('practice.completion_text') }}</div>
-      <PixelButton variant="primary" @click="$emit('restart')">
+      <Button variant="primary" @click="$emit('restart')">
         {{ t('practice.completion_restart') }}
-      </PixelButton>
+      </Button>
     </div>
-  </PixelCard>
+  </Card>
 </template>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PixelButton from '~/components/ui/PixelButton.vue'
-import PixelInput from '~/components/ui/PixelInput.vue'
+import Button from '~/components/ui/Button.vue'
+import Input from '~/components/ui/Input.vue'
 
 interface Props {
   modelValue: string
@@ -13,7 +13,7 @@ const { t } = useI18n()
 <template>
   <div class="enote">
     <div class="enote__label">{{ t('practice.error_note_label') }}</div>
-    <PixelInput
+    <Input
       :model-value="modelValue"
       :placeholder="t('practice.error_note_placeholder')"
       multiline
@@ -21,12 +21,12 @@ const { t } = useI18n()
       @update:model-value="$emit('update:modelValue', $event)"
     />
     <div class="enote__actions">
-      <PixelButton variant="danger" @click="$emit('save')">
+      <Button variant="danger" @click="$emit('save')">
         {{ t('practice.save_with_note') }}
-      </PixelButton>
-      <PixelButton variant="secondary" @click="$emit('skip')">
+      </Button>
+      <Button variant="secondary" @click="$emit('skip')">
         {{ t('practice.skip_note') }}
-      </PixelButton>
+      </Button>
     </div>
   </div>
 </template>
