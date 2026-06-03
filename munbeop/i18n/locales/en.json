@@ -52,5 +52,23 @@
   "common": {
     "language": "Language",
     "go_to_practice": "Practice"
+  },
+  "auth": {
+    "sign_in_title": "Sign in",
+    "sign_up_title": "Create account",
+    "email_label": "Email",
+    "password_label": "Password",
+    "submit_sign_in": "Sign in",
+    "submit_sign_up": "Sign up",
+    "submit_magic_link": "Send magic link",
+    "magic_link_sent": "Check your email for the sign-in link.",
+    "checking": "Checking link…",
+    "callback_success": "Signed in! Redirecting…",
+    "callback_error": "Sign-in link is invalid or expired.",
+    "switch_to_sign_up": "No account? Sign up",
+    "switch_to_sign_in": "Have an account? Sign in",
+    "signed_in_as": "Signed in as",
+    "sign_out": "Sign out",
+    "anonymous_banner": "Practicing locally. Sign in to sync across devices."
   }
 }

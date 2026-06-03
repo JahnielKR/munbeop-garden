@@ -52,5 +52,23 @@
   "common": {
     "language": "Bahasa",
     "go_to_practice": "Latihan"
+  },
+  "auth": {
+    "sign_in_title": "Masuk",
+    "sign_up_title": "Buat akun",
+    "email_label": "Email",
+    "password_label": "Kata sandi",
+    "submit_sign_in": "Masuk",
+    "submit_sign_up": "Daftar",
+    "submit_magic_link": "Kirim link ajaib",
+    "magic_link_sent": "Cek emailmu untuk link masuk.",
+    "checking": "Memeriksa link…",
+    "callback_success": "Berhasil masuk! Mengalihkan…",
+    "callback_error": "Link tidak valid atau kedaluwarsa.",
+    "switch_to_sign_up": "Belum punya akun? Daftar",
+    "switch_to_sign_in": "Sudah punya akun? Masuk",
+    "signed_in_as": "Masuk sebagai",
+    "sign_out": "Keluar",
+    "anonymous_banner": "Berlatih lokal. Masuk untuk sinkron antar perangkat."
   }
 }

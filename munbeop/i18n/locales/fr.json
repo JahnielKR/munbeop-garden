@@ -52,5 +52,23 @@
   "common": {
     "language": "Langue",
     "go_to_practice": "Pratique"
+  },
+  "auth": {
+    "sign_in_title": "Connexion",
+    "sign_up_title": "Créer un compte",
+    "email_label": "E-mail",
+    "password_label": "Mot de passe",
+    "submit_sign_in": "Se connecter",
+    "submit_sign_up": "S'inscrire",
+    "submit_magic_link": "Envoyer le lien magique",
+    "magic_link_sent": "Consulte ton e-mail pour le lien de connexion.",
+    "checking": "Vérification du lien…",
+    "callback_success": "Connecté ! Redirection…",
+    "callback_error": "Le lien est invalide ou expiré.",
+    "switch_to_sign_up": "Pas de compte ? Inscris-toi",
+    "switch_to_sign_in": "Tu as un compte ? Connecte-toi",
+    "signed_in_as": "Connecté en tant que",
+    "sign_out": "Se déconnecter",
+    "anonymous_banner": "Pratique locale. Connecte-toi pour synchroniser entre appareils."
   }
 }

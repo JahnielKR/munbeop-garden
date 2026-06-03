@@ -52,5 +52,23 @@
   "common": {
     "language": "言語",
     "go_to_practice": "練習"
+  },
+  "auth": {
+    "sign_in_title": "サインイン",
+    "sign_up_title": "アカウント作成",
+    "email_label": "メール",
+    "password_label": "パスワード",
+    "submit_sign_in": "サインイン",
+    "submit_sign_up": "登録",
+    "submit_magic_link": "マジックリンクを送る",
+    "magic_link_sent": "メールでサインインリンクを確認してください。",
+    "checking": "リンクを確認中…",
+    "callback_success": "サインインしました!リダイレクト中…",
+    "callback_error": "リンクが無効または期限切れです。",
+    "switch_to_sign_up": "アカウントがない?登録",
+    "switch_to_sign_in": "アカウントある?サインイン",
+    "signed_in_as": "サインイン中:",
+    "sign_out": "サインアウト",
+    "anonymous_banner": "ローカル練習中。デバイス間で同期するにはサインイン。"
   }
 }

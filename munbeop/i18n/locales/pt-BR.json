@@ -52,5 +52,23 @@
   "common": {
     "language": "Idioma",
     "go_to_practice": "Prática"
+  },
+  "auth": {
+    "sign_in_title": "Entrar",
+    "sign_up_title": "Criar conta",
+    "email_label": "E-mail",
+    "password_label": "Senha",
+    "submit_sign_in": "Entrar",
+    "submit_sign_up": "Cadastrar",
+    "submit_magic_link": "Enviar link mágico",
+    "magic_link_sent": "Confere teu e-mail para o link de acesso.",
+    "checking": "Verificando link…",
+    "callback_success": "Pronto! Redirecionando…",
+    "callback_error": "O link é inválido ou expirou.",
+    "switch_to_sign_up": "Sem conta? Cadastra-te",
+    "switch_to_sign_in": "Já tem conta? Entra",
+    "signed_in_as": "Sessão de",
+    "sign_out": "Sair",
+    "anonymous_banner": "Treinando local. Entra pra sincronizar entre dispositivos."
   }
 }

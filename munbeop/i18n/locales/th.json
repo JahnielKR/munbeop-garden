@@ -52,5 +52,23 @@
   "common": {
     "language": "ภาษา",
     "go_to_practice": "ฝึก"
+  },
+  "auth": {
+    "sign_in_title": "เข้าสู่ระบบ",
+    "sign_up_title": "สร้างบัญชี",
+    "email_label": "อีเมล",
+    "password_label": "รหัสผ่าน",
+    "submit_sign_in": "เข้าสู่ระบบ",
+    "submit_sign_up": "สมัคร",
+    "submit_magic_link": "ส่งลิงก์เวทมนตร์",
+    "magic_link_sent": "เช็คอีเมลเพื่อรับลิงก์เข้าสู่ระบบ",
+    "checking": "กำลังตรวจสอบลิงก์…",
+    "callback_success": "เข้าสู่ระบบแล้ว! กำลังเปลี่ยนหน้า…",
+    "callback_error": "ลิงก์ไม่ถูกต้องหรือหมดอายุ",
+    "switch_to_sign_up": "ยังไม่มีบัญชี? สมัคร",
+    "switch_to_sign_in": "มีบัญชีแล้ว? เข้าสู่ระบบ",
+    "signed_in_as": "เข้าสู่ระบบเป็น",
+    "sign_out": "ออกจากระบบ",
+    "anonymous_banner": "ฝึกในเครื่อง เข้าสู่ระบบเพื่อซิงค์ระหว่างอุปกรณ์"
   }
 }
