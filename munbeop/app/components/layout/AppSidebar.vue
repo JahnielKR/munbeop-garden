@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AccountWidget from './AccountWidget.vue'
 import LocaleSwitcher from './LocaleSwitcher.vue'
 
 interface NavItem {
@@ -39,6 +40,7 @@ const { t } = useI18n()
       </NuxtLink>
     </nav>
     <div class="sidebar__footer">
+      <AccountWidget />
       <LocaleSwitcher />
     </div>
   </aside>
@@ -114,5 +116,8 @@ const { t } = useI18n()
 }
 .sidebar__footer {
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 </style>
