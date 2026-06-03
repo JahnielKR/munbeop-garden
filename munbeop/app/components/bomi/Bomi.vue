@@ -120,23 +120,31 @@ provide('bomi:hatAnim', hatAnim)
   display: inline-block;
   vertical-align: middle;
   flex-shrink: 0;
-  /* Bomi is decorative (role=img + aria-label). Prevent text selection
-   * on the sleep-Z and on click-drag over any sprite layer; also keep
-   * the cursor as default so users don't get an I-beam over the Z. */
+  /* Bomi is decorative (role=img + aria-label). Three layers of defense
+   * against unwanted selection / interaction behavior:
+   *   1. pointer-events:none -- the strongest: clicks pass through, so
+   *      no individual sub-group (wings, hat, etc.) can be tap-selected
+   *      on mobile, no focus rings on inner motion.g elements.
+   *   2. user-select:none + -webkit-user-drag:none -- belt-and-suspenders
+   *      for text selection on the sleep-Z + drag-select on desktop.
+   *   3. -webkit-tap-highlight-color:transparent -- suppresses the iOS
+   *      Safari "blue flash" on tap.
+   * cursor:default keeps the mouse pointer normal instead of I-beam
+   * over the Z text.
+   *
+   * If a future iteration needs Bomi to be clickable (petting,
+   * /mascota detail link), flip pointer-events back to auto on the
+   * specific wrapper that should receive clicks. */
+  pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
   cursor: default;
 }
 .bomi :deep(g),
 .bomi :deep(svg g),
 .bomi :deep(text) {
   transform-box: view-box;
-}
-.bomi :deep(text) {
-  /* Belt-and-suspenders: also block selection on the text element
-   * itself in case a browser ignores the parent user-select. */
-  user-select: none;
-  -webkit-user-select: none;
 }
 </style>
