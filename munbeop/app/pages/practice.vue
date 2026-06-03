@@ -3,6 +3,8 @@ import GrammarCard from '~/components/practice/GrammarCard.vue'
 import CompletionBanner from '~/components/practice/CompletionBanner.vue'
 import PixelButton from '~/components/ui/PixelButton.vue'
 
+definePageMeta({ surface: 'game' })
+
 const { session, error, completed, start, grammarOf, currentContextOf, persistEntry, reset } =
   usePractice()
 const toast = useToast()
