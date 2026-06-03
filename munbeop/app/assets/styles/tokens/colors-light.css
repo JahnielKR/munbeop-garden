@@ -33,6 +33,7 @@
   --text-soft: var(--ink-soft);
   --border: #d8b96a;
   --border-strong: var(--ink-soft);
+  --shadow-color: var(--ink-soft);
   --focus-ring: var(--jade-deep);
   --link: var(--jade-deep);
   --link-visited: var(--ink-soft);

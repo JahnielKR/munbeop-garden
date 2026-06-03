@@ -27,6 +27,7 @@
   --success: var(--jade);
   --mastery-tree: var(--jade);
   --border: #5e4a2c;
+  --shadow-color: #0d0907;
   --focus-ring: var(--jade);
   --text-on-accent: var(--always-dark);
   --text-on-danger: var(--always-dark);
