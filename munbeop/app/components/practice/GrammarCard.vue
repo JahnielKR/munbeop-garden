@@ -8,6 +8,7 @@ import ProgressDots from './ProgressDots.vue'
 import SentenceInput from './SentenceInput.vue'
 import FeedbackRow from './FeedbackRow.vue'
 import ErrorNoteBlock from './ErrorNoteBlock.vue'
+import MasteryIcon from './MasteryIcon.vue'
 
 interface Props {
   grammar: Grammar
@@ -30,7 +31,8 @@ const emit = defineEmits<{
 const srs = useSrsStore()
 const { t } = useI18n()
 const { tl } = useLocalized()
-const masteryInfo = computed(() => getMasteryInfo(srs.ensure(props.grammar.ko).mastery))
+const masteryLevel = computed(() => srs.ensure(props.grammar.ko).mastery)
+const masteryInfo = computed(() => getMasteryInfo(masteryLevel.value))
 
 const sentence = ref('')
 const showErrorBlock = ref(false)
@@ -85,7 +87,10 @@ function onSkipNote() {
   <PixelCard accent="jade">
     <div class="header">
       <div class="ko">{{ grammar.ko }}</div>
-      <div class="mastery">{{ masteryInfo.emoji }} {{ t(masteryInfo.labelKey) }}</div>
+      <div class="mastery">
+        <MasteryIcon :level="masteryLevel" :size="12" />
+        <span>{{ t(masteryInfo.labelKey) }}</span>
+      </div>
     </div>
     <div class="meaning">{{ tl(grammar.meaning) }}</div>
     <div v-if="grammar.example" class="example">{{ grammar.example }}</div>
@@ -119,6 +124,9 @@ function onSkipNote() {
   color: var(--ink);
 }
 .mastery {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-family: 'Press Start 2P', monospace;
   font-size: 9px;
   color: var(--muted);

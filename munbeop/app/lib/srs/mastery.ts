@@ -49,16 +49,15 @@ export function recalculateMastery(ko: string, log: readonly LogEntry[]): SrsSta
 }
 
 export interface MasteryInfo {
-  emoji: string
   /** i18n key for the localized label (resolved by useI18n() in UI). */
   labelKey: string
   cls: string
 }
 
 const MASTERY_INFO: Record<MasteryLevel, MasteryInfo> = {
-  seedling: { emoji: '🌱', labelKey: 'mastery.seedling', cls: 'mastery-seedling' },
-  plant: { emoji: '🌿', labelKey: 'mastery.plant', cls: 'mastery-plant' },
-  tree: { emoji: '🌳', labelKey: 'mastery.tree', cls: 'mastery-tree' },
+  seedling: { labelKey: 'mastery.seedling', cls: 'mastery-seedling' },
+  plant: { labelKey: 'mastery.plant', cls: 'mastery-plant' },
+  tree: { labelKey: 'mastery.tree', cls: 'mastery-tree' },
 }
 
 export function getMasteryInfo(level: MasteryLevel): MasteryInfo {

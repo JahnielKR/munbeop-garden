@@ -1,10 +1,17 @@
 <script setup lang="ts">
-const items = [
-  { to: '/', emoji: '🏡' },
-  { to: '/practice', emoji: '🎲' },
-  { to: '/library', emoji: '📚' },
-  { to: '/stats', emoji: '📊' },
-  { to: '/settings', emoji: '🤖' },
+import Icon, { type IconName } from '~/components/ui/Icon.vue'
+
+interface MobileNavItem {
+  to: string
+  icon: IconName
+}
+
+const items: MobileNavItem[] = [
+  { to: '/', icon: 'home' },
+  { to: '/practice', icon: 'practice' },
+  { to: '/library', icon: 'library' },
+  { to: '/stats', icon: 'stats' },
+  { to: '/settings', icon: 'settings' },
 ]
 </script>
 
@@ -17,7 +24,7 @@ const items = [
       class="mobile-nav__link"
       active-class="mobile-nav__link--active"
     >
-      <span class="mobile-nav__emoji">{{ item.emoji }}</span>
+      <Icon :name="item.icon" :size="22" />
     </NuxtLink>
   </nav>
 </template>
@@ -50,8 +57,5 @@ const items = [
   color: var(--jade);
   border-top-color: var(--jade);
   background: var(--paper-deep);
-}
-.mobile-nav__emoji {
-  font-size: 22px;
 }
 </style>
