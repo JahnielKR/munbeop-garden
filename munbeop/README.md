@@ -25,7 +25,7 @@ app/                              # Nuxt 4 srcDir
 ├── components/
 │   ├── layout/{AppShell,AppSidebar,MobileNavbar,LocaleSwitcher}.vue
 │   ├── practice/{GrammarCard,ContextDisplay,SentenceInput,...}.vue
-│   └── ui/{PixelButton,PixelCard,PixelInput,Toast}.vue
+│   └── ui/{Button,Card,Input,Toast}.vue
 ├── composables/{usePractice,useLocalized,useToast}.ts
 ├── layouts/default.vue
 ├── lib/                          # pura lógica de dominio (sin Vue)

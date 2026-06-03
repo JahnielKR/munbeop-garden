@@ -87,7 +87,7 @@ const { t } = useI18n()
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  color: var(--muted);
+  color: var(--ink-soft);
   text-decoration: none;
   border-left: 3px solid transparent;
   transition: all 0.15s ease;
@@ -109,7 +109,7 @@ const { t } = useI18n()
 .sidebar__ko {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 11px;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 .sidebar__footer {
   margin-top: auto;

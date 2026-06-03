@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import GrammarCard from '~/components/practice/GrammarCard.vue'
 import CompletionBanner from '~/components/practice/CompletionBanner.vue'
-import PixelButton from '~/components/ui/PixelButton.vue'
+import Button from '~/components/ui/Button.vue'
 
 definePageMeta({ surface: 'game' })
 
@@ -46,7 +46,7 @@ async function onRestart() {
 
     <div v-if="!session" class="intro">
       <p class="intro__text">{{ t('practice.intro_lead') }}</p>
-      <PixelButton variant="primary" @click="onStart">{{ t('practice.spin') }}</PixelButton>
+      <Button variant="primary" @click="onStart">{{ t('practice.spin') }}</Button>
     </div>
 
     <div v-else class="session">
@@ -95,7 +95,7 @@ async function onRestart() {
 }
 .intro__text {
   font-family: 'Inter', sans-serif;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin-bottom: 18px;
   line-height: 1.5;
 }

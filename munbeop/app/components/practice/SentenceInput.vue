@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PixelInput from '~/components/ui/PixelInput.vue'
+import Input from '~/components/ui/Input.vue'
 
 interface Props {
   modelValue: string
@@ -10,7 +10,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <PixelInput
+  <Input
     :model-value="modelValue"
     :placeholder="t('practice.sentence_placeholder')"
     multiline

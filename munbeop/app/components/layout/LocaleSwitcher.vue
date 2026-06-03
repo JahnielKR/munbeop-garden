@@ -36,7 +36,7 @@ function onChange(e: Event) {
   font-family: 'Press Start 2P', monospace;
   font-size: 8px;
   letter-spacing: 0.15em;
-  color: var(--muted);
+  color: var(--ink-soft);
   text-transform: uppercase;
 }
 .loc__select {

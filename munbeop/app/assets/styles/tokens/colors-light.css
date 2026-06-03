@@ -4,7 +4,6 @@
  *   1. Theme-invariants (same in light and dark; dark inherits via :root)
  *   2. Brand swatches — light values
  *   3. Semantic aliases — components reference these, never brand swatches
- *   4. Deprecated aliases — Phase 1 compatibility; removed in Phase 2
  */
 
 :root {
@@ -51,13 +50,4 @@
   --text-on-danger: var(--paper);
   --text-on-info: var(--always-dark);
   --text-on-warning: var(--always-dark);
-
-  /* ---- 4. Deprecated aliases (Phase 1 only) ---- */
-  /* Components still reference these names; remove in Phase 2 once
-   * consumer renames land. */
-  --muted: var(--ink-soft);
-  --indigo: var(--sky);
-  --seedling: var(--mastery-seedling);
-  --plant: var(--mastery-plant);
-  --tree: var(--mastery-tree);
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import PixelButton from '~/components/ui/PixelButton.vue'
-import PixelCard from '~/components/ui/PixelCard.vue'
-import PixelInput from '~/components/ui/PixelInput.vue'
+import Button from '~/components/ui/Button.vue'
+import Card from '~/components/ui/Card.vue'
+import Input from '~/components/ui/Input.vue'
 
 const { signIn, signUp, signInMagicLink } = useAuth()
 const { t } = useI18n()
@@ -37,21 +37,21 @@ async function submit() {
 
 <template>
   <div class="page">
-    <PixelCard accent="jade">
+    <Card accent="jade">
       <h1 class="title">
         {{ mode === 'sign-up' ? t('auth.sign_up_title') : t('auth.sign_in_title') }}
       </h1>
 
       <label class="label">{{ t('auth.email_label') }}</label>
-      <PixelInput v-model="email" placeholder="you@example.com" />
+      <Input v-model="email" placeholder="you@example.com" />
 
       <template v-if="mode !== 'magic-link'">
         <label class="label">{{ t('auth.password_label') }}</label>
-        <PixelInput v-model="password" />
+        <Input v-model="password" />
       </template>
 
       <div class="actions">
-        <PixelButton variant="primary" :disabled="loading" @click="submit">
+        <Button variant="primary" :disabled="loading" @click="submit">
           {{
             mode === 'sign-up'
               ? t('auth.submit_sign_up')
@@ -59,7 +59,7 @@ async function submit() {
                 ? t('auth.submit_magic_link')
                 : t('auth.submit_sign_in')
           }}
-        </PixelButton>
+        </Button>
       </div>
 
       <div class="switch">
@@ -73,7 +73,7 @@ async function submit() {
           {{ t('auth.submit_magic_link') }}
         </button>
       </div>
-    </PixelCard>
+    </Card>
   </div>
 </template>
 
@@ -91,7 +91,7 @@ async function submit() {
 .label {
   font-family: 'Press Start 2P', monospace;
   font-size: 9px;
-  color: var(--muted);
+  color: var(--ink-soft);
   display: block;
   margin: 12px 0 6px;
   letter-spacing: 0.15em;
@@ -109,7 +109,7 @@ async function submit() {
 .link {
   background: none;
   border: none;
-  color: var(--indigo);
+  color: var(--sky);
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-size: 13px;

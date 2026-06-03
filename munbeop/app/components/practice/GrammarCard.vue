@@ -2,7 +2,7 @@
 import type { Context, Grammar } from '~/lib/domain'
 import { getMasteryInfo } from '~/lib/srs'
 import { useSrsStore } from '~/stores/srs'
-import PixelCard from '~/components/ui/PixelCard.vue'
+import Card from '~/components/ui/Card.vue'
 import ContextDisplay from './ContextDisplay.vue'
 import ProgressDots from './ProgressDots.vue'
 import SentenceInput from './SentenceInput.vue'
@@ -84,7 +84,7 @@ function onSkipNote() {
 </script>
 
 <template>
-  <PixelCard accent="jade">
+  <Card accent="jade">
     <div class="header">
       <div class="ko">{{ grammar.ko }}</div>
       <div class="mastery">
@@ -106,7 +106,7 @@ function onSkipNote() {
       @save="onSaveWithNote"
       @skip="onSkipNote"
     />
-  </PixelCard>
+  </Card>
 </template>
 
 <style scoped>
@@ -129,11 +129,11 @@ function onSkipNote() {
   gap: 6px;
   font-family: 'Press Start 2P', monospace;
   font-size: 9px;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 .meaning {
   font-family: 'Inter', sans-serif;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin: 8px 0 12px;
   font-size: 15px;
 }
@@ -145,7 +145,7 @@ function onSkipNote() {
 .trans {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin-top: 4px;
 }
 </style>

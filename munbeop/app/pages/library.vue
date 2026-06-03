@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PixelCard from '~/components/ui/PixelCard.vue'
+import Card from '~/components/ui/Card.vue'
 import MasteryIcon from '~/components/practice/MasteryIcon.vue'
 import { getMasteryInfo } from '~/lib/srs'
 import { useGrammarStore } from '~/stores/grammar'
@@ -31,7 +31,7 @@ const items = computed(() =>
     <p class="lead">{{ t('library.lead') }}</p>
 
     <div class="grid">
-      <PixelCard
+      <Card
         v-for="item in items"
         :key="item.grammar.ko"
         :accent="
@@ -39,7 +39,7 @@ const items = computed(() =>
             ? 'jade'
             : item.info.cls === 'mastery-plant'
               ? 'gold'
-              : 'indigo'
+              : 'sky'
         "
       >
         <div class="item__head">
@@ -52,7 +52,7 @@ const items = computed(() =>
         <div class="item__meaning">{{ tl(item.grammar.meaning) }}</div>
         <div v-if="item.grammar.example" class="item__example">{{ item.grammar.example }}</div>
         <div v-if="item.grammar.trans" class="item__trans">{{ tl(item.grammar.trans) }}</div>
-      </PixelCard>
+      </Card>
     </div>
   </div>
 </template>
@@ -81,7 +81,7 @@ const items = computed(() =>
 }
 .lead {
   font-family: 'Inter', sans-serif;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 .grid {
   display: grid;
@@ -107,11 +107,11 @@ const items = computed(() =>
   gap: 6px;
   font-family: 'Press Start 2P', monospace;
   font-size: 8px;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 .item__meaning {
   font-family: 'Inter', sans-serif;
-  color: var(--muted);
+  color: var(--ink-soft);
   font-size: 14px;
 }
 .item__example {
@@ -123,7 +123,7 @@ const items = computed(() =>
 .item__trans {
   font-family: 'Inter', sans-serif;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--ink-soft);
   margin-top: 2px;
 }
 </style>

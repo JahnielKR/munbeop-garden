@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import PixelButton from '~/components/ui/PixelButton.vue'
+import Button from '~/components/ui/Button.vue'
 defineEmits<{ easy: []; hard: [] }>()
 const { t } = useI18n()
 </script>
 
 <template>
   <div class="fb">
-    <PixelButton variant="primary" @click="$emit('easy')">{{ t('practice.fb_easy') }}</PixelButton>
-    <PixelButton variant="danger" @click="$emit('hard')">{{ t('practice.fb_hard') }}</PixelButton>
+    <Button variant="primary" @click="$emit('easy')">{{ t('practice.fb_easy') }}</Button>
+    <Button variant="danger" @click="$emit('hard')">{{ t('practice.fb_hard') }}</Button>
   </div>
 </template>
 

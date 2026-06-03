@@ -50,7 +50,7 @@ const items: MobileNavItem[] = [
   align-items: center;
   height: 100%;
   text-decoration: none;
-  color: var(--muted);
+  color: var(--ink-soft);
   border-top: 3px solid transparent;
 }
 .mobile-nav__link--active {

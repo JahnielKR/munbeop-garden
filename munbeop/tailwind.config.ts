@@ -12,13 +12,6 @@ export default {
   theme: {
     extend: {
       colors: {
-        // v1 names — kept as deprecated aliases through Phase 1, removed in Phase 2
-        muted: 'var(--muted)',
-        indigo: 'var(--indigo)',
-        seedling: 'var(--seedling)',
-        plant: 'var(--plant)',
-        tree: 'var(--tree)',
-        // v2 names — canonical
         paper: 'var(--paper)',
         'paper-warm': 'var(--paper-warm)',
         'paper-deep': 'var(--paper-deep)',

@@ -16,20 +16,20 @@ defineEmits<{ 'update:modelValue': [string] }>()
     :value="modelValue"
     :placeholder="placeholder"
     :rows="rows"
-    class="pixel-input"
+    class="input"
     @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"
   />
   <input
     v-else
     :value="modelValue"
     :placeholder="placeholder"
-    class="pixel-input"
+    class="input"
     @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
   >
 </template>
 
 <style scoped>
-.pixel-input {
+.input {
   width: 100%;
   background: var(--paper);
   color: var(--ink);
@@ -41,7 +41,7 @@ defineEmits<{ 'update:modelValue': [string] }>()
   resize: vertical;
   transition: border-color 0.15s ease;
 }
-.pixel-input:focus {
+.input:focus {
   border-color: var(--jade);
 }
 </style>

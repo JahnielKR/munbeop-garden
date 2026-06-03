@@ -18,8 +18,8 @@ defineEmits<{ click: [MouseEvent] }>()
   <button
     :type="type"
     :disabled="disabled"
-    class="pixel-button"
-    :class="[`pixel-button--${variant}`, { 'pixel-button--disabled': disabled }]"
+    class="button"
+    :class="[`button--${variant}`, { 'button--disabled': disabled }]"
     @click="$emit('click', $event)"
   >
     <slot />
@@ -27,7 +27,7 @@ defineEmits<{ click: [MouseEvent] }>()
 </template>
 
 <style scoped>
-.pixel-button {
+.button {
   font-family: 'Press Start 2P', monospace;
   font-size: 11px;
   letter-spacing: 0.05em;
@@ -43,24 +43,24 @@ defineEmits<{ click: [MouseEvent] }>()
     background 0.15s ease;
   box-shadow: 4px 4px 0 var(--ink);
 }
-.pixel-button:hover:not(:disabled) {
+.button:hover:not(:disabled) {
   transform: translate(-1px, -1px);
   box-shadow: 5px 5px 0 var(--ink);
 }
-.pixel-button:active:not(:disabled) {
+.button:active:not(:disabled) {
   transform: translate(2px, 2px);
   box-shadow: 2px 2px 0 var(--ink);
 }
-.pixel-button--secondary {
+.button--secondary {
   background: var(--paper-warm);
   color: var(--ink);
 }
-.pixel-button--danger {
+.button--danger {
   background: var(--red);
   color: var(--paper);
 }
-.pixel-button--disabled,
-.pixel-button:disabled {
+.button--disabled,
+.button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
