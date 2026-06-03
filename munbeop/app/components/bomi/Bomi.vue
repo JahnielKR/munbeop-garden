@@ -88,6 +88,29 @@ provide('bomi:hatAnim', hatAnim)
       <BomiEyes />
       <BomiHat />
       <BomiAntennae />
+
+      <!--
+        Sleep "Z" overlay (spec §3.9). Conditionally rendered only
+        when pose === 'sleep'. Floats up + fades, loops every 2s.
+        Painted last so it appears on top of antennae/hat.
+        Position anchor: x=22 (right of head center col 16, near
+        right antenna), starting y=14 (near hat brim), animating
+        translateY=-10 (10 sprite-units upward = above the viewbox
+        top edge, fades out before clipping).
+      -->
+      <motion.text
+        v-if="pose === 'sleep'"
+        x="22"
+        y="14"
+        font-size="5"
+        font-family="'Press Start 2P', monospace"
+        font-weight="bold"
+        fill="#1a1f1a"
+        shape-rendering="auto"
+        :animate="{ y: [14, 4], opacity: [0, 1, 0] }"
+        :transition="{ duration: 2, repeat: Infinity, ease: 'easeOut' }"
+        aria-hidden="true"
+      >Z</motion.text>
     </motion.g>
   </svg>
 </template>

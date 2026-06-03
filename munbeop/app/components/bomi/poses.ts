@@ -41,22 +41,32 @@ export interface PoseDefinition {
 
 export const POSES: Record<Pose, PoseDefinition> = {
   idle: {
+    // idle is also the "reset all properties to defaults" pose. Every
+    // property any other pose can mutate is explicitly set here so
+    // motion-v transitions cleanly back when a pose returns/clears.
+    // Without this, properties like wings.opacity (sleep), eyes.y
+    // (play-hat), hat.y/rotate (play-hat), bee.rotate (thinking/cheer/
+    // fly) get stuck at their last value when transitioning to idle.
     bee: {
-      animate: { y: [0, -0.5, 0] },
+      animate: { y: [0, -0.5, 0], rotate: 0 },
       transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
     },
     wings: {
-      animate: { scaleX: [1, 0.45, 1] },
+      animate: { scaleX: [1, 0.45, 1], opacity: 1 },
       transition: { duration: 0.18, repeat: Infinity, ease: 'easeInOut' },
     },
     eyes: {
-      animate: { scaleY: [1, 0.05, 1] },
+      animate: { scaleY: [1, 0.05, 1], y: 0 },
       transition: {
         duration: 0.15,
         repeat: Infinity,
         repeatDelay: 3.3,
         ease: 'easeInOut',
       },
+    },
+    hat: {
+      animate: { y: 0, rotate: 0 },
+      transition: { duration: 0.3, ease: 'easeOut' },
     },
   },
 
