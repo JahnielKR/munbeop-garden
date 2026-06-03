@@ -408,7 +408,7 @@ Hard offset shadows — `Npx Npx 0 <color>` — never soft Gaussian blurs. This 
 | `--shadow-inset` | `inset 2px 2px 0 var(--border-strong)` | Inputs in resting state — looks pressed-in like a slot |
 | `--shadow-inset-strong` | `inset 3px 3px 0 var(--ink-soft)` | Input focused state |
 
-The color always references `--border-strong` (which is `--ink-soft` via alias), NOT raw `--ink`. This means dark theme's shadow is darker-warm-brown automatically, not pure cream — preserving the chunky block silhouette without it glowing in dark mode.
+The color always references `--border-strong` (which aliases `--ink-soft`), NOT raw `--ink`. In light theme this resolves to warm brown (`#4a3a1f`) — the chunky-pixel look on cream paper. In dark theme, `--ink-soft` inverts to dusty cream (`#d8c89a`), so the shadow becomes cream-on-cave-brown — a halo rather than a chunky block. That's a known design follow-up for Phase 8 when the dark toggle ships; leaving as-is here per the spec direction.
 
 #### 6.2 Semantic aliases (per state)
 
