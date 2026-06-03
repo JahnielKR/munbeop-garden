@@ -8,18 +8,18 @@ const { session, error, completed, start, grammarOf, currentContextOf, persistEn
 const toast = useToast()
 const { t } = useI18n()
 
-function onStart() {
-  start()
+async function onStart() {
+  await start()
   if (error.value) toast.show(error.value)
 }
 
-function onSubmit(payload: {
+async function onSubmit(payload: {
   pickIndex: number
   sentence: string
   feedback: 'easy' | 'hard'
   errorNote: string | null
 }) {
-  const entry = persistEntry(payload)
+  const entry = await persistEntry(payload)
   if (entry) {
     toast.show(
       payload.feedback === 'easy'
@@ -29,9 +29,9 @@ function onSubmit(payload: {
   }
 }
 
-function onRestart() {
+async function onRestart() {
   reset()
-  onStart()
+  await onStart()
 }
 </script>
 

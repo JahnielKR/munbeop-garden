@@ -17,7 +17,7 @@ export function usePractice() {
   const session = ref<PracticeSession | null>(null)
   const error = ref<string | null>(null)
 
-  function start() {
+  async function start() {
     error.value = null
     try {
       const pool = grammarStore.activeIndices
@@ -35,9 +35,12 @@ export function usePractice() {
         contextPool: activeContexts,
         weightOf: (idx) => srsStore.weightFor(grammarStore.items[idx]!.ko),
       })
-      for (const pick of session.value.picks) {
-        srsStore.markSeen(grammarStore.items[pick.grammarIdx]!.ko)
-      }
+      // Mark every picked grammar as seen — runs in parallel against storage.
+      await Promise.all(
+        session.value.picks.map((pick) =>
+          srsStore.markSeen(grammarStore.items[pick.grammarIdx]!.ko),
+        ),
+      )
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'Unknown error'
     }
@@ -59,12 +62,12 @@ export function usePractice() {
     return pick.contexts[pick.progress] ?? null
   }
 
-  function persistEntry(p: {
+  async function persistEntry(p: {
     pickIndex: number
     sentence: string
     feedback: Feedback
     errorNote: string | null
-  }): LogEntry | null {
+  }): Promise<LogEntry | null> {
     const s = session.value
     if (!s) return null
     const grammar = grammarOf(p.pickIndex)
@@ -72,7 +75,7 @@ export function usePractice() {
     if (!grammar || !ctx) return null
     const hasNote = p.errorNote !== null && p.errorNote.trim().length > 0
     const reviewState: ReviewState = p.feedback === 'hard' && hasNote ? 'incorrect' : 'unreviewed'
-    const entry = logStore.add({
+    const entry = await logStore.add({
       ko: grammar.ko,
       sentence: p.sentence,
       feedback: p.feedback,
@@ -81,7 +84,7 @@ export function usePractice() {
       contextId: ctx.id,
       contextName: ctx.name,
     })
-    srsStore.recalculate(grammar.ko)
+    await srsStore.recalculate(grammar.ko)
     advanceProgress(s, p.pickIndex)
     return entry
   }

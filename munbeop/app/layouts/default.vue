@@ -12,14 +12,16 @@ import { useSrsStore } from '~/stores/srs'
 const { setLocale, locale } = useI18n()
 const localeStore = useLocaleStore()
 
-// Hydrate stores from storage once when the app boots, then restore the
-// user's saved locale.
-onMounted(() => {
-  useGrammarStore().hydrate()
-  useContextsStore().hydrate()
-  useSrsStore().hydrate()
-  useLogStore().hydrate()
-  localeStore.hydrate()
+// Hydrate all stores in parallel, then restore the user's saved locale.
+// Stores are now async (Plan 2) so we await before reading localeStore.current.
+onMounted(async () => {
+  await Promise.all([
+    useGrammarStore().hydrate(),
+    useContextsStore().hydrate(),
+    useSrsStore().hydrate(),
+    useLogStore().hydrate(),
+    localeStore.hydrate(),
+  ])
   if (locale.value !== localeStore.current) {
     void setLocale(localeStore.current)
   }

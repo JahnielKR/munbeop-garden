@@ -7,8 +7,8 @@ const storage = new LocalStorageAdapter()
 export const useLogStore = defineStore('log', () => {
   const entries = ref<LogEntry[]>([])
 
-  function hydrate() {
-    const raw = storage.read(STORAGE_KEYS.log, [] as LogEntry[])
+  async function hydrate() {
+    const raw = await storage.read(STORAGE_KEYS.log, [] as LogEntry[])
     entries.value = raw.map((e) => ({
       ...e,
       reviewState: (e.reviewState ?? 'unreviewed') as ReviewState,
@@ -16,7 +16,7 @@ export const useLogStore = defineStore('log', () => {
     }))
   }
 
-  function add(p: {
+  async function add(p: {
     ko: string
     sentence: string
     feedback: Feedback
@@ -24,18 +24,18 @@ export const useLogStore = defineStore('log', () => {
     reviewState: ReviewState
     contextId: string
     contextName: string
-  }): LogEntry {
+  }): Promise<LogEntry> {
     const entry: LogEntry = {
       id: Date.now() + Math.random(),
       date: new Date().toISOString(),
       ...p,
     }
     entries.value.unshift(entry)
-    storage.write(STORAGE_KEYS.log, entries.value)
+    await storage.write(STORAGE_KEYS.log, entries.value)
     return entry
   }
 
-  function setReviewState(
+  async function setReviewState(
     id: number,
     reviewState: ReviewState,
     errorNote: string | null = null,
@@ -44,7 +44,7 @@ export const useLogStore = defineStore('log', () => {
     if (!entry) return
     entry.reviewState = reviewState
     entry.errorNote = errorNote
-    storage.write(STORAGE_KEYS.log, entries.value)
+    await storage.write(STORAGE_KEYS.log, entries.value)
   }
 
   return { entries, hydrate, add, setReviewState }

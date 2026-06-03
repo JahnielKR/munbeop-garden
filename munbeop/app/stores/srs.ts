@@ -11,8 +11,8 @@ const storage = new LocalStorageAdapter()
 export const useSrsStore = defineStore('srs', () => {
   const map = ref<SrsMap>({})
 
-  function hydrate() {
-    map.value = storage.read(STORAGE_KEYS.srs, {} as SrsMap)
+  async function hydrate() {
+    map.value = await storage.read(STORAGE_KEYS.srs, {} as SrsMap)
   }
 
   function ensure(ko: string): SrsState {
@@ -24,15 +24,15 @@ export const useSrsStore = defineStore('srs', () => {
     return getWeight(ensure(ko), now)
   }
 
-  function markSeen(ko: string, now: number = Date.now()) {
+  async function markSeen(ko: string, now: number = Date.now()) {
     ensure(ko).lastSeen = now
-    storage.write(STORAGE_KEYS.srs, map.value)
+    await storage.write(STORAGE_KEYS.srs, map.value)
   }
 
-  function recalculate(ko: string) {
+  async function recalculate(ko: string) {
     const log = useLogStore().entries
     map.value[ko] = recalculateMastery(ko, log)
-    storage.write(STORAGE_KEYS.srs, map.value)
+    await storage.write(STORAGE_KEYS.srs, map.value)
   }
 
   return { map, hydrate, ensure, weightFor, markSeen, recalculate }

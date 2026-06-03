@@ -2,7 +2,7 @@ import type { StorageAdapter } from './adapter'
 import { STORAGE_KEYS, type StorageKey } from './keys'
 
 export class LocalStorageAdapter implements StorageAdapter {
-  read<T>(key: StorageKey, fallback: T): T {
+  async read<T>(key: StorageKey, fallback: T): Promise<T> {
     try {
       const raw = localStorage.getItem(key)
       if (raw === null) return fallback
@@ -12,7 +12,7 @@ export class LocalStorageAdapter implements StorageAdapter {
     }
   }
 
-  write<T>(key: StorageKey, value: T): void {
+  async write<T>(key: StorageKey, value: T): Promise<void> {
     try {
       localStorage.setItem(key, JSON.stringify(value))
     } catch (err) {
@@ -20,11 +20,11 @@ export class LocalStorageAdapter implements StorageAdapter {
     }
   }
 
-  remove(key: StorageKey): void {
+  async remove(key: StorageKey): Promise<void> {
     localStorage.removeItem(key)
   }
 
-  clear(): void {
+  async clear(): Promise<void> {
     for (const key of Object.values(STORAGE_KEYS)) {
       localStorage.removeItem(key)
     }

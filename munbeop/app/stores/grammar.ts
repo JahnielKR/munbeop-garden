@@ -23,16 +23,16 @@ export const useGrammarStore = defineStore('grammar', () => {
     return items.value.find((g) => g.ko === ko)
   }
 
-  function hydrate() {
-    items.value = storage.read(STORAGE_KEYS.grammar, [] as Grammar[])
-    decks.value = storage.read(STORAGE_KEYS.decks, [] as Deck[])
+  async function hydrate() {
+    items.value = await storage.read(STORAGE_KEYS.grammar, [] as Grammar[])
+    decks.value = await storage.read(STORAGE_KEYS.decks, [] as Deck[])
     if (items.value.length === 0) {
       items.value = [...DEFAULT_GRAMMAR]
-      storage.write(STORAGE_KEYS.grammar, items.value)
+      await storage.write(STORAGE_KEYS.grammar, items.value)
     }
     if (decks.value.length === 0) {
       decks.value = [DEFAULT_DECK]
-      storage.write(STORAGE_KEYS.decks, decks.value)
+      await storage.write(STORAGE_KEYS.decks, decks.value)
     }
   }
 

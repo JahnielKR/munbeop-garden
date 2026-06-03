@@ -19,21 +19,21 @@ export const useContextsStore = defineStore('contexts', () => {
     return all.value.find((c) => c.id === id)
   }
 
-  function hydrate() {
-    custom.value = storage.read(STORAGE_KEYS.customContexts, [] as Context[])
-    inactiveIds.value = storage.read(STORAGE_KEYS.inactiveContextIds, [] as string[])
+  async function hydrate() {
+    custom.value = await storage.read(STORAGE_KEYS.customContexts, [] as Context[])
+    inactiveIds.value = await storage.read(STORAGE_KEYS.inactiveContextIds, [] as string[])
   }
 
-  function toggleActive(id: string) {
+  async function toggleActive(id: string) {
     if (inactiveIds.value.includes(id)) {
       inactiveIds.value = inactiveIds.value.filter((x) => x !== id)
     } else {
       inactiveIds.value = [...inactiveIds.value, id]
     }
-    storage.write(STORAGE_KEYS.inactiveContextIds, inactiveIds.value)
+    await storage.write(STORAGE_KEYS.inactiveContextIds, inactiveIds.value)
   }
 
-  function addCustom(name: string, scene: LocalizedString): Context | null {
+  async function addCustom(name: string, scene: LocalizedString): Promise<Context | null> {
     const exists = all.value.some((c) => c.name === name)
     if (exists) return null
     const ctx: Context = {
@@ -44,7 +44,7 @@ export const useContextsStore = defineStore('contexts', () => {
       builtin: false,
     }
     custom.value.push(ctx)
-    storage.write(STORAGE_KEYS.customContexts, custom.value)
+    await storage.write(STORAGE_KEYS.customContexts, custom.value)
     return ctx
   }
 

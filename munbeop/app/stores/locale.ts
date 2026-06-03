@@ -11,14 +11,14 @@ function isValid(code: string): code is LocaleCode {
 export const useLocaleStore = defineStore('locale', () => {
   const current = ref<LocaleCode>(DEFAULT_LOCALE)
 
-  function hydrate() {
-    const stored = storage.read<string>(STORAGE_KEYS.locale, DEFAULT_LOCALE)
+  async function hydrate() {
+    const stored = await storage.read<string>(STORAGE_KEYS.locale, DEFAULT_LOCALE)
     current.value = isValid(stored) ? stored : DEFAULT_LOCALE
   }
 
-  function set(code: LocaleCode) {
+  async function set(code: LocaleCode) {
     current.value = code
-    storage.write(STORAGE_KEYS.locale, code)
+    await storage.write(STORAGE_KEYS.locale, code)
   }
 
   return { current, hydrate, set }

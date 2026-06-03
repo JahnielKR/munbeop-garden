@@ -1,12 +1,16 @@
 import type { StorageKey } from './keys'
 
 /**
- * Storage abstraction. Implemented by LocalStorageAdapter in Plan 1.
- * Will be replaced with SupabaseAdapter in Plan 2 — same interface.
+ * Async storage abstraction.
+ * - LocalStorageAdapter: trivial Promise-wrapping over sync localStorage.
+ * - SupabaseAdapter (P2.11): genuine async via @supabase/supabase-js.
+ *
+ * Returning Promise<T> from every method lets us swap one implementation
+ * for the other behind useStorageAdapter() without touching any call site.
  */
 export interface StorageAdapter {
-  read<T>(key: StorageKey, fallback: T): T
-  write<T>(key: StorageKey, value: T): void
-  remove(key: StorageKey): void
-  clear(): void
+  read<T>(key: StorageKey, fallback: T): Promise<T>
+  write<T>(key: StorageKey, value: T): Promise<void>
+  remove(key: StorageKey): Promise<void>
+  clear(): Promise<void>
 }
