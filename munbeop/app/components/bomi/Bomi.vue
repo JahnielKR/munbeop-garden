@@ -52,12 +52,24 @@ const renderSize = computed(() => 32 * props.scale)
     class="bomi"
   >
     <g id="bee">
+      <!--
+        Render order (later siblings paint on top):
+        abdomen -> body -> wings -> eyes -> hat -> antennae
+
+        Eyes paint BEFORE hat in DOM so the hat-brim can cover them
+        during extreme play-hat rotation (Task 4 / spec §3.10 +
+        §3.12 parenthetical — "hat falls over her eyes" beat).
+
+        The spec's §3.12 first sentence listed eyes last, but that
+        contradicts the §3.12 parenthetical and the play-hat intent;
+        the parenthetical wins.
+      -->
       <BomiAbdomen />
       <BomiBody />
       <BomiWings />
+      <BomiEyes />
       <BomiHat />
       <BomiAntennae />
-      <BomiEyes />
     </g>
   </svg>
 </template>
