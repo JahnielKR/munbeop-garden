@@ -69,12 +69,12 @@ const { t } = useI18n()
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 900;
   font-size: 26px;
-  color: var(--jade);
+  color: var(--accent);
 }
 .sidebar__brand-name {
-  font-family: 'Press Start 2P', monospace;
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
   font-size: 14px;
-  color: var(--ink);
+  color: var(--text);
 }
 .sidebar__nav {
   display: flex;
@@ -87,19 +87,28 @@ const { t } = useI18n()
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  color: var(--ink-soft);
+  color: var(--text-soft);
   text-decoration: none;
   border-left: 3px solid transparent;
-  transition: all 0.15s ease;
+  outline: none;
+  transition:
+    background var(--motion-quick) var(--ease-out),
+    color var(--motion-quick) var(--ease-out);
 }
 .sidebar__link:hover {
-  background: var(--paper-deep);
-  color: var(--ink);
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.sidebar__link:focus-visible {
+  background: var(--surface-hover);
+  color: var(--text);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
 }
 .sidebar__link--active {
-  background: var(--paper-deep);
-  color: var(--ink);
-  border-left-color: var(--jade);
+  background: var(--surface-hover);
+  color: var(--text);
+  border-left-color: var(--accent);
 }
 .sidebar__label {
   font-family: 'Inter', sans-serif;

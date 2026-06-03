@@ -39,12 +39,12 @@ const { t } = useI18n()
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 900;
   font-size: 32px;
-  color: var(--jade);
+  color: var(--accent);
 }
 .title__es {
-  font-family: 'Press Start 2P', monospace;
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
   font-size: 14px;
-  color: var(--ink);
+  color: var(--text);
 }
 .greeter {
   background: var(--paper-warm);
@@ -67,9 +67,13 @@ const { t } = useI18n()
   margin: 0 0 12px;
 }
 .greeter__link {
-  color: var(--jade-deep);
+  color: var(--link);
   text-decoration: underline;
   font-weight: 600;
+}
+.greeter__link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 @media (max-width: 480px) {
   .greeter {

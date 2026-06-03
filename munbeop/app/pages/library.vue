@@ -72,12 +72,12 @@ const items = computed(() =>
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 900;
   font-size: 32px;
-  color: var(--jade);
+  color: var(--accent);
 }
 .title__es {
-  font-family: 'Press Start 2P', monospace;
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
   font-size: 14px;
-  color: var(--ink);
+  color: var(--text);
 }
 .lead {
   font-family: 'Inter', sans-serif;

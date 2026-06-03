@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { nextTick } from 'vue'
 import GrammarCard from '~/components/practice/GrammarCard.vue'
 import CompletionBanner from '~/components/practice/CompletionBanner.vue'
 import Button from '~/components/ui/Button.vue'
@@ -15,6 +16,27 @@ async function onStart() {
   if (error.value) toast.show(error.value)
 }
 
+/**
+ * After a save, scroll the next still-active card into view on mobile.
+ * Within a card the context advances in place (no scroll needed). When
+ * a card's 3rd context finishes, the card unmounts and the next one
+ * shifts up via reflow — on mobile we explicitly scroll so the user
+ * sees the new card at the top rather than ending up at whatever
+ * scrollTop the reflow left them with. Desktop already shows all cards
+ * stacked, no scroll needed. (G9 from audit.)
+ */
+function scrollNextCardIntoView() {
+  if (window.innerWidth >= 768) return
+  const slots = document.querySelectorAll('.card-slot')
+  for (const slot of slots) {
+    const card = slot.querySelector('.card')
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      break
+    }
+  }
+}
+
 async function onSubmit(payload: {
   pickIndex: number
   sentence: string
@@ -28,6 +50,8 @@ async function onSubmit(payload: {
         ? t('practice.toast_saved_easy')
         : t('practice.toast_saved_hard'),
     )
+    await nextTick()
+    scrollNextCardIntoView()
   }
 }
 
@@ -80,12 +104,12 @@ async function onRestart() {
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 900;
   font-size: 32px;
-  color: var(--jade);
+  color: var(--accent);
 }
 .title__es {
-  font-family: 'Press Start 2P', monospace;
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
   font-size: 14px;
-  color: var(--ink);
+  color: var(--text);
 }
 .intro {
   background: var(--paper-warm);

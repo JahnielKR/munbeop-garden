@@ -50,12 +50,17 @@ const items: MobileNavItem[] = [
   align-items: center;
   height: 100%;
   text-decoration: none;
-  color: var(--ink-soft);
+  color: var(--text-soft);
   border-top: 3px solid transparent;
+  outline: none;
+}
+.mobile-nav__link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
 }
 .mobile-nav__link--active {
-  color: var(--jade);
-  border-top-color: var(--jade);
-  background: var(--paper-deep);
+  color: var(--accent);
+  border-top-color: var(--accent);
+  background: var(--surface-hover);
 }
 </style>
