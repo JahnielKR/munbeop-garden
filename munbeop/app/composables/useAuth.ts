@@ -23,8 +23,20 @@ export function useAuth() {
   async function init() {
     const { data } = await $supabase.auth.getSession()
     authStore.setSession(data.session ?? null)
-    $supabase.auth.onAuthStateChange((_event, session) => {
+    $supabase.auth.onAuthStateChange(async (event, session) => {
       authStore.setSession(session)
+      // After SIGNED_OUT the stores still hold the previous user's data in
+      // memory; re-hydrate from the now-anonymous adapter so the UI clears.
+      // (Caught here rather than inside signOut() so token-expiry sign-outs
+      // and other paths flow through the same code.)
+      if (event === 'SIGNED_OUT') {
+        await Promise.all([
+          useGrammarStore().hydrate(),
+          useContextsStore().hydrate(),
+          useSrsStore().hydrate(),
+          useLogStore().hydrate(),
+        ])
+      }
     })
   }
 
