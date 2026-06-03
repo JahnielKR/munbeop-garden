@@ -69,7 +69,19 @@ Requisitos: Node 20+, pnpm 9+.
 - Placeholder mascota (32×48 sprite, paleta-compliant) en home page + CompletionBanner peek — identidad final OPEN para sesión creativa futura
 - Renames: `PixelButton/Card/Input` → `Button/Card/Input` (prefix redundante), 5 deprecated aliases (`--muted`, `--indigo`, `--seedling`, `--plant`, `--tree`) eliminados
 
-🚧 **Próximos planes**: Landing page, screen redesigns (polish con v2 tokens), identidad final mascota (sesión creativa), IA validadora (Edge Function OpenAI/Anthropic), Modo Mazmorra, Mapa Jardín, Cosméticos, Capacitor, Importer legacy v2→v3.
+✅ **Plan 4 (봄이 — Bomi mascota) — completado:**
+
+- Identidad y design spec creados por el usuario en sesión de brainstorming separada (`docs/superpowers/specs/2026-06-03-bomi-character-design.md`)
+- Bomi: kawaii honeybee gardener (32×32 SVG, 6 sub-component groups — Antennae / Hat / Wings / Body / Abdomen / Eyes — split para animación independiente)
+- 8 animation poses powered by `motion-v` (Vue port de motion.dev): idle (body float + wing flap + blink), happy, sad, thinking, cheer, fly-l/r, sleep (con "Z" floating overlay), play-hat
+- Pinia state machine `useBomiStore` con `react/think/sleep/clearExplicit` actions; activePose computed deriva pose explícita O timeline de inactividad
+- Inactivity timeline + 2 easter eggs: 25s → play-hat (hat tips/rocks), 60s → sleep (wings folded + Z particle). Cualquier mousemove/keydown la regresa a idle smoothly
+- Idle pose canónica como "reset all properties" — `bee.rotate / wings.opacity / eyes.y / hat.{y,rotate}` vuelven a defaults al transicionar desde cualquier pose
+- 9 nuevos palette tokens para honeybee (`--gold-shadow`, `--straw`, `--straw-shadow`, `--straw-texture`, `--wing`, `--wing-shadow`, `--ribbon-red`, `--ribbon-red-deep`, `--pink-bobble`)
+- Bomi consumida en: home (3× scale, greeter), practice loop (3× scale, react a easy/hard submits), CompletionBanner (2× scale, cheer pose). Placeholder Mascota.vue retired.
+- `pointer-events: none` + `user-select: none` + `cursor: default` — sprite decorativa no interceptable
+
+🚧 **Próximos planes**: Landing page, screen redesigns (polish con v2 tokens), Bomi animation expansion (thinking trigger, fly-on-route, empty-state sleep, landing 8× hero), IA validadora (Edge Function OpenAI/Anthropic), Modo Mazmorra, Mapa Jardín, Cosméticos, Capacitor, Importer legacy v2→v3.
 
 ## Legacy (v2.22)
 
