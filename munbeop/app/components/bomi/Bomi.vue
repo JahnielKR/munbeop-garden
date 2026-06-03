@@ -120,9 +120,23 @@ provide('bomi:hatAnim', hatAnim)
   display: inline-block;
   vertical-align: middle;
   flex-shrink: 0;
+  /* Bomi is decorative (role=img + aria-label). Prevent text selection
+   * on the sleep-Z and on click-drag over any sprite layer; also keep
+   * the cursor as default so users don't get an I-beam over the Z. */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  cursor: default;
 }
 .bomi :deep(g),
-.bomi :deep(svg g) {
+.bomi :deep(svg g),
+.bomi :deep(text) {
   transform-box: view-box;
+}
+.bomi :deep(text) {
+  /* Belt-and-suspenders: also block selection on the text element
+   * itself in case a browser ignores the parent user-select. */
+  user-select: none;
+  -webkit-user-select: none;
 }
 </style>
