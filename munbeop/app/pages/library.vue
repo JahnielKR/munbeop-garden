@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PixelCard from '~/components/ui/PixelCard.vue'
+import MasteryIcon from '~/components/practice/MasteryIcon.vue'
 import { getMasteryInfo } from '~/lib/srs'
 import { useGrammarStore } from '~/stores/grammar'
 import { useSrsStore } from '~/stores/srs'
@@ -10,10 +11,14 @@ const { t } = useI18n()
 const { tl } = useLocalized()
 
 const items = computed(() =>
-  grammarStore.items.map((g) => ({
-    grammar: g,
-    info: getMasteryInfo(srsStore.ensure(g.ko).mastery),
-  })),
+  grammarStore.items.map((g) => {
+    const level = srsStore.ensure(g.ko).mastery
+    return {
+      grammar: g,
+      level,
+      info: getMasteryInfo(level),
+    }
+  }),
 )
 </script>
 
@@ -39,7 +44,10 @@ const items = computed(() =>
       >
         <div class="item__head">
           <span class="item__ko">{{ item.grammar.ko }}</span>
-          <span class="item__badge">{{ item.info.emoji }} {{ t(item.info.labelKey) }}</span>
+          <span class="item__badge">
+            <MasteryIcon :level="item.level" :size="10" />
+            <span>{{ t(item.info.labelKey) }}</span>
+          </span>
         </div>
         <div class="item__meaning">{{ tl(item.grammar.meaning) }}</div>
         <div v-if="item.grammar.example" class="item__example">{{ item.grammar.example }}</div>
@@ -94,6 +102,9 @@ const items = computed(() =>
   color: var(--ink);
 }
 .item__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-family: 'Press Start 2P', monospace;
   font-size: 8px;
   color: var(--muted);

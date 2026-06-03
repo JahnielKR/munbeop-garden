@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import AccountWidget from './AccountWidget.vue'
 import LocaleSwitcher from './LocaleSwitcher.vue'
+import Icon, { type IconName } from '~/components/ui/Icon.vue'
 
 interface NavItem {
   to: string
   labelKey: string
-  emoji: string
+  icon: IconName
   ko: string
 }
 
 const items: NavItem[] = [
-  { to: '/', labelKey: 'nav.garden', emoji: '🏡', ko: '내 정원' },
-  { to: '/practice', labelKey: 'nav.practice', emoji: '🎲', ko: '연습' },
-  { to: '/library', labelKey: 'nav.library', emoji: '📚', ko: '도서관' },
-  { to: '/stats', labelKey: 'nav.stats', emoji: '📊', ko: '통계' },
-  { to: '/log', labelKey: 'nav.log', emoji: '📖', ko: '일기' },
-  { to: '/settings', labelKey: 'nav.settings', emoji: '🤖', ko: '설정' },
+  { to: '/', labelKey: 'nav.garden', icon: 'home', ko: '내 정원' },
+  { to: '/practice', labelKey: 'nav.practice', icon: 'practice', ko: '연습' },
+  { to: '/library', labelKey: 'nav.library', icon: 'library', ko: '도서관' },
+  { to: '/stats', labelKey: 'nav.stats', icon: 'stats', ko: '통계' },
+  { to: '/log', labelKey: 'nav.log', icon: 'log', ko: '일기' },
+  { to: '/settings', labelKey: 'nav.settings', icon: 'settings', ko: '설정' },
 ]
 const { t } = useI18n()
 </script>
@@ -34,7 +35,7 @@ const { t } = useI18n()
         class="sidebar__link"
         active-class="sidebar__link--active"
       >
-        <span class="sidebar__emoji">{{ item.emoji }}</span>
+        <Icon :name="item.icon" :size="18" />
         <span class="sidebar__label">{{ t(item.labelKey) }}</span>
         <span class="sidebar__ko">{{ item.ko }}</span>
       </NuxtLink>
@@ -109,10 +110,6 @@ const { t } = useI18n()
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 11px;
   color: var(--muted);
-}
-.sidebar__emoji {
-  font-size: 18px;
-  line-height: 1;
 }
 .sidebar__footer {
   margin-top: auto;

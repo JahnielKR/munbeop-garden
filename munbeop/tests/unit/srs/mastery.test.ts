@@ -82,13 +82,15 @@ describe('recalculateMastery', () => {
 
 describe('getMasteryInfo', () => {
   it('seedling', () => {
-    expect(getMasteryInfo('seedling').emoji).toBe('🌱')
     expect(getMasteryInfo('seedling').labelKey).toBe('mastery.seedling')
+    expect(getMasteryInfo('seedling').cls).toBe('mastery-seedling')
   })
   it('plant', () => {
-    expect(getMasteryInfo('plant').emoji).toBe('🌿')
+    expect(getMasteryInfo('plant').labelKey).toBe('mastery.plant')
+    expect(getMasteryInfo('plant').cls).toBe('mastery-plant')
   })
   it('tree', () => {
-    expect(getMasteryInfo('tree').emoji).toBe('🌳')
+    expect(getMasteryInfo('tree').labelKey).toBe('mastery.tree')
+    expect(getMasteryInfo('tree').cls).toBe('mastery-tree')
   })
 })
