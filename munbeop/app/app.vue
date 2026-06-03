@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
+import { useBomiStore } from '~/stores/bomi'
+
 // Boot the Supabase auth subscription as early as possible so getSession()
 // fires before the layout's onMounted runs. The layout still owns store
 // hydration; this only populates useAuthStore so pickAdapter inside that
@@ -26,6 +29,30 @@ onMounted(() => {
   // already applied to the DOM. setTheme later writes both back.
   hydrateTheme()
   void init()
+
+  // Bomi inactivity tracking — global event listeners reset the
+  // activity clock so the timeline (5s thinking / 25s play-hat /
+  // 60s sleep) accurately reflects idle time.
+  const bomi = useBomiStore()
+  const ACTIVITY_EVENTS = [
+    'mousemove',
+    'keydown',
+    'pointerdown',
+    'wheel',
+    'touchstart',
+    'focusin',
+  ] as const
+  function onActivity() {
+    bomi.resetActivity()
+  }
+  for (const evt of ACTIVITY_EVENTS) {
+    window.addEventListener(evt, onActivity, { passive: true })
+  }
+  onUnmounted(() => {
+    for (const evt of ACTIVITY_EVENTS) {
+      window.removeEventListener(evt, onActivity)
+    }
+  })
 })
 </script>
 
