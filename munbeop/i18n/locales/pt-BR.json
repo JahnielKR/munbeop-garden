@@ -70,5 +70,8 @@
     "signed_in_as": "Sessão de",
     "sign_out": "Sair",
     "anonymous_banner": "Treinando local. Entra pra sincronizar entre dispositivos."
+  },
+  "settings": {
+    "dark_mode": "Modo escuro"
   }
 }

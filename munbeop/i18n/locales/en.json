@@ -70,5 +70,8 @@
     "signed_in_as": "Signed in as",
     "sign_out": "Sign out",
     "anonymous_banner": "Practicing locally. Sign in to sync across devices."
+  },
+  "settings": {
+    "dark_mode": "Dark mode"
   }
 }
