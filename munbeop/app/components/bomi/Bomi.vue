@@ -1,44 +1,58 @@
 <script setup lang="ts">
 /**
- * Bomi — composition root.
+ * Bomi — composition root with motion-v wiring.
  *
- * Wraps the 32x32 SVG, composes the 6 sub-groups in the canonical
- * render order, and exposes `pose` + `scale` props.
+ * Reads the pose prop, resolves to a POSES entry, provides per-group
+ * animate+transition tuples to children via `provide`. Sub-components
+ * inject what they need.
  *
- * Render order (DOM top-to-bottom = paints first-to-last, later
- * siblings paint ON TOP):
- *   #abdomen → #body → #wings → #hat → #antennae → #eyes
- *
- * Eyes are BELOW the hat in the DOM order so during extreme
- * play-hat rotation the brim can cover them (per spec §3.12).
- *
- * In Task 2 the `pose` prop is accepted but not yet consumed
- * (sprite is static). Task 4 wires motion-v based on this prop.
+ * The #bee root group itself animates the body-level translation and
+ * rotation (idle float, happy jump, cheer wobble).
  */
 
+import { computed, provide } from 'vue'
+import { motion } from 'motion-v'
 import BomiAbdomen from './BomiAbdomen.vue'
 import BomiBody from './BomiBody.vue'
 import BomiWings from './BomiWings.vue'
 import BomiHat from './BomiHat.vue'
 import BomiAntennae from './BomiAntennae.vue'
 import BomiEyes from './BomiEyes.vue'
+import { POSES, type Pose, type PoseGroupAnimation } from './poses'
 
 interface Props {
-  /** Animation pose. Default 'idle'. Used by Task 4 onward. */
-  pose?: string
-  /** Integer scale multiplier. Sprite is 32x32 at scale=1. */
+  pose?: Pose
   scale?: number
-  /** Optional aria label; defaults to '봄이 (Bomi) mascot'. */
   label?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pose: 'idle',
+  pose: 'idle' as Pose,
   scale: 3,
   label: '봄이 (Bomi) mascot',
 })
 
 const renderSize = computed(() => 32 * props.scale)
+
+const currentPose = computed(() => POSES[props.pose])
+const idlePose = POSES.idle
+
+// Per-group resolution: pose's group def OR idle's group def.
+// This way 'play-hat' (which only specifies hat + eyes) still gets
+// idle bee-float and idle wing-flap, per spec §3.10.
+function resolveGroup(group: 'bee' | 'wings' | 'eyes' | 'hat'): PoseGroupAnimation | undefined {
+  return currentPose.value[group] ?? idlePose[group]
+}
+
+const beeAnim = computed(() => resolveGroup('bee'))
+const wingsAnim = computed(() => resolveGroup('wings'))
+const eyesAnim = computed(() => resolveGroup('eyes'))
+const hatAnim = computed(() => resolveGroup('hat'))
+
+// Children inject these refs so they can self-wire their motion.g.
+provide('bomi:wingsAnim', wingsAnim)
+provide('bomi:eyesAnim', eyesAnim)
+provide('bomi:hatAnim', hatAnim)
 </script>
 
 <template>
@@ -51,7 +65,11 @@ const renderSize = computed(() => 32 * props.scale)
     role="img"
     class="bomi"
   >
-    <g id="bee">
+    <motion.g
+      id="bee"
+      :animate="beeAnim?.animate"
+      :transition="beeAnim?.transition"
+    >
       <!--
         Render order (later siblings paint on top):
         abdomen -> body -> wings -> eyes -> hat -> antennae
@@ -70,7 +88,7 @@ const renderSize = computed(() => 32 * props.scale)
       <BomiEyes />
       <BomiHat />
       <BomiAntennae />
-    </g>
+    </motion.g>
   </svg>
 </template>
 
@@ -79,9 +97,9 @@ const renderSize = computed(() => 32 * props.scale)
   display: inline-block;
   vertical-align: middle;
   flex-shrink: 0;
-  /* Preserve transforms when scaling — important for Task 4 motion */
 }
-.bomi :deep(g) {
+.bomi :deep(g),
+.bomi :deep(svg g) {
   transform-box: view-box;
 }
 </style>
