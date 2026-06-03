@@ -20,8 +20,8 @@ This is the locked palette for the default light theme. All other tokens (semant
 | Token | Hex | Role |
 |---|---|---|
 | `--paper` | `#f8efd0` | App background. Cream parchment. |
-| `--paper-warm` | `#ffe19a` | Card / surface background. Warmer step. |
-| `--paper-deep` | `#ecd28a` | Recessed surfaces, hovered cards, dividers. |
+| `--paper-warm` | `#f1e5b8` | Card / surface background. Softer parchment step (was `#ffe19a` — too saturated, read as Post-It; tuned 2026-06-03 after first prod preview). |
+| `--paper-deep` | `#e6d4a8` | Recessed surfaces, hovered cards, dividers (paired desaturation with `--paper-warm`). |
 | `--ink` | `#1a1a1a` | Body text default. Highest contrast. |
 | `--ink-soft` | `#4a3a1f` | Captions, helper text, muted UI. |
 | `--jade` | `#3aa84a` | Bright leaf green. Sprite, badge, mastery-tree ornament. |
@@ -100,8 +100,8 @@ Combinations that explicitly fail and must not ship: `--paper` on `--jade` (~2.9
 | v1 token | v1 hex | v2 token | v2 hex | Notes |
 |---|---|---|---|---|
 | `--paper` | `#1a1f1a` | `--paper` | `#f8efd0` | Inverts. v1 value migrates to dark theme (§2). |
-| `--paper-warm` | `#232a23` | `--paper-warm` | `#ffe19a` | Inverts. |
-| `--paper-deep` | `#2d362d` | `--paper-deep` | `#ecd28a` | Inverts. |
+| `--paper-warm` | `#232a23` | `--paper-warm` | `#f1e5b8` | Inverts. Initial v2 value `#ffe19a` desaturated post-preview (was Post-It-yellow, see §1.1 note). |
+| `--paper-deep` | `#2d362d` | `--paper-deep` | `#e6d4a8` | Inverts. Paired with `--paper-warm` tune. |
 | `--ink` | `#ebe6d7` | `--ink` | `#1a1a1a` | Inverts. |
 | `--muted` | `#8a9189` | `--ink-soft` | `#4a3a1f` | Renamed; semantic clarity. |
 | `--jade` | `#7da653` | `--jade` | `#3aa84a` | Brighter, more saturated. |
