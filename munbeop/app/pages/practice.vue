@@ -17,7 +17,7 @@ const bomi = useBomiStore()
 
 async function onStart() {
   await start()
-  if (error.value) toast.show(error.value)
+  if (error.value) toast.error(error.value)
 }
 
 /**
@@ -50,11 +50,11 @@ async function onSubmit(payload: {
   const entry = await persistEntry(payload)
   if (entry) {
     bomi.react(payload.feedback === 'easy' ? 'happy' : 'sad')
-    toast.show(
-      payload.feedback === 'easy'
-        ? t('practice.toast_saved_easy')
-        : t('practice.toast_saved_hard'),
-    )
+    if (payload.feedback === 'easy') {
+      toast.success(t('practice.toast_saved_easy'))
+    } else {
+      toast.info(t('practice.toast_saved_hard'))
+    }
     await nextTick()
     scrollNextCardIntoView()
   }

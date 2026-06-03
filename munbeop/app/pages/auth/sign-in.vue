@@ -29,14 +29,14 @@ async function submit() {
       result = await signUp(e, p)
     } else {
       result = await signInMagicLink(e)
-      if (!result.error) toast.show(t('auth.magic_link_sent'))
+      if (!result.error) toast.success(t('auth.magic_link_sent'))
     }
   } finally {
     loading.value = false
   }
   if (result.error) {
     errorMsg.value = result.error.message
-    toast.show(result.error.message)
+    toast.error(result.error.message)
   } else if (mode.value !== 'magic-link') {
     await router.push('/')
   }
