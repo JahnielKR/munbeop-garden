@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Mascota from './Mascota.vue'
+import Bomi from '~/components/bomi/Bomi.vue'
 import Button from '~/components/ui/Button.vue'
 import Card from '~/components/ui/Card.vue'
 defineEmits<{ restart: [] }>()
@@ -9,7 +9,7 @@ const { t } = useI18n()
 <template>
   <Card accent="jade">
     <div class="banner">
-      <Mascota class="banner__mascota" :size="64" />
+      <Bomi class="banner__mascota" :scale="2" pose="cheer" />
       <div class="banner__ko">{{ t('practice.completion_ko') }}</div>
       <div class="banner__txt">{{ t('practice.completion_text') }}</div>
       <Button variant="primary" @click="$emit('restart')">
