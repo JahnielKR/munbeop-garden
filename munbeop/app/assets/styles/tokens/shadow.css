@@ -1,7 +1,11 @@
 /* tokens/shadow.css
  * Hard offset shadows. Never soft Gaussian blur — that erases the LADX
- * silhouette. Colour references --border-strong (which is --ink-soft)
- * so dark theme gets a warm-brown shadow automatically.
+ * silhouette. Colour references --border-strong (which aliases --ink-soft)
+ * so the shadow ink follows the theme: warm brown in light theme (good
+ * chunky-pixel look on cream paper). In dark theme --ink-soft inverts to
+ * dusty cream, producing a cream-on-cave-brown shadow that may need
+ * design follow-up in Phase 8 when the toggle ships — leaving as-is for
+ * now per the spec.
  */
 
 :root {
@@ -11,7 +15,7 @@
   --shadow-pixel-lg: 6px 6px 0 var(--border-strong);
   --shadow-pixel-xl: 8px 8px 0 var(--border-strong);
   --shadow-inset: inset 2px 2px 0 var(--border-strong);
-  --shadow-inset-strong: inset 2px 2px 0 var(--ink-soft);
+  --shadow-inset-strong: inset 3px 3px 0 var(--ink-soft);
 
   /* ---- Semantic aliases ---- */
   --shadow-card: var(--shadow-pixel-md);

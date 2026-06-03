@@ -32,9 +32,4 @@
   --text-on-danger: var(--always-dark);
   /* --text-on-info and --text-on-warning stay at --always-dark
    * because --sky and --gold are bright in both themes */
-
-  /* Deprecated aliases re-point too, so legacy consumers stay correct
-   * in dark theme */
-  --muted: var(--ink-soft);
-  --indigo: var(--sky);
 }
