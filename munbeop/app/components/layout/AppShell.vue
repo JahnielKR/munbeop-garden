@@ -1,7 +1,14 @@
 <script setup lang="ts">
+import { computed, provide } from 'vue'
 import AppSidebar from './AppSidebar.vue'
 import MobileNavbar from './MobileNavbar.vue'
 import Toast from '~/components/ui/Toast.vue'
+
+const route = useRoute()
+const surface = computed<'study' | 'game'>(
+  () => (route.meta.surface as 'study' | 'game' | undefined) ?? 'study',
+)
+provide('surface', surface)
 </script>
 
 <template>

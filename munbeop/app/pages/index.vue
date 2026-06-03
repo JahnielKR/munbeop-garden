@@ -1,4 +1,6 @@
 <script setup lang="ts">
+definePageMeta({ surface: 'game' })
+
 const { t } = useI18n()
 </script>
 
