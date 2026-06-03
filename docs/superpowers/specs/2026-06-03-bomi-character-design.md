@@ -2,7 +2,7 @@
 
 **Status:** approved, ready for implementation planning
 **Author:** brainstorming session 2026-06-03
-**Scope:** Practice+ pose set (7 poses) — Plan 4 of the rewrite roadmap
+**Scope:** Practice+ pose set (8 poses incl. one easter-egg pose) — Plan 4 of the rewrite roadmap
 
 ---
 
@@ -179,9 +179,11 @@ animate('#wings', { scaleX: [1, 0.3, 1] }, { duration: 0.1, repeat: Infinity })
 
 The L/R variant is just a sign flip on `rotate` and `x`. Reused for both directions.
 
-### 3.9 Pose 7 — Sleep (empty state)
+### 3.9 Pose 7 — Sleep (empty state OR long inactivity easter egg)
 
-Trigger: no SRS reviews due, app shows empty-state on practice page.
+Trigger: either of —
+- No SRS reviews due, app shows empty-state on practice page.
+- User has been inactive past the **sleep threshold** (see §3.11 Inactivity Timeline). This is one of the two easter eggs.
 
 ```ts
 animate('#bee', { y: [0, 0.3, 0] }, { duration: 4, repeat: Infinity, ease: 'easeInOut' })  // slow breath
@@ -192,6 +194,61 @@ animate('#eyes', { scaleY: 0.05 }, { duration: 0.5 })  // closed
 
 Visual: wings folded, eyes closed, slow breathing motion, "Z" particle floating up. Cozy "she's resting because you're caught up" state.
 
+### 3.10 Pose 8 — Play with hat (medium inactivity easter egg)
+
+Trigger: user has been inactive past the **play-hat threshold** but under the sleep threshold (see §3.11).
+
+Bomi doesn't have arms, so the "playing" is conveyed by the **hat itself moving** as if she were fidgeting with it. To make this possible, the hat lives in its own `<g id="hat">` group (see §3.12).
+
+```ts
+// Hat lifts and tips side-to-side, then settles
+animate('#hat',
+  { y: [0, -0.6, -0.4, -0.6, 0], rotate: [0, -8, 6, -4, 0] },
+  { duration: 2.5, repeat: Infinity, ease: 'easeInOut' })
+
+// Eyes look UP at the hat during the play
+animate('#eyes', { y: [-0.2, -0.4, -0.2] }, { duration: 2.5, repeat: Infinity, ease: 'easeInOut' })
+
+// Body keeps the normal float; wings keep flapping at idle rate
+```
+
+Visual: she lifts the hat slightly, tips it left, tips it right, settles. Eyes look up to follow it. The whole loop repeats so it reads as a continuous "fidgeting" until she either gets activity (→ idle) or crosses the sleep threshold (→ sleep, hat returns to its resting position first).
+
+The transform-origin for `#hat` is `(16, 14)` — the bottom-center of the brim. That way the hat tips around where it meets her head, like a real hat rocking.
+
+### 3.11 Inactivity Timeline (easter-egg state machine)
+
+Tracks user activity globally. Resets to T+0 on any of: `mousemove`, `keydown`, `pointerdown`, `wheel`, `touchstart`, `focusin`, or any state mutation in the practice store.
+
+| Time since last activity | Pose triggered | Notes |
+|---|---|---|
+| 0 → idle threshold | `idle` (or whatever explicit pose is set) | Default |
+| 5 s | `thinking` | Only inside the practice page when input is focused but empty. Outside practice this slot is skipped. |
+| 25 s | `play-hat` | Easter egg #1 — works on any page. Bomi gets bored. |
+| 60 s | `sleep` | Easter egg #2 — also fires on the empty-state page. |
+
+The timeline lives in `useBomiStore`. Each threshold is a tunable constant exported from `poses.ts` so they can be A/B tested or themed (e.g., shorter on landing, longer in practice).
+
+**On any activity event:** the timer resets and Bomi smoothly transitions back to the prior explicit pose (or `idle` if none). Motion-v interpolates — there's no snap.
+
+### 3.12 Group split (revised for hat animation)
+
+The hat needs its own SVG group so it can move independently of the head and body. The full sprite split is:
+
+| Group | Pixels | Animated by |
+|---|---|---|
+| `#antennae` | rows 0–4 (`k` + `p` chars in those rows) | Inherits `#bee` transforms only |
+| `#hat` | rows 5–14 (`h`, `H`, `T`, `k`, `b`, `R`, `r` in those rows) | `play-hat` pose rotates/translates it |
+| `#wings` | `w` / `W` chars anywhere | `idle` / `cheer` / `fly` flap |
+| `#body` | rows 15–21 (`g`, `G`, `R` for buches, `k` for mouth) | Static within `#bee` |
+| `#abdomen` | rows 22–31 non-wing pixels (`g`, `k` stripes, stinger) | Static within `#bee` |
+| `#eyes` | smooth `<rect>` + `<path>` (lash) | `blink`, `happy`, `sad`, `play-hat` look-up |
+
+Render order top-to-bottom in DOM (so later siblings paint on top):
+`#abdomen → #body → #wings → #hat → #antennae → #eyes`
+
+(The eyes paint on top of the body but BELOW the hat so the brim can cover them in extreme `play-hat` rotations — desired effect for the "hat falls over her eyes" beat.)
+
 ---
 
 ## 4. Component Architecture (Vue/Nuxt)
@@ -201,10 +258,27 @@ Visual: wings folded, eyes closed, slow breathing motion, "Z" particle floating 
 ```
 munbeop/app/components/bomi/
 ├── Bomi.vue              # Main component — wraps the SVG, accepts pose prop
-├── BomiBody.vue          # Pixel body + hat (static)
+├── BomiAbdomen.vue       # rows 22-31 non-wing pixels (static)
+├── BomiBody.vue          # rows 15-21 head + buches + mouth (static)
 ├── BomiWings.vue         # <motion.g id="wings"> with flap animation
+├── BomiHat.vue           # <motion.g id="hat"> — animates for play-hat easter egg
+├── BomiAntennae.vue      # rows 0-4 (static)
 ├── BomiEyes.vue          # <motion.g id="eyes"> with blink + expressions
-└── poses.ts              # Pose definitions (idle, happy, sad, etc.) as objects
+└── poses.ts              # Pose definitions + inactivity thresholds
+```
+
+`stores/bomi.ts`:
+
+```ts
+export const useBomiStore = defineStore('bomi', () => {
+  const explicitPose = ref<Pose>('idle')   // set by react()/think()/sleep()
+  const activePose = ref<Pose>('idle')     // resolved pose (explicit OR idle-state machine)
+  const lastActivityAt = ref(Date.now())
+
+  // ... inactivity timeline watcher updates activePose based on (now - lastActivityAt)
+  // … global event listeners for mousemove/keydown/etc. update lastActivityAt
+  return { activePose, react, think, sleep, resetActivity }
+})
 ```
 
 ### 4.2 Public API
@@ -254,14 +328,16 @@ Practice+ is the minimum viable Bomi that delivers the emotional loop in the cor
 The implementation is complete when:
 
 1. `Bomi.vue` renders the locked design at any scale ≥ 2× with crisp pixels and smooth lashes.
-2. All 7 poses transition correctly when `:pose` changes — no jumps, no flying eyes, no broken transform-origins.
+2. All **8 poses** transition correctly when `:pose` changes — no jumps, no flying eyes, no broken transform-origins.
 3. The practice page shows Bomi at 3× scale next to the input. She idles when waiting, switches to `happy`/`sad` on answer submission, returns to idle after 600 ms.
 4. The landing page shows Bomi at 8× scale in idle, with smooth float + flap + blink.
 5. The empty state (no reviews due) shows the sleep pose.
-6. 60 fps on mid-tier mobile (iPhone SE 2nd gen, Galaxy A50).
-7. No layout shift when Bomi animates — sprite is `position: absolute` or grid-locked.
-8. Cumulative tokens added < 12 (palette extension).
-9. Lighthouse score unchanged on landing page.
+6. **Easter egg #1 (play-hat):** after 25 s of no global activity, Bomi switches to `play-hat`. Any activity event returns her to the prior pose without snap.
+7. **Easter egg #2 (sleep on inactivity):** after 60 s, Bomi switches to `sleep`. Same activity-resets-pose behavior.
+8. 60 fps on mid-tier mobile (iPhone SE 2nd gen, Galaxy A50).
+9. No layout shift when Bomi animates — sprite is `position: absolute` or grid-locked.
+10. Cumulative tokens added < 12 (palette extension).
+11. Lighthouse score unchanged on landing page.
 
 ---
 
