@@ -2,6 +2,7 @@
 import type { Context, Grammar } from '~/lib/domain'
 import { getMasteryInfo } from '~/lib/srs'
 import { useSrsStore } from '~/stores/srs'
+import Badge from '~/components/ui/Badge.vue'
 import Card from '~/components/ui/Card.vue'
 import ContextDisplay from './ContextDisplay.vue'
 import ProgressDots from './ProgressDots.vue'
@@ -87,10 +88,10 @@ function onSkipNote() {
   <Card accent="jade">
     <div class="header">
       <div class="ko">{{ grammar.ko }}</div>
-      <div class="mastery">
+      <Badge size="md">
         <MasteryIcon :level="masteryLevel" :size="12" />
         <span>{{ t(masteryInfo.labelKey) }}</span>
-      </div>
+      </Badge>
     </div>
     <div class="meaning">{{ tl(grammar.meaning) }}</div>
     <div v-if="grammar.example" class="example">{{ grammar.example }}</div>
@@ -122,14 +123,6 @@ function onSkipNote() {
   font-weight: 700;
   font-size: 24px;
   color: var(--ink);
-}
-.mastery {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 9px;
-  color: var(--ink-soft);
 }
 .meaning {
   font-family: 'Inter', sans-serif;

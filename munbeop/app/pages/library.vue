@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import Card from '~/components/ui/Card.vue'
+import Badge from '~/components/ui/Badge.vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
+import Card from '~/components/ui/Card.vue'
 import MasteryIcon from '~/components/practice/MasteryIcon.vue'
 import { getMasteryInfo } from '~/lib/srs'
 import { useGrammarStore } from '~/stores/grammar'
@@ -42,10 +43,10 @@ const items = computed(() =>
       >
         <div class="item__head">
           <span class="item__ko">{{ item.grammar.ko }}</span>
-          <span class="item__badge">
+          <Badge>
             <MasteryIcon :level="item.level" :size="10" />
             <span>{{ t(item.info.labelKey) }}</span>
-          </span>
+          </Badge>
         </div>
         <div class="item__meaning">{{ tl(item.grammar.meaning) }}</div>
         <div v-if="item.grammar.example" class="item__example">{{ item.grammar.example }}</div>
@@ -82,14 +83,6 @@ const items = computed(() =>
   font-weight: 700;
   font-size: 18px;
   color: var(--ink);
-}
-.item__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 8px;
-  color: var(--ink-soft);
 }
 .item__meaning {
   font-family: 'Inter', sans-serif;
