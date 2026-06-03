@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
 import type { LogEntry, Feedback, ReviewState } from '~/lib/domain'
-import { LocalStorageAdapter, STORAGE_KEYS } from '~/lib/storage'
-
-const storage = new LocalStorageAdapter()
+import { STORAGE_KEYS } from '~/lib/storage'
+import { useStorageAdapter } from '~/composables/useStorageAdapter'
 
 export const useLogStore = defineStore('log', () => {
   const entries = ref<LogEntry[]>([])
 
   async function hydrate() {
+    const storage = useStorageAdapter()
     const raw = await storage.read(STORAGE_KEYS.log, [] as LogEntry[])
     entries.value = raw.map((e) => ({
       ...e,
@@ -25,6 +25,7 @@ export const useLogStore = defineStore('log', () => {
     contextId: string
     contextName: string
   }): Promise<LogEntry> {
+    const storage = useStorageAdapter()
     const entry: LogEntry = {
       id: Date.now() + Math.random(),
       date: new Date().toISOString(),
@@ -40,6 +41,7 @@ export const useLogStore = defineStore('log', () => {
     reviewState: ReviewState,
     errorNote: string | null = null,
   ) {
+    const storage = useStorageAdapter()
     const entry = entries.value.find((e) => e.id === id)
     if (!entry) return
     entry.reviewState = reviewState

@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia'
 import type { SrsState } from '~/lib/domain'
 import { freshSrs, getWeight, recalculateMastery } from '~/lib/srs'
-import { LocalStorageAdapter, STORAGE_KEYS } from '~/lib/storage'
+import { STORAGE_KEYS } from '~/lib/storage'
+import { useStorageAdapter } from '~/composables/useStorageAdapter'
 import { useLogStore } from './log'
 
 type SrsMap = Record<string, SrsState>
-
-const storage = new LocalStorageAdapter()
 
 export const useSrsStore = defineStore('srs', () => {
   const map = ref<SrsMap>({})
 
   async function hydrate() {
+    const storage = useStorageAdapter()
     map.value = await storage.read(STORAGE_KEYS.srs, {} as SrsMap)
   }
 
@@ -25,11 +25,13 @@ export const useSrsStore = defineStore('srs', () => {
   }
 
   async function markSeen(ko: string, now: number = Date.now()) {
+    const storage = useStorageAdapter()
     ensure(ko).lastSeen = now
     await storage.write(STORAGE_KEYS.srs, map.value)
   }
 
   async function recalculate(ko: string) {
+    const storage = useStorageAdapter()
     const log = useLogStore().entries
     map.value[ko] = recalculateMastery(ko, log)
     await storage.write(STORAGE_KEYS.srs, map.value)

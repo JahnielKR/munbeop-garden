@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia'
 import type { Context, LocalizedString } from '~/lib/domain'
-import { LocalStorageAdapter, STORAGE_KEYS } from '~/lib/storage'
+import { STORAGE_KEYS } from '~/lib/storage'
+import { useStorageAdapter } from '~/composables/useStorageAdapter'
 import { DEFAULT_CONTEXTS } from '~/seed/contexts'
-
-const storage = new LocalStorageAdapter()
 
 export const useContextsStore = defineStore('contexts', () => {
   const custom = ref<Context[]>([])
@@ -20,11 +19,13 @@ export const useContextsStore = defineStore('contexts', () => {
   }
 
   async function hydrate() {
+    const storage = useStorageAdapter()
     custom.value = await storage.read(STORAGE_KEYS.customContexts, [] as Context[])
     inactiveIds.value = await storage.read(STORAGE_KEYS.inactiveContextIds, [] as string[])
   }
 
   async function toggleActive(id: string) {
+    const storage = useStorageAdapter()
     if (inactiveIds.value.includes(id)) {
       inactiveIds.value = inactiveIds.value.filter((x) => x !== id)
     } else {
@@ -34,6 +35,7 @@ export const useContextsStore = defineStore('contexts', () => {
   }
 
   async function addCustom(name: string, scene: LocalizedString): Promise<Context | null> {
+    const storage = useStorageAdapter()
     const exists = all.value.some((c) => c.name === name)
     if (exists) return null
     const ctx: Context = {

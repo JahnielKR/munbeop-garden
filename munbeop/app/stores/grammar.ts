@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia'
 import type { Grammar, Deck } from '~/lib/domain'
-import { LocalStorageAdapter, STORAGE_KEYS } from '~/lib/storage'
+import { STORAGE_KEYS } from '~/lib/storage'
+import { useStorageAdapter } from '~/composables/useStorageAdapter'
 import { DEFAULT_GRAMMAR, DEFAULT_DECK } from '~/seed/grammars'
-
-const storage = new LocalStorageAdapter()
 
 export const useGrammarStore = defineStore('grammar', () => {
   const items = ref<Grammar[]>([])
@@ -24,6 +23,7 @@ export const useGrammarStore = defineStore('grammar', () => {
   }
 
   async function hydrate() {
+    const storage = useStorageAdapter()
     items.value = await storage.read(STORAGE_KEYS.grammar, [] as Grammar[])
     decks.value = await storage.read(STORAGE_KEYS.decks, [] as Deck[])
     if (items.value.length === 0) {
