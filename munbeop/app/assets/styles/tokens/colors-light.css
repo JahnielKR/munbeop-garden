@@ -24,6 +24,17 @@
   --red-deep: #9d2525;
   --gold: #f5c533;
 
+  /* ---- Bomi sprite palette (Plan 4) ---- */
+  --gold-shadow: #a06b2e;
+  --straw: #f0c84a;
+  --straw-shadow: #c89030;
+  --straw-texture: #a8741e;
+  --wing: #ebe6d7;
+  --wing-shadow: #a8b0a2;
+  --ribbon-red: #c23e3e;
+  --ribbon-red-deep: #9d2e2e;
+  --pink-bobble: #e58aa0;
+
   /* ---- 3. Semantic aliases ---- */
   --bg: var(--paper);
   --surface: var(--paper-warm);
