@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Mascota from '~/components/practice/Mascota.vue'
+import Bomi from '~/components/bomi/Bomi.vue'
 
 definePageMeta({ surface: 'game' })
 
@@ -13,7 +13,7 @@ const { t } = useI18n()
       <span class="title__es">{{ t('title.garden') }}</span>
     </h1>
     <div class="greeter">
-      <Mascota class="greeter__mascota" :size="96" />
+      <Bomi class="greeter__mascota" :scale="3" pose="idle" />
       <div class="greeter__copy">
         <p class="greeter__lead">{{ t('empty.garden') }}</p>
         <p>
