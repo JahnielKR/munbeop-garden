@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Card from '~/components/ui/Card.vue'
+import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import MasteryIcon from '~/components/practice/MasteryIcon.vue'
 import { getMasteryInfo } from '~/lib/srs'
 import { useGrammarStore } from '~/stores/grammar'
@@ -24,10 +25,7 @@ const items = computed(() =>
 
 <template>
   <div class="page">
-    <h1 class="title">
-      <span class="title__ko">도서관</span>
-      <span class="title__es">{{ t('title.library') }}</span>
-    </h1>
+    <BilingualTitle ko="도서관" :latin="t('title.library')" />
     <p class="lead">{{ t('library.lead') }}</p>
 
     <div class="grid">
@@ -62,22 +60,6 @@ const items = computed(() =>
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-.title {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-.title__ko {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 900;
-  font-size: 32px;
-  color: var(--accent);
-}
-.title__es {
-  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
-  font-size: 14px;
-  color: var(--text);
 }
 .lead {
   font-family: 'Inter', sans-serif;

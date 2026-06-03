@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import LocaleSwitcher from '~/components/layout/LocaleSwitcher.vue'
+import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Toggle from '~/components/ui/Toggle.vue'
 const { t } = useI18n()
 const { theme, setTheme } = useTheme()
@@ -11,10 +12,7 @@ const isDark = computed<boolean>({
 
 <template>
   <div class="page">
-    <h1 class="title">
-      <span class="title__ko">설정</span>
-      <span class="title__es">{{ t('title.settings') }}</span>
-    </h1>
+    <BilingualTitle ko="설정" :latin="t('title.settings')" />
     <div class="card">
       <LocaleSwitcher />
     </div>
@@ -33,22 +31,6 @@ const isDark = computed<boolean>({
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-.title {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-.title__ko {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 900;
-  font-size: 32px;
-  color: var(--accent);
-}
-.title__es {
-  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
-  font-size: 14px;
-  color: var(--text);
 }
 .card {
   background: var(--paper-warm);

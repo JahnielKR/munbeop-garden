@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import { useLogStore } from '~/stores/log'
 const logStore = useLogStore()
 const { t } = useI18n()
@@ -6,10 +7,7 @@ const { t } = useI18n()
 
 <template>
   <div class="page">
-    <h1 class="title">
-      <span class="title__ko">일기</span>
-      <span class="title__es">{{ t('title.log') }}</span>
-    </h1>
+    <BilingualTitle ko="일기" :latin="t('title.log')" />
     <div v-if="logStore.entries.length === 0" class="empty">{{ t('empty.log') }}</div>
     <ul v-else class="list">
       <li v-for="e in logStore.entries.slice(0, 20)" :key="e.id" class="entry">
@@ -32,22 +30,6 @@ const { t } = useI18n()
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-.title {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-.title__ko {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 900;
-  font-size: 32px;
-  color: var(--accent);
-}
-.title__es {
-  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
-  font-size: 14px;
-  color: var(--text);
 }
 .empty {
   background: var(--paper-warm);

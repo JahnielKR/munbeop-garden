@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Bomi from '~/components/bomi/Bomi.vue'
+import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 
 definePageMeta({ surface: 'game' })
 
@@ -8,10 +9,7 @@ const { t } = useI18n()
 
 <template>
   <div class="page">
-    <h1 class="title">
-      <span class="title__ko">내 정원</span>
-      <span class="title__es">{{ t('title.garden') }}</span>
-    </h1>
+    <BilingualTitle ko="내 정원" :latin="t('title.garden')" />
     <div class="greeter">
       <Bomi class="greeter__mascota" :scale="3" pose="idle" />
       <div class="greeter__copy">
@@ -29,22 +27,6 @@ const { t } = useI18n()
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-.title {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-.title__ko {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 900;
-  font-size: 32px;
-  color: var(--accent);
-}
-.title__es {
-  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
-  font-size: 14px;
-  color: var(--text);
 }
 .greeter {
   background: var(--paper-warm);

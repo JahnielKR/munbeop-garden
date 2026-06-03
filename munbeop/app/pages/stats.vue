@@ -1,13 +1,11 @@
 <script setup lang="ts">
+import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 const { t } = useI18n()
 </script>
 
 <template>
   <div class="page">
-    <h1 class="title">
-      <span class="title__ko">통계</span>
-      <span class="title__es">{{ t('title.stats') }}</span>
-    </h1>
+    <BilingualTitle ko="통계" :latin="t('title.stats')" />
     <div class="empty">{{ t('empty.stats') }}</div>
   </div>
 </template>
@@ -17,22 +15,6 @@ const { t } = useI18n()
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-.title {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-.title__ko {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 900;
-  font-size: 32px;
-  color: var(--accent);
-}
-.title__es {
-  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
-  font-size: 14px;
-  color: var(--text);
 }
 .empty {
   background: var(--paper-warm);

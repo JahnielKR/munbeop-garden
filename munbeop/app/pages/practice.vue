@@ -3,6 +3,7 @@ import { nextTick } from 'vue'
 import GrammarCard from '~/components/practice/GrammarCard.vue'
 import CompletionBanner from '~/components/practice/CompletionBanner.vue'
 import Button from '~/components/ui/Button.vue'
+import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Bomi from '~/components/bomi/Bomi.vue'
 import { useBomiStore } from '~/stores/bomi'
 
@@ -67,10 +68,7 @@ async function onRestart() {
 
 <template>
   <div class="page">
-    <h1 class="title">
-      <span class="title__ko">연습</span>
-      <span class="title__es">{{ t('title.practice') }}</span>
-    </h1>
+    <BilingualTitle ko="연습" :latin="t('title.practice')" />
 
     <div class="bomi-row">
       <Bomi :pose="bomi.activePose" :scale="3" />
@@ -102,22 +100,6 @@ async function onRestart() {
   display: flex;
   flex-direction: column;
   gap: 24px;
-}
-.title {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-.title__ko {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 900;
-  font-size: 32px;
-  color: var(--accent);
-}
-.title__es {
-  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
-  font-size: 14px;
-  color: var(--text);
 }
 .intro {
   background: var(--paper-warm);
