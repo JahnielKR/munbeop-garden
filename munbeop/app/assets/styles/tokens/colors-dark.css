@@ -1,0 +1,40 @@
+/* tokens/colors-dark.css
+ * Dark theme — "Hyrule at night". Opt-in via [data-theme="dark"] on
+ * <html>. Only redeclares the brand swatches that flip on the light/dark
+ * axis, plus the aliases that need to re-point because the light value
+ * fails contrast on a dark background. Everything else inherits from
+ * :root in colors-light.css.
+ *
+ * Activation in Phase 8 (toggle UI). Declared now so dark theme is
+ * available the moment the toggle ships.
+ */
+
+[data-theme="dark"] {
+  /* Brand swatches that flip on light/dark axis */
+  --paper: #1a1612;
+  --paper-warm: #2a221a;
+  --paper-deep: #3a2e22;
+  --ink: #f8efd0;
+  --ink-soft: #d8c89a;
+  /* --jade, --jade-deep, --red, --red-deep, --gold, --sky stay constant
+   * (declared in colors-light.css :root, dark inherits) */
+
+  /* Aliases that re-point because the light-theme target hex is too dark
+   * to read on a dark background */
+  --accent: var(--jade);
+  --danger: var(--red);
+  --link: var(--jade);
+  --success: var(--jade);
+  --mastery-tree: var(--jade);
+  --border: #5e4a2c;
+  --focus-ring: var(--jade);
+  --text-on-accent: var(--always-dark);
+  --text-on-danger: var(--always-dark);
+  /* --text-on-info and --text-on-warning stay at --always-dark
+   * because --sky and --gold are bright in both themes */
+
+  /* Deprecated aliases re-point too, so legacy consumers stay correct
+   * in dark theme */
+  --muted: var(--ink-soft);
+  --indigo: var(--sky);
+}

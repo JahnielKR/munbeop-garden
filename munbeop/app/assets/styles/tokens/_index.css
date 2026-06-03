@@ -1,0 +1,16 @@
+/* tokens/_index.css
+ * Design System v2 — token entry point.
+ * Imports each topical file in load order. Has no rules of its own — by
+ * CSS spec, @import statements must precede all other rules. Theme-
+ * invariants live in colors-light.css on :root so [data-theme="dark"]
+ * inherits them.
+ */
+
+@import './colors-light.css';
+@import './colors-dark.css';
+@import './typography.css';
+@import './spacing.css';
+@import './radius.css';
+@import './shadow.css';
+@import './motion.css';
+@import './breakpoints.css';
