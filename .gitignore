@@ -18,3 +18,4 @@ coverage/
 npm-debug.log*
 pnpm-debug.log*
 .vercel
+.superpowers/
