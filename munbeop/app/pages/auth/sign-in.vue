@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Button from '~/components/ui/Button.vue'
 import Card from '~/components/ui/Card.vue'
+import Field from '~/components/ui/Field.vue'
 import Input from '~/components/ui/Input.vue'
 
 const { signIn, signUp, signInMagicLink } = useAuth()
@@ -55,21 +56,26 @@ function switchMode(next: 'sign-in' | 'sign-up' | 'magic-link') {
       </h1>
 
       <form class="form" @submit.prevent="submit">
-        <label class="label" for="auth-email">{{ t('auth.email_label') }}</label>
-        <Input
-          id="auth-email"
-          v-model="email"
-          type="email"
-          name="email"
-          autocomplete="email"
-          inputmode="email"
-          placeholder="you@example.com"
-          :error="!!errorMsg"
-          required
-        />
+        <Field :label="t('auth.email_label')" html-for="auth-email" required>
+          <Input
+            id="auth-email"
+            v-model="email"
+            type="email"
+            name="email"
+            autocomplete="email"
+            inputmode="email"
+            placeholder="you@example.com"
+            :error="!!errorMsg"
+            required
+          />
+        </Field>
 
-        <template v-if="mode !== 'magic-link'">
-          <label class="label" for="auth-password">{{ t('auth.password_label') }}</label>
+        <Field
+          v-if="mode !== 'magic-link'"
+          :label="t('auth.password_label')"
+          html-for="auth-password"
+          required
+        >
           <Input
             id="auth-password"
             v-model="password"
@@ -79,9 +85,9 @@ function switchMode(next: 'sign-in' | 'sign-up' | 'magic-link') {
             :error="!!errorMsg"
             required
           />
-        </template>
+        </Field>
 
-        <div v-if="errorMsg" class="error" role="alert">{{ errorMsg }}</div>
+        <div v-if="errorMsg" class="form-error" role="alert">{{ errorMsg }}</div>
 
         <div class="actions">
           <Button type="submit" variant="primary" :loading="loading" full-width>
@@ -125,25 +131,16 @@ function switchMode(next: 'sign-in' | 'sign-up' | 'magic-link') {
 .form {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 14px;
 }
-.label {
-  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
-  font-size: 9px;
-  color: var(--text-soft);
-  display: block;
-  margin: 12px 0 4px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-.error {
+.form-error {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   color: var(--danger);
   background: color-mix(in oklch, var(--red) 10%, var(--surface));
   border-left: 3px solid var(--red);
   padding: 8px 12px;
-  margin-top: 10px;
+  margin-top: 4px;
 }
 .actions {
   margin-top: 18px;

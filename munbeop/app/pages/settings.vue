@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import LocaleSwitcher from '~/components/layout/LocaleSwitcher.vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
+import Field from '~/components/ui/Field.vue'
 import Toggle from '~/components/ui/Toggle.vue'
 const { t } = useI18n()
 const { theme, setTheme } = useTheme()
@@ -17,10 +18,17 @@ const isDark = computed<boolean>({
       <LocaleSwitcher />
     </div>
     <div class="card">
-      <div class="settings-row">
-        <span class="settings-row__label">{{ t('settings.dark_mode') }}</span>
-        <Toggle v-model="isDark" :label="t('settings.dark_mode')" />
-      </div>
+      <Field
+        :label="t('settings.dark_mode')"
+        html-for="settings-dark-mode"
+        orientation="horizontal"
+      >
+        <Toggle
+          id="settings-dark-mode"
+          v-model="isDark"
+          :label="t('settings.dark_mode')"
+        />
+      </Field>
     </div>
     <div class="empty">{{ t('empty.settings') }}</div>
   </div>
@@ -37,17 +45,6 @@ const isDark = computed<boolean>({
   border: 2px solid var(--border);
   padding: 20px;
   max-width: 320px;
-}
-.settings-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-.settings-row__label {
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  color: var(--ink);
 }
 .empty {
   background: var(--paper-warm);

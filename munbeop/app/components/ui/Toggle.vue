@@ -16,14 +16,21 @@ interface Props {
   size?: 'sm' | 'md'
   disabled?: boolean
   label?: string  // for aria-label when used without an external <label>
+  id?: string     // for <label for> wiring when used inside Field
 }
 
-withDefaults(defineProps<Props>(), { size: 'md', disabled: false, label: '' })
+withDefaults(defineProps<Props>(), {
+  size: 'md',
+  disabled: false,
+  label: '',
+  id: undefined,
+})
 defineEmits<{ 'update:modelValue': [boolean] }>()
 </script>
 
 <template>
   <button
+    :id="id"
     type="button"
     role="switch"
     :aria-checked="modelValue"
