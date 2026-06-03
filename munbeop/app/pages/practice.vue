@@ -3,6 +3,8 @@ import { nextTick } from 'vue'
 import GrammarCard from '~/components/practice/GrammarCard.vue'
 import CompletionBanner from '~/components/practice/CompletionBanner.vue'
 import Button from '~/components/ui/Button.vue'
+import Bomi from '~/components/bomi/Bomi.vue'
+import { useBomiStore } from '~/stores/bomi'
 
 definePageMeta({ surface: 'game' })
 
@@ -10,6 +12,7 @@ const { session, error, completed, start, grammarOf, currentContextOf, persistEn
   usePractice()
 const toast = useToast()
 const { t } = useI18n()
+const bomi = useBomiStore()
 
 async function onStart() {
   await start()
@@ -45,6 +48,7 @@ async function onSubmit(payload: {
 }) {
   const entry = await persistEntry(payload)
   if (entry) {
+    bomi.react(payload.feedback === 'easy' ? 'happy' : 'sad')
     toast.show(
       payload.feedback === 'easy'
         ? t('practice.toast_saved_easy')
@@ -67,6 +71,10 @@ async function onRestart() {
       <span class="title__ko">연습</span>
       <span class="title__es">{{ t('title.practice') }}</span>
     </h1>
+
+    <div class="bomi-row">
+      <Bomi :pose="bomi.activePose" :scale="3" />
+    </div>
 
     <div v-if="!session" class="intro">
       <p class="intro__text">{{ t('practice.intro_lead') }}</p>
@@ -127,5 +135,10 @@ async function onRestart() {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+.bomi-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
 }
 </style>
