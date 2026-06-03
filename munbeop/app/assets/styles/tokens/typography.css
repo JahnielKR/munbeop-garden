@@ -1,0 +1,144 @@
+/* tokens/typography.css
+ * Four font families with locked roles, an 8-step type scale, and
+ * utility classes for the semantic typography roles. Pixel-family
+ * smoothing is disabled here once, not per-component.
+ */
+
+:root {
+  /* ---- Font families ---- */
+  --font-pixel-small: 'Press Start 2P', monospace;
+  --font-pixel-display: 'Silkscreen', monospace;
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-ko: 'Noto Sans KR', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* ---- Type scale (8 steps) ---- */
+  --text-xs: 10px;
+  --text-sm: 12px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --text-xl: 26px;
+  --text-2xl: 32px;
+  --text-3xl: 44px;
+}
+
+/* ---- Semantic typography roles (utility classes) ---- */
+
+.type-display {
+  font-family: var(--font-pixel-display);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.type-page-title {
+  font-family: var(--font-pixel-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+
+.type-section {
+  font-family: var(--font-pixel-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.type-subsection {
+  font-family: var(--font-pixel-display);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+
+.type-body {
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.type-body-md {
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.type-label {
+  font-family: var(--font-pixel-small);
+  font-size: var(--text-sm);
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+}
+
+.type-label-tight {
+  font-family: var(--font-pixel-small);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+}
+
+.type-helper {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.type-caption {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.type-ko-display {
+  font-family: var(--font-ko);
+  font-size: var(--text-2xl);
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.type-ko-body {
+  font-family: var(--font-ko);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.type-ko-sentence {
+  font-family: var(--font-ko);
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.type-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* ---- Pixel font smoothing ---- */
+/* No anti-aliasing on pixel-family classes; default smoothing applies
+ * to Inter / Noto Sans KR / JetBrains Mono because they don't carry
+ * any of these classes. */
+.font-pixel,
+.type-display,
+.type-page-title,
+.type-section,
+.type-subsection,
+.type-label,
+.type-label-tight {
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
+}

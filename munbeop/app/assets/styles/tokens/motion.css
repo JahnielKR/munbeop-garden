@@ -1,0 +1,37 @@
+/* tokens/motion.css
+ * Hybrid motion system. Smooth eases for study chrome (where motion
+ * shouldn't distract from reading), step-based motion for game chrome.
+ * Chrome-aware aliases (--motion-button etc.) are NOT declared as CSS
+ * variables — they live as documented contracts in 01-tokens.md §7.3
+ * because they bundle duration + easing which a single var can't hold.
+ * Components implement them via data-surface attribute selectors when
+ * the chrome mechanism lands in Phase 4.
+ */
+
+:root {
+  /* ---- Durations ---- */
+  --motion-instant: 0ms;
+  --motion-quick: 120ms;
+  --motion-base: 200ms;
+  --motion-slow: 320ms;
+  --motion-deliberate: 500ms;
+
+  /* ---- Easings ---- */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-step-3: steps(3, end);
+  --ease-step-5: steps(5, end);
+}
+
+/* ---- prefers-reduced-motion ---- */
+/* Hard rule: every transition and animation collapses to instant under
+ * the user preference. No exceptions for "important" motion. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

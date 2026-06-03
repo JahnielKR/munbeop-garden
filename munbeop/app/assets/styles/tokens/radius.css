@@ -1,0 +1,10 @@
+/* tokens/radius.css
+ * Pixel-art system. The default is 0. --radius-full exists only for the
+ * avatar primitive (humanises an otherwise mechanical UI).
+ */
+
+:root {
+  --radius-0: 0;
+  --radius-sm: 2px;
+  --radius-full: 9999px;
+}

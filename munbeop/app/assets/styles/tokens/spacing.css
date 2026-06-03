@@ -1,0 +1,30 @@
+/* tokens/spacing.css
+ * 4px-base scale. Numbers 7, 9, 10, 11, 13, 14, 15 intentionally skipped
+ * so the system stays sparse. If a layout asks for --space-7 (28px) the
+ * answer is almost always --space-6 (24px) or --space-8 (32px).
+ */
+
+:root {
+  /* ---- Scale ---- */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ---- Semantic aliases ---- */
+  --gap-tight: var(--space-1);
+  --gap-compact: var(--space-2);
+  --gap: var(--space-3);
+  --gap-loose: var(--space-4);
+  --gap-section: var(--space-6);
+  --padding-card-y: var(--space-4);
+  --padding-card-x: var(--space-5);
+  --padding-page-mobile: var(--space-4);
+  --padding-page-desktop: var(--space-8);
+}

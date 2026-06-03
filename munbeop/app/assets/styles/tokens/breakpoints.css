@@ -1,0 +1,13 @@
+/* tokens/breakpoints.css
+ * Four breakpoints aligned with Tailwind defaults so mental translation
+ * between system vars and utility classes is zero. Declared as custom
+ * properties for any non-Tailwind CSS that wants to reference them
+ * (e.g. clamp() calls, container queries).
+ */
+
+:root {
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+}

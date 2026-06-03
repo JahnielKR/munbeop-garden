@@ -1,0 +1,62 @@
+/* tokens/colors-light.css
+ * Light theme (default). Anchored on Link's Awakening DX.
+ * Layers, top to bottom:
+ *   1. Theme-invariants (same in light and dark; dark inherits via :root)
+ *   2. Brand swatches — light values
+ *   3. Semantic aliases — components reference these, never brand swatches
+ *   4. Deprecated aliases — Phase 1 compatibility; removed in Phase 2
+ */
+
+:root {
+  /* ---- 1. Theme-invariants ---- */
+  --always-dark: #1a1a1a;
+  --always-cream: #f8efd0;
+
+  /* ---- 2. Brand swatches ---- */
+  --paper: #f8efd0;
+  --paper-warm: #ffe19a;
+  --paper-deep: #ecd28a;
+  --ink: #1a1a1a;
+  --ink-soft: #4a3a1f;
+  --jade: #3aa84a;
+  --jade-deep: #185f24;
+  --sky: #5fb8e8;
+  --red: #e83838;
+  --red-deep: #9d2525;
+  --gold: #f5c533;
+
+  /* ---- 3. Semantic aliases ---- */
+  --bg: var(--paper);
+  --surface: var(--paper-warm);
+  --surface-hover: var(--paper-deep);
+  --text: var(--ink);
+  --text-soft: var(--ink-soft);
+  --border: #d8b96a;
+  --border-strong: var(--ink-soft);
+  --focus-ring: var(--jade-deep);
+  --link: var(--jade-deep);
+  --link-visited: var(--ink-soft);
+  --accent: var(--jade-deep);
+  --accent-bright: var(--jade);
+  --danger: var(--red-deep);
+  --danger-bright: var(--red);
+  --info: var(--sky);
+  --warning: var(--gold);
+  --success: var(--jade-deep);
+  --mastery-seedling: var(--ink-soft);
+  --mastery-plant: var(--gold);
+  --mastery-tree: var(--jade-deep);
+  --text-on-accent: var(--paper);
+  --text-on-danger: var(--paper);
+  --text-on-info: var(--always-dark);
+  --text-on-warning: var(--always-dark);
+
+  /* ---- 4. Deprecated aliases (Phase 1 only) ---- */
+  /* Components still reference these names; remove in Phase 2 once
+   * consumer renames land. */
+  --muted: var(--ink-soft);
+  --indigo: var(--sky);
+  --seedling: var(--mastery-seedling);
+  --plant: var(--mastery-plant);
+  --tree: var(--mastery-tree);
+}

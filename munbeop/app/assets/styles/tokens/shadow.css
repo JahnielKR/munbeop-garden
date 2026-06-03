@@ -1,0 +1,25 @@
+/* tokens/shadow.css
+ * Hard offset shadows. Never soft Gaussian blur — that erases the LADX
+ * silhouette. Colour references --border-strong (which is --ink-soft)
+ * so dark theme gets a warm-brown shadow automatically.
+ */
+
+:root {
+  /* ---- Pixel-shadow scale ---- */
+  --shadow-pixel-sm: 2px 2px 0 var(--border-strong);
+  --shadow-pixel-md: 4px 4px 0 var(--border-strong);
+  --shadow-pixel-lg: 6px 6px 0 var(--border-strong);
+  --shadow-pixel-xl: 8px 8px 0 var(--border-strong);
+  --shadow-inset: inset 2px 2px 0 var(--border-strong);
+  --shadow-inset-strong: inset 2px 2px 0 var(--ink-soft);
+
+  /* ---- Semantic aliases ---- */
+  --shadow-card: var(--shadow-pixel-md);
+  --shadow-card-hover: 5px 5px 0 var(--border-strong);
+  --shadow-button: var(--shadow-pixel-md);
+  --shadow-button-hover: 5px 5px 0 var(--border-strong);
+  --shadow-button-pressed: var(--shadow-pixel-sm);
+  --shadow-modal: var(--shadow-pixel-lg);
+  --shadow-input: var(--shadow-inset);
+  --shadow-input-focus: var(--shadow-inset-strong);
+}
