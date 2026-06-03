@@ -99,7 +99,7 @@ function onSkipNote() {
     <ProgressDots :total="3" :progress="progress" />
     <ContextDisplay :context="context" />
     <SentenceInput v-model="sentence" />
-    <FeedbackRow @easy="onEasy" @hard="onHard" />
+    <FeedbackRow :disabled="!sentence.trim()" @easy="onEasy" @hard="onHard" />
     <ErrorNoteBlock
       v-if="showErrorBlock"
       v-model="errorNote"

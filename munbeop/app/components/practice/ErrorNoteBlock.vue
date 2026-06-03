@@ -21,7 +21,13 @@ const { t } = useI18n()
       @update:model-value="$emit('update:modelValue', $event)"
     />
     <div class="enote__actions">
-      <Button variant="danger" @click="$emit('save')">
+      <!--
+        Save with note = primary intent (user took time to articulate the
+        confusion); Skip = secondary opt-out. Earlier wiring had Save as
+        the `danger` variant which read as destructive — inverted the
+        pedagogical intent. Restored per audit fix G8.
+      -->
+      <Button variant="primary" @click="$emit('save')">
         {{ t('practice.save_with_note') }}
       </Button>
       <Button variant="secondary" @click="$emit('skip')">
@@ -35,13 +41,13 @@ const { t } = useI18n()
 .enote {
   margin-top: 14px;
   padding: 14px;
-  background: rgba(194, 62, 62, 0.08);
+  background: color-mix(in oklch, var(--red) 10%, var(--surface));
   border-left: 3px solid var(--red);
 }
 .enote__label {
-  font-family: 'Press Start 2P', monospace;
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
   font-size: 9px;
-  color: var(--red);
+  color: var(--danger);
   margin-bottom: 8px;
   letter-spacing: 0.1em;
 }
