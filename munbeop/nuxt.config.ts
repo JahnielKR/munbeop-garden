@@ -12,6 +12,16 @@ export default defineNuxtConfig({
   ssr: false,
   modules: ['@pinia/nuxt', '@nuxt/eslint', '@nuxtjs/i18n', '@nuxtjs/tailwindcss'],
   css: ['~/assets/styles/main.css'],
+  // Values default to empty strings here; Nuxt overrides them at runtime
+  // from environment variables (NUXT_PUBLIC_* on the client, others server-only).
+  runtimeConfig: {
+    supabaseServiceRoleKey: '',
+    public: {
+      supabaseUrl: '',
+      supabaseAnonKey: '',
+      appUrl: '',
+    },
+  },
   typescript: {
     strict: true,
     typeCheck: false,
