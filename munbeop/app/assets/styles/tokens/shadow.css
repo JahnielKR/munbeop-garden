@@ -1,27 +1,27 @@
 /* tokens/shadow.css
  * Hard offset shadows. Never soft Gaussian blur — that erases the LADX
- * silhouette. Colour references --border-strong (which aliases --ink-soft)
- * so the shadow ink follows the theme: warm brown in light theme (good
- * chunky-pixel look on cream paper). In dark theme --ink-soft inverts to
- * dusty cream, producing a cream-on-cave-brown shadow that may need
- * design follow-up in Phase 8 when the toggle ships — leaving as-is for
- * now per the spec.
+ * silhouette. Shadow ink is driven by --shadow-color (declared in the
+ * colors layer), NOT by --ink-soft or --border-strong directly:
+ *   light theme:  --shadow-color = var(--ink-soft) = #4a3a1f  (warm brown)
+ *   dark theme:   --shadow-color = #0d0907                    (near-black warm)
+ * This keeps the chunky-pixel silhouette correct in both themes — a
+ * shadow that's always DARKER than the surface beneath it.
  */
 
 :root {
   /* ---- Pixel-shadow scale ---- */
-  --shadow-pixel-sm: 2px 2px 0 var(--border-strong);
-  --shadow-pixel-md: 4px 4px 0 var(--border-strong);
-  --shadow-pixel-lg: 6px 6px 0 var(--border-strong);
-  --shadow-pixel-xl: 8px 8px 0 var(--border-strong);
-  --shadow-inset: inset 2px 2px 0 var(--border-strong);
-  --shadow-inset-strong: inset 3px 3px 0 var(--ink-soft);
+  --shadow-pixel-sm: 2px 2px 0 var(--shadow-color);
+  --shadow-pixel-md: 4px 4px 0 var(--shadow-color);
+  --shadow-pixel-lg: 6px 6px 0 var(--shadow-color);
+  --shadow-pixel-xl: 8px 8px 0 var(--shadow-color);
+  --shadow-inset: inset 2px 2px 0 var(--shadow-color);
+  --shadow-inset-strong: inset 3px 3px 0 var(--shadow-color);
 
   /* ---- Semantic aliases ---- */
   --shadow-card: var(--shadow-pixel-md);
-  --shadow-card-hover: 5px 5px 0 var(--border-strong);
+  --shadow-card-hover: 5px 5px 0 var(--shadow-color);
   --shadow-button: var(--shadow-pixel-md);
-  --shadow-button-hover: 5px 5px 0 var(--border-strong);
+  --shadow-button-hover: 5px 5px 0 var(--shadow-color);
   --shadow-button-pressed: var(--shadow-pixel-sm);
   --shadow-modal: var(--shadow-pixel-lg);
   --shadow-input: var(--shadow-inset);
