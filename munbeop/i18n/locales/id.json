@@ -70,5 +70,8 @@
     "signed_in_as": "Masuk sebagai",
     "sign_out": "Keluar",
     "anonymous_banner": "Berlatih lokal. Masuk untuk sinkron antar perangkat."
+  },
+  "settings": {
+    "dark_mode": "Mode gelap"
   }
 }

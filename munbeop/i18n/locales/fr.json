@@ -70,5 +70,8 @@
     "signed_in_as": "Connecté en tant que",
     "sign_out": "Se déconnecter",
     "anonymous_banner": "Pratique locale. Connecte-toi pour synchroniser entre appareils."
+  },
+  "settings": {
+    "dark_mode": "Mode sombre"
   }
 }

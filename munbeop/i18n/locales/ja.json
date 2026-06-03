@@ -70,5 +70,8 @@
     "signed_in_as": "サインイン中:",
     "sign_out": "サインアウト",
     "anonymous_banner": "ローカル練習中。デバイス間で同期するにはサインイン。"
+  },
+  "settings": {
+    "dark_mode": "ダークモード"
   }
 }
