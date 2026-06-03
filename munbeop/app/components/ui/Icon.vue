@@ -180,8 +180,9 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
       />
       <!-- jade-deep accents (depth) -->
       <path d="M4 7h1v1H4z M12 7h1v1h-1z M7 9h1v1H7z" fill="#185f24" />
-      <!-- gold fruit pixel -->
-      <path d="M9 6h1v1H9z" fill="#f5c533" />
+      <!-- gold fruit (2x2 + tiny outline so it reads at small render sizes) -->
+      <path d="M9 5h2v2H9z" fill="#f5c533" />
+      <path d="M8 5h1v1H8z" fill="#185f24" />
     </template>
 
     <!-- mastery-tree: trunk + round canopy + canopy shadow -->
