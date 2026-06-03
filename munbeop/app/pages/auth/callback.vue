@@ -2,6 +2,7 @@
 const { t } = useI18n()
 const status = ref<'checking' | 'success' | 'error'>('checking')
 const toast = useToast()
+const { runPostLoginMigration } = useAuth()
 
 onMounted(async () => {
   // PKCE flow: the client auto-exchanges the URL params for a session.
@@ -13,6 +14,8 @@ onMounted(async () => {
     toast.show(t('auth.callback_error'))
     return
   }
+  // First-time magic-link sign-in: migrate any anonymous local data.
+  await runPostLoginMigration()
   status.value = 'success'
   toast.show(t('auth.callback_success'))
   await navigateTo('/', { replace: true })

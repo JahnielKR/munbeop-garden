@@ -1,15 +1,20 @@
 import { useAuthStore } from '~/stores/auth'
+import { migrateLocalToSupabase } from '~/lib/auth/migration'
+import { pickAdapter } from '~/lib/storage/facade'
+import { useGrammarStore } from '~/stores/grammar'
+import { useContextsStore } from '~/stores/contexts'
+import { useSrsStore } from '~/stores/srs'
+import { useLogStore } from '~/stores/log'
 
 /**
- * Thin wrapper around supabase.auth.* with two responsibilities:
+ * Thin wrapper around supabase.auth.* with three responsibilities:
  *   1) Keep useAuthStore() in sync with the Supabase session.
  *   2) Provide the four UI-facing actions: signUp / signIn /
  *      signInMagicLink / signOut. Each returns { error } so callers
  *      can render a friendly toast on failure without try/catch.
- *
- * Migration of localStorage → Supabase on first sign-in lives in P2.13
- * (lib/auth/migration.ts); this composable will call it from
- * signIn/signUp/callback once that file exists.
+ *   3) Run the one-time localStorage → Supabase migration on the first
+ *      sign-in / sign-up / magic-link callback that lands an
+ *      authenticated session.
  */
 export function useAuth() {
   const { $supabase } = useNuxtApp()
@@ -23,13 +28,31 @@ export function useAuth() {
     })
   }
 
+  // Internal — call after any flow that just put a user in the store.
+  // Re-hydrates every store from the now-active (Supabase) adapter so
+  // the UI immediately reflects whatever was migrated.
+  async function runPostLoginMigration() {
+    if (!authStore.user) return null
+    const adapter = pickAdapter({ user: authStore.user, client: $supabase })
+    const result = await migrateLocalToSupabase(adapter)
+    await Promise.all([
+      useGrammarStore().hydrate(),
+      useContextsStore().hydrate(),
+      useSrsStore().hydrate(),
+      useLogStore().hydrate(),
+    ])
+    return result
+  }
+
   async function signUp(email: string, password: string) {
     const { error } = await $supabase.auth.signUp({ email, password })
+    if (!error) await runPostLoginMigration()
     return { error }
   }
 
   async function signIn(email: string, password: string) {
     const { error } = await $supabase.auth.signInWithPassword({ email, password })
+    if (!error) await runPostLoginMigration()
     return { error }
   }
 
@@ -51,5 +74,5 @@ export function useAuth() {
     return { error }
   }
 
-  return { init, signUp, signIn, signInMagicLink, signOut }
+  return { init, signUp, signIn, signInMagicLink, signOut, runPostLoginMigration }
 }
