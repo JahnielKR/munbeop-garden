@@ -55,7 +55,21 @@ Requisitos: Node 20+, pnpm 9+.
 - Auto re-hydrate de stores en `SIGNED_OUT` (sin esto, las oraciones quedaban visibles al cerrar sesión)
 - Multi-device sync verificado en producción
 
-🚧 **Próximos planes**: IA validadora (Edge Function OpenAI/Anthropic), Modo Mazmorra, Mascota, Mapa Jardín, Cosméticos, Landing, Capacitor, Importer legacy v2→v3.
+✅ **Plan 3 (Design System v2 — LADX cream palette) — completado:**
+
+- Spec modular en 5 docs (`docs/superpowers/specs/2026-06-03-design-system-v2/`) + implementation plan
+- Paleta Link's Awakening DX como default (paper `#f8efd0`, ink `#1a1a1a`, jade-deep `#185f24`, gold `#f5c533`) — reemplaza la dark `#1a1f1a` v1
+- "Hyrule at night" dark theme via `[data-theme="dark"]` con toggle en Settings + FOUC mitigation inline script + persistencia localStorage
+- Token layer modular en `tokens/` directory (9 archivos: colors-light/dark, typography, spacing, radius, shadow, motion, breakpoints) — reemplaza el `tokens.css` monolítico
+- `--shadow-color` semantic alias theme-aware (light: warm brown, dark: near-black) para mantener chunky-pixel silhouette en ambos temas
+- Familia tipográfica `Silkscreen` añadida para narrative display
+- 9 iconos pixel-art SVG inline (Icon + MasteryIcon) reemplazan emoji en sidebar nav + mastery badges
+- Game chrome activado en `/` y `/practice` via `definePageMeta({ surface: 'game' })` + `AppShell` provide/inject — Cards stampan `data-surface` y renderizan 4 corner ornaments jade-deep
+- Toggle primitive (square switch pixel-art, no pill) + `useTheme` composable
+- Placeholder mascota (32×48 sprite, paleta-compliant) en home page + CompletionBanner peek — identidad final OPEN para sesión creativa futura
+- Renames: `PixelButton/Card/Input` → `Button/Card/Input` (prefix redundante), 5 deprecated aliases (`--muted`, `--indigo`, `--seedling`, `--plant`, `--tree`) eliminados
+
+🚧 **Próximos planes**: Landing page, screen redesigns (polish con v2 tokens), identidad final mascota (sesión creativa), IA validadora (Edge Function OpenAI/Anthropic), Modo Mazmorra, Mapa Jardín, Cosméticos, Capacitor, Importer legacy v2→v3.
 
 ## Legacy (v2.22)
 
