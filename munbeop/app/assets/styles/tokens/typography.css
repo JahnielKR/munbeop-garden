@@ -6,9 +6,15 @@
 
 :root {
   /* ---- Font families ---- */
-  --font-pixel-small: 'Press Start 2P', monospace;
-  --font-pixel-display: 'Silkscreen', monospace;
-  --font-ui: 'Inter', system-ui, sans-serif;
+  /* Pixel families fall through Noto Sans KR (carries CJK Unified glyphs;
+   * already loaded for Korean grammar) then system-ui (handles Thai,
+   * Vietnamese accents, etc.) before the generic monospace bucket. On
+   * en/es/fr/pt-BR the pixel fonts render; on ja the labels gracefully
+   * pick up Noto Sans KR's CJK shapes; on th/vi system fonts handle the
+   * scripts the pixel families can't. Audit fix G10. */
+  --font-pixel-small: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
+  --font-pixel-display: 'Silkscreen', 'Noto Sans KR', system-ui, monospace;
+  --font-ui: 'Inter', 'Noto Sans KR', system-ui, sans-serif;
   --font-ko: 'Noto Sans KR', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 

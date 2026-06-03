@@ -22,7 +22,11 @@
   /* Aliases that re-point because the light-theme target hex is too dark
    * to read on a dark background */
   --accent: var(--jade);
-  --danger: var(--red);
+  /* `--danger` keeps `--red-deep` (#9d2525) — matches the light theme
+   * because `--always-cream` text on it passes (6.9:1) while
+   * `--always-dark` on bright `--red` fell to 4.19:1 in measurement
+   * (spec table's nominal 5.2 was optimistic). Same hex in both themes
+   * keeps the danger button stable across the theme toggle. */
   --link: var(--jade);
   --success: var(--jade);
   --mastery-tree: var(--jade);
@@ -30,7 +34,7 @@
   --shadow-color: #0d0907;
   --focus-ring: var(--jade);
   --text-on-accent: var(--always-dark);
-  --text-on-danger: var(--always-dark);
+  --text-on-danger: var(--always-cream);
   /* --text-on-info and --text-on-warning stay at --always-dark
    * because --sky and --gold are bright in both themes */
 }

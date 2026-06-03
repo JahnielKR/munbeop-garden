@@ -7,7 +7,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="dots">
+  <div class="dots" role="progressbar" :aria-valuenow="progress" :aria-valuemax="total">
     <span
       v-for="i in total"
       :key="i"
@@ -28,14 +28,15 @@ defineProps<Props>()
   width: 12px;
   height: 12px;
   background: var(--border);
-  transition: all 0.3s cubic-bezier(0.3, 1.3, 0.5, 1);
+  transition:
+    transform var(--motion-base) var(--ease-out),
+    background var(--motion-base) var(--ease-out);
 }
 .dot--current {
-  background: var(--red);
+  background: var(--accent);
   transform: scale(1.3);
-  box-shadow: 0 0 0 4px rgba(194, 62, 62, 0.2);
 }
 .dot--done {
-  background: var(--jade);
+  background: var(--accent-bright);
 }
 </style>
