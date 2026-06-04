@@ -1,11 +1,17 @@
 <script setup lang="ts">
 // Day scene: Mondstadt-inspired meadow with a bobbing dodo sprite.
 // Pure visual layer — no props, no state.
+//
+// The background image is rendered as a CSS background (not an <img>)
+// so we can repeat it horizontally and slide it laterally for the
+// ambient parallax. The dodo stays a sprite <img> because it has its
+// own keyframe and absolute positioning that don't compose with the
+// background-position scroll.
 </script>
 
 <template>
   <div class="day" aria-hidden="true">
-    <img class="day__bg pixel" src="/welcome/day/garden-day.png" alt="" >
+    <div class="day__bg pixel" />
     <img class="day__dodo pixel-sprite" src="/welcome/day/dodo.png" alt="" >
   </div>
 </template>
@@ -19,11 +25,16 @@
 .day__bg {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center bottom;
+  background-image: url('/welcome/day/garden-day.png');
+  background-repeat: repeat-x;
+  background-position: center bottom;
+  background-size: auto 100%;
   image-rendering: pixelated;
+  animation: scrollFondo 60s linear infinite;
+}
+@keyframes scrollFondo {
+  from { background-position: 0 bottom; }
+  to   { background-position: -1000px bottom; }
 }
 .day__dodo {
   position: absolute;
@@ -40,6 +51,7 @@
   50%      { transform: translateY(-6px) rotate(1deg); }
 }
 @media (prefers-reduced-motion: reduce) {
+  .day__bg { animation: none; }
   .day__dodo { animation: none; }
 }
 </style>
