@@ -11,6 +11,10 @@
   --always-dark: #1a1a1a;
   --always-cream: #f8efd0;
 
+  /* ---- Welcome page sky band (theme-invariant; used only by the scanline overlay) ---- */
+  --sky-day: #87d5ff;
+  --sky-night: #2a1a4a;
+
   /* ---- 2. Brand swatches ---- */
   --paper: #f8efd0;
   --paper-warm: #f1e5b8;
