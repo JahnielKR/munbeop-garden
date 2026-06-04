@@ -83,7 +83,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="welcome" :data-theme="theme">
+  <div
+    class="welcome"
+    :data-theme="theme"
+    :style="{ '--stage-push': sidebarOpen ? '-180px' : '0px' }"
+  >
     <WelcomeStage :theme="theme" />
 
     <div class="welcome__chrome welcome__chrome--top-right">
@@ -127,27 +131,27 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Welcome chrome is dead still when the sidebar opens — no shift, no
- * easing curves, no Vue Transition involvement on the chrome itself.
+/* v5: the *stage layer* shifts when the sidebar opens; the chrome
+ * stays put. The shift is exposed via the --stage-push CSS variable
+ * on .welcome (inline-styled from sidebarOpen), and the only element
+ * that reads it is .stage inside WelcomeStage. Brand mark, pulse
+ * button, music toggle, theme toggle, dialog, and scanline overlay
+ * are all unaffected.
  *
- * Previously we tried a left-shift to re-center the chrome inside the
- * narrower visible area, but multiple variants (welcome-shell wrapper,
- * CSS variable cascade, class-based descendant rules, ease-out easing)
- * all produced a visible bounce — measurements showed the layout
- * temporarily moving past the target then settling back, even with the
- * shift logic fully commented out. The cause is something deeper in
- * the sidebar's slide-in + dialog mount cascade that affects the
- * panel's effective bounds during the transition window. Rather than
- * fight it, we keep the welcome static and let the sidebar overlay
- * the right ~360px of the scene. Chrome ends up slightly
- * right-of-visible-center; acceptable trade-off per user feedback
- * ("deberia de quedarse quieto y ya").
+ * Why v2.18 bounced and v5 doesn't: v2.18 shifted the chrome via a
+ * wrapping class while the CameraStage panel was also applying a
+ * transform during the welcome ↔ app pan. The two transforms
+ * cascaded through the position:fixed containing block (the panel's
+ * own translateZ(0) made it the containing block), producing a
+ * measurable layout settle. v5 moves only .stage, which is
+ * position:absolute inside .welcome — no fixed-positioning cascade,
+ * no chrome involvement, no rebote.
  *
- * Containing-block note: the CameraStage panel sets
+ * Containing-block note (unchanged): the CameraStage panel sets
  * `transform: translateZ(0)`, which makes the panel the containing
  * block for descendant `position: fixed`. The welcome chrome's fixed
- * elements resolve to the panel's bounds, so they ride along with the
- * camera pan and never bleed onto the in-app panel during the
+ * elements resolve to the panel's bounds, so they ride along with
+ * the camera pan and never bleed onto the in-app panel during the
  * welcome ↔ app slide.
  */
 .welcome {
