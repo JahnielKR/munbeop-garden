@@ -27,10 +27,10 @@
 .pan-left-enter-from { transform: translateX(-100%); }
 .pan-left-leave-to { transform: translateX(100%); }
 
-.fade-enter-active,
-.fade-leave-active { transition: opacity 180ms ease; }
-.fade-enter-from,
-.fade-leave-to { opacity: 0; }
+/* No `fade-*` keyframes — in-app tab-to-tab navigation passes
+ * `:transition="false"` to NuxtPage so the <Transition> wrapper is
+ * skipped entirely (no opacity, no slide, no delay). The pan keyframes
+ * above are only used for the welcome↔in-app boundary. */
 
 @media (prefers-reduced-motion: reduce) {
   .pan-right-enter-active,
