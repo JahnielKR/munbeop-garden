@@ -1,17 +1,21 @@
 /* tokens/colors-light.css
- * Light theme v3 ("windrise living").
+ * Light theme v4 ("Mondstadt forest dusk").
  *
- * The palette borrows from the Mondstadt windrise asset that backs the
- * welcome page: bone-white surface, meadow-green action, sky-blue
- * lines/focus, warm cream chunky-pixel shadow, gold for special CTAs.
+ * Despite the file name, this is a DARK palette — deep moss greens with
+ * cream text and amber-corona gold accents. The naming sticks ("light"
+ * = default theme) but the look is forest-at-dusk Mondstadt, not a pale
+ * paper theme.
+ *
+ * Source: docs derived from the user's hand-authored light-mode CSS
+ * spec (Downloads/codigos e ideas/light mode.md). Every brand swatch
+ * below comes from that document; aliases re-route to fit the
+ * codebase's existing semantic tokens so welcome + in-app inherit
+ * automatically.
  *
  * Layers, top to bottom:
  *   1. Theme-invariants (same in light and dark; dark inherits via :root)
  *   2. Brand swatches — light values
  *   3. Semantic aliases — components reference these, never brand swatches
- *
- * Dark theme (colors-dark.css) is unchanged in this round — a separate
- * dark-v3 spec follows once light v3 settles.
  */
 
 :root {
@@ -23,24 +27,24 @@
   --sky-day: #87d5ff;
   --sky-night: #2a1a4a;
 
-  /* ---- 2. Brand swatches (v3 — windrise living) ---- */
-  --paper: #f4f0e2;        /* bone-white (main surface) */
-  --paper-warm: #efe9d2;   /* slightly warmer bone for headers, stripes */
-  --paper-deep: #e8e4d4;   /* THE panel tone — sidebar, nav, raised */
-  --ink: #1f3a4d;          /* deep-ocean body text */
-  --ink-soft: #4a6a82;     /* cool soft slate for secondary text */
-  --ink-line: #14202c;     /* NEAR-BLACK for chunky pixel border on every button */
-  --jade: #5ea84a;         /* meadow-green */
-  --jade-deep: #3f7a30;
-  --meadow: var(--jade);   /* readable alias */
+  /* ---- 2. Brand swatches (v4 — forest dusk) ---- */
+  --paper: #13251d;        /* verde musgo hiperoscuro — main surface */
+  --paper-warm: #1c382b;   /* verde bosque — sidebar / panel tier */
+  --paper-deep: #254838;   /* verde contenedor — card / raised tier */
+  --ink: #f1ece4;          /* crema suave — body text */
+  --ink-soft: #a6c4b9;     /* verde grisáceo — secondary text */
+  --ink-line: #eccc68;     /* amarillo corona — primary outline */
+  --jade: #7cd69f;         /* verde claro follaje — success/positive */
+  --jade-deep: #1c382b;
+  --meadow: var(--jade);
   --meadow-deep: var(--jade-deep);
-  --sky: #87d5ff;          /* the windrise sky */
-  --sky-deep: #4eb8e8;     /* the single sky-blue line color */
-  --red: #c43d3d;          /* flower-red */
-  --red-deep: #9d2525;
-  --gold: #f0c84a;         /* sun-amber */
-  --hover-bg: #f2e8c8;     /* WARM cream pulse on hover */
-  --shadow-cream: #c2a766; /* warm cream chunky pixel shadow */
+  --sky: #a6e3e9;          /* azul cielo pastel — links */
+  --sky-deep: #a6e3e9;
+  --red: #ff4757;          /* rojo flor de viento — danger */
+  --red-deep: #e84118;
+  --gold: #eccc68;         /* amarillo corona — primary action */
+  --hover-bg: rgba(236, 204, 104, 0.15); /* destello amarillo translúcido */
+  --shadow-cream: #13251d; /* paper-color pixel shadow ("extruded" effect over the paper) */
 
   /* ---- Bomi sprite palette (Plan 4 — character identity, untouched) ---- */
   --gold-shadow: #a06b2e;
@@ -55,28 +59,28 @@
 
   /* ---- 3. Semantic aliases ---- */
   --bg: var(--paper);
-  --surface: var(--paper-deep);              /* was --paper-warm */
-  --surface-hover: var(--hover-bg);          /* was --paper-deep */
+  --surface: var(--paper-warm);
+  --surface-hover: var(--hover-bg);
   --text: var(--ink);
   --text-soft: var(--ink-soft);
-  --border: var(--ink-line);                 /* was #d8b96a — now black outline */
-  --border-strong: var(--ink-line);          /* was --ink-soft */
-  --shadow-color: var(--shadow-cream);       /* was --ink-soft — now warm cream */
-  --focus-ring: var(--sky-deep);             /* was --jade-deep */
-  --link: var(--sky-deep);                   /* was --jade-deep */
+  --border: var(--ink-line);             /* gold outline by default */
+  --border-strong: var(--ink-line);
+  --shadow-color: var(--shadow-cream);   /* dark-green extruded shadow */
+  --focus-ring: var(--gold);             /* gold ring fits the dusk vibe */
+  --link: var(--sky-deep);
   --link-visited: var(--ink-soft);
-  --accent: var(--meadow-deep);
-  --accent-bright: var(--meadow);
-  --danger: var(--red-deep);
+  --accent: var(--gold);                 /* primary action = gold */
+  --accent-bright: var(--gold);
+  --danger: var(--red);
   --danger-bright: var(--red);
   --info: var(--sky);
   --warning: var(--gold);
-  --success: var(--meadow-deep);
+  --success: var(--jade);
   --mastery-seedling: var(--ink-soft);
   --mastery-plant: var(--gold);
-  --mastery-tree: var(--meadow-deep);
-  --text-on-accent: var(--always-cream);     /* was --paper — kept readable on meadow */
-  --text-on-danger: var(--always-cream);     /* was --paper */
+  --mastery-tree: var(--jade);
+  --text-on-accent: var(--always-dark);  /* dark text on gold */
+  --text-on-danger: var(--always-cream); /* cream text on red */
   --text-on-info: var(--always-dark);
   --text-on-warning: var(--always-dark);
 }
