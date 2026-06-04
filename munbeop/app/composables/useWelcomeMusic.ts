@@ -1,7 +1,7 @@
 import { ref, readonly } from 'vue'
 
 const STORAGE_KEY = 'mungarden:welcome:music'
-const SRC = '/welcome/audio/welcome-loop.wav'
+const SRC = '/welcome/audio/welcome-loop.mp3'
 const VOLUME = 0.20
 
 export type MusicState = 'on' | 'off'
