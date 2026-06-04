@@ -83,11 +83,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="welcome"
-    :data-theme="theme"
-    :style="{ '--stage-push': sidebarOpen ? '-180px' : '0px' }"
-  >
+  <div class="welcome" :data-theme="theme">
     <WelcomeStage :theme="theme" />
 
     <div class="welcome__chrome welcome__chrome--top-right">
@@ -131,21 +127,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* v5: the *stage layer* shifts when the sidebar opens; the chrome
- * stays put. The shift is exposed via the --stage-push CSS variable
- * on .welcome (inline-styled from sidebarOpen), and the only element
- * that reads it is .stage inside WelcomeStage. Brand mark, pulse
- * button, music toggle, theme toggle, dialog, and scanline overlay
- * are all unaffected.
- *
- * Why v2.18 bounced and v5 doesn't: v2.18 shifted the chrome via a
- * wrapping class while the CameraStage panel was also applying a
- * transform during the welcome ↔ app pan. The two transforms
- * cascaded through the position:fixed containing block (the panel's
- * own translateZ(0) made it the containing block), producing a
- * measurable layout settle. v5 moves only .stage, which is
- * position:absolute inside .welcome — no fixed-positioning cascade,
- * no chrome involvement, no rebote.
+/* v7: nothing in the welcome shifts when the sidebar opens — not
+ * the chrome, not the stage. The sidebar now drops from above as a
+ * left-aligned gate (see WelcomeSidebar's `caidaCompuerta` keyframe)
+ * and overlays the left portion of the scene directly. No horizontal
+ * displacement anywhere, which means the v2.18 rebote and the
+ * `--stage-push` plumbing v5 introduced are both gone.
  *
  * Containing-block note (unchanged): the CameraStage panel sets
  * `transform: translateZ(0)`, which makes the panel the containing

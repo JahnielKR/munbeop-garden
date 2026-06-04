@@ -2,7 +2,6 @@
 
 **Day scene (Mondstadt-inspired):**
 - `day/garden-day.png` — from the "Mondstadt Background Wallpaper" pack by @theflavare on itch.io.
-- `day/dodo.png` — from the "Mondstadt Tileset Platform - Basic" pack by @theflavare on itch.io.
 
 **Night scene (Mondstadt-inspired at night):**
 - `night/garden-night.jpg` — night-shot of the same windrise composition as `day/garden-day.png`, from the "Mondstadt Background Wallpaper" pack by @theflavare on itch.io.

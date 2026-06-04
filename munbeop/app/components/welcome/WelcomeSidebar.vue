@@ -76,25 +76,47 @@ watch(() => props.open, async (now) => {
 </template>
 
 <style scoped>
+/* v7: the sidebar drops from above the viewport like a heavy gate,
+ * lands on the left side, overshoots a hair, and settles. The whole
+ * motion is on `top` + `scaleY`, not `transform: translateX`, so the
+ * scene behind it never has to shift sideways to make room — which
+ * is what was triggering the v2.18 rebote in earlier attempts. The
+ * scene stays perfectly still; the menu just falls in front of it.
+ *
+ * Open path:  `.sidebar--open` plays caidaCompuerta (0.45s,
+ *   cubic-bezier(0.6,-0.28,0.735,0.045) — a sharp gravity curve).
+ *   forwards keeps the panel pinned at top:0 after the slam.
+ * Close path: removing `.sidebar--open` cancels the animation;
+ *   `top` reverts to -100% via the base `transition: top 0.3s`,
+ *   pulling the panel back up off-screen quickly.
+ */
 .sidebar {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: min(360px, 92vw);
+  left: 0;
+  top: -100%;
+  width: min(300px, 92vw);
+  height: 100vh;
   background: var(--paper);
-  border-left: 6px double var(--gold);
-  box-shadow: -8px 0 0 var(--ink), -10px 0 18px rgba(0, 0, 0, 0.55);
+  border-right: 6px double var(--gold);
+  box-shadow: 8px 0 0 var(--ink), 10px 0 18px rgba(0, 0, 0, 0.55);
   padding: 56px 22px 22px;
-  transform: translateX(100%);
-  transition: transform 360ms cubic-bezier(0.1, 0.8, 0.3, 1);
+  transition: top 0.3s ease-in;
   z-index: 25;
   display: flex;
   flex-direction: column;
   gap: 18px;
   color: var(--text);
 }
-.sidebar--open { transform: translateX(0); }
+.sidebar--open {
+  top: 0;
+  animation: caidaCompuerta 0.45s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
+@keyframes caidaCompuerta {
+  0%   { top: -100%; transform: scaleY(1); }
+  85%  { top: 5px;   transform: scaleY(0.98); }
+  93%  { top: -2px;  transform: scaleY(1.01); }
+  100% { top: 0;     transform: scaleY(1); }
+}
 .sidebar__close {
   position: absolute;
   top: 14px;
@@ -129,6 +151,7 @@ watch(() => props.open, async (now) => {
   gap: 12px;
 }
 @media (prefers-reduced-motion: reduce) {
-  .sidebar { transition: transform 120ms linear; }
+  .sidebar { transition: top 120ms linear; }
+  .sidebar--open { animation: none; }
 }
 </style>

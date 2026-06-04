@@ -5,11 +5,11 @@ import WelcomeNightScene from './WelcomeNightScene.vue'
 
 const props = defineProps<{ theme: 'light' | 'dark' }>()
 
-// v5: the stage reads --stage-push from .welcome (set inline based on
-// sidebarOpen) and slides laterally to make room for the sidebar. No
-// mouse-driven parallax — v2.19 dropped that layer; v5 doesn't need
-// it back because the ambient horizontal scroll inside each scene
-// already provides perpetual motion.
+// v7: the stage is fully passive. No mouse parallax (dropped in
+// v2.19), no ambient scroll (dropped in v6), no sidebar push (dropped
+// in v7 — the sidebar now drops from above, so the scene doesn't
+// need to make horizontal room). All it does is cross-fade between
+// the day and night scene components when the theme flips.
 const isLight = computed(() => props.theme === 'light')
 </script>
 
@@ -27,11 +27,6 @@ const isLight = computed(() => props.theme === 'light')
   position: absolute;
   inset: 0;
   overflow: hidden;
-  /* Matches the WelcomeSidebar slide curve and duration so the push
-   * and the sidebar move as one rigid pair. */
-  transform: translateX(var(--stage-push, 0));
-  transition: transform 360ms cubic-bezier(0.1, 0.8, 0.3, 1);
-  will-change: transform;
 }
 .stage__scene {
   position: absolute;
@@ -46,7 +41,6 @@ const isLight = computed(() => props.theme === 'light')
   opacity: 0;
 }
 @media (prefers-reduced-motion: reduce) {
-  .stage { transition: transform 120ms linear; }
   .stage-fade-enter-active,
   .stage-fade-leave-active { transition: opacity 100ms linear; }
 }
