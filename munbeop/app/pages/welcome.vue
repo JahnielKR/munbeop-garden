@@ -50,11 +50,22 @@ function openSidebar() {
 
 function closeSidebar() {
   sidebarOpen.value = false
+  // Clear any lingering dialog so the user can't end up with stale copy
+  // floating after the sidebar is gone (e.g. an intro line the user
+  // didn't dismiss). If they had wanted to keep reading they would not
+  // have closed the sidebar.
+  dialogText.value = ''
 }
 
 function onThemeToggle() {
   scanlineDirection.value = theme.value === 'light' ? 'down' : 'up'
   scanlineActive.value = true
+  // Clear any open dialog before the scene flips. The intro lines are
+  // theme-specific ("the sun is up" / "the sky is purple") — leaving
+  // the day intro visible after the night scene loads would read as a
+  // bug. If the user wanted to keep reading they would have dismissed
+  // the scanline trigger, not started a theme change mid-conversation.
+  dialogText.value = ''
   // Flip the theme at the midpoint of the sweep so the new scene is fully
   // revealed by the time the line reaches the far edge.
   setTimeout(() => {
