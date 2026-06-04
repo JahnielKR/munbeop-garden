@@ -3,17 +3,20 @@ import { useAuthStore } from '~/stores/auth'
 import Button from '~/components/ui/Button.vue'
 
 const auth = useAuthStore()
-const { signOut } = useAuth()
+const { signOutAndExit } = useAuth()
 const { t } = useI18n()
 const router = useRouter()
 
 async function onSignOut() {
-  await signOut()
-  router.push('/')
+  // signOutAndExit fires setExit() then navigates to /welcome so the
+  // pan-left transition plays as the user "leaves the castle".
+  await signOutAndExit()
 }
 
 function onSignIn() {
-  router.push('/auth/sign-in')
+  // Skip the legacy /auth/sign-in redirect hop — push directly to the
+  // welcome sidebar with the email form pre-opened in sign-in mode.
+  router.push({ path: '/welcome', query: { open: 'signin', mode: 'signin' } })
 }
 </script>
 

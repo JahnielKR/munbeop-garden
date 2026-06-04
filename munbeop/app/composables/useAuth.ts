@@ -86,6 +86,20 @@ export function useAuth() {
     return { error }
   }
 
+  /**
+   * Sign out + navigate to /welcome with the pan-left transition.
+   * The AccountWidget calls this instead of bare signOut() so the
+   * user gets the "leaving the castle" visual.
+   */
+  async function signOutAndExit() {
+    const { setExit } = useRouteTransition()
+    setExit()
+    const { error } = await $supabase.auth.signOut()
+    const router = useRouter()
+    if (!error) await router.push('/welcome')
+    return { error }
+  }
+
   async function signInWithProvider(provider: 'kakao' | 'google') {
     const config = useRuntimeConfig()
     const base =
@@ -100,5 +114,5 @@ export function useAuth() {
     return { error }
   }
 
-  return { init, signUp, signIn, signInMagicLink, signInWithProvider, signOut, runPostLoginMigration }
+  return { init, signUp, signIn, signInMagicLink, signInWithProvider, signOut, signOutAndExit, runPostLoginMigration }
 }

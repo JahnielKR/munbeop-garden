@@ -39,6 +39,8 @@ async function submit() {
       return
     }
     emit('success')
+    const { setEnter } = useRouteTransition()
+    setEnter()
     await router.push('/')
   } finally {
     loading.value = false

@@ -18,6 +18,8 @@ onMounted(async () => {
   await runPostLoginMigration()
   status.value = 'success'
   toast.show(t('auth.callback_success'))
+  const { setEnter } = useRouteTransition()
+  setEnter()
   await navigateTo('/', { replace: true })
 })
 </script>
