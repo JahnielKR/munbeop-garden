@@ -86,5 +86,19 @@ export function useAuth() {
     return { error }
   }
 
-  return { init, signUp, signIn, signInMagicLink, signOut, runPostLoginMigration }
+  async function signInWithProvider(provider: 'kakao' | 'google') {
+    const config = useRuntimeConfig()
+    const base =
+      (config.public.appUrl as string | undefined) ||
+      (typeof window !== 'undefined' ? window.location.origin : '')
+    const redirectTo = `${base}/auth/callback`
+    const { error } = await $supabase.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo },
+    })
+    // Migration runs on the /auth/callback page after Supabase sets the session.
+    return { error }
+  }
+
+  return { init, signUp, signIn, signInMagicLink, signInWithProvider, signOut, runPostLoginMigration }
 }
