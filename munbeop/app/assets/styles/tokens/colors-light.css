@@ -1,16 +1,15 @@
 /* tokens/colors-light.css
- * Light theme v4 ("Mondstadt forest dusk").
+ * Light theme v5 ("Pergamino + madera + girasol").
  *
- * Despite the file name, this is a DARK palette — deep moss greens with
- * cream text and amber-corona gold accents. The naming sticks ("light"
- * = default theme) but the look is forest-at-dusk Mondstadt, not a pale
- * paper theme.
+ * Warm parchment paper background with wood-frame sidebar tiers, dark
+ * coffee ink, sunflower gold buttons, and rust-orange links. Replaces
+ * v4 ("Mondstadt forest dusk") at the user's request — same token
+ * names, same alias layer, only the brand swatch values change so
+ * every component flips theme without code edits.
  *
- * Source: docs derived from the user's hand-authored light-mode CSS
- * spec (Downloads/codigos e ideas/light mode.md). Every brand swatch
- * below comes from that document; aliases re-route to fit the
- * codebase's existing semantic tokens so welcome + in-app inherit
- * automatically.
+ * Source: docs/codigos e ideas/segundo light and dark mode.md (the
+ * user's hand-authored .modo-dia palette, mapped into the codebase's
+ * existing --paper / --ink / --gold token names).
  *
  * Layers, top to bottom:
  *   1. Theme-invariants (same in light and dark; dark inherits via :root)
@@ -27,24 +26,24 @@
   --sky-day: #87d5ff;
   --sky-night: #2a1a4a;
 
-  /* ---- 2. Brand swatches (v4 — forest dusk) ---- */
-  --paper: #13251d;        /* verde musgo hiperoscuro — main surface */
-  --paper-warm: #1c382b;   /* verde bosque — sidebar / panel tier */
-  --paper-deep: #254838;   /* verde contenedor — card / raised tier */
-  --ink: #f1ece4;          /* crema suave — body text */
-  --ink-soft: #a6c4b9;     /* verde grisáceo — secondary text */
-  --ink-line: #eccc68;     /* amarillo corona — primary outline */
-  --jade: #7cd69f;         /* verde claro follaje — success/positive */
-  --jade-deep: #1c382b;
+  /* ---- 2. Brand swatches (v5 — pergamino + madera + girasol) ---- */
+  --paper: #f4ecd8;        /* pergamino claro — main surface */
+  --paper-warm: #ded0b6;   /* madera clara texturizada — sidebar / panel tier */
+  --paper-deep: #faf6ee;   /* crema más clara — card / raised tier */
+  --ink: #2d1e18;          /* marrón café muy oscuro — body text */
+  --ink-soft: #705335;     /* marrón medio — secondary text */
+  --ink-line: #8c6a4a;     /* marco de madera — primary outline */
+  --jade: #5e8f4a;         /* hoja verde cálida — success/positive */
+  --jade-deep: #4a6f3a;
   --meadow: var(--jade);
   --meadow-deep: var(--jade-deep);
-  --sky: #a6e3e9;          /* azul cielo pastel — links */
-  --sky-deep: #a6e3e9;
-  --red: #ff4757;          /* rojo flor de viento — danger */
-  --red-deep: #e84118;
-  --gold: #eccc68;         /* amarillo corona — primary action */
-  --hover-bg: rgba(236, 204, 104, 0.15); /* destello amarillo translúcido */
-  --shadow-cream: #13251d; /* paper-color pixel shadow ("extruded" effect over the paper) */
+  --sky: #b05c1e;          /* óxido / naranja rústico — links */
+  --sky-deep: #8e4a17;
+  --red: #c23e3e;          /* rojo identitario (Korean brand) — danger */
+  --red-deep: #9d2e2e;
+  --gold: #e6a121;         /* amarillo girasol — primary action */
+  --hover-bg: rgba(255, 196, 77, 0.25); /* brillo de sol translúcido */
+  --shadow-cream: #2d1e18; /* ink-dark pixel shadow — pops against pergamino */
 
   /* ---- Bomi sprite palette (Plan 4 — character identity, untouched) ---- */
   --gold-shadow: #a06b2e;
@@ -63,13 +62,13 @@
   --surface-hover: var(--hover-bg);
   --text: var(--ink);
   --text-soft: var(--ink-soft);
-  --border: var(--ink-line);             /* gold outline by default */
+  --border: var(--ink-line);             /* wood-frame outline by default */
   --border-strong: var(--ink-line);
-  --shadow-color: var(--shadow-cream);   /* dark-green extruded shadow */
-  --focus-ring: var(--gold);             /* gold ring fits the dusk vibe */
+  --shadow-color: var(--shadow-cream);   /* dark-ink extruded shadow */
+  --focus-ring: var(--gold);             /* sunflower ring */
   --link: var(--sky-deep);
   --link-visited: var(--ink-soft);
-  --accent: var(--gold);                 /* primary action = gold */
+  --accent: var(--gold);                 /* primary action = sunflower */
   --accent-bright: var(--gold);
   --danger: var(--red);
   --danger-bright: var(--red);
@@ -79,8 +78,8 @@
   --mastery-seedling: var(--ink-soft);
   --mastery-plant: var(--gold);
   --mastery-tree: var(--jade);
-  --text-on-accent: var(--always-dark);  /* dark text on gold */
+  --text-on-accent: var(--always-dark);  /* dark text on sunflower */
   --text-on-danger: var(--always-cream); /* cream text on red */
-  --text-on-info: var(--always-dark);
+  --text-on-info: var(--always-cream);   /* cream text on rust-orange link */
   --text-on-warning: var(--always-dark);
 }

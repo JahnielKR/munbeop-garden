@@ -1,35 +1,36 @@
 /* tokens/colors-dark.css
- * Dark theme v4 ("Mondstadt at deep night").
+ * Dark theme v5 ("Abisal + pino + fuego de campamento").
  *
  * Opt-in via [data-theme="dark"] on <html>. Inherits theme-invariants
  * from :root (colors-light.css) and overrides every brand swatch + the
  * aliases that need to re-point because the light hex no longer works
- * against the deep night surfaces.
+ * against the abyssal-blue night surfaces.
  *
- * Source: docs derived from the user's hand-authored dark-mode CSS
- * spec (Downloads/codigos e ideas/dark mode.md). The vibe is a
- * Mondstadt dungeon at night — deep blue-black sky, moss-green walls,
- * firefly-yellow accents, mint-cream text.
+ * Source: docs/codigos e ideas/segundo light and dark mode.md (the
+ * user's hand-authored .modo-noche palette). Vibe: deep abyssal-blue
+ * sky over a pine-forest sidebar, with campfire-orange CTAs and
+ * firefly-green links lighting the gloom.
  */
 
 [data-theme="dark"] {
   /* ---- Brand swatches that flip on light/dark axis ---- */
-  --paper: #0f141c;        /* azul noche profundo — main surface */
-  --paper-warm: #14241e;   /* verde calabozo — sidebar / panel tier */
-  --paper-deep: #19222f;   /* azul grisáceo sombra — card / raised tier */
-  --ink: #e3faf0;          /* blanco menta brillante — body text */
-  --ink-soft: #a6c4b9;     /* verde grisáceo apagado — secondary text */
-  --ink-line: #2e5c46;     /* verde musgo eléctrico — primary outline */
-  --jade: #2e5c46;         /* moss — success/positive */
-  --jade-deep: #2e5c46;
+  --paper: #0c1220;        /* azul abisal profundo — main surface */
+  --paper-warm: #0a1f1d;   /* verde pino silvestre ultra oscuro — sidebar tier */
+  --paper-deep: #121b2d;   /* azul medianoche — card / raised tier */
+  --ink: #e2e8f0;          /* blanco platino lunar — body text */
+  --ink-soft: #577570;     /* verde azulado grisáceo — secondary text */
+  --ink-line: #3b5275;     /* azul acero apagado — primary outline */
+  --jade: #3ad29f;         /* verde cian luciérnaga — success/positive */
+  --jade-deep: #2eaa7e;
   --meadow: var(--jade);
   --meadow-deep: var(--jade-deep);
-  --sky: #f1c40f;          /* firefly yellow stands in for "link sky" in dark */
-  --sky-deep: #f1c40f;
-  --gold: #f1c40f;         /* amarillo luciérnaga — primary action */
-  --hover-bg: #2e5c46;     /* moss hover */
-  --shadow-cream: rgba(0, 0, 0, 0.4); /* translucent black drop shadow */
-  /* --red, --red-deep, --always-* stay constant (inherited from :root) */
+  --sky: #3ad29f;          /* firefly green doubles as link in dark */
+  --sky-deep: #2eaa7e;
+  --gold: #d95738;         /* naranja fuego de campamento — primary action */
+  --red: #ff4757;          /* warmer red on the abyssal-blue surface */
+  --red-deep: #e84118;
+  --hover-bg: rgba(255, 118, 84, 0.25); /* destello de flama translúcido */
+  --shadow-cream: #f1ece4; /* cream pixel shadow — keeps silhouettes visible */
 
   /* ---- Aliases that re-point ---- */
   --bg: var(--paper);
@@ -41,17 +42,17 @@
   --border-strong: var(--ink-line);
   --shadow-color: var(--shadow-cream);
   --focus-ring: var(--gold);
-  --link: var(--gold);                   /* firefly-yellow links in the dark */
+  --link: var(--jade);                   /* firefly-green links in the dark */
   --link-visited: var(--ink-soft);
   --accent: var(--gold);
   --accent-bright: var(--gold);
   --success: var(--jade);
-  --info: var(--gold);
+  --info: var(--jade);
   --warning: var(--gold);
   --mastery-tree: var(--jade);
   --mastery-plant: var(--gold);
-  --text-on-accent: var(--always-dark);  /* dark text on firefly yellow */
+  --text-on-accent: var(--always-cream); /* cream text on campfire orange */
   --text-on-danger: var(--always-cream); /* cream text on red */
-  --text-on-info: var(--always-dark);
-  --text-on-warning: var(--always-dark);
+  --text-on-info: var(--always-dark);    /* dark text on firefly green */
+  --text-on-warning: var(--always-cream);
 }
