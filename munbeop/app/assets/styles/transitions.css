@@ -1,63 +1,14 @@
 /* transitions.css
- * Camera-pan transitions for <NuxtLayout :transition> at the
- * welcome ↔ in-app boundary. The technique mirrors the reference
- * idea-de-movimiento-de-landing.md: both layouts coexist in the DOM
- * for the duration of the pan, each pinned full-viewport, and a
- * shared translateX timeline moves them as one wide camera.
+ * Page-level transitions used to wrap NuxtPage / NuxtLayout. Currently
+ * empty because the welcome ↔ in-app camera pan lives on the
+ * CameraStage wrapper (components/layout/CameraStage.vue), which owns
+ * its own `transition: transform 700ms` rule directly on the wrapper.
  *
- *   pan-right — welcome → in-app ("entering the castle").
- *               OLD layout slides from translateX(0) → translateX(-100vw).
- *               NEW layout slides from translateX(100vw) → translateX(0).
- *               Both at the same speed and easing, so visually it reads
- *               as a single camera move to the right.
- *   pan-left  — in-app → welcome ("leaving the castle"). Mirror.
+ * In-app tab-to-tab navigation passes `:transition="false"` to NuxtPage
+ * so Vue skips the <Transition> wrapper entirely — no fade, no slide,
+ * instant snap.
  *
- * In-app tab-to-tab navigation passes `:transition="false"` to NuxtPage,
- * so the <Transition> wrapper is skipped entirely — instant snap, no
- * delay. The pan only ever fires when the active layout changes.
- *
- * Easing: cubic-bezier(0.65, 0, 0.35, 1). Duration: 700 ms.
+ * If a future feature needs a per-page transition (e.g. a flashy
+ * Practice intro animation), add its keyframes here and reference the
+ * name via definePageMeta({ pageTransition: { name: '...' } }).
  */
-
-.pan-right-enter-active,
-.pan-right-leave-active,
-.pan-left-enter-active,
-.pan-left-leave-active {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 100;
-  will-change: transform;
-  transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-/* pan-right: welcome leaves to the left; in-app enters from the right */
-.pan-right-leave-from { transform: translateX(0); }
-.pan-right-leave-to   { transform: translateX(-100vw); }
-.pan-right-enter-from { transform: translateX(100vw); }
-.pan-right-enter-to   { transform: translateX(0); }
-
-/* pan-left: in-app leaves to the right; welcome enters from the left */
-.pan-left-leave-from { transform: translateX(0); }
-.pan-left-leave-to   { transform: translateX(100vw); }
-.pan-left-enter-from { transform: translateX(-100vw); }
-.pan-left-enter-to   { transform: translateX(0); }
-
-@media (prefers-reduced-motion: reduce) {
-  .pan-right-enter-active,
-  .pan-right-leave-active,
-  .pan-left-enter-active,
-  .pan-left-leave-active {
-    transition: opacity 200ms linear;
-  }
-  .pan-right-leave-from,
-  .pan-right-enter-to,
-  .pan-left-leave-from,
-  .pan-left-enter-to { transform: none; opacity: 1; }
-  .pan-right-leave-to,
-  .pan-right-enter-from,
-  .pan-left-leave-to,
-  .pan-left-enter-from { transform: none; opacity: 0; }
-}

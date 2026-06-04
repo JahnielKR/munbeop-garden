@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, watch } from 'vue'
 import { useBomiStore } from '~/stores/bomi'
+import CameraStage from '~/components/layout/CameraStage.vue'
 
 // Boot the Supabase auth subscription as early as possible so getSession()
 // fires before the layout's onMounted runs. The layout still owns store
@@ -10,12 +11,10 @@ const { init } = useAuth()
 const { hydrate: hydrateTheme } = useTheme()
 const { locale } = useI18n()
 
-// The welcome ↔ in-app camera pan is driven entirely by
-// app/middleware/layout-transition.global.ts, which sets
-// to.meta.layoutTransition per navigation. NuxtLayout reads that meta
-// directly — a `:transition` prop on <NuxtLayout> is ignored in Nuxt 4
-// (see node_modules/nuxt/dist/app/components/nuxt-layout.js, the
-// `hasTransition` line).
+// The welcome ↔ in-app camera pan is now driven by CameraStage —
+// a 200vw wrapper with both panels always mounted, a single transform
+// on the wrapper sliding both as one rigid camera. See
+// components/layout/CameraStage.vue.
 
 // Keep <html lang="..."> in sync with the i18n locale. Required for
 // CSS :lang() rules (per-locale font-size bumps for Thai / Vietnamese)
@@ -81,7 +80,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <NuxtLayout>
-    <NuxtPage :transition="false" />
-  </NuxtLayout>
+  <CameraStage>
+    <NuxtLayout>
+      <NuxtPage :transition="false" />
+    </NuxtLayout>
+  </CameraStage>
 </template>
