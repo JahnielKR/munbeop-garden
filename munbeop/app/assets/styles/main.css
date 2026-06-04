@@ -1,5 +1,6 @@
 @import './tokens/_index.css';
 @import './pixel.css';
+@import './transitions.css';
 
 @tailwind base;
 @tailwind components;

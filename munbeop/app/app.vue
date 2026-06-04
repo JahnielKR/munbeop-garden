@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch } from 'vue'
+import { onMounted, onUnmounted, watch, computed } from 'vue'
 import { useBomiStore } from '~/stores/bomi'
 
 // Boot the Supabase auth subscription as early as possible so getSession()
@@ -9,6 +9,17 @@ import { useBomiStore } from '~/stores/bomi'
 const { init } = useAuth()
 const { hydrate: hydrateTheme } = useTheme()
 const { locale } = useI18n()
+const { direction } = useRouteTransition()
+
+// Maps the welcome-driven direction flag to the keyframe name used by
+// <NuxtPage>'s built-in <Transition>. 'enter' = pan-right (entering the
+// castle). 'exit' = pan-left (leaving). Everything else fades.
+const pageTransitionName = computed(() => {
+  const d = direction.value
+  if (d === 'enter') return 'pan-right'
+  if (d === 'exit') return 'pan-left'
+  return 'fade'
+})
 
 // Keep <html lang="..."> in sync with the i18n locale. Required for
 // CSS :lang() rules (per-locale font-size bumps for Thai / Vietnamese)
@@ -75,6 +86,6 @@ onMounted(() => {
 
 <template>
   <NuxtLayout>
-    <NuxtPage />
+    <NuxtPage :transition="{ name: pageTransitionName, mode: 'out-in' }" />
   </NuxtLayout>
 </template>
