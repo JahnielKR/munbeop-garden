@@ -9,17 +9,26 @@ import { useBomiStore } from '~/stores/bomi'
 const { init } = useAuth()
 const { hydrate: hydrateTheme } = useTheme()
 const { locale } = useI18n()
-const { direction } = useRouteTransition()
+const { direction, clear: clearTransitionDirection } = useRouteTransition()
 
 // Maps the welcome-driven direction flag to the keyframe name used by
 // <NuxtPage>'s built-in <Transition>. 'enter' = pan-right (entering the
 // castle). 'exit' = pan-left (leaving). Everything else fades.
+//
+// The pan is ONLY for the welcome↔in-app boundary. In-app tab-to-tab
+// navigation must fall back to the default fade — that's why we clear
+// the direction in onAfterEnter once each transition completes. Without
+// the clear, the direction set on (welcome → /) would survive into the
+// next navigation (/ → /practice) and replay the pan there too.
 const pageTransitionName = computed(() => {
   const d = direction.value
   if (d === 'enter') return 'pan-right'
   if (d === 'exit') return 'pan-left'
   return 'fade'
 })
+function onPageTransitionAfterEnter() {
+  clearTransitionDirection()
+}
 
 // Keep <html lang="..."> in sync with the i18n locale. Required for
 // CSS :lang() rules (per-locale font-size bumps for Thai / Vietnamese)
@@ -86,6 +95,12 @@ onMounted(() => {
 
 <template>
   <NuxtLayout>
-    <NuxtPage :transition="{ name: pageTransitionName, mode: 'out-in' }" />
+    <NuxtPage
+      :transition="{
+        name: pageTransitionName,
+        mode: 'out-in',
+        onAfterEnter: onPageTransitionAfterEnter,
+      }"
+    />
   </NuxtLayout>
 </template>
