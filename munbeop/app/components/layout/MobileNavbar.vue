@@ -87,11 +87,13 @@ const { t } = useI18n()
   -moz-osx-font-smoothing: grayscale;
   font-smooth: never;
 }
-/* Thai / Vietnamese script needs more pixel headroom — at 7 px tone
- * marks merge into the consonant. 9 px stays inside the 65 px per-cell
- * budget for short Thai labels. */
+/* Thai / Vietnamese / Japanese all need more pixel headroom at 7 px —
+ * tone marks merge into the consonant and kanji strokes collapse.
+ * 9 px stays inside the 65 px per-cell budget for the typically short
+ * mobile-nav translations. */
 :lang(th) .mobile-nav__label,
-:lang(vi) .mobile-nav__label {
+:lang(vi) .mobile-nav__label,
+:lang(ja) .mobile-nav__label {
   font-size: 9px;
 }
 </style>

@@ -80,14 +80,17 @@ defineEmits<{ click: [MouseEvent] }>()
 .button[data-size='lg'] { font-size: 13px; padding: 16px 28px; }
 .button--full { width: 100%; }
 
-/* Thai / Vietnamese script: tone marks and diacritics at 9-13 px lose
+/* Thai / Vietnamese diacritics and Japanese kanji at 9-13 px lose
  * their detail. Bump every size one step so button labels read. */
 :lang(th) .button[data-size='sm'],
-:lang(vi) .button[data-size='sm'] { font-size: 11px; }
+:lang(vi) .button[data-size='sm'],
+:lang(ja) .button[data-size='sm'] { font-size: 11px; }
 :lang(th) .button[data-size='md'],
-:lang(vi) .button[data-size='md'] { font-size: 13px; }
+:lang(vi) .button[data-size='md'],
+:lang(ja) .button[data-size='md'] { font-size: 13px; }
 :lang(th) .button[data-size='lg'],
-:lang(vi) .button[data-size='lg'] { font-size: 15px; }
+:lang(vi) .button[data-size='lg'],
+:lang(ja) .button[data-size='lg'] { font-size: 15px; }
 
 .button[data-variant='secondary'] {
   background: var(--surface);

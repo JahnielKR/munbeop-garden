@@ -129,11 +129,13 @@ const { t } = useI18n()
   -moz-osx-font-smoothing: grayscale;
   font-smooth: never;
 }
-/* Thai script (and Vietnamese with full Latin Extended diacritics)
- * carries tone marks above + below the consonant — at 10 px those
- * marks compress into illegible glyphs. Bump one step so they read. */
+/* Thai / Vietnamese tone marks + stacked diacritics, and Japanese
+ * kanji strokes, all lose detail at 10 px. Bump one step so the
+ * glyphs stay legible. (Korean is content-not-chrome, never shows
+ * here — the .sidebar__ko subtitle is a separate selector below.) */
 :lang(th) .sidebar__label,
-:lang(vi) .sidebar__label {
+:lang(vi) .sidebar__label,
+:lang(ja) .sidebar__label {
   font-size: 13px;
 }
 .sidebar__ko {

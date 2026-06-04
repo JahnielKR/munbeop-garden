@@ -78,9 +78,11 @@ function onChange(e: Event) {
   font-smooth: never;
   cursor: pointer;
 }
-/* Thai locale name "ไทย" at 10 px has unreadable tone marks. */
+/* Thai "ไทย" tone marks, Japanese "日本語" kanji, and Vietnamese
+ * stacked diacritics all lose detail at 10 px. Same bump. */
 :lang(th) .loc__select,
-:lang(vi) .loc__select {
+:lang(vi) .loc__select,
+:lang(ja) .loc__select {
   font-size: 13px;
 }
 .loc__select {
