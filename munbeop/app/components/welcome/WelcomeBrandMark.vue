@@ -5,9 +5,7 @@ const { t } = useI18n()
 <template>
   <div class="brand">
     <h1 class="brand__title" lang="ko">문법 정원</h1>
-    <p class="brand__subtitle">
-      {{ t('welcome.brand.subtitle') }} · <span lang="ko">화이팅</span>
-    </p>
+    <p class="brand__subtitle">{{ t('welcome.brand.subtitle') }}</p>
   </div>
 </template>
 
