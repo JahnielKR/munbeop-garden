@@ -27,6 +27,11 @@ export default defineConfig({
       // resolves consistently in source files and tests.
       '~': fileURLToPath(new URL('./app', import.meta.url)),
       '@': fileURLToPath(new URL('./app', import.meta.url)),
+      // Nuxt's virtual #imports module isn't materialised under vitest; the
+      // stub here re-exports the helpers our app code touches as no-op
+      // implementations so middleware and other files that depend on
+      // defineNuxtRouteMiddleware / navigateTo load cleanly in tests.
+      '#imports': fileURLToPath(new URL('./tests/nuxt-imports-stub.ts', import.meta.url)),
     },
   },
 })
