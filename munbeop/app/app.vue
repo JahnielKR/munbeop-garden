@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch, computed } from 'vue'
+import { onMounted, onUnmounted, watch } from 'vue'
 import { useBomiStore } from '~/stores/bomi'
 
 // Boot the Supabase auth subscription as early as possible so getSession()
@@ -9,29 +9,13 @@ import { useBomiStore } from '~/stores/bomi'
 const { init } = useAuth()
 const { hydrate: hydrateTheme } = useTheme()
 const { locale } = useI18n()
-const { direction, clear: clearTransitionDirection } = useRouteTransition()
 
-// Layout-level "camera pan" between welcome and the in-app surface.
-//
-// The pan ONLY fires when the active LAYOUT changes (welcome ↔ default),
-// which is exactly the welcome↔app boundary. In-app tab-to-tab nav
-// (e.g. /practice → /library) reuses the same default layout, so this
-// transition never fires there — the slot content swaps instantly.
-//
-// CRITICAL: no `mode: 'out-in'`. Both layouts coexist in the DOM during
-// the pan, position:fixed full-viewport (set in transitions.css), so they
-// pan together as a single 200vw camera rather than swapping sequentially.
-//
-// onAfterEnter clears the direction flag so a stray subsequent layout
-// change (shouldn't happen in normal use) falls back to no transition.
-const layoutTransitionConfig = computed<
-  false | { name: string; onAfterEnter: () => void }
->(() => {
-  const d = direction.value
-  if (d === 'enter') return { name: 'pan-right', onAfterEnter: clearTransitionDirection }
-  if (d === 'exit') return { name: 'pan-left', onAfterEnter: clearTransitionDirection }
-  return false
-})
+// The welcome ↔ in-app camera pan is driven entirely by
+// app/middleware/layout-transition.global.ts, which sets
+// to.meta.layoutTransition per navigation. NuxtLayout reads that meta
+// directly — a `:transition` prop on <NuxtLayout> is ignored in Nuxt 4
+// (see node_modules/nuxt/dist/app/components/nuxt-layout.js, the
+// `hasTransition` line).
 
 // Keep <html lang="..."> in sync with the i18n locale. Required for
 // CSS :lang() rules (per-locale font-size bumps for Thai / Vietnamese)
@@ -97,7 +81,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <NuxtLayout :transition="layoutTransitionConfig">
+  <NuxtLayout>
     <NuxtPage :transition="false" />
   </NuxtLayout>
 </template>

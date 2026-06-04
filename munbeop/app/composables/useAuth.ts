@@ -87,13 +87,11 @@ export function useAuth() {
   }
 
   /**
-   * Sign out + navigate to /welcome with the pan-left transition.
-   * The AccountWidget calls this instead of bare signOut() so the
-   * user gets the "leaving the castle" visual.
+   * Sign out + navigate to /welcome. The layout-transition.global
+   * middleware sees the navigation away-from-in-app to /welcome and
+   * fires the pan-left camera move automatically.
    */
   async function signOutAndExit() {
-    const { setExit } = useRouteTransition()
-    setExit()
     const { error } = await $supabase.auth.signOut()
     const router = useRouter()
     if (!error) await router.push('/welcome')

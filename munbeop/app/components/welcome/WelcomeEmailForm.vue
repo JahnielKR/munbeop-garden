@@ -39,11 +39,10 @@ async function submit() {
       return
     }
     emit('success')
-    const { setEnter } = useRouteTransition()
     const { fadeOut } = useWelcomeMusic()
-    setEnter()
-    // Fire the fade in parallel with the pan — the 700ms music ramp
-    // ends just as the new scene finishes sliding in.
+    // Fire the music fade in parallel with the pan — the 700ms ramp
+    // ends just as the layout-transition middleware's pan-right finishes
+    // sliding the camera into the in-app surface.
     void fadeOut(700)
     await router.push('/')
   } finally {

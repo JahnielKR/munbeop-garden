@@ -18,8 +18,8 @@ onMounted(async () => {
   await runPostLoginMigration()
   status.value = 'success'
   toast.show(t('auth.callback_success'))
-  const { setEnter } = useRouteTransition()
-  setEnter()
+  // layout-transition.global middleware sees from=/auth/callback,
+  // to=/ → sets layoutTransition='pan-right' so the camera pans in.
   await navigateTo('/', { replace: true })
 })
 </script>
