@@ -14,7 +14,7 @@ definePageMeta({ layout: false, surface: 'welcome' })
 
 const { t } = useI18n()
 const { theme, setTheme, hydrate: hydrateTheme } = useTheme()
-const { hydrate: hydrateMusic } = useWelcomeMusic()
+const { hydrate: hydrateMusic, ensurePlaying: ensureMusicPlaying } = useWelcomeMusic()
 
 const sidebarOpen = ref(false)
 const dialogText = ref('')
@@ -42,6 +42,10 @@ function showDialog(text: string, variant: 'normal' | 'error' = 'normal') {
 function openSidebar() {
   sidebarOpen.value = true
   showDialog(theme.value === 'light' ? t('welcome.dialog.intro_day') : t('welcome.dialog.intro_night'))
+  // ENTER counts as the user's "intent to enter" — auto-start music so
+  // the experience has a soundtrack. Catches autoplay-blocked errors
+  // silently; the music toggle remains the manual recourse.
+  ensureMusicPlaying().catch(() => { /* autoplay blocked — silent */ })
 }
 
 function closeSidebar() {

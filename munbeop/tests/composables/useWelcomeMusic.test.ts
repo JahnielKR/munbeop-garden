@@ -52,4 +52,22 @@ describe('useWelcomeMusic', () => {
     expect(state.value).toBe('on')
     expect(ready.value).toBe(false)
   })
+
+  it('ensurePlaying() forces state on and starts the audio', async () => {
+    const { state, ready, ensurePlaying } = useWelcomeMusic()
+    await ensurePlaying()
+    expect(state.value).toBe('on')
+    expect(ready.value).toBe(true)
+    expect(localStorage.getItem(STORAGE_KEY)).toBe('on')
+  })
+
+  it('ensurePlaying() overrides a previously-off preference', async () => {
+    localStorage.setItem(STORAGE_KEY, 'off')
+    const { state, ensurePlaying, hydrate } = useWelcomeMusic()
+    hydrate()
+    expect(state.value).toBe('off')
+    await ensurePlaying()
+    expect(state.value).toBe('on')
+    expect(localStorage.getItem(STORAGE_KEY)).toBe('on')
+  })
 })

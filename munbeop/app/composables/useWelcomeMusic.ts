@@ -77,11 +77,29 @@ export function useWelcomeMusic() {
     await play()
   }
 
+  /**
+   * Force music on and start playing. Used by surfaces that count as
+   * the user's "intent to enter the experience" — the welcome pulse
+   * button is the canonical caller. Idempotent: calling while already
+   * playing is a no-op. If the user previously turned music off via
+   * the toggle, this overrides that preference (the next ENTER is an
+   * intentional re-engagement).
+   */
+  async function ensurePlaying() {
+    if (state.value !== 'on') {
+      state.value = 'on'
+      writeStored('on')
+    }
+    if (ready.value && audio && !audio.paused) return
+    await play()
+  }
+
   return {
     state: readonly(state),
     ready: readonly(ready),
     hydrate,
     toggle,
+    ensurePlaying,
   }
 }
 
