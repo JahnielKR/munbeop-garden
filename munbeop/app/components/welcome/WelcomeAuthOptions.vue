@@ -11,6 +11,7 @@ const props = defineProps<{ initialEmailMode: 'signin' | 'signup' | 'magic' | nu
 
 const { t } = useI18n()
 const { signInWithProvider } = useAuth()
+const { fadeOut: fadeOutMusic } = useWelcomeMusic()
 
 const expanded = ref<'signin' | 'signup' | 'magic' | null>(props.initialEmailMode)
 const loading = ref<'kakao' | 'google' | null>(null)
@@ -25,6 +26,11 @@ async function provider(name: 'kakao' | 'google') {
   loading.value = name
   emit('dialog', name === 'kakao' ? t('welcome.dialog.kakao') : t('welcome.dialog.google'))
   setWelcomedFlag()
+  // Fade in parallel with the OAuth redirect. The page typically unloads
+  // before the fade completes — that's fine, the SPA is gone anyway.
+  // It's cosmetic; if the redirect is slow the user hears a graceful ramp
+  // instead of a hard cut.
+  void fadeOutMusic(700)
   const { error } = await signInWithProvider(name)
   if (error) {
     emit('dialog', t('welcome.dialog.error_oauth'), 'error')

@@ -94,12 +94,36 @@ export function useWelcomeMusic() {
     await play()
   }
 
+  /**
+   * Ramp the audio volume to 0 over `durationMs`, then pause. State
+   * flips to 'off' and persists so the music UI stays in sync. Called
+   * by the welcome→in-app transition so the soundtrack doesn't cut
+   * abruptly while the pan plays.
+   *
+   * If nothing is playing, resolves immediately.
+   */
+  async function fadeOut(durationMs = 700) {
+    if (!audio || audio.paused) return
+    const startVolume = audio.volume
+    const steps = 20
+    const stepDuration = Math.max(1, Math.floor(durationMs / steps))
+    for (let i = 1; i <= steps; i += 1) {
+      audio.volume = Math.max(0, startVolume * (1 - i / steps))
+      await new Promise<void>((resolve) => setTimeout(resolve, stepDuration))
+    }
+    audio.pause()
+    audio.volume = VOLUME // reset so the next ensurePlaying() resumes at the normal level
+    state.value = 'off'
+    writeStored('off')
+  }
+
   return {
     state: readonly(state),
     ready: readonly(ready),
     hydrate,
     toggle,
     ensurePlaying,
+    fadeOut,
   }
 }
 

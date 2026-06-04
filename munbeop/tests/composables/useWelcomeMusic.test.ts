@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { useWelcomeMusic, _resetWelcomeMusicForTest } from '~/composables/useWelcomeMusic'
 
+let lastAudio: FakeAudio | null = null
 class FakeAudio {
   src: string
   loop = false
@@ -10,7 +11,11 @@ class FakeAudio {
   pause = vi.fn(() => { this.paused = true })
   addEventListener = vi.fn()
   removeEventListener = vi.fn()
-  constructor(src: string) { this.src = src }
+  constructor(src: string) {
+    this.src = src
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    lastAudio = this
+  }
 }
 
 const STORAGE_KEY = 'mungarden:welcome:music'
@@ -18,6 +23,7 @@ const STORAGE_KEY = 'mungarden:welcome:music'
 describe('useWelcomeMusic', () => {
   beforeEach(() => {
     localStorage.clear()
+    lastAudio = null
     vi.stubGlobal('Audio', FakeAudio)
     _resetWelcomeMusicForTest()
   })
@@ -69,5 +75,34 @@ describe('useWelcomeMusic', () => {
     await ensurePlaying()
     expect(state.value).toBe('on')
     expect(localStorage.getItem(STORAGE_KEY)).toBe('on')
+  })
+
+  it('fadeOut() ramps volume to 0, pauses the audio, and flips state to off', async () => {
+    vi.useFakeTimers()
+    const { ensurePlaying, fadeOut, state } = useWelcomeMusic()
+    await ensurePlaying()
+    expect(state.value).toBe('on')
+    expect(lastAudio).not.toBeNull()
+    const audio = lastAudio!
+    const startVolume = audio.volume
+    expect(startVolume).toBeGreaterThan(0)
+    const promise = fadeOut(200)
+    // 20 steps × 10ms each = 200ms
+    await vi.advanceTimersByTimeAsync(200)
+    await promise
+    expect(audio.pause).toHaveBeenCalled()
+    expect(state.value).toBe('off')
+    expect(localStorage.getItem(STORAGE_KEY)).toBe('off')
+    // Volume reset back to the canonical level so the next ensurePlaying()
+    // resumes at normal loudness rather than 0.
+    expect(audio.volume).toBeCloseTo(0.20, 5)
+    vi.useRealTimers()
+  })
+
+  it('fadeOut() is a no-op when nothing is playing', async () => {
+    const { fadeOut, state } = useWelcomeMusic()
+    expect(state.value).toBe('off')
+    await fadeOut(50)
+    expect(state.value).toBe('off')
   })
 })

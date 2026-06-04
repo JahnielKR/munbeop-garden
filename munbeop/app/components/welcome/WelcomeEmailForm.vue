@@ -40,7 +40,11 @@ async function submit() {
     }
     emit('success')
     const { setEnter } = useRouteTransition()
+    const { fadeOut } = useWelcomeMusic()
     setEnter()
+    // Fire the fade in parallel with the pan — the 700ms music ramp
+    // ends just as the new scene finishes sliding in.
+    void fadeOut(700)
     await router.push('/')
   } finally {
     loading.value = false
