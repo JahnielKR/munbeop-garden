@@ -83,42 +83,26 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="welcome-shell" :data-theme="theme">
-    <!-- Everything that "belongs to the scene" lives inside .welcome and
-         shifts left when the sidebar opens, so the visible portion of
-         the chrome stays centered in the now-narrower visible area
-         (the right ~360px gets covered by the sidebar). -->
-    <div class="welcome" :class="{ 'welcome--shifted': sidebarOpen }">
-      <WelcomeStage :theme="theme" />
+  <div class="welcome" :data-theme="theme">
+    <WelcomeStage :theme="theme" />
 
-      <div class="welcome__chrome welcome__chrome--top-right">
-        <WelcomeMusicToggle />
-        <WelcomeThemeToggle :theme="theme" :disabled="scanlineActive" @toggle="onThemeToggle" />
-      </div>
-
-      <div class="welcome__brand">
-        <WelcomeBrandMark />
-      </div>
-
-      <div class="welcome__cta">
-        <WelcomePulseButton
-          :expanded="sidebarOpen"
-          controls="welcome-sidebar"
-          @activate="openSidebar"
-        />
-      </div>
-
-      <WelcomeDialog
-        :text="dialogText"
-        :variant="dialogVariant"
-        @dismiss="dialogText = ''"
-      />
-
-      <WelcomeScanlineOverlay :active="scanlineActive" :direction="scanlineDirection" />
+    <div class="welcome__chrome welcome__chrome--top-right">
+      <WelcomeMusicToggle />
+      <WelcomeThemeToggle :theme="theme" :disabled="scanlineActive" @toggle="onThemeToggle" />
     </div>
 
-    <!-- Sidebar lives OUTSIDE .welcome so it stays pinned to the right
-         edge of the panel while .welcome shifts left under it. -->
+    <div class="welcome__brand">
+      <WelcomeBrandMark />
+    </div>
+
+    <div class="welcome__cta">
+      <WelcomePulseButton
+        :expanded="sidebarOpen"
+        controls="welcome-sidebar"
+        @activate="openSidebar"
+      />
+    </div>
+
     <WelcomeSidebar
       id="welcome-sidebar"
       :open="sidebarOpen"
@@ -131,45 +115,46 @@ onMounted(() => {
         @welcomed="onWelcomed"
       />
     </WelcomeSidebar>
+
+    <WelcomeDialog
+      :text="dialogText"
+      :variant="dialogVariant"
+      @dismiss="dialogText = ''"
+    />
+
+    <WelcomeScanlineOverlay :active="scanlineActive" :direction="scanlineDirection" />
   </div>
 </template>
 
 <style scoped>
-/* The welcome panel lives inside CameraStage's left half (100vw × 100vh).
- * The CameraStage panel applies `transform: translateZ(0)` to itself,
- * which establishes a containing block for descendant `position: fixed`
- * — so the chrome elements below resolve to THIS panel's bounds, not
- * the viewport's. That way they ride along with the camera pan and
- * never bleed onto the in-app panel during the slide.
+/* Welcome chrome is dead still when the sidebar opens — no shift, no
+ * easing curves, no Vue Transition involvement on the chrome itself.
  *
- * welcome-shell wraps both .welcome (scene + chrome) AND the sidebar
- * as siblings. The sidebar stays pinned to the right edge of the
- * containing panel; .welcome shifts left when sidebar is open so the
- * visible chrome stays centered in the now-narrower visible area.
- * Without that shift the brand + pulse + dialog stay at panel-center
- * (x=700 at 1400px viewport) but the sidebar covers the right 360px,
- * so the chrome reads as "shoved right" — what the user perceives as
- * "el fondo se jala".
+ * Previously we tried a left-shift to re-center the chrome inside the
+ * narrower visible area, but multiple variants (welcome-shell wrapper,
+ * CSS variable cascade, class-based descendant rules, ease-out easing)
+ * all produced a visible bounce — measurements showed the layout
+ * temporarily moving past the target then settling back, even with the
+ * shift logic fully commented out. The cause is something deeper in
+ * the sidebar's slide-in + dialog mount cascade that affects the
+ * panel's effective bounds during the transition window. Rather than
+ * fight it, we keep the welcome static and let the sidebar overlay
+ * the right ~360px of the scene. Chrome ends up slightly
+ * right-of-visible-center; acceptable trade-off per user feedback
+ * ("deberia de quedarse quieto y ya").
  *
- * --sidebar-shift is half the sidebar width so the chrome re-centers
- * in the visible 1040px window. Matched to the sidebar's own 360ms
- * cubic-bezier easing so the two motions move in lockstep.
+ * Containing-block note: the CameraStage panel sets
+ * `transform: translateZ(0)`, which makes the panel the containing
+ * block for descendant `position: fixed`. The welcome chrome's fixed
+ * elements resolve to the panel's bounds, so they ride along with the
+ * camera pan and never bleed onto the in-app panel during the
+ * welcome ↔ app slide.
  */
-.welcome-shell {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
 .welcome {
   position: absolute;
   inset: 0;
   overflow: hidden;
   font-family: 'Inter', 'Noto Sans KR', sans-serif;
-  transition: transform 360ms cubic-bezier(0.1, 0.8, 0.3, 1);
-  will-change: transform;
-}
-.welcome--shifted {
-  transform: translateX(-180px);
 }
 .welcome__chrome {
   position: fixed;
@@ -195,9 +180,5 @@ onMounted(() => {
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .welcome { transition: none; }
 }
 </style>
