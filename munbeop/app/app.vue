@@ -11,21 +11,25 @@ const { hydrate: hydrateTheme } = useTheme()
 const { locale } = useI18n()
 const { direction, clear: clearTransitionDirection } = useRouteTransition()
 
-// The pan is ONLY for the welcome↔in-app boundary. In-app tab-to-tab
-// navigation must have NO transition (instant snap, no fade) — user
-// feedback was explicit: "zero pan, zero fade inside the app".
+// Layout-level "camera pan" between welcome and the in-app surface.
 //
-// pageTransitionConfig returns `false` when direction is null (in-app
-// nav), which tells NuxtPage to skip the <Transition> wrapper entirely.
-// When direction is 'enter' or 'exit' (welcome↔app), we pass the pan
-// config and let onAfterEnter clear the flag so the next in-app nav
-// reverts to no-transition.
-const pageTransitionConfig = computed<
-  false | { name: string; mode: 'out-in'; onAfterEnter: () => void }
+// The pan ONLY fires when the active LAYOUT changes (welcome ↔ default),
+// which is exactly the welcome↔app boundary. In-app tab-to-tab nav
+// (e.g. /practice → /library) reuses the same default layout, so this
+// transition never fires there — the slot content swaps instantly.
+//
+// CRITICAL: no `mode: 'out-in'`. Both layouts coexist in the DOM during
+// the pan, position:fixed full-viewport (set in transitions.css), so they
+// pan together as a single 200vw camera rather than swapping sequentially.
+//
+// onAfterEnter clears the direction flag so a stray subsequent layout
+// change (shouldn't happen in normal use) falls back to no transition.
+const layoutTransitionConfig = computed<
+  false | { name: string; onAfterEnter: () => void }
 >(() => {
   const d = direction.value
-  if (d === 'enter') return { name: 'pan-right', mode: 'out-in', onAfterEnter: clearTransitionDirection }
-  if (d === 'exit') return { name: 'pan-left', mode: 'out-in', onAfterEnter: clearTransitionDirection }
+  if (d === 'enter') return { name: 'pan-right', onAfterEnter: clearTransitionDirection }
+  if (d === 'exit') return { name: 'pan-left', onAfterEnter: clearTransitionDirection }
   return false
 })
 
@@ -93,7 +97,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <NuxtLayout>
-    <NuxtPage :transition="pageTransitionConfig" />
+  <NuxtLayout :transition="layoutTransitionConfig">
+    <NuxtPage :transition="false" />
   </NuxtLayout>
 </template>

@@ -10,7 +10,7 @@ import WelcomeSidebar from '~/components/welcome/WelcomeSidebar.vue'
 import WelcomeAuthOptions from '~/components/welcome/WelcomeAuthOptions.vue'
 import WelcomeDialog from '~/components/welcome/WelcomeDialog.vue'
 
-definePageMeta({ layout: false, surface: 'welcome' })
+definePageMeta({ layout: 'welcome', surface: 'welcome' })
 
 const { t } = useI18n()
 const { theme, setTheme, hydrate: hydrateTheme } = useTheme()
