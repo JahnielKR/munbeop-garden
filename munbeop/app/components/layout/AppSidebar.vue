@@ -111,14 +111,29 @@ const { t } = useI18n()
   border-left-color: var(--accent);
 }
 .sidebar__label {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 14px;
+  /* Pixel-art per user feedback. CJK falls through Noto Sans KR
+   * for ja locale labels; Thai / Vietnamese drop into system-ui.
+   * The KO half (.sidebar__ko below) stays Noto Sans KR because
+   * Korean is the content language and needs smooth Hangul.
+   * 10 px sized so the longest EN nav label fits the 220 px sidebar.
+   * white-space:nowrap prevents the grid's 1fr column from rounding
+   * the cell to a sub-pixel boundary that forces "My Garden" onto
+   * two lines (the grid was allocating 82.17 px to a span whose
+   * actual width was 82.17, so any rounding broke it). */
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+  white-space: nowrap;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
 }
 .sidebar__ko {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 11px;
-  color: var(--ink-soft);
+  color: var(--text-soft);
+  white-space: nowrap;
 }
 .sidebar__footer {
   margin-top: auto;

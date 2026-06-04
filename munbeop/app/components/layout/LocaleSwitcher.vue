@@ -65,9 +65,17 @@ function onChange(e: Event) {
   color: var(--text);
   border: 2px solid var(--border);
   padding: 8px 28px 8px 10px;
-  font-family: 'Inter', 'Noto Sans KR', sans-serif;
-  font-size: 12px;
+  /* Pixel-art per user feedback. PS2P renders the Latin locale
+   * names; CJK option labels (日本語) fall through to Noto Sans KR
+   * so they read; Thai falls to system-ui. font-smoothing disabled
+   * so the closed-state label looks identical to other pixel labels. */
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
   line-height: 1.4;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
   cursor: pointer;
   outline: none;
   box-shadow: var(--shadow-input);
@@ -89,8 +97,12 @@ function onChange(e: Event) {
  * the audit notes as a future Select primitive (02-primitives §13
  * stub). For now we own the closed-state chrome only. */
 .loc__select option {
+  /* The native dropdown menu uses OS chrome — most browsers ignore the
+   * font-family on <option> in the open menu (Chrome / Safari), but
+   * Firefox honours it. We declare the pixel chain anyway so any browser
+   * that does render it stays on-brand. */
   background: var(--surface);
   color: var(--text);
-  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
 }
 </style>

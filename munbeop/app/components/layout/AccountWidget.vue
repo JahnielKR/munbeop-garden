@@ -51,22 +51,35 @@ function onSignIn() {
   gap: 2px;
 }
 .email__label {
-  font-family: 'Press Start 2P', monospace;
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
   font-size: 8px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--text-soft);
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
 }
 .email__addr {
+  /* Email addresses keep mono — JetBrains Mono is the system's mono
+   * face per 01-tokens.md §3.1 and is monospaced like a pixel font
+   * without losing legibility for arbitrary user-typed strings. */
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  color: var(--ink);
+  color: var(--text);
   word-break: break-all;
 }
 .anon {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  color: var(--ink-soft);
-  line-height: 1.4;
+  /* Pixel-art per user feedback. The two-line banner reads in PS2P
+   * at 9px with extra line-height; CJK falls through to Noto Sans KR
+   * so the ja translation isn't dropped into raw monospace. */
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
+  font-size: 9px;
+  letter-spacing: 0.03em;
+  color: var(--text-soft);
+  line-height: 1.6;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
 }
 </style>
