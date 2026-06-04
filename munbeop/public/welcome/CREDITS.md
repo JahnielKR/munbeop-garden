@@ -9,7 +9,7 @@
 - `night/falling-star.gif` — from the same pack.
 
 **Audio:**
-- `audio/welcome-loop.mp3` — "Kung Fu Love Tree" by **Quincas Moreira** (YouTube Audio Library, royalty-free). Ships as a ~4.6 MB MP3. The loop is gated behind a user gesture (clicking ENTER or the music toggle), so it never loads pre-interaction.
+- `audio/welcome-loop.mp3` — "Welcome to MunGarden", user-supplied track. Ships as a ~8.6 MB MP3. The loop is gated behind a user gesture (clicking ENTER or the music toggle), so it never loads pre-interaction.
 
 All visual assets are licensed for commercial use without redistribution of the
 raw assets. Credit appreciated. See each pack's readme for full terms.
