@@ -31,7 +31,12 @@
   --success: var(--jade);
   --mastery-tree: var(--jade);
   --border: #5e4a2c;
-  --shadow-color: #0d0907;
+  /* Dark mode flips the shadow ink to dusty cream (matches --ink-soft).
+   * Near-black on cave-brown bg (#1a1612) was effectively invisible
+   * (user feedback) — the LADX chunky-pixel silhouette only reads when
+   * the shadow contrasts strongly with the surface beneath it. In dark
+   * mode that means LIGHT, like a halo. Light mode keeps warm brown. */
+  --shadow-color: var(--ink-soft);
   --focus-ring: var(--jade);
   --text-on-accent: var(--always-dark);
   --text-on-danger: var(--always-cream);

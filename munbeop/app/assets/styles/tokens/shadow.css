@@ -3,9 +3,12 @@
  * silhouette. Shadow ink is driven by --shadow-color (declared in the
  * colors layer), NOT by --ink-soft or --border-strong directly:
  *   light theme:  --shadow-color = var(--ink-soft) = #4a3a1f  (warm brown)
- *   dark theme:   --shadow-color = #0d0907                    (near-black warm)
- * This keeps the chunky-pixel silhouette correct in both themes — a
- * shadow that's always DARKER than the surface beneath it.
+ *   dark theme:   --shadow-color = var(--ink-soft) = #d8c89a  (dusty cream)
+ * Light mode shadow is DARKER than the surface (warm brown on cream);
+ * dark mode shadow is LIGHTER than the surface (cream on cave-brown).
+ * This keeps the chunky-pixel silhouette visible in both themes — the
+ * original "always darker" rule produced an invisible near-black shadow
+ * on cave-brown bg, which the user flagged as broken UX in dark mode.
  */
 
 :root {
