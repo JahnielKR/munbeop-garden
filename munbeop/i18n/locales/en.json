@@ -73,5 +73,35 @@
   },
   "settings": {
     "dark_mode": "Dark mode"
+  },
+  "welcome": {
+    "brand": { "subtitle": "Korean Grammar Garden" },
+    "enter": "ENTER · 들어가기",
+    "toggle": {
+      "theme_to_dark": "Switch to night",
+      "theme_to_light": "Switch to day",
+      "music_on": "Turn music on",
+      "music_off": "Turn music off"
+    },
+    "menu": {
+      "title": "PARTY SELECT",
+      "close": "Close menu",
+      "kakao": "Continue with Kakao",
+      "google": "Continue with Google",
+      "email_signin": "Sign in with email",
+      "email_signup": "Create an account",
+      "email_magic": "Send a magic link",
+      "anon": "Continue without an account"
+    },
+    "dialog": {
+      "intro_day": "Welcome to the garden. The sun is up; the grammar grows.",
+      "intro_night": "The sky is purple. The grammar still grows. 화이팅.",
+      "kakao": "Following the Kakao path…",
+      "google": "Following the Google path…",
+      "email": "Whisper your e-mail to the gatekeeper.",
+      "magic": "A scroll will be sent by carrier owl.",
+      "anon": "Hyrule remembers local heroes too. Your progress lives on this device.",
+      "error_oauth": "That gateway is closed. Try another door."
+    }
   }
 }

@@ -73,5 +73,35 @@
   },
   "settings": {
     "dark_mode": "ダークモード"
+  },
+  "welcome": {
+    "brand": { "subtitle": "韓国語文法ガーデン" },
+    "enter": "はじめる · 들어가기",
+    "toggle": {
+      "theme_to_dark": "夜に切り替え",
+      "theme_to_light": "昼に切り替え",
+      "music_on": "音楽をオン",
+      "music_off": "音楽をオフ"
+    },
+    "menu": {
+      "title": "パーティセレクト",
+      "close": "メニューを閉じる",
+      "kakao": "Kakao で続ける",
+      "google": "Google で続ける",
+      "email_signin": "メールでログイン",
+      "email_signup": "アカウントを作成",
+      "email_magic": "マジックリンクを送る",
+      "anon": "アカウントなしで続ける"
+    },
+    "dialog": {
+      "intro_day": "庭へようこそ。太陽が高い。文法は育つ。",
+      "intro_night": "空は紫色。文法は今夜も育つ。화이팅.",
+      "kakao": "Kakao の道を進みます…",
+      "google": "Google の道を進みます…",
+      "email": "門番にメールをささやいて。",
+      "magic": "ふくろうが巻物を届けます。",
+      "anon": "ハイラルは地元の英雄も覚えている。進捗はこの端末に残ります。",
+      "error_oauth": "その門は閉じています。別の道を試そう。"
+    }
   }
 }

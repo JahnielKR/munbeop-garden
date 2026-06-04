@@ -73,5 +73,35 @@
   },
   "settings": {
     "dark_mode": "Modo escuro"
+  },
+  "welcome": {
+    "brand": { "subtitle": "Jardim de Gramática Coreana" },
+    "enter": "ENTRAR · 들어가기",
+    "toggle": {
+      "theme_to_dark": "Mudar para noite",
+      "theme_to_light": "Mudar para dia",
+      "music_on": "Ativar música",
+      "music_off": "Silenciar música"
+    },
+    "menu": {
+      "title": "SELECIONAR PERSONAGEM",
+      "close": "Fechar menu",
+      "kakao": "Continuar com Kakao",
+      "google": "Continuar com Google",
+      "email_signin": "Entrar com e-mail",
+      "email_signup": "Criar conta",
+      "email_magic": "Enviar link mágico",
+      "anon": "Continuar sem conta"
+    },
+    "dialog": {
+      "intro_day": "Bem-vindo ao jardim. O sol está alto; a gramática cresce.",
+      "intro_night": "O céu é roxo. A gramática cresce mesmo assim. 화이팅.",
+      "kakao": "Seguindo o caminho do Kakao…",
+      "google": "Seguindo o caminho do Google…",
+      "email": "Sussurre seu e-mail ao guardião.",
+      "magic": "Um pergaminho chegará por coruja.",
+      "anon": "Hyrule lembra dos heróis locais também. Seu progresso vive neste dispositivo.",
+      "error_oauth": "Essa porta está fechada. Vamos tentar outra."
+    }
   }
 }

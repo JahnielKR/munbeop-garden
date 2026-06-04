@@ -73,5 +73,35 @@
   },
   "settings": {
     "dark_mode": "Mode gelap"
+  },
+  "welcome": {
+    "brand": { "subtitle": "Taman Tata Bahasa Korea" },
+    "enter": "MASUK · 들어가기",
+    "toggle": {
+      "theme_to_dark": "Beralih ke malam",
+      "theme_to_light": "Beralih ke siang",
+      "music_on": "Hidupkan musik",
+      "music_off": "Matikan musik"
+    },
+    "menu": {
+      "title": "PILIH KARAKTER",
+      "close": "Tutup menu",
+      "kakao": "Lanjutkan dengan Kakao",
+      "google": "Lanjutkan dengan Google",
+      "email_signin": "Masuk dengan email",
+      "email_signup": "Buat akun",
+      "email_magic": "Kirim magic link",
+      "anon": "Lanjut tanpa akun"
+    },
+    "dialog": {
+      "intro_day": "Selamat datang di taman. Matahari tinggi; tata bahasa tumbuh.",
+      "intro_night": "Langitnya ungu. Tata bahasa tetap tumbuh. 화이팅.",
+      "kakao": "Mengikuti jalur Kakao…",
+      "google": "Mengikuti jalur Google…",
+      "email": "Bisikkan emailmu pada penjaga gerbang.",
+      "magic": "Gulungan akan dikirim oleh burung hantu.",
+      "anon": "Hyrule juga mengingat pahlawan lokal. Kemajuanmu tinggal di perangkat ini.",
+      "error_oauth": "Gerbang itu tertutup. Coba pintu lain."
+    }
   }
 }

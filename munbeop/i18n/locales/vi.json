@@ -73,5 +73,35 @@
   },
   "settings": {
     "dark_mode": "Chế độ tối"
+  },
+  "welcome": {
+    "brand": { "subtitle": "Vườn Ngữ Pháp Tiếng Hàn" },
+    "enter": "VÀO VƯỜN · 들어가기",
+    "toggle": {
+      "theme_to_dark": "Chuyển sang ban đêm",
+      "theme_to_light": "Chuyển sang ban ngày",
+      "music_on": "Bật nhạc",
+      "music_off": "Tắt nhạc"
+    },
+    "menu": {
+      "title": "CHỌN NHÂN VẬT",
+      "close": "Đóng menu",
+      "kakao": "Tiếp tục với Kakao",
+      "google": "Tiếp tục với Google",
+      "email_signin": "Đăng nhập bằng email",
+      "email_signup": "Tạo tài khoản",
+      "email_magic": "Gửi đường dẫn ma thuật",
+      "anon": "Tiếp tục mà không cần tài khoản"
+    },
+    "dialog": {
+      "intro_day": "Chào mừng đến khu vườn. Mặt trời lên cao; ngữ pháp lớn lên.",
+      "intro_night": "Bầu trời tím. Ngữ pháp vẫn lớn lên. 화이팅.",
+      "kakao": "Đang đi theo lối Kakao…",
+      "google": "Đang đi theo lối Google…",
+      "email": "Thì thầm email của bạn với người gác cổng.",
+      "magic": "Một cuộn giấy sẽ tới bằng cú.",
+      "anon": "Hyrule cũng nhớ những anh hùng địa phương. Tiến trình của bạn nằm trên thiết bị này.",
+      "error_oauth": "Cánh cổng đó đã đóng. Thử cổng khác."
+    }
   }
 }
