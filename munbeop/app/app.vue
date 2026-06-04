@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, watch } from 'vue'
 import { useBomiStore } from '~/stores/bomi'
 
 // Boot the Supabase auth subscription as early as possible so getSession()
@@ -8,6 +8,23 @@ import { useBomiStore } from '~/stores/bomi'
 // hydration picks the right backend on the very first page load.
 const { init } = useAuth()
 const { hydrate: hydrateTheme } = useTheme()
+const { locale } = useI18n()
+
+// Keep <html lang="..."> in sync with the i18n locale. Required for
+// CSS :lang() rules (per-locale font-size bumps for Thai / Vietnamese)
+// to trigger when the user switches language. Nuxt i18n changes the
+// in-memory locale but doesn't reach into document.documentElement,
+// and nuxt.config's static app.head.htmlAttrs.lang overrides anything
+// useHead would merge in. A direct DOM write avoids both issues and
+// runs before paint in SPA mode (no FOUC) because Vue queues the
+// effect inside the same microtask as the locale change.
+watch(
+  locale,
+  (l) => {
+    document.documentElement.lang = String(l)
+  },
+  { immediate: true },
+)
 
 // Anti-FOUC: inline script reads localStorage theme BEFORE Vue mounts.
 // SPA-only build (ssr: false) means there's a brief window between HTML

@@ -87,4 +87,11 @@ const { t } = useI18n()
   -moz-osx-font-smoothing: grayscale;
   font-smooth: never;
 }
+/* Thai / Vietnamese script needs more pixel headroom — at 7 px tone
+ * marks merge into the consonant. 9 px stays inside the 65 px per-cell
+ * budget for short Thai labels. */
+:lang(th) .mobile-nav__label,
+:lang(vi) .mobile-nav__label {
+  font-size: 9px;
+}
 </style>

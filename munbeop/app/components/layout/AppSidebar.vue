@@ -129,6 +129,13 @@ const { t } = useI18n()
   -moz-osx-font-smoothing: grayscale;
   font-smooth: never;
 }
+/* Thai script (and Vietnamese with full Latin Extended diacritics)
+ * carries tone marks above + below the consonant — at 10 px those
+ * marks compress into illegible glyphs. Bump one step so they read. */
+:lang(th) .sidebar__label,
+:lang(vi) .sidebar__label {
+  font-size: 13px;
+}
 .sidebar__ko {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 11px;

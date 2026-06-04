@@ -77,6 +77,13 @@ function onChange(e: Event) {
   -moz-osx-font-smoothing: grayscale;
   font-smooth: never;
   cursor: pointer;
+}
+/* Thai locale name "ไทย" at 10 px has unreadable tone marks. */
+:lang(th) .loc__select,
+:lang(vi) .loc__select {
+  font-size: 13px;
+}
+.loc__select {
   outline: none;
   box-shadow: var(--shadow-input);
   transition:

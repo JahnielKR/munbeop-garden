@@ -82,4 +82,10 @@ function onSignIn() {
   -moz-osx-font-smoothing: grayscale;
   font-smooth: never;
 }
+/* Thai / Vietnamese diacritics get squashed at 9 px — bump for readability. */
+:lang(th) .anon,
+:lang(vi) .anon {
+  font-size: 11px;
+  line-height: 1.5;
+}
 </style>
