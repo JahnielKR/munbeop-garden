@@ -1,9 +1,17 @@
 /* tokens/colors-light.css
- * Light theme (default). Anchored on Link's Awakening DX.
+ * Light theme v3 ("windrise living").
+ *
+ * The palette borrows from the Mondstadt windrise asset that backs the
+ * welcome page: bone-white surface, meadow-green action, sky-blue
+ * lines/focus, warm cream chunky-pixel shadow, gold for special CTAs.
+ *
  * Layers, top to bottom:
  *   1. Theme-invariants (same in light and dark; dark inherits via :root)
  *   2. Brand swatches — light values
  *   3. Semantic aliases — components reference these, never brand swatches
+ *
+ * Dark theme (colors-dark.css) is unchanged in this round — a separate
+ * dark-v3 spec follows once light v3 settles.
  */
 
 :root {
@@ -15,20 +23,26 @@
   --sky-day: #87d5ff;
   --sky-night: #2a1a4a;
 
-  /* ---- 2. Brand swatches ---- */
-  --paper: #f8efd0;
-  --paper-warm: #f1e5b8;
-  --paper-deep: #e6d4a8;
-  --ink: #1a1a1a;
-  --ink-soft: #4a3a1f;
-  --jade: #3aa84a;
-  --jade-deep: #185f24;
-  --sky: #5fb8e8;
-  --red: #e83838;
+  /* ---- 2. Brand swatches (v3 — windrise living) ---- */
+  --paper: #f4f0e2;        /* bone-white (main surface) */
+  --paper-warm: #efe9d2;   /* slightly warmer bone for headers, stripes */
+  --paper-deep: #e8e4d4;   /* THE panel tone — sidebar, nav, raised */
+  --ink: #1f3a4d;          /* deep-ocean body text */
+  --ink-soft: #4a6a82;     /* cool soft slate for secondary text */
+  --ink-line: #14202c;     /* NEAR-BLACK for chunky pixel border on every button */
+  --jade: #5ea84a;         /* meadow-green */
+  --jade-deep: #3f7a30;
+  --meadow: var(--jade);   /* readable alias */
+  --meadow-deep: var(--jade-deep);
+  --sky: #87d5ff;          /* the windrise sky */
+  --sky-deep: #4eb8e8;     /* the single sky-blue line color */
+  --red: #c43d3d;          /* flower-red */
   --red-deep: #9d2525;
-  --gold: #f5c533;
+  --gold: #f0c84a;         /* sun-amber */
+  --hover-bg: #f2e8c8;     /* WARM cream pulse on hover */
+  --shadow-cream: #c2a766; /* warm cream chunky pixel shadow */
 
-  /* ---- Bomi sprite palette (Plan 4) ---- */
+  /* ---- Bomi sprite palette (Plan 4 — character identity, untouched) ---- */
   --gold-shadow: #a06b2e;
   --straw: #f0c84a;
   --straw-shadow: #c89030;
@@ -41,28 +55,28 @@
 
   /* ---- 3. Semantic aliases ---- */
   --bg: var(--paper);
-  --surface: var(--paper-warm);
-  --surface-hover: var(--paper-deep);
+  --surface: var(--paper-deep);              /* was --paper-warm */
+  --surface-hover: var(--hover-bg);          /* was --paper-deep */
   --text: var(--ink);
   --text-soft: var(--ink-soft);
-  --border: #d8b96a;
-  --border-strong: var(--ink-soft);
-  --shadow-color: var(--ink-soft);
-  --focus-ring: var(--jade-deep);
-  --link: var(--jade-deep);
+  --border: var(--ink-line);                 /* was #d8b96a — now black outline */
+  --border-strong: var(--ink-line);          /* was --ink-soft */
+  --shadow-color: var(--shadow-cream);       /* was --ink-soft — now warm cream */
+  --focus-ring: var(--sky-deep);             /* was --jade-deep */
+  --link: var(--sky-deep);                   /* was --jade-deep */
   --link-visited: var(--ink-soft);
-  --accent: var(--jade-deep);
-  --accent-bright: var(--jade);
+  --accent: var(--meadow-deep);
+  --accent-bright: var(--meadow);
   --danger: var(--red-deep);
   --danger-bright: var(--red);
   --info: var(--sky);
   --warning: var(--gold);
-  --success: var(--jade-deep);
+  --success: var(--meadow-deep);
   --mastery-seedling: var(--ink-soft);
   --mastery-plant: var(--gold);
-  --mastery-tree: var(--jade-deep);
-  --text-on-accent: var(--paper);
-  --text-on-danger: var(--paper);
+  --mastery-tree: var(--meadow-deep);
+  --text-on-accent: var(--always-cream);     /* was --paper — kept readable on meadow */
+  --text-on-danger: var(--always-cream);     /* was --paper */
   --text-on-info: var(--always-dark);
   --text-on-warning: var(--always-dark);
 }

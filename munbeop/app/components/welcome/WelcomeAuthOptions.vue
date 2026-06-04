@@ -142,7 +142,7 @@ async function anonEntry() {
   border: 2px solid currentColor;
   font-size: 10px;
 }
-.opt--kakao { background: #fee500; color: #1a1a1a; border-color: #1a1a1a; }
+.opt--kakao { background: #fee500; color: var(--always-dark); border-color: var(--always-dark); }
 .opt--kakao:hover:not(:disabled) { background: #ffe940; }
 .opt--google { background: var(--paper-warm); border-color: var(--ink-soft); }
 .opt--anon  { font-family: 'Inter', sans-serif; font-size: 12px; opacity: 0.85; }
