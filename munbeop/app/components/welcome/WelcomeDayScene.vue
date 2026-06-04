@@ -2,11 +2,11 @@
 // Day scene: Mondstadt-inspired meadow with a bobbing dodo sprite.
 // Pure visual layer — no props, no state.
 //
-// The background image is rendered as a CSS background (not an <img>)
-// so we can repeat it horizontally and slide it laterally for the
-// ambient parallax. The dodo stays a sprite <img> because it has its
-// own keyframe and absolute positioning that don't compose with the
-// background-position scroll.
+// v6: the background is static (no horizontal scroll). Instead the
+// whole .day container sways with a 1.5° skewX + 1% scaleY breeze
+// every 6s, anchored at bottom center so the silhouette mimics
+// foliage in the wind. The dodo's own bob composes on top of the
+// container sway, so it both rocks and rides the breeze.
 </script>
 
 <template>
@@ -21,20 +21,21 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
+  animation: vientoSuave 6s ease-in-out infinite;
+  transform-origin: bottom center;
 }
 .day__bg {
   position: absolute;
   inset: 0;
   background-image: url('/welcome/day/garden-day.png');
-  background-repeat: repeat-x;
+  background-repeat: no-repeat;
   background-position: center bottom;
-  background-size: auto 100%;
+  background-size: cover;
   image-rendering: pixelated;
-  animation: scrollFondo 60s linear infinite;
 }
-@keyframes scrollFondo {
-  from { background-position: 0 bottom; }
-  to   { background-position: -1000px bottom; }
+@keyframes vientoSuave {
+  0%, 100% { transform: skewX(0deg) scaleY(1); }
+  50%      { transform: skewX(1.5deg) scaleY(0.99); }
 }
 .day__dodo {
   position: absolute;
@@ -51,7 +52,7 @@
   50%      { transform: translateY(-6px) rotate(1deg); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .day__bg { animation: none; }
+  .day { animation: none; }
   .day__dodo { animation: none; }
 }
 </style>
