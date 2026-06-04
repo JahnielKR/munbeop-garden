@@ -8,6 +8,13 @@ const { t } = useI18n()
 const rootEl = ref<HTMLElement | null>(null)
 const closeBtn = ref<HTMLButtonElement | null>(null)
 
+// Tracks whether the sidebar has been opened at least once in this
+// session. Needed so the close (rise-back) animation only runs after
+// a real open — without this, the reverse keyframe would play on
+// first mount and the panel would visibly slide up off-screen on
+// page load. Once set, stays true for the page's lifetime.
+const hasOpened = ref(false)
+
 function onKeydown(e: KeyboardEvent) {
   if (!props.open) return
   if (e.key === 'Escape') {
@@ -40,6 +47,7 @@ function onKeydown(e: KeyboardEvent) {
 
 watch(() => props.open, async (now) => {
   if (now) {
+    hasOpened.value = true
     await nextTick()
     closeBtn.value?.focus()
   }
@@ -50,7 +58,7 @@ watch(() => props.open, async (now) => {
   <aside
     ref="rootEl"
     class="sidebar"
-    :class="{ 'sidebar--open': props.open }"
+    :class="{ 'sidebar--open': props.open, 'sidebar--was-opened': hasOpened }"
     role="dialog"
     aria-modal="true"
     :aria-labelledby="props.titleId"
@@ -76,19 +84,25 @@ watch(() => props.open, async (now) => {
 </template>
 
 <style scoped>
-/* v7: the sidebar drops from above the viewport like a heavy gate,
- * lands on the left side, overshoots a hair, and settles. The whole
- * motion is on `top` + `scaleY`, not `transform: translateX`, so the
- * scene behind it never has to shift sideways to make room — which
- * is what was triggering the v2.18 rebote in earlier attempts. The
- * scene stays perfectly still; the menu just falls in front of it.
+/* v7.2: the sidebar drops from above like a heavy gate, lands on
+ * the left side, overshoots a hair, settles — and on close rises
+ * back up the same way it came, with a brief launch flick and the
+ * same gravity curve. The whole motion is on `top` + `scaleY`, not
+ * `transform: translateX`, so the scene behind it never has to
+ * shift sideways to make room (the v2.18 rebote can't recur).
  *
- * Open path:  `.sidebar--open` plays caidaCompuerta (0.45s,
- *   cubic-bezier(0.6,-0.28,0.735,0.045) — a sharp gravity curve).
- *   forwards keeps the panel pinned at top:0 after the slam.
- * Close path: removing `.sidebar--open` cancels the animation;
- *   `top` reverts to -100% via the base `transition: top 0.3s`,
- *   pulling the panel back up off-screen quickly.
+ * Open path: `.sidebar--open` plays caidaCompuerta forward.
+ * Close path: `.sidebar--was-opened:not(.sidebar--open)` plays
+ *   subidaCompuerta forward — a distinct keyframe (NOT
+ *   `animation-direction: reverse` on the same name, which Chrome
+ *   carried the previous animation's currentTime into and treated
+ *   as instantly finished, snapping the panel offscreen with no
+ *   visible motion).
+ *
+ * `.sidebar--was-opened` is a JS-set flag (true once the user has
+ * opened at least once) that gates the close animation — without
+ * it, subidaCompuerta would play on initial mount and the panel
+ * would visibly slide off-screen on page load.
  */
 .sidebar {
   position: fixed;
@@ -100,7 +114,6 @@ watch(() => props.open, async (now) => {
   border-right: 6px double var(--gold);
   box-shadow: 8px 0 0 var(--ink), 10px 0 18px rgba(0, 0, 0, 0.55);
   padding: 56px 22px 22px;
-  transition: top 0.3s ease-in;
   z-index: 25;
   display: flex;
   flex-direction: column;
@@ -111,11 +124,22 @@ watch(() => props.open, async (now) => {
   top: 0;
   animation: caidaCompuerta 0.45s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
 }
+.sidebar--was-opened:not(.sidebar--open) {
+  animation: subidaCompuerta 0.35s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
 @keyframes caidaCompuerta {
   0%   { top: -100%; transform: scaleY(1); }
   85%  { top: 5px;   transform: scaleY(0.98); }
   93%  { top: -2px;  transform: scaleY(1.01); }
   100% { top: 0;     transform: scaleY(1); }
+}
+@keyframes subidaCompuerta {
+  /* Time-reverse of caidaCompuerta: small launch-stretch, brief
+   * wind-up squash, then a clean rise off the top of the viewport. */
+  0%   { top: 0;     transform: scaleY(1); }
+  7%   { top: -2px;  transform: scaleY(1.01); }
+  15%  { top: 5px;   transform: scaleY(0.98); }
+  100% { top: -100%; transform: scaleY(1); }
 }
 .sidebar__close {
   position: absolute;
@@ -151,7 +175,10 @@ watch(() => props.open, async (now) => {
   gap: 12px;
 }
 @media (prefers-reduced-motion: reduce) {
+  /* Strip the gravity keyframes and just slide top with a tiny
+   * symmetric transition for both directions. */
   .sidebar { transition: top 120ms linear; }
-  .sidebar--open { animation: none; }
+  .sidebar--open,
+  .sidebar--was-opened:not(.sidebar--open) { animation: none; }
 }
 </style>
