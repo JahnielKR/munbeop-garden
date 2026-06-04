@@ -1,7 +1,11 @@
 import { defineConfig } from 'vitest/config'
+import vue from '@vitejs/plugin-vue'
 import { fileURLToPath } from 'node:url'
 
 export default defineConfig({
+  // The Vue plugin lets component tests import .vue SFCs directly. Without
+  // it Vite fails on the first `<template>` block in any imported component.
+  plugins: [vue()],
   test: {
     environment: 'happy-dom',
     globals: true,
