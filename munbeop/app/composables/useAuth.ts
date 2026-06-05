@@ -104,10 +104,16 @@ export function useAuth() {
       (config.public.appUrl as string | undefined) ||
       (typeof window !== 'undefined' ? window.location.origin : '')
     const redirectTo = `${base}/auth/callback`
-    const { error } = await $supabase.auth.signInWithOAuth({
-      provider,
-      options: { redirectTo },
-    })
+    // Kakao app is not authorized for account_email yet (Unauthorized in the
+    // Developers console). Supabase's default Kakao scope includes it, which
+    // makes kauth.kakao.com reject /oauth/authorize with 400. Override to the
+    // two scopes the app actually has consent for; revert once email is
+    // approved by Kakao and re-enable "Allow users without an email" off.
+    const options =
+      provider === 'kakao'
+        ? { redirectTo, scopes: 'profile_nickname profile_image' }
+        : { redirectTo }
+    const { error } = await $supabase.auth.signInWithOAuth({ provider, options })
     // Migration runs on the /auth/callback page after Supabase sets the session.
     return { error }
   }

@@ -20,12 +20,26 @@ vi.mock('~/stores/auth', () => ({ useAuthStore: () => ({ setSession: vi.fn(), us
 describe('useAuth().signInWithProvider', () => {
   beforeEach(() => { signInWithOAuth.mockReset() })
 
-  it('calls supabase.auth.signInWithOAuth with the right provider + redirectTo', async () => {
+  it('calls supabase.auth.signInWithOAuth for kakao with explicit scopes that skip account_email', async () => {
     signInWithOAuth.mockResolvedValue({ error: null })
     const { signInWithProvider } = useAuth()
     const result = await signInWithProvider('kakao')
     expect(signInWithOAuth).toHaveBeenCalledWith({
       provider: 'kakao',
+      options: {
+        redirectTo: 'https://example.test/auth/callback',
+        scopes: 'profile_nickname profile_image',
+      },
+    })
+    expect(result.error).toBe(null)
+  })
+
+  it('calls supabase.auth.signInWithOAuth for google without overriding scopes', async () => {
+    signInWithOAuth.mockResolvedValue({ error: null })
+    const { signInWithProvider } = useAuth()
+    const result = await signInWithProvider('google')
+    expect(signInWithOAuth).toHaveBeenCalledWith({
+      provider: 'google',
       options: { redirectTo: 'https://example.test/auth/callback' },
     })
     expect(result.error).toBe(null)
