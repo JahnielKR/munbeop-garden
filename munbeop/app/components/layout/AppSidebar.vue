@@ -7,16 +7,21 @@ interface NavItem {
   to: string
   labelKey: string
   icon: IconName
-  ko: string
 }
 
+// Korean subtitles used to ride alongside each label (내 정원, 연습,
+// 도서관…). They were dropped per user feedback because longer i18n
+// labels (FR "Herboristerie", ID "Perpustakaan") plus the Hangul
+// subtitle blew past the 220 px sidebar width and wrapped or got
+// truncated. The brand mark 문법 stays — that's the product name,
+// not a translation crutch.
 const items: NavItem[] = [
-  { to: '/', labelKey: 'nav.garden', icon: 'home', ko: '내 정원' },
-  { to: '/practice', labelKey: 'nav.practice', icon: 'practice', ko: '연습' },
-  { to: '/library', labelKey: 'nav.library', icon: 'library', ko: '도서관' },
-  { to: '/stats', labelKey: 'nav.stats', icon: 'stats', ko: '통계' },
-  { to: '/log', labelKey: 'nav.log', icon: 'log', ko: '일기' },
-  { to: '/settings', labelKey: 'nav.settings', icon: 'settings', ko: '설정' },
+  { to: '/', labelKey: 'nav.garden', icon: 'home' },
+  { to: '/practice', labelKey: 'nav.practice', icon: 'practice' },
+  { to: '/library', labelKey: 'nav.library', icon: 'library' },
+  { to: '/stats', labelKey: 'nav.stats', icon: 'stats' },
+  { to: '/log', labelKey: 'nav.log', icon: 'log' },
+  { to: '/settings', labelKey: 'nav.settings', icon: 'settings' },
 ]
 const { t } = useI18n()
 </script>
@@ -37,7 +42,6 @@ const { t } = useI18n()
       >
         <Icon :name="item.icon" :size="18" />
         <span class="sidebar__label">{{ t(item.labelKey) }}</span>
-        <span class="sidebar__ko">{{ item.ko }}</span>
       </NuxtLink>
     </nav>
     <div class="sidebar__footer">
@@ -83,7 +87,7 @@ const { t } = useI18n()
 }
 .sidebar__link {
   display: grid;
-  grid-template-columns: 24px 1fr auto;
+  grid-template-columns: 24px 1fr;
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
@@ -111,15 +115,9 @@ const { t } = useI18n()
   border-left-color: var(--accent);
 }
 .sidebar__label {
-  /* Pixel-art per user feedback. CJK falls through Noto Sans KR
-   * for ja locale labels; Thai / Vietnamese drop into system-ui.
-   * The KO half (.sidebar__ko below) stays Noto Sans KR because
-   * Korean is the content language and needs smooth Hangul.
-   * 10 px sized so the longest EN nav label fits the 220 px sidebar.
-   * white-space:nowrap prevents the grid's 1fr column from rounding
-   * the cell to a sub-pixel boundary that forces "My Garden" onto
-   * two lines (the grid was allocating 82.17 px to a span whose
-   * actual width was 82.17, so any rounding broke it). */
+  /* Pixel font for the chrome; CJK falls through Noto Sans KR for ja
+   * locale labels; Thai / Vietnamese drop into system-ui. 10 px
+   * fits the longest EN label inside the 220 px sidebar. */
   font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
   font-size: 10px;
   letter-spacing: 0.03em;
@@ -131,18 +129,11 @@ const { t } = useI18n()
 }
 /* Thai / Vietnamese tone marks + stacked diacritics, and Japanese
  * kanji strokes, all lose detail at 10 px. Bump one step so the
- * glyphs stay legible. (Korean is content-not-chrome, never shows
- * here — the .sidebar__ko subtitle is a separate selector below.) */
+ * glyphs stay legible. */
 :lang(th) .sidebar__label,
 :lang(vi) .sidebar__label,
 :lang(ja) .sidebar__label {
   font-size: 13px;
-}
-.sidebar__ko {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 11px;
-  color: var(--text-soft);
-  white-space: nowrap;
 }
 .sidebar__footer {
   margin-top: auto;
