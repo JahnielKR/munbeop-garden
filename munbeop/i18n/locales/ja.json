@@ -91,7 +91,12 @@
       "email_signin": "メールでログイン",
       "email_signup": "アカウントを作成",
       "email_magic": "マジックリンクを送る",
-      "anon": "アカウントなしで続ける"
+      "anon": "アカウントなしで続ける",
+      "section_info": "情報",
+      "pricing": "料金プラン",
+      "features": "機能",
+      "policies": "ポリシー",
+      "back": "← 戻る"
     },
     "dialog": {
       "intro_day": "庭へようこそ。太陽が高い。文法は育つ。",
@@ -103,5 +108,8 @@
       "anon": "ハイラルは地元の英雄も覚えている。進捗はこの端末に残ります。",
       "error_oauth": "その門は閉じています。別の道を試そう。"
     }
-  }
+  },
+  "pricing": { "title": "料金プラン" },
+  "features": { "title": "機能" },
+  "policies": { "title": "ポリシー" }
 }

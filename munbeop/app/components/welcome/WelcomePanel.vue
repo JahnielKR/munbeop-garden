@@ -8,6 +8,7 @@ import WelcomeMusicToggle from '~/components/welcome/WelcomeMusicToggle.vue'
 import WelcomePulseButton from '~/components/welcome/WelcomePulseButton.vue'
 import WelcomeSidebar from '~/components/welcome/WelcomeSidebar.vue'
 import WelcomeAuthOptions from '~/components/welcome/WelcomeAuthOptions.vue'
+import WelcomeNavLinks from '~/components/welcome/WelcomeNavLinks.vue'
 import WelcomeDialog from '~/components/welcome/WelcomeDialog.vue'
 
 const { t } = useI18n()
@@ -114,6 +115,7 @@ onMounted(() => {
         @dialog="(text, variant) => showDialog(text, variant ?? 'normal')"
         @welcomed="onWelcomed"
       />
+      <WelcomeNavLinks @navigate="closeSidebar" />
     </WelcomeSidebar>
 
     <WelcomeDialog

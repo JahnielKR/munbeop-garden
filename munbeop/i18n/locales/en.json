@@ -91,7 +91,12 @@
       "email_signin": "Sign in with email",
       "email_signup": "Create an account",
       "email_magic": "Send a magic link",
-      "anon": "Continue without an account"
+      "anon": "Continue without an account",
+      "section_info": "Info",
+      "pricing": "Plans & Pricing",
+      "features": "Features",
+      "policies": "Policies",
+      "back": "← Back"
     },
     "dialog": {
       "intro_day": "Welcome to the garden. The sun is up; the grammar grows.",
@@ -103,5 +108,8 @@
       "anon": "Hyrule remembers local heroes too. Your progress lives on this device.",
       "error_oauth": "That gateway is closed. Try another door."
     }
-  }
+  },
+  "pricing": { "title": "Plans & Pricing" },
+  "features": { "title": "Features" },
+  "policies": { "title": "Policies" }
 }

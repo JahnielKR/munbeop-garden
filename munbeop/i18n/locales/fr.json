@@ -91,7 +91,12 @@
       "email_signin": "Se connecter par e-mail",
       "email_signup": "Créer un compte",
       "email_magic": "Lien magique par e-mail",
-      "anon": "Continuer sans compte"
+      "anon": "Continuer sans compte",
+      "section_info": "Infos",
+      "pricing": "Tarifs",
+      "features": "Fonctionnalités",
+      "policies": "Mentions légales",
+      "back": "← Retour"
     },
     "dialog": {
       "intro_day": "Bienvenue au jardin. Le soleil est haut ; la grammaire pousse.",
@@ -103,5 +108,8 @@
       "anon": "Hyrule se souvient aussi des héros locaux. Ta progression vit sur cet appareil.",
       "error_oauth": "Cette porte est close. Essayons-en une autre."
     }
-  }
+  },
+  "pricing": { "title": "Tarifs" },
+  "features": { "title": "Fonctionnalités" },
+  "policies": { "title": "Mentions légales" }
 }
