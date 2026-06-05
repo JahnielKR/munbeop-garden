@@ -17,24 +17,48 @@ vi.mock('~/stores/srs', () => ({ useSrsStore: () => ({ hydrate: vi.fn() }) }))
 vi.mock('~/stores/log', () => ({ useLogStore: () => ({ hydrate: vi.fn() }) }))
 vi.mock('~/stores/auth', () => ({ useAuthStore: () => ({ setSession: vi.fn(), user: null }) }))
 
-describe('useAuth().signInWithProvider', () => {
-  beforeEach(() => { signInWithOAuth.mockReset() })
+// Capture `window.location.href = ...` instead of letting it trigger a
+// (fake) navigation in happy-dom — we want to assert what URL we tried
+// to redirect to.
+const hrefSpy = vi.fn()
+Object.defineProperty(window.location, 'href', {
+  configurable: true,
+  get: () => '',
+  set: (v: string) => hrefSpy(v),
+})
 
-  it('calls supabase.auth.signInWithOAuth for kakao with explicit scopes that skip account_email', async () => {
-    signInWithOAuth.mockResolvedValue({ error: null })
+describe('useAuth().signInWithProvider', () => {
+  beforeEach(() => {
+    signInWithOAuth.mockReset()
+    hrefSpy.mockReset()
+  })
+
+  it('asks Supabase to skip its own redirect for kakao and strips account_email from the URL', async () => {
+    signInWithOAuth.mockResolvedValue({
+      data: {
+        url:
+          'https://kauth.kakao.com/oauth/authorize?client_id=abc&scope=account_email+profile_image+profile_nickname&response_type=code',
+      },
+      error: null,
+    })
     const { signInWithProvider } = useAuth()
     const result = await signInWithProvider('kakao')
     expect(signInWithOAuth).toHaveBeenCalledWith({
       provider: 'kakao',
       options: {
         redirectTo: 'https://example.test/auth/callback',
-        scopes: 'profile_nickname profile_image',
+        skipBrowserRedirect: true,
       },
     })
+    expect(hrefSpy).toHaveBeenCalledTimes(1)
+    const finalUrl = new URL(hrefSpy.mock.calls[0]![0])
+    expect(finalUrl.searchParams.get('scope')).toBe(
+      'profile_image profile_nickname',
+    )
     expect(result.error).toBe(null)
   })
 
-  it('calls supabase.auth.signInWithOAuth for google without overriding scopes', async () => {
+  it('uses Supabase default redirect flow for google (no scope override, no skipBrowserRedirect)', async () => {
     signInWithOAuth.mockResolvedValue({ error: null })
     const { signInWithProvider } = useAuth()
     const result = await signInWithProvider('google')
@@ -42,6 +66,7 @@ describe('useAuth().signInWithProvider', () => {
       provider: 'google',
       options: { redirectTo: 'https://example.test/auth/callback' },
     })
+    expect(hrefSpy).not.toHaveBeenCalled()
     expect(result.error).toBe(null)
   })
 
@@ -50,5 +75,13 @@ describe('useAuth().signInWithProvider', () => {
     const { signInWithProvider } = useAuth()
     const result = await signInWithProvider('google')
     expect(result.error?.message).toBe('denied')
+  })
+
+  it('passes through kakao errors without attempting a redirect', async () => {
+    signInWithOAuth.mockResolvedValue({ error: { message: 'kakao boom' } })
+    const { signInWithProvider } = useAuth()
+    const result = await signInWithProvider('kakao')
+    expect(result.error?.message).toBe('kakao boom')
+    expect(hrefSpy).not.toHaveBeenCalled()
   })
 })
