@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>Mockup — Cottage corner on My Garden</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet" />
+<style>
+  /* ── Light tokens (mirrors app/assets/styles/tokens/colors-light.css) ── */
+  :root {
+    --paper: #f4ecd8;
+    --paper-warm: #ded0b6;
+    --paper-deep: #faf6ee;
+    --ink: #2d1e18;
+    --ink-soft: #705335;
+    --ink-line: #8c6a4a;
+    --gold: #e6a121;
+    --sky-deep: #8e4a17;
+    --hover-bg: rgba(255, 196, 77, 0.25);
+  }
+
+  /* ── Dark tokens (mirrors app/assets/styles/tokens/colors-dark.css) ── */
+  [data-theme="dark"] {
+    --paper: #0c1220;
+    --paper-warm: #0a1f1d;
+    --paper-deep: #121b2d;
+    --ink: #e2e8f0;
+    --ink-soft: #577570;
+    --ink-line: #3b5275;
+    --gold: #d95738;
+    --sky-deep: #2eaa7e;
+    --hover-bg: rgba(255, 118, 84, 0.25);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+    transition: background 200ms ease;
+  }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 220px;
+    background: var(--paper-warm);
+    border-right: 2px solid var(--ink-line);
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .sidebar__brand {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .sidebar__brand-ko {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    color: var(--gold);
+  }
+  .sidebar__brand-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .sidebar__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sidebar__link {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .sidebar__link--active {
+    background: var(--hover-bg);
+    color: var(--ink);
+    border-left-color: var(--gold);
+  }
+  .sidebar__icon { font-size: 14px; line-height: 1; opacity: 0.8; }
+
+  .sidebar__footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .sidebar__hint {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+  }
+  .sidebar__btn {
+    background: var(--paper-deep);
+    border: 2px solid var(--ink-line);
+    color: var(--ink);
+    padding: 8px 12px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    cursor: pointer;
+  }
+  .sidebar__select {
+    background: var(--paper-deep);
+    border: 2px solid var(--ink-line);
+    color: var(--ink);
+    padding: 6px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    width: 100%;
+  }
+
+  /* ─── Main ─── */
+  .main {
+    padding: 32px 32px 80px;
+    max-width: 1200px;
+    width: 100%;
+  }
+  .title {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 0 0 20px;
+  }
+  .title__ko {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: var(--gold);
+    letter-spacing: -0.02em;
+  }
+  .title__latin {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
+    color: var(--ink);
+  }
+
+  .greeter {
+    background: var(--paper-warm);
+    border: 2px solid var(--ink-line);
+    padding: 32px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-family: 'Inter', sans-serif;
+  }
+  .greeter__mascot {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    background: var(--gold);
+    border: 2px solid var(--ink);
+    display: grid;
+    place-items: center;
+    font-size: 32px;
+    image-rendering: pixelated;
+  }
+  .greeter__copy { flex: 1; }
+  .greeter__lead { margin: 0 0 12px; }
+  .greeter__link {
+    color: var(--sky-deep);
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  /* ─── Cottage corner decoration ─── *
+   *
+   * Two <img> elements, one per theme. CSS toggles which one is visible
+   * based on [data-theme="dark"] on <html>. Mirrors the swap pattern
+   * we use for theme-flipping in tokens/colors-dark.css. */
+  .cottage {
+    position: fixed;
+    bottom: 40px;
+    right: 0;
+    width: 640px;
+    height: auto;
+    pointer-events: none;
+    user-select: none;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    z-index: 1;
+  }
+  .cottage--light { display: block; }
+  .cottage--dark  { display: none; }
+  [data-theme="dark"] .cottage--light { display: none; }
+  [data-theme="dark"] .cottage--dark  { display: block; }
+
+  /* Missing-image placeholder so the mockup is useful even before the
+   * PNGs are dropped in this folder. */
+  .cottage--missing {
+    aspect-ratio: 1860 / 1100;
+    background:
+      repeating-conic-gradient(#d9c89a 0 25%, #f4ecd8 0 50%) 0 0/16px 16px;
+    border: 2px dashed var(--ink-line);
+    display: grid;
+    place-items: center;
+    color: var(--ink-soft);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    text-align: center;
+    line-height: 1.6;
+    padding: 16px;
+  }
+  [data-theme="dark"] .cottage--missing {
+    background:
+      repeating-conic-gradient(#13243d 0 25%, #0c1220 0 50%) 0 0/16px 16px;
+  }
+
+  /* ─── Control panel (mockup helper, not part of real app) ─── */
+  .controls {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    background: var(--paper-deep);
+    border: 2px solid var(--ink-line);
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--ink);
+    z-index: 10;
+    min-width: 220px;
+  }
+  .controls__row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .controls__label {
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .controls button {
+    background: var(--paper);
+    border: 1px solid var(--ink-line);
+    color: var(--ink);
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+  }
+  .controls button:hover { background: var(--hover-bg); }
+  .controls button.is-active {
+    background: var(--gold);
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  [data-theme="dark"] .controls button.is-active {
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+  <div class="controls">
+    <div class="controls__row">
+      <span class="controls__label">Theme:</span>
+      <button data-theme-set="light" class="is-active">☀️ Light</button>
+      <button data-theme-set="dark">🌙 Dark</button>
+    </div>
+    <div class="controls__row">
+      <span class="controls__label">Width:</span>
+      <button data-w="560">560</button>
+      <button data-w="640" class="is-active">640</button>
+      <button data-w="720">720</button>
+      <button data-w="800">800</button>
+    </div>
+    <div class="controls__row">
+      <span class="controls__label">Bottom:</span>
+      <button data-b="0">0</button>
+      <button data-b="40" class="is-active">40</button>
+      <button data-b="80">80</button>
+      <button data-b="120">120</button>
+    </div>
+  </div>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="sidebar__brand">
+        <span class="sidebar__brand-ko">문법</span>
+        <span class="sidebar__brand-name">Garden</span>
+      </div>
+      <nav class="sidebar__nav">
+        <a class="sidebar__link sidebar__link--active" href="#">
+          <span class="sidebar__icon">⌂</span><span>My Garden</span>
+        </a>
+        <a class="sidebar__link" href="#">
+          <span class="sidebar__icon">✎</span><span>Practice</span>
+        </a>
+        <a class="sidebar__link" href="#">
+          <span class="sidebar__icon">▤</span><span>Library</span>
+        </a>
+        <a class="sidebar__link" href="#">
+          <span class="sidebar__icon">∥</span><span>Stats</span>
+        </a>
+        <a class="sidebar__link" href="#">
+          <span class="sidebar__icon">▥</span><span>Journal</span>
+        </a>
+        <a class="sidebar__link" href="#">
+          <span class="sidebar__icon">⚙</span><span>Settings</span>
+        </a>
+      </nav>
+      <div class="sidebar__footer">
+        <div>
+          <div class="sidebar__hint">SIGNED IN AS</div>
+          <button class="sidebar__btn" style="margin-top:6px;width:100%;">Sign out</button>
+        </div>
+        <div>
+          <div class="sidebar__hint">LANGUAGE</div>
+          <select class="sidebar__select" style="margin-top:6px;">
+            <option>English</option>
+          </select>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <h1 class="title">
+        <span class="title__ko">내 정원</span>
+        <span class="title__latin">My Garden</span>
+      </h1>
+      <section class="greeter">
+        <div class="greeter__mascot">🐝</div>
+        <div class="greeter__copy">
+          <p class="greeter__lead">
+            The Garden map (Stardew-style 2D map with TOPIK zones and your grammar plants growing) ships in a later plan. Meanwhile, head to Practice to start cultivating.
+          </p>
+          <p><a class="greeter__link" href="#">→ Practice</a></p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <img class="cottage cottage--light" src="../public/img/cottage-corner-light.png" alt=""
+       onerror="this.outerHTML='&lt;div class=&quot;cottage cottage--light cottage--missing&quot;&gt;Drop cottage-corner-light.png&lt;br&gt;into munbeop/public/img/&lt;/div&gt;';" />
+  <img class="cottage cottage--dark" src="../public/img/cottage-corner-dark.png" alt=""
+       onerror="this.outerHTML='&lt;div class=&quot;cottage cottage--dark cottage--missing&quot;&gt;Drop cottage-corner-dark.png&lt;br&gt;into munbeop/public/img/&lt;/div&gt;';" />
+
+  <script>
+    // ── Theme toggle ──
+    const themeButtons = document.querySelectorAll('[data-theme-set]');
+    themeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        themeButtons.forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const next = btn.dataset.themeSet;
+        if (next === 'dark') {
+          document.documentElement.dataset.theme = 'dark';
+        } else {
+          delete document.documentElement.dataset.theme;
+        }
+      });
+    });
+
+    // ── Cottage size sampler ──
+    const sizeButtons = document.querySelectorAll('[data-w]');
+    sizeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        sizeButtons.forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const w = btn.dataset.w + 'px';
+        document.querySelectorAll('.cottage').forEach(node => {
+          node.style.width = w;
+        });
+      });
+    });
+
+    // ── Cottage bottom-offset sampler ──
+    const bottomButtons = document.querySelectorAll('[data-b]');
+    bottomButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        bottomButtons.forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const b = btn.dataset.b + 'px';
+        document.querySelectorAll('.cottage').forEach(node => {
+          node.style.bottom = b;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
