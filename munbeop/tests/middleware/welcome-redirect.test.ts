@@ -4,43 +4,37 @@ import { decideWelcomeRedirect } from '~/middleware/welcome-redirect.global'
 describe('decideWelcomeRedirect', () => {
   it('signed-in user hitting / → stays at /', () => {
     expect(
-      decideWelcomeRedirect({ path: '/', signedIn: true, welcomed: false }),
+      decideWelcomeRedirect({ path: '/', signedIn: true }),
     ).toBe(null)
   })
 
   it('signed-in user hitting /welcome → redirected to /', () => {
     expect(
-      decideWelcomeRedirect({ path: '/welcome', signedIn: true, welcomed: false }),
+      decideWelcomeRedirect({ path: '/welcome', signedIn: true }),
     ).toBe('/')
   })
 
-  it('anon visitor with welcomed flag hitting / → stays at /', () => {
+  it('anon visitor hitting / → always redirected to /welcome (entry-point policy)', () => {
     expect(
-      decideWelcomeRedirect({ path: '/', signedIn: false, welcomed: true }),
-    ).toBe(null)
-  })
-
-  it('anon visitor with no flag hitting / → redirected to /welcome', () => {
-    expect(
-      decideWelcomeRedirect({ path: '/', signedIn: false, welcomed: false }),
+      decideWelcomeRedirect({ path: '/', signedIn: false }),
     ).toBe('/welcome')
   })
 
-  it('anon visitor hitting /welcome stays regardless of flag', () => {
+  it('anon visitor hitting /welcome → stays', () => {
     expect(
-      decideWelcomeRedirect({ path: '/welcome', signedIn: false, welcomed: true }),
-    ).toBe(null)
-    expect(
-      decideWelcomeRedirect({ path: '/welcome', signedIn: false, welcomed: false }),
+      decideWelcomeRedirect({ path: '/welcome', signedIn: false }),
     ).toBe(null)
   })
 
-  it('other paths never redirect', () => {
+  it('other paths never redirect (direct links / deep routes untouched)', () => {
     expect(
-      decideWelcomeRedirect({ path: '/practice', signedIn: false, welcomed: false }),
+      decideWelcomeRedirect({ path: '/practice', signedIn: false }),
     ).toBe(null)
     expect(
-      decideWelcomeRedirect({ path: '/auth/callback', signedIn: false, welcomed: false }),
+      decideWelcomeRedirect({ path: '/auth/callback', signedIn: false }),
+    ).toBe(null)
+    expect(
+      decideWelcomeRedirect({ path: '/practice', signedIn: true }),
     ).toBe(null)
   })
 })

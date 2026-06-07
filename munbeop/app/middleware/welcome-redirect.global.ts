@@ -3,33 +3,27 @@ import { defineNuxtRouteMiddleware, navigateTo } from '#imports'
 export interface WelcomeRedirectInput {
   path: string
   signedIn: boolean
-  welcomed: boolean
 }
 
 /**
  * Pure decision function. Returns the redirect target or null if no
  * redirect is needed. Exported for unit tests.
  *
- * Rules (mirrors spec §2.1):
- *   - signed in       → never sees /welcome. Hitting it redirects to /.
- *   - anon + welcomed → never redirected; preserves the existing UX.
- *   - anon + no flag  → first hit on / is redirected to /welcome.
- *   - all other paths → never touched.
+ * Policy: the landing page is the entry point for anonymous visitors —
+ * always. The previous `mungarden:welcomed` localStorage exemption (which
+ * let returning anon visitors skip /welcome) was dropped so the welcome
+ * scene is the consistent first-paint surface for everyone who isn't
+ * signed in.
+ *
+ * Rules:
+ *   - signed in + /welcome → /              (don't show the gate to a logged-in user)
+ *   - anon     + /         → /welcome       (start on the landing page)
+ *   - anything else        → null           (direct links / deep routes untouched)
  */
-export function decideWelcomeRedirect({ path, signedIn, welcomed }: WelcomeRedirectInput): string | null {
-  if (signedIn && path === '/welcome') return '/'
-  if (signedIn) return null
-  if (path === '/' && !welcomed) return '/welcome'
+export function decideWelcomeRedirect({ path, signedIn }: WelcomeRedirectInput): string | null {
+  if (signedIn) return path === '/welcome' ? '/' : null
+  if (path === '/') return '/welcome'
   return null
-}
-
-function readWelcomedFlag(): boolean {
-  if (typeof window === 'undefined') return false
-  try {
-    return window.localStorage.getItem('mungarden:welcomed') === '1'
-  } catch {
-    return false
-  }
 }
 
 /**
@@ -57,8 +51,7 @@ function hasActiveSupabaseSession(): boolean {
 
 export default defineNuxtRouteMiddleware((to) => {
   const signedIn = hasActiveSupabaseSession()
-  const welcomed = readWelcomedFlag()
-  const target = decideWelcomeRedirect({ path: to.path, signedIn, welcomed })
+  const target = decideWelcomeRedirect({ path: to.path, signedIn })
   if (target && target !== to.path) {
     return navigateTo(target, { replace: true })
   }
