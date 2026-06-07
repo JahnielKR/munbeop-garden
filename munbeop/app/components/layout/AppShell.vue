@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
 import AppSidebar from './AppSidebar.vue'
+import CottageCorner from './CottageCorner.vue'
 import MobileNavbar from './MobileNavbar.vue'
 import Toast from '~/components/ui/Toast.vue'
 
@@ -18,6 +19,7 @@ provide('surface', surface)
       <slot />
     </main>
     <MobileNavbar class="shell__mobile-nav" />
+    <CottageCorner />
     <Toast />
   </div>
 </template>
