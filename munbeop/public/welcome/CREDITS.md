@@ -1,7 +1,8 @@
 # Welcome page assets
 
 **Day scene (Mondstadt-inspired):**
-- `day/garden-day.png` — from the "Mondstadt Background Wallpaper" pack by @theflavare on itch.io.
+- `landing-hero.webm` — in-house animated landing hero, looped silently as the day-scene backdrop.
+- `day/garden-day.png` — `<video>` poster fallback (paints while the webm buffers, and as the still for browsers without webm). From the "Mondstadt Background Wallpaper" pack by @theflavare on itch.io.
 
 **Night scene (Mondstadt-inspired at night):**
 - `night/garden-night.jpg` — night-shot of the same windrise composition as `day/garden-day.png`, from the "Mondstadt Background Wallpaper" pack by @theflavare on itch.io.
