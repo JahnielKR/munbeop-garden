@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, watch } from 'vue'
 import { useBomiStore } from '~/stores/bomi'
 import CameraStage from '~/components/layout/CameraStage.vue'
+import CottageCorner from '~/components/layout/CottageCorner.vue'
 
 // Boot the Supabase auth subscription as early as possible so getSession()
 // fires before the layout's onMounted runs. The layout still owns store
@@ -80,6 +81,15 @@ onMounted(() => {
 </script>
 
 <template>
+  <!--
+    CottageCorner is the wallpaper layer — rendered ONCE here at the root,
+    OUTSIDE CameraStage. No transformed ancestor means its position:fixed
+    is true viewport-fixed: anchored to the screen corner, untouched by
+    panel scroll, untouched by the camera pan. On /welcome the welcome
+    scene covers it; on app routes the body bg shows through the panel
+    so it reads as a corner decoration.
+  -->
+  <CottageCorner />
   <CameraStage>
     <NuxtLayout>
       <NuxtPage :transition="false" />

@@ -24,10 +24,21 @@ import WelcomePanel from '~/components/welcome/WelcomePanel.vue'
  * When the user is on /welcome the in-app side is off-screen and its
  * NuxtPage just renders the stub — invisible to the user.
  *
- * Each panel applies `transform: translateZ(0)` to itself so it becomes
- * the containing block for any descendant `position: fixed`. Without
- * that trick the welcome chrome (sidebar, dialog box, etc.) would
- * resolve to the full 200vw wrapper and bleed across the boundary.
+ * Scroll lives on a child wrapper, not the panel itself. Each panel keeps
+ * `transform: translateZ(0)` so it remains the containing block for its
+ * position:fixed descendants (welcome chrome on the welcome side; Toast
+ * + MobileNavbar on the app side). If the panel itself scrolled, every
+ * browser engine slides those fixed children along with the content —
+ * the bug we previously hit with the cottage. Putting the scroll on an
+ * inner `.camera-stage__scroll` div sidesteps that: the panel box stays
+ * still, the inner div scrolls. The welcome side doesn't get a scroller
+ * because the welcome composition is intentionally a single-screen
+ * surface that must never grow a scrollbar.
+ *
+ * CottageCorner is rendered ONE LEVEL UP, in app.vue, OUTSIDE this
+ * component. It's a wallpaper — not part of the camera stage at all —
+ * so it sits behind the panels with no transformed ancestor and is
+ * plain viewport-fixed.
  */
 
 const route = useRoute()
@@ -46,7 +57,9 @@ const stageStyle = computed(() => ({
       <WelcomePanel />
     </div>
     <div class="camera-stage__panel camera-stage__panel--app">
-      <slot />
+      <div class="camera-stage__scroll">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
@@ -71,11 +84,23 @@ const stageStyle = computed(() => ({
   height: 100vh;
   position: relative;
   overflow: hidden;
-  /* Establish a containing block for descendant position:fixed children
-   * so the welcome chrome stays inside its own panel. Without this they
-   * resolve to the 200vw wrapper and would visually bleed into the
-   * neighbouring panel during the pan. */
+  /* Containing block for descendant position:fixed children — so welcome
+   * chrome stays inside the welcome panel and the app's Toast/MobileNavbar
+   * resolve to the 100vw panel (NOT the 200vw wrapper, which would stretch
+   * left:0/right:0 across both slides). */
   transform: translateZ(0);
+}
+
+/* Inner scroller for the in-app side. Position:absolute inside the panel
+ * gives us a 100vh scroll viewport; overflow-y:auto handles per-page
+ * vertical scroll. Critically, this element has NO transform/filter, so
+ * fixed-positioned siblings of the slot content still resolve to the
+ * panel above — they don't ride along with the scroll. */
+.camera-stage__scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {

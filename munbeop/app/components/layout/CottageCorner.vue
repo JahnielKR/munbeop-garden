@@ -1,8 +1,23 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 // Ambient pixel-art cottage that sits in the lower-right viewport corner
-// across every page that renders the AppShell. Welcome page sets
-// `layout: false` and therefore never mounts this. Decorative only —
-// pointer-events disabled so it never blocks UI underneath.
+// of the in-app surface. Rendered ONCE at app.vue's root (OUTSIDE
+// CameraStage) so it behaves as a true wallpaper — viewport-fixed, never
+// transformed, never riding the camera pan, never riding the per-page
+// scroll. Decorative only — pointer-events disabled so it never blocks
+// UI underneath.
+//
+// Surface gating: routes flagged `surface: 'welcome'` (the welcome page
+// itself plus /pricing, /policies, /features which use WelcomeSectionShell
+// with an opaque --paper background) must not show the cottage. On those
+// routes the WelcomeSectionShell pages already paint over it while
+// mounted, but during the 700 ms camera pan back to /welcome the leaving
+// page unmounts instantly and the app panel goes transparent — without
+// gating, the cottage flashes into view through that transparent panel
+// before the welcome panel finishes sliding over it. We fade with
+// opacity (not v-if) so the cottage stays mounted and reads as a piece
+// of background being uncovered/covered, not a UI element popping in.
 //
 // Two variants are rendered as separate <img> tags; CSS toggles which
 // one is visible based on [data-theme="dark"] on <html>. This mirrors
@@ -19,17 +34,22 @@
 // alone and treats it as a runtime public path served from `public/img/`.
 const cottageLight = '/img/cottage-corner-light.png'
 const cottageDark = '/img/cottage-corner-dark.png'
+
+const route = useRoute()
+const onAppSurface = computed(() => route.meta.surface !== 'welcome')
 </script>
 
 <template>
   <img
     class="cottage-corner cottage-corner--light"
+    :class="{ 'cottage-corner--hidden': !onAppSurface }"
     :src="cottageLight"
     alt=""
     aria-hidden="true"
   />
   <img
     class="cottage-corner cottage-corner--dark"
+    :class="{ 'cottage-corner--hidden': !onAppSurface }"
     :src="cottageDark"
     alt=""
     aria-hidden="true"
@@ -46,8 +66,17 @@ const cottageDark = '/img/cottage-corner-dark.png'
   pointer-events: none;
   user-select: none;
   image-rendering: pixelated;
-  /* Mobile nav is z-index 50, Toast is 100. Stay well below both. */
-  z-index: 1;
+  /* No z-index on purpose — the cottage is the wallpaper layer. It's
+   * rendered at app.vue's root BEFORE <CameraStage>, so document order
+   * keeps CameraStage on top (z-index: auto for both). On /welcome the
+   * opaque welcome scene inside CameraStage hides the cottage; on the
+   * app side CameraStage's panel is transparent and the cottage shows
+   * through behind the in-app content. Any positive z-index here lifts
+   * the cottage ABOVE CameraStage and leaks it onto the welcome page. */
+  transition: opacity 350ms ease;
+}
+.cottage-corner--hidden {
+  opacity: 0;
 }
 
 .cottage-corner--light { display: block; }
@@ -59,6 +88,10 @@ const cottageDark = '/img/cottage-corner-dark.png'
   .cottage-corner {
     display: none;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cottage-corner { transition: none; }
 }
 </style>
 
