@@ -16,16 +16,11 @@ const { fadeOut: fadeOutMusic } = useWelcomeMusic()
 const expanded = ref<'signin' | 'signup' | 'magic' | null>(props.initialEmailMode)
 const loading = ref<'kakao' | 'google' | null>(null)
 
-function setWelcomedFlag() {
-  try { localStorage.setItem('mungarden:welcomed', '1') } catch { /* private mode */ }
-  emit('welcomed')
-}
-
 async function provider(name: 'kakao' | 'google') {
   if (loading.value) return
   loading.value = name
   emit('dialog', name === 'kakao' ? t('welcome.dialog.kakao') : t('welcome.dialog.google'))
-  setWelcomedFlag()
+  emit('welcomed')
   // Fade in parallel with the OAuth redirect. The page typically unloads
   // before the fade completes — that's fine, the SPA is gone anyway.
   // It's cosmetic; if the redirect is slow the user hears a graceful ramp
@@ -45,7 +40,7 @@ function openEmail(mode: 'signin' | 'signup' | 'magic') {
 }
 
 function onFormSuccess() {
-  setWelcomedFlag()
+  emit('welcomed')
 }
 function onFormError(msg: string) {
   emit('dialog', msg, 'error')
