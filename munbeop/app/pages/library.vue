@@ -12,16 +12,48 @@ const srsStore = useSrsStore()
 const { t } = useI18n()
 const { tl } = useLocalized()
 
-const items = computed(() =>
-  grammarStore.items.map((g) => {
-    const level = srsStore.ensure(g.ko).mastery
-    return {
-      grammar: g,
-      level,
-      info: getMasteryInfo(level),
-    }
-  }),
-)
+/**
+ * Group items by deck, ordered by `deck.order`.
+ *
+ * Empty decks are dropped from the view. Excluded decks (toggled off by the
+ * user) are still rendered so toggling them on in the UI brings them back —
+ * but if a deck happens to have no matching items at all, it's hidden.
+ */
+const sections = computed(() => {
+  const sortedDecks = [...grammarStore.decks].sort((a, b) => a.order - b.order)
+  return sortedDecks
+    .map((deck) => {
+      const items = grammarStore.items
+        .filter((g) => g.deckId === deck.id)
+        .map((g) => {
+          const level = srsStore.ensure(g.ko).mastery
+          return {
+            grammar: g,
+            level,
+            info: getMasteryInfo(level),
+          }
+        })
+      return { deck, items }
+    })
+    .filter((s) => s.items.length > 0)
+})
+
+/** Items whose deckId doesn't match any current deck — render under a fallback section. */
+const orphans = computed(() => {
+  const known = new Set(grammarStore.decks.map((d) => d.id))
+  return grammarStore.items
+    .filter((g) => !known.has(g.deckId))
+    .map((g) => {
+      const level = srsStore.ensure(g.ko).mastery
+      return { grammar: g, level, info: getMasteryInfo(level) }
+    })
+})
+
+function accentFor(masteryCls: string) {
+  if (masteryCls === 'mastery-tree') return 'jade'
+  if (masteryCls === 'mastery-plant') return 'gold'
+  return 'sky'
+}
 </script>
 
 <template>
@@ -29,30 +61,61 @@ const items = computed(() =>
     <BilingualTitle ko="도서관" :latin="t('title.library')" />
     <p class="lead">{{ t('library.lead') }}</p>
 
-    <div class="grid">
-      <Card
-        v-for="item in items"
-        :key="item.grammar.ko"
-        :accent="
-          item.info.cls === 'mastery-tree'
-            ? 'jade'
-            : item.info.cls === 'mastery-plant'
-              ? 'gold'
-              : 'sky'
-        "
-      >
-        <div class="item__head">
-          <span class="item__ko">{{ item.grammar.ko }}</span>
-          <Badge>
-            <MasteryIcon :level="item.level" :size="10" />
-            <span>{{ t(item.info.labelKey) }}</span>
-          </Badge>
-        </div>
-        <div class="item__meaning">{{ tl(item.grammar.meaning) }}</div>
-        <div v-if="item.grammar.example" class="item__example">{{ item.grammar.example }}</div>
-        <div v-if="item.grammar.trans" class="item__trans">{{ tl(item.grammar.trans) }}</div>
-      </Card>
-    </div>
+    <section
+      v-for="section in sections"
+      :key="section.deck.id"
+      class="deck-section"
+      :class="`deck-section--${section.deck.colorId}`"
+    >
+      <header class="deck-header">
+        <h2 class="deck-title">{{ section.deck.name }}</h2>
+        <span class="deck-count">{{ section.items.length }}</span>
+      </header>
+
+      <div class="grid">
+        <Card
+          v-for="item in section.items"
+          :key="item.grammar.ko"
+          :accent="accentFor(item.info.cls)"
+        >
+          <div class="item__head">
+            <span class="item__ko">{{ item.grammar.ko }}</span>
+            <Badge>
+              <MasteryIcon :level="item.level" :size="10" />
+              <span>{{ t(item.info.labelKey) }}</span>
+            </Badge>
+          </div>
+          <div class="item__meaning">{{ tl(item.grammar.meaning) }}</div>
+          <div v-if="item.grammar.example" class="item__example">{{ item.grammar.example }}</div>
+          <div v-if="item.grammar.trans" class="item__trans">{{ tl(item.grammar.trans) }}</div>
+        </Card>
+      </div>
+    </section>
+
+    <section v-if="orphans.length" class="deck-section deck-section--orphan">
+      <header class="deck-header">
+        <h2 class="deck-title">기타 (Otros)</h2>
+        <span class="deck-count">{{ orphans.length }}</span>
+      </header>
+      <div class="grid">
+        <Card
+          v-for="item in orphans"
+          :key="item.grammar.ko"
+          :accent="accentFor(item.info.cls)"
+        >
+          <div class="item__head">
+            <span class="item__ko">{{ item.grammar.ko }}</span>
+            <Badge>
+              <MasteryIcon :level="item.level" :size="10" />
+              <span>{{ t(item.info.labelKey) }}</span>
+            </Badge>
+          </div>
+          <div class="item__meaning">{{ tl(item.grammar.meaning) }}</div>
+          <div v-if="item.grammar.example" class="item__example">{{ item.grammar.example }}</div>
+          <div v-if="item.grammar.trans" class="item__trans">{{ tl(item.grammar.trans) }}</div>
+        </Card>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -60,12 +123,52 @@ const items = computed(() =>
 .page {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 28px;
 }
 .lead {
   font-family: 'Inter', sans-serif;
   color: var(--ink-soft);
 }
+
+.deck-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.deck-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 2px solid var(--border-soft);
+}
+.deck-title {
+  font-family: 'Noto Sans KR', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--ink);
+  margin: 0;
+}
+.deck-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-feature-settings: 'tnum';
+}
+
+/* Deck colour ramp — maps deck.colorId to the existing rustic token palette.
+   No new colour tokens introduced; amber falls back to gold-shadow,
+   rose to red, violet to ink-soft (advanced/literary feels muted). */
+.deck-section--sky    .deck-header { border-bottom-color: var(--sky); }
+.deck-section--jade   .deck-header { border-bottom-color: var(--jade); }
+.deck-section--gold   .deck-header { border-bottom-color: var(--gold); }
+.deck-section--amber  .deck-header { border-bottom-color: var(--gold-shadow, var(--gold)); }
+.deck-section--rose   .deck-header { border-bottom-color: var(--red); }
+.deck-section--violet .deck-header { border-bottom-color: var(--ink-soft); }
+.deck-section--orphan .deck-header { border-bottom-color: var(--border-strong); }
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
