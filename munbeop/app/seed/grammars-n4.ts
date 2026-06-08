@@ -1025,7 +1025,7 @@ export const TOPIK_4_GRAMMAR: Grammar[] = [
     ko: '-고 말겠다',
     meaning: L(
       '"I will ... no matter what" — strong future determination (future use of -고 말다)',
-      '"lo haré sí o sí" — determinación firme en futuro (G167 base en T3)',
+      '"lo haré sí o sí" — uso futuro de -고 말다 con determinación firme',
       '«je le ferai coûte que coûte» — détermination future',
       '"vou ... custe o que custar" — determinação no futuro',
       '"จะ ... ให้ได้แน่นอน" — เด็ดเดี่ยว',
@@ -1619,13 +1619,13 @@ export const TOPIK_4_GRAMMAR: Grammar[] = [
     ko: '-(으)ㄴ/는 척 + V',
     meaning: L(
       '"pretending to ..., do ..." — combine 척 with another action (cf. -(으)ㄴ/는 척하다 in T4)',
-      '"fingiendo ..., hacer ..." — combinar 척 con otra acción (cf. G094 en T4)',
+      '"fingiendo ..., hacer ..." — combinar 척 con otra acción (cf. -(으)ㄴ/는 척하다)',
       '«faisant semblant de ..., faire ...» — combiner avec une autre action',
       '"fingindo ..., fazer ..." — combinação com outra ação',
       '"แกล้งทำเป็น ... แล้ว ..."',
       '"berpura-pura ..., kemudian ..."',
       '"giả vờ ... rồi ..."',
-      '「〜ふりをして〜する」(G094 の応用)',
+      '「〜ふりをして〜する」(-(으)ㄴ/는 척하다 の応用)',
     ),
     example: '못 들은 척 그냥 지나갔어요.',
     trans: L(
@@ -1753,14 +1753,14 @@ export const TOPIK_4_GRAMMAR: Grammar[] = [
   {
     ko: '-(으)면 -(으)ㄹ수록',
     meaning: L(
-      '"the more X, the more Y ..." — emphatic version of -(으)ㄹ수록 (G083)',
-      '"cuanto más X, más Y ..." — versión enfática de -(으)ㄹ수록 (G083)',
-      '«plus X, plus Y» — version emphatique de -(으)ㄹ수록',
-      '"quanto mais X, mais Y" — versão enfática de -(으)ㄹ수록',
-      '"ยิ่ง ... ก็ยิ่ง ..." — รูปเน้นของ G083',
-      '"semakin ..., semakin ..." — versi penegasan G083',
-      '"càng ... thì càng ..." — biến thể nhấn mạnh',
-      '「〜ば〜ほど(強調)」— G083 の強形',
+      '"the more X, the more Y ..." — emphatic, repeats the verb with -(으)면 and -(으)ㄹ수록',
+      '"cuanto más X, más Y ..." — versión enfática que repite el verbo con -(으)면 y -(으)ㄹ수록',
+      '«plus X, plus Y» — version emphatique qui répète le verbe avec -(으)면 et -(으)ㄹ수록',
+      '"quanto mais X, mais Y" — versão enfática que repete o verbo com -(으)면 e -(으)ㄹ수록',
+      '"ยิ่ง ... ก็ยิ่ง ..." — รูปเน้น ใช้กริยาซ้ำกับ -(으)면 และ -(으)ㄹ수록',
+      '"semakin ..., semakin ..." — versi penegasan, mengulang verba dengan -(으)면 dan -(으)ㄹ수록',
+      '"càng ... thì càng ..." — biến thể nhấn mạnh, lặp động từ với -(으)면 và -(으)ㄹ수록',
+      '「〜ば〜ほど(強調)」— -(으)면 と -(으)ㄹ수록 で動詞を繰り返す強形',
     ),
     example: '한국어는 공부하면 공부할수록 재미있어요.',
     trans: L(
@@ -1780,8 +1780,8 @@ export const TOPIK_4_GRAMMAR: Grammar[] = [
   {
     ko: '-았/었어야',
     meaning: L(
-      '"should have ..." — short colloquial regret form (cf. G221 -았/었어야 했다)',
-      '"debería haber ..." — forma corta coloquial (cf. G221)',
+      '"should have ..." — short colloquial regret form (cf. full -았/었어야 했다)',
+      '"debería haber ..." — forma corta coloquial (cf. -았/었어야 했다 completa)',
       '«j’aurais dû ...» — forme courte familière',
       '"deveria ter ..." — forma curta coloquial',
       '"น่าจะ ... ตั้งแต่ตอนนั้น (รูปย่อ)"',
