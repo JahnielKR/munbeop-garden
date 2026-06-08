@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import type { Grammar, Deck } from '~/lib/domain'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
-import { DEFAULT_GRAMMAR, DEFAULT_DECK } from '~/seed/grammars'
+import { DEFAULT_GRAMMAR, TOPIK_DECKS } from '~/seed/grammars'
 
 export const useGrammarStore = defineStore('grammar', () => {
   const items = ref<Grammar[]>([])
@@ -31,7 +31,7 @@ export const useGrammarStore = defineStore('grammar', () => {
       await storage.write(STORAGE_KEYS.grammar, items.value)
     }
     if (decks.value.length === 0) {
-      decks.value = [DEFAULT_DECK]
+      decks.value = [...TOPIK_DECKS]
       await storage.write(STORAGE_KEYS.decks, decks.value)
     }
   }

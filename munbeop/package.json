@@ -14,7 +14,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "gap": "node scripts/topik-spine-gap.mjs",
+    "catalog:sql": "node scripts/regenerate-catalog-sql.mjs"
   },
   "dependencies": {
     "@nuxtjs/i18n": "^9.5.0",

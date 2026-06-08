@@ -1,0 +1,937 @@
+{
+  "$schema": "topik-spine.v1",
+  "version": "1.0.0",
+  "generatedAt": "2026-06-08",
+  "source": {
+    "name": "base de datos Topik",
+    "files": 27,
+    "totalStructures": 290,
+    "coverageNote": "~98-99% del currículo TOPIK 1-6 + niveles editoriales tipo Korean Grammar in Use (Darakwon)"
+  },
+  "importanceLegend": {
+    "critical": { "stars": "★★★", "desc": "Esencial — no se puede hablar sin esto" },
+    "frequent": { "stars": "★★", "desc": "Aparece en TOPIK y habla diaria" },
+    "nuance": { "stars": "★", "desc": "Registro alto / literario / matiz" }
+  },
+
+  "readingOrder": [
+    "00_intro_hangul",
+    "irregulares",
+    "modificadores_nominales",
+    "niveles_de_habla",
+    "nivel_1", "nivel_1b",
+    "nivel_2", "nivel_2b",
+    "nivel_3", "nivel_3b",
+    "auxiliares",
+    "nivel_4", "nivel_4b",
+    "discurso_indirecto_completo",
+    "nivel_5", "nivel_5b",
+    "gramatica_adicional",
+    "nivel_6", "nivel_6b",
+    "gramatica_complementaria"
+  ],
+
+  "foundations": {
+    "speechLevels": {
+      "file": "niveles_de_habla.md",
+      "importance": "critical",
+      "introduceBefore": "TOPIK 3",
+      "summary": "El coreano codifica gramaticalmente respeto al oyente + honor al sujeto. En la práctica se usan 3 niveles principales.",
+      "registers": [
+        { "id": "SL003", "code": "합쇼체", "use": "noticias, presentaciones, primera reunión formal", "endings": { "decl": "-ㅂ/습니다", "ques": "-ㅂ/습니까?", "imp": "-(으)십시오", "past": "-았/었습니다" } },
+        { "id": "SL002", "code": "해요체", "use": "educado cotidiano (nivel base de la BD)", "endings": { "decl": "-아/어요", "imp": "-(으)세요", "prop": "-(으)ㄹ까요?", "prom": "-(으)ㄹ게요", "past": "-았/었어요", "fut": "-(으)ㄹ 거예요" } },
+        { "id": "SL004", "code": "해체/반말", "use": "amigos, familia menor, mensajes", "endings": { "decl": "-아/어", "prop": "-(으)자", "prom": "-(으)ㄹ게", "past": "-았/었어", "fut": "-(으)ㄹ 거야" } },
+        { "id": "SL005", "code": "해라체", "use": "narrativa, libros, periódicos, niños", "endings": { "decl-V": "-ㄴ/는다", "decl-Adj": "-다", "ques": "-(으)냐?/-(으)니?", "imp": "-아/어라", "past": "-았/었다" } },
+        { "id": "SL007", "code": "-(으)시-", "use": "infijo honorífico del sujeto", "rule": "Raíz + (으)시 + terminación" }
+      ],
+      "honorificVocab": {
+        "verbs": [
+          { "normal": "먹다/마시다", "honorific": "드시다/잡수시다" },
+          { "normal": "자다", "honorific": "주무시다" },
+          { "normal": "있다", "honorific": "계시다" },
+          { "normal": "없다", "honorific": "안 계시다" },
+          { "normal": "말하다", "honorific": "말씀하시다" },
+          { "normal": "죽다", "honorific": "돌아가시다" },
+          { "normal": "아프다", "honorific": "편찮으시다" },
+          { "normal": "주다", "honorific": "드리다" },
+          { "normal": "묻다", "honorific": "여쭤보다/여쭙다" },
+          { "normal": "보다", "honorific": "뵙다" }
+        ],
+        "nouns": [
+          { "normal": "이름", "honorific": "성함" },
+          { "normal": "나이", "honorific": "연세" },
+          { "normal": "집", "honorific": "댁" },
+          { "normal": "밥/음식", "honorific": "진지" },
+          { "normal": "말", "honorific": "말씀" },
+          { "normal": "생일", "honorific": "생신" }
+        ],
+        "particles": [
+          { "normal": "이/가", "honorific": "께서" },
+          { "normal": "에게/한테", "honorific": "께" }
+        ]
+      }
+    },
+
+    "irregulars": {
+      "file": "irregulares.md",
+      "importance": "critical",
+      "introduceBefore": "TOPIK 2",
+      "summary": "Verbos cuya raíz cambia ante ciertas terminaciones. Casi todos los adjetivos descriptivos comunes son irregulares.",
+      "types": [
+        { "id": "I001", "name": "ㅂ 불규칙", "rule": "ㅂ → 우 ante vocal; ㅂ+아/어 → 워", "examples": ["덥다 → 더워요", "춥다 → 추워요", "어렵다 → 어려워요"], "verbs": ["덥다","춥다","쉽다","어렵다","무겁다","가볍다","아름답다","귀엽다","새롭다","반갑다","무섭다","부드럽다","시끄럽다","외롭다"], "regularExceptions": ["잡다","좁다","입다","씹다","뽑다"] },
+        { "id": "I002", "name": "르 불규칙", "rule": "X르 + 아/어 → Xㄹ라/Xㄹ러", "examples": ["모르다 → 몰라요", "다르다 → 달라요", "부르다 → 불러요"], "verbs": ["모르다","다르다","부르다","고르다","흐르다","빠르다","나르다","자르다","누르다","오르다","이르다","지르다","가르다","마르다"] },
+        { "id": "I003", "name": "ㄷ 불규칙", "rule": "ㄷ → ㄹ ante vocal", "examples": ["듣다 → 들어요", "걷다 → 걸어요"], "verbs": ["듣다","걷다","묻다(preguntar)","싣다","깨닫다"], "regularExceptions": ["받다","닫다","믿다","묻다(enterrar)"] },
+        { "id": "I004", "name": "ㅅ 불규칙", "rule": "ㅅ desaparece ante vocal", "examples": ["낫다 → 나아요", "짓다 → 지어요"], "verbs": ["낫다","짓다","붓다","잇다","긋다"], "regularExceptions": ["벗다","씻다","웃다","빗다"] },
+        { "id": "I005", "name": "ㅎ 불규칙", "rule": "ㅎ desaparece; 아/어 → 애 (solo adjetivos)", "examples": ["빨갛다 → 빨개요/빨간", "어떻다 → 어때요/어떤"], "verbs": ["빨갛다","파랗다","노랗다","까맣다","하얗다","어떻다","그렇다","이렇다","저렇다"], "regularExceptions": ["좋다"] },
+        { "id": "I006", "name": "으 불규칙", "rule": "으 desaparece ante 아/어; vocal de la sílaba anterior decide", "examples": ["바쁘다 → 바빠요", "예쁘다 → 예뻐요", "쓰다 → 써요"], "verbs": ["쓰다","크다","바쁘다","아프다","슬프다","고프다","나쁘다","예쁘다","기쁘다","배고프다"] },
+        { "id": "I007", "name": "ㄹ 탈락", "rule": "ㄹ cae ante ㄴ/ㅂ(습)/시", "examples": ["살다 → 사세요/사는/삽니다", "알다 → 아세요/아는/압니다"], "verbs": ["살다","알다","만들다","팔다","울다","멀다","달다","열다","걸다"] },
+        { "id": "I008", "name": "하다", "rule": "하 + 아/어 → 해", "examples": ["하다 → 해요", "공부하다 → 공부해요"], "verbs": ["하다","공부하다","일하다","사랑하다","행복하다","피곤하다"] },
+        { "id": "I010", "name": "러 / 우 (raros)", "rule": "이르다·푸르다 → 이르러/푸르러; 푸다 → 퍼", "verbs": ["이르다(llegar)","푸르다","푸다"] }
+      ]
+    },
+
+    "nominalModifiers": {
+      "file": "modificadores_nominales.md",
+      "importance": "critical",
+      "introduceBefore": "TOPIK 2",
+      "summary": "Sistema para que un verbo/adjetivo modifique a un sustantivo (equivalente a cláusula relativa).",
+      "forms": [
+        { "id": "M001", "pattern": "-는", "tense": "presente/habitual", "use": "verbo de acción", "example": "뛰는 사람" },
+        { "id": "M002", "pattern": "-(으)ㄴ", "tense": "pasado (V) / presente (Adj)", "use": "V pasado o Adj presente", "example": "먹은 음식 / 큰 집" },
+        { "id": "M003", "pattern": "-(으)ㄹ", "tense": "futuro/potencial", "use": "acción por hacer o hipotética", "example": "갈 곳 / 먹을 것" },
+        { "id": "M004", "pattern": "-던", "tense": "pasado habitual/interrumpido", "use": "solía / estaba (ya no)", "example": "자주 가던 카페" },
+        { "id": "M005", "pattern": "-았/었던", "tense": "pasado completado", "use": "acción terminada con contraste", "example": "다녔던 학교" },
+        { "id": "M007-N-인", "pattern": "N + 인 / N + 이었던", "tense": "presente / pasado", "use": "이다 en forma modificadora", "example": "의사인 친구" }
+      ],
+      "functionalNouns": [
+        { "noun": "것/거", "use": "cosa / hecho de" },
+        { "noun": "곳", "use": "lugar" },
+        { "noun": "때", "use": "momento / cuando" },
+        { "noun": "사람", "use": "persona" },
+        { "noun": "적", "use": "experiencia" },
+        { "noun": "줄", "use": "saber cómo / forma de" },
+        { "noun": "만큼", "use": "tanto como" },
+        { "noun": "데", "use": "lugar / situación" },
+        { "noun": "뿐", "use": "solo / únicamente" }
+      ]
+    }
+  },
+
+  "topik": {
+    "1": {
+      "name": "Principiante",
+      "exam": "TOPIK I",
+      "objective": "Presentarse, pedir, ubicar, hablar rutinas, números, preferencias básicas",
+      "structuresBase": 32,
+      "structuresSuppl": 18,
+      "themes": [
+        {
+          "id": "n1-particles",
+          "title": "Partículas básicas",
+          "importance": "critical",
+          "items": [
+            { "id": "G002", "ko": "은/는", "type": "particle", "fn": "topic", "stars": "★★★", "es": "Marca el tema; implica contraste implícito" },
+            { "id": "G003", "ko": "이/가", "type": "particle", "fn": "subject", "stars": "★★★", "es": "Marca el sujeto; presenta info nueva o enfatiza" },
+            { "id": "G004", "ko": "을/를", "type": "particle", "fn": "object", "stars": "★★★", "es": "Objeto directo del verbo transitivo" },
+            { "id": "G005", "ko": "에", "type": "particle", "fn": "location-static/destination/time", "stars": "★★★", "es": "Lugar estático, destino o tiempo" },
+            { "id": "G006", "ko": "에서", "type": "particle", "fn": "location-action/origin", "stars": "★★★", "es": "Lugar donde ocurre la acción / origen" },
+            { "id": "G007", "ko": "와/과 · 하고 · (이)랑", "type": "particle", "fn": "and/with", "stars": "★★", "es": "Conecta sustantivos; varía por registro" },
+            { "id": "G008", "ko": "도", "type": "particle", "fn": "also", "stars": "★★★", "es": "También / tampoco" },
+            { "id": "G009", "ko": "만", "type": "particle", "fn": "only", "stars": "★★", "es": "Solo / únicamente" },
+            { "id": "G010", "ko": "의", "type": "particle", "fn": "possessive", "stars": "★★", "es": "De — posesión o relación" },
+            { "id": "G011", "ko": "에게 · 한테 · 께", "type": "particle", "fn": "indirect-object", "stars": "★★★", "es": "A alguien (께 honorífico)" },
+            { "id": "G025", "ko": "(으)로", "type": "particle", "fn": "direction/means", "stars": "★★★", "es": "Dirección, medio, herramienta o causa" },
+            { "id": "G133", "ko": "부터 · 까지", "type": "particle", "fn": "range", "stars": "★★", "es": "Desde / hasta" },
+            { "id": "G134", "ko": "마다", "type": "particle", "fn": "distributive", "stars": "★★", "es": "Cada, todos los" },
+            { "id": "G135", "ko": "(이)나", "type": "particle", "fn": "disjunctive/approx", "stars": "★★", "es": "O entre N; aproximación con números" }
+          ]
+        },
+        {
+          "id": "n1-be-exist",
+          "title": "Ser y existir",
+          "importance": "critical",
+          "items": [
+            { "id": "G001", "ko": "이다 / 아니다", "type": "copula", "fn": "be/not-be", "stars": "★★★", "es": "Ser/no ser (이에요/예요/입니다)" },
+            { "id": "G027", "ko": "있다 / 없다", "type": "verb", "fn": "exist/possess", "stars": "★★★", "es": "Hay, está, tener / no hay" },
+            { "id": "G028", "ko": "좋아하다 / 싫어하다", "type": "verb", "fn": "like/dislike", "stars": "★★★", "es": "Gustar / no gustar (verbo activo, OD con 을/를)" }
+          ]
+        },
+        {
+          "id": "n1-conjugation",
+          "title": "Conjugación esencial",
+          "importance": "critical",
+          "items": [
+            { "id": "G012", "ko": "-아/어요", "type": "ending", "fn": "present-polite", "stars": "★★★", "es": "Presente educado cotidiano" },
+            { "id": "G013", "ko": "-았/었어요", "type": "ending", "fn": "past-polite", "stars": "★★★", "es": "Pasado educado" },
+            { "id": "G014", "ko": "-(으)ㄹ 거예요", "type": "ending", "fn": "future/suppos", "stars": "★★★", "es": "Futuro / suposición / intención" },
+            { "id": "G018", "ko": "-(으)세요", "type": "ending", "fn": "imperative-polite/honorific-present", "stars": "★★★", "es": "Mandato educado / presente honorífico" },
+            { "id": "G139", "ko": "-ㅂ/습니다", "type": "ending", "fn": "formal", "stars": "★★★", "es": "Registro formal 합쇼체" }
+          ]
+        },
+        {
+          "id": "n1-negation",
+          "title": "Negación",
+          "importance": "critical",
+          "items": [
+            { "id": "G015", "ko": "안 + V / -지 않다", "type": "negation", "fn": "negation-choice", "stars": "★★★", "es": "No (por elección)" },
+            { "id": "G016", "ko": "못 + V / -지 못하다", "type": "negation", "fn": "negation-inability", "stars": "★★★", "es": "No poder (por incapacidad)" },
+            { "id": "G143", "ko": "안 vs 못 (repaso)", "type": "negation", "fn": "compare", "stars": "★★", "es": "Diferencia entre elección e incapacidad" }
+          ]
+        },
+        {
+          "id": "n1-conjunctions",
+          "title": "Conjunciones básicas",
+          "importance": "frequent",
+          "items": [
+            { "id": "G019", "ko": "-고", "type": "conj", "fn": "and/then", "stars": "★★★", "es": "Y / y luego" },
+            { "id": "G020", "ko": "-아/어서", "type": "conj", "fn": "cause/sequence", "stars": "★★★", "es": "Causa natural + secuencia inseparable" },
+            { "id": "G021", "ko": "-지만", "type": "conj", "fn": "but", "stars": "★★★", "es": "Pero / aunque" },
+            { "id": "G022", "ko": "-(으)면", "type": "conj", "fn": "if/when", "stars": "★★★", "es": "Si / cuando (condicional)" },
+            { "id": "G026", "ko": "-ㄴ/는데", "type": "conj", "fn": "context/contrast-soft", "stars": "★★★", "es": "Contexto de fondo o contraste suave" }
+          ]
+        },
+        {
+          "id": "n1-modals-wishes",
+          "title": "Modales, deseos y reacciones",
+          "importance": "frequent",
+          "items": [
+            { "id": "G017", "ko": "-고 싶다", "type": "ending", "fn": "want", "stars": "★★★", "es": "Querer (1ª persona)" },
+            { "id": "G023", "ko": "-고 있다", "type": "ending", "fn": "progressive", "stars": "★★★", "es": "Aspecto progresivo (gerundio)" },
+            { "id": "G024", "ko": "-(으)러 가다/오다", "type": "ending", "fn": "purpose-movement", "stars": "★★", "es": "Ir/venir a hacer (propósito de movimiento)" },
+            { "id": "G029", "ko": "-(으)ㄴ 적이 있다/없다", "type": "ending", "fn": "experience", "stars": "★★", "es": "Haber (alguna vez) hecho" },
+            { "id": "G126", "ko": "-겠어요", "type": "ending", "fn": "supposition/intention", "stars": "★★", "es": "Suposición o intención firme" },
+            { "id": "G127", "ko": "-(으)ㄹ래요?", "type": "ending", "fn": "offer/wish", "stars": "★★", "es": "¿Quieres? / Me gustaría" },
+            { "id": "G128", "ko": "-네요", "type": "ending", "fn": "realization", "stars": "★★", "es": "Sorpresa o descubrimiento" },
+            { "id": "G129", "ko": "-지요?/-죠?", "type": "ending", "fn": "confirmation", "stars": "★★", "es": "¿Verdad que…?" },
+            { "id": "G136", "ko": "-아/어도 되다", "type": "ending", "fn": "permission", "stars": "★★★", "es": "Se puede / ¿puedo?" },
+            { "id": "G137", "ko": "-지 않아도 되다", "type": "ending", "fn": "no-need", "stars": "★★", "es": "No hace falta" },
+            { "id": "G138", "ko": "-아/어 드리다", "type": "aux", "fn": "benefit-honorific", "stars": "★★", "es": "Hacer algo para alguien (honorífico de 주다)" }
+          ]
+        },
+        {
+          "id": "n1-lexical-core",
+          "title": "Léxico estructural del nivel",
+          "importance": "critical",
+          "items": [
+            { "id": "G030", "ko": "의문사", "type": "lex", "stars": "★★★", "es": "Interrogativos esenciales: 뭐/무엇, 누구, 어디, 언제, 어떻게, 왜, 얼마, 몇, 어느, 어떤" },
+            { "id": "G031", "ko": "숫자", "type": "lex", "stars": "★★★", "es": "Números: sino-coreanos (한자어) + nativos (고유어)" },
+            { "id": "G032", "ko": "시간 표현", "type": "lex", "stars": "★★★", "es": "Expresiones de tiempo: horas, días, 오늘/어제/내일, 매일, 가끔, 항상" },
+            { "id": "G130", "ko": "이 / 그 / 저", "type": "lex", "fn": "demonstratives", "stars": "★★★", "es": "Sistema de 3 distancias (este/ese/aquel)" },
+            { "id": "G131", "ko": "위치어", "type": "lex", "fn": "location-words", "stars": "★★★", "es": "위/아래/앞/뒤/옆/안/밖/사이/근처/오른쪽/왼쪽" },
+            { "id": "G132", "ko": "수 분류사", "type": "lex", "fn": "counters", "stars": "★★★", "es": "Contadores (개, 명, 분, 권, 장, 마리, 병, 잔, 대, 번, 층, 살, 시…)" },
+            { "id": "G140", "ko": "인사 표현", "type": "lex", "stars": "★★★", "es": "Saludos y despedidas: 안녕하세요/가세요/계세요, 감사합니다, 죄송합니다…" },
+            { "id": "G141", "ko": "얼마나 걸려요?", "type": "expr", "stars": "★★", "es": "¿Cuánto se tarda?" },
+            { "id": "G142", "ko": "N(이)랑 / 하고 + 같이 / 함께", "type": "expr", "stars": "★★", "es": "Juntos con (compañía)" }
+          ]
+        }
+      ]
+    },
+
+    "2": {
+      "name": "Principiante avanzado",
+      "exam": "TOPIK I",
+      "objective": "Habilidad, obligación, planes, propuestas, propósito, nominalización, discurso indirecto básico, pasiva básica",
+      "structuresBase": 26,
+      "structuresSuppl": 17,
+      "themes": [
+        {
+          "id": "n2-ability-permission",
+          "title": "Habilidad y permiso",
+          "importance": "critical",
+          "items": [
+            { "id": "G033", "ko": "-(으)ㄹ 수 있다/없다", "type": "expr", "fn": "ability", "stars": "★★★", "es": "Poder / no poder" }
+          ]
+        },
+        {
+          "id": "n2-time-sequence",
+          "title": "Tiempo y secuencia",
+          "importance": "critical",
+          "items": [
+            { "id": "G034", "ko": "-(으)ㄹ 때", "type": "expr", "fn": "when", "stars": "★★★", "es": "Cuando / en el momento de" },
+            { "id": "G035", "ko": "-기 전에", "type": "expr", "fn": "before", "stars": "★★★", "es": "Antes de hacer" },
+            { "id": "G036", "ko": "-(으)ㄴ 후에/다음에", "type": "expr", "fn": "after", "stars": "★★★", "es": "Después de hacer" },
+            { "id": "G048", "ko": "-는 동안", "type": "expr", "fn": "while", "stars": "★★", "es": "Mientras / durante (sujetos pueden diferir)" },
+            { "id": "G145", "ko": "-고 나서 / -고 나면", "type": "expr", "fn": "after-complete", "stars": "★★", "es": "Después de completar del todo" }
+          ]
+        },
+        {
+          "id": "n2-nominalization-conjecture",
+          "title": "Nominalización y conjetura",
+          "importance": "critical",
+          "items": [
+            { "id": "G037", "ko": "-는 것", "type": "nominal", "fn": "nominalization", "stars": "★★★", "es": "El hecho de hacer (게/걸/건 contracciones)" },
+            { "id": "G050", "ko": "-(으)ㄴ/는 것 같다", "type": "expr", "fn": "seems", "stars": "★★★", "es": "Parece que / creo que" },
+            { "id": "G154", "ko": "-(으)ㄴ/는 모양이다", "type": "expr", "fn": "deduction-evidence", "stars": "★★", "es": "Al parecer (por evidencia)" }
+          ]
+        },
+        {
+          "id": "n2-obligation",
+          "title": "Obligación, prohibición, suficiencia",
+          "importance": "critical",
+          "items": [
+            { "id": "G040", "ko": "-아/어야 하다/되다", "type": "expr", "fn": "obligation", "stars": "★★★", "es": "Tener que / deber" },
+            { "id": "G041", "ko": "-(으)면 되다", "type": "expr", "fn": "suffice", "stars": "★★★", "es": "Basta con" },
+            { "id": "G042", "ko": "-(으)면 안 되다", "type": "expr", "fn": "prohibition", "stars": "★★★", "es": "No se puede / está prohibido" },
+            { "id": "G156", "ko": "-(으)ㄹ 필요가 있다/없다", "type": "expr", "fn": "necessity", "stars": "★★", "es": "Hace falta / no hace falta" }
+          ]
+        },
+        {
+          "id": "n2-intention",
+          "title": "Intención, propuesta, decisión",
+          "importance": "critical",
+          "items": [
+            { "id": "G043", "ko": "-(으)ㄹ게요", "type": "ending", "fn": "promise/1p-intent", "stars": "★★★", "es": "Promesa al oyente / decisión del momento" },
+            { "id": "G044", "ko": "-(으)ㄹ까요?", "type": "ending", "fn": "propose/uncertain", "stars": "★★★", "es": "¿Hacemos…? / ¿será que…?" },
+            { "id": "G047", "ko": "-(으)려고 (하다)", "type": "expr", "fn": "intention", "stars": "★★★", "es": "Con la intención de / para" }
+          ]
+        },
+        {
+          "id": "n2-auxiliaries",
+          "title": "Auxiliares del nivel",
+          "importance": "critical",
+          "items": [
+            { "id": "G038", "ko": "-아/어 보다", "type": "aux", "fn": "try/experience", "stars": "★★★", "es": "Intentar / probar" },
+            { "id": "G039", "ko": "-아/어 주다", "type": "aux", "fn": "favor", "stars": "★★★", "es": "Hacer algo para alguien (favor)" },
+            { "id": "G146", "ko": "-아/어 버리다", "type": "aux", "fn": "completion-emotion", "stars": "★★", "es": "Completar con alivio o lamento" },
+            { "id": "G147", "ko": "-아/어 놓다 / -아/어 두다", "type": "aux", "fn": "leave-prepared", "stars": "★★", "es": "Dejar preparado / hecho" }
+          ]
+        },
+        {
+          "id": "n2-cause-comparison",
+          "title": "Causa, contraste, comparación",
+          "importance": "frequent",
+          "items": [
+            { "id": "G045", "ko": "-(으)니까", "type": "conj", "fn": "cause-emphatic", "stars": "★★★", "es": "Porque (admite imperativo y pasado)" },
+            { "id": "G055", "ko": "때문에 / 기 때문에", "type": "conj", "fn": "cause-formal", "stars": "★★", "es": "A causa de (más formal)" },
+            { "id": "G046", "ko": "-거나", "type": "conj", "fn": "or-VAdj", "stars": "★★", "es": "O (entre verbos/adjetivos)" },
+            { "id": "G052", "ko": "-처럼 / -같이", "type": "particle", "fn": "like", "stars": "★★", "es": "Como, igual que" },
+            { "id": "G053", "ko": "-보다", "type": "particle", "fn": "comparison", "stars": "★★", "es": "Más que (comparación)" }
+          ]
+        },
+        {
+          "id": "n2-indirect-questions",
+          "title": "Preguntas indirectas y matices",
+          "importance": "frequent",
+          "items": [
+            { "id": "G049", "ko": "-(으)ㄴ/는지", "type": "expr", "fn": "indirect-question", "stars": "★★★", "es": "Si / cuándo / qué (subordinadas)" },
+            { "id": "G057", "ko": "-(으)ㄴ/는데요", "type": "ending", "fn": "soft-context", "stars": "★★", "es": "Entonación suavizadora cotidiana" },
+            { "id": "G058", "ko": "얼마나", "type": "adv", "fn": "how-much/many", "stars": "★★", "es": "¿Cuánto / qué tan…?" },
+            { "id": "G054", "ko": "에 대해(서)", "type": "expr", "fn": "about", "stars": "★★", "es": "Sobre, acerca de" }
+          ]
+        },
+        {
+          "id": "n2-advanced-nuances",
+          "title": "Reacciones y matices",
+          "importance": "frequent",
+          "items": [
+            { "id": "G144", "ko": "-(으)ㄹ까 봐", "type": "expr", "fn": "fear/precaution", "stars": "★★", "es": "Por miedo a que" },
+            { "id": "G148", "ko": "-더라도", "type": "conj", "fn": "concession-hypo", "stars": "★★", "es": "Aunque (hipotético fuerte)" },
+            { "id": "G149", "ko": "-(으)ㄹ지도 모르다", "type": "expr", "fn": "maybe", "stars": "★★", "es": "Puede que, quizás" },
+            { "id": "G150", "ko": "-잖아요", "type": "ending", "fn": "shared-info", "stars": "★★", "es": "Es que / ya sabe" },
+            { "id": "G151", "ko": "-군요 / -구나", "type": "ending", "fn": "realization-calm", "stars": "★★", "es": "Ah, ya veo (descubrimiento)" },
+            { "id": "G152", "ko": "-더라고요", "type": "ending", "fn": "experiential", "stars": "★★", "es": "Resultó que (experiencia directa)" },
+            { "id": "G153", "ko": "-(으)ㄹ 만큼", "type": "expr", "fn": "as-much-as", "stars": "★★", "es": "Tanto como" },
+            { "id": "G155", "ko": "-기 쉽다/어렵다", "type": "expr", "fn": "easy/hard-to", "stars": "★★", "es": "Es fácil/difícil + infinitivo" }
+          ]
+        },
+        {
+          "id": "n2-passive-basics",
+          "title": "Pasiva básica y otros",
+          "importance": "frequent",
+          "items": [
+            { "id": "G157", "ko": "피동사 (이/히/리/기)", "type": "voice", "fn": "passive-basic", "stars": "★★", "es": "Pasiva morfológica básica (보이다, 들리다, 닫히다, 열리다, 잡히다)" },
+            { "id": "G158", "ko": "아무 N(이)나 / 아무 N도", "type": "expr", "fn": "any/none", "stars": "★★", "es": "Cualquiera / ninguno" },
+            { "id": "G159", "ko": "(이)라도", "type": "particle", "fn": "at-least", "stars": "★★", "es": "Aunque solo sea / al menos" },
+            { "id": "G160", "ko": "-다고요? / -(이)라고요?", "type": "ending", "fn": "echo-surprise", "stars": "★★", "es": "¿Que…? (repetir con sorpresa)" }
+          ]
+        },
+        {
+          "id": "n2-misc",
+          "title": "Cambio y adverbios temporales",
+          "importance": "frequent",
+          "items": [
+            { "id": "G051", "ko": "이/가 되다", "type": "verb", "fn": "become", "stars": "★★", "es": "Convertirse en, llegar a ser" },
+            { "id": "G056", "ko": "아직 / 벌써 / 이미", "type": "adv", "fn": "still/already", "stars": "★★", "es": "Todavía / ya (más pronto) / ya (consumado)" }
+          ]
+        }
+      ]
+    },
+
+    "3": {
+      "name": "Intermedio",
+      "exam": "TOPIK II",
+      "objective": "Cambio de estado, propósito formal, conjetura matizada, pasiva/causativa completa, procesos",
+      "structuresBase": 21,
+      "structuresSuppl": 11,
+      "themes": [
+        {
+          "id": "n3-change-state",
+          "title": "Cambio de estado",
+          "importance": "critical",
+          "items": [
+            { "id": "G059", "ko": "-게 되다", "type": "expr", "fn": "come-to/end-up", "stars": "★★★", "es": "Llegar a / acabar (no intencional)" },
+            { "id": "G066", "ko": "-아/어지다", "type": "expr", "fn": "become-gradual", "stars": "★★★", "es": "Ponerse / volverse (adj → cambio gradual)" },
+            { "id": "G073", "ko": "-아/어 있다", "type": "aux", "fn": "resultant-state", "stars": "★★★", "es": "Estado resultante (estar + participio)" },
+            { "id": "G070", "ko": "-아/어 보이다", "type": "expr", "fn": "look-like", "stars": "★★", "es": "Parecer visualmente / verse" }
+          ]
+        },
+        {
+          "id": "n3-cause-purpose",
+          "title": "Causa, propósito, dependencia",
+          "importance": "critical",
+          "items": [
+            { "id": "G062", "ko": "-기 때문에", "type": "conj", "fn": "cause-formal", "stars": "★★★", "es": "Porque (formal, admite imperativo y pasado)" },
+            { "id": "G061", "ko": "-(으)면서", "type": "conj", "fn": "while-same-subject", "stars": "★★★", "es": "Mientras (mismo sujeto)" },
+            { "id": "G063", "ko": "-(으)ㄹ 수밖에 없다", "type": "expr", "fn": "no-choice", "stars": "★★", "es": "No tener más remedio que" },
+            { "id": "G068", "ko": "-기 위해(서) / -을/를 위해(서)", "type": "expr", "fn": "purpose-formal", "stars": "★★★", "es": "Para / con el fin de (formal)" },
+            { "id": "G067", "ko": "에 따라(서)", "type": "expr", "fn": "according-to", "stars": "★★", "es": "Según / dependiendo de" },
+            { "id": "G170", "ko": "에 비해(서)", "type": "expr", "fn": "compared-to", "stars": "★★", "es": "En comparación con" }
+          ]
+        },
+        {
+          "id": "n3-conjecture",
+          "title": "Conjetura matizada",
+          "importance": "critical",
+          "items": [
+            { "id": "G069", "ko": "-(으)ㄹ 것 같다", "type": "expr", "fn": "future-conjecture", "stars": "★★★", "es": "Parece que va a / creo que" },
+            { "id": "G071", "ko": "-(으)ㄴ/는 것처럼", "type": "expr", "fn": "as-if", "stars": "★★", "es": "Como si / igual que" },
+            { "id": "G072", "ko": "-(으)면 좋겠다", "type": "expr", "fn": "wish", "stars": "★★★", "es": "Ojalá / me gustaría que" },
+            { "id": "G168", "ko": "-(으)ㄴ/는 줄 알다/몰랐다", "type": "expr", "fn": "mistaken-belief", "stars": "★★", "es": "Pensé que / no sabía que (creencia errónea)" },
+            { "id": "G169", "ko": "-기 마련이다", "type": "expr", "fn": "natural-inevitability", "stars": "★★", "es": "Es lo natural / naturalmente sucede" }
+          ]
+        },
+        {
+          "id": "n3-tendency-decision",
+          "title": "Tendencia, decisión, capacidad",
+          "importance": "frequent",
+          "items": [
+            { "id": "G064", "ko": "-기로 하다", "type": "expr", "fn": "decide-to", "stars": "★★", "es": "Decidir / quedar en" },
+            { "id": "G065", "ko": "-(으)ㄴ/는 편이다", "type": "expr", "fn": "tendency", "stars": "★★", "es": "Tender a / ser más bien" },
+            { "id": "G074", "ko": "-(으)ㄹ 줄 알다/모르다", "type": "expr", "fn": "know-how", "stars": "★★", "es": "Saber/no saber cómo hacer" },
+            { "id": "G060", "ko": "-도록", "type": "conj", "fn": "purpose/extent", "stars": "★★", "es": "Para que / hasta que / de modo que" },
+            { "id": "G079", "ko": "-자마자", "type": "conj", "fn": "as-soon-as", "stars": "★★", "es": "En cuanto / tan pronto como" },
+            { "id": "G078", "ko": "-(으)ㄴ 지", "type": "expr", "fn": "time-elapsed", "stars": "★★", "es": "Hace cuánto tiempo que / desde que" }
+          ]
+        },
+        {
+          "id": "n3-concession-restriction",
+          "title": "Concesión y restricción",
+          "importance": "frequent",
+          "items": [
+            { "id": "G076", "ko": "-아/어도", "type": "conj", "fn": "even-if", "stars": "★★", "es": "Aunque / incluso si" },
+            { "id": "G077", "ko": "-(으)ㄴ/는데도", "type": "conj", "fn": "despite", "stars": "★★", "es": "A pesar de que (con sorpresa)" },
+            { "id": "G075", "ko": "밖에 + neg", "type": "particle", "fn": "only-with-lament", "stars": "★★", "es": "Solo / nada más que (con insuficiencia)" }
+          ]
+        },
+        {
+          "id": "n3-passive-causative",
+          "title": "Pasiva y causativa completas",
+          "importance": "critical",
+          "items": [
+            { "id": "G161", "ko": "피동 (이/히/리/기)", "type": "voice", "fn": "passive-full", "stars": "★★★", "es": "Pasiva morfológica exhaustiva por sufijo" },
+            { "id": "G162", "ko": "사동 (이/히/리/기/우/추)", "type": "voice", "fn": "causative-full", "stars": "★★★", "es": "Causativa morfológica (먹이다/입히다/웃기다/재우다/낮추다)" }
+          ]
+        },
+        {
+          "id": "n3-process-discovery",
+          "title": "Procesos y descubrimientos",
+          "importance": "frequent",
+          "items": [
+            { "id": "G163", "ko": "-(으)려다가", "type": "conj", "fn": "intent-abandoned", "stars": "★★", "es": "Iba a hacer pero al final no" },
+            { "id": "G164", "ko": "-다 보면", "type": "expr", "fn": "if-keep-doing", "stars": "★★", "es": "Si sigues haciendo, eventualmente" },
+            { "id": "G165", "ko": "-다 보니", "type": "expr", "fn": "while-doing-realized", "stars": "★★", "es": "Mientras lo hacía me di cuenta / resultó que" },
+            { "id": "G166", "ko": "-아/어 대다", "type": "aux", "fn": "excessive-repetition", "stars": "★", "es": "Hacer en exceso o repetidamente (irritación)" },
+            { "id": "G167", "ko": "-고 말다", "type": "aux", "fn": "ended-up-doing", "stars": "★★", "es": "Acabar haciendo (no deseado)" },
+            { "id": "G171", "ko": "-는다면 / -(이)라면", "type": "conj", "fn": "if-hypothetical", "stars": "★★", "es": "Si (suposición hipotética)" }
+          ]
+        }
+      ]
+    },
+
+    "4": {
+      "name": "Intermedio alto",
+      "exam": "TOPIK II",
+      "objective": "Discurso indirecto completo, matices de contraste, suposición sofisticada, arrepentimiento, registros formales",
+      "structuresBase": 18,
+      "structuresSuppl": 14,
+      "themes": [
+        {
+          "id": "n4-indirect-speech",
+          "title": "Discurso indirecto (núcleo)",
+          "importance": "critical",
+          "items": [
+            { "id": "G089", "ko": "-다고 하다", "type": "indirect", "fn": "report-statement", "stars": "★★★", "es": "Dijo que (afirmación)" },
+            { "id": "G090", "ko": "-(으)라고 하다", "type": "indirect", "fn": "report-command", "stars": "★★★", "es": "Dijo que (mandato)" },
+            { "id": "G091", "ko": "-냐고 하다 / -(으)냐고 묻다", "type": "indirect", "fn": "report-question", "stars": "★★★", "es": "Preguntó si / qué" },
+            { "id": "G092", "ko": "-자고 하다", "type": "indirect", "fn": "report-suggestion", "stars": "★★★", "es": "Propuso que" },
+            { "id": "G177", "ko": "-다면서요?", "type": "ending", "fn": "verify-heard", "stars": "★★", "es": "¿Es verdad que (oí que)…?" }
+          ]
+        },
+        {
+          "id": "n4-additive-contrastive",
+          "title": "Aditivas y contrastivas",
+          "importance": "critical",
+          "items": [
+            { "id": "G080", "ko": "-(으)ㄹ 뿐만 아니라", "type": "conj", "fn": "not-only", "stars": "★★★", "es": "No solo… sino también" },
+            { "id": "G081", "ko": "-는 반면에", "type": "conj", "fn": "while-contrast", "stars": "★★", "es": "Mientras que / en cambio" },
+            { "id": "G082", "ko": "-에도 불구하고", "type": "expr", "fn": "despite-formal", "stars": "★★", "es": "A pesar de / pese a (formal)" },
+            { "id": "G083", "ko": "-(으)ㄹ수록", "type": "expr", "fn": "the-more", "stars": "★★★", "es": "Cuanto más… más…" },
+            { "id": "G084", "ko": "-는 한", "type": "conj", "fn": "as-long-as", "stars": "★★", "es": "Siempre que / mientras / en la medida en que" },
+            { "id": "G088", "ko": "-(으)ㄴ/는 데다가", "type": "conj", "fn": "additive-accum", "stars": "★★", "es": "Además / encima de eso" },
+            { "id": "G179", "ko": "-(으)ㄹ 뿐더러", "type": "conj", "fn": "not-only-formal", "stars": "★", "es": "No solo… sino además (formal)" },
+            { "id": "G180", "ko": "-(으)ㄴ/는 한편", "type": "conj", "fn": "on-the-other-hand", "stars": "★★", "es": "Por un lado / mientras tanto" },
+            { "id": "G182", "ko": "은/는 물론이고", "type": "expr", "fn": "of-course-and", "stars": "★★", "es": "Por supuesto… y además" }
+          ]
+        },
+        {
+          "id": "n4-cause-negative",
+          "title": "Causa con resultado inesperado",
+          "importance": "frequent",
+          "items": [
+            { "id": "G085", "ko": "-는 바람에", "type": "conj", "fn": "cause-unexpected-neg", "stars": "★★", "es": "A causa de (resultado inesperado negativo)" },
+            { "id": "G183", "ko": "-는 통에", "type": "conj", "fn": "in-the-chaos-of", "stars": "★", "es": "En el caos de (situación caótica)" }
+          ]
+        },
+        {
+          "id": "n4-suppos-regret",
+          "title": "Suposición y arrepentimiento",
+          "importance": "frequent",
+          "items": [
+            { "id": "G086", "ko": "-(으)ㄹ 텐데", "type": "expr", "fn": "suppos-background", "stars": "★★", "es": "Supongo que / debe de ser" },
+            { "id": "G095", "ko": "-(으)ㄹ 리가 없다", "type": "expr", "fn": "impossible-that", "stars": "★★", "es": "Es imposible que / no puede ser" },
+            { "id": "G178", "ko": "-(으)ㄹ걸 그랬다", "type": "expr", "fn": "should-have", "stars": "★★", "es": "Debería haber" },
+            { "id": "G176", "ko": "-(으)ㄴ/는 것을 보니", "type": "expr", "fn": "judging-by", "stars": "★★", "es": "Viendo que / juzgando por" }
+          ]
+        },
+        {
+          "id": "n4-change-modes",
+          "title": "Cambio, modos y conformidad",
+          "importance": "frequent",
+          "items": [
+            { "id": "G087", "ko": "-다가", "type": "conj", "fn": "while-interrupted", "stars": "★★", "es": "Estaba haciendo X y luego" },
+            { "id": "G094", "ko": "-(으)ㄴ/는 척하다", "type": "expr", "fn": "pretend", "stars": "★★", "es": "Fingir / hacer como si" },
+            { "id": "G096", "ko": "-게 하다", "type": "expr", "fn": "causative-periphrastic", "stars": "★★", "es": "Hacer que alguien haga" },
+            { "id": "G097", "ko": "-(으)ㄴ/는 대로", "type": "expr", "fn": "as/right-after", "stars": "★★", "es": "Tal como / en cuanto" },
+            { "id": "G093", "ko": "-(으)ㄹ 만하다", "type": "expr", "fn": "worth/tolerable", "stars": "★★", "es": "Vale la pena / es tolerable" }
+          ]
+        },
+        {
+          "id": "n4-extreme-comparison",
+          "title": "Extremo, semejanza, formalidad",
+          "importance": "frequent",
+          "items": [
+            { "id": "G172", "ko": "-(으)ㄹ 정도로 / -(으)ㄹ 정도이다", "type": "expr", "fn": "to-the-extent", "stars": "★★", "es": "Hasta el punto de / tan… que" },
+            { "id": "G173", "ko": "-(으)ㄹ 듯하다 / -(으)ㄹ 듯이", "type": "expr", "fn": "as-if/seem-to", "stars": "★★", "es": "Como si fuera a / aparentemente" },
+            { "id": "G175", "ko": "-기에 앞서", "type": "expr", "fn": "before-formal", "stars": "★", "es": "Antes de (formal)" }
+          ]
+        },
+        {
+          "id": "n4-role-counterfactual",
+          "title": "Rol, instrumento, contrafactual",
+          "importance": "frequent",
+          "items": [
+            { "id": "G174", "ko": "-(으)로서 / -(으)로써", "type": "particle", "fn": "as-role/by-means", "stars": "★★★", "es": "Como (rol) / mediante (instrumento) — ¡distinción TOPIK!" },
+            { "id": "G181", "ko": "-았/었더라면", "type": "conj", "fn": "if-had-counterfactual", "stars": "★★", "es": "Si hubiera (contrafactual pasado)" },
+            { "id": "G184", "ko": "-ㄴ/는다는 것이", "type": "expr", "fn": "intended-but-other", "stars": "★", "es": "Quería hacer A pero sin querer hice B" },
+            { "id": "G185", "ko": "-고서야", "type": "conj", "fn": "only-after", "stars": "★", "es": "Solo después de / no hasta que" }
+          ]
+        }
+      ]
+    },
+
+    "5": {
+      "name": "Avanzado",
+      "exam": "TOPIK II",
+      "objective": "Precisión, evidencialidad, registro formal/literario, argumentación, idiomas estructurales",
+      "structuresBase": 14,
+      "structuresSuppl": 11,
+      "themes": [
+        {
+          "id": "n5-evidentiality",
+          "title": "Evidencialidad y observación",
+          "importance": "critical",
+          "items": [
+            { "id": "G098", "ko": "-더니", "type": "conj", "fn": "observed-result", "stars": "★★", "es": "Observé X → ocurrió Y (esperado)" },
+            { "id": "G099", "ko": "-던", "type": "modifier", "fn": "past-habit-interrupted", "stars": "★★", "es": "Solía / estaba (ya no)" },
+            { "id": "G193", "ko": "-더니만", "type": "conj", "fn": "observed-confirmed", "stars": "★", "es": "Ya decía yo que (énfasis)" }
+          ]
+        },
+        {
+          "id": "n5-concession",
+          "title": "Concesión avanzada",
+          "importance": "frequent",
+          "items": [
+            { "id": "G100", "ko": "-(으)ㄹ지언정", "type": "conj", "fn": "rather-than-firm", "stars": "★", "es": "Prefiero X antes que Y (firme)" },
+            { "id": "G107", "ko": "-(으)ㄹ지라도", "type": "conj", "fn": "concession-formal", "stars": "★", "es": "Aunque (formal/literario)" },
+            { "id": "G186", "ko": "-고도", "type": "conj", "fn": "even-after-completed", "stars": "★", "es": "A pesar de haber completado" },
+            { "id": "G187", "ko": "-느니 (차라리)", "type": "conj", "fn": "rather-than", "stars": "★", "es": "Antes que X, prefiero Y" },
+            { "id": "G189", "ko": "-(으)면 몰라도", "type": "expr", "fn": "unless", "stars": "★", "es": "A no ser que / salvo si" },
+            { "id": "G195", "ko": "-다손 치더라도", "type": "conj", "fn": "even-granting", "stars": "★", "es": "Aun concediendo que (formal)" }
+          ]
+        },
+        {
+          "id": "n5-equivalence-limit",
+          "title": "Equivalencia, limitación, suficiencia",
+          "importance": "critical",
+          "items": [
+            { "id": "G101", "ko": "-(으)ㄴ/는 셈이다", "type": "expr", "fn": "amount-to", "stars": "★★", "es": "Equivale a / viene a ser" },
+            { "id": "G104", "ko": "-(으)ㄹ 따름이다", "type": "expr", "fn": "merely", "stars": "★★", "es": "Simplemente / lo único que" },
+            { "id": "G190", "ko": "-(으)ㄹ 뿐이다", "type": "expr", "fn": "only-restriction", "stars": "★★", "es": "No es más que / solo" },
+            { "id": "G111", "ko": "에 불과하다", "type": "expr", "fn": "no-more-than", "stars": "★", "es": "Apenas / no es más que" },
+            { "id": "G191", "ko": "-기 나름이다", "type": "expr", "fn": "depends-on-how", "stars": "★", "es": "Depende de cómo se haga" },
+            { "id": "G192", "ko": "-(으)ㄹ 나위가 없다", "type": "expr", "fn": "needless-to-say", "stars": "★", "es": "Huelga decir que" },
+            { "id": "G194", "ko": "-(으)ㄹ 것 없이", "type": "expr", "fn": "without-needing", "stars": "★", "es": "Sin necesidad de" },
+            { "id": "G196", "ko": "-(으)면 그만이다", "type": "expr", "fn": "enough-to", "stars": "★", "es": "Con eso basta" }
+          ]
+        },
+        {
+          "id": "n5-cause-formal",
+          "title": "Causa formal con matices",
+          "importance": "frequent",
+          "items": [
+            { "id": "G102", "ko": "-기에", "type": "conj", "fn": "cause-formal-observed", "stars": "★★", "es": "Porque (formal, basado en observación)" },
+            { "id": "G103", "ko": "-(으)ㄴ/는 탓에", "type": "conj", "fn": "cause-negative-blame", "stars": "★★", "es": "Por culpa de (lamento)" },
+            { "id": "G110", "ko": "-(으)로 인해(서)", "type": "expr", "fn": "due-to-formal", "stars": "★★", "es": "Debido a (escrito/formal)" },
+            { "id": "G109", "ko": "-고자", "type": "conj", "fn": "with-purpose-formal", "stars": "★", "es": "Con el propósito de (literario)" }
+          ]
+        },
+        {
+          "id": "n5-extreme-frustration",
+          "title": "Extremo y frustración",
+          "importance": "frequent",
+          "items": [
+            { "id": "G105", "ko": "-(으)ㄴ/는 나머지", "type": "expr", "fn": "as-result-of-excess", "stars": "★★", "es": "Tanto que / de tanto" },
+            { "id": "G188", "ko": "-(으)ㄹ 지경이다", "type": "expr", "fn": "on-the-verge", "stars": "★★", "es": "Al borde de / hasta el punto de" },
+            { "id": "G108", "ko": "-는 커녕", "type": "expr", "fn": "far-from", "stars": "★", "es": "Lejos de / al contrario" }
+          ]
+        },
+        {
+          "id": "n5-indifference",
+          "title": "Indiferencia",
+          "importance": "frequent",
+          "items": [
+            { "id": "G106", "ko": "-든지", "type": "conj", "fn": "whether/or", "stars": "★", "es": "Ya sea… o / independientemente de" }
+          ]
+        }
+      ]
+    },
+
+    "6": {
+      "name": "Superior / literario",
+      "exam": "TOPIK II",
+      "objective": "Registro literario, académico, retórico, formas arcaicas, dominio pleno de matices",
+      "structuresBase": 14,
+      "structuresSuppl": 8,
+      "themes": [
+        {
+          "id": "n6-rhetorical-concession",
+          "title": "Concesión retórica y literaria",
+          "importance": "nuance",
+          "items": [
+            { "id": "G197", "ko": "-ㄴ들", "type": "conj", "fn": "rhetorical-concession", "stars": "★", "es": "¿De qué sirve aunque…? (retórico)" },
+            { "id": "G118", "ko": "-(으)ㄹ망정", "type": "conj", "fn": "moral-firmness", "stars": "★", "es": "Aunque sea (con principio moral)" },
+            { "id": "G201", "ko": "-기로서니", "type": "conj", "fn": "merely-because", "stars": "★", "es": "Solo porque… ¿es que?" }
+          ]
+        },
+        {
+          "id": "n6-formal-connectors",
+          "title": "Conectores literarios",
+          "importance": "nuance",
+          "items": [
+            { "id": "G112", "ko": "-(으)로 말미암아", "type": "expr", "fn": "due-to-literary", "stars": "★", "es": "A causa de (literario/arcaico)" },
+            { "id": "G113", "ko": "-(으)ㄴ/는 즉", "type": "conj", "fn": "that-is", "stars": "★", "es": "Es decir / o sea" },
+            { "id": "G198", "ko": "-거니와", "type": "conj", "fn": "not-only-literary", "stars": "★", "es": "No solo… sino también (literario)" },
+            { "id": "G114", "ko": "-는 마당에", "type": "expr", "fn": "given-the-situation", "stars": "★", "es": "En esta situación / dado este punto" },
+            { "id": "G202", "ko": "-는 즉시", "type": "expr", "fn": "as-soon-as-formal", "stars": "★", "es": "En cuanto (formal)" }
+          ]
+        },
+        {
+          "id": "n6-emphasis-assertion",
+          "title": "Énfasis máximo y aserción",
+          "importance": "frequent",
+          "items": [
+            { "id": "G115", "ko": "-(이)야말로", "type": "particle", "fn": "exactly/precisely", "stars": "★★", "es": "Precisamente / justamente / por excelencia" },
+            { "id": "G116", "ko": "-건대 / 생각건대 / 바라건대", "type": "expr", "fn": "in-my-opinion", "stars": "★", "es": "En mi opinión / a mi juicio" },
+            { "id": "G117", "ko": "에 있어서", "type": "expr", "fn": "regarding-formal", "stars": "★★", "es": "En cuanto a / en el ámbito de (formal)" },
+            { "id": "G119", "ko": "-는 법이다", "type": "expr", "fn": "natural-law", "stars": "★★", "es": "Así son las cosas / es lo natural" },
+            { "id": "G120", "ko": "-(으)ㄴ/는 이상", "type": "conj", "fn": "given-that", "stars": "★★", "es": "Ya que / dado que / en tanto que" },
+            { "id": "G121", "ko": "-다시피", "type": "expr", "fn": "as-you-know/almost", "stars": "★", "es": "Como bien sabes / prácticamente" }
+          ]
+        },
+        {
+          "id": "n6-written-archaic",
+          "title": "Registros escritos y arcaicos",
+          "importance": "nuance",
+          "items": [
+            { "id": "G122", "ko": "-ㄴ/는다", "type": "ending", "fn": "narrative-written", "stars": "★★", "es": "Terminación 문어체 (narrativa/escrita)" },
+            { "id": "G123", "ko": "-노라", "type": "ending", "fn": "poetic-archaic", "stars": "★", "es": "Declaración poética arcaica" },
+            { "id": "G200", "ko": "-로다 / -(이)로다", "type": "ending", "fn": "solemn-archaic", "stars": "★", "es": "Declaración solemne arcaica" },
+            { "id": "G124", "ko": "-(으)ㄹ진대", "type": "conj", "fn": "if-formal-hypothetical", "stars": "★", "es": "Si en verdad es así (formal)" },
+            { "id": "G199", "ko": "-(으)련마는 / -(으)련만", "type": "ending", "fn": "wish-frustrated", "stars": "★", "es": "Quisiera… pero (deseo frustrado)" },
+            { "id": "G203", "ko": "-(으)ㄹ쏘냐", "type": "ending", "fn": "rhetorical-archaic", "stars": "★", "es": "Pregunta retórica arcaica" }
+          ]
+        },
+        {
+          "id": "n6-meta-tables",
+          "title": "Tablas comparativas (meta-tema)",
+          "importance": "critical",
+          "items": [
+            { "id": "G125", "ko": "원인 표현 비교", "type": "meta", "fn": "compare-causes", "stars": "★★★", "es": "Tabla de 8 expresiones causales por registro y matiz" },
+            { "id": "G204", "ko": "양보 표현 비교", "type": "meta", "fn": "compare-concessions", "stars": "★★★", "es": "Tabla completa de concesivas: 아/어도 → -(으)련마는" }
+          ]
+        }
+      ]
+    }
+  },
+
+  "auxiliaries": {
+    "file": "auxiliares.md",
+    "importance": "frequent",
+    "introducedAcross": ["TOPIK 2", "TOPIK 3", "TOPIK 4", "TOPIK 5"],
+    "summary": "Verbos auxiliares que se combinan con V principal vía -아/어 para añadir aspecto, modalidad, beneficio o intensidad.",
+    "items": [
+      { "id": "G205", "ko": "-아/어 가다", "fn": "progressive-forward", "stars": "★★", "es": "Continuar progresando hacia el futuro" },
+      { "id": "G206", "ko": "-아/어 오다", "fn": "accumulative-past", "stars": "★★", "es": "Ha venido ocurriendo hasta ahora" },
+      { "id": "G207", "ko": "-아/어 내다", "fn": "achieve-despite", "stars": "★★", "es": "Lograr a pesar de dificultad" },
+      { "id": "G208", "ko": "-아/어 빠지다", "fn": "extreme-negative", "stars": "★", "es": "De lo más X (énfasis negativo)" },
+      { "id": "G209", "ko": "-아/어 치우다", "fn": "dispatch-quickly", "stars": "★", "es": "Acabar de una vez / despachar" },
+      { "id": "G210", "ko": "-아/어 죽겠다", "fn": "hyperbole-extreme", "stars": "★★", "es": "Estoy que me muero de" },
+      { "id": "G211", "ko": "-아/어 봤자 / 봐야", "fn": "useless-result", "stars": "★★", "es": "Aunque lo intentes / por más que" },
+      { "id": "G212", "ko": "-아/어 가지고", "fn": "cause-sequence-colloquial", "stars": "★★", "es": "Y entonces / porque (coloquial)" },
+      { "id": "G213", "ko": "가져가다 / 가져오다 / 데려가다 / 데려오다", "fn": "movement-action", "stars": "★★", "es": "Combinaciones de movimiento + acción: 가져가다 (llevar), 가져오다 (traer), 데려가다 (llevar a alguien), 데려오다 (traer a alguien)" },
+      { "id": "G214", "ko": "-고 보다 / -고 보니까", "fn": "retrospective-discovery", "stars": "★", "es": "Después de hacer me di cuenta" },
+      { "id": "G215", "ko": "-고 말겠다", "fn": "determination-future", "stars": "★", "es": "Lo haré sí o sí (en futuro) — extensión de G167" },
+      { "id": "G216", "ko": "-다(가) 말다", "fn": "leave-halfway", "stars": "★★", "es": "Dejar a medias" },
+      { "id": "G217", "ko": "-지 말다", "fn": "imperative-negative", "stars": "★★★", "es": "Imperativo negativo (마세요, 마, 말자)" },
+      { "id": "G218", "ko": "N 말고", "fn": "not-X-but-Y", "stars": "★★", "es": "No X sino Y" },
+      { "id": "G219", "ko": "-지 그래(요)?", "fn": "soft-suggestion", "stars": "★★", "es": "¿Por qué no haces…?" },
+      { "id": "G220", "ko": "-아/어야지(요)", "fn": "self-exhort/reproach", "stars": "★★", "es": "Tengo que / deberías" },
+      { "id": "G221", "ko": "-았/었어야 했다", "fn": "regret-strong", "stars": "★★", "es": "Debería haber + participio" },
+      { "id": "G222", "ko": "-(으)ㄹ 테니까", "fn": "reason-intent/suppos", "stars": "★★", "es": "Como yo voy a / debe ser que, así que" },
+      { "id": "G223", "ko": "-(으)ㄴ 채(로)", "fn": "in-the-state-of", "stars": "★★", "es": "En el estado de / con X puesto/hecho" },
+      { "id": "G224", "ko": "-(으)ㄴ/는 김에", "fn": "while-youre-at-it", "stars": "★★", "es": "Ya que estás / aprovechando que" },
+      { "id": "G225", "ko": "-(으)ㄴ/는 길에", "fn": "on-the-way", "stars": "★★", "es": "De camino a / en el camino" },
+      { "id": "G226", "ko": "-(으)ㄹ 겸", "fn": "double-purpose", "stars": "★★", "es": "Para X y también para Y" },
+      { "id": "G227", "ko": "-(으)ㄴ 끝에", "fn": "after-prolonged", "stars": "★★", "es": "Después de mucho / tras prolongado" },
+      { "id": "G228", "ko": "-느라(고)", "fn": "because-of-doing", "stars": "★★", "es": "Por estar haciendo (excusa simultánea)" },
+      { "id": "G229", "ko": "-길래", "fn": "reaction-cause-1p", "stars": "★★", "es": "Como vi que… yo (reacción personal)" },
+      { "id": "G230", "ko": "-자", "fn": "as-soon-as-literary", "stars": "★", "es": "En cuanto (literario)" },
+      { "id": "G231", "ko": "-다가는", "fn": "warning-cond", "stars": "★★", "es": "Si sigues haciendo eso… (advertencia)" },
+      { "id": "G232", "ko": "-고서", "fn": "after-emphatic", "stars": "★", "es": "Después de (con énfasis)" },
+      { "id": "G233", "ko": "-다 못해", "fn": "extreme-point", "stars": "★", "es": "Hasta el punto de no poder más" }
+    ]
+  },
+
+  "indirectSpeech": {
+    "file": "discurso_indirecto_completo.md",
+    "importance": "critical",
+    "introducedAt": "TOPIK 4-5",
+    "summary": "Sistema completo de discurso indirecto + contracciones cotidianas (-대요/-래요/-냬요/-재요).",
+    "baseForms": [
+      { "type": "afirmación", "form": "-다고 하다", "tenses": { "presV": "-ㄴ/는다고", "presAdj": "-다고", "이다": "-(이)라고", "past": "-았/었다고", "fut": "-(으)ㄹ 거라고" } },
+      { "type": "pregunta", "form": "-냐고 하다", "rule": "Verbos acción -느냐고/-냐고, Adj -(으)냐고, N -(이)냐고" },
+      { "type": "mandato", "form": "-(으)라고 하다" },
+      { "type": "propuesta", "form": "-자고 하다" }
+    ],
+    "contractions": {
+      "present": [
+        { "from": "-다고 해요", "to": "-대요" },
+        { "from": "-(이)라고 해요", "to": "-(이)래요" },
+        { "from": "-(으)라고 해요", "to": "-(으)래요" },
+        { "from": "-냐고 해요", "to": "-냬요" },
+        { "from": "-자고 해요", "to": "-재요" }
+      ],
+      "past": [
+        { "from": "-다고 했어요", "to": "-댔어요" },
+        { "from": "-(이)라고 했어요", "to": "-(이)랬어요" },
+        { "from": "-(으)라고 했어요", "to": "-(으)랬어요" },
+        { "from": "-자고 했어요", "to": "-쟀어요" }
+      ]
+    },
+    "items": [
+      { "id": "D006", "ko": "-다면서요? / -다며?", "fn": "verify-third-hand", "stars": "★★", "es": "¿Es verdad que oí que…?" },
+      { "id": "D007", "ko": "-다니(요)?", "fn": "surprise-disbelief", "stars": "★★", "es": "¡¿Que…?! / ¿Cómo que…?" },
+      { "id": "D008", "ko": "-다니까(요)", "fn": "emphasis-already-said", "stars": "★★", "es": "¡Ya te dije!" },
+      { "id": "D009", "ko": "-다고(요)?", "fn": "echo-confirm", "stars": "★★", "es": "¿Que…? (repetir con sorpresa)" },
+      { "id": "D010", "ko": "-다는 + N", "fn": "modifier-quoted", "stars": "★★", "es": "La N de que… / el rumor de que…" },
+      { "id": "D011", "ko": "-다고 + 생각하다/믿다/듣다/보다/알다/느끼다/여기다", "fn": "with-cognition-verbs", "stars": "★★★", "es": "Pensar/creer/escuchar/considerar que" },
+      { "id": "D013", "ko": "-다고 해서", "fn": "indirect-cause", "stars": "★★", "es": "Porque dicen que" },
+      { "id": "D014", "ko": "-다고 해도", "fn": "indirect-concession", "stars": "★★", "es": "Aunque digan que" },
+      { "id": "D015", "ko": "-다는 게", "fn": "nominalized-quote", "stars": "★", "es": "Lo de que… / la cosa de que" },
+      { "id": "D016", "ko": "-다는데 / -다더라 / -다더니 / -다더라고요", "fn": "indirect-extensions", "stars": "★★", "es": "Combinaciones con -는데 y testimonios" },
+      { "id": "D017", "ko": "-다고 할까 봐 / -다고 할 줄 알았다", "fn": "with-uncertainty", "stars": "★", "es": "Por miedo a que digan / pensé que diría" }
+    ]
+  },
+
+  "additionalGrammar": {
+    "file": "gramatica_adicional.md",
+    "importance": "nuance",
+    "introducedAcross": ["TOPIK 4", "TOPIK 5", "TOPIK 6"],
+    "summary": "Inferencia, terminaciones informales con matiz, conjuntivas avanzadas, patrones especiales, sufijos -답다/-스럽다.",
+    "items": [
+      { "id": "G234", "ko": "-나 보다", "fn": "conjecture-V", "stars": "★★", "es": "Parece que (verbos de acción)" },
+      { "id": "G235", "ko": "-(으)ㄴ가 보다", "fn": "conjecture-Adj/past", "stars": "★★", "es": "Parece que (adjetivos / pasado)" },
+      { "id": "G236", "ko": "-(으)ㄹ까 싶다", "fn": "wonder-vacillate", "stars": "★", "es": "Me pregunto si / estoy pensando en" },
+      { "id": "G237", "ko": "-지 싶다", "fn": "moderate-suppos", "stars": "★", "es": "Creo que (suposición moderada)" },
+      { "id": "G238", "ko": "-(으)ㄴ/는 듯하다 / 듯싶다", "fn": "conjecture-formal", "stars": "★", "es": "Parece (formal/literario)" },
+      { "id": "G239", "ko": "-(으)ㄴ가 싶다", "fn": "inner-question", "stars": "★", "es": "Me pregunto si será" },
+      { "id": "G240", "ko": "-거든(요)", "fn": "explanation-introducer", "stars": "★★", "es": "Es que / verás" },
+      { "id": "G241", "ko": "-(으)ㄹ걸(요)", "fn": "suppos-or-regret", "stars": "★★", "es": "Creo que probablemente / debería haber" },
+      { "id": "G242", "ko": "-(으)ㅁ", "fn": "nominalization-formal", "stars": "★★", "es": "Nominalización formal (꿈, 잠, 삶, 죽음…)" },
+      { "id": "G243", "ko": "명사화 비교", "fn": "compare-nominalizations", "stars": "★★", "es": "Comparación de tres nominalizaciones: -는 것 (cotidiana) / -기 (activa) / -(으)ㅁ (formal)" },
+      { "id": "G244", "ko": "-(으)면서도", "fn": "concession-simultaneous", "stars": "★★", "es": "Aunque al mismo tiempo / contradictoriamente" },
+      { "id": "G245", "ko": "-(으)ㄴ/는 데에", "fn": "purpose-context", "stars": "★", "es": "Para / en cuanto a (con 도움이 되다, 필요하다…)" },
+      { "id": "G246", "ko": "-(이)나마 / -(으)나마", "fn": "concession-humble", "stars": "★", "es": "Aunque solo sea (humilde)" },
+      { "id": "G247", "ko": "-느니만 못하다", "fn": "worse-than", "stars": "★", "es": "Es peor que / ni siquiera vale como" },
+      { "id": "G248", "ko": "-았/었던들", "fn": "counterfactual-literary", "stars": "★", "es": "Si hubiera (literario)" },
+      { "id": "G249", "ko": "-(으)ㄹ 새(도) 없이", "fn": "no-time-extreme", "stars": "★", "es": "Sin tiempo ni para" },
+      { "id": "G250", "ko": "-아/어다(가)", "fn": "movement-action-transfer", "stars": "★★", "es": "Ir/venir a hacer X y luego" },
+      { "id": "G251", "ko": "즉시 표현 비교", "fn": "compare-as-soon-as", "stars": "★★", "es": "Cuatro formas de 'en cuanto': -자마자 / -는 대로 / -자 / -는 즉시" },
+      { "id": "G252", "ko": "-아/어 마지않다", "fn": "cannot-but", "stars": "★", "es": "No puedo más que (formal)" },
+      { "id": "G253", "ko": "-아/어 마땅하다", "fn": "deserve", "stars": "★", "es": "Es justo / merecido" },
+      { "id": "G254", "ko": "-(으)ㄴ/는 한이 있어도", "fn": "extreme-determination", "stars": "★", "es": "Aunque tenga que / aun a costa de" },
+      { "id": "G255", "ko": "-(으)리라(고)", "fn": "firm-belief-literary", "stars": "★", "es": "Creo firmemente que (literario)" },
+      { "id": "G256", "ko": "-(으)ㄴ/는 만큼", "fn": "as-much-as/in-proportion", "stars": "★★", "es": "Tanto como / en la medida en que" },
+      { "id": "G257", "ko": "-답시고", "fn": "supposedly-ironic", "stars": "★", "es": "Bajo el pretexto de (irónico)" },
+      { "id": "G258", "ko": "-(으)ㄹ세라", "fn": "fear-literary", "stars": "★", "es": "Por miedo a que (literario)" },
+      { "id": "G259", "ko": "-(으)ㄴ/는다거나", "fn": "alternative-quotes", "stars": "★", "es": "Ya sea que diga X o Y" },
+      { "id": "G260", "ko": "N + 답다", "fn": "be-true-to", "stars": "★★", "es": "Ser propio de / digno de" },
+      { "id": "G261", "ko": "N + 스럽다", "fn": "have-quality-of", "stars": "★★", "es": "Tener cualidad de (parece)" },
+      { "id": "G262", "ko": "-(으)ㄴ/는 척 + V", "fn": "pretend-extended", "stars": "★★", "es": "Combinaciones con 척하다/체하다 — pretending to do X, do Y" },
+      { "id": "G263", "ko": "질문 종결 비교", "fn": "compare-question-endings", "stars": "★★", "es": "Niveles de pregunta por registro: 드십니까/드세요/먹어요/먹니/먹어/먹나요/먹는가/먹느냐" }
+    ]
+  },
+
+  "complementaryGrammar": {
+    "file": "gramatica_complementaria.md",
+    "importance": "nuance",
+    "introducedAcross": ["TOPIK 5", "TOPIK 6"],
+    "summary": "Estructuras que cierran cobertura del currículo: pasado lejano, conectores formales, modales avanzados, enumerativos.",
+    "items": [
+      { "id": "G264", "ko": "-았/었었-", "fn": "remote-past-discontinued", "stars": "★", "es": "Pasado lejano / discontinuado (ya no es el caso)" },
+      { "id": "G265", "ko": "-(으)며", "fn": "and/while-formal", "stars": "★★", "es": "Y / mientras (formal/escrito)" },
+      { "id": "G266", "ko": "-(으)며 -(으)며", "fn": "alternating-enum", "stars": "★", "es": "Ya sea X o Y (enumeración)" },
+      { "id": "G267", "ko": "-(으)나", "fn": "but-literary", "stars": "★", "es": "Pero / aunque (literario)" },
+      { "id": "G268", "ko": "-건만", "fn": "but-lament", "stars": "★", "es": "Pero (literario con queja)" },
+      { "id": "G269", "ko": "-지 않을 수 없다", "fn": "cannot-but", "stars": "★★", "es": "No puedo sino / no puedo dejar de" },
+      { "id": "G270", "ko": "-(으)려고 들다", "fn": "insist-on", "stars": "★", "es": "Empeñarse en / insistir en (crítico)" },
+      { "id": "G271", "ko": "-기 십상이다", "fn": "prone-to-bad", "stars": "★", "es": "Es muy fácil que termine en (negativo)" },
+      { "id": "G272", "ko": "-(으)ㄴ/는 셈 치다", "fn": "treat-as-if", "stars": "★", "es": "Considerar como si fuera" },
+      { "id": "G273", "ko": "-(으)ㄹ락 말락 하다", "fn": "barely-doing", "stars": "★", "es": "Estar a punto de pero sin llegar" },
+      { "id": "G274", "ko": "-는 둥 마는 둥", "fn": "half-heartedly", "stars": "★", "es": "Haciéndolo a medias / sin ganas" },
+      { "id": "G275", "ko": "-느냐에 따라(서)", "fn": "depending-on-if", "stars": "★★", "es": "Dependiendo de si" },
+      { "id": "G276", "ko": "-(으)ㄴ/는 가운데", "fn": "in-the-midst-of", "stars": "★", "es": "En medio de / mientras (formal)" },
+      { "id": "G277", "ko": "-(으)ㄴ/는 데(에)다(가)", "fn": "additive-compact", "stars": "★★", "es": "Encima de eso / además" },
+      { "id": "G278", "ko": "-아/어다(가) 주다", "fn": "fetch-and-give", "stars": "★★", "es": "Ir/venir a hacer para alguien" },
+      { "id": "G279", "ko": "-아/어 뵙다 / 봬요", "fn": "see-humble", "stars": "★", "es": "Forma humilde/honorífica de -아/어 보다" },
+      { "id": "G280", "ko": "-아/어 주십사 (하고)", "fn": "very-formal-request", "stars": "★", "es": "Petición muy formal y humilde" },
+      { "id": "G281", "ko": "-(으)랴 -(으)랴", "fn": "overwhelmed-enum", "stars": "★", "es": "Qué con esto, qué con aquello (agobio)" },
+      { "id": "G282", "ko": "-(으)ㄴ다는 게 / 것이", "fn": "intended-but-other-2", "stars": "★", "es": "Lo que quería era… pero al final" },
+      { "id": "G283", "ko": "-(으)ㄹ 따름입니다", "fn": "merely-humble-formal", "stars": "★", "es": "Forma formal 합쇼체 de -(으)ㄹ 따름이다 (G104) — énfasis humilde" },
+      { "id": "G284", "ko": "-아/어 마다하지 않다", "fn": "willing-to-anything", "stars": "★", "es": "No rehusar ni siquiera" },
+      { "id": "G285", "ko": "-(으)면 -(으)ㄹ수록", "fn": "the-more-the-more", "stars": "★★", "es": "Cuanto más X, más Y (enfático)" },
+      { "id": "G286", "ko": "-(이)야말로 (확장)", "fn": "exactly-combinations", "stars": "★", "es": "Extensión de G115: combinaciones útiles con -(이)야말로" },
+      { "id": "G287", "ko": "-(으)며 살다/지내다", "fn": "live-while", "stars": "★", "es": "Vivir + verbo (modo de vida)" },
+      { "id": "G288", "ko": "-노라면", "fn": "if-one-keeps-doing", "stars": "★", "es": "Si uno sigue haciendo (literario)" },
+      { "id": "G289", "ko": "-아/어 죽을 지경이다", "fn": "dying-extreme", "stars": "★", "es": "Estoy de morirme de (extremo)" },
+      { "id": "G290", "ko": "-았/었어야", "fn": "should-have-short", "stars": "★★", "es": "Debería haber (forma corta)" }
+    ]
+  },
+
+  "cultural": {
+    "idioms": {
+      "file": "expresiones_idiomaticas.md",
+      "title": "관용 표현 — modismos por categoría",
+      "importance": "frequent",
+      "topikLevels": [3, 4, 5, 6],
+      "categories": [
+        { "key": "body-parts", "themes": ["눈 (ojo)", "입 (boca)", "손 (mano)", "발 (pie)", "마음/가슴 (corazón)", "머리 (cabeza)", "귀 (oreja)"] },
+        { "key": "animals", "themes": ["개", "고양이", "호랑이", "쥐"] },
+        { "key": "food-money", "themes": ["밥/김치", "돈/지갑"] },
+        { "key": "weather-nature", "themes": ["비", "바람", "산/물"] }
+      ]
+    },
+    "proverbs": {
+      "file": "refranes.md",
+      "title": "속담 — refranes tradicionales",
+      "importance": "nuance",
+      "topikLevels": [5, 6],
+      "categories": [
+        { "key": "effort-perseverance", "examples": ["천 리 길도 한 걸음부터", "티끌 모아 태산", "시작이 반이다"] },
+        { "key": "words-speech", "examples": ["가는 말이 고와야 오는 말이 곱다", "발 없는 말이 천 리 간다"] },
+        { "key": "learning-experience", "examples": ["백문이 불여일견", "아는 길도 물어 가라"] },
+        { "key": "luck-misfortune", "examples": [] },
+        { "key": "human-relations", "examples": [] }
+      ]
+    },
+    "onomatopoeia": {
+      "file": "onomatopeyas.md",
+      "title": "의성어 / 의태어",
+      "importance": "frequent",
+      "topikLevels": [2, 3, 4],
+      "vowelRule": {
+        "claras": "ㅏ, ㅗ → sensación pequeña/ligera/clara",
+        "oscuras": "ㅓ, ㅜ → sensación grande/pesada/oscura",
+        "pairs": ["반짝/번쩍", "통통/퉁퉁", "살살/슬슬", "깡충/껑충", "졸졸/줄줄", "똑똑/뚝뚝"]
+      },
+      "subcategories": [
+        { "key": "animal-sounds", "examples": ["멍멍", "야옹", "꿀꿀", "음매", "짹짹", "꼬끼오", "개굴개굴", "어흥"] },
+        { "key": "daily-sounds", "examples": ["똑똑", "쾅", "와장창", "콜록콜록", "쿨쿨"] },
+        { "key": "movement-mimetic", "examples": ["반짝반짝", "깡충깡충", "통통", "살살"] }
+      ]
+    },
+    "connectors": {
+      "file": "conectores.md",
+      "title": "접속부사 — conectores discursivos",
+      "importance": "critical",
+      "topikLevels": [2, 3, 4],
+      "summary": "Conectores entre oraciones completas (no cláusulas). Esenciales en TOPIK II.",
+      "categories": [
+        { "key": "addition", "items": ["그리고", "또", "또한", "게다가", "더구나", "뿐만 아니라", "더불어"] },
+        { "key": "cause-consequence", "items": ["그래서", "그러니까", "그러므로", "따라서", "그 결과", "그런 까닭에", "이로 인해"] },
+        { "key": "contrast", "items": ["그러나", "하지만", "그런데", "반면(에)", "오히려"] },
+        { "key": "sequence", "items": ["그 다음에", "이어서", "한편"] },
+        { "key": "example-conclusion", "items": ["예를 들어", "즉", "다시 말해", "결국"] }
+      ]
+    },
+    "compoundParticles": {
+      "file": "particulas_compuestas.md",
+      "title": "복합 조사",
+      "importance": "frequent",
+      "topikLevels": [2, 3, 4],
+      "combinations": [
+        { "key": "from-to", "items": ["N에서부터", "N로부터", "N에까지", "N한테까지"] },
+        { "key": "topic-emphasis", "items": ["N에는", "N에서는", "N에게는", "N(으)로는"] },
+        { "key": "contrast-others", "items": ["N도", "N만", "N조차", "N마저"] }
+      ]
+    },
+    "thematicVocab": {
+      "file": "vocabulario_temas.md",
+      "title": "주제별 어휘 — vocabulario por temas",
+      "importance": "critical",
+      "topikLevels": [1, 2, 3, 4, 5, 6],
+      "topics": [
+        { "key": "family", "ko": "가족", "scope": "directa, hermanos relacionales (형/누나/오빠/언니), abuelos, tíos, políticos" },
+        { "key": "body", "ko": "몸", "scope": "partes del cuerpo, órganos" },
+        { "key": "food", "ko": "음식", "scope": "comida, bebida, sabores" },
+        { "key": "health", "ko": "건강", "scope": "síntomas, enfermedades, hospital" },
+        { "key": "work", "ko": "직업/회사", "scope": "profesiones, oficina, trabajo" },
+        { "key": "nature", "ko": "자연", "scope": "naturaleza, clima, geografía" },
+        { "key": "transport", "ko": "교통", "scope": "medios de transporte, viaje" },
+        { "key": "education", "ko": "교육", "scope": "escuela, universidad, estudios" },
+        { "key": "shopping-money", "ko": "쇼핑/돈", "scope": "comercio, precios" },
+        { "key": "emotions", "ko": "감정", "scope": "emociones, estados de ánimo" }
+      ]
+    }
+  },
+
+  "summaryByLevel": {
+    "topik1": { "structuresBase": 32, "structuresSuppl": 18, "total": 50, "themes": 7, "exam": "TOPIK I" },
+    "topik2": { "structuresBase": 26, "structuresSuppl": 17, "total": 43, "themes": 11, "exam": "TOPIK I" },
+    "topik3": { "structuresBase": 21, "structuresSuppl": 11, "total": 32, "themes": 7, "exam": "TOPIK II" },
+    "topik4": { "structuresBase": 18, "structuresSuppl": 14, "total": 32, "themes": 7, "exam": "TOPIK II" },
+    "topik5": { "structuresBase": 14, "structuresSuppl": 11, "total": 25, "themes": 6, "exam": "TOPIK II" },
+    "topik6": { "structuresBase": 14, "structuresSuppl": 8, "total": 22, "themes": 5, "exam": "TOPIK II" },
+    "transversal": { "auxiliaries": 29, "indirectSpeech": 18, "additional": 30, "complementary": 27, "total": 104 }
+  }
+}
