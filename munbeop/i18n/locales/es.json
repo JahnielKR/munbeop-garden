@@ -36,7 +36,31 @@
     "no_sentence": "Escribe una oración primero"
   },
   "library": {
-    "lead": "Todas las gramáticas que aparecerán en tu ruleta. Cada una crece según las practicas."
+    "lead": "Todas las gramáticas que aparecerán en tu ruleta. Cada una crece según las practicas.",
+    "modal": {
+      "close": "Cerrar",
+      "section": {
+        "meaning": "Significado",
+        "usage_notes": "Notas de uso",
+        "your_progress": "Tu progreso",
+        "examples": "Ejemplos",
+        "audio": "Pronunciación",
+        "achievements": "Logros",
+        "practice_cta": "Practícala ahora"
+      },
+      "srs": {
+        "mastery_label": "Dominio",
+        "last_seen": "Vista por última vez",
+        "last_seen_never": "Nunca practicada",
+        "times_practiced": "Veces practicada"
+      },
+      "coming_soon": {
+        "audio": "El audio de pronunciación llegará pronto. 화이팅!",
+        "examples": "Más oraciones de ejemplo llegarán pronto.",
+        "achievements": "Los logros que puedes ganar con esta gramática llegarán pronto.",
+        "usage_notes": "Las notas de uso detalladas llegarán pronto."
+      }
+    }
   },
   "mastery": {
     "seedling": "새싹 · Nueva",

@@ -36,7 +36,31 @@
     "no_sentence": "Tulis kalimat dulu"
   },
   "library": {
-    "lead": "Semua tata bahasa yang muncul di rodamu. Masing-masing tumbuh seiring latihanmu."
+    "lead": "Semua tata bahasa yang muncul di rodamu. Masing-masing tumbuh seiring latihanmu.",
+    "modal": {
+      "close": "Tutup",
+      "section": {
+        "meaning": "Arti",
+        "usage_notes": "Catatan penggunaan",
+        "your_progress": "Progres kamu",
+        "examples": "Contoh",
+        "audio": "Pelafalan",
+        "achievements": "Pencapaian",
+        "practice_cta": "Latih sekarang"
+      },
+      "srs": {
+        "mastery_label": "Penguasaan",
+        "last_seen": "Terakhir dilihat",
+        "last_seen_never": "Belum pernah dilatih",
+        "times_practiced": "Berapa kali dilatih"
+      },
+      "coming_soon": {
+        "audio": "Audio pelafalan segera hadir. 화이팅!",
+        "examples": "Lebih banyak kalimat contoh segera hadir.",
+        "achievements": "Pencapaian yang bisa kamu raih segera hadir.",
+        "usage_notes": "Catatan penggunaan rinci segera hadir."
+      }
+    }
   },
   "mastery": {
     "seedling": "새싹 · Baru",

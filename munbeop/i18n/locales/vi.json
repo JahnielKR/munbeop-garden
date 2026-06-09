@@ -36,7 +36,31 @@
     "no_sentence": "Viết câu trước đã"
   },
   "library": {
-    "lead": "Tất cả các ngữ pháp xuất hiện trong vòng quay. Mỗi cái lớn lên khi bạn luyện tập."
+    "lead": "Tất cả các ngữ pháp xuất hiện trong vòng quay. Mỗi cái lớn lên khi bạn luyện tập.",
+    "modal": {
+      "close": "Đóng",
+      "section": {
+        "meaning": "Ý nghĩa",
+        "usage_notes": "Ghi chú cách dùng",
+        "your_progress": "Tiến độ của bạn",
+        "examples": "Ví dụ",
+        "audio": "Phát âm",
+        "achievements": "Thành tựu",
+        "practice_cta": "Luyện ngay"
+      },
+      "srs": {
+        "mastery_label": "Mức độ thành thạo",
+        "last_seen": "Lần xem gần nhất",
+        "last_seen_never": "Chưa luyện lần nào",
+        "times_practiced": "Số lần đã luyện"
+      },
+      "coming_soon": {
+        "audio": "Âm thanh phát âm sắp ra mắt. 화이팅!",
+        "examples": "Thêm câu ví dụ sắp ra mắt.",
+        "achievements": "Các thành tựu bạn có thể đạt được sắp ra mắt.",
+        "usage_notes": "Ghi chú cách dùng chi tiết sắp ra mắt."
+      }
+    }
   },
   "mastery": {
     "seedling": "새싹 · Mới",

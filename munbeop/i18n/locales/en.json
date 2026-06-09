@@ -36,7 +36,31 @@
     "no_sentence": "Write a sentence first"
   },
   "library": {
-    "lead": "All the grammar points that show up in your wheel. Each one grows as you practice."
+    "lead": "All the grammar points that show up in your wheel. Each one grows as you practice.",
+    "modal": {
+      "close": "Close",
+      "section": {
+        "meaning": "Meaning",
+        "usage_notes": "Usage notes",
+        "your_progress": "Your progress",
+        "examples": "Examples",
+        "audio": "Pronunciation",
+        "achievements": "Achievements",
+        "practice_cta": "Practice this now"
+      },
+      "srs": {
+        "mastery_label": "Mastery",
+        "last_seen": "Last seen",
+        "last_seen_never": "Never practiced yet",
+        "times_practiced": "Times practiced"
+      },
+      "coming_soon": {
+        "audio": "Pronunciation audio is coming soon. 화이팅!",
+        "examples": "More example sentences are coming soon.",
+        "achievements": "Achievements you can earn with this grammar are coming soon.",
+        "usage_notes": "Detailed usage notes for this grammar are coming soon."
+      }
+    }
   },
   "mastery": {
     "seedling": "Sprout · 새싹",
