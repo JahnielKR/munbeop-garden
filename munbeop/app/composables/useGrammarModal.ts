@@ -21,10 +21,15 @@ export function useGrammarModal() {
     return rest
   }
 
+  // Watch BOTH the query and the items array — on a fresh deep-link load,
+  // the store hasn't hydrated yet, items is empty, and grammarByKo would
+  // wrongly report "unknown" and wipe the URL. The watcher re-fires when
+  // items lands and re-validates against real data.
   watch(
-    () => route.query.grammar,
-    async (raw) => {
+    [() => route.query.grammar, () => grammarStore.items.length],
+    async ([raw, itemCount]) => {
       if (typeof raw !== 'string' || !raw) return
+      if (itemCount === 0) return
       if (!grammarStore.grammarByKo(raw)) {
         await router.replace({ query: queryWithoutGrammar() })
       }
