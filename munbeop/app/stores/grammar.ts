@@ -44,5 +44,30 @@ export const useGrammarStore = defineStore('grammar', () => {
     }
   }
 
-  return { items, decks, excludedDeckIds, activeIndices, grammarByKo, hydrate, toggleDeck }
+  /**
+   * Toggle a deck's `collapsed` flag and persist the change. Distinct from
+   * {@link toggleDeck} — that one excludes the deck from practice; this one
+   * just hides or shows its body in the Library UI.
+   */
+  async function toggleDeckCollapsed(deckId: string) {
+    const idx = decks.value.findIndex((d) => d.id === deckId)
+    if (idx === -1) return
+    // Re-assign to a new array so reactivity fires reliably across adapters.
+    decks.value = decks.value.map((d, i) =>
+      i === idx ? { ...d, collapsed: !d.collapsed } : d,
+    )
+    const storage = useStorageAdapter()
+    await storage.write(STORAGE_KEYS.decks, decks.value)
+  }
+
+  return {
+    items,
+    decks,
+    excludedDeckIds,
+    activeIndices,
+    grammarByKo,
+    hydrate,
+    toggleDeck,
+    toggleDeckCollapsed,
+  }
 })
