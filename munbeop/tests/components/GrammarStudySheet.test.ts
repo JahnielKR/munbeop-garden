@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import type { Grammar } from '~/lib/domain'
+import GrammarStudySheet from '~/components/library/GrammarStudySheet.vue'
 
 vi.mock('~/stores/srs', () => ({
   useSrsStore: () => ({
@@ -13,8 +14,6 @@ vi.mock('~/stores/log', () => ({
 
 const pushSpy = vi.fn()
 vi.stubGlobal('useRouter', () => ({ push: pushSpy }))
-
-import GrammarStudySheet from '~/components/library/GrammarStudySheet.vue'
 
 const seededGrammar: Grammar = {
   ko: '-(으)니까',

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
+import { useGrammarModal } from '~/composables/useGrammarModal'
 
 const routeQuery = ref<Record<string, string | undefined>>({})
 const pushSpy = vi.fn(async () => {})
@@ -18,8 +19,6 @@ const grammarByKo = vi.fn((ko: string) => (ko === fakeGrammar.ko ? fakeGrammar :
 vi.mock('~/stores/grammar', () => ({
   useGrammarStore: () => ({ grammarByKo, items: [fakeGrammar] }),
 }))
-
-import { useGrammarModal } from '~/composables/useGrammarModal'
 
 describe('useGrammarModal', () => {
   beforeEach(() => {

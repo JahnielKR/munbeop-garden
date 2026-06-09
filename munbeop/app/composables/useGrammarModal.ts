@@ -15,13 +15,18 @@ export function useGrammarModal() {
 
   const isOpen = computed(() => selected.value !== null)
 
+  function queryWithoutGrammar() {
+    const rest = { ...route.query }
+    delete rest.grammar
+    return rest
+  }
+
   watch(
     () => route.query.grammar,
     async (raw) => {
       if (typeof raw !== 'string' || !raw) return
       if (!grammarStore.grammarByKo(raw)) {
-        const { grammar: _omit, ...rest } = route.query
-        await router.replace({ query: rest })
+        await router.replace({ query: queryWithoutGrammar() })
       }
     },
     { immediate: true },
@@ -33,8 +38,7 @@ export function useGrammarModal() {
   }
 
   async function close() {
-    const { grammar: _omit, ...rest } = route.query
-    await router.replace({ query: rest })
+    await router.replace({ query: queryWithoutGrammar() })
   }
 
   return { selected, isOpen, open, close }
