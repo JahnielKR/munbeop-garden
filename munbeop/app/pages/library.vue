@@ -158,66 +158,95 @@ async function onToggleDeck(deckId: string) {
   gap: 12px;
 }
 
+/* Header block — full-width pixel-art rectangle.
+   Matches the welcome-screen `.opt` button language:
+     paper-deep surface · 3px ink-line outline · chunky cream shadow ·
+     Press Start 2P type. The left edge thickens to 8px and takes on
+     the deck's color as a tier-tag stripe, so a quick glance reads
+     "this is TOPIK N" without reading the text. */
 .deck-header {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
   width: 100%;
-  padding: 8px 0;
-  border: 0;
-  border-bottom: 2px solid var(--border-soft);
-  background: transparent;
-  cursor: pointer;
+  padding: 14px 16px;
+  background: var(--paper-deep, var(--paper));
+  color: var(--ink);
+  border: 3px solid var(--ink-line);
+  border-left-width: 8px;
+  box-shadow: 3px 3px 0 var(--shadow-cream);
+  font-family: 'Press Start 2P', 'Noto Sans KR', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
   text-align: left;
-  font: inherit;
-  color: inherit;
-  transition: border-color var(--motion-quick, 150ms) var(--ease-out, ease);
+  cursor: pointer;
+  transition:
+    background var(--motion-quick, 120ms) var(--ease-out, ease),
+    transform var(--motion-quick, 120ms) var(--ease-out, ease),
+    box-shadow var(--motion-quick, 120ms) var(--ease-out, ease);
 }
-.deck-header:hover {
-  border-bottom-color: var(--ink-soft);
+.deck-header:hover:not(:disabled) {
+  background: var(--hover-bg, var(--paper-deep));
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--shadow-cream);
+}
+.deck-header:active:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--shadow-cream);
 }
 .deck-header:focus-visible {
   outline: 2px solid var(--focus-ring, var(--gold));
-  outline-offset: 4px;
-  border-radius: 2px;
+  outline-offset: 3px;
 }
 .deck-header--static {
   cursor: default;
 }
+.deck-header--static:hover {
+  background: var(--paper-deep, var(--paper));
+  transform: none;
+  box-shadow: 3px 3px 0 var(--shadow-cream);
+}
+
 .deck-header__caret {
   display: inline-block;
-  font-size: 12px;
+  width: 12px;
+  font-size: 10px;
   color: var(--ink-soft);
-  transition: transform var(--motion-quick, 150ms) var(--ease-out, ease);
+  transition: transform var(--motion-quick, 120ms) var(--ease-out, ease);
 }
 .deck-header__caret--open {
   transform: rotate(90deg);
 }
 .deck-title {
-  font-family: 'Noto Sans KR', 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  color: var(--ink);
   margin: 0;
   flex: 1;
+  font: inherit; /* inherit Press Start 2P from the header */
+  color: var(--ink);
 }
 .deck-count {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  padding: 4px 8px;
+  background: var(--paper);
+  border: 2px solid var(--ink-line);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
   color: var(--ink-soft);
   font-feature-settings: 'tnum';
 }
 
-/* Deck colour ramp — maps deck.colorId to the existing rustic token palette.
-   No new colour tokens introduced; amber falls back to gold-shadow,
-   rose to red, violet to ink-soft (advanced/literary feels muted). */
-.deck-section--sky    .deck-header { border-bottom-color: var(--sky); }
-.deck-section--jade   .deck-header { border-bottom-color: var(--jade); }
-.deck-section--gold   .deck-header { border-bottom-color: var(--gold); }
-.deck-section--amber  .deck-header { border-bottom-color: var(--gold-shadow, var(--gold)); }
-.deck-section--rose   .deck-header { border-bottom-color: var(--red); }
-.deck-section--violet .deck-header { border-bottom-color: var(--ink-soft); }
-.deck-section--orphan .deck-header { border-bottom-color: var(--border-strong); }
+/* Deck colour stripe — left-border tag using the existing rustic palette.
+   No new colour tokens; amber falls back to gold-shadow, rose to red,
+   violet to ink-line (advanced/literary feels woody). */
+.deck-section--sky    .deck-header { border-left-color: var(--sky); }
+.deck-section--jade   .deck-header { border-left-color: var(--jade); }
+.deck-section--gold   .deck-header { border-left-color: var(--gold); }
+.deck-section--amber  .deck-header { border-left-color: var(--gold-shadow, var(--gold)); }
+.deck-section--rose   .deck-header { border-left-color: var(--red); }
+.deck-section--violet .deck-header { border-left-color: var(--ink-line); }
+.deck-section--orphan .deck-header { border-left-color: var(--ink-soft); }
 
 .deck-body {
   overflow: hidden;
