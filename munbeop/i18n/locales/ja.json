@@ -36,7 +36,31 @@
     "no_sentence": "先に文を書いてください"
   },
   "library": {
-    "lead": "ルーレットに出る全文法。練習するたびに育ちます。"
+    "lead": "ルーレットに出る全文法。練習するたびに育ちます。",
+    "modal": {
+      "close": "閉じる",
+      "section": {
+        "meaning": "意味",
+        "usage_notes": "使い方ノート",
+        "your_progress": "あなたの進捗",
+        "examples": "例文",
+        "audio": "発音",
+        "achievements": "アチーブメント",
+        "practice_cta": "今すぐ練習する"
+      },
+      "srs": {
+        "mastery_label": "習熟度",
+        "last_seen": "最終確認",
+        "last_seen_never": "まだ練習していません",
+        "times_practiced": "練習回数"
+      },
+      "coming_soon": {
+        "audio": "発音音声は近日対応予定。화이팅!",
+        "examples": "例文の追加は近日対応予定。",
+        "achievements": "この文法で獲得できるアチーブメントは近日対応予定。",
+        "usage_notes": "詳しい使い方ノートは近日対応予定。"
+      }
+    }
   },
   "mastery": {
     "seedling": "새싹 · 新規",

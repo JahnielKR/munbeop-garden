@@ -1,5 +1,6 @@
 import type { Context, Feedback, Grammar, LogEntry, ReviewState } from '~/lib/domain'
 import { advanceProgress, createSession, isSessionComplete, type Session } from '~/lib/practice'
+import { pickRandomFrom } from '~/lib/srs'
 import { useContextsStore } from '~/stores/contexts'
 import { useGrammarStore } from '~/stores/grammar'
 import { useLogStore } from '~/stores/log'
@@ -12,6 +13,7 @@ export function usePractice() {
   const contextsStore = useContextsStore()
   const srsStore = useSrsStore()
   const logStore = useLogStore()
+  const route = useRoute()
   const { t } = useI18n()
 
   const session = ref<PracticeSession | null>(null)
@@ -20,14 +22,36 @@ export function usePractice() {
   async function start() {
     error.value = null
     try {
-      const pool = grammarStore.activeIndices
       const activeContexts = contextsStore.active
-      if (pool.length < 3) {
-        error.value = t('practice.no_grammars')
-        return
-      }
       if (activeContexts.length < 3) {
         error.value = t('practice.no_contexts')
+        return
+      }
+
+      // Focused round: ?focus=<ko> forces a single-grammar session — 3 picks
+      // of the same grammar × 3 random contexts each. Triggered by the
+      // library study sheet's "Practice this now" CTA.
+      const rawFocus = route.query.focus
+      const focusKo = typeof rawFocus === 'string' && rawFocus ? rawFocus : null
+      const focusIdx = focusKo
+        ? grammarStore.items.findIndex((g) => g.ko === focusKo)
+        : -1
+
+      if (focusIdx >= 0) {
+        session.value = {
+          picks: [0, 1, 2].map(() => ({
+            grammarIdx: focusIdx,
+            contexts: pickRandomFrom(activeContexts, 3),
+            progress: 0,
+          })),
+        }
+        await srsStore.markSeen(grammarStore.items[focusIdx]!.ko)
+        return
+      }
+
+      const pool = grammarStore.activeIndices
+      if (pool.length < 3) {
+        error.value = t('practice.no_grammars')
         return
       }
       session.value = createSession<number, Context>({

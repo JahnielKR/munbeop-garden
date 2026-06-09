@@ -36,7 +36,31 @@
     "no_sentence": "Écris d'abord une phrase"
   },
   "library": {
-    "lead": "Toutes les grammaires qui apparaîtront dans ta roue. Chacune grandit selon ta pratique."
+    "lead": "Toutes les grammaires qui apparaîtront dans ta roue. Chacune grandit selon ta pratique.",
+    "modal": {
+      "close": "Fermer",
+      "section": {
+        "meaning": "Signification",
+        "usage_notes": "Notes d'usage",
+        "your_progress": "Ta progression",
+        "examples": "Exemples",
+        "audio": "Prononciation",
+        "achievements": "Succès",
+        "practice_cta": "Pratique-la maintenant"
+      },
+      "srs": {
+        "mastery_label": "Maîtrise",
+        "last_seen": "Vue pour la dernière fois",
+        "last_seen_never": "Jamais pratiquée",
+        "times_practiced": "Fois pratiquée"
+      },
+      "coming_soon": {
+        "audio": "L'audio de prononciation arrive bientôt. 화이팅!",
+        "examples": "D'autres phrases d'exemple arrivent bientôt.",
+        "achievements": "Les succès que tu peux gagner arriveront bientôt.",
+        "usage_notes": "Les notes d'usage détaillées arrivent bientôt."
+      }
+    }
   },
   "mastery": {
     "seedling": "새싹 · Nouvelle",

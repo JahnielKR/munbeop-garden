@@ -36,7 +36,31 @@
     "no_sentence": "Escreve uma frase primeiro"
   },
   "library": {
-    "lead": "Todas as gramáticas que aparecem na sua roleta. Cada uma cresce conforme você pratica."
+    "lead": "Todas as gramáticas que aparecem na sua roleta. Cada uma cresce conforme você pratica.",
+    "modal": {
+      "close": "Fechar",
+      "section": {
+        "meaning": "Significado",
+        "usage_notes": "Notas de uso",
+        "your_progress": "Seu progresso",
+        "examples": "Exemplos",
+        "audio": "Pronúncia",
+        "achievements": "Conquistas",
+        "practice_cta": "Pratique agora"
+      },
+      "srs": {
+        "mastery_label": "Domínio",
+        "last_seen": "Vista pela última vez",
+        "last_seen_never": "Nunca praticada",
+        "times_practiced": "Vezes praticada"
+      },
+      "coming_soon": {
+        "audio": "O áudio de pronúncia chega em breve. 화이팅!",
+        "examples": "Mais frases de exemplo chegam em breve.",
+        "achievements": "As conquistas que você pode ganhar chegam em breve.",
+        "usage_notes": "Notas de uso detalhadas chegam em breve."
+      }
+    }
   },
   "mastery": {
     "seedling": "새싹 · Nova",

@@ -2,15 +2,19 @@
 import Badge from '~/components/ui/Badge.vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Card from '~/components/ui/Card.vue'
+import Modal from '~/components/ui/Modal.vue'
 import MasteryIcon from '~/components/practice/MasteryIcon.vue'
+import GrammarStudySheet from '~/components/library/GrammarStudySheet.vue'
 import { getMasteryInfo } from '~/lib/srs'
 import { useGrammarStore } from '~/stores/grammar'
 import { useSrsStore } from '~/stores/srs'
+import { useGrammarModal } from '~/composables/useGrammarModal'
 
 const grammarStore = useGrammarStore()
 const srsStore = useSrsStore()
 const { t } = useI18n()
 const { tl } = useLocalized()
+const { selected, isOpen, open, close } = useGrammarModal()
 
 /**
  * Group items by deck, ordered by `deck.order`.
@@ -58,6 +62,10 @@ function accentFor(masteryCls: string) {
 async function onToggleDeck(deckId: string) {
   await grammarStore.toggleDeckCollapsed(deckId)
 }
+
+async function onCardClick(ko: string) {
+  await open(ko)
+}
 </script>
 
 <template>
@@ -94,6 +102,8 @@ async function onToggleDeck(deckId: string) {
               v-for="item in section.items"
               :key="item.grammar.ko"
               :accent="accentFor(item.info.cls)"
+              clickable
+              @click="onCardClick(item.grammar.ko)"
             >
               <div class="item__head">
                 <span class="item__ko">{{ item.grammar.ko }}</span>
@@ -123,6 +133,8 @@ async function onToggleDeck(deckId: string) {
             v-for="item in orphans"
             :key="item.grammar.ko"
             :accent="accentFor(item.info.cls)"
+            clickable
+            @click="onCardClick(item.grammar.ko)"
           >
             <div class="item__head">
               <span class="item__ko">{{ item.grammar.ko }}</span>
@@ -138,6 +150,15 @@ async function onToggleDeck(deckId: string) {
         </div>
       </div>
     </section>
+
+    <Modal
+      :open="isOpen"
+      :title="selected?.ko ?? ''"
+      :close-label="t('library.modal.close')"
+      @close="close"
+    >
+      <GrammarStudySheet v-if="selected" :key="selected.ko" :grammar="selected" />
+    </Modal>
   </div>
 </template>
 
