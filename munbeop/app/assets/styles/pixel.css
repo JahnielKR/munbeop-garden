@@ -29,3 +29,17 @@ body {
   font-family: 'Inter', 'Noto Sans KR', system-ui, sans-serif;
   min-height: 100vh;
 }
+
+/* Prose links always underlined: in light mode --link (rust) matches
+ * --ink-soft in lightness, so hue alone is too weak a signal (and the
+ * first one color-vision-deficient users lose). :not([class]) scopes
+ * the rule to prose — nav links and button-links style themselves. */
+a:not([class]) {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 2px; /* chunky pixel underline */
+}
+a:not([class]):visited {
+  color: var(--link-visited);
+}

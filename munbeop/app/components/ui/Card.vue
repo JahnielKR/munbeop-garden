@@ -8,8 +8,8 @@
  *
  * Shadow now consumes `--shadow-card` (chunky pixel via --shadow-color,
  * theme-aware). Ornaments fill via currentColor on .card__corner, which
- * inherits --accent — that re-points per theme (jade-deep light, jade
- * bright dark) so the ornaments stay visible in both modes.
+ * inherits --accent — that re-points per theme (sunflower gold light,
+ * ember amber dark) so the ornaments stay visible in both modes.
  *
  * `clickable` turns the root into a `<button>` with hover lift / press
  * sink / focus ring. `selected` thickens the border.
