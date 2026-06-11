@@ -94,8 +94,7 @@
     "switch_to_sign_up": "Sem conta? Cadastra-te",
     "switch_to_sign_in": "Já tem conta? Entra",
     "signed_in_as": "Sessão de",
-    "sign_out": "Sair",
-    "anonymous_banner": "Treinando local. Entra pra sincronizar entre dispositivos."
+    "sign_out": "Sair"
   },
   "settings": {
     "dark_mode": "Modo escuro"

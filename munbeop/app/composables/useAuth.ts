@@ -1,7 +1,6 @@
 import { useAuthStore } from '~/stores/auth'
-import { migrateLocalToSupabase } from '~/lib/auth/migration'
+import { isPublicPath } from '~/lib/auth/public-paths'
 import { stripAccountEmailFromKakaoUrl } from '~/lib/auth/kakao-scope'
-import { pickAdapter } from '~/lib/storage/facade'
 import { useGrammarStore } from '~/stores/grammar'
 import { useContextsStore } from '~/stores/contexts'
 import { useSrsStore } from '~/stores/srs'
@@ -10,62 +9,69 @@ import { useLogStore } from '~/stores/log'
 /**
  * Thin wrapper around supabase.auth.* with three responsibilities:
  *   1) Keep useAuthStore() in sync with the Supabase session.
- *   2) Provide the four UI-facing actions: signUp / signIn /
- *      signInMagicLink / signOut. Each returns { error } so callers
- *      can render a friendly toast on failure without try/catch.
- *   3) Run the one-time localStorage → Supabase migration on the first
- *      sign-in / sign-up / magic-link callback that lands an
- *      authenticated session.
+ *   2) Provide the UI-facing actions: signUp / signIn / signInMagicLink /
+ *      signInWithProvider / signOutAndExit. Each returns { error } so
+ *      callers can render a friendly toast on failure without try/catch.
+ *   3) Re-hydrate the data stores when the session changes: a sign-in
+ *      pulls the account's cloud data, a sign-out clears the previous
+ *      user's data from memory.
  */
 export function useAuth() {
   const { $supabase } = useNuxtApp()
   const authStore = useAuthStore()
 
-  async function init() {
-    const { data } = await $supabase.auth.getSession()
-    authStore.setSession(data.session ?? null)
-    $supabase.auth.onAuthStateChange(async (event, session) => {
-      authStore.setSession(session)
-      // After SIGNED_OUT the stores still hold the previous user's data in
-      // memory; re-hydrate from the now-anonymous adapter so the UI clears.
-      // (Caught here rather than inside signOut() so token-expiry sign-outs
-      // and other paths flow through the same code.)
-      if (event === 'SIGNED_OUT') {
-        await Promise.all([
-          useGrammarStore().hydrate(),
-          useContextsStore().hydrate(),
-          useSrsStore().hydrate(),
-          useLogStore().hydrate(),
-        ])
-      }
-    })
-  }
-
-  // Internal — call after any flow that just put a user in the store.
-  // Re-hydrates every store from the now-active (Supabase) adapter so
-  // the UI immediately reflects whatever was migrated.
-  async function runPostLoginMigration() {
-    if (!authStore.user) return null
-    const adapter = pickAdapter({ user: authStore.user, client: $supabase })
-    const result = await migrateLocalToSupabase(adapter)
-    await Promise.all([
+  function hydrateDataStores() {
+    return Promise.all([
       useGrammarStore().hydrate(),
       useContextsStore().hydrate(),
       useSrsStore().hydrate(),
       useLogStore().hydrate(),
     ])
-    return result
+  }
+
+  async function init() {
+    // Captured before the first await: the onAuthStateChange callback
+    // fires long after setup, where useRouter() is no longer available.
+    const router = useRouter()
+    const { data } = await $supabase.auth.getSession()
+    authStore.setSession(data.session ?? null)
+    $supabase.auth.onAuthStateChange(async (event, session) => {
+      authStore.setSession(session)
+      // After SIGNED_OUT the stores still hold the previous user's data
+      // in memory. With no session pickAdapter yields the noop adapter,
+      // so hydrating resolves every store to its fallback — that is what
+      // clears the UI. (Handled here rather than inside signOutAndExit()
+      // so token-expiry sign-outs flow through the same code.)
+      if (event === 'SIGNED_OUT') {
+        await hydrateDataStores()
+        // A passive sign-out (expired/revoked token) leaves the user
+        // parked on an app route with cleared stores — the middleware
+        // only runs on navigation, so push the gate ourselves. After
+        // signOutAndExit() this is a same-route no-op.
+        if (!isPublicPath(router.currentRoute.value.path)) {
+          await router.push('/welcome')
+        }
+      }
+    })
+  }
+
+  // Internal — call after any flow that just put a user in the store.
+  // Re-hydrates every store from the user's Supabase adapter so the UI
+  // immediately shows the account's cloud data.
+  async function hydrateUserStores() {
+    if (!authStore.user) return
+    await hydrateDataStores()
   }
 
   async function signUp(email: string, password: string) {
     const { error } = await $supabase.auth.signUp({ email, password })
-    if (!error) await runPostLoginMigration()
+    if (!error) await hydrateUserStores()
     return { error }
   }
 
   async function signIn(email: string, password: string) {
     const { error } = await $supabase.auth.signInWithPassword({ email, password })
-    if (!error) await runPostLoginMigration()
+    if (!error) await hydrateUserStores()
     return { error }
   }
 
@@ -79,11 +85,6 @@ export function useAuth() {
       email,
       options: { emailRedirectTo: redirectTo },
     })
-    return { error }
-  }
-
-  async function signOut() {
-    const { error } = await $supabase.auth.signOut()
     return { error }
   }
 
@@ -123,9 +124,10 @@ export function useAuth() {
       provider,
       options: { redirectTo },
     })
-    // Migration runs on the /auth/callback page after Supabase sets the session.
+    // Store hydration runs on the /auth/callback page once Supabase has
+    // set the session.
     return { error }
   }
 
-  return { init, signUp, signIn, signInMagicLink, signInWithProvider, signOut, signOutAndExit, runPostLoginMigration }
+  return { init, signUp, signIn, signInMagicLink, signInWithProvider, signOutAndExit, hydrateUserStores }
 }

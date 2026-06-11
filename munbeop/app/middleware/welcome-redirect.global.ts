@@ -1,4 +1,5 @@
 import { defineNuxtRouteMiddleware, navigateTo } from '#imports'
+import { isPublicPath } from '~/lib/auth/public-paths'
 
 export interface WelcomeRedirectInput {
   path: string
@@ -19,12 +20,6 @@ export interface WelcomeRedirectInput {
  *   - anon      + app route → /welcome      (the whole app is behind the account)
  *   - anon      + public    → null          (welcome / pricing / features / policies / auth)
  */
-const PUBLIC_PATHS = new Set(['/welcome', '/pricing', '/features', '/policies'])
-
-function isPublicPath(path: string): boolean {
-  return PUBLIC_PATHS.has(path) || path.startsWith('/auth/')
-}
-
 export function decideWelcomeRedirect({ path, signedIn }: WelcomeRedirectInput): string | null {
   if (signedIn) return path === '/welcome' ? '/' : null
   return isPublicPath(path) ? null : '/welcome'

@@ -94,8 +94,7 @@
     "switch_to_sign_up": "¿Sin cuenta? Registrate",
     "switch_to_sign_in": "¿Ya tenés cuenta? Entrá",
     "signed_in_as": "Sesión de",
-    "sign_out": "Cerrar sesión",
-    "anonymous_banner": "Practicando local. Iniciá sesión para sincronizar entre dispositivos."
+    "sign_out": "Cerrar sesión"
   },
   "settings": {
     "dark_mode": "Modo oscuro"

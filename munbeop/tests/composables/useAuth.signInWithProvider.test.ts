@@ -9,8 +9,6 @@ vi.stubGlobal('useNuxtApp', useNuxtApp)
 vi.stubGlobal('useRuntimeConfig', useRuntimeConfig)
 vi.stubGlobal('useAuthStore', () => ({ setSession: vi.fn(), user: null }))
 
-vi.mock('~/lib/auth/migration', () => ({ migrateLocalToSupabase: vi.fn() }))
-vi.mock('~/lib/storage/facade', () => ({ pickAdapter: vi.fn() }))
 vi.mock('~/stores/grammar', () => ({ useGrammarStore: () => ({ hydrate: vi.fn() }) }))
 vi.mock('~/stores/contexts', () => ({ useContextsStore: () => ({ hydrate: vi.fn() }) }))
 vi.mock('~/stores/srs', () => ({ useSrsStore: () => ({ hydrate: vi.fn() }) }))

@@ -6,15 +6,12 @@ import type { AuthUser, AuthSession } from '~/lib/auth/types'
  * on app boot and kept in sync by an onAuthStateChange subscription.
  *
  * `ready` flips true after the very first getSession() resolves — UI
- * code can use it to avoid flashing the anonymous banner before auth
- * has had a chance to restore a saved session.
+ * code can use it to avoid acting on a not-yet-restored session.
  */
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<AuthUser | null>(null)
   const session = ref<AuthSession | null>(null)
   const ready = ref(false)
-
-  const isAnonymous = computed(() => user.value === null)
 
   function setSession(next: AuthSession | null) {
     session.value = next
@@ -22,5 +19,5 @@ export const useAuthStore = defineStore('auth', () => {
     ready.value = true
   }
 
-  return { user, session, ready, isAnonymous, setSession }
+  return { user, session, ready, setSession }
 })

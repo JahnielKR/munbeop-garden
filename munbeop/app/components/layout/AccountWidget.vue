@@ -5,38 +5,26 @@ import Button from '~/components/ui/Button.vue'
 const auth = useAuthStore()
 const { signOutAndExit } = useAuth()
 const { t } = useI18n()
-const router = useRouter()
 
 async function onSignOut() {
-  // signOutAndExit fires setExit() then navigates to /welcome so the
-  // pan-left transition plays as the user "leaves the castle".
+  // signOutAndExit navigates to /welcome so the pan-left transition
+  // plays as the user "leaves the castle".
   await signOutAndExit()
-}
-
-function onSignIn() {
-  // Skip the legacy /auth/sign-in redirect hop — push directly to the
-  // welcome sidebar with the email form pre-opened in sign-in mode.
-  router.push({ path: '/welcome', query: { open: 'signin', mode: 'signin' } })
 }
 </script>
 
 <template>
-  <div class="widget">
-    <template v-if="auth.user">
-      <div class="email">
-        <span class="email__label">{{ t('auth.signed_in_as') }}</span>
-        <span class="email__addr">{{ auth.user.email }}</span>
-      </div>
-      <Button variant="secondary" @click="onSignOut">
-        {{ t('auth.sign_out') }}
-      </Button>
-    </template>
-    <template v-else>
-      <div class="anon">{{ t('auth.anonymous_banner') }}</div>
-      <Button variant="primary" @click="onSignIn">
-        {{ t('auth.sign_in_title') }}
-      </Button>
-    </template>
+  <!-- Accounts are mandatory: inside the app shell there is always a
+       session. The only signed-out frames are the brief sign-out →
+       /welcome redirect, where rendering nothing is correct. -->
+  <div v-if="auth.user" class="widget">
+    <div class="email">
+      <span class="email__label">{{ t('auth.signed_in_as') }}</span>
+      <span class="email__addr">{{ auth.user.email }}</span>
+    </div>
+    <Button variant="secondary" @click="onSignOut">
+      {{ t('auth.sign_out') }}
+    </Button>
   </div>
 </template>
 
@@ -71,26 +59,5 @@ function onSignIn() {
   font-size: 11px;
   color: var(--text);
   word-break: break-all;
-}
-.anon {
-  /* Pixel-art per user feedback. The two-line banner reads in PS2P
-   * at 9px with extra line-height; CJK falls through to Noto Sans KR
-   * so the ja translation isn't dropped into raw monospace. */
-  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
-  font-size: 9px;
-  letter-spacing: 0.03em;
-  color: var(--text-soft);
-  line-height: 1.6;
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: grayscale;
-  font-smooth: never;
-}
-/* Thai / Vietnamese diacritics and Japanese kanji get squashed at
- * 9 px — bump for readability. */
-:lang(th) .anon,
-:lang(vi) .anon,
-:lang(ja) .anon {
-  font-size: 11px;
-  line-height: 1.5;
 }
 </style>
