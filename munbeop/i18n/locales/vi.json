@@ -115,7 +115,6 @@
       "email_signin": "Đăng nhập bằng email",
       "email_signup": "Tạo tài khoản",
       "email_magic": "Gửi đường dẫn ma thuật",
-      "anon": "Tiếp tục mà không cần tài khoản",
       "section_info": "Thông tin",
       "pricing": "Gói & Giá",
       "features": "Tính năng",
@@ -129,7 +128,6 @@
       "google": "Đang đi theo lối Google…",
       "email": "Thì thầm email của bạn với người gác cổng.",
       "magic": "Một cuộn giấy sẽ tới bằng cú.",
-      "anon": "Hyrule cũng nhớ những anh hùng địa phương. Tiến trình của bạn nằm trên thiết bị này.",
       "error_oauth": "Cánh cổng đó đã đóng. Thử cổng khác."
     }
   },

@@ -115,7 +115,6 @@
       "email_signin": "Entrar com e-mail",
       "email_signup": "Criar conta",
       "email_magic": "Enviar link mágico",
-      "anon": "Continuar sem conta",
       "section_info": "Informações",
       "pricing": "Planos e Preços",
       "features": "Recursos",
@@ -129,7 +128,6 @@
       "google": "Seguindo o caminho do Google…",
       "email": "Sussurre seu e-mail ao guardião.",
       "magic": "Um pergaminho chegará por coruja.",
-      "anon": "Hyrule lembra dos heróis locais também. Seu progresso vive neste dispositivo.",
       "error_oauth": "Essa porta está fechada. Vamos tentar outra."
     }
   },

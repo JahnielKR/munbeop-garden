@@ -115,7 +115,6 @@
       "email_signin": "Masuk dengan email",
       "email_signup": "Buat akun",
       "email_magic": "Kirim magic link",
-      "anon": "Lanjut tanpa akun",
       "section_info": "Info",
       "pricing": "Paket & Harga",
       "features": "Fitur",
@@ -129,7 +128,6 @@
       "google": "Mengikuti jalur Google…",
       "email": "Bisikkan emailmu pada penjaga gerbang.",
       "magic": "Gulungan akan dikirim oleh burung hantu.",
-      "anon": "Hyrule juga mengingat pahlawan lokal. Kemajuanmu tinggal di perangkat ini.",
       "error_oauth": "Gerbang itu tertutup. Coba pintu lain."
     }
   },

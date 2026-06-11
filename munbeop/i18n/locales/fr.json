@@ -115,7 +115,6 @@
       "email_signin": "Se connecter par e-mail",
       "email_signup": "Créer un compte",
       "email_magic": "Lien magique par e-mail",
-      "anon": "Continuer sans compte",
       "section_info": "Infos",
       "pricing": "Tarifs",
       "features": "Fonctionnalités",
@@ -129,7 +128,6 @@
       "google": "Sur la voie de Google…",
       "email": "Murmure ton e-mail au gardien.",
       "magic": "Un parchemin arrive par hibou.",
-      "anon": "Hyrule se souvient aussi des héros locaux. Ta progression vit sur cet appareil.",
       "error_oauth": "Cette porte est close. Essayons-en une autre."
     }
   },

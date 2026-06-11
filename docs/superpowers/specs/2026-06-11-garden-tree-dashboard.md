@@ -49,10 +49,11 @@ desbloqueo debe sentirse un logro).
 
 **Todo el estado del jardín se DERIVA en cliente. Cero tablas nuevas, cero SQL.**
 
-Razón: la app es local-first. Los anónimos practican con `LocalStorageAdapter`
-(`app/lib/storage/facade.ts`) y los logueados con `SupabaseAdapter`, pero ambos
-exponen los mismos datos vía stores. El jardín debe funcionar idéntico en ambos
-modos, así que se calcula desde:
+Razón: los stores ya exponen todo lo necesario vía el storage adapter, y
+derivar evita esquema nuevo y migraciones. (Actualización 2026-06-11: las
+cuentas son OBLIGATORIAS — el modo invitado se eliminó; `SupabaseAdapter` es
+el camino real y `LocalStorageAdapter` queda pendiente de limpieza en una
+tarea aparte.) El jardín se calcula desde:
 
 - **Progreso SRS**: `useSrsStore()` (`app/stores/srs.ts`) → mastery por ítem
   (`seedling | plant | tree`, en `app/lib/domain/mastery.ts`).
@@ -234,7 +235,8 @@ Composición (desktop, dentro del AppShell normal con sidebar):
 
 - [ ] La home muestra el árbol del nivel activo con sus capas según progreso real del SRS.
 - [ ] Practicar gramática del nivel y volver a la home actualiza el árbol sin recargar (reactividad de stores).
-- [ ] Funciona idéntico en modo anónimo (localStorage) y logueado (Supabase).
+- [ ] Funciona para usuarios con sesión (cuentas obligatorias desde 2026-06-11;
+      el middleware manda a los anónimos a `/welcome` en TODA ruta de app).
 - [ ] La vista jardín muestra los 6 árboles con su estado real y bloqueo por puerta del 60%.
 - [ ] Las zonas (themes) se desbloquean en cadena y navegan a la biblioteca filtrada.
 - [ ] Clima refleja oraciones pendientes; revisar el diario lo despeja.
