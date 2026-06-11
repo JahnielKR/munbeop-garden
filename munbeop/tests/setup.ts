@@ -1,6 +1,18 @@
 import { beforeEach } from 'vitest'
+import {
+  computed,
+  ref,
+  reactive,
+  watch,
+  watchEffect,
+  onMounted,
+  onBeforeUnmount,
+  onUnmounted,
+  nextTick,
+} from 'vue'
 import { useTypewriter } from '~/composables/useTypewriter'
 import { useWelcomeMusic } from '~/composables/useWelcomeMusic'
+import { useLocalized } from '~/composables/useLocalized'
 
 beforeEach(() => {
   // Reset localStorage between tests so storage adapter tests stay isolated.
@@ -25,3 +37,17 @@ g.useI18n = () => ({
 })
 g.useTypewriter = useTypewriter
 g.useWelcomeMusic = useWelcomeMusic
+g.useLocalized = useLocalized
+
+// Nuxt's auto-imports module exposes Vue reactivity primitives globally in
+// production builds. Tests need the same so SFCs that use `computed` /
+// `ref` / `watch` etc. without an explicit import don't ReferenceError.
+g.computed = computed
+g.ref = ref
+g.reactive = reactive
+g.watch = watch
+g.watchEffect = watchEffect
+g.onMounted = onMounted
+g.onBeforeUnmount = onBeforeUnmount
+g.onUnmounted = onUnmounted
+g.nextTick = nextTick

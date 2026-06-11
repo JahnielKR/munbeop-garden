@@ -37,7 +37,7 @@ withDefaults(defineProps<Props>(), {
     :data-testid="`game-card-${to.replaceAll('/', '-')}`"
   >
     <div class="game-card__cover">
-      <img v-if="image" :src="image" alt="" class="game-card__img" />
+      <img v-if="image" :src="image" alt="" class="game-card__img" >
       <span v-else class="game-card__emoji" aria-hidden="true">{{ emoji }}</span>
       <span v-if="locked" class="game-card__ribbon">{{ lockedLabel }}</span>
     </div>

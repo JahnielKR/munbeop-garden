@@ -52,7 +52,7 @@ const hearts = computed(() =>
   <article class="sheet" :class="{ 'sheet--locked': entry.status !== 'playable' }">
     <!-- Taped cover photo -->
     <div class="sheet__photo">
-      <img :src="entry.cover" alt="" class="sheet__cover" data-testid="page-cover" />
+      <img :src="entry.cover" alt="" class="sheet__cover" data-testid="page-cover" >
       <span class="sheet__tape" aria-hidden="true" />
     </div>
 

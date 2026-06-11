@@ -2,8 +2,9 @@ import type { StorageKey } from './keys'
 
 /**
  * Async storage abstraction.
- * - LocalStorageAdapter: trivial Promise-wrapping over sync localStorage.
- * - SupabaseAdapter (P2.11): genuine async via @supabase/supabase-js.
+ * - SupabaseAdapter: the real backend — per-user data in Postgres.
+ * - LocalStorageAdapter: per-device preferences only (locale).
+ * - NoopStorageAdapter: transient signed-out state (accounts are mandatory).
  *
  * Returning Promise<T> from every method lets us swap one implementation
  * for the other behind useStorageAdapter() without touching any call site.

@@ -1,7 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { AuthUser } from '~/lib/auth/types'
 import type { StorageAdapter } from './adapter'
-import { LocalStorageAdapter } from './localStorage'
+import { NoopStorageAdapter } from './noop'
 import { SupabaseAdapter } from './supabase'
 
 export interface AdapterPickArgs {
@@ -12,8 +12,11 @@ export interface AdapterPickArgs {
 /**
  * Returns the StorageAdapter that should be used right now, based on auth.
  *
- * - Authenticated (user + client both present): SupabaseAdapter scoped to the user.
- * - Anonymous (user is null OR client is null): LocalStorageAdapter.
+ * Accounts are mandatory (2026-06-11): the Supabase adapter is the only
+ * real storage path. The unauthenticated case covers transient windows
+ * only — the gap between sign-out and the /welcome redirect, or a store
+ * action racing session restore — and gets a noop adapter: reads resolve
+ * to fallbacks (clearing store state), writes are dropped.
  *
  * Stateless. Call from useStorageAdapter() inside store actions so each
  * action re-evaluates auth state — that way signing in/out swaps adapters
@@ -23,5 +26,5 @@ export function pickAdapter(args: AdapterPickArgs): StorageAdapter {
   if (args.user && args.client) {
     return new SupabaseAdapter(args.client, args.user.id)
   }
-  return new LocalStorageAdapter()
+  return new NoopStorageAdapter()
 }

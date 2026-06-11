@@ -20,3 +20,6 @@ pnpm-debug.log*
 .vercel
 .superpowers/
 .playwright-mcp/
+
+# pixel-trees review sheets (derived; regenerate with tools/pixel-trees/generate_trees.py)
+tools/pixel-trees/out/

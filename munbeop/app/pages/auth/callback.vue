@@ -2,7 +2,7 @@
 const { t } = useI18n()
 const status = ref<'checking' | 'success' | 'error'>('checking')
 const toast = useToast()
-const { runPostLoginMigration } = useAuth()
+const { hydrateUserStores } = useAuth()
 
 onMounted(async () => {
   // PKCE flow: the client auto-exchanges the URL params for a session.
@@ -14,8 +14,9 @@ onMounted(async () => {
     toast.show(t('auth.callback_error'))
     return
   }
-  // First-time magic-link sign-in: migrate any anonymous local data.
-  await runPostLoginMigration()
+  // Re-hydrate the stores now that the session exists, so the first
+  // paint of the app shows the account's cloud data.
+  await hydrateUserStores()
   status.value = 'success'
   toast.show(t('auth.callback_success'))
   // layout-transition.global middleware sees from=/auth/callback,

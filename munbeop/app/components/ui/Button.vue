@@ -4,11 +4,12 @@
  *
  * Tokens consumed via semantic aliases — `--accent` / `--text-on-accent`
  * (primary), `--danger` / `--text-on-danger`. All combinations pass WCAG
- * AA (primary 6.16:1 light, 5.2:1 dark; danger 6.6:1 light, 5.2:1 dark)
- * vs. v1 which hardcoded `--jade`/`--paper` at 2.65:1 (FAIL).
+ * AA in v5: primary 7.8:1 light (--always-dark on sunflower #e6a121),
+ * 7.1:1 dark (--always-dark on ember amber #e8923c); danger 4.5:1 light
+ * (cream on #c23e3e), 5.2:1 dark (--always-dark on #ff4757).
  *
- * Shadow uses `--shadow-color` (warm brown ink-soft, light; near-black,
- * dark) for the LADX chunky-pixel silhouette in both themes.
+ * Shadow uses `--shadow-color` (ink #2d1e18 on pergamino, light; cream
+ * #f1ece4 on abyssal, dark) for the LADX chunky-pixel silhouette.
  *
  * `:focus-visible` always renders the focus ring (spec hard rule — never
  * suppress). Motion via tokens so theme can re-tune timing.

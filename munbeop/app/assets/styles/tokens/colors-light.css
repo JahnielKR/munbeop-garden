@@ -70,6 +70,7 @@
   --link-visited: var(--ink-soft);
   --accent: var(--gold);                 /* primary action = sunflower */
   --accent-bright: var(--gold);
+  --heading-accent: var(--jade-deep);    /* KO headings — leaf green, 4.9:1 on paper */
   --danger: var(--red);
   --danger-bright: var(--red);
   --info: var(--sky);
@@ -78,6 +79,7 @@
   --mastery-seedling: var(--ink-soft);
   --mastery-plant: var(--gold);
   --mastery-tree: var(--jade);
+  --overlay: rgba(45, 30, 24, 0.72);     /* tinta café translúcida — modal scrim keeps the warmth */
   --text-on-accent: var(--always-dark);  /* dark text on sunflower */
   --text-on-danger: var(--always-cream); /* cream text on red */
   --text-on-info: var(--always-cream);   /* cream text on rust-orange link */

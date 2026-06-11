@@ -5,7 +5,9 @@
     "library": "図書館",
     "stats": "統計",
     "log": "日記",
-    "settings": "設定"
+    "settings": "設定",
+    "sidebar_collapse": "メニューを隠す",
+    "sidebar_expand": "メニューを表示"
   },
   "title": {
     "garden": "私の庭",
@@ -36,7 +38,31 @@
     "no_sentence": "先に文を書いてください"
   },
   "library": {
-    "lead": "ルーレットに出る全文法。練習するたびに育ちます。"
+    "lead": "ルーレットに出る全文法。練習するたびに育ちます。",
+    "modal": {
+      "close": "閉じる",
+      "section": {
+        "meaning": "意味",
+        "usage_notes": "使い方ノート",
+        "your_progress": "あなたの進捗",
+        "examples": "例文",
+        "audio": "発音",
+        "achievements": "アチーブメント",
+        "practice_cta": "今すぐ練習する"
+      },
+      "srs": {
+        "mastery_label": "習熟度",
+        "last_seen": "最終確認",
+        "last_seen_never": "まだ練習していません",
+        "times_practiced": "練習回数"
+      },
+      "coming_soon": {
+        "audio": "発音音声は近日対応予定。화이팅!",
+        "examples": "例文の追加は近日対応予定。",
+        "achievements": "この文法で獲得できるアチーブメントは近日対応予定。",
+        "usage_notes": "詳しい使い方ノートは近日対応予定。"
+      }
+    }
   },
   "mastery": {
     "seedling": "새싹 · 新規",
@@ -68,8 +94,7 @@
     "switch_to_sign_up": "アカウントがない?登録",
     "switch_to_sign_in": "アカウントある?サインイン",
     "signed_in_as": "サインイン中:",
-    "sign_out": "サインアウト",
-    "anonymous_banner": "ローカル練習中。デバイス間で同期するにはサインイン。"
+    "sign_out": "サインアウト"
   },
   "settings": {
     "dark_mode": "ダークモード"
@@ -93,7 +118,6 @@
       "email_signin": "メールでログイン",
       "email_signup": "アカウントを作成",
       "email_magic": "マジックリンクを送る",
-      "anon": "アカウントなしで続ける",
       "section_info": "情報",
       "pricing": "料金プラン",
       "features": "機能",
@@ -107,8 +131,43 @@
       "google": "Google の道を進みます…",
       "email": "門番にメールをささやいて。",
       "magic": "ふくろうが巻物を届けます。",
-      "anon": "ハイラルは地元の英雄も覚えている。進捗はこの端末に残ります。",
       "error_oauth": "その門は閉じています。別の道を試そう。"
+    }
+  },
+  "garden": {
+    "level": "レベル{n}",
+    "state": {
+      "dormant": "休眠（冬）",
+      "sprouting": "芽吹き",
+      "leafy": "緑豊か",
+      "bloom": "満開"
+    },
+    "practice_cta": "このレベルを練習",
+    "grove_open": "庭を見る",
+    "grove_back": "自分の木に戻る",
+    "diary_chest": "練習日記",
+    "diary_pending": "復習待ち{n}件",
+    "tree_locked": "レベル{n}で{pct}%に達するとこの木を植えられます",
+    "zone_locked": "先に「{zone}」を完了しよう",
+    "zone_overflow": "ほか{n}件",
+    "zone_filter": "表示中のゾーン：{zone}",
+    "zone_filter_clear": "すべて表示",
+    "unlock": {
+      "sprout": "{tree}が芽吹き始めた！",
+      "leafy": "{tree}の葉が茂ってきた！",
+      "bloom": "{tree}が満開になった！",
+      "tree": "新しい木が待っている：{tree}！"
+    },
+    "weather": {
+      "rain_hint": "難しかった文を復習して空を晴らそう"
+    },
+    "species": {
+      "cherry": "桜",
+      "magnolia": "モクレン",
+      "zelkova": "村のケヤキ",
+      "mugunghwa": "ムクゲ",
+      "maple": "秋のモミジ",
+      "ginkgo": "黄金のイチョウ"
     }
   },
   "pricing": {

@@ -5,7 +5,9 @@
     "library": "Perpustakaan",
     "stats": "Statistik",
     "log": "Jurnal",
-    "settings": "Pengaturan"
+    "settings": "Pengaturan",
+    "sidebar_collapse": "Sembunyikan menu",
+    "sidebar_expand": "Tampilkan menu"
   },
   "title": {
     "garden": "Kebunku",
@@ -36,7 +38,31 @@
     "no_sentence": "Tulis kalimat dulu"
   },
   "library": {
-    "lead": "Semua tata bahasa yang muncul di rodamu. Masing-masing tumbuh seiring latihanmu."
+    "lead": "Semua tata bahasa yang muncul di rodamu. Masing-masing tumbuh seiring latihanmu.",
+    "modal": {
+      "close": "Tutup",
+      "section": {
+        "meaning": "Arti",
+        "usage_notes": "Catatan penggunaan",
+        "your_progress": "Progres kamu",
+        "examples": "Contoh",
+        "audio": "Pelafalan",
+        "achievements": "Pencapaian",
+        "practice_cta": "Latih sekarang"
+      },
+      "srs": {
+        "mastery_label": "Penguasaan",
+        "last_seen": "Terakhir dilihat",
+        "last_seen_never": "Belum pernah dilatih",
+        "times_practiced": "Berapa kali dilatih"
+      },
+      "coming_soon": {
+        "audio": "Audio pelafalan segera hadir. 화이팅!",
+        "examples": "Lebih banyak kalimat contoh segera hadir.",
+        "achievements": "Pencapaian yang bisa kamu raih segera hadir.",
+        "usage_notes": "Catatan penggunaan rinci segera hadir."
+      }
+    }
   },
   "mastery": {
     "seedling": "새싹 · Baru",
@@ -68,8 +94,7 @@
     "switch_to_sign_up": "Belum punya akun? Daftar",
     "switch_to_sign_in": "Sudah punya akun? Masuk",
     "signed_in_as": "Masuk sebagai",
-    "sign_out": "Keluar",
-    "anonymous_banner": "Berlatih lokal. Masuk untuk sinkron antar perangkat."
+    "sign_out": "Keluar"
   },
   "settings": {
     "dark_mode": "Mode gelap"
@@ -93,7 +118,6 @@
       "email_signin": "Masuk dengan email",
       "email_signup": "Buat akun",
       "email_magic": "Kirim magic link",
-      "anon": "Lanjut tanpa akun",
       "section_info": "Info",
       "pricing": "Paket & Harga",
       "features": "Fitur",
@@ -107,8 +131,43 @@
       "google": "Mengikuti jalur Google…",
       "email": "Bisikkan emailmu pada penjaga gerbang.",
       "magic": "Gulungan akan dikirim oleh burung hantu.",
-      "anon": "Hyrule juga mengingat pahlawan lokal. Kemajuanmu tinggal di perangkat ini.",
       "error_oauth": "Gerbang itu tertutup. Coba pintu lain."
+    }
+  },
+  "garden": {
+    "level": "Level {n}",
+    "state": {
+      "dormant": "Dorman (musim dingin)",
+      "sprouting": "Bertunas",
+      "leafy": "Rimbun",
+      "bloom": "Mekar penuh"
+    },
+    "practice_cta": "Latih level ini",
+    "grove_open": "Lihat taman",
+    "grove_back": "Kembali ke pohonku",
+    "diary_chest": "Jurnal latihan",
+    "diary_pending": "{n} untuk ditinjau",
+    "tree_locked": "Capai {pct}% di level {n} untuk menanam pohon ini",
+    "zone_locked": "Selesaikan \"{zone}\" dulu",
+    "zone_overflow": "+{n} lagi",
+    "zone_filter": "Menampilkan zona: {zone}",
+    "zone_filter_clear": "Tampilkan semua",
+    "unlock": {
+      "sprout": "{tree} milikmu mulai bertunas!",
+      "leafy": "{tree} milikmu makin rimbun!",
+      "bloom": "{tree} milikmu mekar penuh!",
+      "tree": "Pohon baru menantimu: {tree}!"
+    },
+    "weather": {
+      "rain_hint": "Tinjau kalimat-kalimat sulitmu untuk mencerahkan langit"
+    },
+    "species": {
+      "cherry": "Sakura",
+      "magnolia": "Magnolia",
+      "zelkova": "Zelkova desa",
+      "mugunghwa": "Mugunghwa",
+      "maple": "Mapel musim gugur",
+      "ginkgo": "Ginkgo emas"
     }
   },
   "pricing": {

@@ -1,0 +1,45 @@
+<script setup lang="ts">
+import type { Grammar } from '~/lib/domain'
+import HeaderRow from './GrammarStudySheet/HeaderRow.vue'
+import MeaningSection from './GrammarStudySheet/MeaningSection.vue'
+import UsageNotesSection from './GrammarStudySheet/UsageNotesSection.vue'
+import SrsProgressSection from './GrammarStudySheet/SrsProgressSection.vue'
+import PracticeCtaSection from './GrammarStudySheet/PracticeCtaSection.vue'
+import ComingSoonSection from './GrammarStudySheet/ComingSoonSection.vue'
+
+interface Props {
+  grammar: Grammar
+}
+defineProps<Props>()
+const { t } = useI18n()
+</script>
+
+<template>
+  <article class="study-sheet">
+    <HeaderRow :grammar="grammar" />
+    <MeaningSection :grammar="grammar" />
+    <UsageNotesSection :grammar="grammar" />
+    <SrsProgressSection :grammar="grammar" />
+    <PracticeCtaSection :grammar="grammar" />
+    <ComingSoonSection
+      :title="t('library.modal.section.audio')"
+      :body="t('library.modal.coming_soon.audio')"
+    />
+    <ComingSoonSection
+      :title="t('library.modal.section.examples')"
+      :body="t('library.modal.coming_soon.examples')"
+    />
+    <ComingSoonSection
+      :title="t('library.modal.section.achievements')"
+      :body="t('library.modal.coming_soon.achievements')"
+    />
+  </article>
+</template>
+
+<style scoped>
+.study-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+</style>

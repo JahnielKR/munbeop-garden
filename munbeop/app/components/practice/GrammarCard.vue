@@ -85,7 +85,8 @@ function onSkipNote() {
 </script>
 
 <template>
-  <Card accent="jade">
+  <!-- gold = "the action happens here"; jade is reserved for success states -->
+  <Card accent="gold">
     <div class="header">
       <div class="ko">{{ grammar.ko }}</div>
       <Badge size="md">

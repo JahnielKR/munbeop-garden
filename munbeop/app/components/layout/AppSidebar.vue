@@ -57,7 +57,13 @@ const { t } = useI18n()
   top: 0;
   height: 100vh;
   width: 220px;
-  background: var(--paper-warm);
+  /* Subtle wood grain: 2px vertical streaks every 8px, 6% toward black. */
+  background-color: var(--paper-warm);
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 6px,
+    color-mix(in oklch, var(--paper-warm) 94%, #000) 6px 8px
+  );
   border-right: 2px solid var(--border);
   padding: 24px 16px;
   display: flex;
@@ -69,11 +75,20 @@ const { t } = useI18n()
   align-items: baseline;
   gap: 6px;
 }
+/* Brand gold + ink pixel outline (classic Zelda trick for legible yellow
+ * on any surface). Outline uses --always-dark, not --ink, on purpose —
+ * in dark mode --ink is light and would ruin the contour. */
 .sidebar__brand-ko {
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 900;
   font-size: 26px;
-  color: var(--accent);
+  color: var(--gold);
+  text-shadow:
+    2px 0 0 var(--always-dark),
+    -2px 0 0 var(--always-dark),
+    0 2px 0 var(--always-dark),
+    0 -2px 0 var(--always-dark),
+    2px 2px 0 var(--always-dark);
 }
 .sidebar__brand-name {
   font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;

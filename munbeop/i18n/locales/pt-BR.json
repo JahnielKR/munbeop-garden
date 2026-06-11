@@ -5,7 +5,9 @@
     "library": "Herbário",
     "stats": "Análise",
     "log": "Diário",
-    "settings": "Estufa"
+    "settings": "Estufa",
+    "sidebar_collapse": "Ocultar menu",
+    "sidebar_expand": "Mostrar menu"
   },
   "title": {
     "garden": "Meu Jardim",
@@ -36,7 +38,31 @@
     "no_sentence": "Escreve uma frase primeiro"
   },
   "library": {
-    "lead": "Todas as gramáticas que aparecem na sua roleta. Cada uma cresce conforme você pratica."
+    "lead": "Todas as gramáticas que aparecem na sua roleta. Cada uma cresce conforme você pratica.",
+    "modal": {
+      "close": "Fechar",
+      "section": {
+        "meaning": "Significado",
+        "usage_notes": "Notas de uso",
+        "your_progress": "Seu progresso",
+        "examples": "Exemplos",
+        "audio": "Pronúncia",
+        "achievements": "Conquistas",
+        "practice_cta": "Pratique agora"
+      },
+      "srs": {
+        "mastery_label": "Domínio",
+        "last_seen": "Vista pela última vez",
+        "last_seen_never": "Nunca praticada",
+        "times_practiced": "Vezes praticada"
+      },
+      "coming_soon": {
+        "audio": "O áudio de pronúncia chega em breve. 화이팅!",
+        "examples": "Mais frases de exemplo chegam em breve.",
+        "achievements": "As conquistas que você pode ganhar chegam em breve.",
+        "usage_notes": "Notas de uso detalhadas chegam em breve."
+      }
+    }
   },
   "mastery": {
     "seedling": "새싹 · Nova",
@@ -68,8 +94,7 @@
     "switch_to_sign_up": "Sem conta? Cadastra-te",
     "switch_to_sign_in": "Já tem conta? Entra",
     "signed_in_as": "Sessão de",
-    "sign_out": "Sair",
-    "anonymous_banner": "Treinando local. Entra pra sincronizar entre dispositivos."
+    "sign_out": "Sair"
   },
   "settings": {
     "dark_mode": "Modo escuro"
@@ -93,7 +118,6 @@
       "email_signin": "Entrar com e-mail",
       "email_signup": "Criar conta",
       "email_magic": "Enviar link mágico",
-      "anon": "Continuar sem conta",
       "section_info": "Informações",
       "pricing": "Planos e Preços",
       "features": "Recursos",
@@ -107,8 +131,43 @@
       "google": "Seguindo o caminho do Google…",
       "email": "Sussurre seu e-mail ao guardião.",
       "magic": "Um pergaminho chegará por coruja.",
-      "anon": "Hyrule lembra dos heróis locais também. Seu progresso vive neste dispositivo.",
       "error_oauth": "Essa porta está fechada. Vamos tentar outra."
+    }
+  },
+  "garden": {
+    "level": "Nível {n}",
+    "state": {
+      "dormant": "Dormente (inverno)",
+      "sprouting": "Brotando",
+      "leafy": "Frondosa",
+      "bloom": "Em plena floração"
+    },
+    "practice_cta": "Praticar este nível",
+    "grove_open": "Ver jardim",
+    "grove_back": "Voltar à minha árvore",
+    "diary_chest": "Diário de prática",
+    "diary_pending": "{n} para revisar",
+    "tree_locked": "Chegue a {pct}% no nível {n} para plantar esta árvore",
+    "zone_locked": "Complete \"{zone}\" primeiro",
+    "zone_overflow": "+{n} mais",
+    "zone_filter": "Mostrando zona: {zone}",
+    "zone_filter_clear": "Mostrar tudo",
+    "unlock": {
+      "sprout": "Sua {tree} está brotando!",
+      "leafy": "Sua {tree} está ficando frondosa!",
+      "bloom": "Sua {tree} está em plena floração!",
+      "tree": "Uma nova árvore espera por você: {tree}!"
+    },
+    "weather": {
+      "rain_hint": "Revise suas frases difíceis para limpar o céu"
+    },
+    "species": {
+      "cherry": "Cerejeira",
+      "magnolia": "Magnólia",
+      "zelkova": "Zelkova da aldeia",
+      "mugunghwa": "Rosa-de-sharon",
+      "maple": "Bordo de outono",
+      "ginkgo": "Ginkgo dourado"
     }
   },
   "pricing": {

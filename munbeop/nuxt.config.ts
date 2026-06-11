@@ -57,7 +57,10 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
-        { name: 'theme-color', content: '#1a1f1a' },
+        // Browser chrome / PWA splash tint per system scheme: pergamino
+        // (light --paper) and abisal (dark --paper).
+        { name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#f4ecd8' },
+        { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#0c1220' },
       ],
     },
   },

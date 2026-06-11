@@ -7,12 +7,15 @@
  * are accepted (sidebar 18px, mobile-nav 22px) — slight subpixel softness
  * is the accepted tradeoff for layout fit, mitigated by crispEdges.
  *
- * All colors come from the brand palette (01-tokens.md §1.1) plus
- * `currentColor` for nav silhouettes — that lets the active sidebar link
- * color cascade onto the icon automatically.
+ * All fills consume v5 brand tokens via `var()` (the SVGs are inline, so
+ * custom properties cascade into them) — every icon re-tints with the
+ * active theme instead of carrying frozen v4 hex. `currentColor` drives
+ * the nav silhouettes so the active sidebar link color cascades onto the
+ * icon automatically.
  *
- * Mastery icons hardcode their palette so they read consistently in any
- * surface (cards, badges, modals).
+ * Mastery icons follow the same tokens; their narrative ramp (ink-soft
+ * dirt → gold fruit → jade tree) is expressed per-theme by the token
+ * values themselves.
  */
 
 export type IconName =
@@ -56,14 +59,14 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
       <!-- red roof: stepped triangle, 5 rows -->
       <path
         d="M8 3h1v1H8z M7 4h3v1H7z M6 5h5v1H6z M5 6h7v1H5z M4 7h9v1H4z"
-        fill="#e83838"
+        fill="var(--red)"
       />
       <!-- walls: 9x6 rectangle below roof -->
       <path d="M4 8h9v6H4z" fill="currentColor" />
       <!-- sky-blue window (left of door) -->
-      <path d="M5 9h2v2H5z" fill="#5fb8e8" />
+      <path d="M5 9h2v2H5z" fill="var(--sky-day)" />
       <!-- ink-soft door (right side) -->
-      <path d="M9 10h3v4H9z" fill="#4a3a1f" />
+      <path d="M9 10h3v4H9z" fill="var(--ink-soft)" />
     </template>
 
     <!-- practice: 6-sided die showing the "5" face -->
@@ -83,17 +86,17 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
     <!-- library: 3 stacked books, distinct palette spine colors -->
     <template v-if="name === 'library'">
       <!-- top book: jade-deep -->
-      <path d="M3 4h10v2H3z" fill="#185f24" />
+      <path d="M3 4h10v2H3z" fill="var(--jade-deep)" />
       <!-- top book page highlight -->
-      <path d="M4 5h1v1H4z" fill="#f5c533" />
+      <path d="M4 5h1v1H4z" fill="var(--gold)" />
       <!-- middle book: red-deep -->
-      <path d="M3 7h10v3H3z" fill="#9d2525" />
+      <path d="M3 7h10v3H3z" fill="var(--red-deep)" />
       <!-- middle book page highlight -->
-      <path d="M4 8h1v1H4z" fill="#f5c533" />
+      <path d="M4 8h1v1H4z" fill="var(--gold)" />
       <!-- bottom book: gold body -->
-      <path d="M3 11h10v3H3z" fill="#f5c533" />
+      <path d="M3 11h10v3H3z" fill="var(--gold)" />
       <!-- bottom book dark spine band (ink-soft) -->
-      <path d="M3 11h10v1H3z" fill="#4a3a1f" />
+      <path d="M3 11h10v1H3z" fill="var(--ink-soft)" />
     </template>
 
     <!-- stats: 3 ascending bars -->
@@ -115,14 +118,14 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
         d="M4 3h8v1H4z M3 4h1v2H3z M12 4h1v2h-1z M4 5h8v1H4z"
         fill="currentColor"
       />
-      <!-- scroll body fill (paper-warm) -->
-      <path d="M4 6h8v6H4z" fill="#f1e5b8" />
+      <!-- scroll body fill (paper-deep) -->
+      <path d="M4 6h8v6H4z" fill="var(--paper-deep)" />
       <!-- scroll body side rails (currentColor) -->
       <path d="M3 6h1v6H3z M12 6h1v6h-1z" fill="currentColor" />
       <!-- text lines on scroll (ink-soft) -->
       <path
         d="M5 7h5v1H5z M5 9h5v1H5z M5 11h3v1H5z"
-        fill="#4a3a1f"
+        fill="var(--ink-soft)"
       />
       <!-- bottom rolled end ring -->
       <path
@@ -144,60 +147,60 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
       <!-- left tooth -->
       <path d="M12 7h2v2h-2z" fill="currentColor" />
       <!-- right tooth -->
-      <!-- chamfer the 4 outer corners (paper bg to suggest diagonal teeth) -->
+      <!-- chamfer the 4 outer corners (surface bg "perforates" toward the sidebar) -->
       <path
         d="M4 4h1v1H4z M11 4h1v1h-1z M4 11h1v1H4z M11 11h1v1h-1z"
-        fill="#f8efd0"
+        fill="var(--surface)"
       />
       <!-- center hole punched out (paper) -->
-      <path d="M7 7h2v2H7z" fill="#f8efd0" />
+      <path d="M7 7h2v2H7z" fill="var(--surface)" />
     </template>
 
     <!-- mastery-seedling: dirt mound + stem + 2 leaves -->
     <template v-if="name === 'mastery-seedling'">
       <!-- dirt mound (ink-soft) -->
-      <path d="M5 13h6v1H5z M4 14h8v1H4z" fill="#4a3a1f" />
+      <path d="M5 13h6v1H5z M4 14h8v1H4z" fill="var(--ink-soft)" />
       <!-- stem (jade-deep) -->
-      <path d="M8 8h1v5H8z" fill="#185f24" />
+      <path d="M8 8h1v5H8z" fill="var(--jade-deep)" />
       <!-- left leaf (jade) -->
-      <path d="M6 9h2v1H6z M5 10h2v1H5z M6 11h1v1H6z" fill="#3aa84a" />
+      <path d="M6 9h2v1H6z M5 10h2v1H5z M6 11h1v1H6z" fill="var(--jade)" />
       <!-- right leaf (jade) -->
-      <path d="M9 9h2v1H9z M10 10h2v1h-2z M10 11h1v1h-1z" fill="#3aa84a" />
+      <path d="M9 9h2v1H9z M10 10h2v1h-2z M10 11h1v1h-1z" fill="var(--jade)" />
       <!-- stem tip highlight -->
-      <path d="M8 7h1v1H8z" fill="#3aa84a" />
+      <path d="M8 7h1v1H8z" fill="var(--jade)" />
     </template>
 
     <!-- mastery-plant: bushy plant with gold fruit -->
     <template v-if="name === 'mastery-plant'">
       <!-- dirt mound -->
-      <path d="M5 14h6v1H5z" fill="#4a3a1f" />
+      <path d="M5 14h6v1H5z" fill="var(--ink-soft)" />
       <!-- stem (jade-deep) -->
-      <path d="M8 10h1v4H8z" fill="#185f24" />
+      <path d="M8 10h1v4H8z" fill="var(--jade-deep)" />
       <!-- bushy leaves (jade), wide cluster -->
       <path
         d="M6 5h5v1H6z M5 6h7v1H5z M4 7h9v1H4z M5 8h7v1H5z M6 9h5v1H6z M7 10h3v1H7z"
-        fill="#3aa84a"
+        fill="var(--jade)"
       />
       <!-- jade-deep accents (depth) -->
-      <path d="M4 7h1v1H4z M12 7h1v1h-1z M7 9h1v1H7z" fill="#185f24" />
+      <path d="M4 7h1v1H4z M12 7h1v1h-1z M7 9h1v1H7z" fill="var(--jade-deep)" />
       <!-- gold fruit (2x2 + tiny outline so it reads at small render sizes) -->
-      <path d="M9 5h2v2H9z" fill="#f5c533" />
-      <path d="M8 5h1v1H8z" fill="#185f24" />
+      <path d="M9 5h2v2H9z" fill="var(--gold)" />
+      <path d="M8 5h1v1H8z" fill="var(--jade-deep)" />
     </template>
 
     <!-- mastery-tree: trunk + round canopy + canopy shadow -->
     <template v-if="name === 'mastery-tree'">
       <!-- trunk (ink-soft), centered, 2 wide x 4 tall -->
-      <path d="M7 11h2v4H7z" fill="#4a3a1f" />
+      <path d="M7 11h2v4H7z" fill="var(--ink-soft)" />
       <!-- canopy body (jade) - round, stepped -->
       <path
         d="M6 2h4v1H6z M4 3h8v1H4z M3 4h10v1H3z M3 5h10v1H3z M3 6h10v1H3z M3 7h10v1H3z M4 8h8v1H4z M5 9h6v1H5z M6 10h4v1H6z"
-        fill="#3aa84a"
+        fill="var(--jade)"
       />
       <!-- canopy shadow (jade-deep) along right/bottom curve -->
       <path
         d="M11 4h1v1h-1z M12 5h1v3h-1z M11 8h1v1h-1z M10 9h1v1h-1z M9 10h1v1H9z"
-        fill="#185f24"
+        fill="var(--jade-deep)"
       />
     </template>
   </svg>

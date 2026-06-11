@@ -35,11 +35,11 @@ const fullSrc = (path: string) => `${props.imageBase}${path}`
       data-testid="room-bg"
       :src="fullSrc(room.image)"
       :alt="room.id"
-    />
+    >
     <Hotspot
       v-for="h in room.hotspots"
-      :key="h.id"
       :id="h.id"
+      :key="h.id"
       :rect="h.rect"
       @click="$emit('hotspot', h.id)"
     />

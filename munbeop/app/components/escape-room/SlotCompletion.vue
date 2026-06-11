@@ -57,7 +57,7 @@ function submit() {
         spellcheck="false"
         lang="ko"
         @keydown.enter="submit"
-      />
+      >
       <button
         type="button"
         class="slot-completion__check"

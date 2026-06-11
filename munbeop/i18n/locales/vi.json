@@ -5,7 +5,9 @@
     "library": "Thư viện",
     "stats": "Thống kê",
     "log": "Nhật ký",
-    "settings": "Cài đặt"
+    "settings": "Cài đặt",
+    "sidebar_collapse": "Ẩn menu",
+    "sidebar_expand": "Hiện menu"
   },
   "title": {
     "garden": "Vườn của tôi",
@@ -36,7 +38,31 @@
     "no_sentence": "Viết câu trước đã"
   },
   "library": {
-    "lead": "Tất cả các ngữ pháp xuất hiện trong vòng quay. Mỗi cái lớn lên khi bạn luyện tập."
+    "lead": "Tất cả các ngữ pháp xuất hiện trong vòng quay. Mỗi cái lớn lên khi bạn luyện tập.",
+    "modal": {
+      "close": "Đóng",
+      "section": {
+        "meaning": "Ý nghĩa",
+        "usage_notes": "Ghi chú cách dùng",
+        "your_progress": "Tiến độ của bạn",
+        "examples": "Ví dụ",
+        "audio": "Phát âm",
+        "achievements": "Thành tựu",
+        "practice_cta": "Luyện ngay"
+      },
+      "srs": {
+        "mastery_label": "Mức độ thành thạo",
+        "last_seen": "Lần xem gần nhất",
+        "last_seen_never": "Chưa luyện lần nào",
+        "times_practiced": "Số lần đã luyện"
+      },
+      "coming_soon": {
+        "audio": "Âm thanh phát âm sắp ra mắt. 화이팅!",
+        "examples": "Thêm câu ví dụ sắp ra mắt.",
+        "achievements": "Các thành tựu bạn có thể đạt được sắp ra mắt.",
+        "usage_notes": "Ghi chú cách dùng chi tiết sắp ra mắt."
+      }
+    }
   },
   "mastery": {
     "seedling": "새싹 · Mới",
@@ -68,8 +94,7 @@
     "switch_to_sign_up": "Chưa có tài khoản? Đăng ký",
     "switch_to_sign_in": "Đã có tài khoản? Đăng nhập",
     "signed_in_as": "Đăng nhập với",
-    "sign_out": "Đăng xuất",
-    "anonymous_banner": "Luyện tập cục bộ. Đăng nhập để đồng bộ giữa các thiết bị."
+    "sign_out": "Đăng xuất"
   },
   "settings": {
     "dark_mode": "Chế độ tối"
@@ -93,7 +118,6 @@
       "email_signin": "Đăng nhập bằng email",
       "email_signup": "Tạo tài khoản",
       "email_magic": "Gửi đường dẫn ma thuật",
-      "anon": "Tiếp tục mà không cần tài khoản",
       "section_info": "Thông tin",
       "pricing": "Gói & Giá",
       "features": "Tính năng",
@@ -107,8 +131,43 @@
       "google": "Đang đi theo lối Google…",
       "email": "Thì thầm email của bạn với người gác cổng.",
       "magic": "Một cuộn giấy sẽ tới bằng cú.",
-      "anon": "Hyrule cũng nhớ những anh hùng địa phương. Tiến trình của bạn nằm trên thiết bị này.",
       "error_oauth": "Cánh cổng đó đã đóng. Thử cổng khác."
+    }
+  },
+  "garden": {
+    "level": "Cấp {n}",
+    "state": {
+      "dormant": "Ngủ đông (mùa đông)",
+      "sprouting": "Đang nảy mầm",
+      "leafy": "Rậm lá",
+      "bloom": "Nở rộ"
+    },
+    "practice_cta": "Luyện cấp này",
+    "grove_open": "Xem khu vườn",
+    "grove_back": "Về cây của tôi",
+    "diary_chest": "Nhật ký luyện tập",
+    "diary_pending": "{n} câu chờ xem lại",
+    "tree_locked": "Đạt {pct}% ở cấp {n} để trồng cây này",
+    "zone_locked": "Hoàn thành \"{zone}\" trước đã",
+    "zone_overflow": "+{n} nữa",
+    "zone_filter": "Đang hiển thị vùng: {zone}",
+    "zone_filter_clear": "Hiện tất cả",
+    "unlock": {
+      "sprout": "Cây {tree} của bạn đang nảy mầm!",
+      "leafy": "Cây {tree} của bạn đang rậm lá!",
+      "bloom": "Cây {tree} của bạn đang nở rộ!",
+      "tree": "Một cây mới đang chờ bạn: {tree}!"
+    },
+    "weather": {
+      "rain_hint": "Xem lại những câu khó để bầu trời quang đãng"
+    },
+    "species": {
+      "cherry": "Hoa anh đào",
+      "magnolia": "Mộc lan",
+      "zelkova": "Zelkova làng",
+      "mugunghwa": "Mugunghwa",
+      "maple": "Phong mùa thu",
+      "ginkgo": "Bạch quả vàng"
     }
   },
   "pricing": {

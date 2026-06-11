@@ -1,4 +1,5 @@
 import { defineNuxtRouteMiddleware, navigateTo } from '#imports'
+import { isPublicPath } from '~/lib/auth/public-paths'
 
 export interface WelcomeRedirectInput {
   path: string
@@ -9,21 +10,19 @@ export interface WelcomeRedirectInput {
  * Pure decision function. Returns the redirect target or null if no
  * redirect is needed. Exported for unit tests.
  *
- * Policy: the landing page is the entry point for anonymous visitors —
- * always. The previous `mungarden:welcomed` localStorage exemption (which
- * let returning anon visitors skip /welcome) was dropped so the welcome
- * scene is the consistent first-paint surface for everyone who isn't
- * signed in.
+ * Policy (2026-06-11): accounts are MANDATORY. Anonymous visitors only
+ * ever see the public surface — the welcome gate, the info pages and the
+ * auth flow. Every app route requires a session. (Guest mode was removed:
+ * accounts give usage control and pave the way for premium tiers.)
  *
  * Rules:
- *   - signed in + /welcome → /              (don't show the gate to a logged-in user)
- *   - anon     + /         → /welcome       (start on the landing page)
- *   - anything else        → null           (direct links / deep routes untouched)
+ *   - signed in + /welcome  → /             (don't show the gate to a logged-in user)
+ *   - anon      + app route → /welcome      (the whole app is behind the account)
+ *   - anon      + public    → null          (welcome / pricing / features / policies / auth)
  */
 export function decideWelcomeRedirect({ path, signedIn }: WelcomeRedirectInput): string | null {
   if (signedIn) return path === '/welcome' ? '/' : null
-  if (path === '/') return '/welcome'
-  return null
+  return isPublicPath(path) ? null : '/welcome'
 }
 
 /**

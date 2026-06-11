@@ -26,13 +26,19 @@ describe('decideWelcomeRedirect', () => {
     ).toBe(null)
   })
 
-  it('other paths never redirect (direct links / deep routes untouched)', () => {
-    expect(
-      decideWelcomeRedirect({ path: '/practice', signedIn: false }),
-    ).toBe(null)
-    expect(
-      decideWelcomeRedirect({ path: '/auth/callback', signedIn: false }),
-    ).toBe(null)
+  it('anon visitor on any app route → redirected to /welcome (mandatory accounts)', () => {
+    for (const path of ['/practice', '/library', '/stats', '/log', '/settings']) {
+      expect(decideWelcomeRedirect({ path, signedIn: false })).toBe('/welcome')
+    }
+  })
+
+  it('anon visitor on public/info/auth surfaces → untouched', () => {
+    for (const path of ['/pricing', '/features', '/policies', '/auth/callback', '/auth/sign-in']) {
+      expect(decideWelcomeRedirect({ path, signedIn: false })).toBe(null)
+    }
+  })
+
+  it('signed-in user is never redirected away from app routes', () => {
     expect(
       decideWelcomeRedirect({ path: '/practice', signedIn: true }),
     ).toBe(null)
