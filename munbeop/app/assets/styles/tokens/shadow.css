@@ -1,14 +1,14 @@
 /* tokens/shadow.css
  * Hard offset shadows. Never soft Gaussian blur — that erases the LADX
  * silhouette. Shadow ink is driven by --shadow-color (declared in the
- * colors layer), NOT by --ink-soft or --border-strong directly:
- *   light theme:  --shadow-color = var(--ink-soft) = #4a3a1f  (warm brown)
- *   dark theme:   --shadow-color = var(--ink-soft) = #d8c89a  (dusty cream)
- * Light mode shadow is DARKER than the surface (warm brown on cream);
- * dark mode shadow is LIGHTER than the surface (cream on cave-brown).
- * This keeps the chunky-pixel silhouette visible in both themes — the
- * original "always darker" rule produced an invisible near-black shadow
- * on cave-brown bg, which the user flagged as broken UX in dark mode.
+ * colors layer) = var(--shadow-cream), per theme (v5):
+ *   light theme:  --shadow-cream = #2d1e18  (dark ink on pergamino)
+ *   dark theme:   --shadow-cream = #f1ece4  (cream on abyssal blue)
+ * Light mode shadow is DARKER than the surface; dark mode shadow is
+ * LIGHTER than the surface. This keeps the chunky-pixel silhouette
+ * visible in both themes — the original "always darker" rule produced
+ * an invisible near-black shadow on the dark bg, which the user flagged
+ * as broken UX in dark mode.
  */
 
 :root {

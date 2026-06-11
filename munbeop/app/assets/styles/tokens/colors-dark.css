@@ -7,29 +7,36 @@
  * against the abyssal-blue night surfaces.
  *
  * Source: docs/codigos e ideas/segundo light and dark mode.md (the
- * user's hand-authored .modo-noche palette). Vibe: deep abyssal-blue
- * sky over a pine-forest sidebar, with campfire-orange CTAs and
- * firefly-green links lighting the gloom.
+ * user's hand-authored .modo-noche palette), tuned in v5.1 for contrast
+ * and semantics. Vibe: deep abyssal-blue sky over a pine-forest sidebar,
+ * with ember-amber CTAs, firefly-green links and moonlight-blue info
+ * lighting the gloom.
+ *
+ * v5.1 rules:
+ *   - Elevation ramp: each tier steps UP in lightness (bg → sidebar →
+ *     card), hues stay (pine sidebar, midnight cards).
+ *   - Four roles, four hues: action = amber (30°), danger = red (355°),
+ *     link/success = firefly green, info = moonlight blue.
  */
 
 [data-theme="dark"] {
   /* ---- Brand swatches that flip on light/dark axis ---- */
   --paper: #0c1220;        /* azul abisal profundo — main surface */
-  --paper-warm: #0a1f1d;   /* verde pino silvestre ultra oscuro — sidebar tier */
-  --paper-deep: #121b2d;   /* azul medianoche — card / raised tier */
+  --paper-warm: #102623;   /* pino, un paso más claro — sidebar gana presencia */
+  --paper-deep: #1a2440;   /* medianoche elevada — cards y modales flotan */
   --ink: #e2e8f0;          /* blanco platino lunar — body text */
-  --ink-soft: #577570;     /* verde azulado grisáceo — secondary text */
+  --ink-soft: #7d9a93;     /* verde azulado grisáceo — 6.2:1 sobre paper */
   --ink-line: #3b5275;     /* azul acero apagado — primary outline */
   --jade: #3ad29f;         /* verde cian luciérnaga — success/positive */
   --jade-deep: #2eaa7e;
   --meadow: var(--jade);
   --meadow-deep: var(--jade-deep);
-  --sky: #3ad29f;          /* firefly green doubles as link in dark */
-  --sky-deep: #2eaa7e;
-  --gold: #d95738;         /* naranja fuego de campamento — primary action */
+  --sky: #6ea8d8;          /* azul luz de luna — familia info */
+  --sky-deep: #4f87b5;
+  --gold: #e8923c;         /* ámbar brasa — primary action; 35° del rojo */
   --red: #ff4757;          /* warmer red on the abyssal-blue surface */
   --red-deep: #e84118;
-  --hover-bg: rgba(255, 118, 84, 0.25); /* destello de flama translúcido */
+  --hover-bg: rgba(232, 146, 60, 0.22); /* destello de brasa translúcido */
   --shadow-cream: #f1ece4; /* cream pixel shadow — keeps silhouettes visible */
 
   /* ---- Aliases that re-point ---- */
@@ -48,12 +55,12 @@
   --accent-bright: var(--gold);
   --heading-accent: var(--jade);         /* firefly on abyssal, 9.7:1 */
   --success: var(--jade);
-  --info: var(--jade);
+  --info: var(--sky);                    /* moonlight blue — no longer doubles as link/success */
   --warning: var(--gold);
   --mastery-tree: var(--jade);
   --mastery-plant: var(--gold);
-  --text-on-accent: var(--always-cream); /* cream text on campfire orange */
-  --text-on-danger: var(--always-cream); /* cream text on red */
-  --text-on-info: var(--always-dark);    /* dark text on firefly green */
-  --text-on-warning: var(--always-cream);
+  --text-on-accent: var(--always-dark);  /* dark text on ember amber — 7.1:1 */
+  --text-on-danger: var(--always-dark);  /* dark text on bright red — 5.2:1 (cream was 2.9:1 ✗) */
+  --text-on-info: var(--always-dark);    /* dark text on moonlight blue — 6.8:1 */
+  --text-on-warning: var(--always-dark);
 }
