@@ -1,10 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { NuxtLink } from '#components'
+
 /**
  * GameCard — one game mode in the practice hub.
  *
  * Renders as a chunky pixel card: cover area (image or emoji on gradient),
  * name, one-line description. The whole card is a link; locked cards render
  * inert with a "coming soon" ribbon.
+ *
+ * `tag` binds the imported NuxtLink COMPONENT, never the string 'NuxtLink':
+ * Nuxt auto-imports are compile-time, so a string in `<component :is>` falls
+ * through to an unknown `<nuxtlink>` element that swallows clicks.
  */
 
 interface Props {
@@ -20,17 +27,19 @@ interface Props {
   lockedLabel?: string
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   image: undefined,
   emoji: '🎮',
   locked: false,
   lockedLabel: '',
 })
+
+const tag = computed(() => (props.locked ? 'div' : NuxtLink))
 </script>
 
 <template>
   <component
-    :is="locked ? 'div' : 'NuxtLink'"
+    :is="tag"
     :to="locked ? undefined : to"
     class="game-card"
     :class="{ 'game-card--locked': locked }"
