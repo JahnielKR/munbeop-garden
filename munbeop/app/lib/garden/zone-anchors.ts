@@ -36,8 +36,8 @@ export const ZONE_ANCHORS: Record<TreeSpecies, ZoneAnchor[]> = {
     { top: '50%', left: '37%' },
     { top: '49%', left: '63%' },
     { top: '44%', left: '44%' },
-    { top: '44%', left: '56%' },
-    { top: '40%', left: '50%' },
+    { top: '43%', left: '55%' },
+    { top: '36%', left: '50%' },
   ],
   zelkova: [
     { top: '59%', left: '23%' },
@@ -51,11 +51,11 @@ export const ZONE_ANCHORS: Record<TreeSpecies, ZoneAnchor[]> = {
   mugunghwa: [
     { top: '68%', left: '43%' },
     { top: '67%', left: '57%' },
-    { top: '63%', left: '38%' },
-    { top: '63%', left: '63%' },
-    { top: '59%', left: '44%' },
-    { top: '59%', left: '56%' },
-    { top: '56%', left: '50%' },
+    { top: '61%', left: '38%' },
+    { top: '62%', left: '66%' },
+    { top: '58%', left: '47%' },
+    { top: '58%', left: '57%' },
+    { top: '51%', left: '51%' },
   ],
   maple: [
     { top: '58%', left: '30%' },
