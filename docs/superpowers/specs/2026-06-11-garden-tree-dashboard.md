@@ -115,7 +115,8 @@ Fuente de verdad: `TREE_THRESHOLDS` exportado por `PixelTree.vue`.
   `thinking`.
 - Las posiciones (top/left %) de los nodos son **por especie** (cada árbol
   tiene silueta distinta): mapa estático en
-  `app/components/garden/tree-zones.ts`. Si un nivel tiene más themes que
+  `app/lib/garden/zone-anchors.ts` (en lib/, no components/ — el escáner de
+  componentes de Nuxt colisionaría con `TreeZones.vue`). Si un nivel tiene más themes que
   anclas definidas, los sobrantes se agrupan en el último nodo ("y más…").
 
 ## 5. UX

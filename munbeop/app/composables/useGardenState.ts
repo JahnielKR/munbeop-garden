@@ -125,6 +125,15 @@ export function useGardenState() {
       ).length,
   )
 
+  /** Most recent practice timestamp across every item; null if never (Bomi sleep rule). */
+  const lastPracticedAt = computed<number | null>(() => {
+    let last: number | null = null
+    for (const state of Object.values(srs.map)) {
+      if (state.lastSeen !== null && (last === null || state.lastSeen > last)) last = state.lastSeen
+    }
+    return last
+  })
+
   /** Zones (= spine themes) of the active level, with the chain gate applied. */
   const zones = computed<GardenZone[]>(() => {
     const themes = themesOfLevel(activeLevel.value)
@@ -140,6 +149,7 @@ export function useGardenState() {
     setActiveLevel,
     highestUnlocked,
     pendingReviews,
+    lastPracticedAt,
     zones,
     thresholds: TREE_THRESHOLDS,
   }

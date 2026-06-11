@@ -2,19 +2,27 @@
 /**
  * 내 정원 / My Garden — home hero (spec §5.1).
  *
- * The active level's tree IS the screen: a window-to-the-garden stage
- * whose sky tracks real SRS progress, a retro HUD underneath, and Bomi
- * floating by the crown. The grove view (all 6 trees) arrives with
- * `GardenGrove` (plan Fase 5); its toggle is disabled until then.
+ * The active level's tree IS the screen — and the menu: zone nodes over
+ * the branches open the library filtered by theme, the diary chest sits
+ * by the roots, and Bomi hovers over the furthest unlocked zone (guide
+ * without tutorial). Everything anchored to the tree shares its wrapper
+ * so % anchors live in canvas coordinates at any integer scale.
+ *
+ * The grove view (all 6 trees) arrives with `GardenGrove` (plan Fase 5);
+ * its toggle is disabled until then.
  */
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import Bomi from '~/components/bomi/Bomi.vue'
+import type { Pose } from '~/components/bomi/poses'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Button from '~/components/ui/Button.vue'
+import DiaryChest from '~/components/garden/DiaryChest.vue'
 import GardenHud from '~/components/garden/GardenHud.vue'
 import GardenStage from '~/components/garden/GardenStage.vue'
 import PixelTree from '~/components/garden/PixelTree.vue'
+import TreeZones from '~/components/garden/TreeZones.vue'
+import { ZONE_ANCHORS } from '~/lib/garden/zone-anchors'
 import { SPECIES_KO } from '~/lib/garden'
 import { gardenStateKey, useGardenState } from '~/composables/useGardenState'
 
@@ -22,7 +30,7 @@ definePageMeta({ surface: 'game' })
 
 const { t } = useI18n()
 
-const { active } = useGardenState()
+const { active, zones, pendingReviews, lastPracticedAt } = useGardenState()
 
 // Integer scale only (spec §7.2): x2 on narrow viewports, x3 otherwise.
 const stageWrap = ref<HTMLElement | null>(null)
@@ -32,6 +40,45 @@ const treeScale = computed(() => (width.value > 0 && width.value < 432 ? 2 : 3))
 const stateKey = computed(() => gardenStateKey(active.value.pct))
 const speciesKo = computed(() => SPECIES_KO[active.value.species])
 const speciesLabel = computed(() => t(`garden.species.${active.value.species}`))
+
+// ── Bomi: hovers over the furthest unlocked zone node; 'thinking' for 2s
+// when a locked zone is tapped; 'sleep' when the garden is untouched for
+// a week (spec §5.1).
+const SLEEP_AFTER_MS = 7 * 24 * 60 * 60 * 1000
+
+const thinking = ref(false)
+let thinkTimer: ReturnType<typeof setTimeout> | null = null
+
+function onLockedAttempt() {
+  thinking.value = true
+  if (thinkTimer) clearTimeout(thinkTimer)
+  thinkTimer = setTimeout(() => {
+    thinking.value = false
+  }, 2000)
+}
+
+onBeforeUnmount(() => {
+  if (thinkTimer) clearTimeout(thinkTimer)
+})
+
+const bomiPose = computed<Pose>(() => {
+  if (thinking.value) return 'thinking'
+  const idle =
+    active.value.pct === 0 &&
+    (lastPracticedAt.value === null || Date.now() - lastPracticedAt.value > SLEEP_AFTER_MS)
+  return idle ? 'sleep' : 'idle'
+})
+
+/** Anchor of the furthest unlocked node (Bomi floats 28px above it). */
+const bomiAnchor = computed(() => {
+  const anchors = ZONE_ANCHORS[active.value.species]
+  const nodeCount = Math.min(zones.value.length, anchors.length)
+  let lastUnlocked = 0
+  for (let i = 0; i < nodeCount; i++) {
+    if (zones.value[i]?.unlocked) lastUnlocked = i
+  }
+  return anchors[lastUnlocked] ?? { top: '30%', left: '60%' }
+})
 </script>
 
 <template>
@@ -45,11 +92,23 @@ const speciesLabel = computed(() => t(`garden.species.${active.value.species}`))
 
     <div ref="stageWrap">
       <GardenStage :pct="active.pct" :scale="treeScale">
-        <PixelTree :species="active.species" :progress="active.pct" :scale="treeScale" />
-
-        <template #overlay>
-          <Bomi class="page__bomi" :scale="2" pose="idle" />
-        </template>
+        <!-- one wrapper = the tree's canvas coordinate space -->
+        <div class="hero-tree">
+          <PixelTree :species="active.species" :progress="active.pct" :scale="treeScale" />
+          <TreeZones
+            :species="active.species"
+            :level="active.level"
+            :zones="zones"
+            @locked-attempt="onLockedAttempt"
+          />
+          <DiaryChest :pending="pendingReviews" />
+          <Bomi
+            class="hero-tree__bomi"
+            :style="{ top: bomiAnchor.top, left: bomiAnchor.left }"
+            :scale="2"
+            :pose="bomiPose"
+          />
+        </div>
       </GardenStage>
     </div>
 
@@ -78,15 +137,14 @@ const speciesLabel = computed(() => t(`garden.species.${active.value.species}`))
   flex-wrap: wrap;
 }
 
-.page__bomi {
-  position: absolute;
-  top: 14%;
-  right: 16%;
+.hero-tree {
+  position: relative;
 }
 
-@media (max-width: 480px) {
-  .page__bomi {
-    right: 6%;
-  }
+.hero-tree__bomi {
+  position: absolute;
+  /* anchor sits on the node; lift Bomi a sprite above it */
+  transform: translate(-50%, -100%) translateY(-28px);
+  pointer-events: none;
 }
 </style>

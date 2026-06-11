@@ -71,7 +71,7 @@ Review loop: regenerate → check `out/contact_sheet.png` (all states) and
 Double-click it. Species buttons, progress slider (cumulative layers, same
 thresholds), day/night sky, shadow toggle, and a **calibrate** mode that
 prints `{ top, left }` percent anchors on click — paste those into
-`munbeop/app/components/garden/tree-zones.ts` when a silhouette changes.
+`munbeop/app/lib/garden/zone-anchors.ts` when a silhouette changes.
 
 ## UI sprites
 
