@@ -1,4 +1,6 @@
 <script lang="ts">
+import { computed, ref, watch } from 'vue'
+
 /**
  * PixelTree — layered pixel-art tree for the TOPIK garden.
  *
@@ -44,8 +46,6 @@ export function layersForProgress(progress: number): TreeLayer[] {
 </script>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-
 interface Props {
   species: TreeSpecies
   /** Level progress 0–100; decides which layers are visible. */

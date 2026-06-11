@@ -234,17 +234,32 @@ Composición (desktop, dentro del AppShell normal con sidebar):
 
 ## 9. Criterios de aceptación (v1 completa cuando…)
 
-- [ ] La home muestra el árbol del nivel activo con sus capas según progreso real del SRS.
-- [ ] Practicar gramática del nivel y volver a la home actualiza el árbol sin recargar (reactividad de stores).
-- [ ] Funciona para usuarios con sesión (cuentas obligatorias desde 2026-06-11;
+Verificados el 2026-06-11 (navegador: light/dark × desktop/375px × datos
+vacíos/sembrados × en/es/fr-fallback). Divergencias documentadas abajo.
+
+- [x] La home muestra el árbol del nivel activo con sus capas según progreso real del SRS.
+- [x] Practicar gramática del nivel y volver a la home actualiza el árbol sin recargar (reactividad de stores; verificado vía mutación del SRS sembrado).
+- [x] Funciona para usuarios con sesión (cuentas obligatorias desde 2026-06-11;
       el middleware manda a los anónimos a `/welcome` en TODA ruta de app).
-- [ ] La vista jardín muestra los 6 árboles con su estado real y bloqueo por puerta del 60%.
-- [ ] Las zonas (themes) se desbloquean en cadena y navegan a la biblioteca filtrada.
-- [ ] Clima refleja oraciones pendientes; revisar el diario lo despeja.
-- [ ] Celebración al cruzar umbral, una sola vez por hito, con Bomi `cheer`.
-- [ ] Light/dark v5 sin regresiones; móvil usable; reduced-motion respetado.
-- [ ] Claves i18n en `en` y `es`; sin texto hardcodeado en componentes.
-- [ ] Tests vitest de `app/lib/garden/` (fórmula y puertas) en verde.
+- [x] La vista jardín muestra los 6 árboles con su estado real y bloqueo por puerta del 60%.
+- [x] Las zonas (themes) se desbloquean en cadena y navegan a la biblioteca filtrada (`?level&theme` + banner de filtro).
+- [x] Clima refleja oraciones pendientes; revisar el diario lo despeja.
+- [x] Celebración al cruzar umbral, una sola vez por hito, con Bomi `cheer`.
+- [x] Light/dark v5 sin regresiones; móvil usable; reduced-motion respetado.
+- [x] Claves i18n en `en` y `es`; sin texto hardcodeado en componentes.
+      (Fix derivado: `i18n/i18n.config.ts` con `fallbackLocale: 'en'` — los
+      idiomas sin traducir mostraban claves crudas, no inglés.)
+- [x] Tests vitest de `app/lib/garden/` (fórmula y puertas) en verde (17 casos).
+
+Divergencias de implementación respecto a la spec original:
+
+- Anclas de zona en `app/lib/garden/zone-anchors.ts` (no en components/ —
+  colisión con el escáner de Nuxt), derivadas de la geometría real del
+  generador en vez del calibrador manual (que sigue disponible en el preview).
+- 7 anclas por especie; el nivel 2 (11 themes) agrupa los sobrantes en el
+  último nodo `+N`, que navega a la biblioteca filtrada por nivel completo.
+- Sprites UI: `chest_16_open.png` extra; generados por
+  `tools/pixel-trees/generate_ui_sprites.py`.
 
 ## 10. Fuera de alcance v1
 
