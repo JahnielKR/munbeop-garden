@@ -94,8 +94,7 @@
     "switch_to_sign_up": "Belum punya akun? Daftar",
     "switch_to_sign_in": "Sudah punya akun? Masuk",
     "signed_in_as": "Masuk sebagai",
-    "sign_out": "Keluar",
-    "anonymous_banner": "Berlatih lokal. Masuk untuk sinkron antar perangkat."
+    "sign_out": "Keluar"
   },
   "settings": {
     "dark_mode": "Mode gelap"

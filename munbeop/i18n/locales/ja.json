@@ -94,8 +94,7 @@
     "switch_to_sign_up": "アカウントがない?登録",
     "switch_to_sign_in": "アカウントある?サインイン",
     "signed_in_as": "サインイン中:",
-    "sign_out": "サインアウト",
-    "anonymous_banner": "ローカル練習中。デバイス間で同期するにはサインイン。"
+    "sign_out": "サインアウト"
   },
   "settings": {
     "dark_mode": "ダークモード"

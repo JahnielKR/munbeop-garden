@@ -6,8 +6,9 @@ import { useAuthStore } from '~/stores/auth'
  *
  * Call this fresh at the top of each store action — the returned adapter
  * is not memoized so a sign-in/sign-out instantly causes the next action
- * to hit Supabase or localStorage as appropriate. Locale is special-cased
- * inside locale.ts (always LocalStorage) because it is a per-device pref.
+ * to hit Supabase (session) or the noop adapter (no session). Locale is
+ * special-cased inside locale.ts (always LocalStorage) because it is a
+ * per-device pref.
  */
 export function useStorageAdapter() {
   const auth = useAuthStore()
