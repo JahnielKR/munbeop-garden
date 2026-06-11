@@ -11,7 +11,7 @@
  * The grove toggle (spec §5.2) swaps the hero for the six-tree map in the
  * same page — no new route; picking a tree pins it and returns here.
  */
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import Bomi from '~/components/bomi/Bomi.vue'
 import type { Pose } from '~/components/bomi/poses'
@@ -23,18 +23,29 @@ import GardenHud from '~/components/garden/GardenHud.vue'
 import GardenStage from '~/components/garden/GardenStage.vue'
 import PixelTree, { TREE_THRESHOLDS } from '~/components/garden/PixelTree.vue'
 import TreeZones from '~/components/garden/TreeZones.vue'
+import UnlockCelebration from '~/components/garden/UnlockCelebration.vue'
 import WeatherLayer, { type WeatherKind } from '~/components/garden/WeatherLayer.vue'
 import { ZONE_ANCHORS } from '~/lib/garden/zone-anchors'
-import { SPECIES_KO, SPECIES_PARTICLE } from '~/lib/garden'
+import { SPECIES_BY_LEVEL, SPECIES_KO, SPECIES_PARTICLE } from '~/lib/garden'
 import { gardenStateKey, useGardenState } from '~/composables/useGardenState'
+import { useGardenCelebration } from '~/composables/useGardenCelebration'
+import { useToast } from '~/composables/useToast'
 import type { TopikLevel } from '~/lib/domain'
 
 definePageMeta({ surface: 'game' })
 
 const { t } = useI18n()
 
-const { active, activeLevel, levels, zones, pendingReviews, lastPracticedAt, setActiveLevel } =
-  useGardenState()
+const {
+  active,
+  activeLevel,
+  levels,
+  zones,
+  pendingReviews,
+  lastPracticedAt,
+  milestones,
+  setActiveLevel,
+} = useGardenState()
 
 // hero ↔ grove toggle (same page, spec §5.2)
 const view = ref<'hero' | 'grove'>('hero')
@@ -85,12 +96,47 @@ onBeforeUnmount(() => {
   if (thinkTimer) clearTimeout(thinkTimer)
 })
 
+const cheering = ref(false)
+
 const bomiPose = computed<Pose>(() => {
+  if (cheering.value) return 'cheer'
   if (thinking.value) return 'thinking'
   const idle =
     active.value.pct === 0 &&
     (lastPracticedAt.value === null || Date.now() - lastPracticedAt.value > SLEEP_AFTER_MS)
   return idle ? 'sleep' : 'idle'
+})
+
+// ── Milestone celebration (spec §5.4): toast + Bomi cheer 3s + particle
+// burst from the crown. Seen-set persistence lives in the composable.
+const { celebration, dismiss } = useGardenCelebration(milestones)
+const toast = useToast()
+
+const burst = ref(0)
+let cheerTimer: ReturnType<typeof setTimeout> | null = null
+
+watch(celebration, (c) => {
+  if (!c) return
+  const species = SPECIES_BY_LEVEL[c.level as TopikLevel] ?? active.value.species
+  const treeName = `${SPECIES_KO[species]} · ${t(`garden.species.${species}`)}`
+  toast.success(t(`garden.unlock.${c.kind}`, { tree: treeName }))
+  burst.value += 1
+  cheering.value = true
+  if (cheerTimer) clearTimeout(cheerTimer)
+  cheerTimer = setTimeout(() => {
+    cheering.value = false
+    dismiss()
+  }, 3000)
+})
+
+onBeforeUnmount(() => {
+  if (cheerTimer) clearTimeout(cheerTimer)
+})
+
+/** Burst origin = the crown's top node anchor of the active species. */
+const burstOrigin = computed(() => {
+  const anchors = ZONE_ANCHORS[active.value.species]
+  return anchors[anchors.length - 1] ?? { top: '40%', left: '50%' }
 })
 
 /** Anchor of the furthest unlocked node (Bomi floats 28px above it). */
@@ -131,6 +177,7 @@ const bomiAnchor = computed(() => {
                 @locked-attempt="onLockedAttempt"
               />
               <DiaryChest :pending="pendingReviews" />
+              <UnlockCelebration :burst="burst" :particle-src="particleSrc" :origin="burstOrigin" />
               <Bomi
                 class="hero-tree__bomi"
                 :style="{ top: bomiAnchor.top, left: bomiAnchor.left }"

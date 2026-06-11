@@ -134,6 +134,22 @@ export function useGardenState() {
     return last
   })
 
+  /**
+   * Reached milestone keys (spec §5.4): `<level>:<sprout|leafy|bloom>` per
+   * crossed visual threshold plus `tree:<level>` per unlocked tree (2+).
+   * useGardenCelebration diffs these against the locally-seen set.
+   */
+  const milestones = computed<string[]>(() => {
+    const out: string[] = []
+    for (const l of levels.value) {
+      if (l.pct >= TREE_THRESHOLDS.sprout) out.push(`${l.level}:sprout`)
+      if (l.pct >= TREE_THRESHOLDS.leafy) out.push(`${l.level}:leafy`)
+      if (l.pct >= TREE_THRESHOLDS.bloom) out.push(`${l.level}:bloom`)
+      if (l.level >= 2 && l.unlocked) out.push(`tree:${l.level}`)
+    }
+    return out
+  })
+
   /** Zones (= spine themes) of the active level, with the chain gate applied. */
   const zones = computed<GardenZone[]>(() => {
     const themes = themesOfLevel(activeLevel.value)
@@ -150,6 +166,7 @@ export function useGardenState() {
     highestUnlocked,
     pendingReviews,
     lastPracticedAt,
+    milestones,
     zones,
     thresholds: TREE_THRESHOLDS,
   }
