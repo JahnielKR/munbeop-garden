@@ -22,12 +22,43 @@ svg.pixel,
   font-smooth: never;
 }
 
+/* Woven-paper dither: 2px checkerboard mixed 4% toward black. Mixing
+ * toward #000 (not --ink) darkens in both themes; on the near-black
+ * dark bg the effect is naturally invisible, which is correct. */
 html,
 body {
-  background: var(--paper);
+  background-color: var(--paper); /* fallback */
+  background-image: repeating-conic-gradient(
+    color-mix(in oklch, var(--paper) 96%, #000) 0% 25%,
+    var(--paper) 0% 50%
+  );
+  background-size: 4px 4px;
   color: var(--ink);
   font-family: 'Inter', 'Noto Sans KR', system-ui, sans-serif;
   min-height: 100vh;
+}
+
+/* Text selection: interactive gold — "el oro se toca". */
+::selection {
+  background: var(--gold);
+  color: var(--always-dark);
+}
+
+/* Square pixel scrollbars in wood-frame ink. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-line) var(--surface);
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink-line);
+  border: 3px solid var(--surface); /* no border-radius: square pixel scrollbar */
 }
 
 /* Prose links always underlined: in light mode --link (rust) matches

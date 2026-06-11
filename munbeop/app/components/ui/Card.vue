@@ -70,7 +70,7 @@ const surface = inject<Ref<'study' | 'game'>>('surface', ref('study'))
   border: 2px solid var(--border);
   border-left-width: 6px;
   padding: 18px 20px;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--bevel), var(--shadow-card);
   text-align: left;
   font: inherit;
   transition:
@@ -93,11 +93,11 @@ const surface = inject<Ref<'study' | 'game'>>('surface', ref('study'))
 }
 .card--clickable:hover {
   transform: translate(-1px, -1px);
-  box-shadow: var(--shadow-card-hover);
+  box-shadow: var(--bevel), var(--shadow-card-hover);
 }
 .card--clickable:active {
   transform: translate(2px, 2px);
-  box-shadow: var(--shadow-pixel-sm);
+  box-shadow: var(--bevel), var(--shadow-pixel-sm);
 }
 .card--clickable:focus-visible {
   outline: 2px solid var(--focus-ring);

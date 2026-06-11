@@ -20,6 +20,13 @@
   --shadow-inset: inset 2px 2px 0 var(--shadow-color);
   --shadow-inset-strong: inset 3px 3px 0 var(--shadow-color);
 
+  /* ---- Two-tone bevel (SNES console-UI relief) ----
+   * Light top-left + shade bottom-right, composed BEFORE the outer hard
+   * shadow on raised surfaces (cards, modals). No gradients involved. */
+  --bevel:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.35),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.12);
+
   /* ---- Semantic aliases ---- */
   --shadow-card: var(--shadow-pixel-md);
   --shadow-card-hover: 5px 5px 0 var(--shadow-color);

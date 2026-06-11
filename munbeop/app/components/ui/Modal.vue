@@ -145,7 +145,7 @@ function onOverlayClick() {
   background: var(--paper-deep, var(--paper));
   color: var(--ink);
   border: 4px solid var(--ink-line);
-  box-shadow: 8px 8px 0 var(--shadow-cream);
+  box-shadow: var(--bevel), 8px 8px 0 var(--shadow-cream);
   font-family: 'Inter', sans-serif;
 }
 

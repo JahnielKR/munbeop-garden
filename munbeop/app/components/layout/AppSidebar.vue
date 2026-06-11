@@ -57,7 +57,13 @@ const { t } = useI18n()
   top: 0;
   height: 100vh;
   width: 220px;
-  background: var(--paper-warm);
+  /* Subtle wood grain: 2px vertical streaks every 8px, 6% toward black. */
+  background-color: var(--paper-warm);
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 6px,
+    color-mix(in oklch, var(--paper-warm) 94%, #000) 6px 8px
+  );
   border-right: 2px solid var(--border);
   padding: 24px 16px;
   display: flex;
