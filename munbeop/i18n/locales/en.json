@@ -5,7 +5,9 @@
     "library": "Library",
     "stats": "Stats",
     "log": "Journal",
-    "settings": "Settings"
+    "settings": "Settings",
+    "sidebar_collapse": "Hide menu",
+    "sidebar_expand": "Show menu"
   },
   "title": {
     "garden": "My Garden",

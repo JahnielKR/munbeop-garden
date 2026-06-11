@@ -5,7 +5,9 @@
     "library": "Herbolario",
     "stats": "Analítica",
     "log": "Diario",
-    "settings": "Invernadero"
+    "settings": "Invernadero",
+    "sidebar_collapse": "Ocultar menú",
+    "sidebar_expand": "Mostrar menú"
   },
   "title": {
     "garden": "Mi Jardín",
