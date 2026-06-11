@@ -75,7 +75,9 @@
     "dark_mode": "ダークモード"
   },
   "welcome": {
-    "brand": { "subtitle": "韓国語文法ガーデン" },
+    "brand": {
+      "subtitle": "韓国語文法ガーデン"
+    },
     "enter": "はじめる · 들어가기",
     "toggle": {
       "theme_to_dark": "夜に切り替え",
@@ -109,7 +111,63 @@
       "error_oauth": "その門は閉じています。別の道を試そう。"
     }
   },
-  "pricing": { "title": "料金プラン" },
-  "features": { "title": "機能" },
-  "policies": { "title": "ポリシー" }
+  "pricing": {
+    "title": "料金プラン"
+  },
+  "features": {
+    "title": "機能"
+  },
+  "policies": {
+    "title": "ポリシー"
+  },
+  "games": {
+    "lead": "練習モードを選ぼう。それぞれのゲームが違う形で韓国語を育てます。",
+    "ruleta": {
+      "name": "ルーレット",
+      "desc": "文法3つ × 場面3つ。9つの文を自由に書こう。"
+    },
+    "escape": {
+      "name": "脱出ゲーム",
+      "desc": "文法パズルを解いて、小さな韓国の物語から脱出しよう。"
+    },
+    "third": {
+      "name": "???",
+      "desc": "3つ目のゲームは温室で芽生え中…"
+    },
+    "coming_soon": "近日公開"
+  },
+  "escape": {
+    "book_lead": "ノートをめくって物語を選ぼう。",
+    "level_n": "レベル {n}",
+    "topik_n": "TOPIK {n}",
+    "rewards": "ごほうび",
+    "attempts": "チャンス",
+    "start": "START",
+    "coming_soon": "近日公開",
+    "prev_page": "前のページ",
+    "next_page": "次のページ",
+    "tier_common": "コモン",
+    "tier_rare": "レア",
+    "tier_epic": "エピック",
+    "tier_legendary": "レジェンダリー",
+    "errors": "ミス",
+    "solved": "クリア",
+    "rooms": "部屋",
+    "game_over_title": "物語が逃げてしまった…",
+    "game_over_text": "3回のつまずき。扉はまた閉じた — でも家はあなたを覚えている。新しいメモでもう一度。",
+    "retry": "リトライ",
+    "back_to_book": "ノートに戻る",
+    "victory_title": "脱出成功!",
+    "reward_unlocked": "ごほうび解放",
+    "continue": "つづける",
+    "skip": "スキップ",
+    "tap_to_continue": "タップで進む",
+    "hint_free": "ヒント1(無料)",
+    "hint_premium": "ヒント2",
+    "hint_premium_warn": "ごほうびがコモンに制限されます",
+    "check": "チェック",
+    "clear": "クリア",
+    "completion_placeholder": "助詞を入力…",
+    "creation_help": "タイルを順番にタップして文を作ろう"
+  }
 }

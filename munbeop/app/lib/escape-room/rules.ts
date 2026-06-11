@@ -1,0 +1,151 @@
+import type { Level } from '~/lib/domain'
+
+/**
+ * Level invariants and validation.
+ *
+ * `validateLevel(level)` returns an array of `ValidationIssue` describing every
+ * problem found. Empty array = the level is well-formed. The validator never
+ * short-circuits: a level with multiple issues reports all of them, so the
+ * author sees the full picture in one pass.
+ *
+ * Used at level-load time and inside tests over `seed/escape-room/level-*.ts`.
+ */
+
+/** Number of candidates each slot must carry (the pool). */
+export const POOL_SIZE = 5
+
+/** Number of options in a selection (Tipo A) puzzle. */
+export const SELECTION_OPTIONS_COUNT = 4
+
+/** Marker used in completion (Tipo B) korean strings for the blank. */
+export const COMPLETION_BLANK = '___'
+
+export interface ValidationIssue {
+  /** Human-readable path inside the Level structure, e.g. `slots[1].candidates[0].answer`. */
+  path: string
+  /** Short description of what's wrong. */
+  message: string
+}
+
+export function validateLevel(level: Level): ValidationIssue[] {
+  const issues: ValidationIssue[] = []
+
+  // ─── Slot id uniqueness ───────────────────────────────────────────────────
+  const slotIds = new Set<string>()
+  for (let i = 0; i < level.slots.length; i++) {
+    const slot = level.slots[i]!
+    if (slotIds.has(slot.id)) {
+      issues.push({
+        path: `slots[${i}].id`,
+        message: `duplicate slot id "${slot.id}"`,
+      })
+    } else {
+      slotIds.add(slot.id)
+    }
+  }
+
+  // ─── Per-slot / per-candidate validation ──────────────────────────────────
+  for (let i = 0; i < level.slots.length; i++) {
+    const slot = level.slots[i]!
+    const slotPath = `slots[${i}](${slot.id})`
+
+    if (slot.candidates.length !== POOL_SIZE) {
+      issues.push({
+        path: `${slotPath}.candidates`,
+        message: `expected ${POOL_SIZE} candidates, found ${slot.candidates.length}`,
+      })
+    }
+
+    if (slot.type === 'selection') {
+      for (let j = 0; j < slot.candidates.length; j++) {
+        const c = slot.candidates[j]!
+        const cPath = `${slotPath}.candidates[${j}]`
+        if (c.options.length !== SELECTION_OPTIONS_COUNT) {
+          issues.push({
+            path: `${cPath}.options`,
+            message: `expected ${SELECTION_OPTIONS_COUNT} options, found ${c.options.length}`,
+          })
+        }
+        if (c.correctIndex < 0 || c.correctIndex > 3) {
+          issues.push({
+            path: `${cPath}.correctIndex`,
+            message: `correctIndex must be 0–3, got ${c.correctIndex}`,
+          })
+        }
+      }
+    } else if (slot.type === 'completion') {
+      for (let j = 0; j < slot.candidates.length; j++) {
+        const c = slot.candidates[j]!
+        const cPath = `${slotPath}.candidates[${j}]`
+        const blankCount = c.korean.split(COMPLETION_BLANK).length - 1
+        if (blankCount !== 1) {
+          issues.push({
+            path: `${cPath}.korean`,
+            message: `completion korean must contain exactly one "${COMPLETION_BLANK}" blank, found ${blankCount}`,
+          })
+        }
+        if (c.answer.trim().length === 0) {
+          issues.push({
+            path: `${cPath}.answer`,
+            message: 'answer must not be empty',
+          })
+        }
+      }
+    } else {
+      // creation
+      for (let j = 0; j < slot.candidates.length; j++) {
+        const c = slot.candidates[j]!
+        const cPath = `${slotPath}.candidates[${j}]`
+        const tileCount = c.tiles.length
+        for (const idx of c.correctOrder) {
+          if (idx < 0 || idx >= tileCount) {
+            issues.push({
+              path: `${cPath}.correctOrder`,
+              message: `correctOrder index ${idx} is out of range (tiles.length=${tileCount})`,
+            })
+          }
+        }
+        const unique = new Set(c.correctOrder)
+        if (unique.size !== c.correctOrder.length) {
+          issues.push({
+            path: `${cPath}.correctOrder`,
+            message: 'correctOrder must not contain duplicate indices',
+          })
+        }
+      }
+    }
+  }
+
+  // ─── Hotspot triggersSlot references ──────────────────────────────────────
+  for (let r = 0; r < level.rooms.length; r++) {
+    const room = level.rooms[r]!
+    for (let h = 0; h < room.hotspots.length; h++) {
+      const hotspot = room.hotspots[h]!
+      if (hotspot.triggersSlot && !slotIds.has(hotspot.triggersSlot)) {
+        issues.push({
+          path: `rooms[${r}].hotspots[${h}].triggersSlot`,
+          message: `triggers unknown slot "${hotspot.triggersSlot}"`,
+        })
+      }
+    }
+  }
+
+  // ─── Rules sanity ─────────────────────────────────────────────────────────
+  if (level.rules.maxErrors < 1) {
+    issues.push({ path: 'rules.maxErrors', message: 'maxErrors must be ≥ 1' })
+  }
+  if (level.rules.epicTimeThresholdSeconds <= 0) {
+    issues.push({
+      path: 'rules.epicTimeThresholdSeconds',
+      message: 'epicTimeThresholdSeconds must be > 0',
+    })
+  }
+  if (level.rules.legendaryCleanRunsRequired < 1) {
+    issues.push({
+      path: 'rules.legendaryCleanRunsRequired',
+      message: 'legendaryCleanRunsRequired must be ≥ 1',
+    })
+  }
+
+  return issues
+}

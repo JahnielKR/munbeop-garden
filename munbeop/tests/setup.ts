@@ -16,6 +16,12 @@ beforeEach(() => {
 // `@vue/test-utils`. Tests can still override per-case with
 // `vi.stubGlobal`.
 const g = globalThis as unknown as Record<string, unknown>
-g.useI18n = () => ({ t: (k: string) => k, locale: { value: 'en' } })
+g.useI18n = () => ({
+  // Key-echo stub. When interpolation params are passed, append their values
+  // so assertions can check them (e.g. t('escape.topik_n', {n: 1}) → 'escape.topik_n 1').
+  t: (k: string, params?: Record<string, unknown>) =>
+    params ? `${k} ${Object.values(params).join(' ')}` : k,
+  locale: { value: 'en' },
+})
 g.useTypewriter = useTypewriter
 g.useWelcomeMusic = useWelcomeMusic

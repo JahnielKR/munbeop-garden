@@ -75,7 +75,9 @@
     "dark_mode": "Dark mode"
   },
   "welcome": {
-    "brand": { "subtitle": "Korean Grammar Garden" },
+    "brand": {
+      "subtitle": "Korean Grammar Garden"
+    },
     "enter": "ENTER · 들어가기",
     "toggle": {
       "theme_to_dark": "Switch to night",
@@ -109,7 +111,63 @@
       "error_oauth": "That gateway is closed. Try another door."
     }
   },
-  "pricing": { "title": "Plans & Pricing" },
-  "features": { "title": "Features" },
-  "policies": { "title": "Policies" }
+  "pricing": {
+    "title": "Plans & Pricing"
+  },
+  "features": {
+    "title": "Features"
+  },
+  "policies": {
+    "title": "Policies"
+  },
+  "games": {
+    "lead": "Pick your practice mode. Each game grows your Korean in a different way.",
+    "ruleta": {
+      "name": "The Roulette",
+      "desc": "3 grammar points × 3 contexts. Write 9 creative sentences."
+    },
+    "escape": {
+      "name": "Escape Room",
+      "desc": "Solve grammar puzzles to escape little Korean stories."
+    },
+    "third": {
+      "name": "???",
+      "desc": "A third game is sprouting in the greenhouse…"
+    },
+    "coming_soon": "COMING SOON"
+  },
+  "escape": {
+    "book_lead": "Flip through the notebook and pick your story.",
+    "level_n": "Level {n}",
+    "topik_n": "TOPIK {n}",
+    "rewards": "Rewards",
+    "attempts": "Attempts",
+    "start": "START",
+    "coming_soon": "Coming soon",
+    "prev_page": "Previous page",
+    "next_page": "Next page",
+    "tier_common": "Common",
+    "tier_rare": "Rare",
+    "tier_epic": "Epic",
+    "tier_legendary": "Legendary",
+    "errors": "Mistakes",
+    "solved": "Solved",
+    "rooms": "Rooms",
+    "game_over_title": "The story slipped away…",
+    "game_over_text": "Three stumbles. The door locks again — but the house remembers you. Try again with fresh notes.",
+    "retry": "RETRY",
+    "back_to_book": "Back to the notebook",
+    "victory_title": "You escaped!",
+    "reward_unlocked": "Reward unlocked",
+    "continue": "CONTINUE",
+    "skip": "Skip",
+    "tap_to_continue": "Tap to continue",
+    "hint_free": "Hint 1 (free)",
+    "hint_premium": "Hint 2",
+    "hint_premium_warn": "Caps the reward at Common",
+    "check": "CHECK",
+    "clear": "Clear",
+    "completion_placeholder": "Type the missing piece…",
+    "creation_help": "Tap the tiles in order to build the sentence"
+  }
 }

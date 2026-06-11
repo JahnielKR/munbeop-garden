@@ -75,7 +75,9 @@
     "dark_mode": "Chế độ tối"
   },
   "welcome": {
-    "brand": { "subtitle": "Vườn Ngữ Pháp Tiếng Hàn" },
+    "brand": {
+      "subtitle": "Vườn Ngữ Pháp Tiếng Hàn"
+    },
     "enter": "VÀO VƯỜN · 들어가기",
     "toggle": {
       "theme_to_dark": "Chuyển sang ban đêm",
@@ -109,7 +111,63 @@
       "error_oauth": "Cánh cổng đó đã đóng. Thử cổng khác."
     }
   },
-  "pricing": { "title": "Gói & Giá" },
-  "features": { "title": "Tính năng" },
-  "policies": { "title": "Chính sách" }
+  "pricing": {
+    "title": "Gói & Giá"
+  },
+  "features": {
+    "title": "Tính năng"
+  },
+  "policies": {
+    "title": "Chính sách"
+  },
+  "games": {
+    "lead": "Chọn chế độ luyện tập. Mỗi trò chơi giúp tiếng Hàn của bạn lớn lên theo cách riêng.",
+    "ruleta": {
+      "name": "Vòng Quay",
+      "desc": "3 ngữ pháp × 3 ngữ cảnh. Viết 9 câu sáng tạo."
+    },
+    "escape": {
+      "name": "Phòng Thoát Hiểm",
+      "desc": "Giải đố ngữ pháp để thoát khỏi những câu chuyện Hàn Quốc nhỏ."
+    },
+    "third": {
+      "name": "???",
+      "desc": "Trò chơi thứ ba đang nảy mầm trong nhà kính…"
+    },
+    "coming_soon": "SẮP RA MẮT"
+  },
+  "escape": {
+    "book_lead": "Lật cuốn sổ và chọn câu chuyện của bạn.",
+    "level_n": "Màn {n}",
+    "topik_n": "TOPIK {n}",
+    "rewards": "Phần thưởng",
+    "attempts": "Lượt thử",
+    "start": "START",
+    "coming_soon": "Sắp ra mắt",
+    "prev_page": "Trang trước",
+    "next_page": "Trang sau",
+    "tier_common": "Thường",
+    "tier_rare": "Hiếm",
+    "tier_epic": "Sử thi",
+    "tier_legendary": "Huyền thoại",
+    "errors": "Lỗi",
+    "solved": "Đã giải",
+    "rooms": "Phòng",
+    "game_over_title": "Câu chuyện vụt mất…",
+    "game_over_text": "Ba lần vấp. Cánh cửa lại khóa — nhưng ngôi nhà vẫn nhớ bạn. Thử lại với những mẩu giấy mới.",
+    "retry": "THỬ LẠI",
+    "back_to_book": "Về cuốn sổ",
+    "victory_title": "Bạn đã thoát!",
+    "reward_unlocked": "Đã mở phần thưởng",
+    "continue": "TIẾP TỤC",
+    "skip": "Bỏ qua",
+    "tap_to_continue": "Chạm để tiếp tục",
+    "hint_free": "Gợi ý 1 (miễn phí)",
+    "hint_premium": "Gợi ý 2",
+    "hint_premium_warn": "Giới hạn phần thưởng ở mức Thường",
+    "check": "KIỂM TRA",
+    "clear": "Xóa",
+    "completion_placeholder": "Gõ trợ từ…",
+    "creation_help": "Chạm các ô theo thứ tự để ghép câu"
+  }
 }
