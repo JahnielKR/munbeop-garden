@@ -59,6 +59,7 @@
   --warning: var(--gold);
   --mastery-tree: var(--jade);
   --mastery-plant: var(--gold);
+  --overlay: rgba(2, 6, 12, 0.78);       /* abisal profundo translúcido — modal scrim */
   --text-on-accent: var(--always-dark);  /* dark text on ember amber — 7.1:1 */
   --text-on-danger: var(--always-dark);  /* dark text on bright red — 5.2:1 (cream was 2.9:1 ✗) */
   --text-on-info: var(--always-dark);    /* dark text on moonlight blue — 6.8:1 */

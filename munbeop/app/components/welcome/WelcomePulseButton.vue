@@ -26,7 +26,9 @@ const props = defineProps<{ expanded: boolean; controls: string }>()
   font-size: 14px;
   letter-spacing: 0.05em;
   cursor: pointer;
-  box-shadow: 0 0 15px rgba(245, 197, 51, 0.45);
+  /* One of the very few allowed blurs — landing light glow, not UI shadow.
+   * color-mix over the token so the glow follows the theme's gold forever. */
+  box-shadow: 0 0 15px color-mix(in srgb, var(--gold) 45%, transparent);
   animation: pulse-zelda 1.8s ease-in-out infinite;
   transition: background 200ms ease, color 200ms ease, transform 200ms ease;
 }
@@ -43,7 +45,7 @@ const props = defineProps<{ expanded: boolean; controls: string }>()
 }
 @keyframes pulse-zelda {
   0%, 100% { transform: scale(1);    opacity: 0.92; }
-  50%      { transform: scale(1.05); opacity: 1; box-shadow: 0 0 28px rgba(245, 197, 51, 0.78); }
+  50%      { transform: scale(1.05); opacity: 1; box-shadow: 0 0 28px color-mix(in srgb, var(--gold) 78%, transparent); }
 }
 @media (prefers-reduced-motion: reduce) {
   .pulse { animation: none; }
