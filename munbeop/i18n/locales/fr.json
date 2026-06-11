@@ -100,7 +100,9 @@
     "dark_mode": "Mode sombre"
   },
   "welcome": {
-    "brand": { "subtitle": "Jardin de la Grammaire Coréenne" },
+    "brand": {
+      "subtitle": "Jardin de la Grammaire Coréenne"
+    },
     "enter": "ENTRER · 들어가기",
     "toggle": {
       "theme_to_dark": "Passer à la nuit",
@@ -168,7 +170,63 @@
       "ginkgo": "Ginkgo doré"
     }
   },
-  "pricing": { "title": "Tarifs" },
-  "features": { "title": "Fonctionnalités" },
-  "policies": { "title": "Mentions légales" }
+  "pricing": {
+    "title": "Tarifs"
+  },
+  "features": {
+    "title": "Fonctionnalités"
+  },
+  "policies": {
+    "title": "Mentions légales"
+  },
+  "games": {
+    "lead": "Choisis ton mode d'entraînement. Chaque jeu cultive ton coréen différemment.",
+    "ruleta": {
+      "name": "La Roulette",
+      "desc": "3 points de grammaire × 3 contextes. Écris 9 phrases créatives."
+    },
+    "escape": {
+      "name": "Escape Game",
+      "desc": "Résous des énigmes de grammaire pour t'échapper de petites histoires coréennes."
+    },
+    "third": {
+      "name": "???",
+      "desc": "Un troisième jeu germe dans la serre…"
+    },
+    "coming_soon": "BIENTÔT"
+  },
+  "escape": {
+    "book_lead": "Feuillette le carnet et choisis ton histoire.",
+    "level_n": "Niveau {n}",
+    "topik_n": "TOPIK {n}",
+    "rewards": "Récompenses",
+    "attempts": "Essais",
+    "start": "START",
+    "coming_soon": "Bientôt",
+    "prev_page": "Page précédente",
+    "next_page": "Page suivante",
+    "tier_common": "Commun",
+    "tier_rare": "Rare",
+    "tier_epic": "Épique",
+    "tier_legendary": "Légendaire",
+    "errors": "Erreurs",
+    "solved": "Résolues",
+    "rooms": "Pièces",
+    "game_over_title": "L'histoire s'est échappée…",
+    "game_over_text": "Trois faux pas. La porte se referme — mais la maison se souvient de toi. Réessaie avec de nouvelles notes.",
+    "retry": "RÉESSAYER",
+    "back_to_book": "Retour au carnet",
+    "victory_title": "Tu t'es échappé !",
+    "reward_unlocked": "Récompense débloquée",
+    "continue": "CONTINUER",
+    "skip": "Passer",
+    "tap_to_continue": "Touche pour continuer",
+    "hint_free": "Indice 1 (gratuit)",
+    "hint_premium": "Indice 2",
+    "hint_premium_warn": "Limite la récompense à Commun",
+    "check": "VÉRIFIER",
+    "clear": "Effacer",
+    "completion_placeholder": "Écris la particule…",
+    "creation_help": "Touche les tuiles dans l'ordre pour former la phrase"
+  }
 }

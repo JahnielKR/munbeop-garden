@@ -100,7 +100,9 @@
     "dark_mode": "Modo escuro"
   },
   "welcome": {
-    "brand": { "subtitle": "Jardim de Gramática Coreana" },
+    "brand": {
+      "subtitle": "Jardim de Gramática Coreana"
+    },
     "enter": "ENTRAR · 들어가기",
     "toggle": {
       "theme_to_dark": "Mudar para noite",
@@ -168,7 +170,63 @@
       "ginkgo": "Ginkgo dourado"
     }
   },
-  "pricing": { "title": "Planos e Preços" },
-  "features": { "title": "Recursos" },
-  "policies": { "title": "Políticas" }
+  "pricing": {
+    "title": "Planos e Preços"
+  },
+  "features": {
+    "title": "Recursos"
+  },
+  "policies": {
+    "title": "Políticas"
+  },
+  "games": {
+    "lead": "Escolha seu modo de prática. Cada jogo cultiva seu coreano de um jeito diferente.",
+    "ruleta": {
+      "name": "A Roleta",
+      "desc": "3 gramáticas × 3 contextos. Escreva 9 frases criativas."
+    },
+    "escape": {
+      "name": "Escape Room",
+      "desc": "Resolva enigmas de gramática para escapar de pequenas histórias coreanas."
+    },
+    "third": {
+      "name": "???",
+      "desc": "Um terceiro jogo está brotando na estufa…"
+    },
+    "coming_soon": "EM BREVE"
+  },
+  "escape": {
+    "book_lead": "Folheie o caderno e escolha sua história.",
+    "level_n": "Nível {n}",
+    "topik_n": "TOPIK {n}",
+    "rewards": "Recompensas",
+    "attempts": "Tentativas",
+    "start": "START",
+    "coming_soon": "Em breve",
+    "prev_page": "Página anterior",
+    "next_page": "Próxima página",
+    "tier_common": "Comum",
+    "tier_rare": "Raro",
+    "tier_epic": "Épico",
+    "tier_legendary": "Lendário",
+    "errors": "Erros",
+    "solved": "Resolvidos",
+    "rooms": "Cômodos",
+    "game_over_title": "A história escapou…",
+    "game_over_text": "Três tropeços. A porta se fecha de novo — mas a casa lembra de você. Tente outra vez com notas novas.",
+    "retry": "TENTAR DE NOVO",
+    "back_to_book": "Voltar ao caderno",
+    "victory_title": "Você escapou!",
+    "reward_unlocked": "Recompensa desbloqueada",
+    "continue": "CONTINUAR",
+    "skip": "Pular",
+    "tap_to_continue": "Toque para continuar",
+    "hint_free": "Dica 1 (grátis)",
+    "hint_premium": "Dica 2",
+    "hint_premium_warn": "Limita a recompensa a Comum",
+    "check": "VERIFICAR",
+    "clear": "Limpar",
+    "completion_placeholder": "Digite a partícula…",
+    "creation_help": "Toque nas peças em ordem para montar a frase"
+  }
 }

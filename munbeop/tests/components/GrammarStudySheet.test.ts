@@ -57,10 +57,13 @@ describe('GrammarStudySheet', () => {
     expect(html).toContain('library.modal.coming_soon.achievements')
   })
 
-  it('practice CTA pushes /practice?focus=<ko>', async () => {
+  it('practice CTA pushes /practice/ruleta?focus=<ko> (the hub lives at /practice)', async () => {
     const wrapper = mount(GrammarStudySheet, { props: { grammar: seededGrammar } })
     const btn = wrapper.find('.cta__btn')
     await btn.trigger('click')
-    expect(pushSpy).toHaveBeenCalledWith({ path: '/practice', query: { focus: '-(으)니까' } })
+    expect(pushSpy).toHaveBeenCalledWith({
+      path: '/practice/ruleta',
+      query: { focus: '-(으)니까' },
+    })
   })
 })

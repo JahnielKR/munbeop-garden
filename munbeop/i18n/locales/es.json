@@ -100,7 +100,9 @@
     "dark_mode": "Modo oscuro"
   },
   "welcome": {
-    "brand": { "subtitle": "Jardín de Gramática Coreana" },
+    "brand": {
+      "subtitle": "Jardín de Gramática Coreana"
+    },
     "enter": "ENTRAR · 들어가기",
     "toggle": {
       "theme_to_dark": "Cambiar a noche",
@@ -168,7 +170,63 @@
       "ginkgo": "Ginkgo dorado"
     }
   },
-  "pricing": { "title": "Planes y Precios" },
-  "features": { "title": "Características" },
-  "policies": { "title": "Políticas" }
+  "pricing": {
+    "title": "Planes y Precios"
+  },
+  "features": {
+    "title": "Características"
+  },
+  "policies": {
+    "title": "Políticas"
+  },
+  "games": {
+    "lead": "Elige tu modo de práctica. Cada juego cultiva tu coreano de una forma distinta.",
+    "ruleta": {
+      "name": "La Ruleta",
+      "desc": "3 gramáticas × 3 contextos. Escribe 9 oraciones creativas."
+    },
+    "escape": {
+      "name": "Escape Room",
+      "desc": "Resuelve puzzles de gramática para escapar de pequeñas historias coreanas."
+    },
+    "third": {
+      "name": "???",
+      "desc": "Un tercer juego germina en el invernadero…"
+    },
+    "coming_soon": "PRÓXIMAMENTE"
+  },
+  "escape": {
+    "book_lead": "Hojea la libreta y elige tu historia.",
+    "level_n": "Nivel {n}",
+    "topik_n": "TOPIK {n}",
+    "rewards": "Recompensas",
+    "attempts": "Intentos",
+    "start": "START",
+    "coming_soon": "Próximamente",
+    "prev_page": "Página anterior",
+    "next_page": "Página siguiente",
+    "tier_common": "Común",
+    "tier_rare": "Raro",
+    "tier_epic": "Épico",
+    "tier_legendary": "Legendario",
+    "errors": "Errores",
+    "solved": "Resueltos",
+    "rooms": "Cuartos",
+    "game_over_title": "La historia se escapó…",
+    "game_over_text": "Tres tropiezos. La puerta vuelve a cerrarse — pero la casa te recuerda. Inténtalo otra vez con notas nuevas.",
+    "retry": "REINTENTAR",
+    "back_to_book": "Volver a la libreta",
+    "victory_title": "¡Escapaste!",
+    "reward_unlocked": "Recompensa desbloqueada",
+    "continue": "CONTINUAR",
+    "skip": "Saltar",
+    "tap_to_continue": "Toca para continuar",
+    "hint_free": "Pista 1 (gratis)",
+    "hint_premium": "Pista 2",
+    "hint_premium_warn": "Limita la recompensa a Común",
+    "check": "COMPROBAR",
+    "clear": "Borrar",
+    "completion_placeholder": "Escribe la partícula…",
+    "creation_help": "Toca las fichas en orden para formar la oración"
+  }
 }

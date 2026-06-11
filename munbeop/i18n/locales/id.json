@@ -100,7 +100,9 @@
     "dark_mode": "Mode gelap"
   },
   "welcome": {
-    "brand": { "subtitle": "Taman Tata Bahasa Korea" },
+    "brand": {
+      "subtitle": "Taman Tata Bahasa Korea"
+    },
     "enter": "MASUK · 들어가기",
     "toggle": {
       "theme_to_dark": "Beralih ke malam",
@@ -168,7 +170,63 @@
       "ginkgo": "Ginkgo emas"
     }
   },
-  "pricing": { "title": "Paket & Harga" },
-  "features": { "title": "Fitur" },
-  "policies": { "title": "Kebijakan" }
+  "pricing": {
+    "title": "Paket & Harga"
+  },
+  "features": {
+    "title": "Fitur"
+  },
+  "policies": {
+    "title": "Kebijakan"
+  },
+  "games": {
+    "lead": "Pilih mode latihanmu. Setiap permainan menumbuhkan bahasa Koreamu dengan cara berbeda.",
+    "ruleta": {
+      "name": "Roda Putar",
+      "desc": "3 tata bahasa × 3 konteks. Tulis 9 kalimat kreatif."
+    },
+    "escape": {
+      "name": "Escape Room",
+      "desc": "Pecahkan teka-teki tata bahasa untuk lolos dari kisah-kisah kecil Korea."
+    },
+    "third": {
+      "name": "???",
+      "desc": "Permainan ketiga sedang tumbuh di rumah kaca…"
+    },
+    "coming_soon": "SEGERA"
+  },
+  "escape": {
+    "book_lead": "Buka buku catatan dan pilih ceritamu.",
+    "level_n": "Level {n}",
+    "topik_n": "TOPIK {n}",
+    "rewards": "Hadiah",
+    "attempts": "Kesempatan",
+    "start": "START",
+    "coming_soon": "Segera",
+    "prev_page": "Halaman sebelumnya",
+    "next_page": "Halaman berikutnya",
+    "tier_common": "Umum",
+    "tier_rare": "Langka",
+    "tier_epic": "Epik",
+    "tier_legendary": "Legendaris",
+    "errors": "Kesalahan",
+    "solved": "Terpecahkan",
+    "rooms": "Ruangan",
+    "game_over_title": "Ceritanya lolos…",
+    "game_over_text": "Tiga kali tersandung. Pintu terkunci lagi — tapi rumah ini mengingatmu. Coba lagi dengan catatan baru.",
+    "retry": "COBA LAGI",
+    "back_to_book": "Kembali ke buku catatan",
+    "victory_title": "Kamu lolos!",
+    "reward_unlocked": "Hadiah terbuka",
+    "continue": "LANJUT",
+    "skip": "Lewati",
+    "tap_to_continue": "Ketuk untuk lanjut",
+    "hint_free": "Petunjuk 1 (gratis)",
+    "hint_premium": "Petunjuk 2",
+    "hint_premium_warn": "Membatasi hadiah ke Umum",
+    "check": "PERIKSA",
+    "clear": "Hapus",
+    "completion_placeholder": "Ketik partikelnya…",
+    "creation_help": "Ketuk ubin secara berurutan untuk menyusun kalimat"
+  }
 }

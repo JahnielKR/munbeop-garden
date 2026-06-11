@@ -9,7 +9,8 @@ const { t } = useI18n()
 const router = useRouter()
 
 async function onClick() {
-  await router.push({ path: '/practice', query: { focus: props.grammar.ko } })
+  // /practice is the games hub; the focused round lives in the ruleta game.
+  await router.push({ path: '/practice/ruleta', query: { focus: props.grammar.ko } })
 }
 </script>
 
