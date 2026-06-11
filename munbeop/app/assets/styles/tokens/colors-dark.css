@@ -46,6 +46,7 @@
   --link-visited: var(--ink-soft);
   --accent: var(--gold);
   --accent-bright: var(--gold);
+  --heading-accent: var(--jade);         /* firefly on abyssal, 9.7:1 */
   --success: var(--jade);
   --info: var(--jade);
   --warning: var(--gold);

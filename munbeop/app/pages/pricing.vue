@@ -108,7 +108,7 @@ const tiers: Tier[] = [
 .tier__price-amount {
   font-family: 'Press Start 2P', 'Noto Sans KR', monospace;
   font-size: 24px;
-  color: var(--accent);
+  color: var(--heading-accent);
 }
 .tier__price-cadence {
   font-family: 'Inter', sans-serif;

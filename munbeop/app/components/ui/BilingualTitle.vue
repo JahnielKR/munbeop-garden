@@ -6,9 +6,10 @@
  * that lived inline in every page. Centralises:
  *   1. The bilingual hierarchy rule from 01-tokens.md §3.4 (KO sits
  *      visually dominant, Latin half subordinate at smaller size).
- *   2. The color decisions from p1.layout-pages: KO uses `--accent` so
- *      it stays text-safe (6.16 light, 5.13 dark — was 2.42 fail when
- *      pages hardcoded --jade), Latin uses `--text`.
+ *   2. The color decisions from the v5 palette: KO uses `--heading-accent`
+ *      (jade-deep light 4.9:1, jade dark 9.7:1), Latin uses `--text`.
+ *      `--accent`/gold is reserved for interactive elements only — as
+ *      text on paper it fails contrast (1.9:1 in v5).
  *   3. The pixel-font fallback chain so JA / TH / VI labels don't drop
  *      into raw monospace when PS2P has no glyph for the Latin half.
  *
@@ -50,7 +51,7 @@ const tag = computed(() => props.level)
 }
 .title__ko {
   font-family: 'Noto Sans KR', sans-serif;
-  color: var(--accent);
+  color: var(--heading-accent);
   line-height: 1.3;
 }
 .title__latin {

@@ -70,6 +70,7 @@
   --link-visited: var(--ink-soft);
   --accent: var(--gold);                 /* primary action = sunflower */
   --accent-bright: var(--gold);
+  --heading-accent: var(--jade-deep);    /* KO headings — leaf green, 4.9:1 on paper */
   --danger: var(--red);
   --danger-bright: var(--red);
   --info: var(--sky);

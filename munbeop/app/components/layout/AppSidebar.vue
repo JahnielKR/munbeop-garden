@@ -69,11 +69,20 @@ const { t } = useI18n()
   align-items: baseline;
   gap: 6px;
 }
+/* Brand gold + ink pixel outline (classic Zelda trick for legible yellow
+ * on any surface). Outline uses --always-dark, not --ink, on purpose —
+ * in dark mode --ink is light and would ruin the contour. */
 .sidebar__brand-ko {
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 900;
   font-size: 26px;
-  color: var(--accent);
+  color: var(--gold);
+  text-shadow:
+    2px 0 0 var(--always-dark),
+    -2px 0 0 var(--always-dark),
+    0 2px 0 var(--always-dark),
+    0 -2px 0 var(--always-dark),
+    2px 2px 0 var(--always-dark);
 }
 .sidebar__brand-name {
   font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
