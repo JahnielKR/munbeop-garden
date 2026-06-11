@@ -134,8 +134,10 @@ const { t } = useI18n()
   transition: transform 240ms ease;
 }
 .shell--collapsed .shell__collapse {
-  /* column is 0 wide — nudge fully on-screen instead of half-clipped */
-  transform: translate(2px, -50%);
+  /* The column is 0 wide, so right:0 parks the button entirely OFF-track
+   * (its right edge at x=0). Push it a full button-width inward so the
+   * whole 22px handle sits on-screen against the viewport edge. */
+  transform: translate(calc(100% + 2px), -50%);
 }
 .shell__collapse:hover {
   background: var(--hover-bg);
