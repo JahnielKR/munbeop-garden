@@ -81,8 +81,11 @@ const seatPad = computed(() => 3 * props.scale)
 }
 
 .stage__tree {
+  /* No z-index on purpose: the tree paints above the ground by source
+   * order already, and an explicit z would create a stacking context that
+   * caps every descendant below the weather layer (z 2) — zone-node
+   * tooltips must be able to rise above it (TreeZones hover z 50). */
   position: relative;
-  z-index: 1;
   display: flex;
   justify-content: center;
 }

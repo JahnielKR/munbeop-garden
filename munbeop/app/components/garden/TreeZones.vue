@@ -151,6 +151,16 @@ function onClick(n: ZoneNode) {
   transform: translate(-1px, -1px);
 }
 
+/* Each hit is its own stacking context (it has a transform), so without
+ * this the tooltip paints UNDER later DOM siblings — other nodes, the
+ * chest, Bomi. Raising the hovered hit lifts its whole context, tooltip
+ * included, above everything in the stage (the weather layer sits at
+ * z-index 2). */
+.zones__hit:hover,
+.zones__hit:focus-visible {
+  z-index: 50;
+}
+
 .zones__hit:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: -6px;

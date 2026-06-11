@@ -103,9 +103,11 @@ function onOverlayClick() {
             :aria-label="closeLabel"
             @click="emit('close')"
           >
-            [X]
+            X
           </button>
-          <slot />
+          <div class="modal__body">
+            <slot />
+          </div>
         </div>
       </div>
     </Transition>
@@ -130,33 +132,50 @@ function onOverlayClick() {
   }
 }
 
+/* The frame doesn't scroll (and doesn't clip) — scrolling lives on
+ * .modal__body. That lets the close button hang on the frame corner,
+ * outside the content flow: always visible, never buried under sticky
+ * slot headers, never covering slot content. */
 .modal {
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: min(560px, 100%);
   max-height: calc(100vh - 32px);
-  overflow-y: auto;
   background: var(--paper-deep, var(--paper));
   color: var(--ink);
   border: 4px solid var(--ink-line);
   box-shadow: 8px 8px 0 var(--shadow-cream);
-  padding: 24px;
   font-family: 'Inter', sans-serif;
+}
+
+.modal__body {
+  overflow-y: auto;
+  padding: 24px;
 }
 
 .modal-close {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: none;
-  border: none;
+  top: -14px;
+  right: -14px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper-deep, var(--paper));
+  color: var(--ink);
+  border: 2px solid var(--ink-line);
+  box-shadow: 2px 2px 0 var(--shadow-cream);
   font-family: 'Press Start 2P', monospace;
   font-size: 11px;
-  color: var(--ink);
   cursor: pointer;
-  padding: 4px 6px;
+  padding: 0;
 }
 .modal-close:hover {
-  color: var(--red);
+  background: var(--red);
+  color: var(--always-cream, #fdf6e3);
 }
 .modal-close:focus-visible {
   outline: 2px solid var(--focus-ring, var(--gold));

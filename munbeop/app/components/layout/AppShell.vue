@@ -40,15 +40,23 @@ const { t } = useI18n()
       <slot />
     </main>
 
-    <button
-      type="button"
-      class="shell__collapse font-pixel"
-      :aria-expanded="!collapsed"
-      :aria-label="collapsed ? t('nav.sidebar_expand') : t('nav.sidebar_collapse')"
-      @click="collapsed = !collapsed"
-    >
-      <span aria-hidden="true">{{ collapsed ? '▸' : '◂' }}</span>
-    </button>
+    <!-- Same grid cell as the rail: a zero-footprint sticky track whose
+         right edge IS the rail boundary. The button hangs on that edge, so
+         it rides the collapse animation via the column width and stays at
+         mid-viewport while the page scrolls. Deliberately NOT position:fixed:
+         the camera-stage transform makes fixed resolve against the panel,
+         which drifts after window resizes. -->
+    <div class="shell__handle">
+      <button
+        type="button"
+        class="shell__collapse font-pixel"
+        :aria-expanded="!collapsed"
+        :aria-label="collapsed ? t('nav.sidebar_expand') : t('nav.sidebar_collapse')"
+        @click="collapsed = !collapsed"
+      >
+        <span aria-hidden="true">{{ collapsed ? '▸' : '◂' }}</span>
+      </button>
+    </div>
 
     <MobileNavbar class="shell__mobile-nav" />
     <Toast />
@@ -65,8 +73,20 @@ const { t } = useI18n()
 .shell--collapsed {
   grid-template-columns: 0px 1fr;
 }
+
+/* The page scrolls inside .camera-stage__scroll; the rail pins itself to
+ * that scroller's viewport so the sidebar never rides along with content.
+ * overflow-x clips the fixed-width sidebar during the collapse transition;
+ * overflow-y lets the sidebar scroll itself on short viewports. */
 .shell__rail {
-  overflow: hidden;
+  grid-column: 1;
+  grid-row: 1;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  align-self: start;
+  overflow-x: hidden;
+  overflow-y: auto;
   min-width: 0;
 }
 .shell__sidebar {
@@ -75,17 +95,30 @@ const { t } = useI18n()
   min-height: 100%;
 }
 .shell__main {
+  grid-column: 2;
+  grid-row: 1;
   padding: 32px 32px 80px;
   max-width: 1200px;
   width: 100%;
+  min-width: 0;
 }
 
-.shell__collapse {
-  position: fixed;
-  top: 50%;
-  left: 220px;
-  transform: translate(-50%, -50%);
+.shell__handle {
+  grid-column: 1;
+  grid-row: 1;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  align-self: start;
+  pointer-events: none;
   z-index: 40;
+}
+.shell__collapse {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%);
+  pointer-events: auto;
   width: 22px;
   height: 44px;
   display: flex;
@@ -98,11 +131,11 @@ const { t } = useI18n()
   font-family: 'Press Start 2P', monospace;
   font-size: 9px;
   cursor: pointer;
-  transition: left 240ms ease;
+  transition: transform 240ms ease;
 }
 .shell--collapsed .shell__collapse {
-  left: 12px;
-  transform: translateY(-50%);
+  /* column is 0 wide — nudge fully on-screen instead of half-clipped */
+  transform: translate(2px, -50%);
 }
 .shell__collapse:hover {
   background: var(--hover-bg);
@@ -123,13 +156,14 @@ const { t } = useI18n()
   .shell__rail {
     display: none;
   }
-  .shell__collapse {
+  .shell__handle {
     display: none;
   }
   .shell__mobile-nav {
     display: flex;
   }
   .shell__main {
+    grid-column: 1;
     padding: 16px 16px 80px;
   }
 }
