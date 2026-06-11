@@ -75,7 +75,7 @@ const policies: Policy[] = [
 .block__heading {
   font-family: 'Press Start 2P', 'Noto Sans KR', monospace;
   font-size: 12px;
-  color: var(--accent);
+  color: var(--heading-accent);
   letter-spacing: 0.04em;
   margin: 0;
 }
