@@ -115,7 +115,6 @@
       "email_signin": "Sign in with email",
       "email_signup": "Create an account",
       "email_magic": "Send a magic link",
-      "anon": "Continue without an account",
       "section_info": "Info",
       "pricing": "Plans & Pricing",
       "features": "Features",
@@ -129,8 +128,41 @@
       "google": "Following the Google path…",
       "email": "Whisper your e-mail to the gatekeeper.",
       "magic": "A scroll will be sent by carrier owl.",
-      "anon": "Hyrule remembers local heroes too. Your progress lives on this device.",
       "error_oauth": "That gateway is closed. Try another door."
+    }
+  },
+  "garden": {
+    "level": "Level {n}",
+    "state": {
+      "dormant": "Dormant (winter)",
+      "sprouting": "Sprouting",
+      "leafy": "Leafy",
+      "bloom": "In full bloom"
+    },
+    "practice_cta": "Practice this level",
+    "grove_open": "View garden",
+    "grove_back": "Back to my tree",
+    "diary_chest": "Practice diary",
+    "diary_pending": "{n} to review",
+    "tree_locked": "Reach {pct}% in level {n} to plant this tree",
+    "zone_locked": "Complete \"{zone}\" first",
+    "zone_overflow": "+{n} more",
+    "unlock": {
+      "sprout": "Your {tree} is sprouting!",
+      "leafy": "Your {tree} is getting leafy!",
+      "bloom": "Your {tree} is in full bloom!",
+      "tree": "A new tree awaits: {tree}!"
+    },
+    "weather": {
+      "rain_hint": "Review your tricky sentences to clear the sky"
+    },
+    "species": {
+      "cherry": "Cherry blossom",
+      "magnolia": "Magnolia",
+      "zelkova": "Village zelkova",
+      "mugunghwa": "Rose of Sharon",
+      "maple": "Autumn maple",
+      "ginkgo": "Golden ginkgo"
     }
   },
   "pricing": { "title": "Plans & Pricing" },

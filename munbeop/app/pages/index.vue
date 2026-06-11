@@ -1,24 +1,65 @@
 <script setup lang="ts">
+/**
+ * 내 정원 / My Garden — home hero (spec §5.1).
+ *
+ * The active level's tree IS the screen: a window-to-the-garden stage
+ * whose sky tracks real SRS progress, a retro HUD underneath, and Bomi
+ * floating by the crown. The grove view (all 6 trees) arrives with
+ * `GardenGrove` (plan Fase 5); its toggle is disabled until then.
+ */
+import { computed, ref } from 'vue'
+import { useElementSize } from '@vueuse/core'
 import Bomi from '~/components/bomi/Bomi.vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
+import Button from '~/components/ui/Button.vue'
+import GardenHud from '~/components/garden/GardenHud.vue'
+import GardenStage from '~/components/garden/GardenStage.vue'
+import PixelTree from '~/components/garden/PixelTree.vue'
+import { SPECIES_KO } from '~/lib/garden'
+import { gardenStateKey, useGardenState } from '~/composables/useGardenState'
 
 definePageMeta({ surface: 'game' })
 
 const { t } = useI18n()
+
+const { active } = useGardenState()
+
+// Integer scale only (spec §7.2): x2 on narrow viewports, x3 otherwise.
+const stageWrap = ref<HTMLElement | null>(null)
+const { width } = useElementSize(stageWrap)
+const treeScale = computed(() => (width.value > 0 && width.value < 432 ? 2 : 3))
+
+const stateKey = computed(() => gardenStateKey(active.value.pct))
+const speciesKo = computed(() => SPECIES_KO[active.value.species])
+const speciesLabel = computed(() => t(`garden.species.${active.value.species}`))
 </script>
 
 <template>
   <div class="page">
-    <BilingualTitle ko="내 정원" :latin="t('title.garden')" />
-    <div class="greeter">
-      <Bomi class="greeter__mascota" :scale="3" pose="idle" />
-      <div class="greeter__copy">
-        <p class="greeter__lead">{{ t('empty.garden') }}</p>
-        <p>
-          <NuxtLink class="greeter__link" to="/practice">→ {{ t('common.go_to_practice') }}</NuxtLink>
-        </p>
-      </div>
+    <header class="page__head">
+      <BilingualTitle ko="내 정원" :latin="t('title.garden')" />
+      <Button variant="secondary" size="sm" disabled>
+        {{ t('garden.grove_open') }}
+      </Button>
+    </header>
+
+    <div ref="stageWrap">
+      <GardenStage :pct="active.pct" :scale="treeScale">
+        <PixelTree :species="active.species" :progress="active.pct" :scale="treeScale" />
+
+        <template #overlay>
+          <Bomi class="page__bomi" :scale="2" pose="idle" />
+        </template>
+      </GardenStage>
     </div>
+
+    <GardenHud
+      :level="active.level"
+      :species-ko="speciesKo"
+      :species-label="speciesLabel"
+      :pct="active.pct"
+      :state-key="stateKey"
+    />
   </div>
 </template>
 
@@ -26,42 +67,26 @@ const { t } = useI18n()
 .page {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
-.greeter {
-  background: var(--paper-warm);
-  border: 2px solid var(--border);
-  padding: 32px;
-  font-family: 'Inter', sans-serif;
-  color: var(--ink-soft);
-  line-height: 1.6;
+
+.page__head {
   display: flex;
   align-items: center;
-  gap: 24px;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
-.greeter__mascota {
-  flex-shrink: 0;
+
+.page__bomi {
+  position: absolute;
+  top: 14%;
+  right: 16%;
 }
-.greeter__copy {
-  flex: 1;
-}
-.greeter__lead {
-  margin: 0 0 12px;
-}
-.greeter__link {
-  color: var(--link);
-  text-decoration: underline;
-  font-weight: 600;
-}
-.greeter__link:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
+
 @media (max-width: 480px) {
-  .greeter {
-    flex-direction: column;
-    text-align: center;
-    gap: 16px;
+  .page__bomi {
+    right: 6%;
   }
 }
 </style>
