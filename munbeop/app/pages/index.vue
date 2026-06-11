@@ -21,10 +21,11 @@ import DiaryChest from '~/components/garden/DiaryChest.vue'
 import GardenGrove from '~/components/garden/GardenGrove.vue'
 import GardenHud from '~/components/garden/GardenHud.vue'
 import GardenStage from '~/components/garden/GardenStage.vue'
-import PixelTree from '~/components/garden/PixelTree.vue'
+import PixelTree, { TREE_THRESHOLDS } from '~/components/garden/PixelTree.vue'
 import TreeZones from '~/components/garden/TreeZones.vue'
+import WeatherLayer, { type WeatherKind } from '~/components/garden/WeatherLayer.vue'
 import { ZONE_ANCHORS } from '~/lib/garden/zone-anchors'
-import { SPECIES_KO } from '~/lib/garden'
+import { SPECIES_KO, SPECIES_PARTICLE } from '~/lib/garden'
 import { gardenStateKey, useGardenState } from '~/composables/useGardenState'
 import type { TopikLevel } from '~/lib/domain'
 
@@ -51,6 +52,18 @@ const treeScale = computed(() => (width.value > 0 && width.value < 432 ? 2 : 3))
 const stateKey = computed(() => gardenStateKey(active.value.pct))
 const speciesKo = computed(() => SPECIES_KO[active.value.species])
 const speciesLabel = computed(() => t(`garden.species.${active.value.species}`))
+
+// ── Weather (spec §5.3): rain wins (it's the actionable signal), then
+// mist, then season ambience (snow in winter, species fall at bloom).
+const weatherKind = computed<WeatherKind>(() => {
+  if (pendingReviews.value >= 5) return 'rain'
+  if (pendingReviews.value >= 1) return 'mist'
+  if (active.value.pct < TREE_THRESHOLDS.sprout) return 'snow'
+  if (active.value.pct >= TREE_THRESHOLDS.bloom) return 'fall'
+  return 'none'
+})
+
+const particleSrc = computed(() => SPECIES_PARTICLE[active.value.species])
 
 // ── Bomi: hovers over the furthest unlocked zone node; 'thinking' for 2s
 // when a locked zone is tapped; 'sleep' when the garden is untouched for
@@ -104,7 +117,10 @@ const bomiAnchor = computed(() => {
     <Transition name="garden-fade" mode="out-in">
       <div v-if="view === 'hero'" key="hero" class="page__view">
         <div ref="stageWrap">
-          <GardenStage :pct="active.pct" :scale="treeScale">
+          <GardenStage :pct="active.pct" :scale="treeScale" :cold="weatherKind === 'rain'">
+            <template #weather>
+              <WeatherLayer :kind="weatherKind" :particle-src="particleSrc" />
+            </template>
             <!-- one wrapper = the tree's canvas coordinate space -->
             <div class="hero-tree">
               <PixelTree :species="active.species" :progress="active.pct" :scale="treeScale" />
@@ -132,6 +148,10 @@ const bomiAnchor = computed(() => {
           :pct="active.pct"
           :state-key="stateKey"
         />
+
+        <NuxtLink v-if="weatherKind === 'rain'" class="page__rain-hint" to="/log">
+          {{ t('garden.weather.rain_hint') }}
+        </NuxtLink>
       </div>
 
       <GardenGrove
@@ -175,6 +195,19 @@ const bomiAnchor = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.page__rain-hint {
+  align-self: center;
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  color: var(--link);
+  text-decoration: underline;
+}
+
+.page__rain-hint:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .garden-fade-enter-active,
