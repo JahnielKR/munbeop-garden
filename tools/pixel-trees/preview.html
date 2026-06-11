@@ -1,0 +1,154 @@
+<!doctype html>
+<!--
+  Standalone preview for the pixel-tree assets. Double-click to open
+  (loads PNGs relative to ../../munbeop/public/img/tree/).
+
+  - species buttons + progress slider drive the same cumulative layer
+    rules as PixelTree.vue (thresholds 10/40/80)
+  - day/night toggles the stage sky to sanity-check both app themes
+  - "calibrate" mode: click anywhere on the stage to log `{ top, left }`
+    percent anchors for app/components/garden/tree-zones.ts (plan §4.2)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>pixel-trees preview</title>
+<style>
+  :root { --paper: #f4ecd8; --ink: #2d1e18; --line: #8c6a4a; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; gap: 14px; padding: 18px;
+    background: var(--paper); color: var(--ink);
+    font-family: ui-monospace, 'JetBrains Mono', Consolas, monospace; font-size: 13px;
+  }
+  h1 { font-size: 14px; margin: 0; letter-spacing: 1px; }
+  .row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; align-items: center; }
+  button, label.toggle {
+    font: inherit; padding: 4px 10px; cursor: pointer;
+    background: #faf6ee; color: var(--ink); border: 2px solid var(--line);
+  }
+  button.active { background: #e6a121; border-color: var(--ink); font-weight: 700; }
+  #stage {
+    position: relative; width: 384px; height: 480px;
+    border: 2px solid var(--ink); background: #aed6f1; overflow: hidden;
+    transition: background 0.6s ease;
+  }
+  #stage.night { background: #1c2340; }
+  #stage .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 14%; background: #5e8f4a; }
+  #stage.night .ground { background: #2f4a2a; }
+  #stage img {
+    position: absolute; inset: 0; margin: auto; width: 384px; height: 480px;
+    image-rendering: pixelated; user-select: none; pointer-events: none;
+  }
+  #stage .marker { position: absolute; width: 8px; height: 8px; margin: -4px 0 0 -4px;
+    background: #c23e3e; border: 1px solid #fff; border-radius: 50%; pointer-events: none; }
+  #readout { min-height: 18px; font-weight: 700; }
+  #anchors { width: 384px; max-height: 110px; overflow: auto; background: #faf6ee;
+    border: 2px solid var(--line); padding: 6px; white-space: pre; display: none; }
+  input[type="range"] { width: 240px; accent-color: #e6a121; }
+</style>
+</head>
+<body>
+  <h1>PIXEL TREES — preview</h1>
+
+  <div class="row" id="species"></div>
+
+  <div class="row">
+    <input id="progress" type="range" min="0" max="100" value="100" />
+    <span id="readout"></span>
+  </div>
+
+  <div class="row">
+    <button id="night">night</button>
+    <button id="shadow" class="active">shadow</button>
+    <label class="toggle"><input id="calibrate" type="checkbox" /> calibrate anchors</label>
+    <button id="clear">clear</button>
+  </div>
+
+  <div id="stage"><div class="ground"></div></div>
+  <pre id="anchors"></pre>
+
+<script>
+  const BASE = '../../munbeop/public/img/tree'
+  const SPECIES = ['cherry', 'magnolia', 'zelkova', 'mugunghwa', 'maple', 'ginkgo']
+  const LAYERS = ['tree_skeleton', 'trunk_alive', 'leaves_layer_1', 'leaves_layer_2', 'bloom_full']
+  const THRESHOLDS = { sprout: 10, leafy: 40, bloom: 80 }
+
+  let species = 'cherry'
+  let progress = 100
+  let shadowOn = true
+
+  const stage = document.getElementById('stage')
+  const readout = document.getElementById('readout')
+  const anchorsBox = document.getElementById('anchors')
+  const speciesRow = document.getElementById('species')
+
+  for (const s of SPECIES) {
+    const b = document.createElement('button')
+    b.textContent = s
+    b.onclick = () => { species = s; render(); anchorsBox.textContent = `// ${s}\n` }
+    speciesRow.appendChild(b)
+  }
+
+  function activeLayers() {
+    const out = ['tree_skeleton']
+    if (progress >= THRESHOLDS.sprout) out.push('trunk_alive', 'leaves_layer_1')
+    if (progress >= THRESHOLDS.leafy) out.push('leaves_layer_2')
+    if (progress >= THRESHOLDS.bloom) out.push('bloom_full')
+    return out
+  }
+
+  function stateName() {
+    if (progress >= 80) return 'bloom'
+    if (progress >= 40) return 'leafy'
+    if (progress >= 10) return 'sprout'
+    return 'dormant'
+  }
+
+  function render() {
+    stage.querySelectorAll('img').forEach((n) => n.remove())
+    if (shadowOn) addImg(`${BASE}/ground_shadow.png`)
+    for (const l of activeLayers()) addImg(`${BASE}/${species}/${l}.png`)
+    readout.textContent = `${species} · ${progress}% · ${stateName()}`
+    document.querySelectorAll('#species button').forEach(
+      (b) => b.classList.toggle('active', b.textContent === species))
+  }
+
+  function addImg(src) {
+    const img = document.createElement('img')
+    img.src = src
+    stage.appendChild(img)
+  }
+
+  document.getElementById('progress').oninput = (e) => { progress = +e.target.value; render() }
+  document.getElementById('night').onclick = (e) => {
+    stage.classList.toggle('night'); e.target.classList.toggle('active')
+  }
+  document.getElementById('shadow').onclick = (e) => {
+    shadowOn = !shadowOn; e.target.classList.toggle('active', shadowOn); render()
+  }
+  document.getElementById('clear').onclick = () => {
+    anchorsBox.textContent = ''; stage.querySelectorAll('.marker').forEach((m) => m.remove())
+  }
+
+  // Anchor calibration for tree-zones.ts: click branches, copy the output.
+  stage.addEventListener('click', (e) => {
+    if (!document.getElementById('calibrate').checked) return
+    const r = stage.getBoundingClientRect()
+    const top = Math.round(((e.clientY - r.top) / r.height) * 100)
+    const left = Math.round(((e.clientX - r.left) / r.width) * 100)
+    const line = `{ top: '${top}%', left: '${left}%' },`
+    anchorsBox.style.display = 'block'
+    anchorsBox.textContent += line + '\n'
+    console.log(`[${species}]`, line)
+    const m = document.createElement('div')
+    m.className = 'marker'
+    m.style.top = top + '%'
+    m.style.left = left + '%'
+    stage.appendChild(m)
+  })
+
+  render()
+</script>
+</body>
+</html>

@@ -6,15 +6,58 @@ import Modal from '~/components/ui/Modal.vue'
 import MasteryIcon from '~/components/practice/MasteryIcon.vue'
 import GrammarStudySheet from '~/components/library/GrammarStudySheet.vue'
 import { getMasteryInfo } from '~/lib/srs'
+import { TOPIK_LEVELS, type TopikLevel } from '~/lib/domain'
 import { useGrammarStore } from '~/stores/grammar'
 import { useSrsStore } from '~/stores/srs'
 import { useGrammarModal } from '~/composables/useGrammarModal'
+import { useTopikSpine } from '~/composables/useTopikSpine'
 
 const grammarStore = useGrammarStore()
 const srsStore = useSrsStore()
 const { t } = useI18n()
 const { tl } = useLocalized()
 const { selected, isOpen, open, close } = useGrammarModal()
+
+/**
+ * Garden zone filter (garden plan Fase 4.4): `?theme=<spineThemeId>` or
+ * `?level=<1-6>` narrows the library to the matching spine items. Decks
+ * keep their structure; sections that end up empty disappear (existing
+ * behavior). The banner clears the filter without leaving the page.
+ */
+const route = useRoute()
+const { itemsByTheme, itemsByLevel } = useTopikSpine()
+
+const queryLevel = computed<TopikLevel | null>(() => {
+  const n = Number(route.query.level)
+  return (TOPIK_LEVELS as readonly number[]).includes(n) ? (n as TopikLevel) : null
+})
+
+const zoneFilter = computed<{ kos: Set<string>; label: string } | null>(() => {
+  const theme = typeof route.query.theme === 'string' ? route.query.theme : null
+  if (theme) {
+    const items = itemsByTheme(theme)
+    const src = items[0]?.source
+    if (items.length > 0) {
+      return {
+        kos: new Set(items.map((i) => i.ko)),
+        label: src?.kind === 'topik' ? src.themeTitle : theme,
+      }
+    }
+  }
+  if (queryLevel.value !== null) {
+    return {
+      kos: new Set(itemsByLevel(queryLevel.value).map((i) => i.ko)),
+      label: t('garden.level', { n: queryLevel.value }),
+    }
+  }
+  return null
+})
+
+function clearZoneFilter() {
+  void navigateTo({ path: '/library' })
+}
+
+const inZone = (ko: string) => !zoneFilter.value || zoneFilter.value.kos.has(ko)
 
 /**
  * Group items by deck, ordered by `deck.order`.
@@ -28,7 +71,7 @@ const sections = computed(() => {
   return sortedDecks
     .map((deck) => {
       const items = grammarStore.items
-        .filter((g) => g.deckId === deck.id)
+        .filter((g) => g.deckId === deck.id && inZone(g.ko))
         .map((g) => {
           const level = srsStore.ensure(g.ko).mastery
           return {
@@ -46,7 +89,7 @@ const sections = computed(() => {
 const orphans = computed(() => {
   const known = new Set(grammarStore.decks.map((d) => d.id))
   return grammarStore.items
-    .filter((g) => !known.has(g.deckId))
+    .filter((g) => !known.has(g.deckId) && inZone(g.ko))
     .map((g) => {
       const level = srsStore.ensure(g.ko).mastery
       return { grammar: g, level, info: getMasteryInfo(level) }
@@ -72,6 +115,13 @@ async function onCardClick(ko: string) {
   <div class="page">
     <BilingualTitle ko="도서관" :latin="t('title.library')" />
     <p class="lead">{{ t('library.lead') }}</p>
+
+    <div v-if="zoneFilter" class="zone-filter">
+      <span class="zone-filter__label">{{ t('garden.zone_filter', { zone: zoneFilter.label }) }}</span>
+      <button type="button" class="zone-filter__clear" @click="clearZoneFilter">
+        {{ t('garden.zone_filter_clear') }}
+      </button>
+    </div>
 
     <section
       v-for="section in sections"
@@ -171,6 +221,41 @@ async function onCardClick(ko: string) {
 .lead {
   font-family: 'Inter', sans-serif;
   color: var(--ink-soft);
+}
+
+/* garden zone filter banner — pixel chip + clear action */
+.zone-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: var(--paper-deep, var(--paper));
+  border: 2px solid var(--ink-line);
+  box-shadow: 2px 2px 0 var(--shadow-cream);
+}
+.zone-filter__label {
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  font-weight: 600;
+}
+.zone-filter__clear {
+  margin-left: auto;
+  padding: 6px 10px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--ink-line);
+  font-family: 'Press Start 2P', 'Noto Sans KR', monospace;
+  font-size: 8px;
+  cursor: pointer;
+}
+.zone-filter__clear:hover {
+  background: var(--hover-bg);
+}
+.zone-filter__clear:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .deck-section {

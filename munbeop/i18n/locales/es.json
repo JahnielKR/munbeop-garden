@@ -5,7 +5,9 @@
     "library": "Herbolario",
     "stats": "Analítica",
     "log": "Diario",
-    "settings": "Invernadero"
+    "settings": "Invernadero",
+    "sidebar_collapse": "Ocultar menú",
+    "sidebar_expand": "Mostrar menú"
   },
   "title": {
     "garden": "Mi Jardín",
@@ -115,7 +117,6 @@
       "email_signin": "Entrar con correo",
       "email_signup": "Crear una cuenta",
       "email_magic": "Enviar enlace mágico",
-      "anon": "Entrar sin cuenta",
       "section_info": "Información",
       "pricing": "Planes y Precios",
       "features": "Características",
@@ -129,8 +130,43 @@
       "google": "Siguiendo el sendero de Google…",
       "email": "Susurra tu correo al guardián.",
       "magic": "Te enviamos un pergamino por lechuza.",
-      "anon": "Hyrule también recuerda a los héroes locales. Tu progreso vive en este dispositivo.",
       "error_oauth": "Esa puerta está cerrada. Probemos otra."
+    }
+  },
+  "garden": {
+    "level": "Nivel {n}",
+    "state": {
+      "dormant": "Seco (invierno)",
+      "sprouting": "Brotando",
+      "leafy": "Frondoso",
+      "bloom": "En plena floración"
+    },
+    "practice_cta": "Practicar este nivel",
+    "grove_open": "Ver jardín",
+    "grove_back": "Volver a mi árbol",
+    "diary_chest": "Diario de práctica",
+    "diary_pending": "{n} por revisar",
+    "tree_locked": "Llega al {pct}% del nivel {n} para plantar este árbol",
+    "zone_locked": "Completa antes «{zone}»",
+    "zone_overflow": "+{n} más",
+    "zone_filter": "Mostrando zona: {zone}",
+    "zone_filter_clear": "Ver todo",
+    "unlock": {
+      "sprout": "¡Tu {tree} está brotando!",
+      "leafy": "¡Tu {tree} se está poniendo frondoso!",
+      "bloom": "¡Tu {tree} está en plena floración!",
+      "tree": "¡Un árbol nuevo te espera: {tree}!"
+    },
+    "weather": {
+      "rain_hint": "Revisa tus oraciones difíciles para despejar el cielo"
+    },
+    "species": {
+      "cherry": "Cerezo",
+      "magnolia": "Magnolia",
+      "zelkova": "Zelkova de aldea",
+      "mugunghwa": "Mugunghwa",
+      "maple": "Arce otoñal",
+      "ginkgo": "Ginkgo dorado"
     }
   },
   "pricing": { "title": "Planes y Precios" },
