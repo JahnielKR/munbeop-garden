@@ -5,7 +5,9 @@
     "library": "図書館",
     "stats": "統計",
     "log": "日記",
-    "settings": "設定"
+    "settings": "設定",
+    "sidebar_collapse": "メニューを隠す",
+    "sidebar_expand": "メニューを表示"
   },
   "title": {
     "garden": "私の庭",
@@ -129,6 +131,42 @@
       "email": "門番にメールをささやいて。",
       "magic": "ふくろうが巻物を届けます。",
       "error_oauth": "その門は閉じています。別の道を試そう。"
+    }
+  },
+  "garden": {
+    "level": "レベル{n}",
+    "state": {
+      "dormant": "休眠（冬）",
+      "sprouting": "芽吹き",
+      "leafy": "緑豊か",
+      "bloom": "満開"
+    },
+    "practice_cta": "このレベルを練習",
+    "grove_open": "庭を見る",
+    "grove_back": "自分の木に戻る",
+    "diary_chest": "練習日記",
+    "diary_pending": "復習待ち{n}件",
+    "tree_locked": "レベル{n}で{pct}%に達するとこの木を植えられます",
+    "zone_locked": "先に「{zone}」を完了しよう",
+    "zone_overflow": "ほか{n}件",
+    "zone_filter": "表示中のゾーン：{zone}",
+    "zone_filter_clear": "すべて表示",
+    "unlock": {
+      "sprout": "{tree}が芽吹き始めた！",
+      "leafy": "{tree}の葉が茂ってきた！",
+      "bloom": "{tree}が満開になった！",
+      "tree": "新しい木が待っている：{tree}！"
+    },
+    "weather": {
+      "rain_hint": "難しかった文を復習して空を晴らそう"
+    },
+    "species": {
+      "cherry": "桜",
+      "magnolia": "モクレン",
+      "zelkova": "村のケヤキ",
+      "mugunghwa": "ムクゲ",
+      "maple": "秋のモミジ",
+      "ginkgo": "黄金のイチョウ"
     }
   },
   "pricing": { "title": "料金プラン" },

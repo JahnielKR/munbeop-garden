@@ -5,7 +5,9 @@
     "library": "Thư viện",
     "stats": "Thống kê",
     "log": "Nhật ký",
-    "settings": "Cài đặt"
+    "settings": "Cài đặt",
+    "sidebar_collapse": "Ẩn menu",
+    "sidebar_expand": "Hiện menu"
   },
   "title": {
     "garden": "Vườn của tôi",
@@ -129,6 +131,42 @@
       "email": "Thì thầm email của bạn với người gác cổng.",
       "magic": "Một cuộn giấy sẽ tới bằng cú.",
       "error_oauth": "Cánh cổng đó đã đóng. Thử cổng khác."
+    }
+  },
+  "garden": {
+    "level": "Cấp {n}",
+    "state": {
+      "dormant": "Ngủ đông (mùa đông)",
+      "sprouting": "Đang nảy mầm",
+      "leafy": "Rậm lá",
+      "bloom": "Nở rộ"
+    },
+    "practice_cta": "Luyện cấp này",
+    "grove_open": "Xem khu vườn",
+    "grove_back": "Về cây của tôi",
+    "diary_chest": "Nhật ký luyện tập",
+    "diary_pending": "{n} câu chờ xem lại",
+    "tree_locked": "Đạt {pct}% ở cấp {n} để trồng cây này",
+    "zone_locked": "Hoàn thành \"{zone}\" trước đã",
+    "zone_overflow": "+{n} nữa",
+    "zone_filter": "Đang hiển thị vùng: {zone}",
+    "zone_filter_clear": "Hiện tất cả",
+    "unlock": {
+      "sprout": "Cây {tree} của bạn đang nảy mầm!",
+      "leafy": "Cây {tree} của bạn đang rậm lá!",
+      "bloom": "Cây {tree} của bạn đang nở rộ!",
+      "tree": "Một cây mới đang chờ bạn: {tree}!"
+    },
+    "weather": {
+      "rain_hint": "Xem lại những câu khó để bầu trời quang đãng"
+    },
+    "species": {
+      "cherry": "Hoa anh đào",
+      "magnolia": "Mộc lan",
+      "zelkova": "Zelkova làng",
+      "mugunghwa": "Mugunghwa",
+      "maple": "Phong mùa thu",
+      "ginkgo": "Bạch quả vàng"
     }
   },
   "pricing": { "title": "Gói & Giá" },

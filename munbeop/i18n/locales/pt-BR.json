@@ -5,7 +5,9 @@
     "library": "Herbário",
     "stats": "Análise",
     "log": "Diário",
-    "settings": "Estufa"
+    "settings": "Estufa",
+    "sidebar_collapse": "Ocultar menu",
+    "sidebar_expand": "Mostrar menu"
   },
   "title": {
     "garden": "Meu Jardim",
@@ -129,6 +131,42 @@
       "email": "Sussurre seu e-mail ao guardião.",
       "magic": "Um pergaminho chegará por coruja.",
       "error_oauth": "Essa porta está fechada. Vamos tentar outra."
+    }
+  },
+  "garden": {
+    "level": "Nível {n}",
+    "state": {
+      "dormant": "Dormente (inverno)",
+      "sprouting": "Brotando",
+      "leafy": "Frondosa",
+      "bloom": "Em plena floração"
+    },
+    "practice_cta": "Praticar este nível",
+    "grove_open": "Ver jardim",
+    "grove_back": "Voltar à minha árvore",
+    "diary_chest": "Diário de prática",
+    "diary_pending": "{n} para revisar",
+    "tree_locked": "Chegue a {pct}% no nível {n} para plantar esta árvore",
+    "zone_locked": "Complete \"{zone}\" primeiro",
+    "zone_overflow": "+{n} mais",
+    "zone_filter": "Mostrando zona: {zone}",
+    "zone_filter_clear": "Mostrar tudo",
+    "unlock": {
+      "sprout": "Sua {tree} está brotando!",
+      "leafy": "Sua {tree} está ficando frondosa!",
+      "bloom": "Sua {tree} está em plena floração!",
+      "tree": "Uma nova árvore espera por você: {tree}!"
+    },
+    "weather": {
+      "rain_hint": "Revise suas frases difíceis para limpar o céu"
+    },
+    "species": {
+      "cherry": "Cerejeira",
+      "magnolia": "Magnólia",
+      "zelkova": "Zelkova da aldeia",
+      "mugunghwa": "Rosa-de-sharon",
+      "maple": "Bordo de outono",
+      "ginkgo": "Ginkgo dourado"
     }
   },
   "pricing": { "title": "Planos e Preços" },
