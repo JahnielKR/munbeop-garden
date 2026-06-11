@@ -32,6 +32,8 @@ export default defineConfig({
       // implementations so middleware and other files that depend on
       // defineNuxtRouteMiddleware / navigateTo load cleanly in tests.
       '#imports': fileURLToPath(new URL('./tests/nuxt-imports-stub.ts', import.meta.url)),
+      // Same story for the virtual #components module (NuxtLink et al).
+      '#components': fileURLToPath(new URL('./tests/nuxt-components-stub.ts', import.meta.url)),
     },
   },
 })
