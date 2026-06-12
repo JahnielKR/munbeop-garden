@@ -60,6 +60,8 @@ function onActivate(e: MouseEvent | KeyboardEvent) {
   cursor: pointer;
   z-index: 35;
 }
+/* Error sobre la consola negra fija: #ffd1d1 es constante de escena (tinte
+ * claro de red, 15.3:1 sobre #000) — los tokens de tema no aplican aquí. */
 .dialog--error { border-color: var(--red); color: #ffd1d1; }
 .dialog:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
 .dialog__text { margin: 0; }

@@ -52,7 +52,7 @@ const style = computed(() => {
 .hotspot {
   position: absolute;
   background: transparent;
-  border: 2px dashed rgba(255, 200, 80, 0.0);
+  border: 2px dashed transparent;
   cursor: pointer;
   padding: 0;
   min-width: 44px;
@@ -61,7 +61,7 @@ const style = computed(() => {
 }
 .hotspot:hover,
 .hotspot:focus-visible {
-  border-color: rgba(255, 200, 80, 0.85);
+  border-color: var(--focus-ring, #ffc850);
   outline: none;
 }
 .hotspot__sr-only {
