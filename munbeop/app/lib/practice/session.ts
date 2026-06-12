@@ -38,6 +38,19 @@ export function createSession<G, C>(p: CreateSessionParams<G, C>): Session<G, C>
   }
 }
 
+/**
+ * Narrow a grammar-index pool to a single deck before drawing.
+ * `deckId === null` keeps the whole pool — the "all levels" draw.
+ */
+export function filterPoolByDeck(
+  pool: readonly number[],
+  deckIdOf: (idx: number) => string | undefined,
+  deckId: string | null,
+): number[] {
+  if (!deckId) return [...pool]
+  return pool.filter((idx) => deckIdOf(idx) === deckId)
+}
+
 export function currentPickOf<G, C>(s: Session<G, C>, i: number): Pick<G, C> {
   const p = s.picks[i]
   if (!p) throw new Error(`No pick at index ${i}`)

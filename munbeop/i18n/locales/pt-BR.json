@@ -18,8 +18,16 @@
     "settings": "Estufa"
   },
   "practice": {
-    "intro_lead": "Clica em GIRAR e vai receber 3 pontos de gramática × 3 contextos = 9 frases pra escrever. 화이팅! 💪",
-    "spin": "🎲 GIRAR",
+    "deck_lead": "Cada baralho é um nível TOPIK. Embaralha, tira 3 cartas e escreve 9 frases. 화이팅! 💪",
+    "deck_all": "Todos os níveis",
+    "deck_count": "{n} gramáticas",
+    "deck_excluded": "Excluído no Herbário",
+    "deck_too_few": "Precisa de pelo menos 3 gramáticas",
+    "deck_shuffling": "Embaralhando…",
+    "deck_tap_hint": "Toca nas cartas para revelar tua mão",
+    "deck_flip_card": "Virar carta {n}",
+    "deck_start": "✍️ BORA ESCREVER!",
+    "deck_all_revealed": "Mão completa — as 3 cartas estão reveladas.",
     "fb_easy": "✨ FÁCIL",
     "fb_hard": "😤 DIFÍCIL",
     "error_note_label": "O que foi difícil? · 뭐가 어려웠어요?",
@@ -27,8 +35,8 @@
     "save_with_note": "💾 Salvar com nota",
     "skip_note": "Pular nota",
     "completion_ko": "수고했어요! 🎉",
-    "completion_text": "9 frases salvas — 3 gramáticas × 3 contextos. Outra rodada?",
-    "completion_restart": "🎲 NOVA RODADA",
+    "completion_text": "9 frases salvas — 3 gramáticas × 3 contextos. Tiramos outra mão?",
+    "completion_restart": "🃏 NOVA MÃO",
     "context_label": "Contexto · 상황",
     "sentence_placeholder": "Escreve tua frase aqui…",
     "no_grammars": "Não há gramáticas suficientes nos decks ativos.",
@@ -38,7 +46,7 @@
     "no_sentence": "Escreve uma frase primeiro"
   },
   "library": {
-    "lead": "Todas as gramáticas que aparecem na sua roleta. Cada uma cresce conforme você pratica.",
+    "lead": "Todas as gramáticas que podem sair nas suas cartas. Cada uma cresce conforme você pratica.",
     "modal": {
       "close": "Fechar",
       "section": {
@@ -182,8 +190,8 @@
   "games": {
     "lead": "Escolha seu modo de prática. Cada jogo cultiva seu coreano de um jeito diferente.",
     "ruleta": {
-      "name": "A Roleta",
-      "desc": "3 gramáticas × 3 contextos. Escreva 9 frases criativas."
+      "name": "O Baralho",
+      "desc": "Escolha seu baralho TOPIK, embaralhe e tire 3 cartas. Escreva 9 frases criativas."
     },
     "escape": {
       "name": "Escape Room",

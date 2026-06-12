@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" shape-rendering="crispEdges">
+  <!-- pixel-art cover for the deck-draw game: three cards fanned on green felt -->
+  <defs>
+    <!-- card frame: dark notched outline + paper body, 64x88 -->
+    <g id="frame">
+      <rect x="8" y="0" width="48" height="4" fill="#3c2a18"/>
+      <rect x="8" y="84" width="48" height="4" fill="#3c2a18"/>
+      <rect x="0" y="8" width="4" height="72" fill="#3c2a18"/>
+      <rect x="60" y="8" width="4" height="72" fill="#3c2a18"/>
+      <rect x="4" y="4" width="4" height="4" fill="#3c2a18"/>
+      <rect x="56" y="4" width="4" height="4" fill="#3c2a18"/>
+      <rect x="4" y="80" width="4" height="4" fill="#3c2a18"/>
+      <rect x="56" y="80" width="4" height="4" fill="#3c2a18"/>
+      <rect x="4" y="8" width="56" height="72" fill="#f5e9d4"/>
+      <rect x="8" y="4" width="48" height="80" fill="#f5e9d4"/>
+    </g>
+    <!-- hanji diamond motif, paper on color panel -->
+    <g id="motif">
+      <rect x="28" y="32" width="8" height="4" fill="#f5e9d4"/>
+      <rect x="24" y="36" width="16" height="4" fill="#f5e9d4"/>
+      <rect x="20" y="40" width="24" height="4" fill="#f5e9d4"/>
+      <rect x="24" y="44" width="16" height="4" fill="#f5e9d4"/>
+      <rect x="28" y="48" width="8" height="4" fill="#f5e9d4"/>
+      <rect x="16" y="24" width="4" height="4" fill="#f5e9d4"/>
+      <rect x="44" y="24" width="4" height="4" fill="#f5e9d4"/>
+      <rect x="16" y="60" width="4" height="4" fill="#f5e9d4"/>
+      <rect x="44" y="60" width="4" height="4" fill="#f5e9d4"/>
+    </g>
+  </defs>
+
+  <!-- felt table -->
+  <rect x="0" y="0" width="320" height="180" fill="#2f5d44"/>
+  <rect x="0" y="0" width="320" height="8" fill="#27503a"/>
+  <rect x="0" y="168" width="320" height="12" fill="#27503a"/>
+  <rect x="0" y="8" width="8" height="160" fill="#27503a"/>
+  <rect x="312" y="8" width="8" height="160" fill="#27503a"/>
+  <!-- felt texture dots -->
+  <rect x="36" y="44" width="4" height="4" fill="#3e7257"/>
+  <rect x="276" y="60" width="4" height="4" fill="#3e7257"/>
+  <rect x="52" y="132" width="4" height="4" fill="#3e7257"/>
+  <rect x="268" y="140" width="4" height="4" fill="#3e7257"/>
+  <rect x="160" y="24" width="4" height="4" fill="#3e7257"/>
+  <rect x="232" y="156" width="4" height="4" fill="#3e7257"/>
+  <rect x="84" y="20" width="4" height="4" fill="#3e7257"/>
+
+  <!-- left card: sky-blue back -->
+  <g transform="translate(72, 60)">
+    <use href="#frame"/>
+    <rect x="12" y="16" width="40" height="56" fill="#5aa7d6"/>
+    <rect x="12" y="16" width="40" height="4" fill="#8cc4e8"/>
+    <rect x="12" y="68" width="40" height="4" fill="#3f7fa8"/>
+    <rect x="28" y="40" width="8" height="4" fill="#5aa7d6"/>
+    <use href="#motif"/>
+  </g>
+
+  <!-- right card: red back -->
+  <g transform="translate(184, 60)">
+    <use href="#frame"/>
+    <rect x="12" y="16" width="40" height="56" fill="#c23e3e"/>
+    <rect x="12" y="16" width="40" height="4" fill="#d96b5e"/>
+    <rect x="12" y="68" width="40" height="4" fill="#8f2c2c"/>
+    <rect x="28" y="40" width="8" height="4" fill="#c23e3e"/>
+    <use href="#motif"/>
+  </g>
+
+  <!-- middle card: flipped front with gold band and 가 -->
+  <g transform="translate(128, 40)">
+    <use href="#frame"/>
+    <rect x="4" y="8" width="56" height="16" fill="#e6a121"/>
+    <rect x="8" y="4" width="48" height="4" fill="#e6a121"/>
+    <rect x="4" y="24" width="56" height="4" fill="#3c2a18"/>
+    <text x="32" y="68" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="36" font-weight="bold" fill="#2d1e18" text-anchor="middle">가</text>
+  </g>
+
+  <!-- sparkles -->
+  <g fill="#f7e9b8">
+    <rect x="48" y="24" width="4" height="4"/>
+    <rect x="44" y="28" width="4" height="4"/>
+    <rect x="48" y="28" width="4" height="4"/>
+    <rect x="52" y="28" width="4" height="4"/>
+    <rect x="48" y="32" width="4" height="4"/>
+    <rect x="260" y="32" width="4" height="4"/>
+    <rect x="256" y="36" width="4" height="4"/>
+    <rect x="260" y="36" width="4" height="4"/>
+    <rect x="264" y="36" width="4" height="4"/>
+    <rect x="260" y="40" width="4" height="4"/>
+    <rect x="288" y="104" width="4" height="4"/>
+    <rect x="32" y="108" width="4" height="4"/>
+    <rect x="108" y="144" width="4" height="4"/>
+    <rect x="216" y="148" width="4" height="4"/>
+  </g>
+</svg>

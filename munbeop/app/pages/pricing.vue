@@ -23,7 +23,7 @@ const tiers: Tier[] = [
     name: 'Sprout',
     price: 'Free',
     cadence: 'forever',
-    bullets: ['Local-only progress', 'Full grammar wheel', '8 UI languages'],
+    bullets: ['Local-only progress', 'Full grammar card decks', '8 UI languages'],
   },
   {
     name: 'Grove',

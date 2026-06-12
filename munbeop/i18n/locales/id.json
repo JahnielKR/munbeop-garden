@@ -18,8 +18,16 @@
     "settings": "Pengaturan"
   },
   "practice": {
-    "intro_lead": "Tekan PUTAR dan kamu dapat 3 tata bahasa × 3 konteks = 9 kalimat untuk ditulis. 화이팅! 💪",
-    "spin": "🎲 PUTAR",
+    "deck_lead": "Setiap dek adalah satu level TOPIK. Kocok, ambil 3 kartu, dan tulis 9 kalimat. 화이팅! 💪",
+    "deck_all": "Semua level",
+    "deck_count": "{n} tata bahasa",
+    "deck_excluded": "Dikecualikan di Perpustakaan",
+    "deck_too_few": "Butuh minimal 3 tata bahasa",
+    "deck_shuffling": "Mengocok…",
+    "deck_tap_hint": "Ketuk setiap kartu untuk membukanya",
+    "deck_flip_card": "Balik kartu {n}",
+    "deck_start": "✍️ AYO MENULIS!",
+    "deck_all_revealed": "Pengambilan selesai — ketiga kartu sudah terbuka.",
     "fb_easy": "✨ MUDAH",
     "fb_hard": "😤 SULIT",
     "error_note_label": "Apa yang sulit? · 뭐가 어려웠어요?",
@@ -27,8 +35,8 @@
     "save_with_note": "💾 Simpan dengan catatan",
     "skip_note": "Lewati catatan",
     "completion_ko": "수고했어요! 🎉",
-    "completion_text": "9 kalimat tersimpan — 3 tata bahasa × 3 konteks. Putaran lagi?",
-    "completion_restart": "🎲 PUTARAN BARU",
+    "completion_text": "9 kalimat tersimpan — 3 tata bahasa × 3 konteks. Ambil kartu baru?",
+    "completion_restart": "🃏 KARTU BARU",
     "context_label": "Konteks · 상황",
     "sentence_placeholder": "Tulis kalimatmu di sini…",
     "no_grammars": "Tata bahasa di deck aktif tidak cukup.",
@@ -38,7 +46,7 @@
     "no_sentence": "Tulis kalimat dulu"
   },
   "library": {
-    "lead": "Semua tata bahasa yang muncul di rodamu. Masing-masing tumbuh seiring latihanmu.",
+    "lead": "Semua tata bahasa yang bisa muncul di kartu-kartumu. Masing-masing tumbuh seiring latihanmu.",
     "modal": {
       "close": "Tutup",
       "section": {
@@ -182,8 +190,8 @@
   "games": {
     "lead": "Pilih mode latihanmu. Setiap permainan menumbuhkan bahasa Koreamu dengan cara berbeda.",
     "ruleta": {
-      "name": "Roda Putar",
-      "desc": "3 tata bahasa × 3 konteks. Tulis 9 kalimat kreatif."
+      "name": "Dek Kartu",
+      "desc": "Pilih dek TOPIK-mu, kocok, dan ambil 3 kartu. Tulis 9 kalimat kreatif."
     },
     "escape": {
       "name": "Escape Room",

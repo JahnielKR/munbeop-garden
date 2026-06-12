@@ -25,7 +25,7 @@ const { t } = useI18n()
         to="/practice/ruleta"
         :name="t('games.ruleta.name')"
         :description="t('games.ruleta.desc')"
-        emoji="🎲"
+        image="/games/ruleta-cover.svg"
       />
       <GameCard
         to="/escape-room"
