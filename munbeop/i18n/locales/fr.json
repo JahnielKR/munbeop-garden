@@ -18,8 +18,16 @@
     "settings": "Serre"
   },
   "practice": {
-    "intro_lead": "Appuie sur TOURNER et tu auras 3 points de grammaire × 3 contextes = 9 phrases à écrire. 화이팅! 💪",
-    "spin": "🎲 TOURNER",
+    "deck_lead": "Chaque deck est un niveau TOPIK. Mélange, tire 3 cartes et écris 9 phrases. 화이팅! 💪",
+    "deck_all": "Tous les niveaux",
+    "deck_count": "{n} grammaires",
+    "deck_excluded": "Exclu dans l'Herboristerie",
+    "deck_too_few": "Il faut au moins 3 grammaires",
+    "deck_shuffling": "On mélange…",
+    "deck_tap_hint": "Touche les cartes pour révéler ta main",
+    "deck_flip_card": "Retourner la carte {n}",
+    "deck_start": "✍️ À TOI D'ÉCRIRE !",
+    "deck_all_revealed": "Main complète — les 3 cartes sont révélées.",
     "fb_easy": "✨ FACILE",
     "fb_hard": "😤 DIFFICILE",
     "error_note_label": "Qu'est-ce qui était difficile ? · 뭐가 어려웠어요?",
@@ -27,8 +35,8 @@
     "save_with_note": "💾 Sauver avec note",
     "skip_note": "Sauter la note",
     "completion_ko": "수고했어요! 🎉",
-    "completion_text": "9 phrases sauvegardées — 3 grammaires × 3 contextes. Encore un tour ?",
-    "completion_restart": "🎲 NOUVEAU TOUR",
+    "completion_text": "9 phrases sauvegardées — 3 grammaires × 3 contextes. On tire une autre main ?",
+    "completion_restart": "🃏 NOUVELLE MAIN",
     "context_label": "Contexte · 상황",
     "sentence_placeholder": "Écris ta phrase ici…",
     "no_grammars": "Pas assez de grammaires dans les decks actifs.",
@@ -38,7 +46,7 @@
     "no_sentence": "Écris d'abord une phrase"
   },
   "library": {
-    "lead": "Toutes les grammaires qui apparaîtront dans ta roue. Chacune grandit selon ta pratique.",
+    "lead": "Toutes les grammaires qui peuvent sortir dans tes tirages de cartes. Chacune grandit selon ta pratique.",
     "modal": {
       "close": "Fermer",
       "section": {
@@ -182,8 +190,8 @@
   "games": {
     "lead": "Choisis ton mode d'entraînement. Chaque jeu cultive ton coréen différemment.",
     "ruleta": {
-      "name": "La Roulette",
-      "desc": "3 points de grammaire × 3 contextes. Écris 9 phrases créatives."
+      "name": "Le Deck",
+      "desc": "Choisis ton deck TOPIK, mélange et tire 3 cartes. Écris 9 phrases créatives."
     },
     "escape": {
       "name": "Escape Game",

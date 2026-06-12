@@ -18,8 +18,16 @@
     "settings": "Settings"
   },
   "practice": {
-    "intro_lead": "Hit GO and you'll get 3 grammar points × 3 contexts = 9 sentences to write. 화이팅! 💪",
-    "spin": "🎲 GO",
+    "deck_lead": "Each deck is a TOPIK level. Shuffle, draw 3 cards and write 9 sentences. 화이팅! 💪",
+    "deck_all": "All levels",
+    "deck_count": "{n} grammar points",
+    "deck_excluded": "Excluded in the Library",
+    "deck_too_few": "Needs at least 3 grammar points",
+    "deck_shuffling": "Shuffling…",
+    "deck_tap_hint": "Tap the cards to reveal your hand",
+    "deck_flip_card": "Flip card {n}",
+    "deck_start": "✍️ START WRITING!",
+    "deck_all_revealed": "Hand complete — all 3 cards are revealed.",
     "fb_easy": "✨ EASY",
     "fb_hard": "😤 HARD",
     "error_note_label": "What was tricky? · 뭐가 어려웠어요?",
@@ -27,8 +35,8 @@
     "save_with_note": "💾 Save with note",
     "skip_note": "Skip note",
     "completion_ko": "수고했어요! 🎉",
-    "completion_text": "9 sentences saved — 3 grammar × 3 contexts. Another round?",
-    "completion_restart": "🎲 NEW ROUND",
+    "completion_text": "9 sentences saved — 3 grammar × 3 contexts. Draw another hand?",
+    "completion_restart": "🃏 NEW HAND",
     "context_label": "Context · 상황",
     "sentence_placeholder": "Write your sentence here…",
     "no_grammars": "Not enough grammar items in the active decks.",
@@ -38,7 +46,7 @@
     "no_sentence": "Write a sentence first"
   },
   "library": {
-    "lead": "All the grammar points that show up in your wheel. Each one grows as you practice.",
+    "lead": "All the grammar points that can show up in your card draws. Each one grows as you practice.",
     "modal": {
       "close": "Close",
       "section": {
@@ -182,8 +190,8 @@
   "games": {
     "lead": "Pick your practice mode. Each game grows your Korean in a different way.",
     "ruleta": {
-      "name": "The Roulette",
-      "desc": "3 grammar points × 3 contexts. Write 9 creative sentences."
+      "name": "The Deck",
+      "desc": "Pick your TOPIK deck, shuffle and draw 3 cards. Write 9 creative sentences."
     },
     "escape": {
       "name": "Escape Room",

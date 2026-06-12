@@ -1,5 +1,11 @@
 import type { Context, Feedback, Grammar, LogEntry, ReviewState } from '~/lib/domain'
-import { advanceProgress, createSession, isSessionComplete, type Session } from '~/lib/practice'
+import {
+  advanceProgress,
+  createSession,
+  filterPoolByDeck,
+  isSessionComplete,
+  type Session,
+} from '~/lib/practice'
 import { pickRandomFrom } from '~/lib/srs'
 import { useContextsStore } from '~/stores/contexts'
 import { useGrammarStore } from '~/stores/grammar'
@@ -19,7 +25,7 @@ export function usePractice() {
   const session = ref<PracticeSession | null>(null)
   const error = ref<string | null>(null)
 
-  async function start() {
+  async function start(opts?: { deckId?: string | null }) {
     error.value = null
     try {
       const activeContexts = contextsStore.active
@@ -30,8 +36,11 @@ export function usePractice() {
 
       // Focused round: ?focus=<ko> forces a single-grammar session — 3 picks
       // of the same grammar × 3 random contexts each. Triggered by the
-      // library study sheet's "Practice this now" CTA.
-      const rawFocus = route.query.focus
+      // library study sheet's "Practice this now" CTA. An explicit deck
+      // pick always wins over a stale focus param still sitting in the
+      // URL (e.g. after restarting a completed focused round).
+      const explicitDeckPick = opts?.deckId !== undefined
+      const rawFocus = explicitDeckPick ? undefined : route.query.focus
       const focusKo = typeof rawFocus === 'string' && rawFocus ? rawFocus : null
       const focusIdx = focusKo
         ? grammarStore.items.findIndex((g) => g.ko === focusKo)
@@ -49,7 +58,13 @@ export function usePractice() {
         return
       }
 
-      const pool = grammarStore.activeIndices
+      // Deck draw: the card game narrows the pool to one TOPIK deck.
+      // `null`/omitted keeps every active deck (the "all levels" mat).
+      const pool = filterPoolByDeck(
+        grammarStore.activeIndices,
+        (idx) => grammarStore.items[idx]?.deckId,
+        opts?.deckId ?? null,
+      )
       if (pool.length < 3) {
         error.value = t('practice.no_grammars')
         return

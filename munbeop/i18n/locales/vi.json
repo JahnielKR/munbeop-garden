@@ -18,8 +18,16 @@
     "settings": "Cài đặt"
   },
   "practice": {
-    "intro_lead": "Nhấn QUAY và bạn sẽ nhận 3 ngữ pháp × 3 ngữ cảnh = 9 câu để viết. 화이팅! 💪",
-    "spin": "🎲 QUAY",
+    "deck_lead": "Mỗi bộ bài là một cấp TOPIK. Xáo bài, rút 3 lá và viết 9 câu. 화이팅! 💪",
+    "deck_all": "Tất cả các cấp",
+    "deck_count": "{n} ngữ pháp",
+    "deck_excluded": "Đã loại trừ trong Thư viện",
+    "deck_too_few": "Cần ít nhất 3 ngữ pháp",
+    "deck_shuffling": "Đang xáo bài…",
+    "deck_tap_hint": "Chạm vào các lá bài để lật mở tay bài của bạn",
+    "deck_flip_card": "Lật lá bài {n}",
+    "deck_start": "✍️ VIẾT THÔI!",
+    "deck_all_revealed": "Đủ tay bài — cả 3 lá đã được lật mở.",
     "fb_easy": "✨ DỄ",
     "fb_hard": "😤 KHÓ",
     "error_note_label": "Cái gì khó? · 뭐가 어려웠어요?",
@@ -27,8 +35,8 @@
     "save_with_note": "💾 Lưu với ghi chú",
     "skip_note": "Bỏ qua ghi chú",
     "completion_ko": "수고했어요! 🎉",
-    "completion_text": "9 câu đã lưu — 3 ngữ pháp × 3 ngữ cảnh. Vòng nữa không?",
-    "completion_restart": "🎲 VÒNG MỚI",
+    "completion_text": "9 câu đã lưu — 3 ngữ pháp × 3 ngữ cảnh. Rút tay bài mới không?",
+    "completion_restart": "🃏 TAY BÀI MỚI",
     "context_label": "Ngữ cảnh · 상황",
     "sentence_placeholder": "Viết câu của bạn ở đây…",
     "no_grammars": "Không đủ ngữ pháp trong các deck đang hoạt động.",
@@ -38,7 +46,7 @@
     "no_sentence": "Viết câu trước đã"
   },
   "library": {
-    "lead": "Tất cả các ngữ pháp xuất hiện trong vòng quay. Mỗi cái lớn lên khi bạn luyện tập.",
+    "lead": "Tất cả các ngữ pháp có thể xuất hiện trong các lượt rút bài của bạn. Mỗi cái lớn lên khi bạn luyện tập.",
     "modal": {
       "close": "Đóng",
       "section": {
@@ -182,8 +190,8 @@
   "games": {
     "lead": "Chọn chế độ luyện tập. Mỗi trò chơi giúp tiếng Hàn của bạn lớn lên theo cách riêng.",
     "ruleta": {
-      "name": "Vòng Quay",
-      "desc": "3 ngữ pháp × 3 ngữ cảnh. Viết 9 câu sáng tạo."
+      "name": "Bộ Bài",
+      "desc": "Chọn bộ bài TOPIK của bạn, xáo bài và rút 3 lá. Viết 9 câu sáng tạo."
     },
     "escape": {
       "name": "Phòng Thoát Hiểm",

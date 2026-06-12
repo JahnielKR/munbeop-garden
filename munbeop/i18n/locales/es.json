@@ -18,8 +18,16 @@
     "settings": "Invernadero"
   },
   "practice": {
-    "intro_lead": "Dale a GIRAR y te tocarán 3 gramáticas × 3 contextos = 9 oraciones para escribir. 화이팅! 💪",
-    "spin": "🎲 GIRAR",
+    "deck_lead": "Cada mazo es un nivel TOPIK. Baraja, saca 3 cartas y escribe 9 oraciones. 화이팅! 💪",
+    "deck_all": "Todos los niveles",
+    "deck_count": "{n} gramáticas",
+    "deck_excluded": "Excluido en el Herbolario",
+    "deck_too_few": "Necesita al menos 3 gramáticas",
+    "deck_shuffling": "Barajando…",
+    "deck_tap_hint": "Toca las cartas para revelar tu mano",
+    "deck_flip_card": "Voltear carta {n}",
+    "deck_start": "✍️ ¡A ESCRIBIR!",
+    "deck_all_revealed": "Mano completa — las 3 cartas están reveladas.",
     "fb_easy": "✨ FÁCIL",
     "fb_hard": "😤 DIFÍCIL",
     "error_note_label": "¿Qué te costó? · 뭐가 어려웠어요?",
@@ -27,8 +35,8 @@
     "save_with_note": "💾 Guardar con nota",
     "skip_note": "Saltar nota",
     "completion_ko": "수고했어요! 🎉",
-    "completion_text": "9 oraciones guardadas — 3 gramáticas × 3 contextos. ¿Otro giro?",
-    "completion_restart": "🎲 NUEVO GIRO",
+    "completion_text": "9 oraciones guardadas — 3 gramáticas × 3 contextos. ¿Sacamos otra mano?",
+    "completion_restart": "🃏 NUEVA MANO",
     "context_label": "Contexto · 상황",
     "sentence_placeholder": "Escribe tu oración aquí…",
     "no_grammars": "No hay suficientes gramáticas en los decks activos.",
@@ -38,7 +46,7 @@
     "no_sentence": "Escribe una oración primero"
   },
   "library": {
-    "lead": "Todas las gramáticas que aparecerán en tu ruleta. Cada una crece según las practicas.",
+    "lead": "Todas las gramáticas que pueden salir en tus cartas. Cada una crece según las practicas.",
     "modal": {
       "close": "Cerrar",
       "section": {
@@ -182,8 +190,8 @@
   "games": {
     "lead": "Elige tu modo de práctica. Cada juego cultiva tu coreano de una forma distinta.",
     "ruleta": {
-      "name": "La Ruleta",
-      "desc": "3 gramáticas × 3 contextos. Escribe 9 oraciones creativas."
+      "name": "La Baraja",
+      "desc": "Elige tu mazo TOPIK, baraja y saca 3 cartas. Escribe 9 oraciones creativas."
     },
     "escape": {
       "name": "Escape Room",

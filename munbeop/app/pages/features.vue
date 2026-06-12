@@ -17,9 +17,9 @@ interface Feature {
 
 const features: Feature[] = [
   {
-    glyph: '🎲',
-    name: 'Grammar wheel',
-    description: 'Spin three grammar points across three contexts — nine sentences per session, never the same twice.',
+    glyph: '🃏',
+    name: 'Grammar card decks',
+    description: 'Pick a TOPIK deck, shuffle, and draw three grammar cards across three contexts — nine sentences per session, never the same twice.',
   },
   {
     glyph: '🌱',

@@ -18,8 +18,16 @@
     "settings": "設定"
   },
   "practice": {
-    "intro_lead": "回すを押すと文法3つ×文脈3つ=9文を書くことになります。화이팅! 💪",
-    "spin": "🎲 回す",
+    "deck_lead": "デッキはそれぞれTOPIKレベル。シャッフルして3枚引いて、9つの文を書こう。화이팅! 💪",
+    "deck_all": "全レベル",
+    "deck_count": "文法{n}個",
+    "deck_excluded": "図書館で除外中",
+    "deck_too_few": "文法が3つ以上必要です",
+    "deck_shuffling": "シャッフル中…",
+    "deck_tap_hint": "カードをタップして手札をめくろう",
+    "deck_flip_card": "カード{n}をめくる",
+    "deck_start": "✍️ 書くぞ!",
+    "deck_all_revealed": "手札完成 — 3枚すべてめくられました。",
     "fb_easy": "✨ かんたん",
     "fb_hard": "😤 むずかしい",
     "error_note_label": "何が難しかった? · 뭐가 어려웠어요?",
@@ -27,8 +35,8 @@
     "save_with_note": "💾 メモ付きで保存",
     "skip_note": "メモなし",
     "completion_ko": "수고했어요! 🎉",
-    "completion_text": "9文保存しました — 文法3 × 文脈3。もう一回?",
-    "completion_restart": "🎲 もう一回",
+    "completion_text": "9文保存しました — 文法3 × 文脈3。次の手札を引く?",
+    "completion_restart": "🃏 新しい手札",
     "context_label": "文脈 · 상황",
     "sentence_placeholder": "ここに文を書いて…",
     "no_grammars": "アクティブなデッキの文法が足りません。",
@@ -38,7 +46,7 @@
     "no_sentence": "先に文を書いてください"
   },
   "library": {
-    "lead": "ルーレットに出る全文法。練習するたびに育ちます。",
+    "lead": "カードを引くと出てくる全文法。練習するたびに育ちます。",
     "modal": {
       "close": "閉じる",
       "section": {
@@ -182,8 +190,8 @@
   "games": {
     "lead": "練習モードを選ぼう。それぞれのゲームが違う形で韓国語を育てます。",
     "ruleta": {
-      "name": "ルーレット",
-      "desc": "文法3つ × 場面3つ。9つの文を自由に書こう。"
+      "name": "デッキ",
+      "desc": "TOPIKデッキを選んで、シャッフルして3枚引こう。9つの文を自由に書こう。"
     },
     "escape": {
       "name": "脱出ゲーム",
