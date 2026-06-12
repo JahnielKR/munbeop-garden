@@ -57,13 +57,9 @@ const { t } = useI18n()
   top: 0;
   height: 100vh;
   width: 220px;
-  /* Subtle wood grain: 2px vertical streaks every 8px, 6% toward black. */
+  /* Panel liso: la identidad pixel vive en la pestaña activa y el cursor
+   * (la veta vertical producía banding en light y era invisible en dark). */
   background-color: var(--paper-warm);
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent 0 6px,
-    color-mix(in oklch, var(--paper-warm) 94%, #000) 6px 8px
-  );
   border-right: 2px solid var(--border);
   padding: 24px 16px;
   display: flex;
@@ -77,7 +73,10 @@ const { t } = useI18n()
 }
 /* Brand gold + ink pixel outline (classic Zelda trick for legible yellow
  * on any surface). Outline uses --always-dark, not --ink, on purpose —
- * in dark mode --ink is light and would ruin the contour. */
+ * in dark mode --ink is light and would ruin the contour. 8 direcciones:
+ * sin las diagonales el contorno se abre en las uniones de trazos del
+ * Hangul, y en light (gold 1.46:1 sobre madera) el rim carga toda la
+ * legibilidad. */
 .sidebar__brand-ko {
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 900;
@@ -88,7 +87,10 @@ const { t } = useI18n()
     -2px 0 0 var(--always-dark),
     0 2px 0 var(--always-dark),
     0 -2px 0 var(--always-dark),
-    2px 2px 0 var(--always-dark);
+    2px 2px 0 var(--always-dark),
+    -2px -2px 0 var(--always-dark),
+    2px -2px 0 var(--always-dark),
+    -2px 2px 0 var(--always-dark);
 }
 .sidebar__brand-name {
   font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
@@ -100,34 +102,89 @@ const { t } = useI18n()
   flex-direction: column;
   gap: 4px;
 }
+/* Item de nav. El borde transparente reserva el marco de la pestaña
+ * activa: reposo y activo miden exactamente igual → cero salto de
+ * layout al navegar. */
 .sidebar__link {
+  position: relative;
   display: grid;
   grid-template-columns: 24px 1fr;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
+  padding: 8px 10px;
   color: var(--text-soft);
   text-decoration: none;
-  border-left: 3px solid transparent;
+  border: 2px solid transparent;
   outline: none;
   transition:
     background var(--motion-quick) var(--ease-out),
     color var(--motion-quick) var(--ease-out);
 }
-.sidebar__link:hover {
+/* Cursor de menú LADX: triángulo gold con rim oscuro (gold da 1.46:1
+ * sobre la madera clara — el rim carga la visibilidad, como en 문법).
+ * Bastan 4 drop-shadows axiales: se componen en cadena y cubren también
+ * las diagonales. Oculto en reposo; preview al 45% en hover/focus;
+ * pleno y parpadeando en el activo. */
+.sidebar__link::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid var(--gold);
+  filter:
+    drop-shadow(1px 0 0 var(--always-dark))
+    drop-shadow(-1px 0 0 var(--always-dark))
+    drop-shadow(0 1px 0 var(--always-dark))
+    drop-shadow(0 -1px 0 var(--always-dark));
+  opacity: 0;
+}
+.sidebar__link:not(.sidebar__link--active):hover {
   background: var(--surface-hover);
   color: var(--text);
 }
+.sidebar__link:not(.sidebar__link--active):hover::before,
+.sidebar__link:not(.sidebar__link--active):focus-visible::before {
+  opacity: 0.45;
+}
+/* El outline de foco aplica a todos (también a la pestaña activa); el
+ * fondo de foco solo a los no-activos, para no pisar la ventana de paper
+ * de la pestaña al navegar con teclado. */
 .sidebar__link:focus-visible {
-  background: var(--surface-hover);
-  color: var(--text);
   outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
 }
-.sidebar__link--active {
+.sidebar__link:not(.sidebar__link--active):focus-visible {
   background: var(--surface-hover);
   color: var(--text);
-  border-left-color: var(--accent);
+}
+/* Pestaña activa: ventana de paper con marco y sombra dura. En light es
+ * más clara que la madera; en dark, más oscura que el pino (ventana al
+ * cielo abisal) y la sombra crema recorta la silueta. Cambio seco a
+ * propósito — los menús pixel no hacen fade. */
+.sidebar__link--active {
+  background: var(--paper);
+  border-color: var(--ink-line);
+  color: var(--text);
+  box-shadow: 3px 3px 0 var(--shadow-color);
+}
+.sidebar__link--active::before {
+  opacity: 1;
+  animation: sidebar-cursor-blink 1.1s steps(1) infinite;
+}
+@keyframes sidebar-cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar__link--active::before {
+    animation: none;
+  }
 }
 .sidebar__label {
   /* Pixel font for the chrome; CJK falls through Noto Sans KR for ja
