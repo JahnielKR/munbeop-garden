@@ -86,7 +86,7 @@ const { t } = useI18n()
   font-size: 12px;
   padding: 14px 34px;
   background: var(--accent, #c97c5d);
-  color: #fff7eb;
+  color: var(--text-on-accent, #1a1a1a);
   border: 3px solid #3a2818;
   cursor: pointer;
   box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);

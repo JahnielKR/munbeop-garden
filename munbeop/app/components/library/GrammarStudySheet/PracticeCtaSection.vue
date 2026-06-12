@@ -30,7 +30,9 @@ async function onClick() {
   width: 100%;
   padding: 12px 16px;
   background: var(--jade);
-  color: var(--ink);
+  /* Texto siempre-oscuro sobre jade: 4.6:1 light / 9.0:1 dark.
+   * Con var(--ink) daba 1.56:1 en dark (platino sobre luciérnaga). */
+  color: var(--always-dark);
   border: 3px solid var(--ink-line);
   box-shadow: 4px 4px 0 var(--shadow-cream);
   font-family: 'Press Start 2P', monospace;
