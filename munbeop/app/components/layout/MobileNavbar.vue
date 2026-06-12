@@ -69,8 +69,10 @@ const { t } = useI18n()
   outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
 }
+/* Texto/icono activos en --text: el gold sobre madera clara daba 1.46:1
+ * a 7px. El gold se queda en la barrita superior, señal no-textual. */
 .mobile-nav__link--active {
-  color: var(--accent);
+  color: var(--text);
   border-top-color: var(--accent);
   background: var(--surface-hover);
 }

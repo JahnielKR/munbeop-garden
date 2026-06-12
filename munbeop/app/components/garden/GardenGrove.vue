@@ -187,7 +187,7 @@ const isActive = (l: GardenLevel) => l.level === props.activeLevel
   background: var(--paper-deep);
   color: var(--ink);
   border: 2px solid var(--ink-line);
-  box-shadow: 2px 2px 0 rgba(26, 17, 12, 0.45);
+  box-shadow: 2px 2px 0 var(--shadow-color);
   font-family: 'Inter', 'Noto Sans KR', sans-serif;
   font-size: 11px;
   line-height: 1.35;

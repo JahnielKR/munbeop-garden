@@ -121,7 +121,7 @@ function onKeydown(e: KeyboardEvent) {
   border: 2px solid var(--border-strong, #6b5b4a);
   border-radius: 50%;
   background: var(--paper-warm, #fbf3e2);
-  box-shadow: inset 0 -2px 0 rgba(60, 42, 24, 0.2);
+  box-shadow: inset 0 -2px 0 var(--shadow-color);
 }
 
 .book__page-area {
@@ -145,12 +145,12 @@ function onKeydown(e: KeyboardEvent) {
   border: 2px solid var(--border-strong, #6b5b4a);
   background: var(--paper-warm, #fbf3e2);
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(60, 42, 24, 0.3);
+  box-shadow: 3px 3px 0 var(--shadow-color);
   transition: transform 100ms, box-shadow 100ms;
 }
 .book__nav-btn:hover:not(:disabled) {
   transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 rgba(60, 42, 24, 0.3);
+  box-shadow: 4px 4px 0 var(--shadow-color);
 }
 .book__nav-btn:disabled {
   opacity: 0.35;
