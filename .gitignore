@@ -23,3 +23,7 @@ pnpm-debug.log*
 
 # pixel-trees review sheets (derived; regenerate with tools/pixel-trees/generate_trees.py)
 tools/pixel-trees/out/
+
+# escape-room level 1 review renders (derived; regenerate with tools/escape-room-level01/gen_*.py)
+tools/escape-room-level01/out/
+tools/escape-room-level01/__pycache__/
