@@ -23,11 +23,19 @@ const items: NavItem[] = [
   { to: '/log', labelKey: 'nav.log', icon: 'log' },
   { to: '/settings', labelKey: 'nav.settings', icon: 'settings' },
 ]
+
+// Mini-rail mode (spec 2026-06-13): the shell owns the collapsed state
+// and its persistence; the sidebar renders both widths and hosts the
+// toggle as its bottom row. Collapsed = 64px icon rail — nav stays
+// usable, labels move into aria-label + native title tooltips.
+defineProps<{ collapsed?: boolean }>()
+defineEmits<{ toggle: [] }>()
+
 const { t } = useI18n()
 </script>
 
 <template>
-  <aside class="sidebar">
+  <aside class="sidebar" :class="{ 'sidebar--collapsed': collapsed }">
     <div class="sidebar__brand">
       <span class="sidebar__brand-ko">문법</span>
       <span class="sidebar__brand-name">Garden</span>
@@ -39,6 +47,8 @@ const { t } = useI18n()
         :to="item.to"
         class="sidebar__link"
         active-class="sidebar__link--active"
+        :aria-label="t(item.labelKey)"
+        :title="collapsed ? t(item.labelKey) : undefined"
       >
         <Icon :name="item.icon" :size="18" />
         <span class="sidebar__label">{{ t(item.labelKey) }}</span>
@@ -48,6 +58,19 @@ const { t } = useI18n()
       <AccountWidget />
       <LocaleSwitcher />
     </div>
+    <button
+      type="button"
+      class="sidebar__toggle font-pixel"
+      :aria-expanded="!collapsed"
+      :aria-label="collapsed ? t('nav.sidebar_expand') : t('nav.sidebar_collapse')"
+      :title="collapsed ? t('nav.sidebar_expand') : undefined"
+      @click="$emit('toggle')"
+    >
+      <span class="sidebar__toggle-glyph" aria-hidden="true">{{ collapsed ? '▸' : '◂' }}</span>
+      <span class="sidebar__label">{{
+        collapsed ? t('nav.sidebar_expand') : t('nav.sidebar_collapse')
+      }}</span>
+    </button>
   </aside>
 </template>
 
@@ -65,11 +88,31 @@ const { t } = useI18n()
   display: flex;
   flex-direction: column;
   gap: 24px;
+  /* Mismo timing que el grid del shell (240ms ease) para que el borde
+   * derecho viaje pegado a la columna durante el plegado. */
+  transition: width 240ms ease;
+}
+/* Mini-rail: 64px, solo iconos. El flip interno (labels/footer) es seco;
+ * el ancho en movimiento lo arropa — menú pixel, sin fades. */
+.sidebar--collapsed {
+  width: 64px;
+  padding: 24px 8px;
 }
 .sidebar__brand {
   display: flex;
   align-items: baseline;
   gap: 6px;
+}
+.sidebar--collapsed .sidebar__brand {
+  justify-content: center;
+}
+/* Plegado, la marca se reduce a 문법 chico y centrado — el contorno de 8
+ * direcciones escala con el text-shadow, no se toca. */
+.sidebar--collapsed .sidebar__brand-ko {
+  font-size: 18px;
+}
+.sidebar--collapsed .sidebar__brand-name {
+  display: none;
 }
 /* Brand gold + ink pixel outline (classic Zelda trick for legible yellow
  * on any surface). Outline uses --always-dark, not --ink, on purpose —
@@ -176,12 +219,36 @@ const { t } = useI18n()
   opacity: 1;
   animation: sidebar-cursor-blink 1.1s steps(1) infinite;
 }
+/* Mini-rail: cada link es una casilla cuadrada centrada, solo icono.
+ * 44px de alto = blanco táctil. El cursor ▶ no cabe a la izquierda
+ * (padding de 8px) — se oculta y la señal de activo la carga la ventana
+ * de paper con marco y sombra, que sobreviven tal cual. El nombre del
+ * link vive en aria-label + title (tooltip nativo). */
+.sidebar--collapsed .sidebar__link {
+  grid-template-columns: 24px;
+  justify-content: center;
+  /* El svg del icono mide 18px dentro de la columna de 24 — centrarlo
+   * también, o queda 4px a la izquierda del glifo del toggle. */
+  justify-items: center;
+  gap: 0;
+  padding: 6px 0;
+  min-height: 44px;
+}
+.sidebar--collapsed .sidebar__link::before {
+  display: none;
+}
+.sidebar--collapsed .sidebar__label {
+  display: none;
+}
 @keyframes sidebar-cursor-blink {
   50% {
     opacity: 0;
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+  }
   .sidebar__link--active::before {
     animation: none;
   }
@@ -212,5 +279,59 @@ const { t } = useI18n()
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+/* Plegado, el footer (email / cerrar sesión / idioma) es contenido
+ * textual que no cabe en 64px — se accede expandiendo. */
+.sidebar--collapsed .sidebar__footer {
+  display: none;
+}
+
+/* Toggle plegar/expandir: la última fila del sidebar, con el mismo
+ * lenguaje que los links del nav (hover tint, focus inset, borde
+ * reservado de 2px). Sustituye al botón flotante del borde y su track
+ * sticky en AppShell. font-pixel solo mata el antialiasing — la fuente
+ * se declara aquí, como hacía el botón viejo. */
+.sidebar__toggle {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  color: var(--text-soft);
+  border: 2px solid transparent;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
+  transition:
+    background var(--motion-quick) var(--ease-out),
+    color var(--motion-quick) var(--ease-out);
+}
+.sidebar__toggle:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.sidebar__toggle:focus-visible {
+  background: var(--surface-hover);
+  color: var(--text);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+.sidebar__toggle-glyph {
+  justify-self: center;
+  font-size: 9px;
+  line-height: 1;
+}
+/* Plegado: casilla cuadrada centrada como los links. El footer oculto ya
+ * no empuja hacia abajo, así que el margin-top:auto pasa al toggle. */
+.sidebar--collapsed .sidebar__toggle {
+  grid-template-columns: 24px;
+  justify-content: center;
+  gap: 0;
+  padding: 6px 0;
+  min-height: 44px;
+  margin-top: auto;
 }
 </style>
