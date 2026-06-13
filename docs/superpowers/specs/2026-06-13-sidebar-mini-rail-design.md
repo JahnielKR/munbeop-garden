@@ -53,6 +53,20 @@ colgado del borde con un track sticky (hack con historial de bugs de drift).
 - El flip de layout interno (labels/footers) es seco al cambiar la clase;
   el movimiento de 240 ms del ancho lo arropa. Estética pixel: correcto.
 
+## 2b. Revisión post-deploy (feedback de Jhoan, 2026-06-13)
+
+Tras verificar en producción, dos correcciones que sustituyen lo dicho
+arriba donde contradigan:
+
+- **La marca no se encoge**: plegado, 문법 se apila en vertical (문 arriba,
+  법 abajo) a tamaño completo vía `writing-mode: vertical-rl` +
+  `text-orientation: upright` — el coreano también se escribe en vertical.
+- **El toggle no va al fondo** (ese espacio queda reservado para el futuro
+  perfil de usuario): es una **flecha junto al nombre coreano**, icon-only
+  en ambos estados — a la derecha de la fila de marca expandido, centrada
+  bajo la marca apilada plegado. Color `var(--ink)`: negra de día, platino
+  de noche. aria-label/title con las mismas claves `nav.sidebar_*`.
+
 ## 3. Fuera de alcance
 
 - Variante compacta de AccountWidget/LocaleSwitcher.
