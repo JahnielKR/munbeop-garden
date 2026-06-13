@@ -6,8 +6,8 @@
     "stats": "Análise",
     "log": "Diário",
     "settings": "Estufa",
-    "sidebar_collapse": "Ocultar menu",
-    "sidebar_expand": "Mostrar menu"
+    "sidebar_collapse": "Recolher",
+    "sidebar_expand": "Expandir"
   },
   "title": {
     "garden": "Meu Jardim",

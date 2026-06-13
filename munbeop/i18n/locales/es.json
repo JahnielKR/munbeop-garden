@@ -6,8 +6,8 @@
     "stats": "Analítica",
     "log": "Diario",
     "settings": "Invernadero",
-    "sidebar_collapse": "Ocultar menú",
-    "sidebar_expand": "Mostrar menú"
+    "sidebar_collapse": "Plegar",
+    "sidebar_expand": "Expandir"
   },
   "title": {
     "garden": "Mi Jardín",

@@ -6,8 +6,8 @@
     "stats": "Stats",
     "log": "Journal",
     "settings": "Settings",
-    "sidebar_collapse": "Hide menu",
-    "sidebar_expand": "Show menu"
+    "sidebar_collapse": "Collapse",
+    "sidebar_expand": "Expand"
   },
   "title": {
     "garden": "My Garden",
