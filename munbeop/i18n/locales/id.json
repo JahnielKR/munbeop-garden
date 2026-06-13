@@ -229,6 +229,8 @@
     "continue": "LANJUT",
     "skip": "Lewati",
     "tap_to_continue": "Ketuk untuk lanjut",
+    "audio_on": "Nyalakan suara",
+    "audio_off": "Matikan suara",
     "hint_free": "Petunjuk 1 (gratis)",
     "hint_premium": "Petunjuk 2",
     "hint_premium_warn": "Membatasi hadiah ke Umum",

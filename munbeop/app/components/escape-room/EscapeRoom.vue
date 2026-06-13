@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import type { Level, RewardTier, ScriptedBeat, SelectionCandidate, CompletionCandidate, CreationCandidate } from '~/lib/domain'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import { useLocalized } from '~/composables/useLocalized'
+import { useEscapeRoomAudio } from '~/composables/useEscapeRoomAudio'
 import Scene from './Scene.vue'
 import IntroCinematic from './IntroCinematic.vue'
 import VictoryScreen from './VictoryScreen.vue'
@@ -30,6 +31,23 @@ const emit = defineEmits<{ exit: [] }>()
 const store = useEscapeRoomStore()
 const { tl } = useLocalized()
 const { t } = useI18n()
+const audio = useEscapeRoomAudio()
+
+/**
+ * Generic UI feedback SFX (synthesized into every level's audio dir). Resolved
+ * against `imageBase` at call time so the path follows the active level.
+ */
+const UI_SFX = {
+  correct: 'audio/sfx-correct.ogg',
+  wrong: 'audio/sfx-wrong.ogg',
+  select: 'audio/sfx-select.ogg',
+  door: 'audio/sfx-door-wood.ogg',
+} as const
+
+/** Join the level's asset base with a seed-relative path ('audio/...'). */
+function url(path: string): string {
+  return `${imageBase.value}${path}`
+}
 
 /** Visual phase. Store keeps run state; this drives which screen is up. */
 const phase = ref<'intro' | 'playing'>('intro')
@@ -91,6 +109,7 @@ const farewell = computed(() => {
 })
 
 onMounted(() => {
+  audio.hydrate()
   store.startRun(props.level, baseSeed.value)
   phase.value = 'intro'
 })
@@ -108,28 +127,106 @@ watch(
   },
 )
 
+/**
+ * Drive the ambient bed off the active room (once we're in the playing phase).
+ * The composable keeps ONE looping ambient and ignores a same-src re-call, so
+ * re-entering the same room never restarts it. On an actual room CHANGE (not
+ * the first entry of the run) a wooden-door one-shot punctuates the move.
+ */
+watch(
+  [() => store.currentRoomId, phase],
+  ([roomId], [prevRoomId, prevPhase]) => {
+    if (phase.value !== 'playing' || !activeRoom.value) return
+    const isRealRoomChange =
+      prevPhase === 'playing' && prevRoomId != null && prevRoomId !== roomId
+    if (isRealRoomChange) audio.playSfx(url(UI_SFX.door))
+    audio.playAmbient(url(activeRoom.value.ambientAudio))
+  },
+)
+
 type AnswerOutcome = 'correct' | 'wrong' | 'game-over' | 'level-complete' | 'soft-reject'
 
 function onHotspot(hotspotId: string) {
   const h = activeRoom.value?.hotspots.find((x) => x.id === hotspotId)
-  if (h?.triggersSlot && !store.resolvedSlots.includes(h.triggersSlot)) {
+  if (!h) return
+  // Cosmetic click sound for any hotspot that declares one (tea pour, purr, …).
+  if (h.sfx) audio.playSfx(url(h.sfx))
+  if (h.triggersSlot && !store.resolvedSlots.includes(h.triggersSlot)) {
     softMessage.value = null
+    audio.playSfx(url(UI_SFX.select))
     activeSlotId.value = h.triggersSlot
+    // Slot 1 (the memory): the monk recalls the drawn line as the overlay opens.
+    // Slots 5/6 instead speak their line on SUCCESS (handled in handleResult).
+    if (h.triggersSlot === 'slot-1') {
+      const voice = candidateVoiceAudio(h.triggersSlot)
+      if (voice) audio.playVoice(url(voice))
+    }
   }
 }
 
+/** Resolved candidate's spoken-line path for a slot, or null. */
+function candidateVoiceAudio(slotId: string): string | null {
+  const slot = props.level.slots.find((s) => s.id === slotId)
+  if (!slot || !store.currentRun) return null
+  const idx = props.level.slots.findIndex((s) => s.id === slotId)
+  const drawn = store.currentRun.slots[idx]
+  if (!drawn) return null
+  return slot.candidates[drawn.candidateIndex]?.voiceAudio ?? null
+}
+
+/** Resolved candidate's soft-reject voice path for a slot, or null. */
+function candidateSoftRejectVoiceAudio(slotId: string): string | null {
+  const slot = props.level.slots.find((s) => s.id === slotId)
+  if (!slot || slot.type !== 'creation' || !store.currentRun) return null
+  const idx = props.level.slots.findIndex((s) => s.id === slotId)
+  const drawn = store.currentRun.slots[idx]
+  if (!drawn) return null
+  return slot.candidates[drawn.candidateIndex]?.softRejectVoiceAudio ?? null
+}
+
 /**
- * Resolve the overlay after an answer. Keep it open on a wrong or soft-reject
- * answer (the player retries in place); on a correct/complete answer, close it
- * and play the slot's scripted beat (if any) before the next screen.
+ * Resolve the overlay after an answer + play its feedback audio.
+ *
+ * Keep the overlay open on a wrong or soft-reject answer (the player retries in
+ * place); on a correct/complete answer, close it and play the slot's scripted
+ * beat (if any) before the next screen.
+ *
+ * Audio:
+ *   - 'wrong'        → the soft wrong thunk.
+ *   - 'soft-reject'  → the monk's soft-reject voice (NO wrong sfx).
+ *   - correct/done   → the correct chime, then ONE spoken line. For slot-5/
+ *                      slot-6 the drawn candidate's line (the per-run confession
+ *                      / farewell the monk repeats) IS the payload, so it wins;
+ *                      the slot's reactionVoiceAudio is only the fallback when
+ *                      that candidate has no spoken line. Other slots just play
+ *                      their reaction voice. Only one playVoice fires, because
+ *                      the voice channel is single-instance — a second call
+ *                      would instantly cancel the first.
  */
 function handleResult(slotId: string, result: AnswerOutcome) {
-  if (result === 'wrong' || result === 'soft-reject') return
-  activeSlotId.value = null
-  if (result === 'correct' || result === 'level-complete') {
-    const beat = store.scriptedBeatAfter(slotId)
-    if (beat) activeBeat.value = beat
+  if (result === 'wrong') {
+    audio.playSfx(url(UI_SFX.wrong))
+    return
   }
+  if (result === 'soft-reject') {
+    const v = candidateSoftRejectVoiceAudio(slotId)
+    if (v) audio.playVoice(url(v))
+    return
+  }
+  // correct or level-complete
+  audio.playSfx(url(UI_SFX.correct))
+  const slot = props.level.slots.find((s) => s.id === slotId)
+  // The drawn candidate line (slot-5 confession / slot-6 farewell) is the
+  // emotional payload and takes precedence; otherwise fall back to the slot's
+  // reaction line. Exactly one line plays so neither stomps the other.
+  const candidateVoice =
+    slotId === 'slot-5' || slotId === 'slot-6' ? candidateVoiceAudio(slotId) : null
+  const lineToPlay = candidateVoice ?? slot?.reactionVoiceAudio ?? null
+  if (lineToPlay) audio.playVoice(url(lineToPlay))
+
+  activeSlotId.value = null
+  const beat = store.scriptedBeatAfter(slotId)
+  if (beat) activeBeat.value = beat
 }
 
 function onSelectionAnswer(idx: number) {
@@ -164,10 +261,22 @@ function retry() {
   activeSlotId.value = null
   activeBeat.value = null
   softMessage.value = null
+  audio.stopAll()
   store.reset()
   store.startRun(props.level, `${baseSeed.value}#r${retryCount.value}`)
   // Roguelike loop stays fast: no cinematic on retry.
   phase.value = 'playing'
+  // Kick the ambient for the first room (the watcher fires on real CHANGES only).
+  if (activeRoom.value) audio.playAmbient(url(activeRoom.value.ambientAudio))
+}
+
+/** Toggle audio on/off from the HUD; persists the preference. */
+function toggleAudio() {
+  audio.setEnabled(!audio.enabled.value)
+  // Re-arming: bring the ambient back for the current room when turning on.
+  if (audio.enabled.value && phase.value === 'playing' && activeRoom.value) {
+    audio.playAmbient(url(activeRoom.value.ambientAudio))
+  }
 }
 
 /** Close the puzzle overlay and clear any lingering soft-reject nudge. */
@@ -177,6 +286,7 @@ function closeOverlay() {
 }
 
 function exitToBook() {
+  audio.stopAll()
   store.reset()
   emit('exit')
 }
@@ -189,6 +299,7 @@ function exitToBook() {
       v-if="phase === 'intro'"
       :narrative="level.intro"
       :voice-line="level.voiceIntro"
+      :voice-audio="level.voiceIntroAudio ? url(level.voiceIntroAudio) : undefined"
       @done="phase = 'playing'"
     />
 
@@ -212,6 +323,16 @@ function exitToBook() {
       <span class="er__solved">
         {{ t('escape.solved') }} {{ store.resolvedSlots.length }} / {{ level.slots.length }}
       </span>
+      <button
+        type="button"
+        class="er__mute"
+        data-testid="er-mute"
+        :aria-label="audio.enabled.value ? t('escape.audio_off') : t('escape.audio_on')"
+        :aria-pressed="!audio.enabled.value"
+        @click="toggleAudio"
+      >
+        {{ audio.enabled.value ? '♪' : '🔇' }}
+      </button>
     </div>
 
     <!-- Room tabs -->
@@ -278,6 +399,7 @@ function exitToBook() {
       :key="activeBeat.afterSlotId"
       :narrative="activeBeat.narrative"
       :voice-line="activeBeat.voiceLine"
+      :voice-audio="activeBeat.voiceAudio ? url(activeBeat.voiceAudio) : undefined"
       @done="activeBeat = null"
     />
 
@@ -288,6 +410,9 @@ function exitToBook() {
       :level="level"
       :tier="earnedTier"
       :farewell="farewell"
+      :bell-toll-audio="level.bellTollAudio ? url(level.bellTollAudio) : undefined"
+      :rain-stop-audio="level.rainStopAudio ? url(level.rainStopAudio) : undefined"
+      :voice-outro-audio="level.voiceOutroAudio ? url(level.voiceOutroAudio) : undefined"
       @exit="exitToBook"
     />
   </div>
@@ -335,6 +460,20 @@ function exitToBook() {
 .er__solved {
   color: var(--text-muted, #8a6f4a);
   white-space: nowrap;
+}
+.er__mute {
+  font: inherit;
+  font-size: 12px;
+  border: 2px solid var(--border-strong, #6b5b4a);
+  background: transparent;
+  padding: 6px 8px;
+  cursor: pointer;
+  min-width: 36px;
+  line-height: 1;
+}
+.er__mute:focus-visible {
+  outline: 2px solid var(--focus-ring, #d8842f);
+  outline-offset: 1px;
 }
 
 .er__rooms {

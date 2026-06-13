@@ -45,6 +45,11 @@ export interface SelectionCandidate {
   options: readonly [LocalizedString, LocalizedString, LocalizedString, LocalizedString]
   /** Index of the correct option in `options`. */
   correctIndex: 0 | 1 | 2 | 3
+  /**
+   * Optional NPC voice line (path under the level's audio dir) — the monk
+   * speaks the drawn line. Played by the UI; never validated for content.
+   */
+  voiceAudio?: string
   hints: Hints
 }
 
@@ -56,6 +61,8 @@ export interface CompletionCandidate {
   translation: LocalizedString
   /** Exact string the player must produce. Compared verbatim after trim. */
   answer: string
+  /** Optional NPC voice line for the drawn line (path under the level audio dir). */
+  voiceAudio?: string
   hints: Hints
 }
 
@@ -84,6 +91,10 @@ export interface CreationCandidate {
   softRejectTiles?: readonly number[]
   /** Message shown on a soft-reject (e.g. the monk's «끝난 일은… 끝난 말로 해야 해요»). */
   softRejectMessage?: LocalizedString
+  /** Optional NPC voice line for the drawn spoken farewell (path under the level audio dir). */
+  voiceAudio?: string
+  /** Optional NPC voice line played on a soft-reject (path under the level audio dir). */
+  softRejectVoiceAudio?: string
   hints: Hints
 }
 
@@ -99,6 +110,11 @@ interface SlotBase {
   id: string
   /** Grammar codes this slot is designed to exercise (foco). */
   grammarFocus: GrammarCode[]
+  /**
+   * Optional NPC voice line played when THIS slot is solved (the monk's
+   * reaction — relief, absolution, farewell). Path under the level audio dir.
+   */
+  reactionVoiceAudio?: string
 }
 
 /**
@@ -125,6 +141,8 @@ export interface Hotspot {
   triggersSlot?: string
   /** Easter-egg text shown on click; only set for cosmetic hotspots. */
   cosmeticDetail?: LocalizedString
+  /** Optional cosmetic click sound (path under the level audio dir). */
+  sfx?: string
 }
 
 export interface Room {
@@ -165,6 +183,8 @@ export interface ScriptedBeat {
   afterSlotId: string
   /** Korean NPC voice line shown above the narrative (may be empty). */
   voiceLine: string
+  /** Optional spoken voice line for this beat (path under the level audio dir). */
+  voiceAudio?: string
   /** Multi-paragraph narrative (`\n\n` separated), same convention as `intro`. */
   narrative: LocalizedString
 }
@@ -197,6 +217,20 @@ export interface Level {
   voiceIntro: string
   /** NPC voice line (Korean) played over the outro. */
   voiceOutro: string
+  /**
+   * Optional spoken intro/outro voice files (paths under the level audio dir).
+   * The intro plays over the opening cinematic; the outro plays on the victory
+   * screen after the bell climax. Level 1 omits them (silent).
+   */
+  voiceIntroAudio?: string
+  voiceOutroAudio?: string
+  /**
+   * Optional victory-climax sound files (paths under the level audio dir).
+   * `bellTollAudio` rings the bell and `rainStopAudio` lets the rain die out,
+   * just before the outro voice. Level 1 omits them (silent climax).
+   */
+  bellTollAudio?: string
+  rainStopAudio?: string
   /** Every grammar this level exercises. Cross-references `topik.ts` ids. */
   grammarCodes: GrammarCode[]
   topikLevel: TopikLevel

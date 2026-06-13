@@ -248,4 +248,66 @@ describe('validateLevel', () => {
     expect(v.en).toBe('x')
     expect(v.ja).toBe('x')
   })
+
+  // ─── Optional audio fields ──────────────────────────────────────────────────
+
+  it('accepts optional audio fields when they are non-empty strings', () => {
+    const level = makeLevel()
+    const slot = level.slots[0]
+    if (slot?.type !== 'selection') throw new Error('fixture changed')
+    const ok: Level = {
+      ...replaceSlot(level, slot.id, {
+        ...slot,
+        reactionVoiceAudio: 'audio/voice/r.ogg',
+        candidates: slot.candidates.map((c) => ({ ...c, voiceAudio: 'audio/voice/c.ogg' })),
+      }),
+      voiceIntroAudio: 'audio/voice/intro.ogg',
+      voiceOutroAudio: 'audio/voice/outro.ogg',
+      bellTollAudio: 'audio/sfx-bell.ogg',
+      rainStopAudio: 'audio/sfx-rain.ogg',
+    }
+    ok.rooms = ok.rooms.map((r, i) =>
+      i === 0
+        ? { ...r, hotspots: r.hotspots.map((h) => ({ ...h, sfx: 'audio/sfx-tick.ogg' })) }
+        : r,
+    )
+    expect(validateLevel(ok)).toEqual([])
+  })
+
+  it('flags a level-level audio field present but empty', () => {
+    const broken = makeLevel({ voiceIntroAudio: '   ' })
+    expect(issueContains(validateLevel(broken), 'voiceIntroAudio')).toBe(true)
+  })
+
+  it('flags a slot reactionVoiceAudio present but empty', () => {
+    const level = makeLevel()
+    const slot = level.slots[0]
+    if (slot?.type !== 'selection') throw new Error('fixture changed')
+    const broken = replaceSlot(level, slot.id, { ...slot, reactionVoiceAudio: '' })
+    expect(issueContains(validateLevel(broken), 'reactionVoiceAudio')).toBe(true)
+  })
+
+  it('flags a candidate voiceAudio present but empty', () => {
+    const level = makeLevel()
+    const slot = level.slots[0]
+    if (slot?.type !== 'selection') throw new Error('fixture changed')
+    const broken = replaceSlot(level, slot.id, {
+      ...slot,
+      candidates: slot.candidates.map((c, i) => (i === 0 ? { ...c, voiceAudio: '' } : c)),
+    })
+    expect(issueContains(validateLevel(broken), 'voiceAudio')).toBe(true)
+  })
+
+  it('flags a hotspot sfx present but empty', () => {
+    const level = makeLevel()
+    const broken: Level = {
+      ...level,
+      rooms: level.rooms.map((r, i) =>
+        i === 0
+          ? { ...r, hotspots: [{ id: 'h-x', rect: [0, 0, 10, 10], sfx: '  ' }] }
+          : r,
+      ),
+    }
+    expect(issueContains(validateLevel(broken), 'sfx')).toBe(true)
+  })
 })

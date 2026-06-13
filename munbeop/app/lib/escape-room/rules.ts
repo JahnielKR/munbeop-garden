@@ -30,6 +30,22 @@ export interface ValidationIssue {
 export function validateLevel(level: Level): ValidationIssue[] {
   const issues: ValidationIssue[] = []
 
+  /**
+   * Optional audio paths must, when present, be non-empty strings. An empty
+   * string would silently play nothing — flag it so the author notices.
+   */
+  function checkOptionalAudio(value: string | undefined, path: string) {
+    if (value !== undefined && value.trim().length === 0) {
+      issues.push({ path, message: 'audio path must not be empty when present' })
+    }
+  }
+
+  // ─── Level-level optional audio ───────────────────────────────────────────
+  checkOptionalAudio(level.voiceIntroAudio, 'voiceIntroAudio')
+  checkOptionalAudio(level.voiceOutroAudio, 'voiceOutroAudio')
+  checkOptionalAudio(level.bellTollAudio, 'bellTollAudio')
+  checkOptionalAudio(level.rainStopAudio, 'rainStopAudio')
+
   // ─── Slot id uniqueness ───────────────────────────────────────────────────
   const slotIds = new Set<string>()
   for (let i = 0; i < level.slots.length; i++) {
@@ -48,6 +64,11 @@ export function validateLevel(level: Level): ValidationIssue[] {
   for (let i = 0; i < level.slots.length; i++) {
     const slot = level.slots[i]!
     const slotPath = `slots[${i}](${slot.id})`
+
+    checkOptionalAudio(slot.reactionVoiceAudio, `${slotPath}.reactionVoiceAudio`)
+    for (let j = 0; j < slot.candidates.length; j++) {
+      checkOptionalAudio(slot.candidates[j]!.voiceAudio, `${slotPath}.candidates[${j}].voiceAudio`)
+    }
 
     if (slot.candidates.length !== POOL_SIZE) {
       issues.push({
@@ -96,6 +117,7 @@ export function validateLevel(level: Level): ValidationIssue[] {
       for (let j = 0; j < slot.candidates.length; j++) {
         const c = slot.candidates[j]!
         const cPath = `${slotPath}.candidates[${j}]`
+        checkOptionalAudio(c.softRejectVoiceAudio, `${cPath}.softRejectVoiceAudio`)
         const tileCount = c.tiles.length
         for (const idx of c.correctOrder) {
           if (idx < 0 || idx >= tileCount) {
@@ -151,6 +173,7 @@ export function validateLevel(level: Level): ValidationIssue[] {
   if (level.scriptedBeats) {
     for (let b = 0; b < level.scriptedBeats.length; b++) {
       const beat = level.scriptedBeats[b]!
+      checkOptionalAudio(beat.voiceAudio, `scriptedBeats[${b}].voiceAudio`)
       if (!slotIds.has(beat.afterSlotId)) {
         issues.push({
           path: `scriptedBeats[${b}].afterSlotId`,
@@ -165,6 +188,7 @@ export function validateLevel(level: Level): ValidationIssue[] {
     const room = level.rooms[r]!
     for (let h = 0; h < room.hotspots.length; h++) {
       const hotspot = room.hotspots[h]!
+      checkOptionalAudio(hotspot.sfx, `rooms[${r}].hotspots[${h}].sfx`)
       if (hotspot.triggersSlot && !slotIds.has(hotspot.triggersSlot)) {
         issues.push({
           path: `rooms[${r}].hotspots[${h}].triggersSlot`,

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import type { Level, RewardTier } from '~/lib/domain'
 import { useLocalized } from '~/composables/useLocalized'
+import { useEscapeRoomAudio } from '~/composables/useEscapeRoomAudio'
 
 /**
  * VictoryScreen — outro narrative + tier reveal + unlocked cosmetic.
@@ -20,6 +21,14 @@ interface Props {
    * (e.g. level 1) ignore it.
    */
   farewell?: string
+  /**
+   * Resolved URLs for the victory climax, passed by the orchestrator
+   * (EscapeRoom). All optional: a level without them (e.g. level 1) plays a
+   * silent victory. The bell tolls and the rain stops, then the monk speaks.
+   */
+  bellTollAudio?: string
+  rainStopAudio?: string
+  voiceOutroAudio?: string
 }
 
 const props = defineProps<Props>()
@@ -27,6 +36,14 @@ defineEmits<{ exit: [] }>()
 
 const { tl } = useLocalized()
 const { t } = useI18n()
+const audio = useEscapeRoomAudio()
+
+onMounted(() => {
+  // The climax: bell + rain-stop one-shots, then the monk's farewell line.
+  if (props.bellTollAudio) audio.playSfx(props.bellTollAudio)
+  if (props.rainStopAudio) audio.playSfx(props.rainStopAudio)
+  if (props.voiceOutroAudio) audio.playVoice(props.voiceOutroAudio)
+})
 
 const TIER_DOTS: Record<RewardTier, string> = {
   common: '🟢',

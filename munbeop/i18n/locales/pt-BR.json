@@ -229,6 +229,8 @@
     "continue": "CONTINUAR",
     "skip": "Pular",
     "tap_to_continue": "Toque para continuar",
+    "audio_on": "Ativar o som",
+    "audio_off": "Silenciar o som",
     "hint_free": "Dica 1 (grátis)",
     "hint_premium": "Dica 2",
     "hint_premium_warn": "Limita a recompensa a Comum",

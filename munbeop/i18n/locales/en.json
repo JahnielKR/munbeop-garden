@@ -229,6 +229,8 @@
     "continue": "CONTINUE",
     "skip": "Skip",
     "tap_to_continue": "Tap to continue",
+    "audio_on": "Turn sound on",
+    "audio_off": "Turn sound off",
     "hint_free": "Hint 1 (free)",
     "hint_premium": "Hint 2",
     "hint_premium_warn": "Caps the reward at Common",

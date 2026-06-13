@@ -49,6 +49,7 @@ const SLOT_1_CANDIDATES: SelectionCandidate[] = [
       t('Cada tarde, al ponerse el sol, oía la campana del maestro.'),
     ],
     correctIndex: 0,
+    voiceAudio: 'audio/voice/voice-slot1-mem-1.ogg',
     hints: {
       free: t('종소리 = el sonido de la campana · 해가 뜨다 = salir el sol · 듣다 → 들었어요 = oí/oía.'),
       premium: t(
@@ -66,6 +67,7 @@ const SLOT_1_CANDIDATES: SelectionCandidate[] = [
       t('Cuando llovía, tomaba café con el maestro.'),
     ],
     correctIndex: 2,
+    voiceAudio: 'audio/voice/voice-slot1-mem-2.ogg',
     hints: {
       free: t('비가 오다 = llover · 차 = té · 하고 같이 = junto con.'),
       premium: t(
@@ -83,6 +85,7 @@ const SLOT_1_CANDIDATES: SelectionCandidate[] = [
       t('Cuando florecía el ciruelo, miraba las flores con el maestro en la montaña.'),
     ],
     correctIndex: 0,
+    voiceAudio: 'audio/voice/voice-slot1-mem-3.ogg',
     hints: {
       free: t('매화 = flor del ciruelo · 피다 = florecer · 마당 = patio.'),
       premium: t(
@@ -100,6 +103,7 @@ const SLOT_1_CANDIDATES: SelectionCandidate[] = [
       t('El invierno pasado hizo kimjang con el maestro, y el kimchi quedó muy rico.'),
     ],
     correctIndex: 3,
+    voiceAudio: 'audio/voice/voice-slot1-mem-4.ogg',
     hints: {
       free: t('김장 = la preparación anual de kimchi · 작년 = el año pasado · 맛있었어요 = estaba delicioso.'),
       premium: t(
@@ -117,6 +121,7 @@ const SLOT_1_CANDIDATES: SelectionCandidate[] = [
       t('Cuando comían juntos, le daban de comer al gato al final.'),
     ],
     correctIndex: 1,
+    voiceAudio: 'audio/voice/voice-slot1-mem-5.ogg',
     hints: {
       free: t('밥을 주다 = dar de comer · 한테 = a (un ser vivo) · 먼저 = primero.'),
       premium: t(
@@ -373,6 +378,7 @@ const SLOT_5_CANDIDATES: CompletionCandidate[] = [
     korean: '마지막 인사를 ___ 했어요. 목이 메었어요.',
     translation: t('No pude decir el último adiós. Se me hizo un nudo en la garganta.'),
     answer: '못',
+    voiceAudio: 'audio/voice/voice-slot5-conf-1.ogg',
     hints: {
       free: t('안 = elegiste no hacerlo. 못 = querías, pero no pudiste.'),
       premium: t('Mira la segunda frase: 목이 메었어요 = «se me hizo un nudo en la garganta». Una garganta que se cierra sola no es una decisión — es un impedimento.'),
@@ -382,6 +388,7 @@ const SLOT_5_CANDIDATES: CompletionCandidate[] = [
     korean: '스승님 방 문을 ___ 닫았어요. 아직 닫고 싶지 않았어요.',
     translation: t('No cerré la puerta del cuarto del maestro. Todavía no quería cerrarla.'),
     answer: '안',
+    voiceAudio: 'audio/voice/voice-slot5-conf-2.ogg',
     hints: {
       free: t('안 = elegiste no hacerlo. 못 = querías, pero no pudiste.'),
       premium: t('Mira la segunda frase: -고 싶지 않았어요 = «no quería». Donde hay querer (o no querer), hay elección.'),
@@ -391,6 +398,7 @@ const SLOT_5_CANDIDATES: CompletionCandidate[] = [
     korean: '그날 아침 종을 ___ 쳤어요. 손이 멈췄어요.',
     translation: t('Aquella mañana no pude tocar la campana. La mano se me detuvo.'),
     answer: '못',
+    voiceAudio: 'audio/voice/voice-slot5-conf-3.ogg',
     hints: {
       free: t('안 = elegiste no hacerlo. 못 = querías, pero no pudiste.'),
       premium: t('Mira la segunda frase: una mano que se detiene sola no es una decisión — es un impedimento.'),
@@ -400,6 +408,7 @@ const SLOT_5_CANDIDATES: CompletionCandidate[] = [
     korean: '일기장을 ___ 읽었어요. 무서웠어요.',
     translation: t('No pude leer el diario. Tenía miedo.'),
     answer: '못',
+    voiceAudio: 'audio/voice/voice-slot5-conf-4.ogg',
     hints: {
       free: t('안 = elegiste no hacerlo. 못 = querías, pero no pudiste.'),
       premium: t('Mira la segunda frase: 무서웠어요 = «tenía miedo». El miedo se interpone — no elige.'),
@@ -409,6 +418,7 @@ const SLOT_5_CANDIDATES: CompletionCandidate[] = [
     korean: '혼자 차를 ___ 마셨어요. 혼자 마시고 싶지 않았어요. 그래서 매일 두 잔을 준비했어요.',
     translation: t('No tomé el té solo. No quería tomarlo solo. Por eso cada día preparaba dos tazas.'),
     answer: '안',
+    voiceAudio: 'audio/voice/voice-slot5-conf-5.ogg',
     hints: {
       free: t('안 = elegiste no hacerlo. 못 = querías, pero no pudiste.'),
       premium: t('Mira la segunda frase: «no quería» es una elección. Y la tercera frase te enseña qué hizo con ella.'),
@@ -432,6 +442,8 @@ const SLOT_6_CANDIDATES: CreationCandidate[] = [
     correctOrder: [0, 1, 2, 3],
     softRejectTiles: [4],
     softRejectMessage: SOFT_REJECT_LINE,
+    voiceAudio: 'audio/voice/voice-slot6-farewell-1.ogg',
+    softRejectVoiceAudio: 'audio/voice/voice-slot6-softreject.ogg',
     hints: {
       free: t('그동안 = «durante todo este tiempo» — y ese tiempo ya se cumplió hoy, día 49.'),
       premium: t('G013: lo terminado lleva -았/었-. 감사해요 agradece hoy; 감사했어요 agradece lo vivido.'),
@@ -444,6 +456,8 @@ const SLOT_6_CANDIDATES: CreationCandidate[] = [
     correctOrder: [0, 1, 2, 3],
     softRejectTiles: [4],
     softRejectMessage: SOFT_REJECT_LINE,
+    voiceAudio: 'audio/voice/voice-slot6-farewell-2.ogg',
+    softRejectVoiceAudio: 'audio/voice/voice-slot6-softreject.ogg',
     hints: {
       free: t('La felicidad no vivía antes del té — vivía durante el té. La pieza que buscas dice «cuando», no «antes de».'),
       premium: t('G034 -(으)ㄹ 때 = «cuando». La frase entera mira atrás: el verbo final lleva -았/었- → 행복했어요.'),
@@ -456,6 +470,8 @@ const SLOT_6_CANDIDATES: CreationCandidate[] = [
     correctOrder: [0, 1, 2, 3],
     softRejectTiles: [4],
     softRejectMessage: SOFT_REJECT_LINE,
+    voiceAudio: 'audio/voice/voice-slot6-farewell-3.ogg',
+    softRejectVoiceAudio: 'audio/voice/voice-slot6-softreject.ogg',
     hints: {
       free: t('Habla del té de todas aquellas tardes — un sabor que ya es recuerdo.'),
       premium: t('G013: 맛있어요 = sabe rico ahora; 맛있었어요 = estaba rico — la taza ya está vacía.'),
@@ -468,6 +484,8 @@ const SLOT_6_CANDIDATES: CreationCandidate[] = [
     correctOrder: [0, 1, 2, 3],
     softRejectTiles: [4],
     softRejectMessage: SOFT_REJECT_LINE,
+    voiceAudio: 'audio/voice/voice-slot6-farewell-4.ogg',
+    softRejectVoiceAudio: 'audio/voice/voice-slot6-softreject.ogg',
     hints: {
       free: t('Lo aprendido ya vive dentro de ti — la frase lo dice desde el después.'),
       premium: t('배우다 + -었어요 → 배웠어요 (우 + 어 = 워). 배워요 sería seguir en clase — y la clase terminó.'),
@@ -480,6 +498,8 @@ const SLOT_6_CANDIDATES: CreationCandidate[] = [
     correctOrder: [0, 1, 2, 3],
     softRejectTiles: [4],
     softRejectMessage: SOFT_REJECT_LINE,
+    voiceAudio: 'audio/voice/voice-slot6-farewell-5.ogg',
+    softRejectVoiceAudio: 'audio/voice/voice-slot6-softreject.ogg',
     hints: {
       free: t('La frase entera dice quién fue alguien — es lo más difícil de decir de quien quisimos.'),
       premium: t('Cópula en pasado tras consonante (받침 ㅁ de 스승님): 스승님이었어요, nunca 였어요. 스승님이에요 lo dejaría en presente.'),
@@ -494,6 +514,7 @@ const SCRIPTED_BEATS: ScriptedBeat[] = [
     // Tras el Slot 4 (el diario): la última entrada + la firma 淸雨. EL GIRO.
     afterSlotId: 'slot-4',
     voiceLine: '…스승님이 보내신 것 같아요.',
+    voiceAudio: 'audio/voice/voice-beat-slot4.ogg',
     narrative: t(
       '우담 no dice nada un rato largo. Luego, despacio, pasa él mismo a la última página — la que no pudo abrir solo.\n\n' +
         '«사십구일째 되는 날, 비가 오면 손님이 올 거예요. 그 손님하고 차를 마시고… 종을 치세요. 우담아, 혼자 울지 마세요.»\n\n' +
@@ -504,6 +525,7 @@ const SCRIPTED_BEATS: ScriptedBeat[] = [
     // Tras el Slot 5 (la confesión): la segunda taza. Pagado en el 100% de los runs.
     afterSlotId: 'slot-5',
     voiceLine: '스승님이 떠나신 후에도 매일 두 잔을 준비했어요.',
+    voiceAudio: 'audio/voice/voice-beat-slot5.ogg',
     narrative: t(
       '우담 recoge la segunda taza — la que ya estaba servida y caliente cuando llegaste. Ahora está vacía.\n\n' +
         '«오늘은… 한 잔이 비어 있었어요», dice, casi para sí. Hoy, una de las dos estaba vacía. No explica por qué. La deja junto a la otra y no vuelve a mirarla.',
@@ -538,6 +560,10 @@ export const LEVEL_02: Level = {
   ),
   voiceIntro: '어서 오세요. 비가 그칠 때까지 차 한잔 해요.',
   voiceOutro: '비가 그쳤어요. 그동안 정말 고마웠어요. 잘 가요.',
+  voiceIntroAudio: 'audio/voice/voice-intro.ogg',
+  voiceOutroAudio: 'audio/voice/voice-outro.ogg',
+  bellTollAudio: 'audio/sfx-bell-toll.ogg',
+  rainStopAudio: 'audio/sfx-rain-stop.ogg',
   grammarCodes: ['G013', 'G016', 'G034', 'G035', 'G036', 'G050'],
   topikLevel: 2,
 
@@ -552,9 +578,9 @@ export const LEVEL_02: Level = {
         // second cup stays outside it (the engine has no overlap priority). See
         // dossier §6 "Nota de hotspots (Cuarto 1)".
         { id: 'monk-tea', rect: [120, 95, 55, 75], triggersSlot: 'slot-1' },
-        { id: 'cat', rect: [240, 150, 40, 30], cosmeticDetail: t('고양이가 빈 방석을 봐요.') },
-        { id: 'second-cup', rect: [205, 165, 28, 24], cosmeticDetail: t('아직 따뜻해요.') },
-        { id: 'guestbook', rect: [273, 118, 34, 44], cosmeticDetail: t('마지막 이름은 49일 전이에요.') },
+        { id: 'cat', rect: [240, 150, 40, 30], cosmeticDetail: t('고양이가 빈 방석을 봐요.'), sfx: 'audio/sfx-cat-purr.ogg' },
+        { id: 'second-cup', rect: [205, 165, 28, 24], cosmeticDetail: t('아직 따뜻해요.'), sfx: 'audio/sfx-tea-pour.ogg' },
+        { id: 'guestbook', rect: [273, 118, 34, 44], cosmeticDetail: t('마지막 이름은 49일 전이에요.'), sfx: 'audio/sfx-brush-sign.ogg' },
         { id: 'window-dasil', rect: [10, 60, 60, 90], cosmeticDetail: t('빗소리가 들려요.') },
       ],
     },
@@ -564,9 +590,9 @@ export const LEVEL_02: Level = {
       image: 'rooms/room-02-daeungjeon.png',
       ambientAudio: 'audio/ambient-daeungjeon.ogg',
       hotspots: [
-        { id: 'ritual-sheet', rect: [28, 128, 52, 44], triggersSlot: 'slot-2' },
+        { id: 'ritual-sheet', rect: [28, 128, 52, 44], triggersSlot: 'slot-2', sfx: 'audio/sfx-paper-page.ogg' },
         { id: 'lantern-49', rect: [282, 32, 28, 32], triggersSlot: 'slot-3' },
-        { id: 'moktak', rect: [88, 148, 30, 30], cosmeticDetail: t('스님의 목탁이에요.') },
+        { id: 'moktak', rect: [88, 148, 30, 30], cosmeticDetail: t('스님의 목탁이에요.'), sfx: 'audio/sfx-moktak.ogg' },
         { id: 'portrait', rect: [148, 68, 32, 38], cosmeticDetail: t('사진 속에서도 웃고 계세요.') },
       ],
     },
@@ -576,9 +602,9 @@ export const LEVEL_02: Level = {
       image: 'rooms/room-03-seungbang.png',
       ambientAudio: 'audio/ambient-seungbang.ogg',
       hotspots: [
-        { id: 'diary', rect: [138, 128, 48, 38], triggersSlot: 'slot-4' },
+        { id: 'diary', rect: [138, 128, 48, 38], triggersSlot: 'slot-4', sfx: 'audio/sfx-paper-page.ogg' },
         { id: 'threshold', rect: [14, 148, 56, 48], triggersSlot: 'slot-5' },
-        { id: 'calligraphy', rect: [148, 58, 38, 52], cosmeticDetail: t('마지막 글씨예요. 끝나지 않았어요.') },
+        { id: 'calligraphy', rect: [148, 58, 38, 52], cosmeticDetail: t('마지막 글씨예요. 끝나지 않았어요.'), sfx: 'audio/sfx-paper-page.ogg' },
         { id: 'emille-book', rect: [252, 88, 16, 44], cosmeticDetail: t('에밀레종 이야기') },
       ],
     },
@@ -596,12 +622,30 @@ export const LEVEL_02: Level = {
   ],
 
   slots: [
-    { id: 'slot-1', type: 'selection', grammarFocus: ['G013', 'G034'], candidates: SLOT_1_CANDIDATES },
+    {
+      id: 'slot-1',
+      type: 'selection',
+      grammarFocus: ['G013', 'G034'],
+      reactionVoiceAudio: 'audio/voice/voice-slot1-correct.ogg',
+      candidates: SLOT_1_CANDIDATES,
+    },
     { id: 'slot-2', type: 'completion', grammarFocus: ['G035', 'G036'], candidates: SLOT_2_CANDIDATES },
     { id: 'slot-3', type: 'selection', grammarFocus: ['G050', 'G013'], candidates: SLOT_3_CANDIDATES },
     { id: 'slot-4', type: 'selection', grammarFocus: ['G013'], candidates: SLOT_4_CANDIDATES },
-    { id: 'slot-5', type: 'completion', grammarFocus: ['G016', 'G013'], candidates: SLOT_5_CANDIDATES },
-    { id: 'slot-6', type: 'creation', grammarFocus: ['G013', 'G034'], candidates: SLOT_6_CANDIDATES },
+    {
+      id: 'slot-5',
+      type: 'completion',
+      grammarFocus: ['G016', 'G013'],
+      reactionVoiceAudio: 'audio/voice/voice-slot5-absolution.ogg',
+      candidates: SLOT_5_CANDIDATES,
+    },
+    {
+      id: 'slot-6',
+      type: 'creation',
+      grammarFocus: ['G013', 'G034'],
+      reactionVoiceAudio: 'audio/voice/voice-slot6-correct.ogg',
+      candidates: SLOT_6_CANDIDATES,
+    },
   ],
 
   scriptedBeats: SCRIPTED_BEATS,

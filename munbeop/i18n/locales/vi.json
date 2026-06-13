@@ -229,6 +229,8 @@
     "continue": "TIẾP TỤC",
     "skip": "Bỏ qua",
     "tap_to_continue": "Chạm để tiếp tục",
+    "audio_on": "Bật âm thanh",
+    "audio_off": "Tắt âm thanh",
     "hint_free": "Gợi ý 1 (miễn phí)",
     "hint_premium": "Gợi ý 2",
     "hint_premium_warn": "Giới hạn phần thưởng ở mức Thường",

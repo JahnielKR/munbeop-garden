@@ -229,6 +229,8 @@
     "continue": "CONTINUAR",
     "skip": "Saltar",
     "tap_to_continue": "Toca para continuar",
+    "audio_on": "Activar el sonido",
+    "audio_off": "Silenciar el sonido",
     "hint_free": "Pista 1 (gratis)",
     "hint_premium": "Pista 2",
     "hint_premium_warn": "Limita la recompensa a Común",

@@ -229,6 +229,8 @@
     "continue": "CONTINUER",
     "skip": "Passer",
     "tap_to_continue": "Touche pour continuer",
+    "audio_on": "Activer le son",
+    "audio_off": "Couper le son",
     "hint_free": "Indice 1 (gratuit)",
     "hint_premium": "Indice 2",
     "hint_premium_warn": "Limite la récompense à Commun",
