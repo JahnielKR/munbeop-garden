@@ -39,6 +39,16 @@ const { t } = useI18n()
     <div class="sidebar__brand">
       <span class="sidebar__brand-ko">문법</span>
       <span class="sidebar__brand-name">Garden</span>
+      <button
+        type="button"
+        class="sidebar__toggle font-pixel"
+        :aria-expanded="!collapsed"
+        :aria-label="collapsed ? t('nav.sidebar_expand') : t('nav.sidebar_collapse')"
+        :title="collapsed ? t('nav.sidebar_expand') : t('nav.sidebar_collapse')"
+        @click="$emit('toggle')"
+      >
+        <span aria-hidden="true">{{ collapsed ? '▸' : '◂' }}</span>
+      </button>
     </div>
     <nav class="sidebar__nav">
       <NuxtLink
@@ -58,19 +68,6 @@ const { t } = useI18n()
       <AccountWidget />
       <LocaleSwitcher />
     </div>
-    <button
-      type="button"
-      class="sidebar__toggle font-pixel"
-      :aria-expanded="!collapsed"
-      :aria-label="collapsed ? t('nav.sidebar_expand') : t('nav.sidebar_collapse')"
-      :title="collapsed ? t('nav.sidebar_expand') : undefined"
-      @click="$emit('toggle')"
-    >
-      <span class="sidebar__toggle-glyph" aria-hidden="true">{{ collapsed ? '▸' : '◂' }}</span>
-      <span class="sidebar__label">{{
-        collapsed ? t('nav.sidebar_expand') : t('nav.sidebar_collapse')
-      }}</span>
-    </button>
   </aside>
 </template>
 
@@ -106,13 +103,18 @@ const { t } = useI18n()
   align-items: baseline;
   gap: 6px;
 }
+/* Plegado, la marca NO se encoge: 문법 se apila en vertical (문 arriba,
+ * 법 abajo) a tamaño completo — el coreano también se escribe así.
+ * writing-mode es literalmente la escritura vertical CJK; el contorno
+ * de 8 direcciones es paint-time y sobrevive tal cual. */
 .sidebar--collapsed .sidebar__brand {
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
-/* Plegado, la marca se reduce a 문법 chico y centrado — el contorno de 8
- * direcciones escala con el text-shadow, no se toca. */
 .sidebar--collapsed .sidebar__brand-ko {
-  font-size: 18px;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
 }
 .sidebar--collapsed .sidebar__brand-name {
   display: none;
@@ -295,60 +297,38 @@ const { t } = useI18n()
   display: none;
 }
 
-/* Toggle plegar/expandir: la última fila del sidebar, con el mismo
- * lenguaje que los links del nav (hover tint, focus inset, borde
- * reservado de 2px). Sustituye al botón flotante del borde y su track
- * sticky en AppShell. font-pixel solo mata el antialiasing — la fuente
- * se declara aquí, como hacía el botón viejo. */
+/* Toggle plegar/expandir: flecha junto a la marca (el fondo del sidebar
+ * queda reservado para el futuro perfil de usuario). Icon-only en ambos
+ * estados — el nombre vive en aria-label + title. Color var(--ink):
+ * negra de día, platino de noche, como pidió el diseño. font-pixel solo
+ * mata el antialiasing; la fuente se declara aquí. */
 .sidebar__toggle {
-  display: grid;
-  grid-template-columns: 24px 1fr;
+  margin-left: auto;
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  display: flex;
   align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 8px 10px;
+  justify-content: center;
   background: transparent;
-  color: var(--text-soft);
-  border: 2px solid transparent;
+  color: var(--ink);
+  border: none;
+  padding: 0;
   outline: none;
-  text-align: left;
   cursor: pointer;
-  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
-  transition:
-    background var(--motion-quick) var(--ease-out),
-    color var(--motion-quick) var(--ease-out);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  transition: background var(--motion-quick) var(--ease-out);
 }
 .sidebar__toggle:hover {
   background: var(--surface-hover);
-  color: var(--text);
 }
 .sidebar__toggle:focus-visible {
-  background: var(--surface-hover);
-  color: var(--text);
   outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
 }
-.sidebar__toggle-glyph {
-  justify-self: center;
-  font-size: 9px;
-  line-height: 1;
-}
-/* Guardia para locales futuros: si un label superara el track de 1fr,
- * degrada a ellipsis en vez de recortarse a medio glifo sobre el borde
- * (min-width:0 anula el suelo min-content del item de grid). */
-.sidebar__toggle .sidebar__label {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-/* Plegado: casilla cuadrada centrada como los links. El footer oculto ya
- * no empuja hacia abajo, así que el margin-top:auto pasa al toggle. */
+/* Plegado, la columna de la marca lo centra sola. */
 .sidebar--collapsed .sidebar__toggle {
-  grid-template-columns: 24px;
-  justify-content: center;
-  gap: 0;
-  padding: 6px 0;
-  min-height: 44px;
-  margin-top: auto;
+  margin-left: 0;
 }
 </style>
