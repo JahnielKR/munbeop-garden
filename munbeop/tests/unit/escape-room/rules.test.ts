@@ -115,6 +115,83 @@ describe('validateLevel', () => {
     expect(issueContains(validateLevel(broken), 'correctOrder')).toBe(true)
   })
 
+  it('accepts a creation candidate with valid softRejectTiles', () => {
+    const level = makeLevel()
+    const slot = level.slots[2]
+    if (slot?.type !== 'creation') throw new Error('fixture changed')
+    const ok = replaceSlot(level, slot.id, {
+      ...slot,
+      // tiles are ['카페에','가요','학교에'], correctOrder [0,1] → index 2 is a free distractor
+      candidates: slot.candidates.map((c) => ({
+        ...c,
+        softRejectTiles: [2],
+        softRejectMessage: ls('nudge'),
+      })),
+    })
+    expect(validateLevel(ok)).toEqual([])
+  })
+
+  it('flags softRejectTiles index out of range', () => {
+    const level = makeLevel()
+    const slot = level.slots[2]
+    if (slot?.type !== 'creation') throw new Error('fixture changed')
+    const broken = replaceSlot(level, slot.id, {
+      ...slot,
+      candidates: slot.candidates.map((c, i) => (i === 0 ? { ...c, softRejectTiles: [99] } : c)),
+    })
+    expect(issueContains(validateLevel(broken), 'softRejectTiles')).toBe(true)
+  })
+
+  it('flags softRejectTiles that overlap correctOrder (must be disjoint)', () => {
+    const level = makeLevel()
+    const slot = level.slots[2]
+    if (slot?.type !== 'creation') throw new Error('fixture changed')
+    const broken = replaceSlot(level, slot.id, {
+      ...slot,
+      // correctOrder is [0,1]; reusing index 0 as a soft tile is illegal
+      candidates: slot.candidates.map((c, i) => (i === 0 ? { ...c, softRejectTiles: [0] } : c)),
+    })
+    expect(issueContains(validateLevel(broken), 'softRejectTiles')).toBe(true)
+  })
+
+  it('flags duplicate indices in softRejectTiles', () => {
+    const level = makeLevel()
+    const slot = level.slots[2]
+    if (slot?.type !== 'creation') throw new Error('fixture changed')
+    const broken = replaceSlot(level, slot.id, {
+      ...slot,
+      candidates: slot.candidates.map((c, i) =>
+        i === 0 ? { ...c, softRejectTiles: [2, 2], softRejectMessage: ls('nudge') } : c,
+      ),
+    })
+    expect(issueContains(validateLevel(broken), 'softRejectTiles')).toBe(true)
+  })
+
+  it('flags softRejectTiles set without a softRejectMessage', () => {
+    const level = makeLevel()
+    const slot = level.slots[2]
+    if (slot?.type !== 'creation') throw new Error('fixture changed')
+    const broken = replaceSlot(level, slot.id, {
+      ...slot,
+      candidates: slot.candidates.map((c, i) => (i === 0 ? { ...c, softRejectTiles: [2] } : c)),
+    })
+    expect(issueContains(validateLevel(broken), 'softRejectMessage')).toBe(true)
+  })
+
+  it('flags a scripted beat whose afterSlotId references an unknown slot', () => {
+    const broken = makeLevel({
+      scriptedBeats: [{ afterSlotId: 'slot-ghost', voiceLine: 'x', narrative: ls('beat') }],
+    })
+    expect(issueContains(validateLevel(broken), 'slot-ghost')).toBe(true)
+  })
+
+  it('accepts a scripted beat that references a real slot', () => {
+    const ok = makeLevel({
+      scriptedBeats: [{ afterSlotId: 'slot-1', voiceLine: 'x', narrative: ls('beat') }],
+    })
+    expect(validateLevel(ok)).toEqual([])
+  })
+
   it('flags a hotspot whose triggersSlot points to an unknown slot', () => {
     const level = makeLevel()
     const broken: Level = {

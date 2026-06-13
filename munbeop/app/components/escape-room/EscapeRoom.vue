@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import type { Level, RewardTier, SelectionCandidate, CompletionCandidate, CreationCandidate } from '~/lib/domain'
+import type { Level, RewardTier, ScriptedBeat, SelectionCandidate, CompletionCandidate, CreationCandidate } from '~/lib/domain'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import { useLocalized } from '~/composables/useLocalized'
 import Scene from './Scene.vue'
@@ -36,6 +36,10 @@ const phase = ref<'intro' | 'playing'>('intro')
 const activeSlotId = ref<string | null>(null)
 const earnedTier = ref<RewardTier | null>(null)
 const retryCount = ref(0)
+/** Scripted beat currently playing (between-slot narrative); null = none. */
+const activeBeat = ref<ScriptedBeat | null>(null)
+/** NPC nudge shown inside the creation overlay after a soft-reject. */
+const softMessage = ref<string | null>(null)
 
 const baseSeed = computed(() => props.seed ?? `run-${Date.now()}`)
 const imageBase = computed(() => `/escape-room/${props.level.id}/`)
@@ -67,6 +71,25 @@ const activeCandidate = computed(() => {
 const heartsTotal = computed(() => props.level.rules.maxErrors + 1)
 const heartsLeft = computed(() => Math.max(0, heartsTotal.value - store.errorsMade))
 
+/**
+ * The player's built farewell for the final creation slot, fed to the outro's
+ * `{farewell}` token so the closing cinematic quotes what they actually said.
+ * Empty only when the last slot isn't a creation slot. For levels whose outro
+ * has no `{farewell}` token (e.g. level 1) the value is simply ignored —
+ * VictoryScreen's replaceAll is then a no-op.
+ */
+const farewell = computed(() => {
+  const slots = props.level.slots
+  const lastIdx = slots.length - 1
+  const last = slots[lastIdx]
+  if (!last || last.type !== 'creation' || !store.currentRun) return ''
+  const drawn = store.currentRun.slots[lastIdx]
+  if (!drawn) return ''
+  const cand = last.candidates[drawn.candidateIndex]
+  if (!cand) return ''
+  return cand.correctOrder.map((i) => cand.tiles[i]).join(' ')
+})
+
 onMounted(() => {
   store.startRun(props.level, baseSeed.value)
   phase.value = 'intro'
@@ -85,25 +108,48 @@ watch(
   },
 )
 
+type AnswerOutcome = 'correct' | 'wrong' | 'game-over' | 'level-complete' | 'soft-reject'
+
 function onHotspot(hotspotId: string) {
   const h = activeRoom.value?.hotspots.find((x) => x.id === hotspotId)
   if (h?.triggersSlot && !store.resolvedSlots.includes(h.triggersSlot)) {
+    softMessage.value = null
     activeSlotId.value = h.triggersSlot
   }
 }
 
-function closeUnlessWrong(result: 'correct' | 'wrong' | 'game-over' | 'level-complete') {
-  if (result !== 'wrong') activeSlotId.value = null
+/**
+ * Resolve the overlay after an answer. Keep it open on a wrong or soft-reject
+ * answer (the player retries in place); on a correct/complete answer, close it
+ * and play the slot's scripted beat (if any) before the next screen.
+ */
+function handleResult(slotId: string, result: AnswerOutcome) {
+  if (result === 'wrong' || result === 'soft-reject') return
+  activeSlotId.value = null
+  if (result === 'correct' || result === 'level-complete') {
+    const beat = store.scriptedBeatAfter(slotId)
+    if (beat) activeBeat.value = beat
+  }
 }
 
 function onSelectionAnswer(idx: number) {
-  if (activeSlotId.value) closeUnlessWrong(store.answerSelection(activeSlotId.value, idx))
+  if (!activeSlotId.value) return
+  handleResult(activeSlotId.value, store.answerSelection(activeSlotId.value, idx))
 }
 function onCompletionAnswer(text: string) {
-  if (activeSlotId.value) closeUnlessWrong(store.answerCompletion(activeSlotId.value, text))
+  if (!activeSlotId.value) return
+  handleResult(activeSlotId.value, store.answerCompletion(activeSlotId.value, text))
 }
 function onCreationAnswer(order: number[]) {
-  if (activeSlotId.value) closeUnlessWrong(store.answerCreation(activeSlotId.value, order))
+  const slotId = activeSlotId.value
+  if (!slotId) return
+  softMessage.value = null
+  const result = store.answerCreation(slotId, order)
+  if (result === 'soft-reject') {
+    const cand = activeCandidate.value as CreationCandidate | null
+    softMessage.value = cand?.softRejectMessage ? tl(cand.softRejectMessage) : null
+  }
+  handleResult(slotId, result)
 }
 function onUseFreeHint() {
   if (activeSlotId.value) store.useFreeHint(activeSlotId.value)
@@ -116,10 +162,18 @@ function retry() {
   retryCount.value++
   earnedTier.value = null
   activeSlotId.value = null
+  activeBeat.value = null
+  softMessage.value = null
   store.reset()
   store.startRun(props.level, `${baseSeed.value}#r${retryCount.value}`)
   // Roguelike loop stays fast: no cinematic on retry.
   phase.value = 'playing'
+}
+
+/** Close the puzzle overlay and clear any lingering soft-reject nudge. */
+function closeOverlay() {
+  activeSlotId.value = null
+  softMessage.value = null
 }
 
 function exitToBook() {
@@ -186,7 +240,7 @@ function exitToBook() {
           class="er__overlay-close"
           data-testid="puzzle-close"
           aria-label="✕"
-          @click="activeSlotId = null"
+          @click="closeOverlay"
         >
           ✕
         </button>
@@ -210,6 +264,7 @@ function exitToBook() {
           v-else
           :candidate="activeCandidate as CreationCandidate"
           :flags="activeHintFlags"
+          :soft-message="softMessage"
           @answer="onCreationAnswer"
           @use-free-hint="onUseFreeHint"
           @use-premium-hint="onUsePremiumHint"
@@ -217,12 +272,22 @@ function exitToBook() {
       </div>
     </div>
 
+    <!-- Scripted beat (between-slot narrative): diary's last entry, second cup… -->
+    <IntroCinematic
+      v-if="activeBeat"
+      :key="activeBeat.afterSlotId"
+      :narrative="activeBeat.narrative"
+      :voice-line="activeBeat.voiceLine"
+      @done="activeBeat = null"
+    />
+
     <!-- End screens -->
     <GameOverScreen v-if="store.status === 'gameover'" @retry="retry" @exit="exitToBook" />
     <VictoryScreen
-      v-if="store.status === 'completed' && earnedTier"
+      v-if="store.status === 'completed' && earnedTier && !activeBeat"
       :level="level"
       :tier="earnedTier"
+      :farewell="farewell"
       @exit="exitToBook"
     />
   </div>

@@ -13,6 +13,13 @@ import { useLocalized } from '~/composables/useLocalized'
 interface Props {
   level: Level
   tier: RewardTier
+  /**
+   * The player's built farewell sentence (the final creation slot's answer).
+   * Substituted for the `{farewell}` token in the outro so the closing
+   * cinematic quotes exactly what the player said. Levels without the token
+   * (e.g. level 1) ignore it.
+   */
+  farewell?: string
 }
 
 const props = defineProps<Props>()
@@ -31,6 +38,7 @@ const TIER_DOTS: Record<RewardTier, string> = {
 const reward = computed(() => props.level.rewards[props.tier])
 const outroParagraphs = computed(() =>
   tl(props.level.outro)
+    .replaceAll('{farewell}', props.farewell ?? '')
     .split('\n\n')
     .map((p) => p.trim())
     .filter(Boolean),

@@ -73,6 +73,17 @@ export interface CreationCandidate {
    * Tiles whose indices are NOT in `correctOrder` are distractors.
    */
   correctOrder: readonly number[]
+  /**
+   * Optional "soft-reject" distractor indices (the thematic present-tense tiles
+   * of level 2's Slot 6). Submitting an order that contains any of these tiles
+   * the FIRST time costs no error — the store returns `'soft-reject'` and the UI
+   * shows `softRejectMessage` instead of an error. A second such submission (or
+   * any other wrong answer) is a normal error. Must be disjoint from
+   * `correctOrder` (enforced by `validateLevel`).
+   */
+  softRejectTiles?: readonly number[]
+  /** Message shown on a soft-reject (e.g. the monk's «끝난 일은… 끝난 말로 해야 해요»). */
+  softRejectMessage?: LocalizedString
   hints: Hints
 }
 
@@ -141,6 +152,23 @@ export interface Reward {
   description: LocalizedString
 }
 
+// ─── Scripted beats (between-slot narrative) ────────────────────────────────
+
+/**
+ * A fixed narrative beat shown after a given slot resolves — identical on every
+ * run (not part of any candidate pool). Rendered with the same typewriter
+ * cinematic as the intro. Level 2 uses these for the diary's last entry (the
+ * twist's emotional payload) and the second-cup confession.
+ */
+export interface ScriptedBeat {
+  /** Show this beat right after the slot with this id is resolved. */
+  afterSlotId: string
+  /** Korean NPC voice line shown above the narrative (may be empty). */
+  voiceLine: string
+  /** Multi-paragraph narrative (`\n\n` separated), same convention as `intro`. */
+  narrative: LocalizedString
+}
+
 // ─── Level ──────────────────────────────────────────────────────────────────
 
 export interface LevelRules {
@@ -176,6 +204,8 @@ export interface Level {
   rooms: Room[]
   /** Slots in the order they unlock. */
   slots: Slot[]
+  /** Optional fixed narrative beats shown between slots (see `ScriptedBeat`). */
+  scriptedBeats?: ScriptedBeat[]
   /** One reward per tier; all four are required. */
   rewards: Record<RewardTier, Reward>
   rules: LevelRules

@@ -1,6 +1,7 @@
 import type { Level, LocalizedString, TopikLevel } from '~/lib/domain'
 import { t } from './locale'
 import { LEVEL_01 } from './level-01'
+import { LEVEL_02 } from './level-02'
 
 /**
  * Level registry — the notebook's table of contents.
@@ -51,14 +52,13 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
   {
     id: 'level-02',
     number: 2,
-    title: t('El templo de la lluvia'),
-    tagline: t(
-      'Subiste al templo a esperar que pasara el aguacero. El monje te sirvió té, sonrió, y dijo que la campana solo deja salir a quien entiende lo que perdió.',
-    ),
+    title: LEVEL_02.title,
+    tagline: LEVEL_02.tagline,
     mood: t('Místico · Contemplativo'),
     cover: '/escape-room/covers/level-02.png',
     topikLevel: 2,
-    status: 'coming-soon',
+    status: 'playable',
+    level: LEVEL_02,
   },
   {
     id: 'level-03',

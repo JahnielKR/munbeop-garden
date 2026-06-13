@@ -37,9 +37,10 @@ describe('LEVEL_REGISTRY', () => {
     }
   })
 
-  it('playableLevel resolves level-01 and rejects coming-soon ids', () => {
+  it('playableLevel resolves playable levels and rejects unknown/coming-soon ids', () => {
     expect(playableLevel('level-01')?.id).toBe('level-01')
-    expect(playableLevel('level-02')).toBeNull()
+    expect(playableLevel('level-02')?.id).toBe('level-02')
+    expect(playableLevel('level-03')).toBeNull()
     expect(playableLevel('nope')).toBeNull()
   })
 })

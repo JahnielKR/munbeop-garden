@@ -5,6 +5,7 @@ import type {
   CreationCandidate,
   Level,
   RewardTier,
+  ScriptedBeat,
   SelectionCandidate,
 } from '~/lib/domain'
 import { drawRun, type DrawnRun } from '~/lib/escape-room/shuffle'
@@ -25,8 +26,13 @@ import { scoreRun, type RunOutcome } from '~/lib/escape-room/scoring'
 
 type Status = 'idle' | 'playing' | 'gameover' | 'completed'
 
-/** Result of an answer*() action. The UI uses this to drive feedback animations. */
-type AnswerResult = 'correct' | 'wrong' | 'game-over' | 'level-complete'
+/**
+ * Result of an answer*() action. The UI uses this to drive feedback animations.
+ * `'soft-reject'` is the level-2 Slot-6 soft refusal: the answer used a
+ * present-tense (soft-reject) tile for the first time — no error charged, the
+ * overlay stays open, and the NPC nudges the player with `softRejectMessage`.
+ */
+type AnswerResult = 'correct' | 'wrong' | 'game-over' | 'level-complete' | 'soft-reject'
 
 interface HintFlags {
   free: boolean
@@ -42,6 +48,8 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
   const errorsMade = ref(0)
   const resolvedSlots = ref<string[]>([])
   const hintsUsed = ref<Record<string, HintFlags>>({})
+  /** Per-slot flag: the one free soft-reject (present-tense tile) already spent this run. */
+  const softRejectConsumed = ref<Record<string, boolean>>({})
   const startedAt = ref<number | null>(null)
   /** Persisted across runs (hydrated by composable). */
   const consecutiveCleanRuns = ref(0)
@@ -103,6 +111,7 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
     errorsMade.value = 0
     resolvedSlots.value = []
     hintsUsed.value = {}
+    softRejectConsumed.value = {}
     startedAt.value = now
   }
 
@@ -130,12 +139,27 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
     if (status.value !== 'playing') return 'wrong'
     const cand = drawnCandidate<CreationCandidate>(slotId)
     if (!cand) return recordError()
+    // Soft-reject (present-tense tile, first time only): nudge, no error charged.
+    // Evaluated before the order check so the thematic refusal is never an error.
+    const soft = cand.softRejectTiles
+    if (soft && soft.length > 0 && order.some((i) => soft.includes(i))) {
+      if (!softRejectConsumed.value[slotId]) {
+        softRejectConsumed.value[slotId] = true
+        return 'soft-reject'
+      }
+      // Already spent the free pass → falls through to a normal error.
+    }
     const correct = cand.correctOrder
     if (order.length !== correct.length) return recordError()
     for (let i = 0; i < order.length; i++) {
       if (order[i] !== correct[i]) return recordError()
     }
     return resolveSlot(slotId)
+  }
+
+  /** The scripted beat (if any) that should play right after `slotId` resolves. */
+  function scriptedBeatAfter(slotId: string): ScriptedBeat | null {
+    return currentLevel.value?.scriptedBeats?.find((b) => b.afterSlotId === slotId) ?? null
   }
 
   function useFreeHint(slotId: string) {
@@ -182,6 +206,7 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
     errorsMade.value = 0
     resolvedSlots.value = []
     hintsUsed.value = {}
+    softRejectConsumed.value = {}
     startedAt.value = null
   }
 
@@ -194,6 +219,7 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
     errorsMade,
     resolvedSlots,
     hintsUsed,
+    softRejectConsumed,
     startedAt,
     consecutiveCleanRuns,
     unlockedCosmetics,
@@ -206,6 +232,7 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
     answerSelection,
     answerCompletion,
     answerCreation,
+    scriptedBeatAfter,
     useFreeHint,
     usePremiumHint,
     complete,

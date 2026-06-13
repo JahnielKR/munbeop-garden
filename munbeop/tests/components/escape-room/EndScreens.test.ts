@@ -19,6 +19,27 @@ describe('VictoryScreen', () => {
     await w.get('[data-testid="victory-exit"]').trigger('click')
     expect(w.emitted('exit')).toBeTruthy()
   })
+
+  it('substitutes the {farewell} token in the outro with the player’s sentence', () => {
+    const level = makeLevel({
+      outro: {
+        en: 'You said: «{farewell}».',
+        es: 'Dijiste: «{farewell}».',
+        fr: 'Dijiste: «{farewell}».',
+        'pt-BR': 'Dijiste: «{farewell}».',
+        th: 'Dijiste: «{farewell}».',
+        id: 'Dijiste: «{farewell}».',
+        vi: 'Dijiste: «{farewell}».',
+        ja: 'Dijiste: «{farewell}».',
+      },
+    })
+    const w = mount(VictoryScreen, {
+      props: { level, tier: 'common', farewell: '스승님, 그동안 정말 감사했어요' },
+    })
+    const outro = w.get('[data-testid="victory-outro"]').text()
+    expect(outro).toContain('스승님, 그동안 정말 감사했어요')
+    expect(outro).not.toContain('{farewell}')
+  })
 })
 
 describe('GameOverScreen', () => {

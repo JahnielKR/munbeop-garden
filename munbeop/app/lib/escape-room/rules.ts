@@ -112,6 +112,50 @@ export function validateLevel(level: Level): ValidationIssue[] {
             message: 'correctOrder must not contain duplicate indices',
           })
         }
+        if (c.softRejectTiles) {
+          const correctSet = new Set(c.correctOrder)
+          for (const idx of c.softRejectTiles) {
+            if (idx < 0 || idx >= tileCount) {
+              issues.push({
+                path: `${cPath}.softRejectTiles`,
+                message: `softRejectTiles index ${idx} is out of range (tiles.length=${tileCount})`,
+              })
+            }
+            if (correctSet.has(idx)) {
+              issues.push({
+                path: `${cPath}.softRejectTiles`,
+                message: `softRejectTiles index ${idx} also appears in correctOrder (must be disjoint)`,
+              })
+            }
+          }
+          const softUnique = new Set(c.softRejectTiles)
+          if (softUnique.size !== c.softRejectTiles.length) {
+            issues.push({
+              path: `${cPath}.softRejectTiles`,
+              message: 'softRejectTiles must not contain duplicate indices',
+            })
+          }
+          // A soft-reject with no message would be a silent no-op in the UI.
+          if (c.softRejectTiles.length > 0 && !c.softRejectMessage) {
+            issues.push({
+              path: `${cPath}.softRejectMessage`,
+              message: 'softRejectMessage is required when softRejectTiles is set',
+            })
+          }
+        }
+      }
+    }
+  }
+
+  // ─── Scripted beats reference real slots ──────────────────────────────────
+  if (level.scriptedBeats) {
+    for (let b = 0; b < level.scriptedBeats.length; b++) {
+      const beat = level.scriptedBeats[b]!
+      if (!slotIds.has(beat.afterSlotId)) {
+        issues.push({
+          path: `scriptedBeats[${b}].afterSlotId`,
+          message: `references unknown slot "${beat.afterSlotId}"`,
+        })
       }
     }
   }

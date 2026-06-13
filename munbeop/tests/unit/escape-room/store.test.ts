@@ -1,7 +1,17 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useEscapeRoomStore } from '~/stores/escape-room'
-import { makeLevel } from './_fixture'
+import { makeLevel, ls } from './_fixture'
+
+/** Fixture level whose slot-3 creation candidates carry a soft-reject tile (index 2). */
+function makeSoftLevel() {
+  const level = makeLevel()
+  const s3 = level.slots[2]
+  if (s3.type === 'creation') {
+    s3.candidates = s3.candidates.map((c) => ({ ...c, softRejectTiles: [2] as const }))
+  }
+  return level
+}
 
 describe('useEscapeRoomStore', () => {
   beforeEach(() => {
@@ -191,6 +201,50 @@ describe('useEscapeRoomStore', () => {
     expect(store.resolvedSlots).toEqual([])
     expect(store.consecutiveCleanRuns).toBe(7)
     expect(store.unlockedCosmetics).toEqual(['r-c', 'r-r'])
+  })
+
+  it('soft-rejects a present-tense tile once (no error), then errors normally', () => {
+    const store = useEscapeRoomStore()
+    store.startRun(makeSoftLevel(), 'seed-soft', 0)
+    // First submission containing the soft tile (index 2): nudge, no error.
+    expect(store.answerCreation('slot-3', [0, 1, 2])).toBe('soft-reject')
+    expect(store.errorsMade).toBe(0)
+    expect(store.resolvedSlots).not.toContain('slot-3')
+    // Second time the free pass is spent → normal error.
+    expect(store.answerCreation('slot-3', [0, 1, 2])).toBe('wrong')
+    expect(store.errorsMade).toBe(1)
+    // The correct order still resolves the slot afterwards.
+    expect(store.answerCreation('slot-3', [0, 1])).toBe('correct')
+    expect(store.resolvedSlots).toContain('slot-3')
+  })
+
+  it('does NOT soft-reject a wrong answer that omits the soft tile', () => {
+    const store = useEscapeRoomStore()
+    store.startRun(makeSoftLevel(), 'seed-soft-2', 0)
+    // Wrong order, but no soft tile → a normal error from the first try.
+    expect(store.answerCreation('slot-3', [1, 0])).toBe('wrong')
+    expect(store.errorsMade).toBe(1)
+  })
+
+  it('resets the soft-reject pass on a new run', () => {
+    const store = useEscapeRoomStore()
+    store.startRun(makeSoftLevel(), 'seed-soft-3', 0)
+    expect(store.answerCreation('slot-3', [0, 1, 2])).toBe('soft-reject')
+    store.reset()
+    store.startRun(makeSoftLevel(), 'seed-soft-4', 0)
+    // Fresh run → the free pass is available again.
+    expect(store.answerCreation('slot-3', [0, 1, 2])).toBe('soft-reject')
+    expect(store.errorsMade).toBe(0)
+  })
+
+  it('scriptedBeatAfter returns the matching beat or null', () => {
+    const store = useEscapeRoomStore()
+    const level = makeLevel({
+      scriptedBeats: [{ afterSlotId: 'slot-1', voiceLine: '…보내신 것 같아요.', narrative: ls('beat') }],
+    })
+    store.startRun(level, 'seed-beat', 0)
+    expect(store.scriptedBeatAfter('slot-1')?.afterSlotId).toBe('slot-1')
+    expect(store.scriptedBeatAfter('slot-2')).toBeNull()
   })
 
   it('ignores answer methods after game over', () => {
