@@ -15,6 +15,8 @@ import HintPanel from './HintPanel.vue'
 interface Props {
   candidate: CreationCandidate
   flags: { free: boolean; premium: boolean }
+  /** Set when the last submission was a soft-reject; shows the NPC's gentle nudge. */
+  softMessage?: string | null
 }
 
 const props = defineProps<Props>()
@@ -92,6 +94,15 @@ function submit() {
       </button>
     </div>
 
+    <p
+      v-if="softMessage"
+      class="slot-creation__soft"
+      data-testid="slot-soft"
+      role="status"
+    >
+      {{ softMessage }}
+    </p>
+
     <div class="slot-creation__actions">
       <button
         type="button"
@@ -162,6 +173,17 @@ function submit() {
   font-family: 'Inter', 'Noto Sans KR', sans-serif;
   font-size: 12px;
   color: var(--text-muted, #9a866a);
+}
+.slot-creation__soft {
+  margin: 0;
+  padding: 8px 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--text-muted, #8a6f4a);
+  background: var(--surface-elevated, #ffe8b4);
+  border-left: 4px solid var(--border-strong, #6b5b4a);
 }
 .slot-creation__chip {
   font-family: 'Noto Sans KR', sans-serif;

@@ -8,7 +8,7 @@ const stubs = { NuxtLink: { template: '<a><slot /></a>' } }
 
 describe('LevelPage', () => {
   const playable = LEVEL_REGISTRY[0]!
-  const comingSoon = LEVEL_REGISTRY[1]!
+  const comingSoon = LEVEL_REGISTRY.find((e) => e.status === 'coming-soon')!
 
   it('renders cover, title, tagline and TOPIK badge', () => {
     const w = mount(LevelPage, { props: { entry: playable }, global: { stubs } })
