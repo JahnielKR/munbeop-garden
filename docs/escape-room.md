@@ -628,15 +628,17 @@ Por qué:
 | # | Tema | TOPIK | Gramáticas objetivo | Tono |
 |---|---|---|---|---|
 | 1 | **Una mañana en el minbak** | 1 | G003, G005, G012, G027, G031, G032 | Cálido, slice-of-life ✅ DISEÑADO |
-| 2 | **El templo de la lluvia** | 2 | Pasado G013, -지만 G021, conjunción G019, modales | Místico, contemplativo |
-| 3 | **El mercado nocturno** | 2-3 | -아/어 보다, -아/어 주다, comparativos | Energético, callejero |
-| 4 | **La estación de Seúl** | 3 | -면서, -자마자, -기 전에/후에 | Urgente, contemporáneo |
+| 2 | **El templo de la lluvia** | 2 | G013, G016, G034, G035, G036, G050 | Místico, contemplativo ✅ DISEÑADO |
+| 3 | **El mercado nocturno** | 2-3 | -아/어 보다, -아/어 주다, comparativos, G021 (-지만), G019 (-고) | Energético, callejero |
+| 4 | **El último tren a Seúl** | 3 | -면서, -자마자, -는 동안, -고 나서 | Urgente, contemporáneo |
 | 5 | **La cocina del abuelo** | 3 | -아/어 놓다/두다, -게 되다, voz pasiva | Nostálgico, familiar |
 | 6 | **El estudio de K-drama** | 3-4 | Discurso indirecto, -대요/-(이)래요 | Meta-pop, divertido |
 | 7 | **La oficina de Gangnam** | 4 | -았/었던, -ㄴ/는다는 것이다, formal -습니다 | Corporativo, frío |
 | 8 | **El palacio Joseon de noche** | 4-5 | Honoríficos altos, -(으)시-, formas literarias suaves | Histórico, misterioso |
 | 9 | **El juicio de la era moderna** | 5-6 | Causativos -게 하다, expresiones idiomáticas, refranes | Dramático, denso |
 | 10 | **La cumbre diplomática** | 5-6 | Lenguaje formal escrito, -(으)ㅁ/-기, periodístico | Formal, tenso |
+
+> El remapeo de gramáticas de los niveles 2-4 se decidió en el dossier del nivel 2 (§5.2 de [`escape-room-level-02.md`](./escape-room-level-02.md)): -기 전에/-(으)ㄴ 후에 (G035/G036) adelantan al nivel 2 porque el orden ritual del 49재 es su hogar narrativo; el nivel 3 hereda -지만/-고; el nivel 4 («El último tren a Seúl») gana -는 동안/-고 나서 para compensar.
 
 **Ritmo de release sugerido:** 1 nivel nuevo cada 3-4 semanas una vez el motor está estable. Objetivo a 6 meses: 5-6 niveles vivos. A 12 meses: 10-12.
 
