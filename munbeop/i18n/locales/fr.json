@@ -6,8 +6,8 @@
     "stats": "Analyse",
     "log": "Journal",
     "settings": "Serre",
-    "sidebar_collapse": "Masquer le menu",
-    "sidebar_expand": "Afficher le menu"
+    "sidebar_collapse": "Replier",
+    "sidebar_expand": "Déplier"
   },
   "title": {
     "garden": "Mon Jardin",

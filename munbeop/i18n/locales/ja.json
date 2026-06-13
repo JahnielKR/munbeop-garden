@@ -6,8 +6,8 @@
     "stats": "統計",
     "log": "日記",
     "settings": "設定",
-    "sidebar_collapse": "メニューを隠す",
-    "sidebar_expand": "メニューを表示"
+    "sidebar_collapse": "折りたたむ",
+    "sidebar_expand": "展開する"
   },
   "title": {
     "garden": "私の庭",

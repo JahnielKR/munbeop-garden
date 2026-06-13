@@ -76,9 +76,12 @@ const { t } = useI18n()
 
 <style scoped>
 .sidebar {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  /* El rail del shell (sticky, 100vh, overflow-y) es quien fija y
+   * scrollea; aquí solo crecemos con el contenido (min-height: 100%
+   * viene de .shell__sidebar). Un height:100vh fijo dejaba el fondo y
+   * el borde sin pintar más allá del primer viewport en pantallas
+   * bajas — y plegado, el toggle (único control de recuperación)
+   * quedaba flotando sobre el dither de la página. */
   width: 220px;
   /* Panel liso: la identidad pixel vive en la pestaña activa y el cursor
    * (la veta vertical producía banding en light y era invisible en dark). */
@@ -279,6 +282,12 @@ const { t } = useI18n()
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* Ancho final del contenido expandido (220 − 32 padding − 2 borde).
+   * Al expandir, el footer reaparece cuando la caja aún mide ~64px;
+   * sin esto el email (word-break) se apila en una columna alta y
+   * flashea un scrollbar en el rail durante los 240ms. Con min-width
+   * mantiene su layout final y el rail solo recorta por la derecha. */
+  min-width: 186px;
 }
 /* Plegado, el footer (email / cerrar sesión / idioma) es contenido
  * textual que no cabe en 64px — se accede expandiendo. */
@@ -323,6 +332,14 @@ const { t } = useI18n()
   justify-self: center;
   font-size: 9px;
   line-height: 1;
+}
+/* Guardia para locales futuros: si un label superara el track de 1fr,
+ * degrada a ellipsis en vez de recortarse a medio glifo sobre el borde
+ * (min-width:0 anula el suelo min-content del item de grid). */
+.sidebar__toggle .sidebar__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* Plegado: casilla cuadrada centrada como los links. El footer oculto ya
  * no empuja hacia abajo, así que el margin-top:auto pasa al toggle. */
