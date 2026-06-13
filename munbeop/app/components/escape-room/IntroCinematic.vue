@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import type { LocalizedString } from '~/lib/domain'
 import { useLocalized } from '~/composables/useLocalized'
 import { useTypewriter } from '~/composables/useTypewriter'
+import { useEscapeRoomAudio } from '~/composables/useEscapeRoomAudio'
 
 /**
  * IntroCinematic — ambient narrative opener.
@@ -17,6 +18,8 @@ interface Props {
   narrative: LocalizedString
   /** Korean NPC voice line shown above the narrative (and later, played as TTS). */
   voiceLine: string
+  /** Already-resolved URL of the spoken voice line; played while the cinematic is shown. */
+  voiceAudio?: string
 }
 
 const props = defineProps<Props>()
@@ -24,6 +27,20 @@ const emit = defineEmits<{ done: [] }>()
 
 const { tl } = useLocalized()
 const { t } = useI18n()
+const audio = useEscapeRoomAudio()
+
+onMounted(() => {
+  if (props.voiceAudio) audio.playVoice(props.voiceAudio)
+})
+onBeforeUnmount(() => {
+  if (props.voiceAudio) audio.stopVoice()
+})
+
+/** Stop the spoken line, then bubble `done` so the parent advances. */
+function finish() {
+  if (props.voiceAudio) audio.stopVoice()
+  emit('done')
+}
 
 const paragraphs = computed(() =>
   tl(props.narrative)
@@ -44,7 +61,7 @@ function onTap() {
   if (pIndex.value < paragraphs.value.length - 1) {
     pIndex.value++
   } else {
-    emit('done')
+    finish()
   }
 }
 </script>
@@ -72,7 +89,7 @@ function onTap() {
         type="button"
         class="cinematic__skip"
         data-testid="cinematic-skip"
-        @click.stop="emit('done')"
+        @click.stop="finish"
       >
         {{ t('escape.skip') }} ▸▸
       </button>

@@ -229,6 +229,8 @@
     "continue": "つづける",
     "skip": "スキップ",
     "tap_to_continue": "タップで進む",
+    "audio_on": "音をオンにする",
+    "audio_off": "音をオフにする",
     "hint_free": "ヒント1(無料)",
     "hint_premium": "ヒント2",
     "hint_premium_warn": "ごほうびがコモンに制限されます",

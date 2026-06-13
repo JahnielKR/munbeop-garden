@@ -229,6 +229,8 @@
     "continue": "ต่อไป",
     "skip": "ข้าม",
     "tap_to_continue": "แตะเพื่อไปต่อ",
+    "audio_on": "เปิดเสียง",
+    "audio_off": "ปิดเสียง",
     "hint_free": "คำใบ้ 1 (ฟรี)",
     "hint_premium": "คำใบ้ 2",
     "hint_premium_warn": "จำกัดรางวัลไว้ที่ระดับทั่วไป",

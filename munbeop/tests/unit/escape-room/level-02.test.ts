@@ -1,6 +1,14 @@
 import { describe, it, expect } from 'vitest'
+import { existsSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve } from 'node:path'
 import { LEVEL_02 } from '~/seed/escape-room/level-02'
 import { validateLevel } from '~/lib/escape-room/rules'
+
+const HERE = dirname(fileURLToPath(import.meta.url))
+/** Absolute path to a level-02 audio asset given its seed-relative path ('audio/...'). */
+const audioPath = (rel: string) =>
+  resolve(HERE, '../../../public/escape-room/level-02/', rel)
 
 describe('LEVEL_02 — El templo de la lluvia', () => {
   it('passes validateLevel with zero issues', () => {
@@ -159,5 +167,74 @@ describe('LEVEL_02 — El templo de la lluvia', () => {
     expect(LEVEL_02.intro.es.split('\n\n').length).toBeGreaterThanOrEqual(5)
     expect(LEVEL_02.outro.es.split('\n\n').length).toBeGreaterThanOrEqual(5)
     expect(LEVEL_02.tagline.es.length).toBeGreaterThan(40)
+  })
+
+  // ─── Audio wiring ───────────────────────────────────────────────────────────
+
+  it('wires the intro/outro voice and the victory-climax sfx', () => {
+    expect(LEVEL_02.voiceIntroAudio).toBe('audio/voice/voice-intro.ogg')
+    expect(LEVEL_02.voiceOutroAudio).toBe('audio/voice/voice-outro.ogg')
+    expect(LEVEL_02.bellTollAudio).toBe('audio/sfx-bell-toll.ogg')
+    expect(LEVEL_02.rainStopAudio).toBe('audio/sfx-rain-stop.ogg')
+  })
+
+  it('gives slot-1 candidates a spoken memory line (voice-slot1-mem-1..5)', () => {
+    const slot1 = LEVEL_02.slots[0]
+    expect(slot1?.id).toBe('slot-1')
+    slot1?.candidates.forEach((c, i) => {
+      expect(c.voiceAudio).toBe(`audio/voice/voice-slot1-mem-${i + 1}.ogg`)
+    })
+    expect(slot1?.reactionVoiceAudio).toBe('audio/voice/voice-slot1-correct.ogg')
+  })
+
+  it('gives slot-6 candidates a spoken farewell + a shared soft-reject voice', () => {
+    const slot6 = LEVEL_02.slots[5]
+    expect(slot6?.type).toBe('creation')
+    if (slot6?.type !== 'creation') throw new Error('unreachable')
+    slot6.candidates.forEach((c, i) => {
+      expect(c.voiceAudio).toBe(`audio/voice/voice-slot6-farewell-${i + 1}.ogg`)
+      expect(c.softRejectVoiceAudio).toBe('audio/voice/voice-slot6-softreject.ogg')
+    })
+    expect(slot6.reactionVoiceAudio).toBe('audio/voice/voice-slot6-correct.ogg')
+  })
+
+  it('attaches cosmetic click sfx to the tea, cat, moktak and page hotspots', () => {
+    const sfxById = new Map<string, string | undefined>()
+    for (const room of LEVEL_02.rooms) {
+      for (const h of room.hotspots) sfxById.set(h.id, h.sfx)
+    }
+    expect(sfxById.get('second-cup')).toBe('audio/sfx-tea-pour.ogg')
+    expect(sfxById.get('cat')).toBe('audio/sfx-cat-purr.ogg')
+    expect(sfxById.get('guestbook')).toBe('audio/sfx-brush-sign.ogg')
+    expect(sfxById.get('moktak')).toBe('audio/sfx-moktak.ogg')
+    expect(sfxById.get('diary')).toBe('audio/sfx-paper-page.ogg')
+    expect(sfxById.get('calligraphy')).toBe('audio/sfx-paper-page.ogg')
+    // The bell-rope slot trigger must NOT carry a click sfx (bell rings at victory).
+    expect(sfxById.get('bell-rope')).toBeUndefined()
+  })
+
+  it('every referenced audio file exists on disk under public/escape-room/level-02', () => {
+    const refs = new Set<string>()
+    const add = (p?: string) => {
+      if (p) refs.add(p)
+    }
+    add(LEVEL_02.voiceIntroAudio)
+    add(LEVEL_02.voiceOutroAudio)
+    add(LEVEL_02.bellTollAudio)
+    add(LEVEL_02.rainStopAudio)
+    for (const slot of LEVEL_02.slots) {
+      add(slot.reactionVoiceAudio)
+      for (const c of slot.candidates) {
+        add(c.voiceAudio)
+        if (slot.type === 'creation') add(c.softRejectVoiceAudio)
+      }
+    }
+    for (const beat of LEVEL_02.scriptedBeats ?? []) add(beat.voiceAudio)
+    for (const room of LEVEL_02.rooms) {
+      add(room.ambientAudio)
+      for (const h of room.hotspots) add(h.sfx)
+    }
+    const missing = [...refs].filter((p) => !existsSync(audioPath(p)))
+    expect(missing).toEqual([])
   })
 })
