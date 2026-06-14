@@ -7,7 +7,7 @@ import {
   type Session,
 } from '~/lib/practice'
 import { pickRandomFrom } from '~/lib/srs'
-import { useContextsStore } from '~/stores/contexts'
+import { useContextsStore, MIN_ACTIVE_CONTEXTS } from '~/stores/contexts'
 import { useGrammarStore } from '~/stores/grammar'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
@@ -29,7 +29,7 @@ export function usePractice() {
     error.value = null
     try {
       const activeContexts = contextsStore.active
-      if (activeContexts.length < 3) {
+      if (activeContexts.length < MIN_ACTIVE_CONTEXTS) {
         error.value = t('practice.no_contexts')
         return
       }
