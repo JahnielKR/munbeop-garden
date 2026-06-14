@@ -5,6 +5,7 @@ import { useGrammarStore } from '~/stores/grammar'
 import { useContextsStore } from '~/stores/contexts'
 import { useSrsStore } from '~/stores/srs'
 import { useLogStore } from '~/stores/log'
+import { useSettingsStore } from '~/stores/settings'
 
 /**
  * Thin wrapper around supabase.auth.* with three responsibilities:
@@ -37,6 +38,12 @@ export function useAuth() {
     authStore.setSession(data.session ?? null)
     $supabase.auth.onAuthStateChange(async (event, session) => {
       authStore.setSession(session)
+      // Pull the account's synced preferences once a session exists. Theme
+      // applies immediately (DOM write); locale re-applies when default.vue
+      // (re)mounts on the post-sign-in navigation from /welcome.
+      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
+        await useSettingsStore().hydrate()
+      }
       // After SIGNED_OUT the stores still hold the previous user's data
       // in memory. With no session pickAdapter yields the noop adapter,
       // so hydrating resolves every store to its fallback — that is what

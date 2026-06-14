@@ -123,7 +123,28 @@
     "sign_out": "Sair"
   },
   "settings": {
-    "dark_mode": "Modo escuro"
+    "dark_mode": "Modo escuro",
+    "contexts": {
+      "title": "Contextos de prática",
+      "subtitle": "Escolha quais situações aparecem na prática.",
+      "category": { "formalidad": "Formalidade", "situacional": "Situacional", "custom": "Seus contextos" },
+      "add": "Adicionar contexto",
+      "name_label": "Nome (coreano)",
+      "name_placeholder": "ex. 반말",
+      "scene_label": "Quando se aplica?",
+      "scene_placeholder": "ex. conversando com um amigo próximo",
+      "error_korean": "Use um nome em coreano, ex. 반말.",
+      "error_duplicate": "Já existe um contexto com esse nome.",
+      "error_scene_required": "Adicione uma descrição curta.",
+      "min_active_hint": "Mantenha ao menos 3 ativos para praticar.",
+      "active_count": "{count} ativos",
+      "delete": "Excluir",
+      "delete_confirm_title": "Excluir este contexto?",
+      "delete_confirm_body": "“{name}” será removido dos seus contextos.",
+      "created": "Contexto adicionado.",
+      "deleted": "Contexto excluído.",
+      "cancel": "Cancelar"
+    }
   },
   "welcome": {
     "brand": {

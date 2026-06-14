@@ -3,6 +3,7 @@ import {
   computed,
   ref,
   reactive,
+  readonly,
   watch,
   watchEffect,
   onMounted,
@@ -45,6 +46,7 @@ g.useLocalized = useLocalized
 g.computed = computed
 g.ref = ref
 g.reactive = reactive
+g.readonly = readonly
 g.watch = watch
 g.watchEffect = watchEffect
 g.onMounted = onMounted

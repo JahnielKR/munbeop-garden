@@ -123,7 +123,28 @@
     "sign_out": "Se déconnecter"
   },
   "settings": {
-    "dark_mode": "Mode sombre"
+    "dark_mode": "Mode sombre",
+    "contexts": {
+      "title": "Contextes de pratique",
+      "subtitle": "Choisis les situations qui apparaissent en pratique.",
+      "category": { "formalidad": "Formalité", "situacional": "Situationnel", "custom": "Tes contextes" },
+      "add": "Ajouter un contexte",
+      "name_label": "Nom (coréen)",
+      "name_placeholder": "ex. 반말",
+      "scene_label": "Quand l'utiliser ?",
+      "scene_placeholder": "ex. écrire à un ami proche",
+      "error_korean": "Utilise un nom en coréen, ex. 반말.",
+      "error_duplicate": "Un contexte portant ce nom existe déjà.",
+      "error_scene_required": "Ajoute une courte description.",
+      "min_active_hint": "Garde au moins 3 contextes actifs pour pratiquer.",
+      "active_count": "{count} actifs",
+      "delete": "Supprimer",
+      "delete_confirm_title": "Supprimer ce contexte ?",
+      "delete_confirm_body": "« {name} » sera retiré de tes contextes.",
+      "created": "Contexte ajouté.",
+      "deleted": "Contexte supprimé.",
+      "cancel": "Annuler"
+    }
   },
   "welcome": {
     "brand": {

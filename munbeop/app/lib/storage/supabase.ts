@@ -141,6 +141,15 @@ export class SupabaseAdapter implements StorageAdapter {
         return (rows.length ? rows.map((r) => r.context_id) : fallback) as T
       }
 
+      case STORAGE_KEYS.settings: {
+        const res = await this.client
+          .from('user_settings')
+          .select('prefs')
+          .eq('user_id', this.userId)
+        const rows = ((res as unknown as { data: Array<{ prefs: unknown }> | null }).data) ?? []
+        return (rows.length && rows[0]?.prefs != null ? rows[0].prefs : fallback) as T
+      }
+
       case STORAGE_KEYS.locale:
       default:
         return fallback
@@ -248,6 +257,15 @@ export class SupabaseAdapter implements StorageAdapter {
             .from('user_inactive_contexts')
             .upsert(ids.map((context_id) => ({ user_id: this.userId, context_id })))
         }
+        return
+      }
+
+      case STORAGE_KEYS.settings: {
+        await this.client.from('user_settings').upsert({
+          user_id: this.userId,
+          prefs: value as Record<string, unknown>,
+          updated_at: new Date().toISOString(),
+        })
         return
       }
 
