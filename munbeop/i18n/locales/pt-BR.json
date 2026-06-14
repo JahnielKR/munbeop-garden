@@ -70,6 +70,24 @@
         "achievements": "As conquistas que você pode ganhar chegam em breve.",
         "usage_notes": "Notas de uso detalhadas chegam em breve."
       }
+    },
+    "search": {
+      "placeholder": "Busque um padrão ou seu significado…",
+      "result_count": "{n} resultados",
+      "no_results": "Nenhum padrão corresponde à sua busca.",
+      "clear": "Limpar",
+      "filter_level": "Nível",
+      "filter_all_levels": "Todos os níveis",
+      "filter_category": "Categoria",
+      "filter_all_categories": "Todas as categorias",
+      "active_zone": "Filtrando por: {zone}",
+      "category": {
+        "particle": "Partícula", "ending": "Terminação", "conj": "Conjunção",
+        "expr": "Expressão", "aux": "Auxiliar", "verb": "Verbo", "voice": "Voz",
+        "lex": "Lexical", "nominal": "Nominalizador", "modifier": "Modificador",
+        "copula": "Cópula", "negation": "Negação", "adv": "Adverbial",
+        "indirect": "Discurso indireto", "meta": "Meta"
+      }
     }
   },
   "mastery": {

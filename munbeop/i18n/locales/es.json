@@ -70,6 +70,24 @@
         "achievements": "Los logros que puedes ganar con esta gramática llegarán pronto.",
         "usage_notes": "Las notas de uso detalladas llegarán pronto."
       }
+    },
+    "search": {
+      "placeholder": "Busca un patrón o su significado…",
+      "result_count": "{n} resultados",
+      "no_results": "Ningún patrón coincide con tu búsqueda.",
+      "clear": "Limpiar",
+      "filter_level": "Nivel",
+      "filter_all_levels": "Todos los niveles",
+      "filter_category": "Categoría",
+      "filter_all_categories": "Todas las categorías",
+      "active_zone": "Filtrando por: {zone}",
+      "category": {
+        "particle": "Partícula", "ending": "Terminación", "conj": "Conjunción",
+        "expr": "Expresión", "aux": "Auxiliar", "verb": "Verbo", "voice": "Voz",
+        "lex": "Léxico", "nominal": "Nominalizador", "modifier": "Modificador",
+        "copula": "Cópula", "negation": "Negación", "adv": "Adverbial",
+        "indirect": "Estilo indirecto", "meta": "Meta"
+      }
     }
   },
   "mastery": {
