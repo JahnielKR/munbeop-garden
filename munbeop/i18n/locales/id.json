@@ -217,7 +217,12 @@
       "name": "???",
       "desc": "Permainan ketiga sedang tumbuh di rumah kaca…"
     },
-    "coming_soon": "SEGERA"
+    "coming_soon": "SEGERA",
+    "exit": "Kembali ke Latihan",
+    "exit_confirm_title": "Keluar dari permainan?",
+    "exit_confirm_body": "Kamu akan kehilangan progres ronde ini.",
+    "exit_confirm_leave": "Keluar",
+    "exit_confirm_cancel": "Batal"
   },
   "escape": {
     "book_lead": "Buka buku catatan dan pilih ceritamu.",

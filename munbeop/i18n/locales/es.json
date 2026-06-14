@@ -217,7 +217,12 @@
       "name": "???",
       "desc": "Un tercer juego germina en el invernadero…"
     },
-    "coming_soon": "PRÓXIMAMENTE"
+    "coming_soon": "PRÓXIMAMENTE",
+    "exit": "Volver a Práctica",
+    "exit_confirm_title": "¿Salir del juego?",
+    "exit_confirm_body": "Perderás el progreso de esta ronda.",
+    "exit_confirm_leave": "Salir",
+    "exit_confirm_cancel": "Cancelar"
   },
   "escape": {
     "book_lead": "Hojea la libreta y elige tu historia.",

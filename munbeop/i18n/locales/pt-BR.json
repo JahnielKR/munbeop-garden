@@ -217,7 +217,12 @@
       "name": "???",
       "desc": "Um terceiro jogo está brotando na estufa…"
     },
-    "coming_soon": "EM BREVE"
+    "coming_soon": "EM BREVE",
+    "exit": "Voltar à Prática",
+    "exit_confirm_title": "Sair do jogo?",
+    "exit_confirm_body": "Você perderá o progresso desta rodada.",
+    "exit_confirm_leave": "Sair",
+    "exit_confirm_cancel": "Cancelar"
   },
   "escape": {
     "book_lead": "Folheie o caderno e escolha sua história.",

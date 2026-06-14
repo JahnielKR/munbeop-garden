@@ -217,7 +217,12 @@
       "name": "???",
       "desc": "Trò chơi thứ ba đang nảy mầm trong nhà kính…"
     },
-    "coming_soon": "SẮP RA MẮT"
+    "coming_soon": "SẮP RA MẮT",
+    "exit": "Quay lại Luyện tập",
+    "exit_confirm_title": "Thoát trò chơi?",
+    "exit_confirm_body": "Bạn sẽ mất tiến trình của vòng này.",
+    "exit_confirm_leave": "Thoát",
+    "exit_confirm_cancel": "Hủy"
   },
   "escape": {
     "book_lead": "Lật cuốn sổ và chọn câu chuyện của bạn.",

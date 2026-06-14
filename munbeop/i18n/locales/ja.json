@@ -217,7 +217,12 @@
       "name": "???",
       "desc": "3つ目のゲームは温室で芽生え中…"
     },
-    "coming_soon": "近日公開"
+    "coming_soon": "近日公開",
+    "exit": "練習に戻る",
+    "exit_confirm_title": "ゲームを終了しますか？",
+    "exit_confirm_body": "このラウンドの進行状況が失われます。",
+    "exit_confirm_leave": "終了",
+    "exit_confirm_cancel": "キャンセル"
   },
   "escape": {
     "book_lead": "ノートをめくって物語を選ぼう。",

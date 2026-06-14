@@ -217,7 +217,12 @@
       "name": "???",
       "desc": "Un troisième jeu germe dans la serre…"
     },
-    "coming_soon": "BIENTÔT"
+    "coming_soon": "BIENTÔT",
+    "exit": "Retour à la pratique",
+    "exit_confirm_title": "Quitter le jeu ?",
+    "exit_confirm_body": "Vous perdrez votre progression dans cette manche.",
+    "exit_confirm_leave": "Quitter",
+    "exit_confirm_cancel": "Annuler"
   },
   "escape": {
     "book_lead": "Feuillette le carnet et choisis ton histoire.",

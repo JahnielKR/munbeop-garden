@@ -217,7 +217,12 @@
       "name": "???",
       "desc": "A third game is sprouting in the greenhouse…"
     },
-    "coming_soon": "COMING SOON"
+    "coming_soon": "COMING SOON",
+    "exit": "Back to Practice",
+    "exit_confirm_title": "Leave the game?",
+    "exit_confirm_body": "You'll lose your progress in this round.",
+    "exit_confirm_leave": "Leave",
+    "exit_confirm_cancel": "Cancel"
   },
   "escape": {
     "book_lead": "Flip through the notebook and pick your story.",

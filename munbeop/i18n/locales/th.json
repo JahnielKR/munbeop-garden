@@ -217,7 +217,12 @@
       "name": "???",
       "desc": "เกมที่สามกำลังงอกในเรือนกระจก…"
     },
-    "coming_soon": "เร็ว ๆ นี้"
+    "coming_soon": "เร็ว ๆ นี้",
+    "exit": "กลับไปฝึก",
+    "exit_confirm_title": "ออกจากเกมไหม?",
+    "exit_confirm_body": "คุณจะเสียความคืบหน้าของรอบนี้",
+    "exit_confirm_leave": "ออก",
+    "exit_confirm_cancel": "ยกเลิก"
   },
   "escape": {
     "book_lead": "พลิกสมุดและเลือกเรื่องราวของคุณ",
