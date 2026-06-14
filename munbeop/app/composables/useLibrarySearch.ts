@@ -55,8 +55,11 @@ export function useLibrarySearch() {
   // Merge a patch into the current query (preserve ?grammar= etc.), dropping
   // any key whose value is undefined. Uses replace to avoid history spam.
   function mergeQuery(patch: Record<string, string | number | undefined>) {
-    const next: Record<string, unknown> = { ...route.query, ...patch }
-    for (const k of Object.keys(next)) if (next[k] === undefined) delete next[k]
+    const merged: Record<string, unknown> = { ...route.query, ...patch }
+    const next: Record<string, unknown> = {}
+    for (const [k, v] of Object.entries(merged)) {
+      if (v !== undefined) next[k] = v
+    }
     void router.replace({ query: next as never })
   }
 
