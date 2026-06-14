@@ -16,6 +16,7 @@ function makeMockClient() {
     user_custom_grammars: [],
     user_custom_contexts: [],
     user_inactive_contexts: [],
+    user_settings: [],
   }
   const writes: Array<{ table: string; op: 'upsert' | 'delete'; payload: unknown }> = []
   return {
@@ -120,6 +121,17 @@ describe('SupabaseAdapter', () => {
       // No reads/writes recorded for locale.
       expect(client.writes.filter((w) => w.table.includes('locale'))).toHaveLength(0)
     })
+
+    it('settings: returns the prefs blob of the user row', async () => {
+      client.data.user_settings = [{ prefs: { theme: 'dark', locale: 'es' } }]
+      const v = (await adapter.read(STORAGE_KEYS.settings, null)) as { theme: string; locale: string } | null
+      expect(v).toEqual({ theme: 'dark', locale: 'es' })
+    })
+
+    it('settings: returns fallback when the user has no row', async () => {
+      const v = await adapter.read(STORAGE_KEYS.settings, { theme: 'light', locale: 'en' })
+      expect(v).toEqual({ theme: 'light', locale: 'en' })
+    })
   })
 
   describe('write', () => {
@@ -170,6 +182,15 @@ describe('SupabaseAdapter', () => {
       const before = client.writes.length
       await adapter.write(STORAGE_KEYS.locale, 'ja')
       expect(client.writes.length).toBe(before)
+    })
+
+    it('settings: upserts the prefs blob with user_id', async () => {
+      await adapter.write(STORAGE_KEYS.settings, { theme: 'dark', locale: 'ja' })
+      const upsert = client.writes.find((w) => w.table === 'user_settings' && w.op === 'upsert')
+      expect(upsert).toBeDefined()
+      const row = upsert!.payload as { user_id: string; prefs: { theme: string; locale: string } }
+      expect(row.user_id).toBe(USER)
+      expect(row.prefs).toEqual({ theme: 'dark', locale: 'ja' })
     })
   })
 
