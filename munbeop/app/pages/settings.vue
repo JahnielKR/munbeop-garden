@@ -4,10 +4,14 @@ import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Field from '~/components/ui/Field.vue'
 import Toggle from '~/components/ui/Toggle.vue'
 import ContextManager from '~/components/settings/ContextManager.vue'
+import AboutSection from '~/components/settings/AboutSection.vue'
+import Button from '~/components/ui/Button.vue'
+import { useDataExport } from '~/composables/useDataExport'
 import { useSettingsStore } from '~/stores/settings'
 const { t } = useI18n()
 const { theme } = useTheme()
 const settings = useSettingsStore()
+const { exportData } = useDataExport()
 const isDark = computed<boolean>({
   get: () => theme.value === 'dark',
   set: (v) => {
@@ -38,6 +42,15 @@ const isDark = computed<boolean>({
     <div class="card card--wide">
       <ContextManager />
     </div>
+    <div class="card">
+      <div class="data-card">
+        <BilingualTitle ko="데이터" :latin="t('settings.data.title')" level="h2" />
+        <Button size="sm" @click="exportData">{{ t('settings.data.export') }}</Button>
+      </div>
+    </div>
+    <div class="card card--wide">
+      <AboutSection />
+    </div>
     <div class="empty">{{ t('empty.settings') }}</div>
   </div>
 </template>
@@ -56,6 +69,12 @@ const isDark = computed<boolean>({
 }
 .card--wide {
   max-width: 560px;
+}
+.data-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
 }
 .empty {
   background: var(--paper-warm);

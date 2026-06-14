@@ -18,7 +18,7 @@ interface Policy {
 const policies: Policy[] = [
   {
     heading: 'Privacy',
-    body: 'We store your email, your sentences, and your mastery progress. We do not sell your data. Local-only mode keeps everything on your device until you sign in.',
+    body: 'We store your email, your sentences, and your mastery progress, and sync them to your account so they follow you across devices. We do not sell your data.',
   },
   {
     heading: 'Terms',

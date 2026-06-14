@@ -144,7 +144,9 @@
       "created": "Contexto adicionado.",
       "deleted": "Contexto excluído.",
       "cancel": "Cancelar"
-    }
+    },
+    "about": { "title": "Sobre e jurídico", "contact": "Contato" },
+    "data": { "title": "Dados e privacidade", "export": "Exportar meus dados (.json)", "exported": "Seus dados estão sendo baixados.", "export_error": "Não foi possível exportar seus dados. Tente novamente." }
   },
   "welcome": {
     "brand": {
