@@ -17,5 +17,5 @@ export interface Context {
  * badges (반말, 존댓말, …).
  */
 export function isHangulName(value: string): boolean {
-  return /[가-힣ᄀ-ᇿ㄰-㆏]/.test(value)
+  return /[가-힣ᄀ-ᇿㄱ-ㆎ]/.test(value)
 }
