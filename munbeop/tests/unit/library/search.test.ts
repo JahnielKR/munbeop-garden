@@ -83,4 +83,30 @@ describe('searchLibrary', () => {
     const r = searchLibrary(items, { query: '', level: null, category: null, themeKos: new Set(['-더라']) }, ctxEn)
     expect(r.map((x) => x.ko)).toEqual(['-더라'])
   })
+
+  it('matches only the trans field (lowest tier) and returns that item', () => {
+    const r = searchLibrary(items, { query: 'sleeping', ...noFilter }, ctxEn)
+    expect(r.map((x) => x.ko)).toEqual(['-기 전에'])
+  })
+
+  it('matches the Korean example field', () => {
+    const r = searchLibrary(items, { query: '자기', ...noFilter }, ctxEn)
+    expect(r.map((x) => x.ko)).toEqual(['-기 전에'])
+  })
+
+  it('orders ko matches above meaning-only matches', () => {
+    const fixture = [
+      g('meaning-only', 'contains zzz keyword'),
+      g('zzz', 'a pattern'),
+    ]
+    const ctx = { locale: 'en' as const, levelOf: () => undefined, categoryOf: () => undefined }
+    const r = searchLibrary(fixture, { query: 'zzz', ...noFilter }, ctx)
+    expect(r.map((x) => x.ko)).toEqual(['zzz', 'meaning-only'])
+  })
+
+  it('falls back to the en meaning when the active locale value is empty', () => {
+    // item 0 has es:'' → localized() falls back to en 'topic particle…' which contains 'topic'
+    const r = searchLibrary(items, { query: 'topic', ...noFilter }, ctxEs)
+    expect(r.map((x) => x.ko)).toEqual(['은/는'])
+  })
 })
