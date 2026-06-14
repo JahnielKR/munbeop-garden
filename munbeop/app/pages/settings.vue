@@ -3,6 +3,7 @@ import LocaleSwitcher from '~/components/layout/LocaleSwitcher.vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Field from '~/components/ui/Field.vue'
 import Toggle from '~/components/ui/Toggle.vue'
+import ContextManager from '~/components/settings/ContextManager.vue'
 const { t } = useI18n()
 const { theme, setTheme } = useTheme()
 const isDark = computed<boolean>({
@@ -30,6 +31,9 @@ const isDark = computed<boolean>({
         />
       </Field>
     </div>
+    <div class="card card--wide">
+      <ContextManager />
+    </div>
     <div class="empty">{{ t('empty.settings') }}</div>
   </div>
 </template>
@@ -45,6 +49,9 @@ const isDark = computed<boolean>({
   border: 2px solid var(--border);
   padding: 20px;
   max-width: 320px;
+}
+.card--wide {
+  max-width: 560px;
 }
 .empty {
   background: var(--paper-warm);
