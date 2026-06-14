@@ -60,5 +60,22 @@ export const useContextsStore = defineStore('contexts', () => {
     return ctx
   }
 
-  return { custom, inactiveIds, all, active, byId, hydrate, toggleActive, addCustom }
+  async function removeCustom(id: string): Promise<boolean> {
+    const target = custom.value.find((c) => c.id === id)
+    if (!target) return false // built-in or unknown id — not removable
+    const isActive = !inactiveIds.value.includes(id)
+    if (isActive && active.value.length <= MIN_ACTIVE_CONTEXTS) {
+      return false // removing an active context can't drop us below the minimum
+    }
+    const storage = useStorageAdapter()
+    custom.value = custom.value.filter((c) => c.id !== id)
+    if (inactiveIds.value.includes(id)) {
+      inactiveIds.value = inactiveIds.value.filter((x) => x !== id)
+      await storage.write(STORAGE_KEYS.inactiveContextIds, inactiveIds.value)
+    }
+    await storage.write(STORAGE_KEYS.customContexts, custom.value)
+    return true
+  }
+
+  return { custom, inactiveIds, all, active, byId, hydrate, toggleActive, addCustom, removeCustom }
 })
