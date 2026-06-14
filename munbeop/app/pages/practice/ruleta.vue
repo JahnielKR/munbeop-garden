@@ -6,6 +6,7 @@ import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Bomi from '~/components/bomi/Bomi.vue'
 import DeckPicker from '~/components/games/ruleta/DeckPicker.vue'
 import CardDraw from '~/components/games/ruleta/CardDraw.vue'
+import GameExitButton from '~/components/games/GameExitButton.vue'
 import { buildDeckOptions, deckColorVar, type DrawCard } from '~/components/games/ruleta/cards'
 import { useBomiStore } from '~/stores/bomi'
 import { useGrammarStore } from '~/stores/grammar'
@@ -166,6 +167,7 @@ async function onRestart() {
 
 <template>
   <div class="page">
+    <GameExitButton :confirm="phase !== 'pick'" />
     <BilingualTitle ko="연습" :latin="t('title.practice')" />
 
     <div class="bomi-row">

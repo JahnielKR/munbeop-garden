@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import LevelBook from '~/components/escape-room/LevelBook.vue'
+import GameExitButton from '~/components/games/GameExitButton.vue'
 import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
 
 /**
@@ -22,6 +23,7 @@ function onStart(levelId: string) {
 
 <template>
   <div class="er-index">
+    <GameExitButton />
     <BilingualTitle ko="탈출" latin="Escape Room" />
     <p class="er-index__lead">{{ t('escape.book_lead') }}</p>
     <LevelBook :entries="LEVEL_REGISTRY" @start="onStart" />
