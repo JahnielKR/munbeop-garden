@@ -8,17 +8,17 @@
  * sits inside the LADX surface like the Input primitive does.
  */
 import type { LocaleCode } from '~/lib/domain'
-import { useLocaleStore } from '~/stores/locale'
+import { useSettingsStore } from '~/stores/settings'
 
 const { locale, locales, setLocale, t } = useI18n()
-const localeStore = useLocaleStore()
+const settings = useSettingsStore()
 
 const options = computed(() => locales.value as Array<{ code: string; name: string }>)
 
 function onChange(e: Event) {
   const code = (e.target as HTMLSelectElement).value as LocaleCode
   void setLocale(code)
-  localeStore.set(code)
+  void settings.setLocale(code)
 }
 </script>
 
