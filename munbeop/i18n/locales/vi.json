@@ -144,7 +144,9 @@
       "created": "Đã thêm ngữ cảnh.",
       "deleted": "Đã xóa ngữ cảnh.",
       "cancel": "Hủy"
-    }
+    },
+    "about": { "title": "Giới thiệu & pháp lý", "contact": "Liên hệ" },
+    "data": { "title": "Dữ liệu & quyền riêng tư", "export": "Xuất dữ liệu của tôi (.json)", "exported": "Dữ liệu của bạn đang được tải xuống.", "export_error": "Không thể xuất dữ liệu của bạn. Thử lại." }
   },
   "welcome": {
     "brand": {
