@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import Badge from '~/components/ui/Badge.vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
-import Card from '~/components/ui/Card.vue'
 import Modal from '~/components/ui/Modal.vue'
-import MasteryIcon from '~/components/practice/MasteryIcon.vue'
+import GrammarCard from '~/components/library/GrammarCard.vue'
 import GrammarStudySheet from '~/components/library/GrammarStudySheet.vue'
 import { getMasteryInfo } from '~/lib/srs'
 import { TOPIK_LEVELS, type TopikLevel } from '~/lib/domain'
@@ -96,12 +94,6 @@ const orphans = computed(() => {
     })
 })
 
-function accentFor(masteryCls: string) {
-  if (masteryCls === 'mastery-tree') return 'jade'
-  if (masteryCls === 'mastery-plant') return 'gold'
-  return 'sky'
-}
-
 async function onToggleDeck(deckId: string) {
   await grammarStore.toggleDeckCollapsed(deckId)
 }
@@ -148,24 +140,12 @@ async function onCardClick(ko: string) {
           class="deck-body"
         >
           <div class="grid">
-            <Card
+            <GrammarCard
               v-for="item in section.items"
               :key="item.grammar.ko"
-              :accent="accentFor(item.info.cls)"
-              clickable
+              :grammar="item.grammar"
               @click="onCardClick(item.grammar.ko)"
-            >
-              <div class="item__head">
-                <span class="item__ko">{{ item.grammar.ko }}</span>
-                <Badge>
-                  <MasteryIcon :level="item.level" :size="10" />
-                  <span>{{ t(item.info.labelKey) }}</span>
-                </Badge>
-              </div>
-              <div class="item__meaning">{{ tl(item.grammar.meaning) }}</div>
-              <div v-if="item.grammar.example" class="item__example">{{ item.grammar.example }}</div>
-              <div v-if="item.grammar.trans" class="item__trans">{{ tl(item.grammar.trans) }}</div>
-            </Card>
+            />
           </div>
         </div>
       </Transition>
@@ -179,24 +159,12 @@ async function onCardClick(ko: string) {
       </header>
       <div class="deck-body">
         <div class="grid">
-          <Card
+          <GrammarCard
             v-for="item in orphans"
             :key="item.grammar.ko"
-            :accent="accentFor(item.info.cls)"
-            clickable
+            :grammar="item.grammar"
             @click="onCardClick(item.grammar.ko)"
-          >
-            <div class="item__head">
-              <span class="item__ko">{{ item.grammar.ko }}</span>
-              <Badge>
-                <MasteryIcon :level="item.level" :size="10" />
-                <span>{{ t(item.info.labelKey) }}</span>
-              </Badge>
-            </div>
-            <div class="item__meaning">{{ tl(item.grammar.meaning) }}</div>
-            <div v-if="item.grammar.example" class="item__example">{{ item.grammar.example }}</div>
-            <div v-if="item.grammar.trans" class="item__trans">{{ tl(item.grammar.trans) }}</div>
-          </Card>
+          />
         </div>
       </div>
     </section>
@@ -379,34 +347,4 @@ async function onCardClick(ko: string) {
   opacity: 0;
 }
 
-.item__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-.item__ko {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  color: var(--ink);
-}
-.item__meaning {
-  font-family: 'Inter', sans-serif;
-  color: var(--ink-soft);
-  font-size: 14px;
-}
-.item__example {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 14px;
-  color: var(--ink);
-  margin-top: 8px;
-}
-.item__trans {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: var(--ink-soft);
-  margin-top: 2px;
-}
 </style>
