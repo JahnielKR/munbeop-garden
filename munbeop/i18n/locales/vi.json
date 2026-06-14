@@ -158,8 +158,6 @@
     "tree_locked": "Đạt {pct}% ở cấp {n} để trồng cây này",
     "zone_locked": "Hoàn thành \"{zone}\" trước đã",
     "zone_overflow": "+{n} nữa",
-    "zone_filter": "Đang hiển thị vùng: {zone}",
-    "zone_filter_clear": "Hiện tất cả",
     "unlock": {
       "sprout": "Cây {tree} của bạn đang nảy mầm!",
       "leafy": "Cây {tree} của bạn đang rậm lá!",

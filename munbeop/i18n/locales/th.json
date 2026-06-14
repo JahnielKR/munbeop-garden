@@ -158,8 +158,6 @@
     "tree_locked": "ไปให้ถึง {pct}% ในระดับ {n} เพื่อปลูกต้นไม้ต้นนี้",
     "zone_locked": "ทำ \"{zone}\" ให้เสร็จก่อน",
     "zone_overflow": "อีก {n} โซน",
-    "zone_filter": "กำลังแสดงโซน: {zone}",
-    "zone_filter_clear": "แสดงทั้งหมด",
     "unlock": {
       "sprout": "{tree} ของคุณกำลังแตกหน่อ!",
       "leafy": "{tree} ของคุณใบดกขึ้นแล้ว!",

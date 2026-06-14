@@ -158,8 +158,6 @@
     "tree_locked": "Chegue a {pct}% no nível {n} para plantar esta árvore",
     "zone_locked": "Complete \"{zone}\" primeiro",
     "zone_overflow": "+{n} mais",
-    "zone_filter": "Mostrando zona: {zone}",
-    "zone_filter_clear": "Mostrar tudo",
     "unlock": {
       "sprout": "Sua {tree} está brotando!",
       "leafy": "Sua {tree} está ficando frondosa!",

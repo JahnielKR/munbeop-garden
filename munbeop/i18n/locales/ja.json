@@ -158,8 +158,6 @@
     "tree_locked": "レベル{n}で{pct}%に達するとこの木を植えられます",
     "zone_locked": "先に「{zone}」を完了しよう",
     "zone_overflow": "ほか{n}件",
-    "zone_filter": "表示中のゾーン：{zone}",
-    "zone_filter_clear": "すべて表示",
     "unlock": {
       "sprout": "{tree}が芽吹き始めた！",
       "leafy": "{tree}の葉が茂ってきた！",

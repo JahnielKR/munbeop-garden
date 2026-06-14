@@ -158,8 +158,6 @@
     "tree_locked": "Atteins {pct}% au niveau {n} pour planter cet arbre",
     "zone_locked": "Termine d'abord « {zone} »",
     "zone_overflow": "+{n} autres",
-    "zone_filter": "Zone affichée : {zone}",
-    "zone_filter_clear": "Tout afficher",
     "unlock": {
       "sprout": "Ton {tree} bourgeonne !",
       "leafy": "Ton {tree} se couvre de feuilles !",

@@ -158,8 +158,6 @@
     "tree_locked": "Capai {pct}% di level {n} untuk menanam pohon ini",
     "zone_locked": "Selesaikan \"{zone}\" dulu",
     "zone_overflow": "+{n} lagi",
-    "zone_filter": "Menampilkan zona: {zone}",
-    "zone_filter_clear": "Tampilkan semua",
     "unlock": {
       "sprout": "{tree} milikmu mulai bertunas!",
       "leafy": "{tree} milikmu makin rimbun!",
