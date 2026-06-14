@@ -1,111 +1,39 @@
 <script setup lang="ts">
-import Badge from '~/components/ui/Badge.vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
-import Card from '~/components/ui/Card.vue'
 import Modal from '~/components/ui/Modal.vue'
-import MasteryIcon from '~/components/practice/MasteryIcon.vue'
 import GrammarStudySheet from '~/components/library/GrammarStudySheet.vue'
-import { getMasteryInfo } from '~/lib/srs'
-import { TOPIK_LEVELS, type TopikLevel } from '~/lib/domain'
+import GrammarCard from '~/components/library/GrammarCard.vue'
+import LibrarySearchBar from '~/components/library/LibrarySearchBar.vue'
 import { useGrammarStore } from '~/stores/grammar'
-import { useSrsStore } from '~/stores/srs'
 import { useGrammarModal } from '~/composables/useGrammarModal'
-import { useTopikSpine } from '~/composables/useTopikSpine'
+import { useLibrarySearch } from '~/composables/useLibrarySearch'
 
 const grammarStore = useGrammarStore()
-const srsStore = useSrsStore()
 const { t } = useI18n()
-const { tl } = useLocalized()
 const { selected, isOpen, open, close } = useGrammarModal()
+const { query, level, category, zoneLabel, isFiltering, results, setLevel, setCategory, clear } =
+  useLibrarySearch()
 
-/**
- * Garden zone filter (garden plan Fase 4.4): `?theme=<spineThemeId>` or
- * `?level=<1-6>` narrows the library to the matching spine items. Decks
- * keep their structure; sections that end up empty disappear (existing
- * behavior). The banner clears the filter without leaving the page.
- */
-const route = useRoute()
-const { itemsByTheme, itemsByLevel } = useTopikSpine()
-
-const queryLevel = computed<TopikLevel | null>(() => {
-  const n = Number(route.query.level)
-  return (TOPIK_LEVELS as readonly number[]).includes(n) ? (n as TopikLevel) : null
-})
-
-const zoneFilter = computed<{ kos: Set<string>; label: string } | null>(() => {
-  const theme = typeof route.query.theme === 'string' ? route.query.theme : null
-  if (theme) {
-    const items = itemsByTheme(theme)
-    const src = items[0]?.source
-    if (items.length > 0) {
-      return {
-        kos: new Set(items.map((i) => i.ko)),
-        label: src?.kind === 'topik' ? src.themeTitle : theme,
-      }
-    }
-  }
-  if (queryLevel.value !== null) {
-    return {
-      kos: new Set(itemsByLevel(queryLevel.value).map((i) => i.ko)),
-      label: t('garden.level', { n: queryLevel.value }),
-    }
-  }
-  return null
-})
-
-function clearZoneFilter() {
-  void navigateTo({ path: '/library' })
-}
-
-const inZone = (ko: string) => !zoneFilter.value || zoneFilter.value.kos.has(ko)
-
-/**
- * Group items by deck, ordered by `deck.order`.
- *
- * Empty decks are dropped from the view. Excluded decks (toggled off by the
- * user) are still rendered so toggling them on in the UI brings them back —
- * but if a deck happens to have no matching items at all, it's hidden.
- */
+/** Grouped view (shown when not filtering): decks in order, empty decks dropped. */
 const sections = computed(() => {
   const sortedDecks = [...grammarStore.decks].sort((a, b) => a.order - b.order)
   return sortedDecks
-    .map((deck) => {
-      const items = grammarStore.items
-        .filter((g) => g.deckId === deck.id && inZone(g.ko))
-        .map((g) => {
-          const level = srsStore.ensure(g.ko).mastery
-          return {
-            grammar: g,
-            level,
-            info: getMasteryInfo(level),
-          }
-        })
-      return { deck, items }
-    })
+    .map((deck) => ({
+      deck,
+      items: grammarStore.items.filter((g) => g.deckId === deck.id),
+    }))
     .filter((s) => s.items.length > 0)
 })
 
-/** Items whose deckId doesn't match any current deck — render under a fallback section. */
+/** Items whose deckId matches no current deck — rendered under a fallback section. */
 const orphans = computed(() => {
   const known = new Set(grammarStore.decks.map((d) => d.id))
-  return grammarStore.items
-    .filter((g) => !known.has(g.deckId) && inZone(g.ko))
-    .map((g) => {
-      const level = srsStore.ensure(g.ko).mastery
-      return { grammar: g, level, info: getMasteryInfo(level) }
-    })
+  return grammarStore.items.filter((g) => !known.has(g.deckId))
 })
-
-function accentFor(masteryCls: string) {
-  if (masteryCls === 'mastery-tree') return 'jade'
-  if (masteryCls === 'mastery-plant') return 'gold'
-  return 'sky'
-}
 
 async function onToggleDeck(deckId: string) {
   await grammarStore.toggleDeckCollapsed(deckId)
 }
-
 async function onCardClick(ko: string) {
   await open(ko)
 }
@@ -116,90 +44,82 @@ async function onCardClick(ko: string) {
     <BilingualTitle ko="도서관" :latin="t('title.library')" />
     <p class="lead">{{ t('library.lead') }}</p>
 
-    <div v-if="zoneFilter" class="zone-filter">
-      <span class="zone-filter__label">{{ t('garden.zone_filter', { zone: zoneFilter.label }) }}</span>
-      <button type="button" class="zone-filter__clear" @click="clearZoneFilter">
-        {{ t('garden.zone_filter_clear') }}
-      </button>
-    </div>
+    <LibrarySearchBar
+      v-model:query="query"
+      :level="level"
+      :category="category"
+      :zone-label="zoneLabel"
+      :result-count="results.length"
+      @set-level="setLevel"
+      @set-category="setCategory"
+      @clear="clear"
+    />
 
-    <section
-      v-for="section in sections"
-      :key="section.deck.id"
-      class="deck-section"
-      :class="`deck-section--${section.deck.colorId}`"
-    >
-      <button
-        type="button"
-        class="deck-header"
-        :aria-expanded="!section.deck.collapsed"
-        :aria-controls="`deck-body-${section.deck.id}`"
-        @click="onToggleDeck(section.deck.id)"
+    <!-- Filtering: a single relevance-ranked flat list. -->
+    <template v-if="isFiltering">
+      <p v-if="results.length === 0" class="empty">{{ t('library.search.no_results') }}</p>
+      <div v-else class="grid">
+        <GrammarCard
+          v-for="g in results"
+          :key="g.ko"
+          :grammar="g"
+          @click="onCardClick(g.ko)"
+        />
+      </div>
+    </template>
+
+    <!-- Default: grouped, collapsible decks. -->
+    <template v-else>
+      <section
+        v-for="section in sections"
+        :key="section.deck.id"
+        class="deck-section"
+        :class="`deck-section--${section.deck.colorId}`"
       >
-        <span class="deck-header__caret" :class="{ 'deck-header__caret--open': !section.deck.collapsed }" aria-hidden="true">▸</span>
-        <h2 class="deck-title">{{ section.deck.name }}</h2>
-        <span class="deck-count">{{ section.items.length }}</span>
-      </button>
-
-      <Transition name="collapse">
-        <div
-          v-show="!section.deck.collapsed"
-          :id="`deck-body-${section.deck.id}`"
-          class="deck-body"
+        <button
+          type="button"
+          class="deck-header"
+          :aria-expanded="!section.deck.collapsed"
+          :aria-controls="`deck-body-${section.deck.id}`"
+          @click="onToggleDeck(section.deck.id)"
         >
+          <span class="deck-header__caret" :class="{ 'deck-header__caret--open': !section.deck.collapsed }" aria-hidden="true">▸</span>
+          <h2 class="deck-title">{{ section.deck.name }}</h2>
+          <span class="deck-count">{{ section.items.length }}</span>
+        </button>
+
+        <Transition name="collapse">
+          <div v-show="!section.deck.collapsed" :id="`deck-body-${section.deck.id}`" class="deck-body">
+            <div class="grid">
+              <GrammarCard
+                v-for="item in section.items"
+                :key="item.ko"
+                :grammar="item"
+                @click="onCardClick(item.ko)"
+              />
+            </div>
+          </div>
+        </Transition>
+      </section>
+
+      <section v-if="orphans.length" class="deck-section deck-section--orphan">
+        <header class="deck-header deck-header--static">
+          <span class="deck-header__caret" aria-hidden="true">▸</span>
+          <h2 class="deck-title">기타 (Otros)</h2>
+          <span class="deck-count">{{ orphans.length }}</span>
+        </header>
+        <div class="deck-body">
           <div class="grid">
-            <Card
-              v-for="item in section.items"
-              :key="item.grammar.ko"
-              :accent="accentFor(item.info.cls)"
-              clickable
-              @click="onCardClick(item.grammar.ko)"
-            >
-              <div class="item__head">
-                <span class="item__ko">{{ item.grammar.ko }}</span>
-                <Badge>
-                  <MasteryIcon :level="item.level" :size="10" />
-                  <span>{{ t(item.info.labelKey) }}</span>
-                </Badge>
-              </div>
-              <div class="item__meaning">{{ tl(item.grammar.meaning) }}</div>
-              <div v-if="item.grammar.example" class="item__example">{{ item.grammar.example }}</div>
-              <div v-if="item.grammar.trans" class="item__trans">{{ tl(item.grammar.trans) }}</div>
-            </Card>
+            <GrammarCard
+              v-for="item in orphans"
+              :key="item.ko"
+              :grammar="item"
+              @click="onCardClick(item.ko)"
+            />
           </div>
         </div>
-      </Transition>
-    </section>
-
-    <section v-if="orphans.length" class="deck-section deck-section--orphan">
-      <header class="deck-header deck-header--static">
-        <span class="deck-header__caret" aria-hidden="true">▸</span>
-        <h2 class="deck-title">기타 (Otros)</h2>
-        <span class="deck-count">{{ orphans.length }}</span>
-      </header>
-      <div class="deck-body">
-        <div class="grid">
-          <Card
-            v-for="item in orphans"
-            :key="item.grammar.ko"
-            :accent="accentFor(item.info.cls)"
-            clickable
-            @click="onCardClick(item.grammar.ko)"
-          >
-            <div class="item__head">
-              <span class="item__ko">{{ item.grammar.ko }}</span>
-              <Badge>
-                <MasteryIcon :level="item.level" :size="10" />
-                <span>{{ t(item.info.labelKey) }}</span>
-              </Badge>
-            </div>
-            <div class="item__meaning">{{ tl(item.grammar.meaning) }}</div>
-            <div v-if="item.grammar.example" class="item__example">{{ item.grammar.example }}</div>
-            <div v-if="item.grammar.trans" class="item__trans">{{ tl(item.grammar.trans) }}</div>
-          </Card>
-        </div>
-      </div>
-    </section>
+      </section>
+    </template>
 
     <Modal
       :open="isOpen"
@@ -223,39 +143,9 @@ async function onCardClick(ko: string) {
   color: var(--ink-soft);
 }
 
-/* garden zone filter banner — pixel chip + clear action */
-.zone-filter {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 10px 14px;
-  background: var(--paper-deep, var(--paper));
-  border: 2px solid var(--ink-line);
-  box-shadow: 2px 2px 0 var(--shadow-cream);
-}
-.zone-filter__label {
-  font-family: 'Inter', 'Noto Sans KR', sans-serif;
-  font-size: 13px;
-  color: var(--ink);
-  font-weight: 600;
-}
-.zone-filter__clear {
-  margin-left: auto;
-  padding: 6px 10px;
-  background: var(--paper);
-  color: var(--ink);
-  border: 2px solid var(--ink-line);
-  font-family: 'Press Start 2P', 'Noto Sans KR', monospace;
-  font-size: 8px;
-  cursor: pointer;
-}
-.zone-filter__clear:hover {
-  background: var(--hover-bg);
-}
-.zone-filter__clear:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
+.empty {
+  font-family: 'Inter', sans-serif;
+  color: var(--ink-soft);
 }
 
 .deck-section {
@@ -379,34 +269,4 @@ async function onCardClick(ko: string) {
   opacity: 0;
 }
 
-.item__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-.item__ko {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  color: var(--ink);
-}
-.item__meaning {
-  font-family: 'Inter', sans-serif;
-  color: var(--ink-soft);
-  font-size: 14px;
-}
-.item__example {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 14px;
-  color: var(--ink);
-  margin-top: 8px;
-}
-.item__trans {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: var(--ink-soft);
-  margin-top: 2px;
-}
 </style>

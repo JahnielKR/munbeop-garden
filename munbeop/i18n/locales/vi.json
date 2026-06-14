@@ -70,6 +70,24 @@
         "achievements": "Các thành tựu bạn có thể đạt được sắp ra mắt.",
         "usage_notes": "Ghi chú cách dùng chi tiết sắp ra mắt."
       }
+    },
+    "search": {
+      "placeholder": "Tìm một mẫu câu hoặc nghĩa của nó…",
+      "result_count": "{n} kết quả",
+      "no_results": "Không có mẫu nào khớp với tìm kiếm của bạn.",
+      "clear": "Xóa",
+      "filter_level": "Cấp độ",
+      "filter_all_levels": "Tất cả cấp độ",
+      "filter_category": "Loại",
+      "filter_all_categories": "Tất cả các loại",
+      "active_zone": "Đang lọc: {zone}",
+      "category": {
+        "particle": "Tiểu từ", "ending": "Đuôi từ", "conj": "Liên từ",
+        "expr": "Cấu trúc", "aux": "Trợ động từ", "verb": "Động từ", "voice": "Dạng",
+        "lex": "Từ vựng", "nominal": "Danh từ hóa", "modifier": "Định ngữ",
+        "copula": "Hệ từ", "negation": "Phủ định", "adv": "Trạng từ",
+        "indirect": "Lời nói gián tiếp", "meta": "Meta"
+      }
     }
   },
   "mastery": {

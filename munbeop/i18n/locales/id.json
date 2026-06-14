@@ -70,6 +70,24 @@
         "achievements": "Pencapaian yang bisa kamu raih segera hadir.",
         "usage_notes": "Catatan penggunaan rinci segera hadir."
       }
+    },
+    "search": {
+      "placeholder": "Cari pola atau artinya…",
+      "result_count": "{n} hasil",
+      "no_results": "Tidak ada pola yang cocok dengan pencarianmu.",
+      "clear": "Hapus",
+      "filter_level": "Tingkat",
+      "filter_all_levels": "Semua tingkat",
+      "filter_category": "Kategori",
+      "filter_all_categories": "Semua kategori",
+      "active_zone": "Memfilter: {zone}",
+      "category": {
+        "particle": "Partikel", "ending": "Akhiran", "conj": "Konjungsi",
+        "expr": "Ekspresi", "aux": "Kata bantu", "verb": "Kata kerja", "voice": "Diatesis",
+        "lex": "Leksikal", "nominal": "Penominal", "modifier": "Pewatas",
+        "copula": "Kopula", "negation": "Negasi", "adv": "Keterangan",
+        "indirect": "Kalimat tak langsung", "meta": "Meta"
+      }
     }
   },
   "mastery": {

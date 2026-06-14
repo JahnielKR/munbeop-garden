@@ -206,3 +206,45 @@ export const STARS_TO_IMPORTANCE: Record<Stars, Importance> = {
   '★★': 'frequent',
   '★': 'nuance',
 }
+
+// ─── ko → {level, type} index (for Library search/filter) ──────────────────
+
+/** Fixed, human-friendly display order for the 15 GrammarType values. */
+export const GRAMMAR_TYPE_ORDER: GrammarType[] = [
+  'particle', 'ending', 'conj', 'expr', 'aux', 'verb', 'voice', 'lex',
+  'nominal', 'modifier', 'copula', 'negation', 'adv', 'indirect', 'meta',
+]
+
+let _koIndex: Map<string, { level?: TopikLevel; type?: GrammarType }> | null = null
+
+function koIndex(): Map<string, { level?: TopikLevel; type?: GrammarType }> {
+  if (_koIndex) return _koIndex
+  const m = new Map<string, { level?: TopikLevel; type?: GrammarType }>()
+  for (const it of allItems()) {
+    if (!m.has(it.ko)) {
+      m.set(it.ko, {
+        level: it.source.kind === 'topik' ? it.source.level : undefined,
+        type: it.type,
+      })
+    }
+  }
+  _koIndex = m
+  return m
+}
+
+/** Coarse grammar category for a rendered pattern, or undefined if unknown. */
+export function categoryOf(ko: string): GrammarType | undefined {
+  return koIndex().get(ko)?.type
+}
+
+/** TOPIK level for a rendered pattern, or undefined for transversal/unknown. */
+export function levelOf(ko: string): TopikLevel | undefined {
+  return koIndex().get(ko)?.level
+}
+
+/** Distinct categories actually present in the spine, in GRAMMAR_TYPE_ORDER. */
+export function presentCategories(): GrammarType[] {
+  const seen = new Set<GrammarType>()
+  for (const it of allItems()) if (it.type) seen.add(it.type)
+  return GRAMMAR_TYPE_ORDER.filter((t) => seen.has(t))
+}

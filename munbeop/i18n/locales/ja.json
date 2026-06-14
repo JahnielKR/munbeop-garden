@@ -70,6 +70,24 @@
         "achievements": "この文法で獲得できるアチーブメントは近日対応予定。",
         "usage_notes": "詳しい使い方ノートは近日対応予定。"
       }
+    },
+    "search": {
+      "placeholder": "文型や意味を検索…",
+      "result_count": "{n} 件",
+      "no_results": "検索に一致する文型がありません。",
+      "clear": "クリア",
+      "filter_level": "レベル",
+      "filter_all_levels": "すべてのレベル",
+      "filter_category": "カテゴリ",
+      "filter_all_categories": "すべてのカテゴリ",
+      "active_zone": "絞り込み: {zone}",
+      "category": {
+        "particle": "助詞", "ending": "語尾", "conj": "接続",
+        "expr": "表現", "aux": "補助", "verb": "動詞", "voice": "態",
+        "lex": "語彙", "nominal": "名詞化", "modifier": "連体修飾",
+        "copula": "コピュラ", "negation": "否定", "adv": "副詞的",
+        "indirect": "間接話法", "meta": "メタ"
+      }
     }
   },
   "mastery": {

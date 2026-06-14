@@ -70,6 +70,24 @@
         "achievements": "Les succès que tu peux gagner arriveront bientôt.",
         "usage_notes": "Les notes d'usage détaillées arrivent bientôt."
       }
+    },
+    "search": {
+      "placeholder": "Cherchez un schéma ou son sens…",
+      "result_count": "{n} résultats",
+      "no_results": "Aucun schéma ne correspond à votre recherche.",
+      "clear": "Effacer",
+      "filter_level": "Niveau",
+      "filter_all_levels": "Tous les niveaux",
+      "filter_category": "Catégorie",
+      "filter_all_categories": "Toutes les catégories",
+      "active_zone": "Filtre : {zone}",
+      "category": {
+        "particle": "Particule", "ending": "Terminaison", "conj": "Conjonction",
+        "expr": "Expression", "aux": "Auxiliaire", "verb": "Verbe", "voice": "Voix",
+        "lex": "Lexical", "nominal": "Nominalisateur", "modifier": "Déterminant",
+        "copula": "Copule", "negation": "Négation", "adv": "Adverbial",
+        "indirect": "Discours indirect", "meta": "Méta"
+      }
     }
   },
   "mastery": {

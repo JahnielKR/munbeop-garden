@@ -70,6 +70,24 @@
         "achievements": "ความสำเร็จที่คุณจะได้รับกำลังจะมา",
         "usage_notes": "หมายเหตุการใช้งานโดยละเอียดกำลังจะมา"
       }
+    },
+    "search": {
+      "placeholder": "ค้นหารูปประโยคหรือความหมาย…",
+      "result_count": "{n} ผลลัพธ์",
+      "no_results": "ไม่พบรูปประโยคที่ตรงกับการค้นหา",
+      "clear": "ล้าง",
+      "filter_level": "ระดับ",
+      "filter_all_levels": "ทุกระดับ",
+      "filter_category": "หมวด",
+      "filter_all_categories": "ทุกหมวด",
+      "active_zone": "กำลังกรอง: {zone}",
+      "category": {
+        "particle": "คำช่วย", "ending": "คำลงท้าย", "conj": "คำเชื่อม",
+        "expr": "สำนวน", "aux": "กริยาช่วย", "verb": "คำกริยา", "voice": "วาจก",
+        "lex": "ศัพท์", "nominal": "ตัวสร้างคำนาม", "modifier": "คำขยาย",
+        "copula": "กริยาเชื่อม", "negation": "การปฏิเสธ", "adv": "คำวิเศษณ์",
+        "indirect": "คำพูดทางอ้อม", "meta": "เมตา"
+      }
     }
   },
   "mastery": {

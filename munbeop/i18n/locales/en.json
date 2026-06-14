@@ -70,6 +70,24 @@
         "achievements": "Achievements you can earn with this grammar are coming soon.",
         "usage_notes": "Detailed usage notes for this grammar are coming soon."
       }
+    },
+    "search": {
+      "placeholder": "Search a pattern or its meaning…",
+      "result_count": "{n} results",
+      "no_results": "No patterns match your search.",
+      "clear": "Clear",
+      "filter_level": "Level",
+      "filter_all_levels": "All levels",
+      "filter_category": "Category",
+      "filter_all_categories": "All categories",
+      "active_zone": "Filtering by: {zone}",
+      "category": {
+        "particle": "Particle", "ending": "Ending", "conj": "Conjunction",
+        "expr": "Expression", "aux": "Auxiliary", "verb": "Verb", "voice": "Voice",
+        "lex": "Lexical", "nominal": "Nominalizer", "modifier": "Modifier",
+        "copula": "Copula", "negation": "Negation", "adv": "Adverbial",
+        "indirect": "Indirect speech", "meta": "Meta"
+      }
     }
   },
   "mastery": {
