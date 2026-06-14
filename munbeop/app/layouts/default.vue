@@ -5,6 +5,7 @@ import { useGrammarStore } from '~/stores/grammar'
 import { useLocaleStore } from '~/stores/locale'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
+import { useSettingsStore } from '~/stores/settings'
 
 // useI18n() must be called from inside the layout's setup() — never from
 // a defineNuxtPlugin handler. The latter triggers a fatal 'SyntaxError: 26'
@@ -22,6 +23,8 @@ onMounted(async () => {
     useLogStore().hydrate(),
     localeStore.hydrate(),
   ])
+  // Cloud preferences win: override the device theme/locale just loaded above.
+  await useSettingsStore().hydrate()
   if (locale.value !== localeStore.current) {
     void setLocale(localeStore.current)
   }

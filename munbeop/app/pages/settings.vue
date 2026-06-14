@@ -4,11 +4,15 @@ import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Field from '~/components/ui/Field.vue'
 import Toggle from '~/components/ui/Toggle.vue'
 import ContextManager from '~/components/settings/ContextManager.vue'
+import { useSettingsStore } from '~/stores/settings'
 const { t } = useI18n()
-const { theme, setTheme } = useTheme()
+const { theme } = useTheme()
+const settings = useSettingsStore()
 const isDark = computed<boolean>({
   get: () => theme.value === 'dark',
-  set: (v) => setTheme(v ? 'dark' : 'light'),
+  set: (v) => {
+    void settings.setTheme(v ? 'dark' : 'light')
+  },
 })
 </script>
 
