@@ -10,6 +10,9 @@ import Button from '~/components/ui/Button.vue'
  * round) clicking opens a confirmation modal so a misclick can't discard the
  * round. With `confirm` false it navigates immediately. The component owns the
  * navigation so a page only needs the single tag.
+ *
+ * Place it as the first child of a flex-column page (it uses
+ * `align-self: flex-start` so it stays compact at the top-left).
  */
 interface Props {
   /** Ask before leaving. Pass a reactive flag tied to in-progress state. */
@@ -110,5 +113,10 @@ function leave() {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .game-exit {
+    transition: none;
+  }
 }
 </style>
