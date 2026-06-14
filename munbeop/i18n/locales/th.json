@@ -123,7 +123,28 @@
     "sign_out": "ออกจากระบบ"
   },
   "settings": {
-    "dark_mode": "โหมดมืด"
+    "dark_mode": "โหมดมืด",
+    "contexts": {
+      "title": "บริบทการฝึก",
+      "subtitle": "เลือกสถานการณ์ที่จะปรากฏในการฝึก",
+      "category": { "formalidad": "ความเป็นทางการ", "situacional": "ตามสถานการณ์", "custom": "บริบทของคุณ" },
+      "add": "เพิ่มบริบท",
+      "name_label": "ชื่อ (ภาษาเกาหลี)",
+      "name_placeholder": "เช่น 반말",
+      "scene_label": "ใช้เมื่อไหร่?",
+      "scene_placeholder": "เช่น ส่งข้อความหาเพื่อนสนิท",
+      "error_korean": "ใช้ชื่อภาษาเกาหลี เช่น 반말",
+      "error_duplicate": "มีบริบทชื่อนี้อยู่แล้ว",
+      "error_scene_required": "เพิ่มคำอธิบายสั้นๆ",
+      "min_active_hint": "เปิดใช้งานอย่างน้อย 3 บริบทเพื่อฝึก",
+      "active_count": "เปิดใช้ {count} บริบท",
+      "delete": "ลบ",
+      "delete_confirm_title": "ลบบริบทนี้?",
+      "delete_confirm_body": "“{name}” จะถูกลบออกจากบริบทของคุณ",
+      "created": "เพิ่มบริบทแล้ว",
+      "deleted": "ลบบริบทแล้ว",
+      "cancel": "ยกเลิก"
+    }
   },
   "welcome": {
     "brand": {

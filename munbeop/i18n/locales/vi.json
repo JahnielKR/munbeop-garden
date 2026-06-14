@@ -123,7 +123,28 @@
     "sign_out": "Đăng xuất"
   },
   "settings": {
-    "dark_mode": "Chế độ tối"
+    "dark_mode": "Chế độ tối",
+    "contexts": {
+      "title": "Ngữ cảnh luyện tập",
+      "subtitle": "Chọn những tình huống xuất hiện khi luyện tập.",
+      "category": { "formalidad": "Mức trang trọng", "situacional": "Theo tình huống", "custom": "Ngữ cảnh của bạn" },
+      "add": "Thêm ngữ cảnh",
+      "name_label": "Tên (tiếng Hàn)",
+      "name_placeholder": "vd. 반말",
+      "scene_label": "Dùng khi nào?",
+      "scene_placeholder": "vd. nhắn tin cho bạn thân",
+      "error_korean": "Dùng tên tiếng Hàn, vd. 반말.",
+      "error_duplicate": "Đã có ngữ cảnh trùng tên này.",
+      "error_scene_required": "Thêm mô tả ngắn.",
+      "min_active_hint": "Giữ ít nhất 3 ngữ cảnh để luyện tập.",
+      "active_count": "{count} đang bật",
+      "delete": "Xóa",
+      "delete_confirm_title": "Xóa ngữ cảnh này?",
+      "delete_confirm_body": "“{name}” sẽ bị xóa khỏi ngữ cảnh của bạn.",
+      "created": "Đã thêm ngữ cảnh.",
+      "deleted": "Đã xóa ngữ cảnh.",
+      "cancel": "Hủy"
+    }
   },
   "welcome": {
     "brand": {

@@ -123,7 +123,28 @@
     "sign_out": "サインアウト"
   },
   "settings": {
-    "dark_mode": "ダークモード"
+    "dark_mode": "ダークモード",
+    "contexts": {
+      "title": "練習シーン",
+      "subtitle": "練習に出てくる場面を選びます。",
+      "category": { "formalidad": "敬語レベル", "situacional": "シチュエーション", "custom": "あなたのシーン" },
+      "add": "シーンを追加",
+      "name_label": "名前（韓国語）",
+      "name_placeholder": "例: 반말",
+      "scene_label": "どんな時に使う？",
+      "scene_placeholder": "例: 親しい友達にメッセージ",
+      "error_korean": "韓国語の名前を入力してください（例: 반말）。",
+      "error_duplicate": "同じ名前のシーンが既にあります。",
+      "error_scene_required": "短い説明を追加してください。",
+      "min_active_hint": "練習するには3つ以上を有効にしてください。",
+      "active_count": "{count}件有効",
+      "delete": "削除",
+      "delete_confirm_title": "このシーンを削除しますか？",
+      "delete_confirm_body": "「{name}」をシーンから削除します。",
+      "created": "シーンを追加しました。",
+      "deleted": "シーンを削除しました。",
+      "cancel": "キャンセル"
+    }
   },
   "welcome": {
     "brand": {

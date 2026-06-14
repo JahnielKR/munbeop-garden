@@ -123,7 +123,28 @@
     "sign_out": "Keluar"
   },
   "settings": {
-    "dark_mode": "Mode gelap"
+    "dark_mode": "Mode gelap",
+    "contexts": {
+      "title": "Konteks latihan",
+      "subtitle": "Pilih situasi mana yang muncul saat latihan.",
+      "category": { "formalidad": "Formalitas", "situacional": "Situasional", "custom": "Konteks kamu" },
+      "add": "Tambah konteks",
+      "name_label": "Nama (Korea)",
+      "name_placeholder": "mis. 반말",
+      "scene_label": "Kapan digunakan?",
+      "scene_placeholder": "mis. mengirim pesan ke teman dekat",
+      "error_korean": "Gunakan nama Korea, mis. 반말.",
+      "error_duplicate": "Konteks dengan nama ini sudah ada.",
+      "error_scene_required": "Tambahkan deskripsi singkat.",
+      "min_active_hint": "Aktifkan minimal 3 untuk berlatih.",
+      "active_count": "{count} aktif",
+      "delete": "Hapus",
+      "delete_confirm_title": "Hapus konteks ini?",
+      "delete_confirm_body": "“{name}” akan dihapus dari konteksmu.",
+      "created": "Konteks ditambahkan.",
+      "deleted": "Konteks dihapus.",
+      "cancel": "Batal"
+    }
   },
   "welcome": {
     "brand": {

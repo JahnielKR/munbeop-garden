@@ -123,7 +123,28 @@
     "sign_out": "Sign out"
   },
   "settings": {
-    "dark_mode": "Dark mode"
+    "dark_mode": "Dark mode",
+    "contexts": {
+      "title": "Practice contexts",
+      "subtitle": "Pick which situations show up in practice.",
+      "category": { "formalidad": "Formality", "situacional": "Situational", "custom": "Your contexts" },
+      "add": "Add context",
+      "name_label": "Name (Korean)",
+      "name_placeholder": "e.g. 반말",
+      "scene_label": "When does it apply?",
+      "scene_placeholder": "e.g. texting a close friend",
+      "error_korean": "Use a Korean name, e.g. 반말.",
+      "error_duplicate": "A context with this name already exists.",
+      "error_scene_required": "Add a short description.",
+      "min_active_hint": "Keep at least 3 active to practice.",
+      "active_count": "{count} active",
+      "delete": "Delete",
+      "delete_confirm_title": "Delete this context?",
+      "delete_confirm_body": "“{name}” will be removed from your contexts.",
+      "created": "Context added.",
+      "deleted": "Context deleted.",
+      "cancel": "Cancel"
+    }
   },
   "welcome": {
     "brand": {
