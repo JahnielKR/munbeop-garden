@@ -1,11 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { useDataExport } from '~/composables/useDataExport'
 
+// vi.mock is hoisted above imports by vitest, so the mock is registered
+// before useDataExport (and its useStorageAdapter import) is evaluated.
 const mockRead = vi.fn()
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({ read: mockRead, write: vi.fn(), remove: vi.fn(), clear: vi.fn() }),
 }))
-
-import { useDataExport } from '~/composables/useDataExport'
 
 describe('useDataExport.collectExportData', () => {
   beforeEach(() => mockRead.mockReset())
