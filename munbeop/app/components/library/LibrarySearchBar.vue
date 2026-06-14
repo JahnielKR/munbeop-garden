@@ -90,10 +90,10 @@ function onCategory(e: Event) {
       </Button>
     </div>
 
-    <div v-if="zoneLabel" class="library-search__zone">
+    <div v-if="zoneLabel" class="library-search__zone" role="status">
       {{ t('library.search.active_zone', { zone: zoneLabel }) }}
     </div>
-    <p v-if="hasFilter" class="library-search__count">
+    <p v-if="hasFilter" class="library-search__count" aria-live="polite">
       {{ t('library.search.result_count', { n: resultCount }) }}
     </p>
   </div>
