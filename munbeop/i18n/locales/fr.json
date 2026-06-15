@@ -147,7 +147,8 @@
     },
     "about": { "title": "À propos & mentions légales", "contact": "Contact" },
     "data": { "title": "Données et confidentialité", "export": "Exporter mes données (.json)", "exported": "Le téléchargement de vos données a commencé.", "export_error": "Impossible d'exporter vos données. Réessaie." },
-    "tabs": { "account": "Compte", "appearance": "Apparence", "learning": "Apprentissage", "data": "Données", "about": "À propos" }
+    "tabs": { "account": "Compte", "appearance": "Apparence", "learning": "Apprentissage", "data": "Données", "about": "À propos" },
+    "account": { "danger": { "title": "Zone de danger", "description": "Supprime définitivement ton compte et toutes tes données. Action irréversible.", "button": "Supprimer le compte", "modal_title": "Supprimer ton compte ?", "modal_body": "Ceci supprime définitivement ton compte, tes phrases, ta progression, tes paquets et ta grammaire personnalisée. Action irréversible.", "confirm_label": "Tape DELETE pour confirmer", "confirm_button": "Supprimer définitivement", "cancel": "Annuler", "error": "Impossible de supprimer ton compte. Réessaie." } }
   },
   "welcome": {
     "brand": {
