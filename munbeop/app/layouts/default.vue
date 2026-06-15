@@ -6,6 +6,7 @@ import { useLocaleStore } from '~/stores/locale'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useSettingsStore } from '~/stores/settings'
+import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 
 // useI18n() must be called from inside the layout's setup() — never from
 // a defineNuxtPlugin handler. The latter triggers a fatal 'SyntaxError: 26'
@@ -22,6 +23,7 @@ onMounted(async () => {
     useSrsStore().hydrate(),
     useLogStore().hydrate(),
     localeStore.hydrate(),
+    useEscapeRoomProgress().hydrate(),
   ])
   // Cloud preferences win: override the device theme/locale just loaded above.
   await useSettingsStore().hydrate()

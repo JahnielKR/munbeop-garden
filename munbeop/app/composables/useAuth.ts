@@ -6,6 +6,7 @@ import { useContextsStore } from '~/stores/contexts'
 import { useSrsStore } from '~/stores/srs'
 import { useLogStore } from '~/stores/log'
 import { useSettingsStore } from '~/stores/settings'
+import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 
 /**
  * Thin wrapper around supabase.auth.* with three responsibilities:
@@ -27,6 +28,7 @@ export function useAuth() {
       useContextsStore().hydrate(),
       useSrsStore().hydrate(),
       useLogStore().hydrate(),
+      useEscapeRoomProgress().hydrate(),
     ])
   }
 

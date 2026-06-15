@@ -15,6 +15,9 @@ import type { Grammar, Context, Deck, LogEntry, SrsState } from '~/lib/domain'
  *   decks                -> read/write: user_decks
  *   customContexts       -> read/write: user_custom_contexts
  *   inactiveContextIds   -> read/write: user_inactive_contexts
+ *   settings             -> read/write: user_settings (prefs jsonb blob)
+ *   escapeRoom           -> read/write: user_escape_room (progress jsonb blob —
+ *                          unlocked cosmetics + consecutive clean runs)
  *   locale               -> NOT persisted by this adapter — falls through to
  *                          LocalStorageAdapter (locale is a per-device preference,
  *                          not a per-user one).
@@ -150,6 +153,15 @@ export class SupabaseAdapter implements StorageAdapter {
         return (rows.length && rows[0]?.prefs != null ? rows[0].prefs : fallback) as T
       }
 
+      case STORAGE_KEYS.escapeRoom: {
+        const res = await this.client
+          .from('user_escape_room')
+          .select('progress')
+          .eq('user_id', this.userId)
+        const rows = ((res as unknown as { data: Array<{ progress: unknown }> | null }).data) ?? []
+        return (rows.length && rows[0]?.progress != null ? rows[0].progress : fallback) as T
+      }
+
       case STORAGE_KEYS.locale:
       default:
         return fallback
@@ -269,6 +281,15 @@ export class SupabaseAdapter implements StorageAdapter {
         return
       }
 
+      case STORAGE_KEYS.escapeRoom: {
+        await this.client.from('user_escape_room').upsert({
+          user_id: this.userId,
+          progress: value as Record<string, unknown>,
+          updated_at: new Date().toISOString(),
+        })
+        return
+      }
+
       case STORAGE_KEYS.locale:
       default:
         // Locale stays in localStorage even when authed — it's a per-device pref.
@@ -288,6 +309,7 @@ export class SupabaseAdapter implements StorageAdapter {
       'user_custom_grammars',
       'user_custom_contexts',
       'user_inactive_contexts',
+      'user_escape_room',
     ]
     await Promise.all(
       tables.map((t) => this.client.from(t).delete().eq('user_id', this.userId)),
