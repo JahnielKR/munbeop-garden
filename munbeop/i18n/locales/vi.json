@@ -146,7 +146,8 @@
       "cancel": "Hủy"
     },
     "about": { "title": "Giới thiệu & pháp lý", "contact": "Liên hệ" },
-    "data": { "title": "Dữ liệu & quyền riêng tư", "export": "Xuất dữ liệu của tôi (.json)", "exported": "Dữ liệu của bạn đang được tải xuống.", "export_error": "Không thể xuất dữ liệu của bạn. Thử lại." }
+    "data": { "title": "Dữ liệu & quyền riêng tư", "export": "Xuất dữ liệu của tôi (.json)", "exported": "Dữ liệu của bạn đang được tải xuống.", "export_error": "Không thể xuất dữ liệu của bạn. Thử lại." },
+    "tabs": { "account": "Tài khoản", "appearance": "Giao diện", "learning": "Học tập", "data": "Dữ liệu", "about": "Giới thiệu" }
   },
   "welcome": {
     "brand": {
