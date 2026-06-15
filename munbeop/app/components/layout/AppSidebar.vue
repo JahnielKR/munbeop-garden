@@ -64,7 +64,7 @@ const { t } = useI18n()
       </NuxtLink>
     </nav>
     <div class="sidebar__footer">
-      <AccountMenu />
+      <AccountMenu :collapsed="collapsed" />
     </div>
   </aside>
 </template>

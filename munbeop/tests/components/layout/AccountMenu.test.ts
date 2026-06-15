@@ -1,9 +1,14 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { mount, enableAutoUnmount, type VueWrapper } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import AccountMenu from '~/components/layout/AccountMenu.vue'
 import { useAuthStore } from '~/stores/auth'
+
+// The teleported popover wires window-level observers (useElementBounding /
+// useWindowSize). Unmount every wrapper after its test so those listeners
+// don't survive to re-patch a torn-down tree in the next one.
+enableAutoUnmount(afterEach)
 
 const signOutAndExit = vi.fn(async () => ({ error: null }))
 vi.stubGlobal('useAuth', () => ({ signOutAndExit }))
@@ -16,6 +21,11 @@ function mountMenu() {
   })
 }
 
+async function openMenu(wrapper: VueWrapper) {
+  await wrapper.get('.acct__avatar').trigger('click')
+  await nextTick()
+}
+
 describe('AccountMenu', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -24,37 +34,57 @@ describe('AccountMenu', () => {
     useAuthStore().user = { email: 'sol@example.com' } as never
   })
 
-  it('shows the email initial on the avatar', () => {
+  it('shows the email initial on the framed portrait', () => {
     const wrapper = mountMenu()
+    // The initial lives in .acct__inner inside the .acct__avatar trigger, so
+    // the button's text content is still exactly the initial.
     expect(wrapper.get('.acct__avatar').text()).toBe('S')
   })
 
-  it('opens the popover with email, a settings link, and sign out', async () => {
+  it('opens a popover with the email, a settings link, and sign out', async () => {
     const wrapper = mountMenu()
+    expect(document.querySelector('[role="menu"]')).toBeNull()
+    await openMenu(wrapper)
+    expect(document.querySelector('[role="menu"]')).not.toBeNull()
+    expect(document.body.textContent).toContain('sol@example.com')
+    expect(document.querySelector('a[href="/settings"]')).not.toBeNull()
+    expect(document.querySelector('.acct__signout')).not.toBeNull()
+  })
+
+  it('teleports the popover out of the rail and pins it fixed (never clipped)', async () => {
+    const wrapper = mountMenu()
+    await openMenu(wrapper)
+    // Teleported to <body>, so it is NOT inside the component tree (the rail
+    // with overflow:hidden) — that is the whole fix for the clipping bug.
     expect(wrapper.find('[role="menu"]').exists()).toBe(false)
-    await wrapper.get('.acct__avatar').trigger('click')
-    await nextTick()
-    expect(wrapper.find('[role="menu"]').exists()).toBe(true)
-    expect(wrapper.text()).toContain('sol@example.com')
-    expect(wrapper.find('a[href="/settings"]').exists()).toBe(true)
-    expect(wrapper.find('.acct__signout').exists()).toBe(true)
+    const menu = document.querySelector('[role="menu"]') as HTMLElement
+    expect(menu.style.position).toBe('fixed')
+    expect(menu.style.left).toMatch(/px$/)
+    expect(menu.style.top).toMatch(/px$/)
   })
 
   it('signs out when sign-out is clicked', async () => {
     const wrapper = mountMenu()
-    await wrapper.get('.acct__avatar').trigger('click')
-    await nextTick()
-    await wrapper.get('.acct__signout').trigger('click')
+    await openMenu(wrapper)
+    ;(document.querySelector('.acct__signout') as HTMLElement).click()
     expect(signOutAndExit).toHaveBeenCalledTimes(1)
   })
 
-  it('closes when clicking outside', async () => {
+  it('stays open on a click inside the menu, closes on a click outside', async () => {
     const wrapper = mountMenu()
-    await wrapper.get('.acct__avatar').trigger('click')
+    const avatar = wrapper.get('.acct__avatar')
+    await openMenu(wrapper)
+    expect(avatar.attributes('aria-expanded')).toBe('true')
+
+    // Click inside the teleported menu → dual-ref guard keeps it open.
+    const inside = document.querySelector('.acct__email') as HTMLElement
+    inside.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     await nextTick()
-    expect(wrapper.find('[role="menu"]').exists()).toBe(true)
+    expect(avatar.attributes('aria-expanded')).toBe('true')
+
+    // Click on document.body (outside both refs) → closes.
     document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     await nextTick()
-    expect(wrapper.find('[role="menu"]').exists()).toBe(false)
+    expect(avatar.attributes('aria-expanded')).toBe('false')
   })
 })
