@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import AccountWidget from './AccountWidget.vue'
-import LocaleSwitcher from './LocaleSwitcher.vue'
+import AccountMenu from './AccountMenu.vue'
 import Icon, { type IconName } from '~/components/ui/Icon.vue'
 
 interface NavItem {
@@ -65,8 +64,7 @@ const { t } = useI18n()
       </NuxtLink>
     </nav>
     <div class="sidebar__footer">
-      <AccountWidget />
-      <LocaleSwitcher />
+      <AccountMenu />
     </div>
   </aside>
 </template>
@@ -284,17 +282,6 @@ const { t } = useI18n()
   display: flex;
   flex-direction: column;
   gap: 16px;
-  /* Ancho final del contenido expandido (220 − 32 padding − 2 borde).
-   * Al expandir, el footer reaparece cuando la caja aún mide ~64px;
-   * sin esto el email (word-break) se apila en una columna alta y
-   * flashea un scrollbar en el rail durante los 240ms. Con min-width
-   * mantiene su layout final y el rail solo recorta por la derecha. */
-  min-width: 186px;
-}
-/* Plegado, el footer (email / cerrar sesión / idioma) es contenido
- * textual que no cabe en 64px — se accede expandiendo. */
-.sidebar--collapsed .sidebar__footer {
-  display: none;
 }
 
 /* Toggle plegar/expandir: flecha junto a la marca (el fondo del sidebar
