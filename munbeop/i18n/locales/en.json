@@ -148,7 +148,8 @@
     "about": { "title": "About & legal", "contact": "Contact" },
     "data": { "title": "Data & privacy", "export": "Export my data (.json)", "exported": "Your data is downloading.", "export_error": "Couldn't export your data. Please try again." },
     "tabs": { "account": "Account", "appearance": "Appearance", "learning": "Learning", "data": "Data", "about": "About" },
-    "account": { "danger": { "title": "Danger zone", "description": "Permanently delete your account and all your data. This can't be undone.", "button": "Delete account", "modal_title": "Delete your account?", "modal_body": "This permanently deletes your account, your sentences, progress, decks, and custom grammar. This cannot be undone.", "confirm_label": "Type DELETE to confirm", "confirm_button": "Delete forever", "cancel": "Cancel", "error": "Couldn't delete your account. Please try again." } }
+    "account": { "danger": { "title": "Danger zone", "description": "Permanently delete your account and all your data. This can't be undone.", "button": "Delete account", "modal_title": "Delete your account?", "modal_body": "This permanently deletes your account, your sentences, progress, decks, and custom grammar. This cannot be undone.", "confirm_label": "Type DELETE to confirm", "confirm_button": "Delete forever", "cancel": "Cancel", "error": "Couldn't delete your account. Please try again." } },
+    "menu": { "account": "Account menu" }
   },
   "welcome": {
     "brand": {
