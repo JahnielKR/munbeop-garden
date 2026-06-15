@@ -1,0 +1,15 @@
+# Supabase CLI config.
+#
+# Kept intentionally minimal. Its job is to PIN per-function settings so a
+# CLI `supabase functions deploy` does not reset them to defaults.
+#
+# delete-account must keep verify_jwt = false: the function verifies the
+# caller's JWT itself (auth.getUser -> 401) AND handles the CORS preflight.
+# With the gateway default (verify_jwt = true) the browser's unauthenticated
+# OPTIONS preflight would be rejected (401), breaking the in-app call. The
+# function was first deployed with verify_jwt = false via the Supabase MCP.
+
+project_id = "zbohswpyydwvzowvjaiw"
+
+[functions.delete-account]
+verify_jwt = false
