@@ -7,5 +7,5 @@ export default withNuxt({
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'no-console': ['warn', { allow: ['warn', 'error'] }],
   },
-  ignores: ['.nuxt/**', '.output/**', 'dist/**', 'node_modules/**', 'app/i18n/locales/**'],
+  ignores: ['.nuxt/**', '.output/**', 'dist/**', 'node_modules/**', 'app/i18n/locales/**', 'supabase/functions/**'],
 })

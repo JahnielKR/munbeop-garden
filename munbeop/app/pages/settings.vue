@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import LocaleSwitcher from '~/components/layout/LocaleSwitcher.vue'
 import AccountWidget from '~/components/layout/AccountWidget.vue'
+import DangerZone from '~/components/settings/DangerZone.vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Field from '~/components/ui/Field.vue'
 import Toggle from '~/components/ui/Toggle.vue'
@@ -46,6 +47,7 @@ const active = ref('account')
       class="panel"
     >
       <AccountWidget />
+      <DangerZone />
     </section>
 
     <section

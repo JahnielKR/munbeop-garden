@@ -107,6 +107,17 @@ export function useAuth() {
     return { error }
   }
 
+  /**
+   * Permanently delete the account via the delete-account edge function
+   * (service-role deletes the auth user; ON DELETE CASCADE wipes user data).
+   * On success, sign out + leave to /welcome via the existing flow.
+   */
+  async function deleteAccount() {
+    const { error } = await $supabase.functions.invoke('delete-account')
+    if (error) return { error }
+    return signOutAndExit()
+  }
+
   async function signInWithProvider(provider: 'kakao' | 'google') {
     const config = useRuntimeConfig()
     const base =
@@ -136,5 +147,5 @@ export function useAuth() {
     return { error }
   }
 
-  return { init, signUp, signIn, signInMagicLink, signInWithProvider, signOutAndExit, hydrateUserStores }
+  return { init, signUp, signIn, signInMagicLink, signInWithProvider, signOutAndExit, hydrateUserStores, deleteAccount }
 }
