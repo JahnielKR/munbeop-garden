@@ -148,7 +148,8 @@
     "about": { "title": "情報と規約", "contact": "お問い合わせ" },
     "data": { "title": "データとプライバシー", "export": "データをエクスポート (.json)", "exported": "データをダウンロードしています。", "export_error": "データをエクスポートできませんでした。もう一度お試しください。" },
     "tabs": { "account": "アカウント", "appearance": "表示", "learning": "学習", "data": "データ", "about": "情報" },
-    "account": { "danger": { "title": "危険な操作", "description": "アカウントとすべてのデータを完全に削除します。元に戻せません。", "button": "アカウントを削除", "modal_title": "アカウントを削除しますか？", "modal_body": "アカウント、文章、進捗、デッキ、カスタム文法を完全に削除します。元に戻せません。", "confirm_label": "確認のため DELETE と入力", "confirm_button": "完全に削除", "cancel": "キャンセル", "error": "アカウントを削除できませんでした。もう一度お試しください。" } }
+    "account": { "danger": { "title": "危険な操作", "description": "アカウントとすべてのデータを完全に削除します。元に戻せません。", "button": "アカウントを削除", "modal_title": "アカウントを削除しますか？", "modal_body": "アカウント、文章、進捗、デッキ、カスタム文法を完全に削除します。元に戻せません。", "confirm_label": "確認のため DELETE と入力", "confirm_button": "完全に削除", "cancel": "キャンセル", "error": "アカウントを削除できませんでした。もう一度お試しください。" } },
+    "menu": { "account": "アカウントメニュー" }
   },
   "welcome": {
     "brand": {

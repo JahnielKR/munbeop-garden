@@ -14,6 +14,7 @@ import {
 import { useTypewriter } from '~/composables/useTypewriter'
 import { useWelcomeMusic } from '~/composables/useWelcomeMusic'
 import { useLocalized } from '~/composables/useLocalized'
+import { useTheme } from '~/composables/useTheme'
 
 beforeEach(() => {
   // Reset localStorage between tests so storage adapter tests stay isolated.
@@ -39,6 +40,7 @@ g.useI18n = () => ({
 g.useTypewriter = useTypewriter
 g.useWelcomeMusic = useWelcomeMusic
 g.useLocalized = useLocalized
+g.useTheme = useTheme
 
 // Nuxt's auto-imports module exposes Vue reactivity primitives globally in
 // production builds. Tests need the same so SFCs that use `computed` /

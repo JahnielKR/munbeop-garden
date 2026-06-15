@@ -148,7 +148,8 @@
     "about": { "title": "Sobre e jurídico", "contact": "Contato" },
     "data": { "title": "Dados e privacidade", "export": "Exportar meus dados (.json)", "exported": "Seus dados estão sendo baixados.", "export_error": "Não foi possível exportar seus dados. Tente novamente." },
     "tabs": { "account": "Conta", "appearance": "Aparência", "learning": "Aprendizado", "data": "Dados", "about": "Sobre" },
-    "account": { "danger": { "title": "Zona de perigo", "description": "Exclui permanentemente sua conta e todos os seus dados. Não dá para desfazer.", "button": "Excluir conta", "modal_title": "Excluir sua conta?", "modal_body": "Isto exclui permanentemente sua conta, suas frases, progresso, baralhos e gramática personalizada. Não pode ser desfeito.", "confirm_label": "Digite DELETE para confirmar", "confirm_button": "Excluir para sempre", "cancel": "Cancelar", "error": "Não foi possível excluir sua conta. Tente novamente." } }
+    "account": { "danger": { "title": "Zona de perigo", "description": "Exclui permanentemente sua conta e todos os seus dados. Não dá para desfazer.", "button": "Excluir conta", "modal_title": "Excluir sua conta?", "modal_body": "Isto exclui permanentemente sua conta, suas frases, progresso, baralhos e gramática personalizada. Não pode ser desfeito.", "confirm_label": "Digite DELETE para confirmar", "confirm_button": "Excluir para sempre", "cancel": "Cancelar", "error": "Não foi possível excluir sua conta. Tente novamente." } },
+    "menu": { "account": "Menu da conta" }
   },
   "welcome": {
     "brand": {
