@@ -146,7 +146,8 @@
       "cancel": "キャンセル"
     },
     "about": { "title": "情報と規約", "contact": "お問い合わせ" },
-    "data": { "title": "データとプライバシー", "export": "データをエクスポート (.json)", "exported": "データをダウンロードしています。", "export_error": "データをエクスポートできませんでした。もう一度お試しください。" }
+    "data": { "title": "データとプライバシー", "export": "データをエクスポート (.json)", "exported": "データをダウンロードしています。", "export_error": "データをエクスポートできませんでした。もう一度お試しください。" },
+    "tabs": { "account": "アカウント", "appearance": "表示", "learning": "学習", "data": "データ", "about": "情報" }
   },
   "welcome": {
     "brand": {

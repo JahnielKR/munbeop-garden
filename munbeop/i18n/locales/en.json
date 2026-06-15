@@ -146,7 +146,8 @@
       "cancel": "Cancel"
     },
     "about": { "title": "About & legal", "contact": "Contact" },
-    "data": { "title": "Data & privacy", "export": "Export my data (.json)", "exported": "Your data is downloading.", "export_error": "Couldn't export your data. Please try again." }
+    "data": { "title": "Data & privacy", "export": "Export my data (.json)", "exported": "Your data is downloading.", "export_error": "Couldn't export your data. Please try again." },
+    "tabs": { "account": "Account", "appearance": "Appearance", "learning": "Learning", "data": "Data", "about": "About" }
   },
   "welcome": {
     "brand": {

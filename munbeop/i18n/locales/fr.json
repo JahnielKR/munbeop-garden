@@ -146,7 +146,8 @@
       "cancel": "Annuler"
     },
     "about": { "title": "À propos & mentions légales", "contact": "Contact" },
-    "data": { "title": "Données et confidentialité", "export": "Exporter mes données (.json)", "exported": "Le téléchargement de vos données a commencé.", "export_error": "Impossible d'exporter vos données. Réessaie." }
+    "data": { "title": "Données et confidentialité", "export": "Exporter mes données (.json)", "exported": "Le téléchargement de vos données a commencé.", "export_error": "Impossible d'exporter vos données. Réessaie." },
+    "tabs": { "account": "Compte", "appearance": "Apparence", "learning": "Apprentissage", "data": "Données", "about": "À propos" }
   },
   "welcome": {
     "brand": {
