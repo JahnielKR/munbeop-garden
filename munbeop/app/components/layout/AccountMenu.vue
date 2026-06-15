@@ -35,7 +35,7 @@ const { theme } = useTheme()
 const authStore = useAuthStore()
 const settings = useSettingsStore()
 const { signOutAndExit } = useAuth()
-const { unlockedCount, portrait } = usePremios()
+const { unlockedCount, totalCount, portrait } = usePremios()
 
 const open = ref(false)
 const rootRef = ref<HTMLElement | null>(null)
@@ -58,46 +58,39 @@ const GAP = 12
 const EDGE = 8
 
 const avatar = useElementBounding(avatarRef)
-const menu = useElementBounding(menuRef)
 const { width: vw, height: vh } = useWindowSize()
 
 function clampN(min: number, value: number, max: number) {
   return Math.min(Math.max(value, min), Math.max(min, max))
 }
 
-// Prefer right (the rail hugs the left edge, so right is on-screen in both the
-// 220px and 64px states); fall back above only if the right has no room.
-const placement = computed<'right' | 'top'>(() =>
-  avatar.right.value + GAP + MENU_W > vw.value - EDGE ? 'top' : 'right',
-)
-const placementClass = computed(() =>
-  placement.value === 'top' ? 'acct__menu--top' : 'acct__menu--right',
-)
-
+// The menu opens to the RIGHT of the left-docked rail and is BOTTOM-anchored to
+// the avatar (which lives at the rail's foot), growing upward. Anchoring by the
+// avatar's bottom edge means the position never depends on the menu's own
+// (initially-unknown) height — so it lands in place on the first frame instead
+// of popping near centre and then snapping to the corner.
 const menuStyle = computed<Record<string, string>>(() => {
-  const menuH = menu.height.value || 320
-  const aCx = avatar.left.value + avatar.width.value / 2
-  const aCy = avatar.top.value + avatar.height.value / 2
-  let x: number
-  let y: number
-  if (placement.value === 'right') {
-    x = avatar.right.value + GAP
-    y = aCy - menuH / 2
-  } else {
-    x = avatar.left.value
-    y = avatar.top.value - menuH - GAP
-  }
-  x = clampN(EDGE, x, vw.value - MENU_W - EDGE)
-  y = clampN(EDGE, y, vh.value - menuH - EDGE)
+  const left = clampN(EDGE, avatar.right.value + GAP, vw.value - MENU_W - EDGE)
+  const bottom = clampN(EDGE, vh.value - avatar.bottom.value, vh.value - EDGE)
   return {
     position: 'fixed',
-    left: `${Math.round(x)}px`,
-    top: `${Math.round(y)}px`,
+    left: `${Math.round(left)}px`,
+    bottom: `${Math.round(bottom)}px`,
+    top: 'auto',
     width: `${MENU_W}px`,
-    '--caret-y': `${Math.round(clampN(14, aCy - y - 6, menuH - 26))}px`,
-    '--caret-x': `${Math.round(clampN(14, aCx - x - 6, MENU_W - 26))}px`,
+    maxHeight: `${Math.max(160, Math.round(avatar.bottom.value - EDGE))}px`,
+    // caret sits aH/2 up from the menu's bottom edge → points at the avatar.
+    '--caret-b': `${Math.round(clampN(14, avatar.height.value / 2, 240))}px`,
   }
 })
+
+// Re-measure the avatar before opening: the 240ms collapse changes its rect
+// without firing scroll/resize, so a cached rect would land the menu far from a
+// just-collapsed rail. A fresh rect makes it correct on the first frame.
+function toggle() {
+  if (!open.value) avatar.update()
+  open.value = !open.value
+}
 
 // ─── Open / close / a11y ────────────────────────────────────────────────────
 function close() {
@@ -162,7 +155,7 @@ onUnmounted(() => {
       aria-haspopup="true"
       :aria-expanded="open"
       :aria-label="email || t('settings.menu.account')"
-      @click.stop="open = !open"
+      @click.stop="toggle"
     >
       <span v-if="portrait.bgUrl" class="acct__avatar-bgclip" aria-hidden="true">
         <span class="acct__avatar-bg" :style="{ backgroundImage: `url(${portrait.bgUrl})` }" />
@@ -201,16 +194,8 @@ onUnmounted(() => {
 
     <Teleport to="body">
       <Transition name="acct-pop">
-        <div
-          v-if="open"
-          ref="menuRef"
-          class="acct__menu"
-          :class="placementClass"
-          role="menu"
-          :style="menuStyle"
-        >
+        <div v-if="open" ref="menuRef" class="acct__menu" role="menu" :style="menuStyle">
           <p class="acct__email">{{ email }}</p>
-          <Premios variant="detail" />
           <div class="acct__row">
             <Field :label="t('settings.dark_mode')" html-for="acct-dark" orientation="horizontal">
               <Toggle id="acct-dark" v-model="isDark" :label="t('settings.dark_mode')" />
@@ -219,6 +204,17 @@ onUnmounted(() => {
           <div class="acct__row">
             <LocaleSwitcher />
           </div>
+          <NuxtLink
+            to="/trophies"
+            class="acct__item acct__item--row"
+            role="menuitem"
+            @click="close"
+          >
+            <span>{{ t('escape.premios_title') }}</span>
+            <span class="acct__item-meta" :class="{ 'acct__item-meta--has': unlockedCount > 0 }">
+              {{ unlockedCount }}/{{ totalCount }} ▸
+            </span>
+          </NuxtLink>
           <NuxtLink to="/settings" class="acct__item" role="menuitem" @click="close">
             {{ t('nav.settings') }}
           </NuxtLink>
@@ -345,13 +341,18 @@ onUnmounted(() => {
 }
 
 /* ---- IDENTITY LINE (expanded only) ---- */
+/* Same chunky pixel weight as the "Trophies" strip label so the account name
+ * reads as a peer heading, not a faint caption. */
 .acct__identity {
   max-width: 100%;
   margin: 0;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.02em;
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
+  font-size: 9px;
+  letter-spacing: 0.04em;
   color: var(--ink-soft);
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -413,51 +414,35 @@ onUnmounted(() => {
 
 /* ---- TELEPORTED FIXED POPOVER (escapes .shell__rail overflow clip) ---- */
 .acct__menu {
-  /* left / top / width / --caret-* are set inline by menuStyle */
+  /* left / bottom / width / max-height / --caret-b are set inline by menuStyle */
   position: fixed;
   z-index: 200; /* above content + VictoryScreen(60); below Modal(999) */
-  max-height: min(70vh, 560px);
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 14px;
+  overflow-y: auto; /* safety: scroll instead of clip on a very short viewport */
   background: var(--paper-deep);
   border: 3px solid var(--ink-line);
   box-shadow: var(--bevel), var(--shadow-pixel-lg);
 }
-/* pixel caret — RIGHT placement: points left at the avatar */
-.acct__menu--right::before,
-.acct__menu--right::after {
+/* pixel caret — points left at the avatar, offset up from the menu's bottom
+ * edge by --caret-b (= half the avatar's height) so it tracks the avatar. */
+.acct__menu::before,
+.acct__menu::after {
   content: '';
   position: absolute;
-  top: var(--caret-y, 16px);
+  bottom: var(--caret-b, 24px);
   border-top: 8px solid transparent;
   border-bottom: 8px solid transparent;
 }
-.acct__menu--right::before {
+.acct__menu::before {
   left: -10px;
   border-right: 10px solid var(--ink-line);
 }
-.acct__menu--right::after {
+.acct__menu::after {
   left: -7px;
   border-right: 10px solid var(--paper-deep);
-}
-/* pixel caret — TOP fallback: points down at the avatar */
-.acct__menu--top::before,
-.acct__menu--top::after {
-  content: '';
-  position: absolute;
-  left: var(--caret-x, 16px);
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-}
-.acct__menu--top::before {
-  bottom: -10px;
-  border-top: 10px solid var(--ink-line);
-}
-.acct__menu--top::after {
-  bottom: -7px;
-  border-top: 10px solid var(--paper-deep);
 }
 
 .acct__email {
@@ -497,6 +482,20 @@ onUnmounted(() => {
 .acct__signout {
   color: var(--danger);
 }
+/* the Trophies entry: label left, "n/total ▸" counter right */
+.acct__item--row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.acct__item-meta {
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.acct__item-meta--has {
+  color: var(--gold);
+}
 :lang(th) .acct__item,
 :lang(vi) .acct__item,
 :lang(ja) .acct__item {
@@ -505,10 +504,7 @@ onUnmounted(() => {
 
 /* ---- MOTION (Modal.vue pixel-pop; reduced-motion safe) ---- */
 .acct__menu {
-  transform-origin: left center;
-}
-.acct__menu--top {
-  transform-origin: center bottom;
+  transform-origin: left bottom;
 }
 .acct-pop-enter-active,
 .acct-pop-leave-active {

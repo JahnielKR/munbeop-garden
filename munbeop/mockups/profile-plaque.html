@@ -125,7 +125,7 @@
   .acct__avatar-bg { position: absolute; inset: 0; background-size: cover; background-position: center; image-rendering: pixelated; }
   .acct__avatar-frame { position: absolute; inset: -8px; width: 96px; height: 96px; image-rendering: pixelated; pointer-events: none; z-index: 2; }
   .acct__avatar--framed { border-color: transparent; background: transparent; }
-  .acct__identity { max-width: 100%; margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .02em; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .acct__identity { max-width: 100%; margin: 0; font-family: 'Press Start 2P', 'Noto Sans KR', monospace; font-size: 9px; letter-spacing: .04em; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sidebar--collapsed .acct { background: transparent; border: none; box-shadow: none; padding: 6px; }
   .sidebar--collapsed .acct__avatar { width: 48px; height: 48px; }
   .sidebar--collapsed .acct__inner { width: 36px; height: 36px; font-size: 13px; }
@@ -134,9 +134,12 @@
   .acct__pip { position: absolute; bottom: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 3px; display: grid; place-items: center; border: 2px solid var(--ink-line); background: var(--paper-deep); box-shadow: var(--shadow-pixel-sm); font-family: 'Press Start 2P', monospace; font-size: 7px; color: var(--ink-soft); }
   .acct__pip--has { color: var(--gold); }
   .acct__menu { position: absolute; z-index: 200; max-height: min(70vh, 560px); display: flex; flex-direction: column; gap: 12px; padding: 14px; width: 248px; background: var(--paper-deep); border: 3px solid var(--ink-line); box-shadow: var(--bevel), var(--shadow-pixel-lg); }
-  .acct__menu--right::before, .acct__menu--right::after { content: ''; position: absolute; top: var(--caret-y, 24px); border-top: 8px solid transparent; border-bottom: 8px solid transparent; }
-  .acct__menu--right::before { left: -10px; border-right: 10px solid var(--ink-line); }
-  .acct__menu--right::after { left: -7px; border-right: 10px solid var(--paper-deep); }
+  .acct__menu::before, .acct__menu::after { content: ''; position: absolute; bottom: var(--caret-b, 24px); border-top: 8px solid transparent; border-bottom: 8px solid transparent; }
+  .acct__menu::before { left: -10px; border-right: 10px solid var(--ink-line); }
+  .acct__menu::after { left: -7px; border-right: 10px solid var(--paper-deep); }
+  .acct__item--row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .acct__item-meta { color: var(--ink-soft); white-space: nowrap; }
+  .acct__item-meta--has { color: var(--gold); }
   .acct__email { margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-soft); word-break: break-all; }
   .acct__row { display: flex; flex-direction: column; }
   .acct__item { font-family: 'Press Start 2P', 'Noto Sans KR', monospace; font-size: 9px; letter-spacing: .04em; text-align: left; background: var(--surface); border: 2px solid var(--border); color: var(--text); padding: 10px; cursor: pointer; text-decoration: none; }
@@ -175,6 +178,35 @@
   .premios__row--locked .premios__row-name { color: var(--ink-soft); font-weight: 400; }
   .premios__row-tier { font-family: 'Press Start 2P', monospace; font-size: 8px; color: var(--tier); }
   .premios__row--locked .premios__row-tier { color: transparent; -webkit-text-stroke: 1px var(--tier); }
+
+  /* ===== /trophies page (mirror of app/pages/trophies.vue) ===== */
+  .panel--page { width: 760px; height: 600px; }
+  .panel--page .stagewrap { padding: 46px 28px 28px; overflow-y: auto; height: 100%; --tier-epic: #8a5cd0; }
+  [data-theme="dark"] .panel--page .stagewrap { --tier-epic: #a982f0; }
+  .tpage-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+  .tpage-title { font-family: 'Press Start 2P', monospace; font-size: 18px; color: var(--ink); -webkit-font-smoothing: none; font-smooth: never; }
+  .tpage-title small { display: block; color: var(--gold); font-size: 11px; margin-top: 8px; }
+  .tpage-count { font-family: 'Press Start 2P', monospace; font-size: 14px; color: var(--gold); border: 2px solid var(--ink-line); background: var(--paper-warm); box-shadow: var(--shadow-pixel-sm); padding: 8px 12px; }
+  .tlevel-title { font-family: 'Press Start 2P', 'Noto Sans KR', monospace; font-size: 12px; color: var(--jade-deep, var(--jade)); margin: 18px 0 12px; -webkit-font-smoothing: none; font-smooth: never; }
+  [data-theme="dark"] .tlevel-title { color: var(--jade); }
+  .tgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; }
+  .trophy { --tier: var(--ink-line); display: flex; flex-direction: column; gap: 8px; padding: 14px; border: 2px solid var(--ink-line); }
+  .trophy.premio--common { --tier: var(--jade); }
+  .trophy.premio--rare { --tier: var(--sky); }
+  .trophy.premio--epic { --tier: var(--tier-epic); }
+  .trophy.premio--legendary { --tier: var(--gold); }
+  .trophy--unlocked { background: var(--paper-deep); border-color: var(--tier); box-shadow: inset 0 0 0 1px var(--tier), var(--shadow-pixel-md); }
+  .trophy--unlocked.premio--legendary { box-shadow: inset 0 0 0 1px var(--always-dark), inset 0 0 0 2px var(--gold), var(--shadow-pixel-md); }
+  .trophy--locked { background: var(--paper); border-style: dashed; border-color: color-mix(in srgb, var(--ink-line) 55%, transparent); box-shadow: var(--shadow-inset); }
+  .trophy__art { display: grid; place-items: center; height: 116px; background: color-mix(in srgb, var(--ink-line) 12%, transparent); }
+  .trophy--locked .trophy__art { background: transparent; }
+  .trophy__art img { max-width: 100%; max-height: 100%; object-fit: contain; image-rendering: pixelated; }
+  .trophy__art .premio__lock { color: var(--ink-soft); opacity: .5; }
+  .trophy__tier { font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--tier); -webkit-font-smoothing: none; font-smooth: never; }
+  .trophy--locked .trophy__tier { color: transparent; -webkit-text-stroke: 1px var(--tier); }
+  .trophy__name { margin: 0; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; color: var(--ink); }
+  .trophy--locked .trophy__name { color: var(--ink-soft); }
+  .trophy__desc { margin: 0; font-family: 'Inter', sans-serif; font-size: 12px; line-height: 1.5; color: var(--ink-soft); }
 </style>
 </head>
 <body>
@@ -203,18 +235,15 @@
       </div>`;
     }
 
-    function popover(detailRows, count, caretY) {
-      // Bottom-anchored to mimic the real app's viewport clamp (the avatar is
-      // at the rail's foot, so the fixed+teleported menu grows upward).
-      return `<div class="acct__menu acct__menu--right" role="menu" style="left: calc(100% + 14px); top: auto; bottom: -3px; --caret-y: ${caretY}px;">
+    function popover(count, caretB) {
+      // Bottom-anchored to the avatar (real app: teleported + fixed, grows up).
+      // The inventory is no longer inline — a single "Trophies" entry links to
+      // the full /trophies page.
+      return `<div class="acct__menu" role="menu" style="left: calc(100% + 14px); top: auto; bottom: -3px; --caret-b: ${caretB}px;">
         <p class="acct__email">sol@example.com</p>
-        <div class="premios__detail-wrap">
-          <div class="premios__detail-head"><span>TROPHIES</span><span class="premios__count ${count>0?'premios__count--has':''}">${count}/8</span></div>
-          ${count===0 ? `<p style="margin:6px 0 0;text-align:center;font-size:10px;color:var(--ink-soft);">No trophies yet</p>` : ''}
-          <div class="premios__detail">${detailRows}</div>
-        </div>
         <div class="acct__row"><div class="fakerow"><span>Dark mode</span><span class="switch"></span></div></div>
         <div class="acct__row"><div class="fakeselect">English ▾</div></div>
+        <a class="acct__item acct__item--row"><span>Trophies</span><span class="acct__item-meta ${count>0?'acct__item-meta--has':''}">${count}/8 ▸</span></a>
         <a class="acct__item">Settings</a>
         <button class="acct__item acct__signout">Sign out</button>
       </div>`;
@@ -258,13 +287,41 @@
         <button class="${avatarClass}"><span class="acct__inner">S</span>${frame}</button>
         <p class="acct__identity">sol</p>
         ${strip(framed ? someSlots : emptySlots)}
-        ${withMenu ? popover(framed ? someDetail : emptyDetail, framed ? 2 : 0, 470) : ''}
+        ${withMenu ? popover(framed ? 2 : 0, 150) : ''}
       </div>`;
     }
     function plaqueCollapsed(count, withMenu) {
       return `<div class="acct">
         <button class="acct__avatar"><span class="acct__inner">S</span><span class="acct__pip ${count>0?'acct__pip--has':''}">${count}</span></button>
-        ${withMenu ? popover(count>0?someDetail:emptyDetail, count, 470) : ''}
+        ${withMenu ? popover(count, 24) : ''}
+      </div>`;
+    }
+
+    function trophyCard(tier, name, desc, unlocked, icon) {
+      const art = unlocked
+        ? `<img src="${icon}">`
+        : `<span class="premio__lock"><svg viewBox="0 0 16 16" width="26" height="26" shape-rendering="crispEdges"><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3.5" y="7" width="9" height="7" fill="currentColor"/></svg></span>`;
+      return `<article class="trophy premio--${tier} ${unlocked?'trophy--unlocked':'trophy--locked'}">
+        <div class="trophy__art">${art}</div>
+        <span class="trophy__tier">${tier.toUpperCase()}</span>
+        <h3 class="trophy__name">${name}</h3>
+        <p class="trophy__desc">${desc}</p>
+      </article>`;
+    }
+    function trophiesPanel(theme) {
+      const cards = [
+        trophyCard('common','Fondo "Minbak Sunrise"','Amanecer rosa-melocotón sobre el techo del hanok.', true, L1+'cosmetic-bg-sunrise.png'),
+        trophyCard('rare','Marco "Delantal de Halmeoni"','Marco con estampado de delantal coreano floreado.', true, L1+'cosmetic-frame-apron.png'),
+        trophyCard('epic','Avatar "Linterna Hanji"','Silueta animada con linterna de papel coreano.', false),
+        trophyCard('legendary','Set completo "민박 손님"','Avatar + marco + fondo + título "Huésped del minbak".', false),
+      ].join('');
+      return `<div class="panel panel--page" ${theme==='dark'?'data-theme="dark"':''}>
+        <div class="panel__caption">/TROPHIES PAGE · ${theme.toUpperCase()}</div>
+        <div class="stagewrap">
+          <div class="tpage-head"><div class="tpage-title">전리품<small>Trophies</small></div><span class="tpage-count">2/8</span></div>
+          <div class="tlevel-title">Una mañana en el minbak</div>
+          <div class="tgrid">${cards}</div>
+        </div>
       </div>`;
     }
 
@@ -289,9 +346,12 @@
       panel({theme:'light', collapsed:true, count:0, caption:'LIGHT · COLLAPSED (64px)'}),
       panel({theme:'dark', collapsed:false, framed:true, caption:'DARK · EXPANDED · 2 won + frame'}),
       panel({theme:'dark', collapsed:true, count:2, caption:'DARK · COLLAPSED · pip 2'}),
-      // Row 2 — the popover, fully visible (teleported+fixed in the real app).
-      panel({theme:'light', collapsed:false, framed:false, withMenu:true, size:'m', caption:'LIGHT · MENU OPEN · empty premios'}),
-      panel({theme:'dark', collapsed:false, framed:true, withMenu:true, size:'m', caption:'DARK · MENU OPEN · 2 trophies'}),
+      // Row 2 — the simplified popover (just a "Trophies" link now).
+      panel({theme:'light', collapsed:false, framed:false, withMenu:true, size:'m', caption:'LIGHT · MENU OPEN · Trophies link'}),
+      panel({theme:'dark', collapsed:false, framed:true, withMenu:true, size:'m', caption:'DARK · MENU OPEN · Trophies link'}),
+      // Row 3 — the dedicated /trophies page the link opens.
+      trophiesPanel('light'),
+      trophiesPanel('dark'),
     ].join(''));
   </script>
 </body>

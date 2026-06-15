@@ -31,6 +31,7 @@ export interface Premio {
   /** Resolved public URL of the cosmetic png. */
   url: string
   name: LocalizedString
+  description: LocalizedString
   levelId: string
   levelTitle: LocalizedString
   unlocked: boolean
@@ -70,6 +71,7 @@ export function usePremios() {
           // reward.image already starts with 'cosmetics/'; do NOT double it.
           url: `/escape-room/${entry.id}/${reward.image}`,
           name: reward.name,
+          description: reward.description,
           levelId: entry.id,
           levelTitle: entry.title,
           unlocked: store.unlockedCosmetics.includes(reward.id),

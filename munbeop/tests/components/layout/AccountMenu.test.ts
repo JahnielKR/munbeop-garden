@@ -41,12 +41,31 @@ describe('AccountMenu', () => {
     expect(wrapper.get('.acct__avatar').text()).toBe('S')
   })
 
-  it('opens a popover with the email, a settings link, and sign out', async () => {
+  it('shows the trophy strip and identity when expanded', () => {
+    const wrapper = mountMenu()
+    expect(wrapper.find('.premios').exists()).toBe(true)
+    expect(wrapper.find('.acct__identity').exists()).toBe(true)
+  })
+
+  it('collapses to just the portrait box + count pip (no strip, no identity)', () => {
+    const wrapper = mount(AccountMenu, {
+      attachTo: document.body,
+      props: { collapsed: true },
+      global: { stubs: { LocaleSwitcher: true } },
+    })
+    expect(wrapper.find('.acct__avatar').exists()).toBe(true)
+    expect(wrapper.find('.acct__pip').exists()).toBe(true)
+    expect(wrapper.find('.premios').exists()).toBe(false)
+    expect(wrapper.find('.acct__identity').exists()).toBe(false)
+  })
+
+  it('opens a popover with the email, a trophies link, a settings link, and sign out', async () => {
     const wrapper = mountMenu()
     expect(document.querySelector('[role="menu"]')).toBeNull()
     await openMenu(wrapper)
     expect(document.querySelector('[role="menu"]')).not.toBeNull()
     expect(document.body.textContent).toContain('sol@example.com')
+    expect(document.querySelector('a[href="/trophies"]')).not.toBeNull()
     expect(document.querySelector('a[href="/settings"]')).not.toBeNull()
     expect(document.querySelector('.acct__signout')).not.toBeNull()
   })
@@ -60,7 +79,10 @@ describe('AccountMenu', () => {
     const menu = document.querySelector('[role="menu"]') as HTMLElement
     expect(menu.style.position).toBe('fixed')
     expect(menu.style.left).toMatch(/px$/)
-    expect(menu.style.top).toMatch(/px$/)
+    // bottom-anchored to the avatar (top is auto) so it never depends on the
+    // menu's own height — no center→corner jump on first open.
+    expect(menu.style.bottom).toMatch(/px$/)
+    expect(menu.style.top).toBe('auto')
   })
 
   it('signs out when sign-out is clicked', async () => {
