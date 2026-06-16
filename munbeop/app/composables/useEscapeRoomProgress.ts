@@ -28,6 +28,8 @@ import { useEscapeRoomStore } from '~/stores/escape-room'
 interface EscapeRoomProgress {
   unlockedCosmetics: string[]
   consecutiveCleanRuns: number
+  /** Chosen cosmetic per type ('avatar'|'frame'|'bg'|'set') → reward id. */
+  equipped: Record<string, string>
 }
 
 export function useEscapeRoomProgress() {
@@ -43,11 +45,20 @@ export function useEscapeRoomProgress() {
       )
       const unlocked = cloud?.unlockedCosmetics
       const racha = cloud?.consecutiveCleanRuns
+      const eq = cloud?.equipped
       store.unlockedCosmetics = Array.isArray(unlocked)
         ? unlocked.filter((id): id is string => typeof id === 'string')
         : []
       store.consecutiveCleanRuns =
         typeof racha === 'number' && Number.isFinite(racha) && racha >= 0 ? Math.floor(racha) : 0
+      store.equipped =
+        eq && typeof eq === 'object' && !Array.isArray(eq)
+          ? Object.fromEntries(
+              Object.entries(eq).filter(
+                ([type, id]) => typeof type === 'string' && typeof id === 'string',
+              ),
+            )
+          : {}
     } catch {
       // Table not deployed yet or a network blip — keep whatever's in memory.
       // (A transient read error must NOT wipe progress earned this session.)
@@ -61,6 +72,7 @@ export function useEscapeRoomProgress() {
       await storage.write(STORAGE_KEYS.escapeRoom, {
         unlockedCosmetics: store.unlockedCosmetics,
         consecutiveCleanRuns: store.consecutiveCleanRuns,
+        equipped: store.equipped,
       } satisfies EscapeRoomProgress)
     } catch {
       // A failed cloud write must never throw into the gameplay UI.

@@ -55,6 +55,13 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
   const consecutiveCleanRuns = ref(0)
   /** Persisted across runs (hydrated by composable). */
   const unlockedCosmetics = ref<string[]>([])
+  /**
+   * The cosmetic the player has CHOSEN to show, keyed by type
+   * ('avatar' | 'frame' | 'bg' | 'set') → reward id. An equipped 'set' takes
+   * precedence over the individual layers in the portrait. Persisted across
+   * runs (hydrated by composable). Empty = framed initials.
+   */
+  const equipped = ref<Record<string, string>>({})
 
   // ─── Computed ─────────────────────────────────────────────────────────────
   const usedPremiumHint = computed(() =>
@@ -194,7 +201,28 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
       unlockedCosmetics.value.push(reward.id)
     }
 
+    // Light up the profile on the first unlock of a type: auto-equip into an
+    // empty slot. A 'set' is left for the player to equip deliberately (it
+    // overrides their avatar/frame/bg picks).
+    const type = reward.id.split('-')[1]
+    if (type && type !== 'set' && !equipped.value[type]) {
+      equipped.value[type] = reward.id
+    }
+
     return tier
+  }
+
+  /** Choose a cosmetic to display (no-op if it isn't unlocked). */
+  function equip(type: string, id: string) {
+    if (!unlockedCosmetics.value.includes(id)) return
+    equipped.value[type] = id
+  }
+
+  /** Clear the chosen cosmetic for a type (back to the default for that slot). */
+  function unequip(type: string) {
+    equipped.value = Object.fromEntries(
+      Object.entries(equipped.value).filter(([t]) => t !== type),
+    )
   }
 
   /** Clear the active run state. Leaves persisted progress (racha, cosmetics) untouched. */
@@ -223,6 +251,7 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
     startedAt,
     consecutiveCleanRuns,
     unlockedCosmetics,
+    equipped,
     // computed
     usedPremiumHint,
     allSlotsResolved,
@@ -236,6 +265,8 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
     useFreeHint,
     usePremiumHint,
     complete,
+    equip,
+    unequip,
     reset,
   }
 })

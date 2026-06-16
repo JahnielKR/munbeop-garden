@@ -14,10 +14,10 @@ import { useEscapeRoomStore } from '~/stores/escape-room'
  *
  * The "premios" are escape-room cosmetics: each playable Level defines one
  * Reward per tier (common/rare/epic/legendary), and beating a run unlocks
- * the matching cosmetic id into the escape-room store's `unlockedCosmetics`.
- * Cross-session persistence isn't wired yet, so today the default render is
- * the empty/locked trophy case — by design (it's meant to look inviting,
- * not broken). When persistence lands, this lights up with zero changes.
+ * the matching cosmetic id into the escape-room store's `unlockedCosmetics`
+ * (persisted per-account by useEscapeRoomProgress). The player equips which
+ * unlocked cosmetic is active per type on the /trophies page; `portrait`
+ * reflects that. Before anything is unlocked it's an inviting empty case.
  */
 
 /** Cosmetic kind, decoded from the reward id (`cosmetic-<type>-<name>`). */
@@ -35,6 +35,8 @@ export interface Premio {
   levelId: string
   levelTitle: LocalizedString
   unlocked: boolean
+  /** True when this is the cosmetic currently chosen for its type slot. */
+  equipped: boolean
 }
 
 export interface TierSlot {
@@ -63,10 +65,11 @@ export function usePremios() {
     playable.flatMap((entry) =>
       REWARD_TIERS.map((tier) => {
         const reward = entry.level!.rewards[tier]
+        // 'cosmetic-frame-apron' -> 'frame'; 'cosmetic-set-complete' -> 'set'.
+        const type = (reward.id.split('-')[1] ?? 'set') as CosmeticType
         return {
           tier,
-          // 'cosmetic-frame-apron' -> 'frame'; 'cosmetic-set-complete' -> 'set'.
-          type: (reward.id.split('-')[1] ?? 'set') as CosmeticType,
+          type,
           id: reward.id,
           // reward.image already starts with 'cosmetics/'; do NOT double it.
           url: `/escape-room/${entry.id}/${reward.image}`,
@@ -75,6 +78,7 @@ export function usePremios() {
           levelId: entry.id,
           levelTitle: entry.title,
           unlocked: store.unlockedCosmetics.includes(reward.id),
+          equipped: store.equipped[type] === reward.id,
         }
       }),
     ),
@@ -106,22 +110,24 @@ export function usePremios() {
     })),
   )
 
-  /** What the portrait composites: a 'set' overrides everything; otherwise the
-   *  highest-order unlocked avatar / frame / bg layer each. All undefined today
-   *  (persistence unwired) → the framed-initials default ships. */
+  /** What the portrait composites, driven by the player's EQUIPPED choices (set
+   *  on the /trophies page; auto-equipped into empty slots on first unlock). An
+   *  equipped 'set' overrides the individual layers. Each equip is re-checked
+   *  against `unlockedCosmetics` so a stale id never renders. Nothing equipped →
+   *  framed initials. */
   const portrait = computed(() => {
-    const got = all.value.filter((p) => p.unlocked)
-    const pick = (type: CosmeticType) => {
-      const matches = got.filter((p) => p.type === type)
-      return matches.length ? matches[matches.length - 1]!.url : undefined
+    const urlFor = (id?: string): string | undefined => {
+      if (!id || !store.unlockedCosmetics.includes(id)) return undefined
+      return all.value.find((p) => p.id === id)?.url
     }
-    const setUrl = pick('set')
+    const eq = store.equipped
+    const setUrl = urlFor(eq.set)
     if (setUrl) return { setUrl, avatarUrl: undefined, frameUrl: undefined, bgUrl: undefined }
     return {
       setUrl: undefined,
-      avatarUrl: pick('avatar'),
-      frameUrl: pick('frame'),
-      bgUrl: pick('bg'),
+      avatarUrl: urlFor(eq.avatar),
+      frameUrl: urlFor(eq.frame),
+      bgUrl: urlFor(eq.bg),
     }
   })
 

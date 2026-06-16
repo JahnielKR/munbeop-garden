@@ -5,15 +5,27 @@
  * Reached from the account popover ("Trophies n/total ▸"). Shows every reward
  * grouped by level: unlocked ones render their pixel art framed in their tier
  * colour; locked ones are recessed peg-holes that still tease the name + tier,
- * so the page reads as a collection to complete. Equipping (choosing the active
- * avatar / frame / background) is the next step once run progress is persisted.
+ * so the page reads as a collection to complete. Unlocked rewards can be
+ * EQUIPPED — choosing which avatar / frame / background (or the legendary set)
+ * is active on the sidebar portrait; the choice persists per account.
  */
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
-import { usePremios } from '~/composables/usePremios'
+import { usePremios, type Premio } from '~/composables/usePremios'
+import { useEscapeRoomStore } from '~/stores/escape-room'
+import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 
 const { t } = useI18n()
 const { tl } = useLocalized()
 const { detailLevels, unlockedCount, totalCount } = usePremios()
+const store = useEscapeRoomStore()
+const { persist } = useEscapeRoomProgress()
+
+/** Toggle a reward as the active cosmetic for its type, then persist. */
+function toggleEquip(row: Premio) {
+  if (row.equipped) store.unequip(row.type)
+  else store.equip(row.type, row.id)
+  void persist()
+}
 </script>
 
 <template>
@@ -34,7 +46,11 @@ const { detailLevels, unlockedCount, totalCount } = usePremios()
           v-for="row in lvl.rows"
           :key="row.id"
           class="trophy"
-          :class="[`premio--${row.tier}`, row.unlocked ? 'trophy--unlocked' : 'trophy--locked']"
+          :class="[
+            `premio--${row.tier}`,
+            row.unlocked ? 'trophy--unlocked' : 'trophy--locked',
+            { 'trophy--equipped': row.equipped },
+          ]"
         >
           <div class="trophy__art">
             <img v-if="row.unlocked" class="trophy__img" :src="row.url" :alt="tl(row.name)" >
@@ -48,6 +64,16 @@ const { detailLevels, unlockedCount, totalCount } = usePremios()
           <span class="trophy__tier">{{ t(`escape.tier_${row.tier}`) }}</span>
           <h3 class="trophy__name">{{ tl(row.name) }}</h3>
           <p class="trophy__desc">{{ tl(row.description) }}</p>
+          <button
+            v-if="row.unlocked"
+            type="button"
+            class="trophy__equip"
+            :class="{ 'trophy__equip--on': row.equipped }"
+            :aria-pressed="row.equipped"
+            @click="toggleEquip(row)"
+          >
+            {{ row.equipped ? `✓ ${t('escape.equipped')}` : t('escape.equip') }}
+          </button>
         </article>
       </div>
     </section>
@@ -205,5 +231,52 @@ const { detailLevels, unlockedCount, totalCount } = usePremios()
   font-size: 12px;
   line-height: 1.5;
   color: var(--ink-soft);
+}
+
+/* equipped card reads as the active one: a thicker tier ring */
+.trophy--equipped {
+  box-shadow:
+    inset 0 0 0 2px var(--tier),
+    var(--shadow-pixel-md);
+}
+.trophy--equipped.premio--legendary {
+  box-shadow:
+    inset 0 0 0 1px var(--always-dark),
+    inset 0 0 0 3px var(--gold),
+    var(--shadow-pixel-md);
+}
+
+.trophy__equip {
+  margin-top: auto; /* pin to the card foot so buttons align across a row */
+  align-self: flex-start;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  letter-spacing: 0.04em;
+  padding: 8px 10px;
+  background: var(--surface);
+  border: 2px solid var(--ink-line);
+  color: var(--text);
+  cursor: pointer;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
+}
+.trophy__equip:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+.trophy__equip:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.trophy__equip--on {
+  background: var(--gold);
+  color: var(--text-on-accent);
+  border-color: var(--always-dark);
+}
+:lang(th) .trophy__equip,
+:lang(vi) .trophy__equip,
+:lang(ja) .trophy__equip {
+  font-size: 10px;
 }
 </style>
