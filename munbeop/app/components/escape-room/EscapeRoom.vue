@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import type { Level, RewardTier, ScriptedBeat, SelectionCandidate, CompletionCandidate, CreationCandidate } from '~/lib/domain'
 import { useEscapeRoomStore } from '~/stores/escape-room'
+import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 import { useLocalized } from '~/composables/useLocalized'
 import { useEscapeRoomAudio } from '~/composables/useEscapeRoomAudio'
 import Scene from './Scene.vue'
@@ -29,6 +30,9 @@ const props = defineProps<Props>()
 const emit = defineEmits<{ exit: [] }>()
 
 const store = useEscapeRoomStore()
+// Persistence half of the store (it stays a pure state machine): write the
+// run's outcome — unlocked cosmetic + racha — back to the account on run end.
+const { persist } = useEscapeRoomProgress()
 const { tl } = useLocalized()
 const { t } = useI18n()
 const audio = useEscapeRoomAudio()
@@ -120,9 +124,14 @@ watch(
     if (s === 'completed' && earnedTier.value === null) {
       activeSlotId.value = null
       earnedTier.value = store.complete()
+      // complete() just unlocked the tier's cosmetic and bumped the racha —
+      // persist so it survives a reload and shows in the sidebar/trophies.
+      void persist()
     }
     if (s === 'gameover') {
       activeSlotId.value = null
+      // game-over reset consecutiveCleanRuns to 0 — persist the reset too.
+      void persist()
     }
   },
 )

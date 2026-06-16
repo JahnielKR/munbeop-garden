@@ -10,6 +10,7 @@ export const STORAGE_KEYS = {
   inactiveContextIds: 'munbeop.v1.inactiveContextIds',
   locale: 'munbeop.v1.locale',
   settings: 'munbeop.v1.settings',
+  escapeRoom: 'munbeop.v1.escapeRoom',
 } as const
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS]

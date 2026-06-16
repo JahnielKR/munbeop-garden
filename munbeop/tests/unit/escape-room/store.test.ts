@@ -189,10 +189,11 @@ describe('useEscapeRoomStore', () => {
     expect(store.unlockedCosmetics.filter((id) => id === 'r-e')).toHaveLength(1)
   })
 
-  it('reset() clears run state but keeps racha and cosmetics', () => {
+  it('reset() clears run state but keeps racha, cosmetics, and equipped', () => {
     const store = useEscapeRoomStore()
     store.consecutiveCleanRuns = 7
     store.unlockedCosmetics = ['r-c', 'r-r']
+    store.equipped = { r: 'r-r' }
     store.startRun(makeLevel(), 'seed-x', 0)
     store.answerSelection('slot-1', 0)
     store.reset()
@@ -201,6 +202,45 @@ describe('useEscapeRoomStore', () => {
     expect(store.resolvedSlots).toEqual([])
     expect(store.consecutiveCleanRuns).toBe(7)
     expect(store.unlockedCosmetics).toEqual(['r-c', 'r-r'])
+    expect(store.equipped).toEqual({ r: 'r-r' })
+  })
+
+  it('complete() auto-equips the unlocked cosmetic into an empty type slot', () => {
+    const store = useEscapeRoomStore()
+    store.startRun(makeLevel(), 'seed-x', 0)
+    store.answerSelection('slot-1', 0)
+    store.answerCompletion('slot-2', '이')
+    store.answerCreation('slot-3', [0, 1])
+    store.complete(60_000) // epic → unlocks 'r-e' (decoded type 'e')
+    expect(store.equipped.e).toBe('r-e')
+  })
+
+  it('complete() never overrides an already-equipped slot of the same type', () => {
+    const store = useEscapeRoomStore()
+    store.unlockedCosmetics = ['r-e-old']
+    store.equipped = { e: 'r-e-old' }
+    store.startRun(makeLevel(), 'seed-x', 0)
+    store.answerSelection('slot-1', 0)
+    store.answerCompletion('slot-2', '이')
+    store.answerCreation('slot-3', [0, 1])
+    store.complete(60_000) // unlocks 'r-e' (type 'e') but the slot is taken
+    expect(store.equipped.e).toBe('r-e-old')
+  })
+
+  it('equip() only equips an unlocked cosmetic; unequip() clears the slot', () => {
+    const store = useEscapeRoomStore()
+    store.equip('avatar', 'cosmetic-avatar-lantern') // not unlocked → ignored
+    expect(store.equipped.avatar).toBeUndefined()
+
+    store.unlockedCosmetics = ['cosmetic-avatar-lantern', 'cosmetic-avatar-templecat']
+    store.equip('avatar', 'cosmetic-avatar-lantern')
+    expect(store.equipped.avatar).toBe('cosmetic-avatar-lantern')
+    // re-equipping a different avatar replaces the same slot
+    store.equip('avatar', 'cosmetic-avatar-templecat')
+    expect(store.equipped.avatar).toBe('cosmetic-avatar-templecat')
+
+    store.unequip('avatar')
+    expect(store.equipped.avatar).toBeUndefined()
   })
 
   it('soft-rejects a present-tense tile once (no error), then errors normally', () => {
