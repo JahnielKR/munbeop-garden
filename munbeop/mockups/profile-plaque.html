@@ -131,8 +131,6 @@
   .sidebar--collapsed .acct__inner { width: 36px; height: 36px; font-size: 13px; }
   .sidebar--collapsed .acct__avatar-frame, .sidebar--collapsed .acct__avatar-bgclip { display: none; }
   .sidebar--collapsed .acct__avatar--framed { border-color: var(--ink-line); background: var(--paper); }
-  .acct__pip { position: absolute; bottom: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 3px; display: grid; place-items: center; border: 2px solid var(--ink-line); background: var(--paper-deep); box-shadow: var(--shadow-pixel-sm); font-family: 'Press Start 2P', monospace; font-size: 7px; color: var(--ink-soft); }
-  .acct__pip--has { color: var(--gold); }
   .acct__menu { position: absolute; z-index: 200; max-height: min(70vh, 560px); display: flex; flex-direction: column; gap: 12px; padding: 14px; width: 248px; background: var(--paper-deep); border: 3px solid var(--ink-line); box-shadow: var(--bevel), var(--shadow-pixel-lg); }
   .acct__menu::before, .acct__menu::after { content: ''; position: absolute; bottom: var(--caret-b, 24px); border-top: 8px solid transparent; border-bottom: 8px solid transparent; }
   .acct__menu::before { left: -10px; border-right: 10px solid var(--ink-line); }
@@ -296,7 +294,7 @@
     }
     function plaqueCollapsed(count, withMenu) {
       return `<div class="acct">
-        <button class="acct__avatar"><span class="acct__inner">S</span><span class="acct__pip ${count>0?'acct__pip--has':''}">${count}</span></button>
+        <button class="acct__avatar"><span class="acct__inner">S</span></button>
         ${withMenu ? popover(count, 24) : ''}
       </div>`;
     }
@@ -349,11 +347,11 @@
     }
 
     document.body.insertAdjacentHTML('beforeend', [
-      // Row 1 — the four sidebar states (menu closed): plaque + portrait + strip + pip.
+      // Row 1 — the four sidebar states (menu closed): plaque + portrait + strip.
       panel({theme:'light', collapsed:false, framed:false, caption:'LIGHT · EXPANDED · empty case'}),
       panel({theme:'light', collapsed:true, count:0, caption:'LIGHT · COLLAPSED (64px)'}),
       panel({theme:'dark', collapsed:false, framed:true, caption:'DARK · EXPANDED · 2 won + frame'}),
-      panel({theme:'dark', collapsed:true, count:2, caption:'DARK · COLLAPSED · pip 2'}),
+      panel({theme:'dark', collapsed:true, count:2, caption:'DARK · COLLAPSED (64px)'}),
       // Row 2 — the simplified popover (just a "Trophies" link now).
       panel({theme:'light', collapsed:false, framed:false, withMenu:true, size:'m', caption:'LIGHT · MENU OPEN · Trophies link'}),
       panel({theme:'dark', collapsed:false, framed:true, withMenu:true, size:'m', caption:'DARK · MENU OPEN · Trophies link'}),
