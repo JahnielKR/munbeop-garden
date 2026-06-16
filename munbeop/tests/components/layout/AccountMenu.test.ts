@@ -47,14 +47,16 @@ describe('AccountMenu', () => {
     expect(wrapper.find('.acct__identity').exists()).toBe(true)
   })
 
-  it('collapses to just the portrait box + count pip (no strip, no identity)', () => {
+  it('collapses to just the framed portrait box (no strip, no identity, no pip)', () => {
     const wrapper = mount(AccountMenu, {
       attachTo: document.body,
       props: { collapsed: true },
       global: { stubs: { LocaleSwitcher: true } },
     })
     expect(wrapper.find('.acct__avatar').exists()).toBe(true)
-    expect(wrapper.find('.acct__pip').exists()).toBe(true)
+    // collapsed = ONLY the box: no trophy strip, no identity line, and no count
+    // pip (the pip's corner offset peeked past the 64px rail edge — half-clipped).
+    expect(wrapper.find('.acct__pip').exists()).toBe(false)
     expect(wrapper.find('.premios').exists()).toBe(false)
     expect(wrapper.find('.acct__identity').exists()).toBe(false)
   })

@@ -18,7 +18,7 @@ import { useSettingsStore } from '~/stores/settings'
  * button) and a centred 64px INNER (initials by default, swapped for an
  * unlocked avatar cosmetic). Unlocked frame / bg / set cosmetics compose as
  * fixed-geometry sibling layers (see usePremios().portrait). Collapsed to the
- * 64px rail the plaque dissolves to a 48px tile + a count pip.
+ * 64px rail the plaque dissolves to just the 48px framed tile.
  *
  * The popover is Teleported to <body> and position:fixed, anchored off the
  * avatar's live rect — escaping .shell__rail's overflow clip so it renders
@@ -178,14 +178,6 @@ onUnmounted(() => {
         alt=""
         aria-hidden="true"
       >
-      <span
-        v-if="collapsed"
-        class="acct__pip"
-        :class="{ 'acct__pip--has': unlockedCount > 0 }"
-        aria-hidden="true"
-      >
-        {{ unlockedCount }}
-      </span>
     </button>
 
     <p v-if="!collapsed" class="acct__identity">{{ localPart }}</p>
@@ -358,7 +350,7 @@ onUnmounted(() => {
   text-overflow: ellipsis;
 }
 
-/* ---- COLLAPSED 64px RAIL: chrome dissolves to a framed tile + pip ---- */
+/* ---- COLLAPSED 64px RAIL: chrome dissolves to just the framed tile ---- */
 .sidebar--collapsed .acct {
   background: transparent;
   border: none;
@@ -388,28 +380,6 @@ onUnmounted(() => {
 .sidebar--collapsed .acct__avatar--set {
   border-color: var(--ink-line);
   background: var(--paper);
-}
-.acct__pip {
-  position: absolute;
-  bottom: -6px;
-  right: -6px;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 3px;
-  display: grid;
-  place-items: center;
-  border: 2px solid var(--ink-line);
-  background: var(--paper-deep);
-  box-shadow: var(--shadow-pixel-sm);
-  font-family: 'Press Start 2P', monospace;
-  font-size: 7px;
-  color: var(--ink-soft);
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: grayscale;
-  font-smooth: never;
-}
-.acct__pip--has {
-  color: var(--gold);
 }
 
 /* ---- TELEPORTED FIXED POPOVER (escapes .shell__rail overflow clip) ---- */
