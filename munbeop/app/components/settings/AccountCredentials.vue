@@ -16,25 +16,37 @@ import Button from '~/components/ui/Button.vue'
 const { t } = useI18n()
 const toast = useToast()
 const authStore = useAuthStore()
-const { updatePassword, updateEmail } = useAuth()
+const { reauthenticate, updatePassword, updateEmail } = useAuth()
 
 const isEmailUser = computed(() => isEmailIdentity(authStore.user))
 
 // ── Change password ──────────────────────────────────────────────────────
 const MIN_LEN = 8
+const currentPassword = ref('')
 const newPassword = ref('')
 const pwBusy = ref(false)
-const canPw = computed(() => newPassword.value.length >= MIN_LEN && !pwBusy.value)
+const canPw = computed(
+  () => currentPassword.value.length > 0 && newPassword.value.length >= MIN_LEN && !pwBusy.value,
+)
 
 async function submitPassword() {
   if (!canPw.value) return
   pwBusy.value = true
+  // Re-verify the current password before rotating it — a hijacked session
+  // must not be able to change the password without knowing the old one.
+  const reauth = await reauthenticate(currentPassword.value)
+  if (reauth.error) {
+    pwBusy.value = false
+    toast.error(t('settings.account.password.wrong_current'))
+    return
+  }
   const { error } = await updatePassword(newPassword.value)
   pwBusy.value = false
   if (error) {
     toast.error(t('auth.reset_error'))
     return
   }
+  currentPassword.value = ''
   newPassword.value = ''
   toast.success(t('auth.password_updated'))
 }
@@ -63,6 +75,14 @@ async function submitEmail() {
     <BilingualTitle ko="보안" :latin="t('settings.account.security.title')" level="h2" />
 
     <form class="creds__form" @submit.prevent="submitPassword">
+      <Field :label="t('auth.current_password_label')" html-for="current-password">
+        <Input
+          id="current-password"
+          v-model="currentPassword"
+          type="password"
+          autocomplete="current-password"
+        />
+      </Field>
       <Field :label="t('auth.new_password_label')" html-for="set-password">
         <Input id="set-password" v-model="newPassword" type="password" autocomplete="new-password" />
       </Field>

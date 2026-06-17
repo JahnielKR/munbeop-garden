@@ -127,6 +127,7 @@
     "reset_title": "Définir un nouveau mot de passe",
     "reset_invalid": "Ce lien est invalide ou expiré. Demande-en un nouveau depuis l'écran de connexion.",
     "new_password_label": "Nouveau mot de passe",
+    "current_password_label": "Mot de passe actuel",
     "password_min": "Au moins 8 caractères.",
     "submit_new_password": "Mettre à jour le mot de passe",
     "password_updated": "Mot de passe mis à jour.",
@@ -158,7 +159,7 @@
     "about": { "title": "À propos & mentions légales", "contact": "Contact" },
     "data": { "title": "Données et confidentialité", "export": "Exporter mes données (.json)", "exported": "Le téléchargement de vos données a commencé.", "export_error": "Impossible d'exporter vos données. Réessaie." },
     "tabs": { "account": "Compte", "appearance": "Apparence", "learning": "Apprentissage", "data": "Données", "about": "À propos" },
-    "account": { "danger": { "title": "Zone de danger", "description": "Supprime définitivement ton compte et toutes tes données. Action irréversible.", "button": "Supprimer le compte", "modal_title": "Supprimer ton compte ?", "modal_body": "Ceci supprime définitivement ton compte, tes phrases, ta progression, tes paquets et ta grammaire personnalisée. Action irréversible.", "confirm_label": "Tape DELETE pour confirmer", "confirm_button": "Supprimer définitivement", "cancel": "Annuler", "error": "Impossible de supprimer ton compte. Réessaie." }, "security": { "title": "Connexion et sécurité" }, "password": { "submit": "Mettre à jour le mot de passe" }, "email": { "title": "Nouvel e-mail", "submit": "Mettre à jour l'e-mail", "hint": "Nous enverrons un lien de confirmation à la nouvelle adresse.", "sent": "Lien de confirmation envoyé — vérifie ta nouvelle boîte mail.", "error": "Impossible de mettre à jour ton e-mail. Réessaie." } },
+    "account": { "danger": { "title": "Zone de danger", "description": "Supprime définitivement ton compte et toutes tes données. Action irréversible.", "button": "Supprimer le compte", "modal_title": "Supprimer ton compte ?", "modal_body": "Ceci supprime définitivement ton compte, tes phrases, ta progression, tes paquets et ta grammaire personnalisée. Action irréversible.", "confirm_label": "Tape DELETE pour confirmer", "confirm_button": "Supprimer définitivement", "cancel": "Annuler", "error": "Impossible de supprimer ton compte. Réessaie." }, "security": { "title": "Connexion et sécurité" }, "password": { "submit": "Mettre à jour le mot de passe", "wrong_current": "Le mot de passe actuel est incorrect." }, "email": { "title": "Nouvel e-mail", "submit": "Mettre à jour l'e-mail", "hint": "Nous enverrons un lien de confirmation à la nouvelle adresse.", "sent": "Lien de confirmation envoyé — vérifie ta nouvelle boîte mail.", "error": "Impossible de mettre à jour ton e-mail. Réessaie." } },
     "menu": { "account": "Menu du compte" }
   },
   "welcome": {

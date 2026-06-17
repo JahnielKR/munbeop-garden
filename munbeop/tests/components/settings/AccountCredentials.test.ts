@@ -5,9 +5,10 @@ import AccountCredentials from '~/components/settings/AccountCredentials.vue'
 import { useAuthStore } from '~/stores/auth'
 import { useToast } from '~/composables/useToast'
 
+const reauthenticate = vi.fn(async () => ({ error: null }))
 const updatePassword = vi.fn(async () => ({ error: null }))
 const updateEmail = vi.fn(async () => ({ error: null }))
-vi.stubGlobal('useAuth', () => ({ updatePassword, updateEmail }))
+vi.stubGlobal('useAuth', () => ({ reauthenticate, updatePassword, updateEmail }))
 
 function mountWith(user: unknown) {
   setActivePinia(createPinia())
@@ -18,6 +19,8 @@ function mountWith(user: unknown) {
 
 describe('AccountCredentials', () => {
   beforeEach(() => {
+    reauthenticate.mockReset()
+    reauthenticate.mockResolvedValue({ error: null })
     updatePassword.mockReset()
     updatePassword.mockResolvedValue({ error: null })
     updateEmail.mockReset()
@@ -35,14 +38,28 @@ describe('AccountCredentials', () => {
     expect(wrapper.find('input[type="email"]').exists()).toBe(true)
   })
 
-  it('updates the password and clears the field', async () => {
+  it('reauthenticates then updates the password and clears both fields', async () => {
     const wrapper = mountWith({ identities: [{ provider: 'email' }] })
-    await wrapper.find('input[type="password"]').setValue('sup3r-secret')
+    await wrapper.find('#current-password').setValue('old-pass1')
+    await wrapper.find('#set-password').setValue('sup3r-secret')
     await wrapper.findAll('form')[0].trigger('submit')
     await flushPromises()
+    expect(reauthenticate).toHaveBeenCalledWith('old-pass1')
     expect(updatePassword).toHaveBeenCalledWith('sup3r-secret')
-    expect((wrapper.find('input[type="password"]').element as HTMLInputElement).value).toBe('')
+    expect((wrapper.find('#current-password').element as HTMLInputElement).value).toBe('')
+    expect((wrapper.find('#set-password').element as HTMLInputElement).value).toBe('')
     expect(useToast().toasts.value.some((t) => t.variant === 'success')).toBe(true)
+  })
+
+  it('rejects the change (no update) when the current password is wrong', async () => {
+    reauthenticate.mockResolvedValueOnce({ error: { message: 'Invalid login credentials' } })
+    const wrapper = mountWith({ identities: [{ provider: 'email' }] })
+    await wrapper.find('#current-password').setValue('wrong')
+    await wrapper.find('#set-password').setValue('sup3r-secret')
+    await wrapper.findAll('form')[0].trigger('submit')
+    await flushPromises()
+    expect(updatePassword).not.toHaveBeenCalled()
+    expect(useToast().toasts.value.some((t) => t.variant === 'error')).toBe(true)
   })
 
   it('requests an email change for a valid address', async () => {
@@ -54,12 +71,14 @@ describe('AccountCredentials', () => {
     expect(useToast().toasts.value.some((t) => t.variant === 'success')).toBe(true)
   })
 
-  it('shows an error toast when the password update fails', async () => {
+  it('shows an error toast when the password update itself fails', async () => {
     updatePassword.mockResolvedValueOnce({ error: { message: 'weak' } })
     const wrapper = mountWith({ identities: [{ provider: 'email' }] })
-    await wrapper.find('input[type="password"]').setValue('sup3r-secret')
+    await wrapper.find('#current-password').setValue('old-pass1')
+    await wrapper.find('#set-password').setValue('sup3r-secret')
     await wrapper.findAll('form')[0].trigger('submit')
     await flushPromises()
+    expect(reauthenticate).toHaveBeenCalled()
     expect(useToast().toasts.value.some((t) => t.variant === 'error')).toBe(true)
   })
 })
