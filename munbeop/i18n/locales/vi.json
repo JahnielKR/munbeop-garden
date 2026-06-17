@@ -98,8 +98,7 @@
   "empty": {
     "garden": "Bản đồ Vườn của tôi (bản đồ 2D kiểu Stardew với các vùng TOPIK và các cây ngữ pháp đang lớn) sẽ có trong kế hoạch sau. Trong khi đó, vào Luyện tập để bắt đầu trồng.",
     "stats": "Thống kê chi tiết sẽ có trong kế hoạch sau.",
-    "log": "Chưa có câu nào. Vào Luyện tập.",
-    "settings": "Cài đặt tài khoản sẽ có trong kế hoạch sau."
+    "log": "Chưa có câu nào. Vào Luyện tập."
   },
   "common": {
     "language": "Ngôn ngữ",
@@ -120,7 +119,18 @@
     "switch_to_sign_up": "Chưa có tài khoản? Đăng ký",
     "switch_to_sign_in": "Đã có tài khoản? Đăng nhập",
     "signed_in_as": "Đăng nhập với",
-    "sign_out": "Đăng xuất"
+    "sign_out": "Đăng xuất",
+    "sign_out_error": "Không thể đăng xuất. Thử lại.",
+    "forgot_password": "Quên mật khẩu?",
+    "reset_email_sent": "Kiểm tra email để nhận liên kết đặt lại.",
+    "reset_need_email": "Nhập email của bạn trước.",
+    "reset_title": "Đặt mật khẩu mới",
+    "reset_invalid": "Liên kết này không hợp lệ hoặc đã hết hạn. Yêu cầu liên kết mới từ màn hình đăng nhập.",
+    "new_password_label": "Mật khẩu mới",
+    "password_min": "Ít nhất 8 ký tự.",
+    "submit_new_password": "Cập nhật mật khẩu",
+    "password_updated": "Đã cập nhật mật khẩu.",
+    "reset_error": "Không thể cập nhật mật khẩu. Thử lại."
   },
   "settings": {
     "dark_mode": "Chế độ tối",
@@ -148,7 +158,7 @@
     "about": { "title": "Giới thiệu & pháp lý", "contact": "Liên hệ" },
     "data": { "title": "Dữ liệu & quyền riêng tư", "export": "Xuất dữ liệu của tôi (.json)", "exported": "Dữ liệu của bạn đang được tải xuống.", "export_error": "Không thể xuất dữ liệu của bạn. Thử lại." },
     "tabs": { "account": "Tài khoản", "appearance": "Giao diện", "learning": "Học tập", "data": "Dữ liệu", "about": "Giới thiệu" },
-    "account": { "danger": { "title": "Vùng nguy hiểm", "description": "Xóa vĩnh viễn tài khoản và toàn bộ dữ liệu của bạn. Không thể hoàn tác.", "button": "Xóa tài khoản", "modal_title": "Xóa tài khoản của bạn?", "modal_body": "Thao tác này xóa vĩnh viễn tài khoản, câu, tiến độ, bộ thẻ và ngữ pháp tùy chỉnh của bạn. Không thể hoàn tác.", "confirm_label": "Nhập DELETE để xác nhận", "confirm_button": "Xóa vĩnh viễn", "cancel": "Hủy", "error": "Không thể xóa tài khoản của bạn. Thử lại." } },
+    "account": { "danger": { "title": "Vùng nguy hiểm", "description": "Xóa vĩnh viễn tài khoản và toàn bộ dữ liệu của bạn. Không thể hoàn tác.", "button": "Xóa tài khoản", "modal_title": "Xóa tài khoản của bạn?", "modal_body": "Thao tác này xóa vĩnh viễn tài khoản, câu, tiến độ, bộ thẻ và ngữ pháp tùy chỉnh của bạn. Không thể hoàn tác.", "confirm_label": "Nhập DELETE để xác nhận", "confirm_button": "Xóa vĩnh viễn", "cancel": "Hủy", "error": "Không thể xóa tài khoản của bạn. Thử lại." }, "security": { "title": "Đăng nhập & bảo mật" }, "password": { "submit": "Cập nhật mật khẩu" }, "email": { "title": "Email mới", "submit": "Cập nhật email", "hint": "Chúng tôi sẽ gửi liên kết xác nhận đến email mới.", "sent": "Đã gửi liên kết xác nhận — kiểm tra hộp thư mới của bạn.", "error": "Không thể cập nhật email. Thử lại." } },
     "menu": { "account": "Menu tài khoản" }
   },
   "welcome": {

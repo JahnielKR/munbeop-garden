@@ -1,9 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { mount, enableAutoUnmount, type VueWrapper } from '@vue/test-utils'
+import { mount, enableAutoUnmount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import AccountMenu from '~/components/layout/AccountMenu.vue'
 import { useAuthStore } from '~/stores/auth'
+import { useToast } from '~/composables/useToast'
 
 // The teleported popover wires window-level observers (useElementBounding /
 // useWindowSize). Unmount every wrapper after its test so those listeners
@@ -30,6 +31,8 @@ describe('AccountMenu', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     signOutAndExit.mockClear()
+    signOutAndExit.mockResolvedValue({ error: null })
+    useToast().dismiss()
     document.body.innerHTML = ''
     useAuthStore().user = { email: 'sol@example.com' } as never
   })
@@ -92,6 +95,15 @@ describe('AccountMenu', () => {
     await openMenu(wrapper)
     ;(document.querySelector('.acct__signout') as HTMLElement).click()
     expect(signOutAndExit).toHaveBeenCalledTimes(1)
+  })
+
+  it('shows an error toast when sign-out fails', async () => {
+    signOutAndExit.mockResolvedValueOnce({ error: { message: 'network' } })
+    const wrapper = mountMenu()
+    await openMenu(wrapper)
+    ;(document.querySelector('.acct__signout') as HTMLElement).click()
+    await flushPromises()
+    expect(useToast().toasts.value.some((t) => t.variant === 'error')).toBe(true)
   })
 
   it('stays open on a click inside the menu, closes on a click outside', async () => {

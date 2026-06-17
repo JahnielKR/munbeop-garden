@@ -27,8 +27,10 @@ async function confirm() {
   const { error } = await deleteAccount()
   busy.value = false
   if (error) {
+    // Keep the modal open and the typed DELETE intact so the user can
+    // retry without re-opening and re-typing the confirmation.
     toast.error(t('settings.account.danger.error'))
-    open.value = false
+    return
   }
   // success navigates away via signOutAndExit — nothing else to do
 }

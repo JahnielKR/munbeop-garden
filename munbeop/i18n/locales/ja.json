@@ -98,8 +98,7 @@
   "empty": {
     "garden": "私の庭マップ(StardewスタイルのTOPIKゾーン2Dマップで文法の植物が育つ)は次の計画で実装します。今は練習に行って栽培を始めてください。",
     "stats": "詳細統計は今後の計画で実装します。",
-    "log": "まだ文がありません。練習へ。",
-    "settings": "アカウント設定は今後の計画で実装します。"
+    "log": "まだ文がありません。練習へ。"
   },
   "common": {
     "language": "言語",
@@ -120,7 +119,18 @@
     "switch_to_sign_up": "アカウントがない?登録",
     "switch_to_sign_in": "アカウントある?サインイン",
     "signed_in_as": "サインイン中:",
-    "sign_out": "サインアウト"
+    "sign_out": "サインアウト",
+    "sign_out_error": "サインアウトできませんでした。もう一度お試しください。",
+    "forgot_password": "パスワードをお忘れですか？",
+    "reset_email_sent": "リセットリンクをメールで確認してください。",
+    "reset_need_email": "先にメールアドレスを入力してください。",
+    "reset_title": "新しいパスワードを設定",
+    "reset_invalid": "このリンクは無効または期限切れです。サインイン画面から再発行してください。",
+    "new_password_label": "新しいパスワード",
+    "password_min": "8文字以上。",
+    "submit_new_password": "パスワードを更新",
+    "password_updated": "パスワードを更新しました。",
+    "reset_error": "パスワードを更新できませんでした。もう一度お試しください。"
   },
   "settings": {
     "dark_mode": "ダークモード",
@@ -148,7 +158,7 @@
     "about": { "title": "情報と規約", "contact": "お問い合わせ" },
     "data": { "title": "データとプライバシー", "export": "データをエクスポート (.json)", "exported": "データをダウンロードしています。", "export_error": "データをエクスポートできませんでした。もう一度お試しください。" },
     "tabs": { "account": "アカウント", "appearance": "表示", "learning": "学習", "data": "データ", "about": "情報" },
-    "account": { "danger": { "title": "危険な操作", "description": "アカウントとすべてのデータを完全に削除します。元に戻せません。", "button": "アカウントを削除", "modal_title": "アカウントを削除しますか？", "modal_body": "アカウント、文章、進捗、デッキ、カスタム文法を完全に削除します。元に戻せません。", "confirm_label": "確認のため DELETE と入力", "confirm_button": "完全に削除", "cancel": "キャンセル", "error": "アカウントを削除できませんでした。もう一度お試しください。" } },
+    "account": { "danger": { "title": "危険な操作", "description": "アカウントとすべてのデータを完全に削除します。元に戻せません。", "button": "アカウントを削除", "modal_title": "アカウントを削除しますか？", "modal_body": "アカウント、文章、進捗、デッキ、カスタム文法を完全に削除します。元に戻せません。", "confirm_label": "確認のため DELETE と入力", "confirm_button": "完全に削除", "cancel": "キャンセル", "error": "アカウントを削除できませんでした。もう一度お試しください。" }, "security": { "title": "ログインとセキュリティ" }, "password": { "submit": "パスワードを更新" }, "email": { "title": "新しいメール", "submit": "メールを更新", "hint": "新しいアドレスに確認リンクを送ります。", "sent": "確認リンクを送信しました。新しい受信箱を確認してください。", "error": "メールを更新できませんでした。もう一度お試しください。" } },
     "menu": { "account": "アカウントメニュー" }
   },
   "welcome": {

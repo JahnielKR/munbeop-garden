@@ -29,7 +29,7 @@ const tiers: Tier[] = [
     name: 'Grove',
     price: '$4',
     cadence: '/ month',
-    bullets: ['Cross-device sync', 'Deeper stats', 'Backup & restore'],
+    bullets: ['Cross-device sync', 'Deeper stats', 'Data export (.json)'],
     featured: true,
   },
   {

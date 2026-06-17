@@ -98,8 +98,7 @@
   "empty": {
     "garden": "O mapa Meu Jardim (mapa 2D estilo Stardew com zonas TOPIK e suas plantas gramaticais crescendo) chega num plano futuro. Por enquanto, vai pra Prática começar a cultivar.",
     "stats": "Estatísticas detalhadas chegam num plano futuro.",
-    "log": "Ainda não há frases. Vai pra Prática.",
-    "settings": "Configurações e conta chegam em planos futuros."
+    "log": "Ainda não há frases. Vai pra Prática."
   },
   "common": {
     "language": "Idioma",
@@ -120,7 +119,18 @@
     "switch_to_sign_up": "Sem conta? Cadastra-te",
     "switch_to_sign_in": "Já tem conta? Entra",
     "signed_in_as": "Sessão de",
-    "sign_out": "Sair"
+    "sign_out": "Sair",
+    "sign_out_error": "Não foi possível sair. Tente novamente.",
+    "forgot_password": "Esqueceu a senha?",
+    "reset_email_sent": "Confere teu e-mail para o link de redefinição.",
+    "reset_need_email": "Digite teu e-mail primeiro.",
+    "reset_title": "Definir uma nova senha",
+    "reset_invalid": "Este link é inválido ou expirou. Peça um novo na tela de login.",
+    "new_password_label": "Nova senha",
+    "password_min": "Pelo menos 8 caracteres.",
+    "submit_new_password": "Atualizar senha",
+    "password_updated": "Senha atualizada.",
+    "reset_error": "Não foi possível atualizar sua senha. Tente novamente."
   },
   "settings": {
     "dark_mode": "Modo escuro",
@@ -148,7 +158,7 @@
     "about": { "title": "Sobre e jurídico", "contact": "Contato" },
     "data": { "title": "Dados e privacidade", "export": "Exportar meus dados (.json)", "exported": "Seus dados estão sendo baixados.", "export_error": "Não foi possível exportar seus dados. Tente novamente." },
     "tabs": { "account": "Conta", "appearance": "Aparência", "learning": "Aprendizado", "data": "Dados", "about": "Sobre" },
-    "account": { "danger": { "title": "Zona de perigo", "description": "Exclui permanentemente sua conta e todos os seus dados. Não dá para desfazer.", "button": "Excluir conta", "modal_title": "Excluir sua conta?", "modal_body": "Isto exclui permanentemente sua conta, suas frases, progresso, baralhos e gramática personalizada. Não pode ser desfeito.", "confirm_label": "Digite DELETE para confirmar", "confirm_button": "Excluir para sempre", "cancel": "Cancelar", "error": "Não foi possível excluir sua conta. Tente novamente." } },
+    "account": { "danger": { "title": "Zona de perigo", "description": "Exclui permanentemente sua conta e todos os seus dados. Não dá para desfazer.", "button": "Excluir conta", "modal_title": "Excluir sua conta?", "modal_body": "Isto exclui permanentemente sua conta, suas frases, progresso, baralhos e gramática personalizada. Não pode ser desfeito.", "confirm_label": "Digite DELETE para confirmar", "confirm_button": "Excluir para sempre", "cancel": "Cancelar", "error": "Não foi possível excluir sua conta. Tente novamente." }, "security": { "title": "Acesso e segurança" }, "password": { "submit": "Atualizar senha" }, "email": { "title": "Novo e-mail", "submit": "Atualizar e-mail", "hint": "Enviaremos um link de confirmação para o novo e-mail.", "sent": "Link de confirmação enviado — confira sua nova caixa de entrada.", "error": "Não foi possível atualizar seu e-mail. Tente novamente." } },
     "menu": { "account": "Menu da conta" }
   },
   "welcome": {

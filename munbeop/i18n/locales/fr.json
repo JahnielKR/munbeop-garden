@@ -98,8 +98,7 @@
   "empty": {
     "garden": "La carte Mon Jardin (carte 2D style Stardew avec zones TOPIK et tes plantes grammaticales qui grandissent) arrive dans un prochain plan. En attendant, va à Pratique pour commencer à cultiver.",
     "stats": "Les statistiques détaillées arrivent dans un plan ultérieur.",
-    "log": "Aucune phrase pour l'instant. Va à Pratique.",
-    "settings": "Réglages et compte arrivent dans des plans ultérieurs."
+    "log": "Aucune phrase pour l'instant. Va à Pratique."
   },
   "common": {
     "language": "Langue",
@@ -120,7 +119,18 @@
     "switch_to_sign_up": "Pas de compte ? Inscris-toi",
     "switch_to_sign_in": "Tu as un compte ? Connecte-toi",
     "signed_in_as": "Connecté en tant que",
-    "sign_out": "Se déconnecter"
+    "sign_out": "Se déconnecter",
+    "sign_out_error": "Échec de la déconnexion. Réessaie.",
+    "forgot_password": "Mot de passe oublié ?",
+    "reset_email_sent": "Consulte ton e-mail pour le lien de réinitialisation.",
+    "reset_need_email": "Saisis d'abord ton e-mail.",
+    "reset_title": "Définir un nouveau mot de passe",
+    "reset_invalid": "Ce lien est invalide ou expiré. Demande-en un nouveau depuis l'écran de connexion.",
+    "new_password_label": "Nouveau mot de passe",
+    "password_min": "Au moins 8 caractères.",
+    "submit_new_password": "Mettre à jour le mot de passe",
+    "password_updated": "Mot de passe mis à jour.",
+    "reset_error": "Impossible de mettre à jour ton mot de passe. Réessaie."
   },
   "settings": {
     "dark_mode": "Mode sombre",
@@ -148,7 +158,7 @@
     "about": { "title": "À propos & mentions légales", "contact": "Contact" },
     "data": { "title": "Données et confidentialité", "export": "Exporter mes données (.json)", "exported": "Le téléchargement de vos données a commencé.", "export_error": "Impossible d'exporter vos données. Réessaie." },
     "tabs": { "account": "Compte", "appearance": "Apparence", "learning": "Apprentissage", "data": "Données", "about": "À propos" },
-    "account": { "danger": { "title": "Zone de danger", "description": "Supprime définitivement ton compte et toutes tes données. Action irréversible.", "button": "Supprimer le compte", "modal_title": "Supprimer ton compte ?", "modal_body": "Ceci supprime définitivement ton compte, tes phrases, ta progression, tes paquets et ta grammaire personnalisée. Action irréversible.", "confirm_label": "Tape DELETE pour confirmer", "confirm_button": "Supprimer définitivement", "cancel": "Annuler", "error": "Impossible de supprimer ton compte. Réessaie." } },
+    "account": { "danger": { "title": "Zone de danger", "description": "Supprime définitivement ton compte et toutes tes données. Action irréversible.", "button": "Supprimer le compte", "modal_title": "Supprimer ton compte ?", "modal_body": "Ceci supprime définitivement ton compte, tes phrases, ta progression, tes paquets et ta grammaire personnalisée. Action irréversible.", "confirm_label": "Tape DELETE pour confirmer", "confirm_button": "Supprimer définitivement", "cancel": "Annuler", "error": "Impossible de supprimer ton compte. Réessaie." }, "security": { "title": "Connexion et sécurité" }, "password": { "submit": "Mettre à jour le mot de passe" }, "email": { "title": "Nouvel e-mail", "submit": "Mettre à jour l'e-mail", "hint": "Nous enverrons un lien de confirmation à la nouvelle adresse.", "sent": "Lien de confirmation envoyé — vérifie ta nouvelle boîte mail.", "error": "Impossible de mettre à jour ton e-mail. Réessaie." } },
     "menu": { "account": "Menu du compte" }
   },
   "welcome": {
