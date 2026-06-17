@@ -22,7 +22,7 @@ interface Settings {
 }
 
 function isTheme(v: unknown): v is Theme {
-  return v === 'light' || v === 'dark'
+  return v === 'light' || v === 'dark' || v === 'system'
 }
 function isLocale(v: unknown): v is LocaleCode {
   return typeof v === 'string' && (LOCALE_CODES as readonly string[]).includes(v)

@@ -135,6 +135,7 @@
   },
   "settings": {
     "dark_mode": "Mode sombre",
+    "appearance": { "theme": { "label": "Thème", "light": "Clair", "auto": "Auto", "dark": "Sombre" } },
     "contexts": {
       "title": "Contextes de pratique",
       "subtitle": "Choisis les situations qui apparaissent en pratique.",

@@ -12,7 +12,7 @@ import WelcomeNavLinks from '~/components/welcome/WelcomeNavLinks.vue'
 import WelcomeDialog from '~/components/welcome/WelcomeDialog.vue'
 
 const { t } = useI18n()
-const { theme, setTheme, hydrate: hydrateTheme } = useTheme()
+const { resolved, setTheme, hydrate: hydrateTheme } = useTheme()
 const { hydrate: hydrateMusic, ensurePlaying: ensureMusicPlaying } = useWelcomeMusic()
 
 const sidebarOpen = ref(false)
@@ -40,7 +40,7 @@ function showDialog(text: string, variant: 'normal' | 'error' = 'normal') {
 
 function openSidebar() {
   sidebarOpen.value = true
-  showDialog(theme.value === 'light' ? t('welcome.dialog.intro_day') : t('welcome.dialog.intro_night'))
+  showDialog(resolved.value === 'light' ? t('welcome.dialog.intro_day') : t('welcome.dialog.intro_night'))
   // ENTER counts as the user's "intent to enter" — auto-start music so
   // the experience has a soundtrack. Catches autoplay-blocked errors
   // silently; the music toggle remains the manual recourse.
@@ -55,14 +55,14 @@ function closeSidebar() {
 }
 
 function onThemeToggle() {
-  scanlineDirection.value = theme.value === 'light' ? 'down' : 'up'
+  scanlineDirection.value = resolved.value === 'light' ? 'down' : 'up'
   scanlineActive.value = true
   // Intro lines are theme-specific — wipe before the scene flips.
   dialogText.value = ''
   // Flip the theme at the midpoint of the sweep so the new scene is fully
   // revealed by the time the line reaches the far edge.
   setTimeout(() => {
-    setTheme(theme.value === 'light' ? 'dark' : 'light')
+    setTheme(resolved.value === 'light' ? 'dark' : 'light')
   }, 350)
   setTimeout(() => {
     scanlineActive.value = false
@@ -84,12 +84,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="welcome" :data-theme="theme">
-    <WelcomeStage :theme="theme" />
+  <div class="welcome" :data-theme="resolved">
+    <WelcomeStage :theme="resolved" />
 
     <div class="welcome__chrome welcome__chrome--top-right">
       <WelcomeMusicToggle />
-      <WelcomeThemeToggle :theme="theme" :disabled="scanlineActive" @toggle="onThemeToggle" />
+      <WelcomeThemeToggle :theme="resolved" :disabled="scanlineActive" @toggle="onThemeToggle" />
     </div>
 
     <div class="welcome__brand">

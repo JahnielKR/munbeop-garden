@@ -4,10 +4,9 @@ import AccountWidget from '~/components/layout/AccountWidget.vue'
 import DangerZone from '~/components/settings/DangerZone.vue'
 import AccountCredentials from '~/components/settings/AccountCredentials.vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
-import Field from '~/components/ui/Field.vue'
-import Toggle from '~/components/ui/Toggle.vue'
 import Button from '~/components/ui/Button.vue'
 import SettingsTabs from '~/components/settings/SettingsTabs.vue'
+import ThemePicker from '~/components/settings/ThemePicker.vue'
 import ContextManager from '~/components/settings/ContextManager.vue'
 import AboutSection from '~/components/settings/AboutSection.vue'
 import { useSettingsStore } from '~/stores/settings'
@@ -18,12 +17,9 @@ const { theme } = useTheme()
 const settings = useSettingsStore()
 const { exportData } = useDataExport()
 
-const isDark = computed<boolean>({
-  get: () => theme.value === 'dark',
-  set: (v) => {
-    void settings.setTheme(v ? 'dark' : 'light')
-  },
-})
+function onTheme(next: 'light' | 'dark' | 'system') {
+  void settings.setTheme(next)
+}
 
 const TABS = [
   { id: 'account', labelKey: 'settings.tabs.account' },
@@ -60,13 +56,10 @@ const active = ref('account')
       class="panel"
     >
       <LocaleSwitcher />
-      <Field
-        :label="t('settings.dark_mode')"
-        html-for="settings-dark-mode"
-        orientation="horizontal"
-      >
-        <Toggle id="settings-dark-mode" v-model="isDark" :label="t('settings.dark_mode')" />
-      </Field>
+      <div class="appearance-field">
+        <span class="appearance-field__label">{{ t('settings.appearance.theme.label') }}</span>
+        <ThemePicker :model-value="theme" @update:model-value="onTheme" />
+      </div>
     </section>
 
     <section
@@ -116,5 +109,20 @@ const active = ref('account')
   background: var(--paper-warm);
   border: 2px solid var(--border);
   padding: 20px;
+}
+.appearance-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.appearance-field__label {
+  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
 }
 </style>

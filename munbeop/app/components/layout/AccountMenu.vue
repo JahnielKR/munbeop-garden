@@ -32,7 +32,7 @@ import { useToast } from '~/composables/useToast'
 const props = defineProps<{ collapsed?: boolean }>()
 
 const { t } = useI18n()
-const { theme } = useTheme()
+const { resolved } = useTheme()
 const authStore = useAuthStore()
 const settings = useSettingsStore()
 const { signOutAndExit } = useAuth()
@@ -47,8 +47,11 @@ const menuRef = ref<HTMLElement | null>(null)
 const email = computed(() => authStore.user?.email ?? '')
 const localPart = computed(() => email.value.split('@')[0] ?? '')
 const initial = computed(() => (email.value.trim()[0] ?? '?').toUpperCase())
+// Quick light/dark toggle. Reflects the *resolved* theme (so it shows the
+// right state even when the preference is 'system'); flipping it sets an
+// explicit light/dark preference. The 3-way Auto control lives in settings.
 const isDark = computed<boolean>({
-  get: () => theme.value === 'dark',
+  get: () => resolved.value === 'dark',
   set: (v) => {
     void settings.setTheme(v ? 'dark' : 'light')
   },

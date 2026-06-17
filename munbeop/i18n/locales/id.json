@@ -135,6 +135,7 @@
   },
   "settings": {
     "dark_mode": "Mode gelap",
+    "appearance": { "theme": { "label": "Tema", "light": "Terang", "auto": "Otomatis", "dark": "Gelap" } },
     "contexts": {
       "title": "Konteks latihan",
       "subtitle": "Pilih situasi mana yang muncul saat latihan.",
