@@ -42,7 +42,7 @@ watch(
 useHead({
   script: [
     {
-      innerHTML: `(function(){try{var t=localStorage.getItem('mungarden:theme');if(t==='dark')document.documentElement.dataset.theme='dark';}catch(e){}})();`,
+      innerHTML: `(function(){try{var t=localStorage.getItem('mungarden:theme');var d=t==='dark'||(t==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.dataset.theme='dark';}catch(e){}})();`,
       tagPosition: 'head',
     },
   ],

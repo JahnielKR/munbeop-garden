@@ -135,6 +135,7 @@
   },
   "settings": {
     "dark_mode": "ダークモード",
+    "appearance": { "theme": { "label": "テーマ", "light": "ライト", "auto": "自動", "dark": "ダーク" } },
     "contexts": {
       "title": "練習シーン",
       "subtitle": "練習に出てくる場面を選びます。",

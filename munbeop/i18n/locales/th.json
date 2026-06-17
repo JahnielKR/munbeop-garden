@@ -135,6 +135,7 @@
   },
   "settings": {
     "dark_mode": "โหมดมืด",
+    "appearance": { "theme": { "label": "ธีม", "light": "สว่าง", "auto": "อัตโนมัติ", "dark": "มืด" } },
     "contexts": {
       "title": "บริบทการฝึก",
       "subtitle": "เลือกสถานการณ์ที่จะปรากฏในการฝึก",

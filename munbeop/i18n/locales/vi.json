@@ -135,6 +135,7 @@
   },
   "settings": {
     "dark_mode": "Chế độ tối",
+    "appearance": { "theme": { "label": "Chủ đề", "light": "Sáng", "auto": "Tự động", "dark": "Tối" } },
     "contexts": {
       "title": "Ngữ cảnh luyện tập",
       "subtitle": "Chọn những tình huống xuất hiện khi luyện tập.",
