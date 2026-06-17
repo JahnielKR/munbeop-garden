@@ -98,8 +98,7 @@
   "empty": {
     "garden": "El mapa de Mi Jardín (mapa 2D estilo Stardew con zonas TOPIK y tus plantas gramaticales creciendo) llegará en un próximo plan. Mientras tanto, ve a Práctica para empezar a cultivar.",
     "stats": "Estadísticas detalladas llegan en un plan posterior.",
-    "log": "Aún no has escrito ninguna oración. Ve a Práctica.",
-    "settings": "Ajustes y gestión de cuenta llegan en planes posteriores."
+    "log": "Aún no has escrito ninguna oración. Ve a Práctica."
   },
   "common": {
     "language": "Idioma",
@@ -120,7 +119,18 @@
     "switch_to_sign_up": "¿Sin cuenta? Registrate",
     "switch_to_sign_in": "¿Ya tenés cuenta? Entrá",
     "signed_in_as": "Sesión de",
-    "sign_out": "Cerrar sesión"
+    "sign_out": "Cerrar sesión",
+    "sign_out_error": "No se pudo cerrar sesión. Inténtalo de nuevo.",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "reset_email_sent": "Revisá tu correo para el enlace de restablecimiento.",
+    "reset_need_email": "Primero escribí tu correo.",
+    "reset_title": "Crear una nueva contraseña",
+    "reset_invalid": "Este enlace es inválido o expiró. Pedí uno nuevo desde la pantalla de inicio de sesión.",
+    "new_password_label": "Nueva contraseña",
+    "password_min": "Al menos 8 caracteres.",
+    "submit_new_password": "Actualizar contraseña",
+    "password_updated": "Contraseña actualizada.",
+    "reset_error": "No se pudo actualizar tu contraseña. Inténtalo de nuevo."
   },
   "settings": {
     "dark_mode": "Modo oscuro",
@@ -148,7 +158,7 @@
     "about": { "title": "Acerca de y legal", "contact": "Contacto" },
     "data": { "title": "Datos y privacidad", "export": "Exportar mis datos (.json)", "exported": "Tus datos se están descargando.", "export_error": "No se pudieron exportar tus datos. Inténtalo de nuevo." },
     "tabs": { "account": "Cuenta", "appearance": "Apariencia", "learning": "Aprendizaje", "data": "Datos", "about": "Acerca de" },
-    "account": { "danger": { "title": "Zona de peligro", "description": "Borra permanentemente tu cuenta y todos tus datos. No se puede deshacer.", "button": "Borrar cuenta", "modal_title": "¿Borrar tu cuenta?", "modal_body": "Esto borra permanentemente tu cuenta, tus frases, progreso, mazos y gramática personalizada. No se puede deshacer.", "confirm_label": "Escribe DELETE para confirmar", "confirm_button": "Borrar para siempre", "cancel": "Cancelar", "error": "No se pudo borrar tu cuenta. Inténtalo de nuevo." } },
+    "account": { "danger": { "title": "Zona de peligro", "description": "Borra permanentemente tu cuenta y todos tus datos. No se puede deshacer.", "button": "Borrar cuenta", "modal_title": "¿Borrar tu cuenta?", "modal_body": "Esto borra permanentemente tu cuenta, tus frases, progreso, mazos y gramática personalizada. No se puede deshacer.", "confirm_label": "Escribe DELETE para confirmar", "confirm_button": "Borrar para siempre", "cancel": "Cancelar", "error": "No se pudo borrar tu cuenta. Inténtalo de nuevo." }, "security": { "title": "Acceso y seguridad" }, "password": { "submit": "Actualizar contraseña" }, "email": { "title": "Nuevo correo", "submit": "Actualizar correo", "hint": "Te enviaremos un enlace de confirmación al nuevo correo.", "sent": "Enlace de confirmación enviado: revisá tu nuevo correo.", "error": "No se pudo actualizar tu correo. Inténtalo de nuevo." } },
     "menu": { "account": "Menú de cuenta" }
   },
   "welcome": {

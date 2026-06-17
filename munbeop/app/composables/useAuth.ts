@@ -120,6 +120,49 @@ export function useAuth() {
     return signOutAndExit()
   }
 
+  /**
+   * Email a password-recovery link. The link returns the user to
+   * /auth/reset-password (a recovery session is established there) where
+   * updatePassword() sets the new password. Only meaningful for email
+   * identities; OAuth-only accounts have no password to reset.
+   */
+  async function resetPassword(email: string) {
+    const config = useRuntimeConfig()
+    const base =
+      (config.public.appUrl as string | undefined) ||
+      (typeof window !== 'undefined' ? window.location.origin : '')
+    const { error } = await $supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${base}/auth/reset-password`,
+    })
+    return { error }
+  }
+
+  /**
+   * Set a new password for the signed-in (or recovery-session) user.
+   * Used by the reset-password page and the in-settings change-password form.
+   */
+  async function updatePassword(password: string) {
+    const { error } = await $supabase.auth.updateUser({ password })
+    return { error }
+  }
+
+  /**
+   * Change the account email. Supabase sends a confirmation link to the new
+   * address; confirming it returns to /auth/callback. The email only changes
+   * once confirmed.
+   */
+  async function updateEmail(email: string) {
+    const config = useRuntimeConfig()
+    const base =
+      (config.public.appUrl as string | undefined) ||
+      (typeof window !== 'undefined' ? window.location.origin : '')
+    const { error } = await $supabase.auth.updateUser(
+      { email },
+      { emailRedirectTo: `${base}/auth/callback` },
+    )
+    return { error }
+  }
+
   async function signInWithProvider(provider: 'kakao' | 'google') {
     const config = useRuntimeConfig()
     const base =
@@ -149,5 +192,17 @@ export function useAuth() {
     return { error }
   }
 
-  return { init, signUp, signIn, signInMagicLink, signInWithProvider, signOutAndExit, hydrateUserStores, deleteAccount }
+  return {
+    init,
+    signUp,
+    signIn,
+    signInMagicLink,
+    signInWithProvider,
+    signOutAndExit,
+    hydrateUserStores,
+    deleteAccount,
+    resetPassword,
+    updatePassword,
+    updateEmail,
+  }
 }

@@ -9,7 +9,7 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
-const { signIn, signUp, signInMagicLink } = useAuth()
+const { signIn, signUp, signInMagicLink, resetPassword } = useAuth()
 const router = useRouter()
 
 const email = ref('')
@@ -17,6 +17,23 @@ const password = ref('')
 const loading = ref(false)
 
 watch(() => props.mode, () => { password.value = '' })
+
+// "Forgot password?" — email a recovery link to the address already typed.
+// Self-service recovery for password accounts; without it a forgotten
+// password permanently strands the user (accounts are mandatory).
+async function onForgotPassword() {
+  const addr = email.value.trim()
+  if (!addr) {
+    emit('error', t('auth.reset_need_email'))
+    return
+  }
+  const { error } = await resetPassword(addr)
+  if (error) {
+    emit('error', error.message)
+    return
+  }
+  emit('info', t('auth.reset_email_sent'))
+}
 
 async function submit() {
   if (loading.value) return
@@ -87,6 +104,15 @@ async function submit() {
             : t('auth.submit_sign_in')
       }}
     </button>
+    <button
+      v-if="props.mode === 'signin'"
+      type="button"
+      class="email-form__forgot"
+      :disabled="loading"
+      @click="onForgotPassword"
+    >
+      {{ t('auth.forgot_password') }}
+    </button>
   </form>
 </template>
 
@@ -120,4 +146,19 @@ async function submit() {
 }
 .email-form__submit:disabled { opacity: 0.55; cursor: progress; }
 .email-form__submit:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.email-form__forgot {
+  align-self: center;
+  margin-top: 2px;
+  background: none;
+  border: none;
+  padding: 4px;
+  color: var(--text-soft);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.email-form__forgot:hover { color: var(--text); }
+.email-form__forgot:disabled { opacity: 0.55; cursor: progress; }
+.email-form__forgot:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 </style>

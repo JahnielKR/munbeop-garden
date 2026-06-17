@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth'
+import { useToast } from '~/composables/useToast'
 import Button from '~/components/ui/Button.vue'
 
 const auth = useAuthStore()
 const { signOutAndExit } = useAuth()
 const { t } = useI18n()
+const toast = useToast()
 
 async function onSignOut() {
   // signOutAndExit navigates to /welcome so the pan-left transition
-  // plays as the user "leaves the castle".
-  await signOutAndExit()
+  // plays as the user "leaves the castle". Surface a failure (network /
+  // token) instead of leaving the user staring at an unchanged screen.
+  const { error } = await signOutAndExit()
+  if (error) toast.error(t('auth.sign_out_error'))
 }
 </script>
 

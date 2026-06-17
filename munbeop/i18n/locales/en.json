@@ -98,8 +98,7 @@
   "empty": {
     "garden": "The Garden map (Stardew-style 2D map with TOPIK zones and your grammar plants growing) ships in a later plan. Meanwhile, head to Practice to start cultivating.",
     "stats": "Detailed stats land in a later plan.",
-    "log": "No sentences yet. Head to Practice.",
-    "settings": "Account settings and customization land in later plans."
+    "log": "No sentences yet. Head to Practice."
   },
   "common": {
     "language": "Language",
@@ -120,7 +119,18 @@
     "switch_to_sign_up": "No account? Sign up",
     "switch_to_sign_in": "Have an account? Sign in",
     "signed_in_as": "Signed in as",
-    "sign_out": "Sign out"
+    "sign_out": "Sign out",
+    "sign_out_error": "Couldn't sign out. Please try again.",
+    "forgot_password": "Forgot password?",
+    "reset_email_sent": "Check your email for a reset link.",
+    "reset_need_email": "Enter your email first.",
+    "reset_title": "Set a new password",
+    "reset_invalid": "This reset link is invalid or has expired. Request a new one from the sign-in screen.",
+    "new_password_label": "New password",
+    "password_min": "At least 8 characters.",
+    "submit_new_password": "Update password",
+    "password_updated": "Password updated.",
+    "reset_error": "Couldn't update your password. Please try again."
   },
   "settings": {
     "dark_mode": "Dark mode",
@@ -148,7 +158,7 @@
     "about": { "title": "About & legal", "contact": "Contact" },
     "data": { "title": "Data & privacy", "export": "Export my data (.json)", "exported": "Your data is downloading.", "export_error": "Couldn't export your data. Please try again." },
     "tabs": { "account": "Account", "appearance": "Appearance", "learning": "Learning", "data": "Data", "about": "About" },
-    "account": { "danger": { "title": "Danger zone", "description": "Permanently delete your account and all your data. This can't be undone.", "button": "Delete account", "modal_title": "Delete your account?", "modal_body": "This permanently deletes your account, your sentences, progress, decks, and custom grammar. This cannot be undone.", "confirm_label": "Type DELETE to confirm", "confirm_button": "Delete forever", "cancel": "Cancel", "error": "Couldn't delete your account. Please try again." } },
+    "account": { "danger": { "title": "Danger zone", "description": "Permanently delete your account and all your data. This can't be undone.", "button": "Delete account", "modal_title": "Delete your account?", "modal_body": "This permanently deletes your account, your sentences, progress, decks, and custom grammar. This cannot be undone.", "confirm_label": "Type DELETE to confirm", "confirm_button": "Delete forever", "cancel": "Cancel", "error": "Couldn't delete your account. Please try again." }, "security": { "title": "Login & security" }, "password": { "submit": "Update password" }, "email": { "title": "New email", "submit": "Update email", "hint": "We'll send a confirmation link to the new address.", "sent": "Confirmation link sent — check your new inbox.", "error": "Couldn't update your email. Please try again." } },
     "menu": { "account": "Account menu" }
   },
   "welcome": {

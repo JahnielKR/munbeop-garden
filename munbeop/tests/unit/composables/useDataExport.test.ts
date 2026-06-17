@@ -24,6 +24,7 @@ describe('useDataExport.collectExportData', () => {
       'munbeop.v1.customContexts',
       'munbeop.v1.inactiveContextIds',
       'munbeop.v1.settings',
+      'munbeop.v1.escapeRoom',
     ])
     expect(payload.data['munbeop.v1.log']).toBe('value-for-munbeop.v1.log')
   })

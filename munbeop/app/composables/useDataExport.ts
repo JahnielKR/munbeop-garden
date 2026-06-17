@@ -18,6 +18,7 @@ const EXPORT_KEYS = [
   STORAGE_KEYS.customContexts,
   STORAGE_KEYS.inactiveContextIds,
   STORAGE_KEYS.settings,
+  STORAGE_KEYS.escapeRoom,
 ] as const
 
 export interface ExportPayload {

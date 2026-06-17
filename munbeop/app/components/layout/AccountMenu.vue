@@ -8,6 +8,7 @@ import { NuxtLink } from '#components'
 import { usePremios } from '~/composables/usePremios'
 import { useAuthStore } from '~/stores/auth'
 import { useSettingsStore } from '~/stores/settings'
+import { useToast } from '~/composables/useToast'
 
 /**
  * AccountMenu — "Placa de Unidad": a wooden plaque in the sidebar footer
@@ -35,6 +36,7 @@ const { theme } = useTheme()
 const authStore = useAuthStore()
 const settings = useSettingsStore()
 const { signOutAndExit } = useAuth()
+const toast = useToast()
 const { unlockedCount, totalCount, portrait } = usePremios()
 
 const open = ref(false)
@@ -97,7 +99,8 @@ function close() {
   open.value = false
 }
 async function onSignOut() {
-  await signOutAndExit()
+  const { error } = await signOutAndExit()
+  if (error) toast.error(t('auth.sign_out_error'))
 }
 // Dual-ref: close only when the click is outside BOTH the plaque AND the
 // teleported menu (the menu lives in <body>, so rootRef alone can't see it).
