@@ -138,6 +138,22 @@ export function useAuth() {
   }
 
   /**
+   * Re-verify the current password before a sensitive change. Supabase has no
+   * "check password" call, so we re-run signInWithPassword with the account
+   * email: it errors on a wrong password and otherwise just refreshes the same
+   * session. Used to gate the in-settings change-password flow so a hijacked
+   * session can't rotate the password without knowing the current one. (The
+   * forgot-password reset flow deliberately skips this — the user has no
+   * current password to prove.)
+   */
+  async function reauthenticate(currentPassword: string) {
+    const email = authStore.user?.email
+    if (!email) return { error: { message: 'no-session' } as { message: string } }
+    const { error } = await $supabase.auth.signInWithPassword({ email, password: currentPassword })
+    return { error }
+  }
+
+  /**
    * Set a new password for the signed-in (or recovery-session) user.
    * Used by the reset-password page and the in-settings change-password form.
    */
@@ -202,6 +218,7 @@ export function useAuth() {
     hydrateUserStores,
     deleteAccount,
     resetPassword,
+    reauthenticate,
     updatePassword,
     updateEmail,
   }

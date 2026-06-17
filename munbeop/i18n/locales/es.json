@@ -127,6 +127,7 @@
     "reset_title": "Crear una nueva contraseña",
     "reset_invalid": "Este enlace es inválido o expiró. Pedí uno nuevo desde la pantalla de inicio de sesión.",
     "new_password_label": "Nueva contraseña",
+    "current_password_label": "Contraseña actual",
     "password_min": "Al menos 8 caracteres.",
     "submit_new_password": "Actualizar contraseña",
     "password_updated": "Contraseña actualizada.",
@@ -158,7 +159,7 @@
     "about": { "title": "Acerca de y legal", "contact": "Contacto" },
     "data": { "title": "Datos y privacidad", "export": "Exportar mis datos (.json)", "exported": "Tus datos se están descargando.", "export_error": "No se pudieron exportar tus datos. Inténtalo de nuevo." },
     "tabs": { "account": "Cuenta", "appearance": "Apariencia", "learning": "Aprendizaje", "data": "Datos", "about": "Acerca de" },
-    "account": { "danger": { "title": "Zona de peligro", "description": "Borra permanentemente tu cuenta y todos tus datos. No se puede deshacer.", "button": "Borrar cuenta", "modal_title": "¿Borrar tu cuenta?", "modal_body": "Esto borra permanentemente tu cuenta, tus frases, progreso, mazos y gramática personalizada. No se puede deshacer.", "confirm_label": "Escribe DELETE para confirmar", "confirm_button": "Borrar para siempre", "cancel": "Cancelar", "error": "No se pudo borrar tu cuenta. Inténtalo de nuevo." }, "security": { "title": "Acceso y seguridad" }, "password": { "submit": "Actualizar contraseña" }, "email": { "title": "Nuevo correo", "submit": "Actualizar correo", "hint": "Te enviaremos un enlace de confirmación al nuevo correo.", "sent": "Enlace de confirmación enviado: revisá tu nuevo correo.", "error": "No se pudo actualizar tu correo. Inténtalo de nuevo." } },
+    "account": { "danger": { "title": "Zona de peligro", "description": "Borra permanentemente tu cuenta y todos tus datos. No se puede deshacer.", "button": "Borrar cuenta", "modal_title": "¿Borrar tu cuenta?", "modal_body": "Esto borra permanentemente tu cuenta, tus frases, progreso, mazos y gramática personalizada. No se puede deshacer.", "confirm_label": "Escribe DELETE para confirmar", "confirm_button": "Borrar para siempre", "cancel": "Cancelar", "error": "No se pudo borrar tu cuenta. Inténtalo de nuevo." }, "security": { "title": "Acceso y seguridad" }, "password": { "submit": "Actualizar contraseña", "wrong_current": "La contraseña actual es incorrecta." }, "email": { "title": "Nuevo correo", "submit": "Actualizar correo", "hint": "Te enviaremos un enlace de confirmación al nuevo correo.", "sent": "Enlace de confirmación enviado: revisá tu nuevo correo.", "error": "No se pudo actualizar tu correo. Inténtalo de nuevo." } },
     "menu": { "account": "Menú de cuenta" }
   },
   "welcome": {
