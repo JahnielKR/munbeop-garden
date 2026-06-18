@@ -1,4 +1,9 @@
 {
+  "journal": {
+    "mark_reviewed": "Tandai sudah ditinjau",
+    "reviewed": "Sudah ditinjau",
+    "note_label": "Catatan"
+  },
   "nav": {
     "garden": "Kebunku",
     "practice": "Latihan",

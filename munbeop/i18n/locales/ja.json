@@ -1,4 +1,9 @@
 {
+  "journal": {
+    "mark_reviewed": "復習済みにする",
+    "reviewed": "復習済み",
+    "note_label": "メモ"
+  },
   "nav": {
     "garden": "私の庭",
     "practice": "練習",

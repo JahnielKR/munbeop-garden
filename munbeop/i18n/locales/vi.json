@@ -1,4 +1,9 @@
 {
+  "journal": {
+    "mark_reviewed": "Đánh dấu đã ôn",
+    "reviewed": "Đã ôn",
+    "note_label": "Ghi chú"
+  },
   "nav": {
     "garden": "Vườn của tôi",
     "practice": "Luyện tập",

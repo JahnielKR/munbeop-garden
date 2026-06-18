@@ -1,4 +1,9 @@
 {
+  "journal": {
+    "mark_reviewed": "Marcar como revisado",
+    "reviewed": "Revisado",
+    "note_label": "Nota"
+  },
   "nav": {
     "garden": "Meu Jardim",
     "practice": "Prática",

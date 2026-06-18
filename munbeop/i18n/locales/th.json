@@ -1,4 +1,9 @@
 {
+  "journal": {
+    "mark_reviewed": "ทำเครื่องหมายว่าทบทวนแล้ว",
+    "reviewed": "ทบทวนแล้ว",
+    "note_label": "บันทึก"
+  },
   "nav": {
     "garden": "สวนของฉัน",
     "practice": "ฝึก",
