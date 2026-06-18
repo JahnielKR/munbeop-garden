@@ -4,6 +4,35 @@
     "reviewed": "Đã ôn",
     "note_label": "Ghi chú"
   },
+  "stats": {
+    "empty": "Chưa có thống kê — viết vài câu trong phần Luyện tập và câu chuyện khu vườn của bạn bắt đầu từ đây.",
+    "hero": {
+      "sentences": "Số câu đã viết",
+      "streak": "Chuỗi ngày",
+      "mastered": "Ngữ pháp đã thành thạo",
+      "pending": "Chờ ôn lại"
+    },
+    "mastery": {
+      "title": "Mức thành thạo TOPIK 1–6",
+      "sub": "Ngữ pháp mỗi cấp, từ mầm → cây non → cây."
+    },
+    "rhythm": {
+      "title": "Nhịp luyện tập",
+      "sub": "Số câu mỗi tuần · 8 tuần gần nhất",
+      "easy": "Thấy dễ",
+      "hard": "Thấy khó"
+    },
+    "contexts": {
+      "title": "Ngữ cảnh hàng đầu",
+      "sub": "Nơi bạn viết nhiều nhất"
+    },
+    "toughest": {
+      "title": "Ngữ pháp khó nhất",
+      "sub": "Khó nhất — luyện ngay.",
+      "practice": "Luyện",
+      "hard_count": "khó ×{n}"
+    }
+  },
   "nav": {
     "garden": "Vườn của tôi",
     "practice": "Luyện tập",

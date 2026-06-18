@@ -4,6 +4,35 @@
     "reviewed": "Repasado",
     "note_label": "Nota"
   },
+  "stats": {
+    "empty": "Aún no hay estadísticas — escribe unas frases en Práctica y la historia de tu jardín empieza aquí.",
+    "hero": {
+      "sentences": "Frases escritas",
+      "streak": "Racha de días",
+      "mastered": "Gramáticas dominadas",
+      "pending": "Repasos pendientes"
+    },
+    "mastery": {
+      "title": "Dominio por TOPIK 1–6",
+      "sub": "La gramática de cada nivel, de brote → planta → árbol."
+    },
+    "rhythm": {
+      "title": "Ritmo de práctica",
+      "sub": "Frases por semana · últimas 8 semanas",
+      "easy": "Fácil",
+      "hard": "Difícil"
+    },
+    "contexts": {
+      "title": "Contextos top",
+      "sub": "Donde más escribes"
+    },
+    "toughest": {
+      "title": "Gramática más difícil",
+      "sub": "Lo más “difícil” — practícalo ahora.",
+      "practice": "Practicar",
+      "hard_count": "difícil ×{n}"
+    }
+  },
   "nav": {
     "garden": "Mi Jardín",
     "practice": "Práctica",

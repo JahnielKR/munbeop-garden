@@ -4,6 +4,35 @@
     "reviewed": "Révisé",
     "note_label": "Note"
   },
+  "stats": {
+    "empty": "Pas encore de stats — écris quelques phrases dans Pratique et l'histoire de ton jardin commence ici.",
+    "hero": {
+      "sentences": "Phrases écrites",
+      "streak": "Série de jours",
+      "mastered": "Grammaires maîtrisées",
+      "pending": "Révisions en attente"
+    },
+    "mastery": {
+      "title": "Maîtrise par TOPIK 1–6",
+      "sub": "La grammaire de chaque niveau, de pousse → plante → arbre."
+    },
+    "rhythm": {
+      "title": "Rythme de pratique",
+      "sub": "Phrases par semaine · 8 dernières semaines",
+      "easy": "Facile",
+      "hard": "Difficile"
+    },
+    "contexts": {
+      "title": "Contextes principaux",
+      "sub": "Où tu écris le plus"
+    },
+    "toughest": {
+      "title": "Grammaire la plus difficile",
+      "sub": "Le plus “difficile” — entraîne-toi maintenant.",
+      "practice": "S'entraîner",
+      "hard_count": "difficile ×{n}"
+    }
+  },
   "nav": {
     "garden": "Mon Jardin",
     "practice": "Pratique",
