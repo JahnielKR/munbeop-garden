@@ -33,6 +33,10 @@
       "hard_count": "sulit ×{n}"
     }
   },
+  "errors": {
+    "data_failed": "Gagal memuat datamu. Periksa koneksimu dan coba lagi.",
+    "retry": "Coba lagi"
+  },
   "nav": {
     "garden": "Kebunku",
     "practice": "Latihan",

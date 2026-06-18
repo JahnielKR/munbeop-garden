@@ -33,6 +33,10 @@
       "hard_count": "hard ×{n}"
     }
   },
+  "errors": {
+    "data_failed": "Couldn't load your data. Check your connection and try again.",
+    "retry": "Retry"
+  },
   "nav": {
     "garden": "My Garden",
     "practice": "Practice",

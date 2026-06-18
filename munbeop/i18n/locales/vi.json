@@ -33,6 +33,10 @@
       "hard_count": "khó ×{n}"
     }
   },
+  "errors": {
+    "data_failed": "Không tải được dữ liệu của bạn. Kiểm tra kết nối và thử lại.",
+    "retry": "Thử lại"
+  },
   "nav": {
     "garden": "Vườn của tôi",
     "practice": "Luyện tập",

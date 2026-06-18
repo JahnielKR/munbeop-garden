@@ -1,4 +1,5 @@
 import { useAuthStore } from '~/stores/auth'
+import { useAppStatus } from '~/stores/appStatus'
 import { isPublicPath } from '~/lib/auth/public-paths'
 import { stripAccountEmailFromKakaoUrl } from '~/lib/auth/kakao-scope'
 import { useGrammarStore } from '~/stores/grammar'
@@ -54,14 +55,12 @@ export function useAuth() {
         // explicitly via hydrateUserStores(), so we only do it here for the
         // restore path to avoid a redundant double-pull.
         if (event === 'INITIAL_SESSION') {
-          // The adapter now throws on a Supabase error; don't let a failed
-          // pull become an unhandled rejection in this callback. The user is
-          // authed — the data just didn't load this round (a reload retries).
-          try {
-            await hydrateDataStores()
-          } catch (err) {
-            console.error('useAuth: INITIAL_SESSION data hydration failed', err)
-          }
+          // The adapter throws on a Supabase error; route the pull through
+          // appStatus so a failure surfaces as a retryable 'error' in the shell
+          // (track() swallows the throw — no unhandled rejection here) instead
+          // of a silent empty state. The user is authed; the data just didn't
+          // load this round.
+          await useAppStatus().track(() => hydrateDataStores())
         }
       }
       // After SIGNED_OUT the stores still hold the previous user's data
@@ -87,14 +86,10 @@ export function useAuth() {
   // immediately shows the account's cloud data.
   async function hydrateUserStores() {
     if (!authStore.user) return
-    // A post-auth hydration failure must not reject the sign-in flow — the
-    // user authenticated successfully; the cloud data simply didn't load.
-    // (The adapter throws on a Supabase error now that it no longer swallows.)
-    try {
-      await hydrateDataStores()
-    } catch (err) {
-      console.error('useAuth: post-auth data hydration failed', err)
-    }
+    // A post-auth hydration failure must not reject the sign-in flow — the user
+    // authenticated successfully; the cloud data simply didn't load. Route it
+    // through appStatus so the failure is visible + retryable in the shell.
+    await useAppStatus().track(() => hydrateDataStores())
   }
 
   async function signUp(email: string, password: string) {

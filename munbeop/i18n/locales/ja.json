@@ -33,6 +33,10 @@
       "hard_count": "難しい ×{n}"
     }
   },
+  "errors": {
+    "data_failed": "データを読み込めませんでした。接続を確認して再試行してください。",
+    "retry": "再試行"
+  },
   "nav": {
     "garden": "私の庭",
     "practice": "練習",

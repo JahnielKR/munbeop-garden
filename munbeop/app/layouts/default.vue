@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppShell from '~/components/layout/AppShell.vue'
+import DataErrorBanner from '~/components/layout/DataErrorBanner.vue'
 import { useContextsStore } from '~/stores/contexts'
 import { useGrammarStore } from '~/stores/grammar'
 import { useLocaleStore } from '~/stores/locale'
@@ -50,6 +51,7 @@ onMounted(async () => {
 
 <template>
   <AppShell>
+    <DataErrorBanner />
     <slot />
   </AppShell>
 </template>

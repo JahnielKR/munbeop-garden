@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { setActivePinia, createPinia } from 'pinia'
 import { useAuth } from '~/composables/useAuth'
+import { useAppStatus } from '~/stores/appStatus'
 
 // Capture the onAuthStateChange callback so a test can drive the events
 // Supabase would fire (INITIAL_SESSION on a hard reload, SIGNED_IN, etc.).
@@ -36,6 +38,7 @@ vi.mock('~/composables/useEscapeRoomProgress', () => ({
 
 describe('useAuth().init — session restored on reload', () => {
   beforeEach(() => {
+    setActivePinia(createPinia())
     vi.clearAllMocks()
     getSession.mockResolvedValue({ data: { session: null } })
   })
@@ -80,5 +83,21 @@ describe('useAuth().init — session restored on reload', () => {
     logHydrate.mockRejectedValueOnce(new Error('network'))
     const res = await useAuth().signIn('a@b.com', 'pw')
     expect(res.error).toBeNull()
+  })
+
+  // The failure must be visible to the user, not just logged — the shell reads
+  // appStatus to show an error+retry banner.
+  it('marks app data status error when INITIAL_SESSION hydration fails', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    grammarHydrate.mockRejectedValueOnce(new Error('rls denied'))
+    await useAuth().init()
+    await authCallback('INITIAL_SESSION', { user: { id: 'u' } })
+    expect(useAppStatus().status).toBe('error')
+  })
+
+  it('marks app data status ready when INITIAL_SESSION hydration succeeds', async () => {
+    await useAuth().init()
+    await authCallback('INITIAL_SESSION', { user: { id: 'u' } })
+    expect(useAppStatus().status).toBe('ready')
   })
 })

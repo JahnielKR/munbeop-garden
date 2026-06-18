@@ -33,6 +33,10 @@
       "hard_count": "difícil ×{n}"
     }
   },
+  "errors": {
+    "data_failed": "Não foi possível carregar seus dados. Verifique sua conexão e tente de novo.",
+    "retry": "Tentar de novo"
+  },
   "nav": {
     "garden": "Meu Jardim",
     "practice": "Prática",
