@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import type { Grammar, Deck } from '~/lib/domain'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
-import { DEFAULT_GRAMMAR, TOPIK_DECKS } from '~/seed/grammars'
 
 export const useGrammarStore = defineStore('grammar', () => {
   const items = ref<Grammar[]>([])
@@ -26,13 +25,20 @@ export const useGrammarStore = defineStore('grammar', () => {
     const storage = useStorageAdapter()
     items.value = await storage.read(STORAGE_KEYS.grammar, [] as Grammar[])
     decks.value = await storage.read(STORAGE_KEYS.decks, [] as Deck[])
-    if (items.value.length === 0) {
-      items.value = [...DEFAULT_GRAMMAR]
-      await storage.write(STORAGE_KEYS.grammar, items.value)
-    }
-    if (decks.value.length === 0) {
-      decks.value = [...TOPIK_DECKS]
-      await storage.write(STORAGE_KEYS.decks, decks.value)
+    // The ~893 KB TOPIK seed is only a first-run fallback — for mandatory-account
+    // users the catalog comes from Supabase, so it's dead weight on the eager
+    // entry chunk. Load it on demand only when storage genuinely returns empty,
+    // which Vite/Rollup then splits into a separate async chunk.
+    if (items.value.length === 0 || decks.value.length === 0) {
+      const { DEFAULT_GRAMMAR, TOPIK_DECKS } = await import('~/seed/grammars')
+      if (items.value.length === 0) {
+        items.value = [...DEFAULT_GRAMMAR]
+        await storage.write(STORAGE_KEYS.grammar, items.value)
+      }
+      if (decks.value.length === 0) {
+        decks.value = [...TOPIK_DECKS]
+        await storage.write(STORAGE_KEYS.decks, decks.value)
+      }
     }
   }
 
