@@ -45,6 +45,24 @@ export function useAuth() {
       // (re)mounts on the post-sign-in navigation from /welcome.
       if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
         await useSettingsStore().hydrate()
+        // INITIAL_SESSION is the hard-reload path: a persisted session is
+        // restored AFTER the layout already hydrated the data stores against
+        // the noop adapter (user still null), so they hold seed defaults. Pull
+        // them again now that the real session is in the store — otherwise the
+        // user sees the seed catalog / empty progress, and the next write would
+        // push those seeds over their real cloud data. SIGNED_IN flows hydrate
+        // explicitly via hydrateUserStores(), so we only do it here for the
+        // restore path to avoid a redundant double-pull.
+        if (event === 'INITIAL_SESSION') {
+          // The adapter now throws on a Supabase error; don't let a failed
+          // pull become an unhandled rejection in this callback. The user is
+          // authed — the data just didn't load this round (a reload retries).
+          try {
+            await hydrateDataStores()
+          } catch (err) {
+            console.error('useAuth: INITIAL_SESSION data hydration failed', err)
+          }
+        }
       }
       // After SIGNED_OUT the stores still hold the previous user's data
       // in memory. With no session pickAdapter yields the noop adapter,
@@ -69,7 +87,14 @@ export function useAuth() {
   // immediately shows the account's cloud data.
   async function hydrateUserStores() {
     if (!authStore.user) return
-    await hydrateDataStores()
+    // A post-auth hydration failure must not reject the sign-in flow — the
+    // user authenticated successfully; the cloud data simply didn't load.
+    // (The adapter throws on a Supabase error now that it no longer swallows.)
+    try {
+      await hydrateDataStores()
+    } catch (err) {
+      console.error('useAuth: post-auth data hydration failed', err)
+    }
   }
 
   async function signUp(email: string, password: string) {
