@@ -28,7 +28,9 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # Node 24 LTS: the ESLint flat-config toolchain uses Object.groupBy,
+          # which doesn't exist before Node 21. Matches local + Vercel's runtime.
+          node-version: 24
           cache: pnpm
           cache-dependency-path: munbeop/pnpm-lock.yaml
 
