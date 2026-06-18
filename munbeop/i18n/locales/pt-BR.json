@@ -1,4 +1,42 @@
 {
+  "journal": {
+    "mark_reviewed": "Marcar como revisado",
+    "reviewed": "Revisado",
+    "note_label": "Nota"
+  },
+  "stats": {
+    "empty": "Ainda sem estatísticas — escreva algumas frases na Prática e a história do seu jardim começa aqui.",
+    "hero": {
+      "sentences": "Frases escritas",
+      "streak": "Sequência de dias",
+      "mastered": "Gramáticas dominadas",
+      "pending": "Revisões pendentes"
+    },
+    "mastery": {
+      "title": "Domínio por TOPIK 1–6",
+      "sub": "A gramática de cada nível, de broto → planta → árvore."
+    },
+    "rhythm": {
+      "title": "Ritmo de prática",
+      "sub": "Frases por semana · últimas 8 semanas",
+      "easy": "Fácil",
+      "hard": "Difícil"
+    },
+    "contexts": {
+      "title": "Principais contextos",
+      "sub": "Onde você mais escreve"
+    },
+    "toughest": {
+      "title": "Gramática mais difícil",
+      "sub": "O mais “difícil” — pratique agora.",
+      "practice": "Praticar",
+      "hard_count": "difícil ×{n}"
+    }
+  },
+  "errors": {
+    "data_failed": "Não foi possível carregar seus dados. Verifique sua conexão e tente de novo.",
+    "retry": "Tentar de novo"
+  },
   "nav": {
     "garden": "Meu Jardim",
     "practice": "Prática",

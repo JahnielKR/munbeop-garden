@@ -1,4 +1,5 @@
 import { useAuthStore } from '~/stores/auth'
+import { useAppStatus } from '~/stores/appStatus'
 import { isPublicPath } from '~/lib/auth/public-paths'
 import { stripAccountEmailFromKakaoUrl } from '~/lib/auth/kakao-scope'
 import { useGrammarStore } from '~/stores/grammar'
@@ -45,6 +46,22 @@ export function useAuth() {
       // (re)mounts on the post-sign-in navigation from /welcome.
       if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
         await useSettingsStore().hydrate()
+        // INITIAL_SESSION is the hard-reload path: a persisted session is
+        // restored AFTER the layout already hydrated the data stores against
+        // the noop adapter (user still null), so they hold seed defaults. Pull
+        // them again now that the real session is in the store — otherwise the
+        // user sees the seed catalog / empty progress, and the next write would
+        // push those seeds over their real cloud data. SIGNED_IN flows hydrate
+        // explicitly via hydrateUserStores(), so we only do it here for the
+        // restore path to avoid a redundant double-pull.
+        if (event === 'INITIAL_SESSION') {
+          // The adapter throws on a Supabase error; route the pull through
+          // appStatus so a failure surfaces as a retryable 'error' in the shell
+          // (track() swallows the throw — no unhandled rejection here) instead
+          // of a silent empty state. The user is authed; the data just didn't
+          // load this round.
+          await useAppStatus().track(() => hydrateDataStores())
+        }
       }
       // After SIGNED_OUT the stores still hold the previous user's data
       // in memory. With no session pickAdapter yields the noop adapter,
@@ -69,7 +86,10 @@ export function useAuth() {
   // immediately shows the account's cloud data.
   async function hydrateUserStores() {
     if (!authStore.user) return
-    await hydrateDataStores()
+    // A post-auth hydration failure must not reject the sign-in flow — the user
+    // authenticated successfully; the cloud data simply didn't load. Route it
+    // through appStatus so the failure is visible + retryable in the shell.
+    await useAppStatus().track(() => hydrateDataStores())
   }
 
   async function signUp(email: string, password: string) {

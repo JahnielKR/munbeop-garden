@@ -20,3 +20,13 @@ export interface LogEntry {
   /** ISO date string. */
   date: string
 }
+
+/**
+ * A diary entry "waiting in the rain": unreviewed and worth revisiting — either
+ * the user rated it hard or left a note about what tripped them up. This is the
+ * single source of truth for the garden's rain weather (useGardenState) and the
+ * /log review control, so the two never disagree about what counts as pending.
+ */
+export function isPendingReview(e: LogEntry): boolean {
+  return e.reviewState === 'unreviewed' && (e.feedback === 'hard' || !!e.errorNote)
+}

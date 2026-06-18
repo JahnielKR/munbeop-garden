@@ -103,7 +103,15 @@ onMounted(async () => {
   // store hydration, so hydrate here first (idempotent) — otherwise the
   // grammar list is empty and the focus lookup falls through.
   if (typeof route.query.focus === 'string' && route.query.focus) {
-    await Promise.all([grammarStore.hydrate(), contextsStore.hydrate()])
+    // The adapter throws on a Supabase error now; if the focus-round hydrate
+    // fails, fall back to the normal picker rather than leaving an unhandled
+    // rejection / a blank deep-link page.
+    try {
+      await Promise.all([grammarStore.hydrate(), contextsStore.hydrate()])
+    } catch (err) {
+      console.error('ruleta: focus-round hydration failed', err)
+      return
+    }
     await start()
     if (error.value) {
       toast.error(error.value)

@@ -1,4 +1,42 @@
 {
+  "journal": {
+    "mark_reviewed": "復習済みにする",
+    "reviewed": "復習済み",
+    "note_label": "メモ"
+  },
+  "stats": {
+    "empty": "まだ統計はありません — 練習で文をいくつか書くと、ここにあなたの庭の物語が始まります。",
+    "hero": {
+      "sentences": "書いた文の数",
+      "streak": "連続日数",
+      "mastered": "習得した文法",
+      "pending": "未復習"
+    },
+    "mastery": {
+      "title": "TOPIK 1〜6の習得度",
+      "sub": "各レベルの文法を 新芽 → 苗 → 木 で表示。"
+    },
+    "rhythm": {
+      "title": "練習のリズム",
+      "sub": "週ごとの文の数 · 直近8週間",
+      "easy": "簡単だった",
+      "hard": "難しかった"
+    },
+    "contexts": {
+      "title": "よく使う文脈",
+      "sub": "最もよく書く場面"
+    },
+    "toughest": {
+      "title": "苦手な文法",
+      "sub": "「難しかった」の上位 — 今すぐ練習。",
+      "practice": "練習",
+      "hard_count": "難しい ×{n}"
+    }
+  },
+  "errors": {
+    "data_failed": "データを読み込めませんでした。接続を確認して再試行してください。",
+    "retry": "再試行"
+  },
   "nav": {
     "garden": "私の庭",
     "practice": "練習",

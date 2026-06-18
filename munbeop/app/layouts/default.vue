@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppShell from '~/components/layout/AppShell.vue'
+import DataErrorBanner from '~/components/layout/DataErrorBanner.vue'
 import { useContextsStore } from '~/stores/contexts'
 import { useGrammarStore } from '~/stores/grammar'
 import { useLocaleStore } from '~/stores/locale'
@@ -24,14 +25,23 @@ syncLocaleToI18n(() => localeStore.current, locale, setLocale)
 // Hydrate all stores in parallel, then restore the user's saved locale.
 // Stores are now async (Plan 2) so we await before reading localeStore.current.
 onMounted(async () => {
-  await Promise.all([
-    useGrammarStore().hydrate(),
-    useContextsStore().hydrate(),
-    useSrsStore().hydrate(),
-    useLogStore().hydrate(),
-    localeStore.hydrate(),
-    useEscapeRoomProgress().hydrate(),
-  ])
+  // On a hard reload this runs against the noop adapter (the session isn't in
+  // the store yet); useAuth().init() re-pulls the data stores on INITIAL_SESSION
+  // once getSession() resolves. The adapter now throws on a Supabase error, so
+  // guard the pull: a transient failure must not become an unhandled rejection
+  // or trigger a destructive re-seed — the stores keep their last-known state.
+  try {
+    await Promise.all([
+      useGrammarStore().hydrate(),
+      useContextsStore().hydrate(),
+      useSrsStore().hydrate(),
+      useLogStore().hydrate(),
+      localeStore.hydrate(),
+      useEscapeRoomProgress().hydrate(),
+    ])
+  } catch (err) {
+    console.error('default.vue: store hydration failed', err)
+  }
   // Cloud preferences win: override the device theme/locale just loaded above.
   // The syncLocaleToI18n watch above carries the resulting localeStore.current
   // into the i18n runtime — no explicit setLocale needed here.
@@ -41,6 +51,7 @@ onMounted(async () => {
 
 <template>
   <AppShell>
+    <DataErrorBanner />
     <slot />
   </AppShell>
 </template>

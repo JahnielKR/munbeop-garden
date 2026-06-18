@@ -1,5 +1,5 @@
 import { computed, onMounted } from 'vue'
-import { TOPIK_LEVELS, type TopikLevel } from '~/lib/domain'
+import { TOPIK_LEVELS, isPendingReview, type TopikLevel } from '~/lib/domain'
 import { SPECIES_BY_LEVEL, isTreeUnlocked, progressPct, unlockedZoneCount } from '~/lib/garden'
 import { TREE_THRESHOLDS, type TreeSpecies } from '~/components/garden/PixelTree.vue'
 import { useSrsStore } from '~/stores/srs'
@@ -118,12 +118,7 @@ export function useGardenState() {
   const active = computed<GardenLevel>(() => levels.value.find((l) => l.level === activeLevel.value) ?? levels.value[0]!)
 
   /** Hard sentences waiting in the diary — drives the weather (spec §5.3). */
-  const pendingReviews = computed(
-    () =>
-      log.entries.filter(
-        (e) => e.reviewState === 'unreviewed' && (e.feedback === 'hard' || e.errorNote),
-      ).length,
-  )
+  const pendingReviews = computed(() => log.entries.filter(isPendingReview).length)
 
   /** Most recent practice timestamp across every item; null if never (Bomi sleep rule). */
   const lastPracticedAt = computed<number | null>(() => {

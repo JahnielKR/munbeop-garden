@@ -1,0 +1,47 @@
+name: CI
+
+# Run the quality gates the project already owns (lint, typecheck, test) on
+# every push to main and every PR, so a broken commit can't reach the Vercel
+# auto-deploy unnoticed. The app lives in ./munbeop.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: munbeop
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          # Node 24 LTS: the ESLint flat-config toolchain uses Object.groupBy,
+          # which doesn't exist before Node 21. Matches local + Vercel's runtime.
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: munbeop/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test

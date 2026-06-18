@@ -1,4 +1,42 @@
 {
+  "journal": {
+    "mark_reviewed": "Tandai sudah ditinjau",
+    "reviewed": "Sudah ditinjau",
+    "note_label": "Catatan"
+  },
+  "stats": {
+    "empty": "Belum ada statistik — tulis beberapa kalimat di Latihan dan kisah kebunmu dimulai di sini.",
+    "hero": {
+      "sentences": "Kalimat ditulis",
+      "streak": "Rentetan hari",
+      "mastered": "Tata bahasa dikuasai",
+      "pending": "Tinjauan tertunda"
+    },
+    "mastery": {
+      "title": "Penguasaan TOPIK 1–6",
+      "sub": "Tata bahasa tiap level, dari tunas → tanaman → pohon."
+    },
+    "rhythm": {
+      "title": "Ritme latihan",
+      "sub": "Kalimat per minggu · 8 minggu terakhir",
+      "easy": "Mudah",
+      "hard": "Sulit"
+    },
+    "contexts": {
+      "title": "Konteks teratas",
+      "sub": "Tempat kamu paling banyak menulis"
+    },
+    "toughest": {
+      "title": "Tata bahasa tersulit",
+      "sub": "Yang paling “sulit” — latih sekarang.",
+      "practice": "Latih",
+      "hard_count": "sulit ×{n}"
+    }
+  },
+  "errors": {
+    "data_failed": "Gagal memuat datamu. Periksa koneksimu dan coba lagi.",
+    "retry": "Coba lagi"
+  },
   "nav": {
     "garden": "Kebunku",
     "practice": "Latihan",

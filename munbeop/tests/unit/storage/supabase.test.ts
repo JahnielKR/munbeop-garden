@@ -19,9 +19,14 @@ function makeMockClient() {
     user_settings: [],
   }
   const writes: Array<{ table: string; op: 'upsert' | 'delete'; payload: unknown }> = []
+  // Per-table injected error: when set, reads/writes for that table resolve
+  // with { error } the way @supabase/supabase-js does on an RLS denial or a
+  // network/PostgREST failure (it does NOT throw — it returns the error).
+  const errors: Record<string, { message: string } | undefined> = {}
   return {
     data,
     writes,
+    errors,
     from(table: string) {
       return {
         select: (_cols?: string) => {
@@ -30,12 +35,17 @@ function makeMockClient() {
           const chain = {
             eq: (_col: string, _val: unknown) => chain,
             order: (_col: string, _opts?: unknown) => chain,
-            then: (cb: (v: { data: unknown[]; error: null }) => unknown) =>
-              cb({ data: data[table] ?? [], error: null }),
+            then: (cb: (v: { data: unknown[] | null; error: { message: string } | null }) => unknown) =>
+              cb(
+                errors[table]
+                  ? { data: null, error: errors[table]! }
+                  : { data: data[table] ?? [], error: null },
+              ),
           }
           return chain
         },
         upsert: (rowOrRows: unknown) => {
+          if (errors[table]) return Promise.resolve({ error: errors[table] })
           const arr = Array.isArray(rowOrRows) ? rowOrRows : [rowOrRows]
           data[table] = [...(data[table] ?? []), ...arr]
           writes.push({ table, op: 'upsert', payload: rowOrRows })
@@ -43,6 +53,7 @@ function makeMockClient() {
         },
         delete: () => ({
           eq: (_col: string, _val: unknown) => {
+            if (errors[table]) return Promise.resolve({ error: errors[table] })
             const before = (data[table] ?? []).length
             data[table] = []
             writes.push({ table, op: 'delete', payload: { rows: before } })
@@ -191,6 +202,36 @@ describe('SupabaseAdapter', () => {
       const row = upsert!.payload as { user_id: string; prefs: { theme: string; locale: string } }
       expect(row.user_id).toBe(USER)
       expect(row.prefs).toEqual({ theme: 'dark', locale: 'ja' })
+    })
+  })
+
+  describe('error handling', () => {
+    // The whole data barrier is client-side over the anon key + RLS, so a
+    // failed query surfaces ONLY as the returned { error }. Swallowing it (the
+    // old behavior: `(...).data ?? fallback`) makes a transient failure look
+    // like "the user has no data" — which then drives a destructive re-seed.
+    it('read throws instead of silently returning the fallback on a Supabase error', async () => {
+      client.errors.user_progress = { message: 'boom' }
+      await expect(adapter.read(STORAGE_KEYS.srs, {})).rejects.toThrow(/boom|failed/i)
+    })
+
+    it('read throws when a failed read would otherwise masquerade as an empty log', async () => {
+      client.errors.user_log = { message: 'rls denied' }
+      await expect(adapter.read(STORAGE_KEYS.log, [])).rejects.toThrow()
+    })
+
+    it('write throws when an upsert returns an error', async () => {
+      client.errors.user_settings = { message: 'network' }
+      await expect(adapter.write(STORAGE_KEYS.settings, { theme: 'dark' })).rejects.toThrow()
+    })
+
+    it('write throws when the delete half of a delete-then-upsert fails', async () => {
+      client.errors.user_decks = { message: 'timeout' }
+      await expect(
+        adapter.write(STORAGE_KEYS.decks, [
+          { id: 'd1', name: 'D', colorId: 'indigo', order: 0, collapsed: false },
+        ]),
+      ).rejects.toThrow()
     })
   })
 
