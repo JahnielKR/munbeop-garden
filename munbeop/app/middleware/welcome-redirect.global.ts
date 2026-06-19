@@ -26,20 +26,44 @@ export function decideWelcomeRedirect({ path, signedIn }: WelcomeRedirectInput):
 }
 
 /**
+ * Whether a raw `sb-<ref>-auth-token` localStorage value represents an ACTIVE
+ * session. Exported (pure) for unit tests.
+ *
+ * This is a defensive superset of a bare presence check: if we can parse the
+ * value and read a numeric `expires_at` (Supabase stores it as UNIX seconds),
+ * an already-expired token counts as signed-out — that's the hardening over the
+ * old "contains an access_token" substring test. But any value we can't parse,
+ * or one without `expires_at`, falls back to presence, so a token format we
+ * don't recognise can never log a genuinely-valid user out. `now` is injected
+ * for tests.
+ */
+export function isActiveSessionToken(raw: string | null, now: number): boolean {
+  if (!raw || !raw.includes('"access_token"')) return false
+  try {
+    const parsed = JSON.parse(raw) as { expires_at?: unknown }
+    if (typeof parsed.expires_at === 'number') {
+      return parsed.expires_at * 1000 > now
+    }
+  } catch {
+    /* not JSON we understand — fall back to presence */
+  }
+  return true
+}
+
+/**
  * Detect a Supabase session via localStorage. The project is SPA-only
  * (`ssr: false`), so this middleware always runs in the browser. The
  * Supabase JS client persists sessions under a key like
- * `sb-<project-ref>-auth-token`; any matching key with an access_token
- * payload means we're signed in.
+ * `sb-<project-ref>-auth-token`; a matching key with a non-expired
+ * access_token payload means we're signed in.
  */
-function hasActiveSupabaseSession(): boolean {
+function hasActiveSupabaseSession(now: number = Date.now()): boolean {
   if (typeof window === 'undefined') return false
   try {
     for (let i = 0; i < window.localStorage.length; i += 1) {
       const k = window.localStorage.key(i)
       if (k && k.startsWith('sb-') && k.endsWith('-auth-token')) {
-        const v = window.localStorage.getItem(k)
-        if (v && v.includes('"access_token"')) return true
+        if (isActiveSessionToken(window.localStorage.getItem(k), now)) return true
       }
     }
   } catch {
