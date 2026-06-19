@@ -66,6 +66,19 @@ export class SupabaseAdapter implements StorageAdapter {
     }
   }
 
+  /** Map one (ko, SrsState) to its user_progress row — shared by write() and upsertOne(). */
+  private srsRow(ko: string, s: SrsState) {
+    return {
+      user_id: this.userId,
+      ko,
+      last_seen: s.lastSeen ? new Date(s.lastSeen).toISOString() : null,
+      easy_count: s.easyCount,
+      hard_count: s.hardCount,
+      mastery: s.mastery,
+      updated_at: new Date().toISOString(),
+    }
+  }
+
   async read<T>(key: StorageKey, fallback: T): Promise<T> {
     switch (key) {
       case STORAGE_KEYS.grammar: {
@@ -226,15 +239,7 @@ export class SupabaseAdapter implements StorageAdapter {
 
       case STORAGE_KEYS.srs: {
         const map = value as Record<string, SrsState>
-        const rows = Object.entries(map).map(([ko, s]) => ({
-          user_id: this.userId,
-          ko,
-          last_seen: s.lastSeen ? new Date(s.lastSeen).toISOString() : null,
-          easy_count: s.easyCount,
-          hard_count: s.hardCount,
-          mastery: s.mastery,
-          updated_at: new Date().toISOString(),
-        }))
+        const rows = Object.entries(map).map(([ko, s]) => this.srsRow(ko, s))
         if (rows.length) {
           const { error } = await this.client.from('user_progress').upsert(rows)
           assertOk('write', key, error)
@@ -338,6 +343,21 @@ export class SupabaseAdapter implements StorageAdapter {
       }
       default:
         throw new Error(`SupabaseAdapter.append(${key}) is not supported`)
+    }
+  }
+
+  async upsertOne<V>(key: StorageKey, entry: { id: string; value: V }): Promise<void> {
+    switch (key) {
+      case STORAGE_KEYS.srs: {
+        // One-row upsert instead of re-upserting the whole SRS map per card.
+        const { error } = await this.client
+          .from('user_progress')
+          .upsert(this.srsRow(entry.id, entry.value as SrsState))
+        assertOk('write', key, error)
+        return
+      }
+      default:
+        throw new Error(`SupabaseAdapter.upsertOne(${key}) is not supported`)
     }
   }
 

@@ -36,6 +36,13 @@ describe('LocalStorageAdapter (async)', () => {
     expect(await adapter.read(STORAGE_KEYS.log, [])).toEqual([{ id: 1 }, { id: 2 }])
   })
 
+  it('upsertOne inserts and overwrites a keyed entry in the stored map', async () => {
+    await adapter.upsertOne(STORAGE_KEYS.srs, { id: 'A', value: 1 })
+    await adapter.upsertOne(STORAGE_KEYS.srs, { id: 'B', value: 2 })
+    await adapter.upsertOne(STORAGE_KEYS.srs, { id: 'A', value: 9 })
+    expect(await adapter.read(STORAGE_KEYS.srs, {})).toEqual({ A: 9, B: 2 })
+  })
+
   it('clear wipes known keys only', async () => {
     localStorage.setItem('unrelated', 'keep')
     await adapter.write(STORAGE_KEYS.grammar, ['a'])

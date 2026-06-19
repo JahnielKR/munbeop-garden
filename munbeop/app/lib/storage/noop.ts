@@ -28,6 +28,8 @@ export class NoopStorageAdapter implements StorageAdapter {
 
   async append<T>(_key: StorageKey, _item: T): Promise<void> {}
 
+  async upsertOne<V>(_key: StorageKey, _entry: { id: string; value: V }): Promise<void> {}
+
   async remove(_key: StorageKey): Promise<void> {}
 
   async clear(): Promise<void> {}
