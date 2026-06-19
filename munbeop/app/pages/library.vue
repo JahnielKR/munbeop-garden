@@ -105,7 +105,7 @@ async function onCardClick(ko: string) {
       <section v-if="orphans.length" class="deck-section deck-section--orphan">
         <header class="deck-header deck-header--static">
           <span class="deck-header__caret" aria-hidden="true">▸</span>
-          <h2 class="deck-title">기타 (Otros)</h2>
+          <h2 class="deck-title">기타 ({{ t('library.orphan_section') }})</h2>
           <span class="deck-count">{{ orphans.length }}</span>
         </header>
         <div class="deck-body">

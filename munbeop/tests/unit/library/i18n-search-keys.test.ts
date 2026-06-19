@@ -39,3 +39,13 @@ describe('library.search i18n parity', () => {
     })
   }
 })
+
+describe('library.orphan_section i18n parity', () => {
+  for (const [code, msgs] of Object.entries(locales)) {
+    it(`${code} defines library.orphan_section as a non-empty string`, () => {
+      const value = (msgs as { library?: { orphan_section?: unknown } })?.library?.orphan_section
+      expect(typeof value, code).toBe('string')
+      expect((value as string).length, code).toBeGreaterThan(0)
+    })
+  }
+})

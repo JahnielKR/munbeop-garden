@@ -20,7 +20,10 @@
       "title": "Ritmo de práctica",
       "sub": "Frases por semana · últimas 8 semanas",
       "easy": "Fácil",
-      "hard": "Difícil"
+      "hard": "Difícil",
+      "aria": "{total} frases en las últimas {weeks} semanas.",
+      "axis_oldest": "Antes",
+      "axis_newest": "Esta semana"
     },
     "contexts": {
       "title": "Contextos top",
@@ -85,6 +88,7 @@
   },
   "library": {
     "lead": "Todas las gramáticas que pueden salir en tus cartas. Cada una crece según las practicas.",
+    "orphan_section": "Otros",
     "modal": {
       "close": "Cerrar",
       "section": {
@@ -134,8 +138,6 @@
     "tree": "나무 · Dominada"
   },
   "empty": {
-    "garden": "El mapa de Mi Jardín (mapa 2D estilo Stardew con zonas TOPIK y tus plantas gramaticales creciendo) llegará en un próximo plan. Mientras tanto, ve a Práctica para empezar a cultivar.",
-    "stats": "Estadísticas detalladas llegan en un plan posterior.",
     "log": "Aún no has escrito ninguna oración. Ve a Práctica."
   },
   "common": {

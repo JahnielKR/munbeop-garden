@@ -26,6 +26,7 @@ const weekHeight = (count: number) => {
   const max = Math.max(1, ...weekly.value)
   return Math.round((count / max) * 100)
 }
+const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
 </script>
 
 <template>
@@ -79,12 +80,20 @@ const weekHeight = (count: number) => {
         <div data-test="rhythm">
           <h2 class="block__title">{{ t('stats.rhythm.title') }}</h2>
           <p class="block__sub">{{ t('stats.rhythm.sub') }}</p>
-          <div class="rhythm">
+          <div
+            class="rhythm"
+            role="img"
+            :aria-label="t('stats.rhythm.aria', { total: rhythmTotal, weeks: weekly.length })"
+          >
             <div v-for="(count, i) in weekly" :key="i" class="rhythm__bar-wrap">
-              <div class="rhythm__bar" :style="{ height: weekHeight(count) + '%' }"/>
+              <div class="rhythm__bar" :style="{ height: weekHeight(count) + '%' }" :title="String(count)"/>
             </div>
           </div>
-          <div class="ratio">
+          <div class="rhythm__axis" aria-hidden="true">
+            <span>{{ t('stats.rhythm.axis_oldest') }}</span>
+            <span>{{ t('stats.rhythm.axis_newest') }}</span>
+          </div>
+          <div v-if="split.easy + split.hard > 0" class="ratio">
             <div class="ratio__item">
               <div class="ratio__num ratio__num--easy">{{ split.easyPct }}%</div>
               <div class="ratio__label">{{ t('stats.rhythm.easy') }}</div>
@@ -278,6 +287,14 @@ const weekHeight = (count: number) => {
   min-height: 3px;
   background: var(--sky);
   border-radius: 3px 3px 0 0;
+}
+.rhythm__axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: var(--ink-soft);
 }
 .ratio {
   display: flex;

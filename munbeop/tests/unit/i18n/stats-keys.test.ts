@@ -26,6 +26,9 @@ const KEYS = [
   'stats.rhythm.sub',
   'stats.rhythm.easy',
   'stats.rhythm.hard',
+  'stats.rhythm.aria',
+  'stats.rhythm.axis_oldest',
+  'stats.rhythm.axis_newest',
   'stats.contexts.title',
   'stats.contexts.sub',
   'stats.toughest.title',
@@ -47,6 +50,13 @@ describe('stats.* i18n parity', () => {
   it('every locale keeps the {n} placeholder in toughest.hard_count', () => {
     for (const [code, msgs] of Object.entries(locales)) {
       expect(dig(msgs, 'stats.toughest.hard_count'), code).toContain('{n}')
+    }
+  })
+  it('every locale keeps the {total} and {weeks} placeholders in rhythm.aria', () => {
+    for (const [code, msgs] of Object.entries(locales)) {
+      const aria = dig(msgs, 'stats.rhythm.aria') as string
+      expect(aria, code).toContain('{total}')
+      expect(aria, code).toContain('{weeks}')
     }
   })
 })
