@@ -1,4 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '~/types/database.types'
 import type { AuthUser } from '~/lib/auth/types'
 import type { StorageAdapter } from './adapter'
 import { NoopStorageAdapter } from './noop'
@@ -6,7 +7,7 @@ import { SupabaseAdapter } from './supabase'
 
 export interface AdapterPickArgs {
   user: AuthUser | null
-  client: SupabaseClient | null
+  client: SupabaseClient<Database> | null
 }
 
 /**

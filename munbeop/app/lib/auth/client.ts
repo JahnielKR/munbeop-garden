@@ -1,6 +1,7 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '~/types/database.types'
 
-let cached: SupabaseClient | null = null
+let cached: SupabaseClient<Database> | null = null
 
 /**
  * Returns a process-wide singleton client. The Nuxt plugin builds it from
@@ -13,9 +14,9 @@ let cached: SupabaseClient | null = null
  *   - detectSessionInUrl: true   — required for magic-link / OAuth callbacks.
  *   - flowType: 'pkce'           — the modern OAuth/PKCE flow (rather than implicit).
  */
-export function getSupabaseClient(url: string, anonKey: string): SupabaseClient {
+export function getSupabaseClient(url: string, anonKey: string): SupabaseClient<Database> {
   if (!cached) {
-    cached = createClient(url, anonKey, {
+    cached = createClient<Database>(url, anonKey, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
