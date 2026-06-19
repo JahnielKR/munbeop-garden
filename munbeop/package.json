@@ -16,7 +16,8 @@
     "test:ui": "vitest --ui",
     "typecheck": "nuxt typecheck",
     "gap": "node scripts/topik-spine-gap.mjs",
-    "catalog:sql": "node scripts/regenerate-catalog-sql.mjs"
+    "catalog:sql": "node scripts/regenerate-catalog-sql.mjs",
+    "db:types": "supabase gen types typescript --project-id zbohswpyydwvzowvjaiw > app/types/database.types.ts"
   },
   "dependencies": {
     "@nuxtjs/i18n": "^9.5.0",

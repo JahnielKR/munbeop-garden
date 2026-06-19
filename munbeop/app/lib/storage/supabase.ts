@@ -1,14 +1,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database, Json } from '~/types/database.types'
 import type { StorageAdapter } from './adapter'
 import { STORAGE_KEYS, type StorageKey } from './keys'
 import type { Grammar, Context, Deck, LogEntry, SrsState } from '~/lib/domain'
-
-/**
- * Shape of an awaited @supabase/supabase-js query result. The client returns
- * (not throws) `{ data, error }`; on an RLS denial, constraint violation, or
- * network/PostgREST failure, `error` is populated and `data` is null.
- */
-type SupaResult<R> = { data: R | null; error: { message?: string } | null }
 
 /**
  * Surface a Supabase error instead of swallowing it. Every read/write goes
@@ -25,6 +19,13 @@ function assertOk(op: 'read' | 'write', key: StorageKey, error: { message?: stri
 /**
  * SupabaseAdapter — implements StorageAdapter against Supabase Postgres.
  *
+ * The client is typed as SupabaseClient<Database> (generated types in
+ * ~/types/database.types), so every .from().select()/.upsert() is checked
+ * against the real schema: a column rename or type change in a migration now
+ * fails `nuxt typecheck` instead of surfacing as a runtime undefined. The only
+ * remaining casts are jsonb columns (Json -> the domain LocalizedString shapes),
+ * which Postgres can't constrain further.
+ *
  * Each StorageKey maps to a specific table or pair of tables:
  *
  *   grammar              -> read:  grammars (catalog) ∪ user_custom_grammars (this user)
@@ -35,56 +36,39 @@ function assertOk(op: 'read' | 'write', key: StorageKey, error: { message?: stri
  *   customContexts       -> read/write: user_custom_contexts
  *   inactiveContextIds   -> read/write: user_inactive_contexts
  *   settings             -> read/write: user_settings (prefs jsonb blob)
- *   escapeRoom           -> read/write: user_escape_room (progress jsonb blob —
- *                          unlocked cosmetics + consecutive clean runs)
+ *   escapeRoom           -> read/write: user_escape_room (progress jsonb blob)
  *   locale               -> NOT persisted by this adapter — falls through to
- *                          LocalStorageAdapter (locale is a per-device preference,
- *                          not a per-user one).
+ *                          LocalStorageAdapter (locale is a per-device preference).
  *
  * Writes are 'replace the user's set' semantics: delete + upsert. The current
  * SRS-app patterns always pass the full collection (not deltas), so this is
- * the simplest correct shape.
- *
- * Every query checks its `error` via assertOk() and throws on failure — see
- * the helper above for why.
+ * the simplest correct shape. Every query checks its `error` via assertOk().
  */
 export class SupabaseAdapter implements StorageAdapter {
   constructor(
-    private client: SupabaseClient,
+    private client: SupabaseClient<Database>,
     private userId: string,
   ) {}
 
   async read<T>(key: StorageKey, fallback: T): Promise<T> {
     switch (key) {
       case STORAGE_KEYS.grammar: {
-        const [catalog, custom] = (await Promise.all([
+        const [catalog, custom] = await Promise.all([
           this.client.from('grammars').select('ko, meaning, example, trans, deck_id'),
           this.client
             .from('user_custom_grammars')
             .select('ko, meaning, example, trans, deck_id')
             .eq('user_id', this.userId),
-        ])) as unknown as [
-          SupaResult<Array<{ ko: string; meaning: unknown; example?: string; trans?: unknown; deck_id: string }>>,
-          SupaResult<Array<{ ko: string; meaning: unknown; example?: string; trans?: unknown; deck_id: string }>>,
-        ]
+        ])
         assertOk('read', key, catalog.error)
         assertOk('read', key, custom.error)
         const all: Grammar[] = []
-        for (const row of catalog.data ?? []) {
+        for (const row of [...(catalog.data ?? []), ...(custom.data ?? [])]) {
           all.push({
             ko: row.ko,
             meaning: row.meaning as Grammar['meaning'],
             example: row.example ?? undefined,
-            trans: row.trans as Grammar['trans'] | undefined,
-            deckId: row.deck_id,
-          })
-        }
-        for (const row of custom.data ?? []) {
-          all.push({
-            ko: row.ko,
-            meaning: row.meaning as Grammar['meaning'],
-            example: row.example ?? undefined,
-            trans: row.trans as Grammar['trans'] | undefined,
+            trans: (row.trans ?? undefined) as Grammar['trans'] | undefined,
             deckId: row.deck_id,
           })
         }
@@ -92,43 +76,37 @@ export class SupabaseAdapter implements StorageAdapter {
       }
 
       case STORAGE_KEYS.srs: {
-        const res = (await this.client
+        const { data, error } = await this.client
           .from('user_progress')
           .select('ko, last_seen, easy_count, hard_count, mastery')
-          .eq('user_id', this.userId)) as unknown as SupaResult<
-          Array<{ ko: string; last_seen: string | null; easy_count: number; hard_count: number; mastery: SrsState['mastery'] }>
-        >
-        assertOk('read', key, res.error)
-        const rows = res.data ?? []
+          .eq('user_id', this.userId)
+        assertOk('read', key, error)
         const map: Record<string, SrsState> = {}
-        for (const row of rows) {
+        for (const row of data ?? []) {
           map[row.ko] = {
             lastSeen: row.last_seen ? new Date(row.last_seen).getTime() : null,
             easyCount: row.easy_count,
             hardCount: row.hard_count,
-            mastery: row.mastery,
+            mastery: row.mastery as SrsState['mastery'],
           }
         }
         return (Object.keys(map).length ? map : fallback) as T
       }
 
       case STORAGE_KEYS.log: {
-        const res = (await this.client
+        const { data, error } = await this.client
           .from('user_log')
           .select('*')
           .eq('user_id', this.userId)
-          .order('created_at', { ascending: false })) as unknown as SupaResult<
-          Array<{ id: number; ko: string; sentence: string; feedback: 'easy' | 'hard'; error_note: string | null; review_state: LogEntry['reviewState']; context_id: string; context_name: string; created_at: string }>
-        >
-        assertOk('read', key, res.error)
-        const rows = res.data ?? []
-        const entries: LogEntry[] = rows.map((r) => ({
+          .order('created_at', { ascending: false })
+        assertOk('read', key, error)
+        const entries: LogEntry[] = (data ?? []).map((r) => ({
           id: r.id,
           ko: r.ko,
           sentence: r.sentence,
-          feedback: r.feedback,
+          feedback: r.feedback as LogEntry['feedback'],
           errorNote: r.error_note,
-          reviewState: r.review_state,
+          reviewState: r.review_state as LogEntry['reviewState'],
           contextId: r.context_id,
           contextName: r.context_name,
           date: r.created_at,
@@ -137,15 +115,12 @@ export class SupabaseAdapter implements StorageAdapter {
       }
 
       case STORAGE_KEYS.decks: {
-        const res = (await this.client
+        const { data, error } = await this.client
           .from('user_decks')
           .select('id, name, color_id, position, collapsed')
-          .eq('user_id', this.userId)) as unknown as SupaResult<
-          Array<{ id: string; name: string; color_id: string; position: number; collapsed: boolean }>
-        >
-        assertOk('read', key, res.error)
-        const rows = res.data ?? []
-        const decks: Deck[] = rows.map((r) => ({
+          .eq('user_id', this.userId)
+        assertOk('read', key, error)
+        const decks: Deck[] = (data ?? []).map((r) => ({
           id: r.id,
           name: r.name,
           colorId: r.color_id,
@@ -156,18 +131,15 @@ export class SupabaseAdapter implements StorageAdapter {
       }
 
       case STORAGE_KEYS.customContexts: {
-        const res = (await this.client
+        const { data, error } = await this.client
           .from('user_custom_contexts')
           .select('id, name, scene')
-          .eq('user_id', this.userId)) as unknown as SupaResult<
-          Array<{ id: string; name: string; scene: Context['scene'] }>
-        >
-        assertOk('read', key, res.error)
-        const rows = res.data ?? []
-        const contexts: Context[] = rows.map((r) => ({
+          .eq('user_id', this.userId)
+        assertOk('read', key, error)
+        const contexts: Context[] = (data ?? []).map((r) => ({
           id: r.id,
           name: r.name,
-          scene: r.scene,
+          scene: r.scene as Context['scene'],
           category: 'custom',
           builtin: false,
         }))
@@ -175,32 +147,32 @@ export class SupabaseAdapter implements StorageAdapter {
       }
 
       case STORAGE_KEYS.inactiveContextIds: {
-        const res = (await this.client
+        const { data, error } = await this.client
           .from('user_inactive_contexts')
           .select('context_id')
-          .eq('user_id', this.userId)) as unknown as SupaResult<Array<{ context_id: string }>>
-        assertOk('read', key, res.error)
-        const rows = res.data ?? []
+          .eq('user_id', this.userId)
+        assertOk('read', key, error)
+        const rows = data ?? []
         return (rows.length ? rows.map((r) => r.context_id) : fallback) as T
       }
 
       case STORAGE_KEYS.settings: {
-        const res = (await this.client
+        const { data, error } = await this.client
           .from('user_settings')
           .select('prefs')
-          .eq('user_id', this.userId)) as unknown as SupaResult<Array<{ prefs: unknown }>>
-        assertOk('read', key, res.error)
-        const rows = res.data ?? []
+          .eq('user_id', this.userId)
+        assertOk('read', key, error)
+        const rows = data ?? []
         return (rows.length && rows[0]?.prefs != null ? rows[0].prefs : fallback) as T
       }
 
       case STORAGE_KEYS.escapeRoom: {
-        const res = (await this.client
+        const { data, error } = await this.client
           .from('user_escape_room')
           .select('progress')
-          .eq('user_id', this.userId)) as unknown as SupaResult<Array<{ progress: unknown }>>
-        assertOk('read', key, res.error)
-        const rows = res.data ?? []
+          .eq('user_id', this.userId)
+        assertOk('read', key, error)
+        const rows = data ?? []
         return (rows.length && rows[0]?.progress != null ? rows[0].progress : fallback) as T
       }
 
@@ -221,17 +193,17 @@ export class SupabaseAdapter implements StorageAdapter {
         const del = await this.client.from('user_custom_grammars').delete().eq('user_id', this.userId)
         assertOk('write', key, del.error)
         if (customs.length) {
-          const up = await this.client.from('user_custom_grammars').upsert(
+          const { error } = await this.client.from('user_custom_grammars').upsert(
             customs.map((g) => ({
               user_id: this.userId,
               ko: g.ko,
-              meaning: g.meaning,
+              meaning: g.meaning as Json,
               example: g.example ?? null,
-              trans: g.trans ?? null,
+              trans: (g.trans ?? null) as Json | null,
               deck_id: g.deckId,
             })),
           )
-          assertOk('write', key, up.error)
+          assertOk('write', key, error)
         }
         return
       }
@@ -248,8 +220,8 @@ export class SupabaseAdapter implements StorageAdapter {
           updated_at: new Date().toISOString(),
         }))
         if (rows.length) {
-          const up = await this.client.from('user_progress').upsert(rows)
-          assertOk('write', key, up.error)
+          const { error } = await this.client.from('user_progress').upsert(rows)
+          assertOk('write', key, error)
         }
         return
       }
@@ -257,7 +229,7 @@ export class SupabaseAdapter implements StorageAdapter {
       case STORAGE_KEYS.log: {
         const entries = value as LogEntry[]
         if (!entries.length) return
-        const up = await this.client.from('user_log').upsert(
+        const { error } = await this.client.from('user_log').upsert(
           entries.map((e) => ({
             id: Math.floor(e.id), // user_log.id is bigserial; manual ids accepted
             user_id: this.userId,
@@ -271,7 +243,7 @@ export class SupabaseAdapter implements StorageAdapter {
             created_at: e.date,
           })),
         )
-        assertOk('write', key, up.error)
+        assertOk('write', key, error)
         return
       }
 
@@ -280,7 +252,7 @@ export class SupabaseAdapter implements StorageAdapter {
         const del = await this.client.from('user_decks').delete().eq('user_id', this.userId)
         assertOk('write', key, del.error)
         if (decks.length) {
-          const up = await this.client.from('user_decks').upsert(
+          const { error } = await this.client.from('user_decks').upsert(
             decks.map((d) => ({
               user_id: this.userId,
               id: d.id,
@@ -290,7 +262,7 @@ export class SupabaseAdapter implements StorageAdapter {
               collapsed: d.collapsed,
             })),
           )
-          assertOk('write', key, up.error)
+          assertOk('write', key, error)
         }
         return
       }
@@ -300,15 +272,15 @@ export class SupabaseAdapter implements StorageAdapter {
         const del = await this.client.from('user_custom_contexts').delete().eq('user_id', this.userId)
         assertOk('write', key, del.error)
         if (contexts.length) {
-          const up = await this.client.from('user_custom_contexts').upsert(
+          const { error } = await this.client.from('user_custom_contexts').upsert(
             contexts.map((c) => ({
               user_id: this.userId,
               id: c.id,
               name: c.name,
-              scene: c.scene,
+              scene: c.scene as Json,
             })),
           )
-          assertOk('write', key, up.error)
+          assertOk('write', key, error)
         }
         return
       }
@@ -318,31 +290,31 @@ export class SupabaseAdapter implements StorageAdapter {
         const del = await this.client.from('user_inactive_contexts').delete().eq('user_id', this.userId)
         assertOk('write', key, del.error)
         if (ids.length) {
-          const up = await this.client
+          const { error } = await this.client
             .from('user_inactive_contexts')
             .upsert(ids.map((context_id) => ({ user_id: this.userId, context_id })))
-          assertOk('write', key, up.error)
+          assertOk('write', key, error)
         }
         return
       }
 
       case STORAGE_KEYS.settings: {
-        const up = await this.client.from('user_settings').upsert({
+        const { error } = await this.client.from('user_settings').upsert({
           user_id: this.userId,
-          prefs: value as Record<string, unknown>,
+          prefs: value as unknown as Json,
           updated_at: new Date().toISOString(),
         })
-        assertOk('write', key, up.error)
+        assertOk('write', key, error)
         return
       }
 
       case STORAGE_KEYS.escapeRoom: {
-        const up = await this.client.from('user_escape_room').upsert({
+        const { error } = await this.client.from('user_escape_room').upsert({
           user_id: this.userId,
-          progress: value as Record<string, unknown>,
+          progress: value as unknown as Json,
           updated_at: new Date().toISOString(),
         })
-        assertOk('write', key, up.error)
+        assertOk('write', key, error)
         return
       }
 
@@ -366,10 +338,10 @@ export class SupabaseAdapter implements StorageAdapter {
       'user_custom_contexts',
       'user_inactive_contexts',
       'user_escape_room',
-    ]
-    const results = (await Promise.all(
+    ] as const
+    const results = await Promise.all(
       tables.map((t) => this.client.from(t).delete().eq('user_id', this.userId)),
-    )) as unknown as Array<{ error: { message?: string } | null }>
+    )
     for (const res of results) {
       assertOk('write', STORAGE_KEYS.grammar, res.error)
     }
