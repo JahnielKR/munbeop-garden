@@ -17,6 +17,16 @@ function assertOk(op: 'read' | 'write', key: StorageKey, error: { message?: stri
 }
 
 /**
+ * Exhaustiveness rail for the read/write switches: every StorageKey is handled,
+ * so this default arm is unreachable and `key` narrows to `never`. Adding a new
+ * StorageKey without a case becomes a compile error here (and a loud runtime
+ * throw) instead of a silently-dropped write / fallback read.
+ */
+function assertNever(key: never): never {
+  throw new Error(`SupabaseAdapter: unmapped storage key ${String(key)}`)
+}
+
+/**
  * SupabaseAdapter — implements StorageAdapter against Supabase Postgres.
  *
  * The client is typed as SupabaseClient<Database> (generated types in
@@ -206,8 +216,9 @@ export class SupabaseAdapter implements StorageAdapter {
       }
 
       case STORAGE_KEYS.locale:
-      default:
         return fallback
+      default:
+        return assertNever(key)
     }
   }
 
@@ -327,9 +338,10 @@ export class SupabaseAdapter implements StorageAdapter {
       }
 
       case STORAGE_KEYS.locale:
-      default:
         // Locale stays in localStorage even when authed — it's a per-device pref.
         return
+      default:
+        return assertNever(key)
     }
   }
 
@@ -373,6 +385,7 @@ export class SupabaseAdapter implements StorageAdapter {
       'user_custom_grammars',
       'user_custom_contexts',
       'user_inactive_contexts',
+      'user_settings',
       'user_escape_room',
     ] as const
     const results = await Promise.all(

@@ -243,14 +243,16 @@ describe('SupabaseAdapter', () => {
   })
 
   describe('clear', () => {
-    it('deletes from every user_* table but leaves catalog (grammars, contexts) intact', async () => {
+    it('deletes from every user_* table (incl. user_settings) but leaves catalog intact', async () => {
       client.data.user_log = [{ id: 1 }]
       client.data.user_progress = [{ ko: 'A' }]
+      client.data.user_settings = [{ user_id: 'u' }]
       client.data.grammars = [{ ko: 'X' }]
       client.data.contexts = [{ id: 'banmal' }]
       await adapter.clear()
       expect(client.data.user_log).toHaveLength(0)
       expect(client.data.user_progress).toHaveLength(0)
+      expect(client.data.user_settings).toHaveLength(0)
       expect(client.data.grammars).toHaveLength(1)
       expect(client.data.contexts).toHaveLength(1)
     })
@@ -316,6 +318,19 @@ describe('SupabaseAdapter', () => {
 
     it('throws for a key that does not support upsertOne', async () => {
       await expect(adapter.upsertOne(STORAGE_KEYS.log, { id: 'A', value: state })).rejects.toThrow()
+    })
+  })
+
+  describe('exhaustiveness', () => {
+    // read/write handle every StorageKey; the default arm is an assertNever
+    // rail, so an unmapped key fails loudly (and adding one fails typecheck)
+    // instead of silently returning the fallback / dropping the write.
+    it('read throws for an unmapped storage key', async () => {
+      await expect(adapter.read('munbeop.v1.bogus' as never, [])).rejects.toThrow()
+    })
+
+    it('write throws for an unmapped storage key', async () => {
+      await expect(adapter.write('munbeop.v1.bogus' as never, [])).rejects.toThrow()
     })
   })
 })
