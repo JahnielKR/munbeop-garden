@@ -59,4 +59,21 @@ describe('stats page', () => {
     // koA has the highest hardCount, so it leads the list.
     expect(link.attributes('href')).toContain('/practice/ruleta?focus=koA')
   })
+
+  it('exposes the rhythm chart as a labelled image for screen readers', () => {
+    seedWithData()
+    const w = mount(StatsPage)
+    const chart = w.find('.rhythm')
+    expect(chart.attributes('role')).toBe('img')
+    expect((chart.attributes('aria-label') ?? '').length).toBeGreaterThan(0)
+  })
+
+  it('hides the easy/hard ratio when there are no rated log entries (srs-only user)', () => {
+    // srs rows but no log entries → split.easy + split.hard === 0
+    useGrammarStore().items = [g('koA', 'topik-1')]
+    useSrsStore().map = { koA: srs({ mastery: 'plant' }) }
+    const w = mount(StatsPage)
+    expect(w.find('[data-test="stats-empty"]').exists()).toBe(false) // srs alone counts as data
+    expect(w.find('.ratio').exists()).toBe(false)
+  })
 })

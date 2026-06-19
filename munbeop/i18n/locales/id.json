@@ -20,7 +20,10 @@
       "title": "Ritme latihan",
       "sub": "Kalimat per minggu · 8 minggu terakhir",
       "easy": "Mudah",
-      "hard": "Sulit"
+      "hard": "Sulit",
+      "aria": "{total} kalimat dalam {weeks} minggu terakhir.",
+      "axis_oldest": "Sebelumnya",
+      "axis_newest": "Minggu ini"
     },
     "contexts": {
       "title": "Konteks teratas",
@@ -85,6 +88,7 @@
   },
   "library": {
     "lead": "Semua tata bahasa yang bisa muncul di kartu-kartumu. Masing-masing tumbuh seiring latihanmu.",
+    "orphan_section": "Lainnya",
     "modal": {
       "close": "Tutup",
       "section": {
@@ -134,8 +138,6 @@
     "tree": "나무 · Dikuasai"
   },
   "empty": {
-    "garden": "Peta Kebunku (peta 2D ala Stardew dengan zona TOPIK dan tanaman tata bahasamu tumbuh) hadir di rencana selanjutnya. Sementara itu, ke Latihan untuk mulai berkebun.",
-    "stats": "Statistik detail hadir di rencana selanjutnya.",
     "log": "Belum ada kalimat. Pergi ke Latihan."
   },
   "common": {

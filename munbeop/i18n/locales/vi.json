@@ -20,7 +20,10 @@
       "title": "Nhịp luyện tập",
       "sub": "Số câu mỗi tuần · 8 tuần gần nhất",
       "easy": "Thấy dễ",
-      "hard": "Thấy khó"
+      "hard": "Thấy khó",
+      "aria": "{total} câu trong {weeks} tuần qua.",
+      "axis_oldest": "Trước đây",
+      "axis_newest": "Tuần này"
     },
     "contexts": {
       "title": "Ngữ cảnh hàng đầu",
@@ -85,6 +88,7 @@
   },
   "library": {
     "lead": "Tất cả các ngữ pháp có thể xuất hiện trong các lượt rút bài của bạn. Mỗi cái lớn lên khi bạn luyện tập.",
+    "orphan_section": "Khác",
     "modal": {
       "close": "Đóng",
       "section": {
@@ -134,8 +138,6 @@
     "tree": "나무 · Đã thuộc"
   },
   "empty": {
-    "garden": "Bản đồ Vườn của tôi (bản đồ 2D kiểu Stardew với các vùng TOPIK và các cây ngữ pháp đang lớn) sẽ có trong kế hoạch sau. Trong khi đó, vào Luyện tập để bắt đầu trồng.",
-    "stats": "Thống kê chi tiết sẽ có trong kế hoạch sau.",
     "log": "Chưa có câu nào. Vào Luyện tập."
   },
   "common": {

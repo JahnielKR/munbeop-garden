@@ -20,7 +20,10 @@
       "title": "Rythme de pratique",
       "sub": "Phrases par semaine · 8 dernières semaines",
       "easy": "Facile",
-      "hard": "Difficile"
+      "hard": "Difficile",
+      "aria": "{total} phrases sur les {weeks} dernières semaines.",
+      "axis_oldest": "Avant",
+      "axis_newest": "Cette semaine"
     },
     "contexts": {
       "title": "Contextes principaux",
@@ -85,6 +88,7 @@
   },
   "library": {
     "lead": "Toutes les grammaires qui peuvent sortir dans tes tirages de cartes. Chacune grandit selon ta pratique.",
+    "orphan_section": "Autres",
     "modal": {
       "close": "Fermer",
       "section": {
@@ -134,8 +138,6 @@
     "tree": "나무 · Maîtrisée"
   },
   "empty": {
-    "garden": "La carte Mon Jardin (carte 2D style Stardew avec zones TOPIK et tes plantes grammaticales qui grandissent) arrive dans un prochain plan. En attendant, va à Pratique pour commencer à cultiver.",
-    "stats": "Les statistiques détaillées arrivent dans un plan ultérieur.",
     "log": "Aucune phrase pour l'instant. Va à Pratique."
   },
   "common": {

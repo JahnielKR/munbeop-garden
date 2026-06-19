@@ -20,7 +20,10 @@
       "title": "Practice rhythm",
       "sub": "Sentences per week · last 8 weeks",
       "easy": "Felt easy",
-      "hard": "Felt hard"
+      "hard": "Felt hard",
+      "aria": "{total} sentences over the last {weeks} weeks.",
+      "axis_oldest": "Earlier",
+      "axis_newest": "This week"
     },
     "contexts": {
       "title": "Top contexts",
@@ -85,6 +88,7 @@
   },
   "library": {
     "lead": "All the grammar points that can show up in your card draws. Each one grows as you practice.",
+    "orphan_section": "Other",
     "modal": {
       "close": "Close",
       "section": {
@@ -134,8 +138,6 @@
     "tree": "Mastered · 나무"
   },
   "empty": {
-    "garden": "The Garden map (Stardew-style 2D map with TOPIK zones and your grammar plants growing) ships in a later plan. Meanwhile, head to Practice to start cultivating.",
-    "stats": "Detailed stats land in a later plan.",
     "log": "No sentences yet. Head to Practice."
   },
   "common": {
