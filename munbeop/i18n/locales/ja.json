@@ -35,7 +35,11 @@
   },
   "errors": {
     "data_failed": "データを読み込めませんでした。接続を確認して再試行してください。",
-    "retry": "再試行"
+    "retry": "再試行",
+    "fatal_title": "問題が発生しました",
+    "fatal_body": "申し訳ありません — 庭で問題が発生しました。再読み込みするか、ホームに戻ってください。",
+    "reload": "再読み込み",
+    "go_home": "庭に戻る"
   },
   "nav": {
     "garden": "私の庭",
@@ -169,7 +173,8 @@
     "password_min": "8文字以上。",
     "submit_new_password": "パスワードを更新",
     "password_updated": "パスワードを更新しました。",
-    "reset_error": "パスワードを更新できませんでした。もう一度お試しください。"
+    "reset_error": "パスワードを更新できませんでした。もう一度お試しください。",
+    "back_to_sign_in": "ログインに戻る"
   },
   "settings": {
     "dark_mode": "ダークモード",

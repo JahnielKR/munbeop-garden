@@ -25,6 +25,7 @@ const KEYS = [
   'auth.submit_new_password',
   'auth.password_updated',
   'auth.reset_error',
+  'auth.back_to_sign_in',
   'settings.account.security.title',
   'settings.account.password.submit',
   'settings.account.password.wrong_current',

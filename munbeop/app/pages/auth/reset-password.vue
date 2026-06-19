@@ -2,6 +2,7 @@
 import Button from '~/components/ui/Button.vue'
 import Field from '~/components/ui/Field.vue'
 import Input from '~/components/ui/Input.vue'
+import { NuxtLink } from '#components'
 import { useToast } from '~/composables/useToast'
 
 // Standalone surface (no AppShell): the user arrives here from a recovery
@@ -50,9 +51,10 @@ async function submit() {
 
       <p v-if="status === 'checking'" class="reset__msg">{{ t('auth.checking') }}</p>
 
-      <p v-else-if="status === 'invalid'" class="reset__msg reset__msg--err">
-        {{ t('auth.reset_invalid') }}
-      </p>
+      <template v-else-if="status === 'invalid'">
+        <p class="reset__msg reset__msg--err">{{ t('auth.reset_invalid') }}</p>
+        <NuxtLink class="reset__link" to="/welcome">{{ t('auth.back_to_sign_in') }}</NuxtLink>
+      </template>
 
       <form v-else class="reset__form" @submit.prevent="submit">
         <Field :label="t('auth.new_password_label')" html-for="new-password">
@@ -117,5 +119,17 @@ async function submit() {
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   color: var(--text-soft);
+}
+.reset__link {
+  align-self: flex-start;
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.reset__link:focus-visible {
+  outline: 2px solid var(--focus-ring, var(--sky));
+  outline-offset: 2px;
 }
 </style>

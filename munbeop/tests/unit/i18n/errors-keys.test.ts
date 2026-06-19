@@ -14,7 +14,14 @@ function dig(obj: unknown, path: string): unknown {
   return path.split('.').reduce<unknown>((acc, k) => (acc as Record<string, unknown>)?.[k], obj)
 }
 
-const KEYS = ['errors.data_failed', 'errors.retry']
+const KEYS = [
+  'errors.data_failed',
+  'errors.retry',
+  'errors.fatal_title',
+  'errors.fatal_body',
+  'errors.reload',
+  'errors.go_home',
+]
 
 describe('errors.* i18n parity', () => {
   for (const [code, msgs] of Object.entries(locales)) {

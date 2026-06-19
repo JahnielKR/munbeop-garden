@@ -35,7 +35,11 @@
   },
   "errors": {
     "data_failed": "Không tải được dữ liệu của bạn. Kiểm tra kết nối và thử lại.",
-    "retry": "Thử lại"
+    "retry": "Thử lại",
+    "fatal_title": "Đã xảy ra lỗi",
+    "fatal_body": "Xin lỗi — khu vườn gặp sự cố. Hãy thử tải lại hoặc quay về trang chủ.",
+    "reload": "Tải lại",
+    "go_home": "Về khu vườn"
   },
   "nav": {
     "garden": "Vườn của tôi",
@@ -169,7 +173,8 @@
     "password_min": "Ít nhất 8 ký tự.",
     "submit_new_password": "Cập nhật mật khẩu",
     "password_updated": "Đã cập nhật mật khẩu.",
-    "reset_error": "Không thể cập nhật mật khẩu. Thử lại."
+    "reset_error": "Không thể cập nhật mật khẩu. Thử lại.",
+    "back_to_sign_in": "Quay lại đăng nhập"
   },
   "settings": {
     "dark_mode": "Chế độ tối",

@@ -35,7 +35,11 @@
   },
   "errors": {
     "data_failed": "Impossible de charger tes données. Vérifie ta connexion et réessaie.",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "fatal_title": "Une erreur est survenue",
+    "fatal_body": "Désolé — le jardin a rencontré un problème. Réessayez de recharger ou revenez à l'accueil.",
+    "reload": "Recharger",
+    "go_home": "Retour au jardin"
   },
   "nav": {
     "garden": "Mon Jardin",
@@ -169,7 +173,8 @@
     "password_min": "Au moins 8 caractères.",
     "submit_new_password": "Mettre à jour le mot de passe",
     "password_updated": "Mot de passe mis à jour.",
-    "reset_error": "Impossible de mettre à jour ton mot de passe. Réessaie."
+    "reset_error": "Impossible de mettre à jour ton mot de passe. Réessaie.",
+    "back_to_sign_in": "Retour à la connexion"
   },
   "settings": {
     "dark_mode": "Mode sombre",

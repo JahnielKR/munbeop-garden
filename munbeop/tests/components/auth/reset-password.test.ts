@@ -33,6 +33,8 @@ describe('reset-password page', () => {
     await flushPromises()
     expect(wrapper.find('input[type="password"]').exists()).toBe(false)
     expect(wrapper.text()).toContain('auth.reset_invalid')
+    // ...with a way out of the dead end, back to sign in.
+    expect(wrapper.find('a[href="/welcome"]').exists()).toBe(true)
   })
 
   it('updates the password and navigates home on success', async () => {
