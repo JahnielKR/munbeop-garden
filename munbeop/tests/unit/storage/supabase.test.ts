@@ -292,6 +292,32 @@ describe('SupabaseAdapter', () => {
       await expect(adapter.append(STORAGE_KEYS.srs, {})).rejects.toThrow()
     })
   })
+
+  describe('upsertOne', () => {
+    const state = { lastSeen: 1717200000000, easyCount: 2, hardCount: 1, mastery: 'plant' as const }
+
+    it('srs: upserts ONE user_progress row (not the whole map) with snake_case + user_id', async () => {
+      await adapter.upsertOne(STORAGE_KEYS.srs, { id: '-(으)니까', value: state })
+      const ups = client.writes.filter((w) => w.table === 'user_progress' && w.op === 'upsert')
+      expect(ups).toHaveLength(1)
+      expect(Array.isArray(ups[0]!.payload)).toBe(false)
+      const row = ups[0]!.payload as { user_id: string; ko: string; easy_count: number; hard_count: number; mastery: string }
+      expect(row.user_id).toBe(USER)
+      expect(row.ko).toBe('-(으)니까')
+      expect(row.easy_count).toBe(2)
+      expect(row.hard_count).toBe(1)
+      expect(row.mastery).toBe('plant')
+    })
+
+    it('srs: throws when the upsert returns a Supabase error', async () => {
+      client.errors.user_progress = { message: 'boom' }
+      await expect(adapter.upsertOne(STORAGE_KEYS.srs, { id: 'A', value: state })).rejects.toThrow()
+    })
+
+    it('throws for a key that does not support upsertOne', async () => {
+      await expect(adapter.upsertOne(STORAGE_KEYS.log, { id: 'A', value: state })).rejects.toThrow()
+    })
+  })
 })
 
 // Keep linter happy about referenced symbols in inline mocks.

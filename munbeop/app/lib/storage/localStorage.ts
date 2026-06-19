@@ -25,6 +25,12 @@ export class LocalStorageAdapter implements StorageAdapter {
     await this.write(key, [...current, item])
   }
 
+  async upsertOne<V>(key: StorageKey, entry: { id: string; value: V }): Promise<void> {
+    const map = await this.read<Record<string, V>>(key, {})
+    map[entry.id] = entry.value
+    await this.write(key, map)
+  }
+
   async remove(key: StorageKey): Promise<void> {
     localStorage.removeItem(key)
   }

@@ -27,14 +27,16 @@ export const useSrsStore = defineStore('srs', () => {
   async function markSeen(ko: string, now: number = Date.now()) {
     const storage = useStorageAdapter()
     ensure(ko).lastSeen = now
-    await storage.write(STORAGE_KEYS.srs, map.value)
+    // Upsert just this ko's row, not the whole map (the session start fires
+    // several markSeen in parallel; a full-map write each time is O(catalog)).
+    await storage.upsertOne(STORAGE_KEYS.srs, { id: ko, value: map.value[ko]! })
   }
 
   async function recalculate(ko: string) {
     const storage = useStorageAdapter()
     const log = useLogStore().entries
     map.value[ko] = recalculateMastery(ko, log)
-    await storage.write(STORAGE_KEYS.srs, map.value)
+    await storage.upsertOne(STORAGE_KEYS.srs, { id: ko, value: map.value[ko]! })
   }
 
   return { map, hydrate, ensure, weightFor, markSeen, recalculate }

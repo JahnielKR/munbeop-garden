@@ -19,6 +19,13 @@ export interface StorageAdapter {
    * adapter throws for keys it doesn't support.
    */
   append<T>(key: StorageKey, item: T): Promise<void>
+  /**
+   * Upsert a single keyed entry into a map-valued key (e.g. one grammar's SRS
+   * state), so a per-item update is one row instead of re-writing the whole map
+   * (which is O(catalog) per practiced card). Only meaningful for keyed-map
+   * keys; the Supabase adapter throws for keys it doesn't support.
+   */
+  upsertOne<V>(key: StorageKey, entry: { id: string; value: V }): Promise<void>
   remove(key: StorageKey): Promise<void>
   clear(): Promise<void>
 }
