@@ -38,7 +38,11 @@
   },
   "errors": {
     "data_failed": "Não foi possível carregar seus dados. Verifique sua conexão e tente de novo.",
-    "retry": "Tentar de novo"
+    "retry": "Tentar de novo",
+    "fatal_title": "Algo deu errado",
+    "fatal_body": "Desculpe — o jardim teve um problema. Tente recarregar ou volte ao início.",
+    "reload": "Recarregar",
+    "go_home": "Voltar ao jardim"
   },
   "nav": {
     "garden": "Meu Jardim",
@@ -171,7 +175,8 @@
     "password_min": "Pelo menos 8 caracteres.",
     "submit_new_password": "Atualizar senha",
     "password_updated": "Senha atualizada.",
-    "reset_error": "Não foi possível atualizar sua senha. Tente novamente."
+    "reset_error": "Não foi possível atualizar sua senha. Tente novamente.",
+    "back_to_sign_in": "Voltar ao login"
   },
   "settings": {
     "dark_mode": "Modo escuro",

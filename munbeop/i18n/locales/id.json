@@ -38,7 +38,11 @@
   },
   "errors": {
     "data_failed": "Gagal memuat datamu. Periksa koneksimu dan coba lagi.",
-    "retry": "Coba lagi"
+    "retry": "Coba lagi",
+    "fatal_title": "Terjadi kesalahan",
+    "fatal_body": "Maaf — taman mengalami masalah. Coba muat ulang, atau kembali ke beranda.",
+    "reload": "Muat ulang",
+    "go_home": "Kembali ke taman"
   },
   "nav": {
     "garden": "Kebunku",
@@ -171,7 +175,8 @@
     "password_min": "Minimal 8 karakter.",
     "submit_new_password": "Perbarui kata sandi",
     "password_updated": "Kata sandi diperbarui.",
-    "reset_error": "Gagal memperbarui kata sandimu. Coba lagi."
+    "reset_error": "Gagal memperbarui kata sandimu. Coba lagi.",
+    "back_to_sign_in": "Kembali ke halaman masuk"
   },
   "settings": {
     "dark_mode": "Mode gelap",

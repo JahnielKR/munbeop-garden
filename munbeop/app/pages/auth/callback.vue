@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { NuxtLink } from '#components'
+
 const { t } = useI18n()
 const status = ref<'checking' | 'success' | 'error'>('checking')
 const toast = useToast()
@@ -29,7 +31,10 @@ onMounted(async () => {
   <div class="page">
     <p v-if="status === 'checking'">{{ t('auth.checking') }}</p>
     <p v-else-if="status === 'success'">{{ t('auth.callback_success') }}</p>
-    <p v-else>{{ t('auth.callback_error') }}</p>
+    <template v-else>
+      <p>{{ t('auth.callback_error') }}</p>
+      <NuxtLink class="link" to="/welcome">{{ t('auth.back_to_sign_in') }}</NuxtLink>
+    </template>
   </div>
 </template>
 
@@ -40,5 +45,16 @@ onMounted(async () => {
   text-align: center;
   font-family: 'Inter', sans-serif;
   color: var(--ink-soft);
+}
+.link {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: underline;
+}
+.link:focus-visible {
+  outline: 2px solid var(--focus-ring, var(--sky));
+  outline-offset: 2px;
 }
 </style>

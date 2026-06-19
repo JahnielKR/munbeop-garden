@@ -38,7 +38,11 @@
   },
   "errors": {
     "data_failed": "Couldn't load your data. Check your connection and try again.",
-    "retry": "Retry"
+    "retry": "Retry",
+    "fatal_title": "Something went wrong",
+    "fatal_body": "Sorry — the garden hit a snag. Try reloading, or head back home.",
+    "reload": "Reload",
+    "go_home": "Back to the garden"
   },
   "nav": {
     "garden": "My Garden",
@@ -171,7 +175,8 @@
     "password_min": "At least 8 characters.",
     "submit_new_password": "Update password",
     "password_updated": "Password updated.",
-    "reset_error": "Couldn't update your password. Please try again."
+    "reset_error": "Couldn't update your password. Please try again.",
+    "back_to_sign_in": "Back to sign in"
   },
   "settings": {
     "dark_mode": "Dark mode",
