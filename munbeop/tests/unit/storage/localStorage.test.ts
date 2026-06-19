@@ -30,6 +30,12 @@ describe('LocalStorageAdapter (async)', () => {
     expect(await adapter.read(STORAGE_KEYS.log, null)).toBeNull()
   })
 
+  it('append adds one item to the stored collection', async () => {
+    await adapter.append(STORAGE_KEYS.log, { id: 1 })
+    await adapter.append(STORAGE_KEYS.log, { id: 2 })
+    expect(await adapter.read(STORAGE_KEYS.log, [])).toEqual([{ id: 1 }, { id: 2 }])
+  })
+
   it('clear wipes known keys only', async () => {
     localStorage.setItem('unrelated', 'keep')
     await adapter.write(STORAGE_KEYS.grammar, ['a'])

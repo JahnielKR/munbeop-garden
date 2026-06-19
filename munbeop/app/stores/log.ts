@@ -32,7 +32,10 @@ export const useLogStore = defineStore('log', () => {
       ...p,
     }
     entries.value.unshift(entry)
-    await storage.write(STORAGE_KEYS.log, entries.value)
+    // Append the one new row instead of re-writing the whole log — an add is
+    // O(1), not O(history). (setReviewState still does a full write; it edits
+    // an existing row and fires rarely.)
+    await storage.append(STORAGE_KEYS.log, entry)
     return entry
   }
 

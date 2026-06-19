@@ -50,6 +50,22 @@ export class SupabaseAdapter implements StorageAdapter {
     private userId: string,
   ) {}
 
+  /** Map a domain LogEntry to its user_log row — shared by write() and append(). */
+  private logRow(e: LogEntry) {
+    return {
+      id: Math.floor(e.id), // user_log.id is bigserial; manual ids accepted
+      user_id: this.userId,
+      ko: e.ko,
+      sentence: e.sentence,
+      feedback: e.feedback,
+      error_note: e.errorNote,
+      review_state: e.reviewState,
+      context_id: e.contextId,
+      context_name: e.contextName,
+      created_at: e.date,
+    }
+  }
+
   async read<T>(key: StorageKey, fallback: T): Promise<T> {
     switch (key) {
       case STORAGE_KEYS.grammar: {
@@ -229,20 +245,7 @@ export class SupabaseAdapter implements StorageAdapter {
       case STORAGE_KEYS.log: {
         const entries = value as LogEntry[]
         if (!entries.length) return
-        const { error } = await this.client.from('user_log').upsert(
-          entries.map((e) => ({
-            id: Math.floor(e.id), // user_log.id is bigserial; manual ids accepted
-            user_id: this.userId,
-            ko: e.ko,
-            sentence: e.sentence,
-            feedback: e.feedback,
-            error_note: e.errorNote,
-            review_state: e.reviewState,
-            context_id: e.contextId,
-            context_name: e.contextName,
-            created_at: e.date,
-          })),
-        )
+        const { error } = await this.client.from('user_log').upsert(entries.map((e) => this.logRow(e)))
         assertOk('write', key, error)
         return
       }
@@ -322,6 +325,19 @@ export class SupabaseAdapter implements StorageAdapter {
       default:
         // Locale stays in localStorage even when authed — it's a per-device pref.
         return
+    }
+  }
+
+  async append<T>(key: StorageKey, item: T): Promise<void> {
+    switch (key) {
+      case STORAGE_KEYS.log: {
+        // One-row insert instead of re-upserting the whole log on every add.
+        const { error } = await this.client.from('user_log').insert(this.logRow(item as LogEntry))
+        assertOk('write', key, error)
+        return
+      }
+      default:
+        throw new Error(`SupabaseAdapter.append(${key}) is not supported`)
     }
   }
 

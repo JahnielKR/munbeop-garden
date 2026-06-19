@@ -18,7 +18,7 @@ function makeMockClient() {
     user_inactive_contexts: [],
     user_settings: [],
   }
-  const writes: Array<{ table: string; op: 'upsert' | 'delete'; payload: unknown }> = []
+  const writes: Array<{ table: string; op: 'upsert' | 'delete' | 'insert'; payload: unknown }> = []
   // Per-table injected error: when set, reads/writes for that table resolve
   // with { error } the way @supabase/supabase-js does on an RLS denial or a
   // network/PostgREST failure (it does NOT throw — it returns the error).
@@ -49,6 +49,13 @@ function makeMockClient() {
           const arr = Array.isArray(rowOrRows) ? rowOrRows : [rowOrRows]
           data[table] = [...(data[table] ?? []), ...arr]
           writes.push({ table, op: 'upsert', payload: rowOrRows })
+          return Promise.resolve({ error: null })
+        },
+        insert: (rowOrRows: unknown) => {
+          if (errors[table]) return Promise.resolve({ error: errors[table] })
+          const arr = Array.isArray(rowOrRows) ? rowOrRows : [rowOrRows]
+          data[table] = [...(data[table] ?? []), ...arr]
+          writes.push({ table, op: 'insert', payload: rowOrRows })
           return Promise.resolve({ error: null })
         },
         delete: () => ({
@@ -246,6 +253,43 @@ describe('SupabaseAdapter', () => {
       expect(client.data.user_progress).toHaveLength(0)
       expect(client.data.grammars).toHaveLength(1)
       expect(client.data.contexts).toHaveLength(1)
+    })
+  })
+
+  describe('append', () => {
+    const entry = {
+      id: 5,
+      ko: 'A',
+      sentence: 'x',
+      feedback: 'easy' as const,
+      errorNote: null,
+      reviewState: 'unreviewed' as const,
+      contextId: 'banmal',
+      contextName: '반말',
+      date: '2026-06-03T00:00:00Z',
+    }
+
+    it('log: inserts ONE user_log row (not the whole collection) with snake_case + user_id', async () => {
+      await adapter.append(STORAGE_KEYS.log, entry)
+      const inserts = client.writes.filter((w) => w.table === 'user_log' && w.op === 'insert')
+      expect(inserts).toHaveLength(1)
+      expect(Array.isArray(inserts[0]!.payload)).toBe(false)
+      const row = inserts[0]!.payload as { user_id: string; ko: string; review_state: string; context_id: string }
+      expect(row.user_id).toBe(USER)
+      expect(row.ko).toBe('A')
+      expect(row.review_state).toBe('unreviewed')
+      expect(row.context_id).toBe('banmal')
+      // no full-collection upsert happened
+      expect(client.writes.some((w) => w.op === 'upsert')).toBe(false)
+    })
+
+    it('log: throws when the insert returns a Supabase error', async () => {
+      client.errors.user_log = { message: 'boom' }
+      await expect(adapter.append(STORAGE_KEYS.log, entry)).rejects.toThrow()
+    })
+
+    it('throws for a key that does not support append', async () => {
+      await expect(adapter.append(STORAGE_KEYS.srs, {})).rejects.toThrow()
     })
   })
 })

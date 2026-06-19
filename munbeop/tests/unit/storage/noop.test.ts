@@ -21,4 +21,10 @@ describe('NoopStorageAdapter', () => {
     await expect(adapter.remove(STORAGE_KEYS.decks)).resolves.toBeUndefined()
     await expect(adapter.clear()).resolves.toBeUndefined()
   })
+
+  it('append drops the item silently like write', async () => {
+    const adapter = new NoopStorageAdapter()
+    await expect(adapter.append(STORAGE_KEYS.log, { id: 1 })).resolves.toBeUndefined()
+    await expect(adapter.read(STORAGE_KEYS.log, [])).resolves.toEqual([])
+  })
 })

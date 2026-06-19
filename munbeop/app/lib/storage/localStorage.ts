@@ -20,6 +20,11 @@ export class LocalStorageAdapter implements StorageAdapter {
     }
   }
 
+  async append<T>(key: StorageKey, item: T): Promise<void> {
+    const current = await this.read<T[]>(key, [])
+    await this.write(key, [...current, item])
+  }
+
   async remove(key: StorageKey): Promise<void> {
     localStorage.removeItem(key)
   }
