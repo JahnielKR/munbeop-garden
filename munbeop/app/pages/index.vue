@@ -30,6 +30,10 @@ import { SPECIES_BY_LEVEL, SPECIES_KO, SPECIES_PARTICLE } from '~/lib/garden'
 import { gardenStateKey, useGardenState } from '~/composables/useGardenState'
 import { useGardenCelebration } from '~/composables/useGardenCelebration'
 import { useToast } from '~/composables/useToast'
+import DailyGoalRing from '~/components/garden/DailyGoalRing.vue'
+import { useSettingsStore } from '~/stores/settings'
+import { useLogStore } from '~/stores/log'
+import { todayCount } from '~/lib/stats/goal'
 import type { TopikLevel } from '~/lib/domain'
 
 definePageMeta({ surface: 'game' })
@@ -46,6 +50,13 @@ const {
   milestones,
   setActiveLevel,
 } = useGardenState()
+
+// Daily goal ring (today's practiced count vs the user's goal).
+const settings = useSettingsStore()
+const logStore = useLogStore()
+const goalCount = computed(() =>
+  todayCount(logStore.entries.map((e) => new Date(e.date).getTime()), Date.now()),
+)
 
 // hero ↔ grove toggle (same page, spec §5.2)
 const view = ref<'hero' | 'grove'>('hero')
@@ -196,6 +207,8 @@ const bomiAnchor = computed(() => {
           :state-key="stateKey"
         />
 
+        <DailyGoalRing class="page__goal" :count="goalCount" :goal="settings.dailyGoal" />
+
         <NuxtLink v-if="weatherKind === 'rain'" class="page__rain-hint" to="/log">
           {{ t('garden.weather.rain_hint') }}
         </NuxtLink>
@@ -242,6 +255,10 @@ const bomiAnchor = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.page__goal {
+  align-self: center;
 }
 
 .page__rain-hint {
