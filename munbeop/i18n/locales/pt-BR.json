@@ -193,6 +193,25 @@
     "back_to_sign_in": "Voltar ao login"
   },
   "settings": {
+    "custom_grammar": {
+      "title": "Sua própria gramática",
+      "subtitle": "Adicione padrões da sua vida real — eles aparecem na prática como os demais.",
+      "ko_label": "Padrão (coreano)",
+      "ko_placeholder": "ex. -거든요",
+      "meaning_label": "Significado",
+      "meaning_placeholder": "ex. dar um motivo ou contexto",
+      "example_label": "Exemplo (opcional)",
+      "example_placeholder": "ex. 바빠서 못 갔거든요",
+      "add": "Plante",
+      "error_korean": "Use o padrão em coreano, ex. -거든요.",
+      "error_duplicate": "Esse padrão já existe.",
+      "delete": "Excluir",
+      "delete_confirm_title": "Excluir esta gramática?",
+      "delete_confirm_body": "“{ko}” será removido dos seus padrões.",
+      "empty": "Você ainda não tem padrões próprios. Plante o primeiro abaixo.",
+      "created": "Gramática adicionada.",
+      "deleted": "Gramática removida."
+    },
     "dark_mode": "Modo escuro",
     "appearance": { "theme": { "label": "Tema", "light": "Claro", "auto": "Auto", "dark": "Escuro" } },
     "contexts": {

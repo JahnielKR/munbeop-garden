@@ -193,6 +193,25 @@
     "back_to_sign_in": "ログインに戻る"
   },
   "settings": {
+    "custom_grammar": {
+      "title": "自分の文法",
+      "subtitle": "実生活の表現を追加 — ほかと同じように練習に出てきます。",
+      "ko_label": "表現（韓国語）",
+      "ko_placeholder": "例: -거든요",
+      "meaning_label": "意味",
+      "meaning_placeholder": "例: 理由や背景を述べる",
+      "example_label": "例文（任意）",
+      "example_placeholder": "例: 바빠서 못 갔거든요",
+      "add": "植える",
+      "error_korean": "韓国語の表現を入力してください。例: -거든요",
+      "error_duplicate": "その表現はすでにあります。",
+      "delete": "削除",
+      "delete_confirm_title": "この文法を削除しますか？",
+      "delete_confirm_body": "「{ko}」をあなたの表現から削除します。",
+      "empty": "まだ自分の表現がありません。下から最初の表現を植えましょう。",
+      "created": "文法を追加しました。",
+      "deleted": "文法を削除しました。"
+    },
     "dark_mode": "ダークモード",
     "appearance": { "theme": { "label": "テーマ", "light": "ライト", "auto": "自動", "dark": "ダーク" } },
     "contexts": {

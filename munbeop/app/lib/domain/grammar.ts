@@ -27,3 +27,6 @@ export interface Deck {
   order: number
   collapsed: boolean
 }
+
+/** Reserved deckId for user-authored grammar (self-study). Catalog items never use it. */
+export const CUSTOM_DECK_ID = 'custom'

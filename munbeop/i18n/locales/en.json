@@ -193,6 +193,25 @@
     "back_to_sign_in": "Back to sign in"
   },
   "settings": {
+    "custom_grammar": {
+      "title": "Your own grammar",
+      "subtitle": "Add patterns from your real life — they show up in practice like the rest.",
+      "ko_label": "Pattern (Korean)",
+      "ko_placeholder": "e.g. -거든요",
+      "meaning_label": "Meaning",
+      "meaning_placeholder": "e.g. giving a reason or background",
+      "example_label": "Example (optional)",
+      "example_placeholder": "e.g. 바빠서 못 갔거든요",
+      "add": "Plant it",
+      "error_korean": "Use the Korean pattern, e.g. -거든요.",
+      "error_duplicate": "That pattern already exists.",
+      "delete": "Delete",
+      "delete_confirm_title": "Delete this grammar?",
+      "delete_confirm_body": "“{ko}” will be removed from your patterns.",
+      "empty": "No patterns of your own yet. Plant your first below.",
+      "created": "Grammar added.",
+      "deleted": "Grammar removed."
+    },
     "dark_mode": "Dark mode",
     "appearance": { "theme": { "label": "Theme", "light": "Light", "auto": "Auto", "dark": "Dark" } },
     "contexts": {
