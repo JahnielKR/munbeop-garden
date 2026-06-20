@@ -85,6 +85,8 @@ export type ClashFamily =
 
 export interface ClashSet {
   id: string
+  /** Particle clash (default) or pronoun+가 contraction. */
+  kind?: 'particle' | 'contraction'
   /** Short bilingual name for the set picker. */
   name: LocalizedString
   families: [ClashFamily, ClashFamily]
@@ -114,3 +116,4 @@ export type DrillVerdict =
   | { kind: 'correct' }
   | { kind: 'blocked'; expected: string; nounHasBatchim: boolean }
   | { kind: 'wrong-family'; expected: string; familyId: string }
+  | { kind: 'contraction'; expected: string }
