@@ -182,7 +182,6 @@ const { t } = useI18n()
   cursor: not-allowed;
 }
 .custom-mat--locked .custom-mat__cover,
-.custom-mat--locked .custom-mat__name,
 .custom-mat--locked .custom-mat__count {
   opacity: 0.45;
 }

@@ -38,4 +38,10 @@ describe('CustomDeckShelf', () => {
     await w.find('[data-testid="custom-deck-create"]').trigger('click')
     expect(w.emitted('create')).toHaveLength(1)
   })
+
+  it('emits create from the empty-state button', async () => {
+    const w = mount(CustomDeckShelf, { props: { options: [] } })
+    await w.find('[data-testid="custom-deck-create"]').trigger('click')
+    expect(w.emitted('create')).toHaveLength(1)
+  })
 })
