@@ -204,6 +204,11 @@
     "back_to_sign_in": "Voltar ao login"
   },
   "settings": {
+    "daily_goal": {
+      "title": "Meta diária",
+      "label": "Plantas para cuidar por dia",
+      "hint": "Perdeu um dia? O mulch mantém sua sequência."
+    },
     "custom_grammar": {
       "title": "Sua própria gramática",
       "subtitle": "Adicione padrões da sua vida real — eles aparecem na prática como os demais.",
@@ -288,6 +293,11 @@
     }
   },
   "garden": {
+    "goal": {
+      "label": "Hoje: {count}/{goal}",
+      "aria": "Meta diária: {count} de {goal} plantas cuidadas hoje.",
+      "done": "Meta de hoje concluída! 화이팅"
+    },
     "level": "Nível {n}",
     "state": {
       "dormant": "Dormente (inverno)",

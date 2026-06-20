@@ -204,6 +204,11 @@
     "back_to_sign_in": "Back to sign in"
   },
   "settings": {
+    "daily_goal": {
+      "title": "Daily goal",
+      "label": "Plants to tend each day",
+      "hint": "Miss a day? Mulch keeps your streak."
+    },
     "custom_grammar": {
       "title": "Your own grammar",
       "subtitle": "Add patterns from your real life — they show up in practice like the rest.",
@@ -288,6 +293,11 @@
     }
   },
   "garden": {
+    "goal": {
+      "label": "Today: {count}/{goal}",
+      "aria": "Daily goal: {count} of {goal} plants tended today.",
+      "done": "Today's goal done! 화이팅"
+    },
     "level": "Level {n}",
     "state": {
       "dormant": "Dormant (winter)",

@@ -204,6 +204,11 @@
     "back_to_sign_in": "Quay lại đăng nhập"
   },
   "settings": {
+    "daily_goal": {
+      "title": "Mục tiêu hằng ngày",
+      "label": "Số cây chăm mỗi ngày",
+      "hint": "Lỡ một ngày? Mulch giữ chuỗi của bạn."
+    },
     "custom_grammar": {
       "title": "Ngữ pháp của riêng bạn",
       "subtitle": "Thêm các mẫu từ đời thực — chúng xuất hiện khi luyện tập như những mẫu khác.",
@@ -288,6 +293,11 @@
     }
   },
   "garden": {
+    "goal": {
+      "label": "Hôm nay: {count}/{goal}",
+      "aria": "Mục tiêu hằng ngày: đã chăm {count}/{goal} cây hôm nay.",
+      "done": "Hoàn thành mục tiêu hôm nay! 화이팅"
+    },
     "level": "Cấp {n}",
     "state": {
       "dormant": "Ngủ đông (mùa đông)",

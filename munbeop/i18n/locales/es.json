@@ -204,6 +204,11 @@
     "back_to_sign_in": "Volver a iniciar sesión"
   },
   "settings": {
+    "daily_goal": {
+      "title": "Meta diaria",
+      "label": "Plantas que cuidar cada día",
+      "hint": "¿Te saltas un día? El mulch mantiene tu racha."
+    },
     "custom_grammar": {
       "title": "Tu propia gramática",
       "subtitle": "Añade patrones de tu vida real — aparecen en la práctica como el resto.",
@@ -288,6 +293,11 @@
     }
   },
   "garden": {
+    "goal": {
+      "label": "Hoy: {count}/{goal}",
+      "aria": "Meta diaria: {count} de {goal} plantas cuidadas hoy.",
+      "done": "¡Meta de hoy cumplida! 화이팅"
+    },
     "level": "Nivel {n}",
     "state": {
       "dormant": "Seco (invierno)",

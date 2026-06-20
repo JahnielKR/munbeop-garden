@@ -30,6 +30,10 @@ import { SPECIES_BY_LEVEL, SPECIES_KO, SPECIES_PARTICLE } from '~/lib/garden'
 import { gardenStateKey, useGardenState } from '~/composables/useGardenState'
 import { useGardenCelebration } from '~/composables/useGardenCelebration'
 import { useToast } from '~/composables/useToast'
+import DailyGoalRing from '~/components/garden/DailyGoalRing.vue'
+import { useSettingsStore } from '~/stores/settings'
+import { useLogStore } from '~/stores/log'
+import { todayCount } from '~/lib/stats/goal'
 import EmptyPlot from '~/components/garden/EmptyPlot.vue'
 import GuidedFirstSentence from '~/components/onboarding/GuidedFirstSentence.vue'
 import { useOnboarding } from '~/composables/useOnboarding'
@@ -49,6 +53,13 @@ const {
   milestones,
   setActiveLevel,
 } = useGardenState()
+
+// Daily goal ring (today's practiced count vs the user's goal).
+const settings = useSettingsStore()
+const logStore = useLogStore()
+const goalCount = computed(() =>
+  todayCount(logStore.entries.map((e) => new Date(e.date).getTime()), Date.now()),
+)
 
 // First-run onboarding: a distinct empty plot + one guided sentence. The
 // overlay auto-opens once data is ready for a brand-new (empty-log) user;
@@ -217,6 +228,8 @@ const bomiAnchor = computed(() => {
           :state-key="stateKey"
         />
 
+        <DailyGoalRing class="page__goal" :count="goalCount" :goal="settings.dailyGoal" />
+
         <NuxtLink v-if="weatherKind === 'rain'" class="page__rain-hint" to="/log">
           {{ t('garden.weather.rain_hint') }}
         </NuxtLink>
@@ -269,6 +282,10 @@ const bomiAnchor = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.page__goal {
+  align-self: center;
 }
 
 .page__rain-hint {
