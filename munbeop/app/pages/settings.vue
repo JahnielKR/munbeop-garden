@@ -8,6 +8,7 @@ import Button from '~/components/ui/Button.vue'
 import SettingsTabs from '~/components/settings/SettingsTabs.vue'
 import ThemePicker from '~/components/settings/ThemePicker.vue'
 import ContextManager from '~/components/settings/ContextManager.vue'
+import CustomGrammarManager from '~/components/settings/CustomGrammarManager.vue'
 import AboutSection from '~/components/settings/AboutSection.vue'
 import { useSettingsStore } from '~/stores/settings'
 import { useDataExport } from '~/composables/useDataExport'
@@ -70,6 +71,7 @@ const active = ref('account')
       class="panel"
     >
       <ContextManager />
+      <CustomGrammarManager />
     </section>
 
     <section
