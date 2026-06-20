@@ -7,6 +7,20 @@
     "word_order": "어순 · 語順",
     "other": "기타 · その他"
   },
+  "onboarding": {
+    "title": "最初の文を植えよう",
+    "intro": "mungardenでは韓国語の文を自分で書きます。最初の一文を一緒に作りましょう — 空欄を埋めるだけです。",
+    "prompt": "このパターンを使って文を完成させましょう:",
+    "reveal_label": "答えを見る",
+    "celebrate": "最初の種を植えました。화이팅！",
+    "cta": "庭に入る",
+    "skip": "あとで",
+    "empty": {
+      "title": "あなたの庭はまだ何もない土です",
+      "body": "最初の韓国語の文を植えて、最初の木を育てましょう。",
+      "cta": "最初の種を植える"
+    }
+  },
   "journal": {
     "revisit_title": "復習する芽",
     "revisit_count": "{n}件を復習",
@@ -190,6 +204,25 @@
     "back_to_sign_in": "ログインに戻る"
   },
   "settings": {
+    "custom_grammar": {
+      "title": "自分の文法",
+      "subtitle": "実生活の表現を追加 — ほかと同じように練習に出てきます。",
+      "ko_label": "表現（韓国語）",
+      "ko_placeholder": "例: -거든요",
+      "meaning_label": "意味",
+      "meaning_placeholder": "例: 理由や背景を述べる",
+      "example_label": "例文（任意）",
+      "example_placeholder": "例: 바빠서 못 갔거든요",
+      "add": "植える",
+      "error_korean": "韓国語の表現を入力してください。例: -거든요",
+      "error_duplicate": "その表現はすでにあります。",
+      "delete": "削除",
+      "delete_confirm_title": "この文法を削除しますか？",
+      "delete_confirm_body": "「{ko}」をあなたの表現から削除します。",
+      "empty": "まだ自分の表現がありません。下から最初の表現を植えましょう。",
+      "created": "文法を追加しました。",
+      "deleted": "文法を削除しました。"
+    },
     "dark_mode": "ダークモード",
     "appearance": { "theme": { "label": "テーマ", "light": "ライト", "auto": "自動", "dark": "ダーク" } },
     "contexts": {

@@ -7,6 +7,20 @@
     "word_order": "어순 · word order",
     "other": "기타 · other"
   },
+  "onboarding": {
+    "title": "Plant your first sentence",
+    "intro": "In mungarden you write Korean sentences yourself. Let's do the first one together — just fill in the blank.",
+    "prompt": "Complete the sentence using this pattern:",
+    "reveal_label": "Check answer",
+    "celebrate": "Your first seed is planted. 화이팅!",
+    "cta": "Enter my garden",
+    "skip": "Skip for now",
+    "empty": {
+      "title": "Your garden is bare soil",
+      "body": "Plant your first Korean sentence to grow your first tree.",
+      "cta": "Plant the first seed"
+    }
+  },
   "journal": {
     "revisit_title": "Plants to revisit",
     "revisit_count": "{n} to revisit",
@@ -190,6 +204,25 @@
     "back_to_sign_in": "Back to sign in"
   },
   "settings": {
+    "custom_grammar": {
+      "title": "Your own grammar",
+      "subtitle": "Add patterns from your real life — they show up in practice like the rest.",
+      "ko_label": "Pattern (Korean)",
+      "ko_placeholder": "e.g. -거든요",
+      "meaning_label": "Meaning",
+      "meaning_placeholder": "e.g. giving a reason or background",
+      "example_label": "Example (optional)",
+      "example_placeholder": "e.g. 바빠서 못 갔거든요",
+      "add": "Plant it",
+      "error_korean": "Use the Korean pattern, e.g. -거든요.",
+      "error_duplicate": "That pattern already exists.",
+      "delete": "Delete",
+      "delete_confirm_title": "Delete this grammar?",
+      "delete_confirm_body": "“{ko}” will be removed from your patterns.",
+      "empty": "No patterns of your own yet. Plant your first below.",
+      "created": "Grammar added.",
+      "deleted": "Grammar removed."
+    },
     "dark_mode": "Dark mode",
     "appearance": { "theme": { "label": "Theme", "light": "Light", "auto": "Auto", "dark": "Dark" } },
     "contexts": {
