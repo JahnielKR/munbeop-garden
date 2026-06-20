@@ -70,3 +70,22 @@ export function advanceProgress<G, C>(s: Session<G, C>, i: number): void {
 export function isSessionComplete<G, C>(s: Session<G, C>): boolean {
   return s.picks.every((p) => p.progress >= CONTEXTS_PER_PICK)
 }
+
+/**
+ * Build a draw pool for a custom deck by mapping each grammar `ko` to its
+ * catalog index. Unknown kos (deleted/renamed catalog items) are dropped, so
+ * the engine never dereferences a missing row. Unlike {@link filterPoolByDeck}
+ * this bypasses the Library `excludedDeckIds` gate entirely — a custom deck is
+ * the user's explicit curation and is not subject to the global level filter.
+ */
+export function filterPoolByCustomDeck(
+  grammarKos: readonly string[],
+  indexOfKo: (ko: string) => number | undefined,
+): number[] {
+  const out: number[] = []
+  for (const ko of grammarKos) {
+    const idx = indexOfKo(ko)
+    if (idx !== undefined && idx >= 0) out.push(idx)
+  }
+  return out
+}
