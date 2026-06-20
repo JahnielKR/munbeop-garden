@@ -1,4 +1,4 @@
-import type { Deck, Grammar } from '~/lib/domain'
+import type { Deck, Grammar, CustomDeck } from '~/lib/domain'
 
 /**
  * Shared shapes + helpers for the deck-draw game ("La Ruleta").
@@ -88,4 +88,50 @@ export function buildDeckOptions(p: {
   }
 
   return [all, ...perDeck]
+}
+
+/** Palette ids a custom deck may use — the keys of DECK_COLOR_VARS. */
+export const DECK_COLOR_IDS = ['sky', 'jade', 'gold', 'amber', 'rose', 'violet'] as const
+export type DeckColorId = (typeof DECK_COLOR_IDS)[number]
+
+/** Pickable deck icons (must stay in sync with Icon.vue's IconName union). */
+export const DECK_ICONS = [
+  'deck-star', 'deck-flame', 'deck-leaf', 'deck-heart', 'deck-book', 'deck-bolt',
+] as const
+export type DeckIcon = (typeof DECK_ICONS)[number]
+
+/** Minimum grammar count for a custom deck to be PLAYABLE (save allows any count). */
+export const MIN_CUSTOM_PLAYABLE = 6
+
+/** A custom-deck mat. Extends DeckOption with a non-null id + visual fields. */
+export interface CustomDeckOption extends DeckOption {
+  id: string
+  icon: string
+  imageUrl?: string
+}
+
+/**
+ * Build the custom-deck shelf options. Sorted by `order`. A deck is locked
+ * (disabled, reason 'too_few') until it has {@link MIN_CUSTOM_PLAYABLE}
+ * grammars — that is the play gate; saving has no minimum.
+ */
+export function buildCustomDeckOptions(p: {
+  decks: readonly CustomDeck[]
+}): CustomDeckOption[] {
+  return [...p.decks]
+    .sort((a, b) => a.order - b.order)
+    .map((d) => {
+      const count = d.grammarKos.length
+      const tooFew = count < MIN_CUSTOM_PLAYABLE
+      return {
+        id: d.id,
+        name: d.name,
+        colors: [deckColorVar(d.colorId)],
+        count,
+        disabled: tooFew,
+        reason: tooFew ? ('too_few' as const) : null,
+        icon: d.icon,
+        ...(d.imageUrl ? { imageUrl: d.imageUrl } : {}),
+      }
+    })
 }
