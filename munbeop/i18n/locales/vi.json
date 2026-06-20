@@ -179,6 +179,11 @@
     "back_to_sign_in": "Quay lại đăng nhập"
   },
   "settings": {
+    "daily_goal": {
+      "title": "Mục tiêu hằng ngày",
+      "label": "Số cây chăm mỗi ngày",
+      "hint": "Lỡ một ngày? Mulch giữ chuỗi của bạn."
+    },
     "dark_mode": "Chế độ tối",
     "appearance": { "theme": { "label": "Chủ đề", "light": "Sáng", "auto": "Tự động", "dark": "Tối" } },
     "contexts": {
@@ -244,6 +249,11 @@
     }
   },
   "garden": {
+    "goal": {
+      "label": "Hôm nay: {count}/{goal}",
+      "aria": "Mục tiêu hằng ngày: đã chăm {count}/{goal} cây hôm nay.",
+      "done": "Hoàn thành mục tiêu hôm nay! 화이팅"
+    },
     "level": "Cấp {n}",
     "state": {
       "dormant": "Ngủ đông (mùa đông)",

@@ -179,6 +179,11 @@
     "back_to_sign_in": "Retour à la connexion"
   },
   "settings": {
+    "daily_goal": {
+      "title": "Objectif quotidien",
+      "label": "Plantes à soigner chaque jour",
+      "hint": "Un jour manqué ? Le mulch garde ta série."
+    },
     "dark_mode": "Mode sombre",
     "appearance": { "theme": { "label": "Thème", "light": "Clair", "auto": "Auto", "dark": "Sombre" } },
     "contexts": {
@@ -244,6 +249,11 @@
     }
   },
   "garden": {
+    "goal": {
+      "label": "Aujourd'hui : {count}/{goal}",
+      "aria": "Objectif du jour : {count} sur {goal} plantes soignées aujourd'hui.",
+      "done": "Objectif du jour atteint ! 화이팅"
+    },
     "level": "Niveau {n}",
     "state": {
       "dormant": "Endormi (hiver)",

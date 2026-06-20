@@ -179,6 +179,11 @@
     "back_to_sign_in": "ログインに戻る"
   },
   "settings": {
+    "daily_goal": {
+      "title": "毎日の目標",
+      "label": "1日にお世話する株数",
+      "hint": "1日空いても大丈夫。マルチがストリークを守ります。"
+    },
     "dark_mode": "ダークモード",
     "appearance": { "theme": { "label": "テーマ", "light": "ライト", "auto": "自動", "dark": "ダーク" } },
     "contexts": {
@@ -244,6 +249,11 @@
     }
   },
   "garden": {
+    "goal": {
+      "label": "今日: {count}/{goal}",
+      "aria": "毎日の目標: 今日 {goal} 株のうち {count} 株お世話しました。",
+      "done": "今日の目標達成！화이팅"
+    },
     "level": "レベル{n}",
     "state": {
       "dormant": "休眠（冬）",

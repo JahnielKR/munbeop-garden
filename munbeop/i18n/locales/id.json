@@ -179,6 +179,11 @@
     "back_to_sign_in": "Kembali ke halaman masuk"
   },
   "settings": {
+    "daily_goal": {
+      "title": "Target harian",
+      "label": "Tanaman yang dirawat per hari",
+      "hint": "Lewat sehari? Mulch menjaga streak-mu."
+    },
     "dark_mode": "Mode gelap",
     "appearance": { "theme": { "label": "Tema", "light": "Terang", "auto": "Otomatis", "dark": "Gelap" } },
     "contexts": {
@@ -244,6 +249,11 @@
     }
   },
   "garden": {
+    "goal": {
+      "label": "Hari ini: {count}/{goal}",
+      "aria": "Target harian: {count} dari {goal} tanaman dirawat hari ini.",
+      "done": "Target hari ini selesai! 화이팅"
+    },
     "level": "Level {n}",
     "state": {
       "dormant": "Dorman (musim dingin)",
