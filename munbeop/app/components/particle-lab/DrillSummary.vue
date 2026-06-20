@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ClashSet, DrillItem } from '~/lib/domain'
 import type { DrillScore } from '~/lib/particle-lab'
-import { correctForm } from '~/lib/particle-lab'
+import { sentenceParts } from '~/lib/particle-lab'
 import { useLocalized } from '~/composables/useLocalized'
 
 /** End-of-session screen: score, batchim slips, review list, CTAs. */
@@ -11,10 +11,13 @@ interface Props {
   set: ClashSet
   gardenGrew: boolean
 }
-defineProps<Props>()
+const props = defineProps<Props>()
 const emit = defineEmits<{ restart: []; explore: []; 'replay-failed': [] }>()
 const { t } = useI18n()
 const { tl } = useLocalized()
+
+/** Render pieces for a review-list item (handles contraction items). */
+const part = (item: DrillItem) => sentenceParts(item, props.set)
 </script>
 
 <template>
@@ -32,7 +35,7 @@ const { tl } = useLocalized()
       <ul class="summary__list">
         <li v-for="item in failedItems" :key="item.id" class="summary__item">
           <span lang="ko" class="summary__item-ko">
-            {{ item.lead ?? '' }}{{ item.noun }}<strong>{{ correctForm(item, set) }}</strong>{{ item.rest }}
+            {{ part(item).before }}<strong>{{ part(item).answer }}</strong>{{ part(item).after }}
           </span>
           <span class="summary__item-reason">{{ tl(item.reason) }}</span>
         </li>

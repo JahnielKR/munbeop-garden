@@ -42,7 +42,9 @@
       "summary_repeat": "もう一回",
       "summary_explore": "探検する",
       "summary_replay_failed": "まちがいを復習 ({n})",
-      "replay_mode_label": "復習モード · 間違いは再記録されません"
+      "replay_mode_label": "復習モード · 間違いは再記録されません",
+      "contraction_title": "縮約！",
+      "contraction_rule": "{pronoun} + 가 は {answer} に縮約。{trap} ではない。"
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "この文法は助詞：実際の文の中でオン・オフして働きを体感しよう。",

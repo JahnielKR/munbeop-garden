@@ -42,7 +42,9 @@
       "summary_repeat": "เล่นอีกรอบ",
       "summary_explore": "สำรวจ",
       "summary_replay_failed": "ทบทวนที่ผิด ({n})",
-      "replay_mode_label": "โหมดทบทวน · ข้อผิดจะไม่ถูกบันทึกซ้ำ"
+      "replay_mode_label": "โหมดทบทวน · ข้อผิดจะไม่ถูกบันทึกซ้ำ",
+      "contraction_title": "การย่อรูป!",
+      "contraction_rule": "{pronoun} + 가 ย่อเป็น {answer} ไม่ใช่ {trap}"
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "ไวยากรณ์นี้คืออนุภาค: ลองเปิด-ปิดในประโยคจริงเพื่อสัมผัสว่ามันเพิ่มอะไร",

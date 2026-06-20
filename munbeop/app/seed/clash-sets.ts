@@ -53,6 +53,12 @@ export const CLASH_SETS: ClashSet[] = [
   { id: 'place-recipient', name: pair('에 vs 한테'), families: [PLACE_STATIC, RECIPIENT] },
   { id: 'also-only', name: pair('도 vs 만'), families: [ALSO, ONLY] },
   { id: 'from-until', name: pair('부터 vs 까지'), families: [FROM, UNTIL] },
+  {
+    id: 'contraction',
+    kind: 'contraction',
+    name: pair('나/저/너/누구 + 가'),
+    families: [SUBJECT, SUBJECT],
+  },
 ]
 
 export function clashSetById(id: string): ClashSet | undefined {

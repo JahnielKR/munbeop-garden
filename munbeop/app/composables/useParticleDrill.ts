@@ -109,6 +109,14 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
       phase.value = 'blocked'
       return
     }
+    if (v.kind === 'contraction') {
+      // Retry like a 받침 slip, but don't count it as one (that metric is 받침-only).
+      const next = new Set(blockedChoices.value)
+      next.add(choice)
+      blockedChoices.value = next
+      phase.value = 'blocked'
+      return
+    }
     results.value.push({
       itemId: item.value.id,
       correct: false,

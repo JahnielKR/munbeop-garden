@@ -42,7 +42,9 @@
       "summary_repeat": "JOGAR DE NOVO",
       "summary_explore": "EXPLORAR",
       "summary_replay_failed": "REVISAR ERROS ({n})",
-      "replay_mode_label": "Modo revisão · os erros não são registrados de novo"
+      "replay_mode_label": "Modo revisão · os erros não são registrados de novo",
+      "contraction_title": "Contração!",
+      "contraction_rule": "{pronoun} + 가 contrai para {answer}, não {trap}."
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "Esta gramática é uma partícula: ligue e desligue em frases reais para sentir o que ela acrescenta.",

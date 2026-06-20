@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ClashSet, DrillItem, DrillVerdict } from '~/lib/domain'
-import { correctForm, correctSentence, deriveOptions } from '~/lib/particle-lab'
+import { correctSentence, optionsFor, sentenceParts } from '~/lib/particle-lab'
 import { useLocalized } from '~/composables/useLocalized'
 import DrillOption from './DrillOption.vue'
 
@@ -20,8 +20,9 @@ const { t } = useI18n()
 const { tl } = useLocalized()
 
 const revealed = computed(() => props.phase === 'right' || props.phase === 'wrong')
-const answer = computed(() => correctForm(props.item, props.set))
-const options = computed(() => deriveOptions(props.set))
+const parts = computed(() => sentenceParts(props.item, props.set))
+const answer = computed(() => parts.value.answer)
+const options = computed(() => optionsFor(props.item, props.set))
 
 function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
   if (props.blockedChoices.has(choice)) return 'blocked'
@@ -43,12 +44,11 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
     </div>
 
     <p class="drill__sentence" lang="ko">
-      <span v-if="item.lead">{{ item.lead }}</span
-      ><span class="drill__noun">{{ item.noun }}</span
+      <span v-if="parts.before">{{ parts.before }}</span
       ><span class="drill__gap" :class="{ 'drill__gap--filled': revealed }">{{
-        revealed ? answer : '?'
+        revealed ? parts.answer : '?'
       }}</span
-      ><span>{{ item.rest }}</span>
+      ><span>{{ parts.after }}</span>
     </p>
 
     <div class="drill__options" role="group" :aria-label="t('particles.drill.options_label')">
@@ -77,6 +77,26 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
                 : 'particles.drill.blocked_vowel',
               { noun: item.noun, expected: verdict.expected },
             )
+          }}
+        </p>
+        <button type="button" class="feedback__btn" @click="emit('retry')">
+          {{ t('particles.drill.retry') }}
+        </button>
+      </div>
+
+      <div
+        v-else-if="phase === 'blocked' && verdict?.kind === 'contraction'"
+        class="feedback feedback--blocked"
+        data-testid="drill-contraction"
+      >
+        <h4 class="feedback__title">🔗 {{ t('particles.drill.contraction_title') }}</h4>
+        <p class="feedback__body">
+          {{
+            t('particles.drill.contraction_rule', {
+              pronoun: item.noun,
+              answer: verdict.expected,
+              trap: item.noun + '가',
+            })
           }}
         </p>
         <button type="button" class="feedback__btn" @click="emit('retry')">
