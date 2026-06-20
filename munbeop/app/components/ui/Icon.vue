@@ -28,6 +28,13 @@ export type IconName =
   | 'mastery-seedling'
   | 'mastery-plant'
   | 'mastery-tree'
+  | 'deck-star'
+  | 'deck-flame'
+  | 'deck-leaf'
+  | 'deck-heart'
+  | 'deck-book'
+  | 'deck-bolt'
+  | 'deck-edit'
 
 interface Props {
   name: IconName
@@ -202,6 +209,43 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
         d="M11 4h1v1h-1z M12 5h1v3h-1z M11 8h1v1h-1z M10 9h1v1h-1z M9 10h1v1H9z"
         fill="var(--jade-deep)"
       />
+    </template>
+
+    <!-- deck-star: 4-point sparkle -->
+    <template v-if="name === 'deck-star'">
+      <path d="M7 2h2v3h3v2h-3v3H7V7H4V5h3z" fill="currentColor" />
+      <path d="M3 3h1v1H3z M12 11h1v1h-1z" fill="currentColor" />
+    </template>
+
+    <!-- deck-flame -->
+    <template v-if="name === 'deck-flame'">
+      <path d="M8 2h1v2h1v2h1v2h1v3h-1v2H4v-2H3V8h1V6h1V4h1z" fill="currentColor" />
+    </template>
+
+    <!-- deck-leaf -->
+    <template v-if="name === 'deck-leaf'">
+      <path d="M4 12h1v-2h1V8h2V6h2V4h3v3h-3v2H7v2H5v2H4z" fill="currentColor" />
+      <path d="M11 4h2v2h-2z" fill="currentColor" />
+    </template>
+
+    <!-- deck-heart -->
+    <template v-if="name === 'deck-heart'">
+      <path d="M3 4h3v1h1V4h2v1h1V4h3v5h-1v1h-1v1h-1v1h-1v1H8v-1H7v-1H6v-1H5V9H4V4z" fill="currentColor" />
+    </template>
+
+    <!-- deck-book -->
+    <template v-if="name === 'deck-book'">
+      <path d="M3 3h4v10H3z M9 3h4v10H9z M7 4h2v8H7z" fill="currentColor" />
+    </template>
+
+    <!-- deck-bolt -->
+    <template v-if="name === 'deck-bolt'">
+      <path d="M9 2h3l-2 4h3l-6 8 2-6H6z" fill="currentColor" />
+    </template>
+
+    <!-- deck-edit: pencil -->
+    <template v-if="name === 'deck-edit'">
+      <path d="M10 2h2v2h-2z M8 4h2v2H8z M6 6h2v2H6z M4 8h2v2H4z M3 11h2v2H3z M2 13h2v1H2z" fill="currentColor" />
     </template>
   </svg>
 </template>
