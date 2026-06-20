@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
+import { useGrammarStore } from '~/stores/grammar'
+import { CUSTOM_DECK_ID, type LocalizedString } from '~/lib/domain'
 
+// vi.mock is hoisted above the imports by Vitest, so the store picks it up.
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({ read: vi.fn().mockResolvedValue([]), write: vi.fn().mockResolvedValue(undefined) }),
 }))
-
-import { useGrammarStore } from '~/stores/grammar'
-import { CUSTOM_DECK_ID, type LocalizedString } from '~/lib/domain'
 
 const L = (s: string): LocalizedString => ({ en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s })
 
