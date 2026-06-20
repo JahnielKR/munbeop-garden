@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Context, Grammar } from '~/lib/domain'
+import type { Context, ErrorDimension, Grammar } from '~/lib/domain'
 import { getMasteryInfo } from '~/lib/srs'
 import { useSrsStore } from '~/stores/srs'
 import Badge from '~/components/ui/Badge.vue'
@@ -25,6 +25,7 @@ const emit = defineEmits<{
       sentence: string
       feedback: 'easy' | 'hard'
       errorNote: string | null
+      errorDimension: ErrorDimension | null
     },
   ]
 }>()
@@ -38,11 +39,13 @@ const masteryInfo = computed(() => getMasteryInfo(masteryLevel.value))
 const sentence = ref('')
 const showErrorBlock = ref(false)
 const errorNote = ref('')
+const errorDimension = ref<ErrorDimension | null>(null)
 
 function reset() {
   sentence.value = ''
   showErrorBlock.value = false
   errorNote.value = ''
+  errorDimension.value = null
 }
 
 function onEasy() {
@@ -53,6 +56,7 @@ function onEasy() {
     sentence: text,
     feedback: 'easy',
     errorNote: null,
+    errorDimension: null,
   })
   reset()
 }
@@ -68,6 +72,7 @@ function onSaveWithNote() {
     sentence: text,
     feedback: 'hard',
     errorNote: errorNote.value.trim(),
+    errorDimension: errorDimension.value,
   })
   reset()
 }
@@ -79,6 +84,7 @@ function onSkipNote() {
     sentence: text,
     feedback: 'hard',
     errorNote: null,
+    errorDimension: errorDimension.value,
   })
   reset()
 }
@@ -105,6 +111,7 @@ function onSkipNote() {
     <ErrorNoteBlock
       v-if="showErrorBlock"
       v-model="errorNote"
+      v-model:dimension="errorDimension"
       @save="onSaveWithNote"
       @skip="onSkipNote"
     />

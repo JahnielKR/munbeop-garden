@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { LogEntry, Feedback, ReviewState } from '~/lib/domain'
+import type { LogEntry, Feedback, ReviewState, ErrorDimension } from '~/lib/domain'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
 
@@ -21,6 +21,7 @@ export const useLogStore = defineStore('log', () => {
     sentence: string
     feedback: Feedback
     errorNote: string | null
+    errorDimension?: ErrorDimension | null
     reviewState: ReviewState
     contextId: string
     contextName: string

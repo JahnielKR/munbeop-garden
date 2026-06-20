@@ -34,6 +34,9 @@ import DailyGoalRing from '~/components/garden/DailyGoalRing.vue'
 import { useSettingsStore } from '~/stores/settings'
 import { useLogStore } from '~/stores/log'
 import { todayCount } from '~/lib/stats/goal'
+import EmptyPlot from '~/components/garden/EmptyPlot.vue'
+import GuidedFirstSentence from '~/components/onboarding/GuidedFirstSentence.vue'
+import { useOnboarding } from '~/composables/useOnboarding'
 import type { TopikLevel } from '~/lib/domain'
 
 definePageMeta({ surface: 'game' })
@@ -56,6 +59,18 @@ const settings = useSettingsStore()
 const logStore = useLogStore()
 const goalCount = computed(() =>
   todayCount(logStore.entries.map((e) => new Date(e.date).getTime()), Date.now()),
+)
+
+// First-run onboarding: a distinct empty plot + one guided sentence. The
+// overlay auto-opens once data is ready for a brand-new (empty-log) user;
+// the empty plot doubles as the manual entry point after a skip.
+const onboarding = useOnboarding()
+watch(
+  () => onboarding.shouldShow.value,
+  (show) => {
+    if (show) onboarding.start()
+  },
+  { immediate: true },
 )
 
 // hero ↔ grove toggle (same page, spec §5.2)
@@ -172,7 +187,13 @@ const bomiAnchor = computed(() => {
     </header>
 
     <Transition name="garden-fade" mode="out-in">
-      <div v-if="view === 'hero'" key="hero" class="page__view">
+      <EmptyPlot
+        v-if="view === 'hero' && onboarding.showEmptyPlot.value"
+        key="empty"
+        @start="onboarding.start()"
+      />
+
+      <div v-else-if="view === 'hero'" key="hero" class="page__view">
         <div ref="stageWrap">
           <GardenStage :pct="active.pct" :scale="treeScale" :cold="weatherKind === 'rain'">
             <template #weather>
@@ -222,6 +243,12 @@ const bomiAnchor = computed(() => {
         @select="onGroveSelect"
       />
     </Transition>
+
+    <GuidedFirstSentence
+      :open="onboarding.open.value"
+      @complete="onboarding.complete($event)"
+      @skip="onboarding.skip()"
+    />
   </div>
 </template>
 

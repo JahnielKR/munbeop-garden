@@ -1,18 +1,43 @@
 <script setup lang="ts">
 import Button from '~/components/ui/Button.vue'
 import Input from '~/components/ui/Input.vue'
+import { ERROR_DIMENSIONS, type ErrorDimension } from '~/lib/domain'
 
 interface Props {
   modelValue: string
+  dimension: ErrorDimension | null
 }
 defineProps<Props>()
-defineEmits<{ 'update:modelValue': [string]; save: []; skip: [] }>()
+const emit = defineEmits<{
+  'update:modelValue': [string]
+  'update:dimension': [ErrorDimension | null]
+  save: []
+  skip: []
+}>()
 const { t } = useI18n()
+
+function toggle(current: ErrorDimension | null, d: ErrorDimension) {
+  emit('update:dimension', current === d ? null : d)
+}
 </script>
 
 <template>
   <div class="enote">
     <div class="enote__label">{{ t('practice.error_note_label') }}</div>
+    <div class="enote__dims" role="group" :aria-label="t('dimension.prompt')">
+      <button
+        v-for="d in ERROR_DIMENSIONS"
+        :key="d"
+        type="button"
+        class="enote__chip"
+        :class="{ 'enote__chip--on': dimension === d }"
+        :data-testid="`dim-${d}`"
+        :aria-pressed="dimension === d"
+        @click="toggle(dimension, d)"
+      >
+        {{ t(`dimension.${d}`) }}
+      </button>
+    </div>
     <Input
       :model-value="modelValue"
       :placeholder="t('practice.error_note_placeholder')"
@@ -50,6 +75,30 @@ const { t } = useI18n()
   color: var(--danger);
   margin-bottom: 8px;
   letter-spacing: 0.1em;
+}
+.enote__dims {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.enote__chip {
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  padding: 4px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+.enote__chip--on {
+  border-color: var(--danger, var(--red));
+  background: color-mix(in oklch, var(--red) 16%, var(--surface));
+}
+.enote__chip:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 .enote__actions {
   display: flex;

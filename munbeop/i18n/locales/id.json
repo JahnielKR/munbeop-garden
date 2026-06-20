@@ -1,5 +1,30 @@
 {
+  "dimension": {
+    "prompt": "Apa yang meleset?",
+    "particle": "조사 · partikel",
+    "ending": "어미 · akhiran",
+    "register": "높임 · tingkat bahasa",
+    "word_order": "어순 · urutan kata",
+    "other": "기타 · lainnya"
+  },
+  "onboarding": {
+    "title": "Tanam kalimat pertamamu",
+    "intro": "Di mungarden kamu menulis kalimat Korea sendiri. Ayo buat yang pertama bersama — cukup isi bagian yang kosong.",
+    "prompt": "Lengkapi kalimat menggunakan pola ini:",
+    "reveal_label": "Lihat jawaban",
+    "celebrate": "Benih pertamamu sudah ditanam. 화이팅!",
+    "cta": "Masuk ke kebunku",
+    "skip": "Nanti saja",
+    "empty": {
+      "title": "Kebunmu masih tanah kosong",
+      "body": "Tanam kalimat Korea pertamamu untuk menumbuhkan pohon pertamamu.",
+      "cta": "Tanam benih pertama"
+    }
+  },
   "journal": {
+    "revisit_title": "Tanaman untuk ditinjau",
+    "revisit_count": "{n} untuk ditinjau",
+    "revisit_practice": "Latihan 화이팅",
     "mark_reviewed": "Tandai sudah ditinjau",
     "reviewed": "Sudah ditinjau",
     "note_label": "Catatan"
@@ -183,6 +208,25 @@
       "title": "Target harian",
       "label": "Tanaman yang dirawat per hari",
       "hint": "Lewat sehari? Mulch menjaga streak-mu."
+    },
+    "custom_grammar": {
+      "title": "Tata bahasamu sendiri",
+      "subtitle": "Tambahkan pola dari kehidupan nyatamu — muncul saat latihan seperti yang lain.",
+      "ko_label": "Pola (Korea)",
+      "ko_placeholder": "mis. -거든요",
+      "meaning_label": "Arti",
+      "meaning_placeholder": "mis. memberi alasan atau konteks",
+      "example_label": "Contoh (opsional)",
+      "example_placeholder": "mis. 바빠서 못 갔거든요",
+      "add": "Tanam",
+      "error_korean": "Gunakan pola Korea, mis. -거든요.",
+      "error_duplicate": "Pola itu sudah ada.",
+      "delete": "Hapus",
+      "delete_confirm_title": "Hapus tata bahasa ini?",
+      "delete_confirm_body": "“{ko}” akan dihapus dari polamu.",
+      "empty": "Belum ada pola milikmu. Tanam yang pertama di bawah.",
+      "created": "Tata bahasa ditambahkan.",
+      "deleted": "Tata bahasa dihapus."
     },
     "dark_mode": "Mode gelap",
     "appearance": { "theme": { "label": "Tema", "light": "Terang", "auto": "Otomatis", "dark": "Gelap" } },

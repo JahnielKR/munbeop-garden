@@ -2,6 +2,10 @@ export type Feedback = 'easy' | 'hard'
 
 export type ReviewState = 'unreviewed' | 'correct' | 'incorrect'
 
+/** Which dimension a struggled sentence failed on — optional diagnostic tag. */
+export const ERROR_DIMENSIONS = ['particle', 'ending', 'register', 'word_order', 'other'] as const
+export type ErrorDimension = (typeof ERROR_DIMENSIONS)[number]
+
 export interface LogEntry {
   /** Unique id (Date.now() + random in v1). */
   id: number
@@ -12,6 +16,8 @@ export interface LogEntry {
   feedback: Feedback
   /** Optional note explaining what was wrong; required when reviewState === 'incorrect'. */
   errorNote: string | null
+  /** Optional one-tap diagnostic tag for what slipped (particle/ending/…). */
+  errorDimension?: ErrorDimension | null
   reviewState: ReviewState
   /** Context id used when this entry was created. */
   contextId: string

@@ -8,6 +8,7 @@ import Button from '~/components/ui/Button.vue'
 import SettingsTabs from '~/components/settings/SettingsTabs.vue'
 import ThemePicker from '~/components/settings/ThemePicker.vue'
 import ContextManager from '~/components/settings/ContextManager.vue'
+import CustomGrammarManager from '~/components/settings/CustomGrammarManager.vue'
 import DailyGoalSetting from '~/components/settings/DailyGoalSetting.vue'
 import AboutSection from '~/components/settings/AboutSection.vue'
 import { useSettingsStore } from '~/stores/settings'
@@ -72,6 +73,7 @@ const active = ref('account')
     >
       <DailyGoalSetting />
       <ContextManager />
+      <CustomGrammarManager />
     </section>
 
     <section

@@ -1,5 +1,30 @@
 {
+  "dimension": {
+    "prompt": "¿Qué se te escapó?",
+    "particle": "조사 · partícula",
+    "ending": "어미 · terminación",
+    "register": "높임 · registro",
+    "word_order": "어순 · orden",
+    "other": "기타 · otro"
+  },
+  "onboarding": {
+    "title": "Planta tu primera frase",
+    "intro": "En mungarden escribes las frases en coreano tú mismo. Hagamos la primera juntos: solo rellena el hueco.",
+    "prompt": "Completa la frase usando este patrón:",
+    "reveal_label": "Ver respuesta",
+    "celebrate": "Tu primera semilla está plantada. 화이팅!",
+    "cta": "Entrar a mi jardín",
+    "skip": "Ahora no",
+    "empty": {
+      "title": "Tu jardín es tierra desnuda",
+      "body": "Planta tu primera frase en coreano para que crezca tu primer árbol.",
+      "cta": "Plantar la primera semilla"
+    }
+  },
   "journal": {
+    "revisit_title": "Plantas para revisar",
+    "revisit_count": "{n} para revisar",
+    "revisit_practice": "Practicar 화이팅",
     "mark_reviewed": "Marcar repasado",
     "reviewed": "Repasado",
     "note_label": "Nota"
@@ -183,6 +208,25 @@
       "title": "Meta diaria",
       "label": "Plantas que cuidar cada día",
       "hint": "¿Te saltas un día? El mulch mantiene tu racha."
+    },
+    "custom_grammar": {
+      "title": "Tu propia gramática",
+      "subtitle": "Añade patrones de tu vida real — aparecen en la práctica como el resto.",
+      "ko_label": "Patrón (coreano)",
+      "ko_placeholder": "p. ej. -거든요",
+      "meaning_label": "Significado",
+      "meaning_placeholder": "p. ej. dar una razón o contexto",
+      "example_label": "Ejemplo (opcional)",
+      "example_placeholder": "p. ej. 바빠서 못 갔거든요",
+      "add": "Plántalo",
+      "error_korean": "Usa el patrón en coreano, p. ej. -거든요.",
+      "error_duplicate": "Ese patrón ya existe.",
+      "delete": "Borrar",
+      "delete_confirm_title": "¿Borrar esta gramática?",
+      "delete_confirm_body": "«{ko}» se quitará de tus patrones.",
+      "empty": "Aún no tienes patrones propios. Planta el primero abajo.",
+      "created": "Gramática añadida.",
+      "deleted": "Gramática eliminada."
     },
     "dark_mode": "Modo oscuro",
     "appearance": { "theme": { "label": "Tema", "light": "Claro", "auto": "Auto", "dark": "Oscuro" } },

@@ -3,6 +3,7 @@ import type { Database, Json } from '~/types/database.types'
 import type { StorageAdapter } from './adapter'
 import { STORAGE_KEYS, type StorageKey } from './keys'
 import type { Grammar, Context, Deck, LogEntry, SrsState } from '~/lib/domain'
+import { CUSTOM_DECK_ID } from '~/lib/domain'
 
 /**
  * Surface a Supabase error instead of swallowing it. Every read/write goes
@@ -69,6 +70,7 @@ export class SupabaseAdapter implements StorageAdapter {
       sentence: e.sentence,
       feedback: e.feedback,
       error_note: e.errorNote,
+      error_dimension: e.errorDimension ?? null,
       review_state: e.reviewState,
       context_id: e.contextId,
       context_name: e.contextName,
@@ -145,6 +147,7 @@ export class SupabaseAdapter implements StorageAdapter {
           sentence: r.sentence,
           feedback: r.feedback as LogEntry['feedback'],
           errorNote: r.error_note,
+          errorDimension: (r.error_dimension ?? null) as LogEntry['errorDimension'],
           reviewState: r.review_state as LogEntry['reviewState'],
           contextId: r.context_id,
           contextName: r.context_name,
@@ -225,11 +228,9 @@ export class SupabaseAdapter implements StorageAdapter {
   async write<T>(key: StorageKey, value: T): Promise<void> {
     switch (key) {
       case STORAGE_KEYS.grammar: {
-        // Only user-added grammars persist via this adapter; the catalog
-        // is read-only from the client (enforced by RLS).
-        const customs = (value as Grammar[]).filter(
-          (g) => g.deckId !== 'catalog-readonly-marker', // placeholder; all client-side grammars are user-owned at write time
-        )
+        // Only user-authored grammars (the reserved custom deck) persist here;
+        // the catalog is read-only from the client (enforced by RLS).
+        const customs = (value as Grammar[]).filter((g) => g.deckId === CUSTOM_DECK_ID)
         const del = await this.client.from('user_custom_grammars').delete().eq('user_id', this.userId)
         assertOk('write', key, del.error)
         if (customs.length) {
