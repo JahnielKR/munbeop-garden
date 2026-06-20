@@ -1,4 +1,50 @@
 {
+  "particles": {
+    "title": "Particle Lab",
+    "lead": "Las partículas marcan el rol de cada palabra. Tócalas para apagarlas y mira qué pierde la frase.",
+    "mode_label": "Modo",
+    "mode_explore": "Explorar",
+    "mode_drill": "Choque 은/는 · 이/가",
+    "explore": {
+      "tap_hint": "Toca una partícula para apagarla o encenderla. Toca la leyenda para ver su ficha.",
+      "translation_label": "번역 · Traducción",
+      "nuance_generic": "Varias partículas apagadas: estilo telegrama, común en banmal hablado pero raro por escrito.",
+      "legend_title": "조사 · Partículas",
+      "prev": "Oración anterior",
+      "next": "Oración siguiente"
+    },
+    "popover": {
+      "close": "Cerrar",
+      "forms_label": "Formas · 받침",
+      "after_consonant": "tras consonante (받침)",
+      "after_vowel": "tras vocal",
+      "single_form": "Forma única: no cambia con el 받침.",
+      "see_sheet": "VER FICHA COMPLETA"
+    },
+    "drill": {
+      "cue_label": "Situación",
+      "options_label": "Elige la partícula",
+      "blocked_title": "¡BLOQUEADO! · 받침",
+      "blocked_consonant": "«{noun}» termina en CONSONANTE (받침) → necesita {expected}.",
+      "blocked_vowel": "«{noun}» termina en VOCAL (sin 받침) → necesita {expected}.",
+      "retry": "REINTENTAR",
+      "right_title": "정답! ¡Correcto!",
+      "wrong_title": "아직… Esa no era",
+      "next": "SIGUIENTE",
+      "saved_to_diary": "Guardado en tu Diario con esta explicación.",
+      "diary_note": "Elegiste {choice} en el Particle Lab.",
+      "summary_score": "{n} / {total} a la primera",
+      "summary_slips": "{n} tropiezos de 받침 (forma, no concepto)",
+      "summary_review_title": "Para repasar",
+      "summary_perfect": "Cero confusiones de tema/sujeto. 대박!",
+      "summary_garden_note": "Tu jardín creció: el progreso de 은/는 y 이/가 se actualizó.",
+      "summary_repeat": "OTRA RONDA",
+      "summary_explore": "EXPLORAR"
+    },
+    "sheet_section_title": "Particle Lab",
+    "sheet_section_body": "Esta gramática es una partícula: enciéndela y apágala en oraciones reales para sentir qué aporta.",
+    "sheet_section_cta": "ABRIR EN EL LAB"
+  },
   "dimension": {
     "prompt": "¿Qué se te escapó?",
     "particle": "조사 · partícula",
@@ -341,6 +387,10 @@
     "title": "Políticas"
   },
   "games": {
+    "particles": {
+      "name": "조사 LAB · Partículas",
+      "desc": "Enciende y apaga partículas para ver cómo cambia la frase. Supera el choque 은/는 vs 이/가."
+    },
     "lead": "Elige tu modo de práctica. Cada juego cultiva tu coreano de una forma distinta.",
     "ruleta": {
       "name": "La Baraja",

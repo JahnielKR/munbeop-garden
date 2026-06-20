@@ -1,4 +1,50 @@
 {
+  "particles": {
+    "title": "Particle Lab",
+    "lead": "Particles mark each word's role. Tap them off and see what the sentence loses.",
+    "mode_label": "Mode",
+    "mode_explore": "Explore",
+    "mode_drill": "Clash 은/는 · 이/가",
+    "explore": {
+      "tap_hint": "Tap a particle to toggle it. Tap the legend for its full card.",
+      "translation_label": "번역 · Translation",
+      "nuance_generic": "Several particles off: telegram style — common in spoken banmal, odd in writing.",
+      "legend_title": "조사 · Particles",
+      "prev": "Previous sentence",
+      "next": "Next sentence"
+    },
+    "popover": {
+      "close": "Close",
+      "forms_label": "Forms · 받침",
+      "after_consonant": "after a consonant (받침)",
+      "after_vowel": "after a vowel",
+      "single_form": "Single form: it doesn't change with 받침.",
+      "see_sheet": "OPEN FULL SHEET"
+    },
+    "drill": {
+      "cue_label": "Situation",
+      "options_label": "Pick the particle",
+      "blocked_title": "BLOCKED! · 받침",
+      "blocked_consonant": "“{noun}” ends in a CONSONANT (받침) → it needs {expected}.",
+      "blocked_vowel": "“{noun}” ends in a VOWEL (no 받침) → it needs {expected}.",
+      "retry": "TRY AGAIN",
+      "right_title": "정답! Correct!",
+      "wrong_title": "아직… Not that one",
+      "next": "NEXT",
+      "saved_to_diary": "Saved to your Diary with this explanation.",
+      "diary_note": "You picked {choice} in the Particle Lab.",
+      "summary_score": "{n} / {total} first try",
+      "summary_slips": "{n} 받침 slips (form, not concept)",
+      "summary_review_title": "To review",
+      "summary_perfect": "Zero topic/subject mix-ups. 대박!",
+      "summary_garden_note": "Your garden grew: 은/는 and 이/가 progress updated.",
+      "summary_repeat": "PLAY AGAIN",
+      "summary_explore": "EXPLORE"
+    },
+    "sheet_section_title": "Particle Lab",
+    "sheet_section_body": "This grammar is a particle: toggle it inside real sentences to feel what it adds.",
+    "sheet_section_cta": "OPEN IN THE LAB"
+  },
   "dimension": {
     "prompt": "What slipped?",
     "particle": "조사 · particle",
@@ -341,6 +387,10 @@
     "title": "Policies"
   },
   "games": {
+    "particles": {
+      "name": "조사 LAB · Particles",
+      "desc": "Toggle particles on and off to see how the sentence changes. Beat the 은/는 vs 이/가 clash."
+    },
     "lead": "Pick your practice mode. Each game grows your Korean in a different way.",
     "ruleta": {
       "name": "The Deck",

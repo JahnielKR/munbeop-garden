@@ -34,6 +34,12 @@ const { t } = useI18n()
         image="/escape-room/covers/level-01.png"
       />
       <GameCard
+        to="/practice/particles"
+        :name="t('games.particles.name')"
+        :description="t('games.particles.desc')"
+        emoji="🧩"
+      />
+      <GameCard
         to="/practice"
         :name="t('games.third.name')"
         :description="t('games.third.desc')"

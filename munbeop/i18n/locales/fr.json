@@ -1,4 +1,50 @@
 {
+  "particles": {
+    "title": "Particle Lab",
+    "lead": "Les particules marquent le rôle de chaque mot. Touche-les pour voir ce que la phrase perd.",
+    "mode_label": "Mode",
+    "mode_explore": "Explorer",
+    "mode_drill": "Duel 은/는 · 이/가",
+    "explore": {
+      "tap_hint": "Touche une particule pour l'éteindre ou l'allumer. Touche la légende pour sa fiche.",
+      "translation_label": "번역 · Traduction",
+      "nuance_generic": "Plusieurs particules éteintes : style télégramme — courant en banmal oral, étrange à l'écrit.",
+      "legend_title": "조사 · Particules",
+      "prev": "Phrase précédente",
+      "next": "Phrase suivante"
+    },
+    "popover": {
+      "close": "Fermer",
+      "forms_label": "Formes · 받침",
+      "after_consonant": "après consonne (받침)",
+      "after_vowel": "après voyelle",
+      "single_form": "Forme unique : ne change pas selon le 받침.",
+      "see_sheet": "VOIR LA FICHE COMPLÈTE"
+    },
+    "drill": {
+      "cue_label": "Situation",
+      "options_label": "Choisis la particule",
+      "blocked_title": "BLOQUÉ ! · 받침",
+      "blocked_consonant": "« {noun} » finit par une CONSONNE (받침) → il faut {expected}.",
+      "blocked_vowel": "« {noun} » finit par une VOYELLE (sans 받침) → il faut {expected}.",
+      "retry": "RÉESSAYER",
+      "right_title": "정답 ! Correct !",
+      "wrong_title": "아직… Pas celle-là",
+      "next": "SUIVANT",
+      "saved_to_diary": "Enregistré dans ton Journal avec cette explication.",
+      "diary_note": "Tu as choisi {choice} dans le Particle Lab.",
+      "summary_score": "{n} / {total} du premier coup",
+      "summary_slips": "{n} accrocs de 받침 (forme, pas concept)",
+      "summary_review_title": "À revoir",
+      "summary_perfect": "Zéro confusion thème/sujet. 대박 !",
+      "summary_garden_note": "Ton jardin a poussé : progression de 은/는 et 이/가 mise à jour.",
+      "summary_repeat": "REJOUER",
+      "summary_explore": "EXPLORER"
+    },
+    "sheet_section_title": "Particle Lab",
+    "sheet_section_body": "Cette grammaire est une particule : allume-la et éteins-la dans de vraies phrases.",
+    "sheet_section_cta": "OUVRIR DANS LE LAB"
+  },
   "dimension": {
     "prompt": "Qu'est-ce qui a coincé ?",
     "particle": "조사 · particule",
@@ -341,6 +387,10 @@
     "title": "Mentions légales"
   },
   "games": {
+    "particles": {
+      "name": "조사 LAB · Particules",
+      "desc": "Allume et éteins les particules pour voir la phrase changer. Relève le duel 은/는 vs 이/가."
+    },
     "lead": "Choisis ton mode d'entraînement. Chaque jeu cultive ton coréen différemment.",
     "ruleta": {
       "name": "Le Deck",

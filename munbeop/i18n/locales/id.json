@@ -1,4 +1,50 @@
 {
+  "particles": {
+    "title": "Particle Lab",
+    "lead": "Partikel menandai peran tiap kata. Ketuk untuk mematikannya dan lihat apa yang hilang.",
+    "mode_label": "Mode",
+    "mode_explore": "Jelajah",
+    "mode_drill": "Duel 은/는 · 이/가",
+    "explore": {
+      "tap_hint": "Ketuk partikel untuk menyalakan/mematikan. Ketuk legenda untuk kartunya.",
+      "translation_label": "번역 · Terjemahan",
+      "nuance_generic": "Beberapa partikel mati: gaya telegram — umum di banmal lisan, aneh di tulisan.",
+      "legend_title": "조사 · Partikel",
+      "prev": "Kalimat sebelumnya",
+      "next": "Kalimat berikutnya"
+    },
+    "popover": {
+      "close": "Tutup",
+      "forms_label": "Bentuk · 받침",
+      "after_consonant": "setelah konsonan (받침)",
+      "after_vowel": "setelah vokal",
+      "single_form": "Bentuk tunggal: tidak berubah dengan 받침.",
+      "see_sheet": "BUKA KARTU LENGKAP"
+    },
+    "drill": {
+      "cue_label": "Situasi",
+      "options_label": "Pilih partikelnya",
+      "blocked_title": "TERBLOKIR! · 받침",
+      "blocked_consonant": "“{noun}” berakhir KONSONAN (받침) → butuh {expected}.",
+      "blocked_vowel": "“{noun}” berakhir VOKAL (tanpa 받침) → butuh {expected}.",
+      "retry": "COBA LAGI",
+      "right_title": "정답! Benar!",
+      "wrong_title": "아직… Bukan itu",
+      "next": "LANJUT",
+      "saved_to_diary": "Tersimpan di Diarimu dengan penjelasan ini.",
+      "diary_note": "Kamu memilih {choice} di Particle Lab.",
+      "summary_score": "{n} / {total} sekali coba",
+      "summary_slips": "{n} keseleo 받침 (bentuk, bukan konsep)",
+      "summary_review_title": "Untuk diulas",
+      "summary_perfect": "Nol kebingungan topik/subjek. 대박!",
+      "summary_garden_note": "Kebunmu tumbuh: progres 은/는 dan 이/가 diperbarui.",
+      "summary_repeat": "MAIN LAGI",
+      "summary_explore": "JELAJAH"
+    },
+    "sheet_section_title": "Particle Lab",
+    "sheet_section_body": "Tata bahasa ini adalah partikel: nyalakan dan matikan dalam kalimat nyata.",
+    "sheet_section_cta": "BUKA DI LAB"
+  },
   "dimension": {
     "prompt": "Apa yang meleset?",
     "particle": "조사 · partikel",
@@ -341,6 +387,10 @@
     "title": "Kebijakan"
   },
   "games": {
+    "particles": {
+      "name": "조사 LAB · Partikel",
+      "desc": "Nyalakan dan matikan partikel untuk melihat kalimat berubah. Taklukkan duel 은/는 vs 이/가."
+    },
     "lead": "Pilih mode latihanmu. Setiap permainan menumbuhkan bahasa Koreamu dengan cara berbeda.",
     "ruleta": {
       "name": "Dek Kartu",

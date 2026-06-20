@@ -1,0 +1,79 @@
+<script setup lang="ts">
+/**
+ * Dynamic translation + nuance. Re-keyed <Transition> animates every
+ * change triggered by a particle toggle (§2.3).
+ */
+interface Props {
+  text: string
+  nuance: string | null
+  /** OFF combo without explicit reading → show generic colloquial note. */
+  fallback?: boolean
+}
+withDefaults(defineProps<Props>(), { fallback: false })
+const { t } = useI18n()
+</script>
+
+<template>
+  <section class="panel" data-testid="translation-panel" aria-live="polite">
+    <h3 class="panel__title">{{ t('particles.explore.translation_label') }}</h3>
+    <Transition name="panel" mode="out-in">
+      <p :key="text" class="panel__trans">{{ text }}</p>
+    </Transition>
+    <Transition name="panel" mode="out-in">
+      <p v-if="nuance" :key="nuance" class="panel__nuance">💡 {{ nuance }}</p>
+      <p v-else-if="fallback" key="fallback" class="panel__nuance">
+        💡 {{ t('particles.explore.nuance_generic') }}
+      </p>
+    </Transition>
+  </section>
+</template>
+
+<style scoped>
+.panel {
+  background: var(--paper);
+  border-left: 4px solid var(--jade);
+  padding: 12px 14px;
+}
+.panel__title {
+  margin: 0 0 8px;
+  font-family: var(--font-pixel-small);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  color: var(--text-soft);
+  text-transform: uppercase;
+}
+.panel__trans {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
+  color: var(--text);
+  line-height: 1.6;
+}
+.panel__nuance {
+  margin: 8px 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.panel-enter-active,
+.panel-leave-active {
+  transition:
+    opacity var(--motion-base) var(--ease-out),
+    transform var(--motion-base) var(--ease-out);
+}
+.panel-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.panel-leave-to {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-enter-active,
+  .panel-leave-active {
+    transition: none;
+  }
+}
+</style>
