@@ -35,12 +35,17 @@ describe('CustomDeckBuilder', () => {
     await w.find('[data-testid="builder-name"]').setValue('Connectors')
     await w.find('[data-testid="grammar-opt--아서"]').trigger('click')
     await w.find('[data-testid="grammar-opt--니까"]').trigger('click')
+    // select color and icon to verify round-trip
+    await w.find('[data-testid="color-jade"]').trigger('click')
+    await w.find('[data-testid="icon-deck-book"]').trigger('click')
     await w.find('[data-testid="builder-save"]').trigger('click')
     await flushPromises()
     const store = useCustomDecksStore()
     expect(store.decks).toHaveLength(1)
     expect(store.decks[0]!.name).toBe('Connectors')
     expect(store.decks[0]!.grammarKos).toEqual(['-아서', '-니까'])
+    expect(store.decks[0]!.colorId).toBe('jade')
+    expect(store.decks[0]!.icon).toBe('deck-book')
     expect(w.emitted('saved')).toHaveLength(1)
   })
 
@@ -63,5 +68,14 @@ describe('CustomDeckBuilder', () => {
     await flushPromises()
     expect(store.decks).toHaveLength(0)
     expect(w.emitted('saved')).toHaveLength(1)
+  })
+
+  it('filters grammar list by search query', async () => {
+    const w = mount(CustomDeckBuilder, { props: { deckId: null } })
+    await w.find('[data-testid="builder-search"]').setValue('-아서')
+    await flushPromises()
+    await w.vm.$nextTick()
+    expect(w.find('[data-testid="grammar-opt--아서"]').exists()).toBe(true)
+    expect(w.find('[data-testid="grammar-opt--니까"]').exists()).toBe(false)
   })
 })

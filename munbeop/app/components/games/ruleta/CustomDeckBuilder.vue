@@ -22,6 +22,7 @@ const search = ref('')
 const confirmingDelete = ref(false)
 
 onMounted(() => {
+  confirmingDelete.value = false
   if (props.deckId) {
     const d = customDecks.deckById(props.deckId)
     if (d) {

@@ -1,7 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
+import { useCustomDecksStore } from '~/stores/customDecks'
+import { STORAGE_KEYS } from '~/lib/storage'
 
-const stored: Record<string, unknown> = {}
+let stored: Record<string, unknown> = {}
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({
     read: async (key: string, fallback: unknown) => (key in stored ? stored[key] : fallback),
@@ -9,12 +11,9 @@ vi.mock('~/composables/useStorageAdapter', () => ({
   }),
 }))
 
-import { useCustomDecksStore } from '~/stores/customDecks'
-import { STORAGE_KEYS } from '~/lib/storage'
-
 beforeEach(() => {
   setActivePinia(createPinia())
-  for (const k of Object.keys(stored)) delete stored[k]
+  stored = {}
 })
 
 describe('useCustomDecksStore', () => {
