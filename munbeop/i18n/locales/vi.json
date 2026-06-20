@@ -159,7 +159,28 @@
     "no_contexts": "Bạn cần ít nhất 3 ngữ cảnh đang hoạt động.",
     "toast_saved_easy": "✨ Đã lưu",
     "toast_saved_hard": "😤 Đã lưu",
-    "no_sentence": "Viết câu trước đã"
+    "no_sentence": "Viết câu trước đã",
+    "custom": {
+      "section": "Bộ thẻ tùy chỉnh",
+      "create": "Bộ thẻ mới",
+      "edit": "Sửa bộ thẻ",
+      "builder_title": "Bộ thẻ tùy chỉnh",
+      "close": "Đóng",
+      "name": "Tên bộ thẻ",
+      "name_placeholder": "vd: Liên từ của tôi",
+      "color": "Màu",
+      "icon": "Biểu tượng",
+      "grammar": "Ngữ pháp",
+      "search_placeholder": "Tìm ngữ pháp…",
+      "selected_count": "Đã chọn {count}",
+      "need_six_hint": "Chọn ít nhất 6 điểm ngữ pháp để chơi",
+      "locked_need_six": "Cần 6 để chơi",
+      "save": "Lưu bộ thẻ",
+      "delete": "Xóa bộ thẻ",
+      "confirm_delete": "Xóa bộ thẻ này? Không thể hoàn tác.",
+      "empty_title": "Tạo bộ thẻ đầu tiên của bạn",
+      "empty_hint": "Chọn ngữ pháp bạn muốn từ bất kỳ cấp độ nào, đặt tên và chơi."
+    }
   },
   "library": {
     "lead": "Tất cả các ngữ pháp có thể xuất hiện trong các lượt rút bài của bạn. Mỗi cái lớn lên khi bạn luyện tập.",

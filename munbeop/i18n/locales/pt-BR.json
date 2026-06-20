@@ -159,7 +159,28 @@
     "no_contexts": "Você precisa de pelo menos 3 contextos ativos.",
     "toast_saved_easy": "✨ Salva",
     "toast_saved_hard": "😤 Salva",
-    "no_sentence": "Escreve uma frase primeiro"
+    "no_sentence": "Escreve uma frase primeiro",
+    "custom": {
+      "section": "Decks personalizados",
+      "create": "Novo deck",
+      "edit": "Editar deck",
+      "builder_title": "Deck personalizado",
+      "close": "Fechar",
+      "name": "Nome do deck",
+      "name_placeholder": "ex.: Meus conectores",
+      "color": "Cor",
+      "icon": "Ícone",
+      "grammar": "Gramática",
+      "search_placeholder": "Buscar gramática…",
+      "selected_count": "{count} selecionadas",
+      "need_six_hint": "Escolha pelo menos 6 pontos de gramática para jogar",
+      "locked_need_six": "Precisa de 6 para jogar",
+      "save": "Salvar deck",
+      "delete": "Excluir deck",
+      "confirm_delete": "Excluir este deck? Não dá para desfazer.",
+      "empty_title": "Crie seu primeiro deck",
+      "empty_hint": "Escolha a gramática que quiser, de qualquer nível, dê um nome e jogue."
+    }
   },
   "library": {
     "lead": "Todas as gramáticas que podem sair nas suas cartas. Cada uma cresce conforme você pratica.",

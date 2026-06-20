@@ -8,6 +8,7 @@ import { useSrsStore } from '~/stores/srs'
 import { useLogStore } from '~/stores/log'
 import { useSettingsStore } from '~/stores/settings'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
+import { useCustomDecksStore } from '~/stores/customDecks'
 
 /**
  * Thin wrapper around supabase.auth.* with three responsibilities:
@@ -30,6 +31,7 @@ export function useAuth() {
       useSrsStore().hydrate(),
       useLogStore().hydrate(),
       useEscapeRoomProgress().hydrate(),
+      useCustomDecksStore().hydrate(),
     ])
   }
 

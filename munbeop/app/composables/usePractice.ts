@@ -3,6 +3,7 @@ import {
   advanceProgress,
   createSession,
   filterPoolByDeck,
+  filterPoolByCustomDeck,
   isSessionComplete,
   type Session,
 } from '~/lib/practice'
@@ -25,7 +26,7 @@ export function usePractice() {
   const session = ref<PracticeSession | null>(null)
   const error = ref<string | null>(null)
 
-  async function start(opts?: { deckId?: string | null }) {
+  async function start(opts?: { deckId?: string | null; customDeckGrammarKos?: readonly string[] }) {
     error.value = null
     try {
       const activeContexts = contextsStore.active
@@ -39,7 +40,8 @@ export function usePractice() {
       // library study sheet's "Practice this now" CTA. An explicit deck
       // pick always wins over a stale focus param still sitting in the
       // URL (e.g. after restarting a completed focused round).
-      const explicitDeckPick = opts?.deckId !== undefined
+      const explicitDeckPick =
+        opts?.deckId !== undefined || opts?.customDeckGrammarKos !== undefined
       const rawFocus = explicitDeckPick ? undefined : route.query.focus
       const focusKo = typeof rawFocus === 'string' && rawFocus ? rawFocus : null
       const focusIdx = focusKo
@@ -55,6 +57,30 @@ export function usePractice() {
           })),
         }
         await srsStore.markSeen(grammarStore.items[focusIdx]!.ko)
+        return
+      }
+
+      // Custom deck: draw from the user's hand-picked grammar set. Maps each
+      // ko to its catalog index and bypasses the Library excludedDeckIds gate
+      // (a custom deck is an explicit curation). The "min 6 to play" rule is a
+      // picker gate; here only the engine's hard floor of 3 applies.
+      if (opts?.customDeckGrammarKos) {
+        const koToIdx = new Map(grammarStore.items.map((g, i) => [g.ko, i]))
+        const pool = filterPoolByCustomDeck(opts.customDeckGrammarKos, (ko) => koToIdx.get(ko))
+        if (pool.length < 3) {
+          error.value = t('practice.no_grammars')
+          return
+        }
+        session.value = createSession<number, Context>({
+          grammarPool: pool,
+          contextPool: activeContexts,
+          weightOf: (idx) => srsStore.weightFor(grammarStore.items[idx]!.ko),
+        })
+        await Promise.all(
+          session.value.picks.map((pick) =>
+            srsStore.markSeen(grammarStore.items[pick.grammarIdx]!.ko),
+          ),
+        )
         return
       }
 

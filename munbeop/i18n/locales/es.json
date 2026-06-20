@@ -159,7 +159,28 @@
     "no_contexts": "Necesitas al menos 3 contextos activos.",
     "toast_saved_easy": "✨ Guardada",
     "toast_saved_hard": "😤 Guardada",
-    "no_sentence": "Escribe una oración primero"
+    "no_sentence": "Escribe una oración primero",
+    "custom": {
+      "section": "Mazos personalizados",
+      "create": "Nuevo mazo",
+      "edit": "Editar mazo",
+      "builder_title": "Mazo personalizado",
+      "close": "Cerrar",
+      "name": "Nombre del mazo",
+      "name_placeholder": "ej: Mis conectores",
+      "color": "Color",
+      "icon": "Icono",
+      "grammar": "Gramática",
+      "search_placeholder": "Buscar gramática…",
+      "selected_count": "{count} seleccionadas",
+      "need_six_hint": "Elige al menos 6 gramáticas para jugar",
+      "locked_need_six": "Necesita 6 para jugar",
+      "save": "Guardar mazo",
+      "delete": "Eliminar mazo",
+      "confirm_delete": "¿Eliminar este mazo? No se puede deshacer.",
+      "empty_title": "Crea tu primer mazo",
+      "empty_hint": "Elige las gramáticas que quieras de cualquier nivel, ponle nombre y juega."
+    }
   },
   "library": {
     "lead": "Todas las gramáticas que pueden salir en tus cartas. Cada una crece según las practicas.",

@@ -8,6 +8,7 @@ import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useSettingsStore } from '~/stores/settings'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
+import { useCustomDecksStore } from '~/stores/customDecks'
 import { syncLocaleToI18n } from '~/lib/i18n/sync-locale'
 
 // useI18n() must be called from inside the layout's setup() — never from
@@ -38,6 +39,7 @@ onMounted(async () => {
       useLogStore().hydrate(),
       localeStore.hydrate(),
       useEscapeRoomProgress().hydrate(),
+      useCustomDecksStore().hydrate(),
     ])
   } catch (err) {
     console.error('default.vue: store hydration failed', err)

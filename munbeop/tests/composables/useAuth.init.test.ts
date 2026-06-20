@@ -35,6 +35,7 @@ vi.mock('~/stores/settings', () => ({ useSettingsStore: () => ({ hydrate: settin
 vi.mock('~/composables/useEscapeRoomProgress', () => ({
   useEscapeRoomProgress: () => ({ hydrate: escapeRoomHydrate }),
 }))
+vi.mock('~/stores/customDecks', () => ({ useCustomDecksStore: () => ({ hydrate: vi.fn(async () => {}) }) }))
 
 describe('useAuth().init — session restored on reload', () => {
   beforeEach(() => {

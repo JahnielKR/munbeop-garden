@@ -159,7 +159,28 @@
     "no_contexts": "Kamu butuh minimal 3 konteks aktif.",
     "toast_saved_easy": "✨ Tersimpan",
     "toast_saved_hard": "😤 Tersimpan",
-    "no_sentence": "Tulis kalimat dulu"
+    "no_sentence": "Tulis kalimat dulu",
+    "custom": {
+      "section": "Dek khusus",
+      "create": "Dek baru",
+      "edit": "Edit dek",
+      "builder_title": "Dek khusus",
+      "close": "Tutup",
+      "name": "Nama dek",
+      "name_placeholder": "mis. Konektor saya",
+      "color": "Warna",
+      "icon": "Ikon",
+      "grammar": "Tata bahasa",
+      "search_placeholder": "Cari tata bahasa…",
+      "selected_count": "{count} dipilih",
+      "need_six_hint": "Pilih minimal 6 poin tata bahasa untuk bermain",
+      "locked_need_six": "Butuh 6 untuk bermain",
+      "save": "Simpan dek",
+      "delete": "Hapus dek",
+      "confirm_delete": "Hapus dek ini? Tidak bisa dibatalkan.",
+      "empty_title": "Buat dek pertamamu",
+      "empty_hint": "Pilih tata bahasa yang kamu mau dari level mana pun, beri nama, lalu mainkan."
+    }
   },
   "library": {
     "lead": "Semua tata bahasa yang bisa muncul di kartu-kartumu. Masing-masing tumbuh seiring latihanmu.",
