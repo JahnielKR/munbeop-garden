@@ -43,6 +43,10 @@ async function restartDrill() {
   await drill.start()
 }
 
+async function onReplayFailed() {
+  await drill.replayFailed()
+}
+
 async function onSelectSet(id: string) {
   drill.selectSet(id)
   await router.replace({ query: { ...route.query, mode: 'drill', set: id } })
@@ -84,14 +88,21 @@ async function onSelectSet(id: string) {
 
     <template v-else>
       <DrillSetPicker
-        v-if="drill.phase.value === 'question' && drill.index.value === 0"
+        v-if="drill.phase.value === 'question' && drill.index.value === 0 && drill.mode.value === 'normal'"
         :sets="drill.availableSets"
         :selected="drill.selectedSetId.value"
         @select="onSelectSet"
       />
+      <p
+        v-if="drill.mode.value === 'replay' && drill.phase.value !== 'done'"
+        class="lab__replay-note"
+        data-testid="drill-replay-note"
+      >
+        🔁 {{ t('particles.drill.replay_mode_label') }}
+      </p>
       <ProgressDots
         v-if="drill.phase.value !== 'done'"
-        :total="drill.items.value.length"
+        :total="drill.sessionItems.value.length"
         :progress="drill.index.value"
       />
       <DrillCard
@@ -113,6 +124,7 @@ async function onSelectSet(id: string) {
         :set="drill.set.value"
         :garden-grew="drill.gardenGrew.value"
         @restart="restartDrill"
+        @replay-failed="onReplayFailed"
         @explore="mode = 'explore'"
       />
     </template>
@@ -130,6 +142,16 @@ async function onSelectSet(id: string) {
   font-family: var(--font-ui);
   color: var(--text-soft);
   line-height: 1.6;
+}
+.lab__replay-note {
+  margin: 0;
+  font-family: var(--font-pixel-small);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  color: var(--text-soft);
+  background: var(--surface);
+  border: 2px dashed var(--border);
+  padding: 8px 12px;
 }
 .lab__tabs {
   display: grid;

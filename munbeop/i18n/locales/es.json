@@ -40,7 +40,9 @@
       "summary_perfect": "Cero confusiones de tema/sujeto. 대박!",
       "summary_garden_note": "Tu jardín creció: el progreso de 은/는 y 이/가 se actualizó.",
       "summary_repeat": "OTRA RONDA",
-      "summary_explore": "EXPLORAR"
+      "summary_explore": "EXPLORAR",
+      "summary_replay_failed": "REPASAR FALLOS ({n})",
+      "replay_mode_label": "Modo repaso · los fallos no se registran de nuevo"
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "Esta gramática es una partícula: enciéndela y apágala en oraciones reales para sentir qué aporta.",

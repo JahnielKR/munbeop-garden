@@ -12,7 +12,7 @@ interface Props {
   gardenGrew: boolean
 }
 defineProps<Props>()
-const emit = defineEmits<{ restart: []; explore: [] }>()
+const emit = defineEmits<{ restart: []; explore: []; 'replay-failed': [] }>()
 const { t } = useI18n()
 const { tl } = useLocalized()
 </script>
@@ -45,7 +45,22 @@ const { tl } = useLocalized()
     </p>
 
     <div class="summary__actions">
-      <button type="button" class="summary__btn summary__btn--primary" @click="emit('restart')">
+      <button
+        v-if="failedItems.length > 0"
+        type="button"
+        class="summary__btn summary__btn--primary"
+        data-testid="drill-replay-failed"
+        @click="emit('replay-failed')"
+      >
+        🔁 {{ t('particles.drill.summary_replay_failed', { n: failedItems.length }) }}
+      </button>
+      <button
+        type="button"
+        class="summary__btn"
+        :class="{ 'summary__btn--primary': failedItems.length === 0 }"
+        data-testid="drill-restart"
+        @click="emit('restart')"
+      >
         🔁 {{ t('particles.drill.summary_repeat') }}
       </button>
       <button type="button" class="summary__btn" @click="emit('explore')">

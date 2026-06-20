@@ -40,7 +40,9 @@
       "summary_perfect": "主題/主語の混同ゼロ。대박!",
       "summary_garden_note": "庭が育った：은/는 と 이/가 の進捗を更新。",
       "summary_repeat": "もう一回",
-      "summary_explore": "探検する"
+      "summary_explore": "探検する",
+      "summary_replay_failed": "まちがいを復習 ({n})",
+      "replay_mode_label": "復習モード · 間違いは再記録されません"
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "この文法は助詞：実際の文の中でオン・オフして働きを体感しよう。",

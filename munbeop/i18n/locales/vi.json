@@ -40,7 +40,9 @@
       "summary_perfect": "Không nhầm chủ đề/chủ ngữ lần nào. 대박!",
       "summary_garden_note": "Khu vườn của bạn đã lớn: tiến độ 은/는 và 이/가 được cập nhật.",
       "summary_repeat": "CHƠI LẠI",
-      "summary_explore": "KHÁM PHÁ"
+      "summary_explore": "KHÁM PHÁ",
+      "summary_replay_failed": "ÔN LẠI LỖI ({n})",
+      "replay_mode_label": "Chế độ ôn · lỗi không được ghi lại nữa"
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "Ngữ pháp này là một tiểu từ: bật/tắt nó trong câu thật để cảm nhận nó thêm gì.",
