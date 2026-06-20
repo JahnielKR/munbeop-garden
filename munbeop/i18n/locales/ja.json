@@ -1,4 +1,50 @@
 {
+  "particles": {
+    "title": "Particle Lab",
+    "lead": "助詞は各単語の役割を示す。タップで消して、文が何を失うか見てみよう。",
+    "mode_label": "モード",
+    "mode_explore": "探検",
+    "mode_drill": "対決 은/는 · 이/가",
+    "explore": {
+      "tap_hint": "助詞をタップでオン・オフ。凡例をタップすると詳細カード。",
+      "translation_label": "번역 · 訳",
+      "nuance_generic": "複数の助詞オフ：電報スタイル — 話し言葉のパンマルでは普通、書き言葉では不自然。",
+      "legend_title": "조사 · 助詞",
+      "prev": "前の文",
+      "next": "次の文"
+    },
+    "popover": {
+      "close": "閉じる",
+      "forms_label": "形 · 받침",
+      "after_consonant": "子音（받침）の後",
+      "after_vowel": "母音の後",
+      "single_form": "単一形：받침 で変化しない。",
+      "see_sheet": "詳細カードを開く"
+    },
+    "drill": {
+      "cue_label": "場面",
+      "options_label": "助詞を選ぼう",
+      "blocked_title": "ブロック！ · 받침",
+      "blocked_consonant": "「{noun}」は子音（받침）終わり → {expected} が必要。",
+      "blocked_vowel": "「{noun}」は母音終わり（받침 なし）→ {expected} が必要。",
+      "retry": "もう一度",
+      "right_title": "정답! 正解！",
+      "wrong_title": "아직… 違うよ",
+      "next": "次へ",
+      "saved_to_diary": "この解説つきで日記に保存しました。",
+      "diary_note": "Particle Lab で {choice} を選びました。",
+      "summary_score": "一発正解 {n} / {total}",
+      "summary_slips": "받침 のつまずき {n} 回（形の問題、概念ではない）",
+      "summary_review_title": "復習リスト",
+      "summary_perfect": "主題/主語の混同ゼロ。대박!",
+      "summary_garden_note": "庭が育った：은/는 と 이/가 の進捗を更新。",
+      "summary_repeat": "もう一回",
+      "summary_explore": "探検する"
+    },
+    "sheet_section_title": "Particle Lab",
+    "sheet_section_body": "この文法は助詞：実際の文の中でオン・オフして働きを体感しよう。",
+    "sheet_section_cta": "ラボで開く"
+  },
   "dimension": {
     "prompt": "どこで間違えた?",
     "particle": "조사 · 助詞",
@@ -341,6 +387,10 @@
     "title": "ポリシー"
   },
   "games": {
+    "particles": {
+      "name": "조사 LAB · 助詞",
+      "desc": "助詞をオン・オフして文の変化を体感。은/는 vs 이/가 の対決に挑もう。"
+    },
     "lead": "練習モードを選ぼう。それぞれのゲームが違う形で韓国語を育てます。",
     "ruleta": {
       "name": "デッキ",

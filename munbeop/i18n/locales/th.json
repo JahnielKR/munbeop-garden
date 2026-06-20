@@ -1,4 +1,50 @@
 {
+  "particles": {
+    "title": "Particle Lab",
+    "lead": "อนุภาคบอกบทบาทของแต่ละคำ แตะเพื่อปิดแล้วดูว่าประโยคเสียอะไรไป",
+    "mode_label": "โหมด",
+    "mode_explore": "สำรวจ",
+    "mode_drill": "ศึก 은/는 · 이/가",
+    "explore": {
+      "tap_hint": "แตะอนุภาคเพื่อเปิด/ปิด แตะที่คำอธิบายเพื่อดูรายละเอียด",
+      "translation_label": "번역 · คำแปล",
+      "nuance_generic": "ปิดหลายอนุภาค: สไตล์โทรเลข — พบบ่อยในบันมัลพูด แต่แปลกในภาษาเขียน",
+      "legend_title": "조사 · อนุภาค",
+      "prev": "ประโยคก่อนหน้า",
+      "next": "ประโยคถัดไป"
+    },
+    "popover": {
+      "close": "ปิด",
+      "forms_label": "รูป · 받침",
+      "after_consonant": "หลังพยัญชนะ (받침)",
+      "after_vowel": "หลังสระ",
+      "single_form": "รูปเดียว: ไม่เปลี่ยนตาม 받침",
+      "see_sheet": "ดูรายละเอียดเต็ม"
+    },
+    "drill": {
+      "cue_label": "สถานการณ์",
+      "options_label": "เลือกอนุภาค",
+      "blocked_title": "ถูกบล็อก! · 받침",
+      "blocked_consonant": "«{noun}» ลงท้ายด้วยพยัญชนะ (받침) → ต้องใช้ {expected}",
+      "blocked_vowel": "«{noun}» ลงท้ายด้วยสระ (ไม่มี 받침) → ต้องใช้ {expected}",
+      "retry": "ลองอีกครั้ง",
+      "right_title": "정답! ถูกต้อง!",
+      "wrong_title": "아직… ยังไม่ใช่",
+      "next": "ถัดไป",
+      "saved_to_diary": "บันทึกลงไดอารีพร้อมคำอธิบายนี้แล้ว",
+      "diary_note": "คุณเลือก {choice} ใน Particle Lab",
+      "summary_score": "{n} / {total} ในครั้งแรก",
+      "summary_slips": "สะดุด 받침 {n} ครั้ง (เรื่องรูป ไม่ใช่แนวคิด)",
+      "summary_review_title": "ควรทบทวน",
+      "summary_perfect": "ไม่สับสนหัวเรื่อง/ประธานเลย 대박!",
+      "summary_garden_note": "สวนของคุณเติบโต: ความคืบหน้า 은/는 และ 이/가 อัปเดตแล้ว",
+      "summary_repeat": "เล่นอีกรอบ",
+      "summary_explore": "สำรวจ"
+    },
+    "sheet_section_title": "Particle Lab",
+    "sheet_section_body": "ไวยากรณ์นี้คืออนุภาค: ลองเปิด-ปิดในประโยคจริงเพื่อสัมผัสว่ามันเพิ่มอะไร",
+    "sheet_section_cta": "เปิดในแล็บ"
+  },
   "dimension": {
     "prompt": "พลาดตรงไหน?",
     "particle": "조사 · คำชี้",
@@ -341,6 +387,10 @@
     "title": "นโยบาย"
   },
   "games": {
+    "particles": {
+      "name": "조사 LAB · อนุภาค",
+      "desc": "เปิด-ปิดอนุภาคเพื่อดูว่าประโยคเปลี่ยนอย่างไร พิชิตศึก 은/는 vs 이/가"
+    },
     "lead": "เลือกโหมดฝึกของคุณ แต่ละเกมช่วยพัฒนาภาษาเกาหลีในแบบที่ต่างกัน",
     "ruleta": {
       "name": "สำรับไพ่",

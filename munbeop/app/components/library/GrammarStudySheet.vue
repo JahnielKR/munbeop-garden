@@ -5,6 +5,7 @@ import MeaningSection from './GrammarStudySheet/MeaningSection.vue'
 import UsageNotesSection from './GrammarStudySheet/UsageNotesSection.vue'
 import SrsProgressSection from './GrammarStudySheet/SrsProgressSection.vue'
 import PracticeCtaSection from './GrammarStudySheet/PracticeCtaSection.vue'
+import ParticleLabSection from './GrammarStudySheet/ParticleLabSection.vue'
 import ComingSoonSection from './GrammarStudySheet/ComingSoonSection.vue'
 
 interface Props {
@@ -21,6 +22,7 @@ const { t } = useI18n()
     <UsageNotesSection :grammar="grammar" />
     <SrsProgressSection :grammar="grammar" />
     <PracticeCtaSection :grammar="grammar" />
+    <ParticleLabSection :grammar="grammar" />
     <ComingSoonSection
       :title="t('library.modal.section.audio')"
       :body="t('library.modal.coming_soon.audio')"

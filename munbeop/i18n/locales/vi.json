@@ -1,4 +1,50 @@
 {
+  "particles": {
+    "title": "Particle Lab",
+    "lead": "Tiểu từ đánh dấu vai trò của từng từ. Chạm để tắt và xem câu mất đi điều gì.",
+    "mode_label": "Chế độ",
+    "mode_explore": "Khám phá",
+    "mode_drill": "Trận 은/는 · 이/가",
+    "explore": {
+      "tap_hint": "Chạm vào tiểu từ để bật/tắt. Chạm chú giải để xem thẻ chi tiết.",
+      "translation_label": "번역 · Bản dịch",
+      "nuance_generic": "Tắt nhiều tiểu từ: kiểu điện tín — thường gặp trong banmal nói, lạ khi viết.",
+      "legend_title": "조사 · Tiểu từ",
+      "prev": "Câu trước",
+      "next": "Câu sau"
+    },
+    "popover": {
+      "close": "Đóng",
+      "forms_label": "Dạng · 받침",
+      "after_consonant": "sau phụ âm (받침)",
+      "after_vowel": "sau nguyên âm",
+      "single_form": "Một dạng duy nhất: không đổi theo 받침.",
+      "see_sheet": "XEM THẺ ĐẦY ĐỦ"
+    },
+    "drill": {
+      "cue_label": "Tình huống",
+      "options_label": "Chọn tiểu từ",
+      "blocked_title": "BỊ CHẶN! · 받침",
+      "blocked_consonant": "“{noun}” kết thúc bằng PHỤ ÂM (받침) → cần {expected}.",
+      "blocked_vowel": "“{noun}” kết thúc bằng NGUYÊN ÂM (không 받침) → cần {expected}.",
+      "retry": "THỬ LẠI",
+      "right_title": "정답! Chính xác!",
+      "wrong_title": "아직… Chưa đúng",
+      "next": "TIẾP",
+      "saved_to_diary": "Đã lưu vào Nhật ký kèm lời giải thích này.",
+      "diary_note": "Bạn đã chọn {choice} trong Particle Lab.",
+      "summary_score": "{n} / {total} ngay lần đầu",
+      "summary_slips": "{n} lần vấp 받침 (hình thức, không phải khái niệm)",
+      "summary_review_title": "Cần ôn lại",
+      "summary_perfect": "Không nhầm chủ đề/chủ ngữ lần nào. 대박!",
+      "summary_garden_note": "Khu vườn của bạn đã lớn: tiến độ 은/는 và 이/가 được cập nhật.",
+      "summary_repeat": "CHƠI LẠI",
+      "summary_explore": "KHÁM PHÁ"
+    },
+    "sheet_section_title": "Particle Lab",
+    "sheet_section_body": "Ngữ pháp này là một tiểu từ: bật/tắt nó trong câu thật để cảm nhận nó thêm gì.",
+    "sheet_section_cta": "MỞ TRONG LAB"
+  },
   "dimension": {
     "prompt": "Đã sai ở đâu?",
     "particle": "조사 · trợ từ",
@@ -341,6 +387,10 @@
     "title": "Chính sách"
   },
   "games": {
+    "particles": {
+      "name": "조사 LAB · Tiểu từ",
+      "desc": "Bật/tắt tiểu từ để thấy câu thay đổi thế nào. Chinh phục trận 은/는 vs 이/가."
+    },
     "lead": "Chọn chế độ luyện tập. Mỗi trò chơi giúp tiếng Hàn của bạn lớn lên theo cách riêng.",
     "ruleta": {
       "name": "Bộ Bài",
