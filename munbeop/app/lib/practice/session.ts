@@ -82,10 +82,7 @@ export function filterPoolByCustomDeck(
   grammarKos: readonly string[],
   indexOfKo: (ko: string) => number | undefined,
 ): number[] {
-  const out: number[] = []
-  for (const ko of grammarKos) {
-    const idx = indexOfKo(ko)
-    if (idx !== undefined && idx >= 0) out.push(idx)
-  }
-  return out
+  return grammarKos
+    .map((ko) => indexOfKo(ko))
+    .filter((idx): idx is number => idx !== undefined && idx >= 0)
 }
