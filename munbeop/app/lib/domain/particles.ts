@@ -8,11 +8,25 @@ export const PARTICLE_IDS = [
   'place-static',
   'place-action',
   'also',
+  'only',
+  'recipient',
+  'by-means',
+  'and',
+  'from',
+  'until',
 ] as const
 export type ParticleId = (typeof PARTICLE_IDS)[number]
 
-/** Visual role — drives chip color. 에/에서 share the 'place' family. */
-export type ParticleRole = 'topic' | 'subject' | 'object' | 'place' | 'addition'
+/** Visual role — drives chip color. 에/에서 share 'place'; 도/만/부터/까지 share 'addition'. */
+export type ParticleRole =
+  | 'topic'
+  | 'subject'
+  | 'object'
+  | 'place'
+  | 'addition'
+  | 'recipient'
+  | 'means'
+  | 'connective'
 
 export interface ParticleDef {
   id: ParticleId

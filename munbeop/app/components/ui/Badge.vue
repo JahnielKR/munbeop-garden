@@ -24,7 +24,7 @@
  * baseline-align without bespoke wrapper CSS in every consumer.
  */
 interface Props {
-  variant?: 'jade' | 'red' | 'gold' | 'sky' | 'soft'
+  variant?: 'jade' | 'red' | 'gold' | 'sky' | 'soft' | 'plum' | 'teal' | 'rose'
   size?: 'sm' | 'md'
 }
 
@@ -85,6 +85,21 @@ withDefaults(defineProps<Props>(), {
 }
 .badge[data-variant='sky'] {
   background: var(--sky);
+  color: var(--always-dark);
+  border-color: var(--always-dark);
+}
+.badge[data-variant='plum'] {
+  background: var(--plum);
+  color: var(--always-dark);
+  border-color: var(--always-dark);
+}
+.badge[data-variant='teal'] {
+  background: var(--teal);
+  color: var(--always-dark);
+  border-color: var(--always-dark);
+}
+.badge[data-variant='rose'] {
+  background: var(--rose);
   color: var(--always-dark);
   border-color: var(--always-dark);
 }

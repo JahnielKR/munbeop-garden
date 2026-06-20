@@ -42,6 +42,9 @@
   --red: #c23e3e;          /* rojo identitario (Korean brand) — danger */
   --red-deep: #9d2e2e;
   --gold: #e6a121;         /* amarillo girasol — primary action */
+  --plum: #a87fd0;         /* lavanda — recipient (한테) */
+  --teal: #2f8f88;         /* verde azulado — means ((으)로) */
+  --rose: #cf6f92;         /* rosa — connective (와/과) */
   --hover-bg: rgba(255, 196, 77, 0.25); /* brillo de sol translúcido */
   --shadow-cream: #2d1e18; /* ink-dark pixel shadow — pops against pergamino */
 

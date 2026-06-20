@@ -34,6 +34,9 @@ const badgeVariant = computed(() => {
     case 'subject': return 'jade'
     case 'object': return 'sky'
     case 'place': return 'red'
+    case 'recipient': return 'plum'
+    case 'means': return 'teal'
+    case 'connective': return 'rose'
     default: return 'soft'
   }
 })
