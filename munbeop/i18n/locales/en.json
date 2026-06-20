@@ -40,7 +40,9 @@
       "summary_perfect": "Zero topic/subject mix-ups. 대박!",
       "summary_garden_note": "Your garden grew: 은/는 and 이/가 progress updated.",
       "summary_repeat": "PLAY AGAIN",
-      "summary_explore": "EXPLORE"
+      "summary_explore": "EXPLORE",
+      "summary_replay_failed": "REVIEW MISTAKES ({n})",
+      "replay_mode_label": "Review mode · mistakes aren't logged again"
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "This grammar is a particle: toggle it inside real sentences to feel what it adds.",

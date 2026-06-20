@@ -40,7 +40,9 @@
       "summary_perfect": "ไม่สับสนหัวเรื่อง/ประธานเลย 대박!",
       "summary_garden_note": "สวนของคุณเติบโต: ความคืบหน้า 은/는 และ 이/가 อัปเดตแล้ว",
       "summary_repeat": "เล่นอีกรอบ",
-      "summary_explore": "สำรวจ"
+      "summary_explore": "สำรวจ",
+      "summary_replay_failed": "ทบทวนที่ผิด ({n})",
+      "replay_mode_label": "โหมดทบทวน · ข้อผิดจะไม่ถูกบันทึกซ้ำ"
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "ไวยากรณ์นี้คืออนุภาค: ลองเปิด-ปิดในประโยคจริงเพื่อสัมผัสว่ามันเพิ่มอะไร",

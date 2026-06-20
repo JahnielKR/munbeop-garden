@@ -5,6 +5,7 @@ import {
   correctSentence,
   judge,
   scoreOf,
+  shuffle,
   type DrillItemResult,
 } from '~/lib/particle-lab'
 import { PARTICLE_DRILLS } from '~/seed/particle-drills'
@@ -13,6 +14,7 @@ import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 
 export type DrillPhase = 'question' | 'blocked' | 'right' | 'wrong' | 'done'
+export type DrillMode = 'normal' | 'replay'
 
 /** Synthetic context shown in diary entries written by the lab (D7). */
 const LAB_CONTEXT = { id: 'particle-lab', name: '조사 LAB' }
@@ -33,6 +35,10 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
     PARTICLE_DRILLS.filter((it) => it.setId === selectedSetId.value),
   )
 
+  /** The ordered items for the current round (shuffled set, or failed subset). */
+  const sessionItems = ref<DrillItem[]>([])
+  const mode = ref<DrillMode>('normal')
+
   const index = ref(0)
   const phase = ref<DrillPhase>('question')
   const verdict = ref<DrillVerdict | null>(null)
@@ -42,10 +48,10 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
   const slipsThisItem = ref(0)
   const gardenGrew = ref(false)
 
-  const item = computed<DrillItem>(() => items.value[index.value]!)
+  const item = computed<DrillItem>(() => sessionItems.value[index.value]!)
   const score = computed(() => scoreOf(results.value))
   const failedItems = computed(() =>
-    items.value.filter((i) => results.value.some((r) => r.itemId === i.id && !r.correct)),
+    sessionItems.value.filter((i) => results.value.some((r) => r.itemId === i.id && !r.correct)),
   )
 
   /** Switch the active clash set. Caller restarts the round. */
@@ -53,7 +59,7 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
     if (clashSetById(id)) selectedSetId.value = id
   }
 
-  async function start() {
+  function resetRound() {
     index.value = 0
     phase.value = 'question'
     verdict.value = null
@@ -62,6 +68,22 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
     results.value = []
     slipsThisItem.value = 0
     gardenGrew.value = false
+  }
+
+  async function start() {
+    mode.value = 'normal'
+    sessionItems.value = shuffle(items.value)
+    resetRound()
+    await Promise.all(set.value.families.map((f) => srsStore.markSeen(f.grammarKo)))
+  }
+
+  /** Re-drill only the items missed in the round just finished (practice mode). */
+  async function replayFailed() {
+    const failed = failedItems.value
+    if (failed.length === 0) return
+    mode.value = 'replay'
+    sessionItems.value = shuffle(failed)
+    resetRound()
     await Promise.all(set.value.families.map((f) => srsStore.markSeen(f.grammarKo)))
   }
 
@@ -93,7 +115,7 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
       batchimSlips: slipsThisItem.value,
     })
     phase.value = 'wrong'
-    await logMistake(item.value, choice)
+    if (mode.value === 'normal') await logMistake(item.value, choice)
   }
 
   /** Leave the 받침 block and let the user pick again. */
@@ -103,7 +125,7 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
 
   async function next() {
     if (phase.value === 'done') return
-    if (index.value + 1 >= items.value.length) {
+    if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
       await finish()
       return
@@ -134,9 +156,10 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
 
   /** Session end: accuracy gate, then one easy/correct entry per family (D6b). */
   async function finish() {
+    if (mode.value === 'replay') return
     if (score.value.accuracy < EASY_THRESHOLD) return
     for (const [idx, family] of set.value.families.entries()) {
-      const corrects = items.value.filter(
+      const corrects = sessionItems.value.filter(
         (i) =>
           i.familyIndex === idx &&
           results.value.some((r) => r.itemId === i.id && r.correct),
@@ -158,6 +181,8 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
 
   return {
     items,
+    sessionItems,
+    mode,
     set,
     selectedSetId,
     availableSets,
@@ -172,6 +197,7 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
     gardenGrew,
     selectSet,
     start,
+    replayFailed,
     answer,
     retry,
     next,

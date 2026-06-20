@@ -40,7 +40,9 @@
       "summary_perfect": "Nol kebingungan topik/subjek. 대박!",
       "summary_garden_note": "Kebunmu tumbuh: progres 은/는 dan 이/가 diperbarui.",
       "summary_repeat": "MAIN LAGI",
-      "summary_explore": "JELAJAH"
+      "summary_explore": "JELAJAH",
+      "summary_replay_failed": "ULANGI YANG SALAH ({n})",
+      "replay_mode_label": "Mode ulasan · kesalahan tidak dicatat lagi"
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "Tata bahasa ini adalah partikel: nyalakan dan matikan dalam kalimat nyata.",
