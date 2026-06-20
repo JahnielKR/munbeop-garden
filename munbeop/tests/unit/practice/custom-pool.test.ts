@@ -17,4 +17,7 @@ describe('filterPoolByCustomDeck', () => {
   it('returns empty when nothing resolves', () => {
     expect(filterPoolByCustomDeck(['-x', '-y'], indexOfKo)).toEqual([])
   })
+  it('collapses duplicate kos to a single index', () => {
+    expect(filterPoolByCustomDeck(['-아서', '-니까', '-아서'], indexOfKo)).toEqual([0, 1])
+  })
 })
