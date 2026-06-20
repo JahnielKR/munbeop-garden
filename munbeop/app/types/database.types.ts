@@ -193,6 +193,7 @@ export type Database = {
           context_id: string
           context_name: string
           created_at: string
+          error_dimension: string | null
           error_note: string | null
           feedback: string
           id: number
@@ -205,6 +206,7 @@ export type Database = {
           context_id: string
           context_name: string
           created_at?: string
+          error_dimension?: string | null
           error_note?: string | null
           feedback: string
           id?: number
@@ -217,6 +219,7 @@ export type Database = {
           context_id?: string
           context_name?: string
           created_at?: string
+          error_dimension?: string | null
           error_note?: string | null
           feedback?: string
           id?: number

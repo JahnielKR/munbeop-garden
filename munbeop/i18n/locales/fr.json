@@ -1,4 +1,12 @@
 {
+  "dimension": {
+    "prompt": "Qu'est-ce qui a coincé ?",
+    "particle": "조사 · particule",
+    "ending": "어미 · terminaison",
+    "register": "높임 · registre",
+    "word_order": "어순 · ordre des mots",
+    "other": "기타 · autre"
+  },
   "onboarding": {
     "title": "Plante ta première phrase",
     "intro": "Dans mungarden, tu écris toi-même les phrases en coréen. Faisons la première ensemble — il suffit de remplir le blanc.",
@@ -14,6 +22,9 @@
     }
   },
   "journal": {
+    "revisit_title": "Plantes à revoir",
+    "revisit_count": "{n} à revoir",
+    "revisit_practice": "Réviser 화이팅",
     "mark_reviewed": "Marquer révisé",
     "reviewed": "Révisé",
     "note_label": "Note"

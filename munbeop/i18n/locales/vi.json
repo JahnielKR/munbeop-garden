@@ -1,4 +1,12 @@
 {
+  "dimension": {
+    "prompt": "Đã sai ở đâu?",
+    "particle": "조사 · trợ từ",
+    "ending": "어미 · đuôi từ",
+    "register": "높임 · sắc thái",
+    "word_order": "어순 · trật tự từ",
+    "other": "기타 · khác"
+  },
   "onboarding": {
     "title": "Trồng câu đầu tiên của bạn",
     "intro": "Trong mungarden bạn tự viết câu tiếng Hàn. Hãy cùng làm câu đầu tiên — chỉ cần điền vào chỗ trống.",
@@ -14,6 +22,9 @@
     }
   },
   "journal": {
+    "revisit_title": "Cây cần ôn lại",
+    "revisit_count": "{n} cần ôn lại",
+    "revisit_practice": "Luyện tập 화이팅",
     "mark_reviewed": "Đánh dấu đã ôn",
     "reviewed": "Đã ôn",
     "note_label": "Ghi chú"

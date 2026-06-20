@@ -1,4 +1,4 @@
-import type { Context, Feedback, Grammar, LogEntry, ReviewState } from '~/lib/domain'
+import type { Context, ErrorDimension, Feedback, Grammar, LogEntry, ReviewState } from '~/lib/domain'
 import {
   advanceProgress,
   createSession,
@@ -106,6 +106,7 @@ export function usePractice() {
     sentence: string
     feedback: Feedback
     errorNote: string | null
+    errorDimension?: ErrorDimension | null
   }): Promise<LogEntry | null> {
     const s = session.value
     if (!s) return null
@@ -119,6 +120,7 @@ export function usePractice() {
       sentence: p.sentence,
       feedback: p.feedback,
       errorNote: hasNote ? p.errorNote : null,
+      errorDimension: p.errorDimension ?? null,
       reviewState,
       contextId: ctx.id,
       contextName: ctx.name,

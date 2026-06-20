@@ -1,4 +1,12 @@
 {
+  "dimension": {
+    "prompt": "どこで間違えた?",
+    "particle": "조사 · 助詞",
+    "ending": "어미 · 語尾",
+    "register": "높임 · 敬体",
+    "word_order": "어순 · 語順",
+    "other": "기타 · その他"
+  },
   "onboarding": {
     "title": "最初の文を植えよう",
     "intro": "mungardenでは韓国語の文を自分で書きます。最初の一文を一緒に作りましょう — 空欄を埋めるだけです。",
@@ -14,6 +22,9 @@
     }
   },
   "journal": {
+    "revisit_title": "復習する芽",
+    "revisit_count": "{n}件を復習",
+    "revisit_practice": "練習 화이팅",
     "mark_reviewed": "復習済みにする",
     "reviewed": "復習済み",
     "note_label": "メモ"

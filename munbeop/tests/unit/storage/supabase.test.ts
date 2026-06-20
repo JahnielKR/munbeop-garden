@@ -152,6 +152,33 @@ describe('SupabaseAdapter', () => {
     })
   })
 
+  describe('error_dimension round-trip', () => {
+    it('log read maps error_dimension into errorDimension', async () => {
+      client.data.user_log = [
+        {
+          id: 2, ko: 'A', sentence: 'x', feedback: 'hard', error_note: null,
+          error_dimension: 'particle', review_state: 'unreviewed',
+          context_id: 'banmal', context_name: '반말', created_at: '2026-06-20T00:00:00Z',
+        },
+      ]
+      const entries = (await adapter.read(STORAGE_KEYS.log, [])) as LogEntry[]
+      expect(entries[0]?.errorDimension).toBe('particle')
+    })
+
+    it('log write includes error_dimension in the upserted row', async () => {
+      await adapter.write(STORAGE_KEYS.log, [
+        {
+          id: 3, ko: 'A', sentence: 'x', feedback: 'hard', errorNote: null,
+          errorDimension: 'ending', reviewState: 'unreviewed',
+          contextId: 'banmal', contextName: '반말', date: '2026-06-20T00:00:00Z',
+        },
+      ])
+      const upsert = client.writes.find((w) => w.table === 'user_log' && w.op === 'upsert')
+      const rows = upsert!.payload as Array<{ error_dimension: string | null }>
+      expect(rows[0]?.error_dimension).toBe('ending')
+    })
+  })
+
   describe('write', () => {
     it('log: upserts each entry to user_log with snake_case + user_id', async () => {
       await adapter.write(STORAGE_KEYS.log, [

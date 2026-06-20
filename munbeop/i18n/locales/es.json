@@ -1,4 +1,12 @@
 {
+  "dimension": {
+    "prompt": "¿Qué se te escapó?",
+    "particle": "조사 · partícula",
+    "ending": "어미 · terminación",
+    "register": "높임 · registro",
+    "word_order": "어순 · orden",
+    "other": "기타 · otro"
+  },
   "onboarding": {
     "title": "Planta tu primera frase",
     "intro": "En mungarden escribes las frases en coreano tú mismo. Hagamos la primera juntos: solo rellena el hueco.",
@@ -14,6 +22,9 @@
     }
   },
   "journal": {
+    "revisit_title": "Plantas para revisar",
+    "revisit_count": "{n} para revisar",
+    "revisit_practice": "Practicar 화이팅",
     "mark_reviewed": "Marcar repasado",
     "reviewed": "Repasado",
     "note_label": "Nota"
