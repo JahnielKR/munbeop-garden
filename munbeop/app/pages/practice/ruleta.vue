@@ -8,11 +8,17 @@ import DeckPicker from '~/components/games/ruleta/DeckPicker.vue'
 import CardDraw from '~/components/games/ruleta/CardDraw.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
+import CustomDeckShelf from '~/components/games/ruleta/CustomDeckShelf.vue'
+import CustomDeckBuilder from '~/components/games/ruleta/CustomDeckBuilder.vue'
+import Modal from '~/components/ui/Modal.vue'
+import {
+  buildDeckOptions, buildCustomDeckOptions, deckColorVar, type DrawCard,
+} from '~/components/games/ruleta/cards'
 import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
-import { buildDeckOptions, deckColorVar, type DrawCard } from '~/components/games/ruleta/cards'
 import { useBomiStore } from '~/stores/bomi'
 import { useGrammarStore } from '~/stores/grammar'
 import { useContextsStore } from '~/stores/contexts'
+import { useCustomDecksStore } from '~/stores/customDecks'
 
 definePageMeta({ surface: 'game' })
 
@@ -33,8 +39,12 @@ const { t } = useI18n()
 const bomi = useBomiStore()
 const grammarStore = useGrammarStore()
 const contextsStore = useContextsStore()
+const customDecks = useCustomDecksStore()
 const route = useRoute()
 const router = useRouter()
+
+const builderOpen = ref(false)
+const editingDeckId = ref<string | null>(null)
 
 const phase = ref<'pick' | 'draw' | 'play'>('pick')
 // Confirm before leaving once a deck is picked (draw/play).
@@ -64,6 +74,8 @@ const deckOptions = computed(() =>
   }),
 )
 
+const customDeckOptions = computed(() => buildCustomDeckOptions({ decks: customDecks.decks }))
+
 const drawCards = computed<DrawCard[]>(() => {
   const s = session.value
   if (!s) return []
@@ -92,6 +104,39 @@ async function onDeckSelect(deckId: string | null) {
   } finally {
     starting.value = false
   }
+}
+
+async function onCustomDeckSelect(deckId: string) {
+  if (starting.value || phase.value !== 'pick') return
+  const deck = customDecks.deckById(deckId)
+  if (!deck) return
+  starting.value = true
+  try {
+    await start({ customDeckGrammarKos: deck.grammarKos })
+    if (error.value) {
+      toast.error(error.value)
+      return
+    }
+    phase.value = 'draw'
+    await focusPhaseWrap(drawWrap)
+  } finally {
+    starting.value = false
+  }
+}
+
+function onCustomCreate() {
+  editingDeckId.value = null
+  builderOpen.value = true
+}
+
+function onCustomEdit(deckId: string) {
+  editingDeckId.value = deckId
+  builderOpen.value = true
+}
+
+function onBuilderClose() {
+  builderOpen.value = false
+  editingDeckId.value = null
 }
 
 async function onDrawDone() {
@@ -191,6 +236,12 @@ async function onRestart() {
     <div v-if="phase === 'pick'" ref="pickWrap" tabindex="-1" class="phase-wrap">
       <p class="lead">{{ t('practice.deck_lead') }}</p>
       <DeckPicker :options="deckOptions" @select="onDeckSelect" />
+      <CustomDeckShelf
+        :options="customDeckOptions"
+        @select="onCustomDeckSelect"
+        @create="onCustomCreate"
+        @edit="onCustomEdit"
+      />
     </div>
 
     <div v-else-if="phase === 'draw'" ref="drawWrap" tabindex="-1" class="phase-wrap">
@@ -210,6 +261,15 @@ async function onRestart() {
       </div>
       <CompletionBanner v-if="completed" @restart="onRestart" />
     </div>
+
+    <Modal
+      :open="builderOpen"
+      :title="t('practice.custom.builder_title')"
+      :close-label="t('practice.custom.close')"
+      @close="onBuilderClose"
+    >
+      <CustomDeckBuilder :key="editingDeckId ?? 'new'" :deck-id="editingDeckId" @saved="onBuilderClose" />
+    </Modal>
   </div>
 </template>
 

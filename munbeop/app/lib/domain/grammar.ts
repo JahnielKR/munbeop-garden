@@ -30,3 +30,33 @@ export interface Deck {
 
 /** Reserved deckId for user-authored grammar (self-study). Catalog items never use it. */
 export const CUSTOM_DECK_ID = 'custom'
+
+/**
+ * A user-curated, named deck for the Ruleta game. References catalog grammar
+ * by {@link Grammar.ko} (the stable v1 id), so it can mix grammar from any
+ * level and shares the same per-ko SRS mastery. Distinct from
+ * {@link CUSTOM_DECK_ID}, which tags user-authored *grammar* (self-study) —
+ * a CustomDeck is a *collection*, not a grammar.
+ */
+export interface CustomDeck {
+  /** Stable unique id (crypto.randomUUID). */
+  id: string
+  /** User-entered display name, trimmed, non-empty. */
+  name: string
+  /** Palette id — a key of DECK_COLOR_VARS (sky/jade/gold/amber/rose/violet). */
+  colorId: string
+  /** Icon token — a deck IconName (see DECK_ICONS). */
+  icon: string
+  /** Optional uploaded cover image (Supabase Storage public URL). */
+  imageUrl?: string
+  /** Catalog membership by Grammar.ko. May mix levels; unknown kos are dropped at draw time. */
+  grammarKos: string[]
+  /** Creation order; lower sorts first in the shelf. */
+  order: number
+  /** ISO creation timestamp. */
+  createdAt: string
+}
+
+/** Color/icon applied to a freshly created custom deck. */
+export const DEFAULT_DECK_COLOR_ID = 'sky'
+export const DEFAULT_DECK_ICON = 'deck-star'

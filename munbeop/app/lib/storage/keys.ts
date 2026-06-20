@@ -11,6 +11,7 @@ export const STORAGE_KEYS = {
   locale: 'munbeop.v1.locale',
   settings: 'munbeop.v1.settings',
   escapeRoom: 'munbeop.v1.escapeRoom',
+  customDecks: 'munbeop.v1.customDecks',
 } as const
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS]

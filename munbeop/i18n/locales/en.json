@@ -159,7 +159,28 @@
     "no_contexts": "You need at least 3 active contexts.",
     "toast_saved_easy": "✨ Saved",
     "toast_saved_hard": "😤 Saved",
-    "no_sentence": "Write a sentence first"
+    "no_sentence": "Write a sentence first",
+    "custom": {
+      "section": "Custom decks",
+      "create": "New deck",
+      "edit": "Edit deck",
+      "builder_title": "Custom deck",
+      "close": "Close",
+      "name": "Deck name",
+      "name_placeholder": "e.g. My connectors",
+      "color": "Color",
+      "icon": "Icon",
+      "grammar": "Grammar",
+      "search_placeholder": "Search grammar…",
+      "selected_count": "{count} selected",
+      "need_six_hint": "Pick at least 6 grammar points to play",
+      "locked_need_six": "Needs 6 to play",
+      "save": "Save deck",
+      "delete": "Delete deck",
+      "confirm_delete": "Delete this deck? This can't be undone.",
+      "empty_title": "Create your first deck",
+      "empty_hint": "Pick the grammar you want from any level, name it, and play."
+    }
   },
   "library": {
     "lead": "All the grammar points that can show up in your card draws. Each one grows as you practice.",

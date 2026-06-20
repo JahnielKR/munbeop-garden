@@ -125,6 +125,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_custom_decks: {
+        Row: {
+          color_id: string
+          created_at: string
+          grammar_kos: Json
+          icon: string
+          id: string
+          image_url: string | null
+          name: string
+          position: number
+          user_id: string
+        }
+        Insert: {
+          color_id?: string
+          created_at?: string
+          grammar_kos?: Json
+          icon?: string
+          id: string
+          image_url?: string | null
+          name: string
+          position?: number
+          user_id: string
+        }
+        Update: {
+          color_id?: string
+          created_at?: string
+          grammar_kos?: Json
+          icon?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          position?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_decks: {
         Row: {
           collapsed: boolean

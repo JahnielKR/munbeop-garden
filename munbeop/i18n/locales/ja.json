@@ -159,7 +159,28 @@
     "no_contexts": "アクティブな文脈が3つ以上必要です。",
     "toast_saved_easy": "✨ 保存しました",
     "toast_saved_hard": "😤 保存しました",
-    "no_sentence": "先に文を書いてください"
+    "no_sentence": "先に文を書いてください",
+    "custom": {
+      "section": "カスタムデッキ",
+      "create": "新しいデッキ",
+      "edit": "デッキを編集",
+      "builder_title": "カスタムデッキ",
+      "close": "閉じる",
+      "name": "デッキ名",
+      "name_placeholder": "例：私の接続表現",
+      "color": "色",
+      "icon": "アイコン",
+      "grammar": "文法",
+      "search_placeholder": "文法を検索…",
+      "selected_count": "{count}個選択中",
+      "need_six_hint": "プレイするには6つ以上の文法を選んでください",
+      "locked_need_six": "プレイには6つ必要",
+      "save": "デッキを保存",
+      "delete": "デッキを削除",
+      "confirm_delete": "このデッキを削除しますか？元に戻せません。",
+      "empty_title": "最初のデッキを作ろう",
+      "empty_hint": "好きな文法をどのレベルからでも選び、名前を付けてプレイ。"
+    }
   },
   "library": {
     "lead": "カードを引くと出てくる全文法。練習するたびに育ちます。",
