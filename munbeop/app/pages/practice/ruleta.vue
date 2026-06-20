@@ -7,12 +7,14 @@ import Bomi from '~/components/bomi/Bomi.vue'
 import DeckPicker from '~/components/games/ruleta/DeckPicker.vue'
 import CardDraw from '~/components/games/ruleta/CardDraw.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
+import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
 import CustomDeckShelf from '~/components/games/ruleta/CustomDeckShelf.vue'
 import CustomDeckBuilder from '~/components/games/ruleta/CustomDeckBuilder.vue'
 import Modal from '~/components/ui/Modal.vue'
 import {
   buildDeckOptions, buildCustomDeckOptions, deckColorVar, type DrawCard,
 } from '~/components/games/ruleta/cards'
+import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
 import { useBomiStore } from '~/stores/bomi'
 import { useGrammarStore } from '~/stores/grammar'
 import { useContextsStore } from '~/stores/contexts'
@@ -45,6 +47,8 @@ const builderOpen = ref(false)
 const editingDeckId = ref<string | null>(null)
 
 const phase = ref<'pick' | 'draw' | 'play'>('pick')
+// Confirm before leaving once a deck is picked (draw/play).
+useGameLeaveGuard(() => phase.value !== 'pick')
 // In-flight latch: a double-click on a deck mat must not run start() twice
 // (the second run would overwrite the session and mark extra grammars as
 // seen in the SRS without the user ever practicing them).
@@ -221,7 +225,8 @@ async function onRestart() {
 
 <template>
   <div class="page">
-    <GameExitButton :confirm="phase !== 'pick'" />
+    <GameExitButton />
+    <GameLeaveConfirm />
     <BilingualTitle ko="연습" :latin="t('title.practice')" />
 
     <div class="bomi-row">

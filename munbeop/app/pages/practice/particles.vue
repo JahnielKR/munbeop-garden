@@ -5,7 +5,10 @@ import DrillCard from '~/components/particle-lab/DrillCard.vue'
 import DrillSummary from '~/components/particle-lab/DrillSummary.vue'
 import ExploreMode from '~/components/particle-lab/ExploreMode.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
+import GameExitButton from '~/components/games/GameExitButton.vue'
+import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
 import { useParticleDrill } from '~/composables/useParticleDrill'
+import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
 
 /**
  * 조사 연구소 · Particle Lab — game #3. Two modes synced to ?mode=:
@@ -21,6 +24,9 @@ const { t } = useI18n()
 const drill = useParticleDrill()
 
 const mode = ref<Mode>(route.query.mode === 'drill' ? 'drill' : 'explore')
+
+// Confirm before leaving an in-progress drill round (Explore is read-only).
+useGameLeaveGuard(() => mode.value === 'drill' && drill.phase.value !== 'done')
 
 watch(mode, async (m) => {
   await router.replace({ query: { ...route.query, mode: m } })
@@ -39,6 +45,8 @@ async function restartDrill() {
 
 <template>
   <div class="lab">
+    <GameExitButton />
+    <GameLeaveConfirm />
     <BilingualTitle ko="조사 연구소" :latin="t('particles.title')" />
     <p class="lab__lead">{{ t('particles.lead') }}</p>
 
