@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import type { Grammar, Deck } from '~/lib/domain'
+import type { Grammar, Deck, LocalizedString } from '~/lib/domain'
+import { CUSTOM_DECK_ID, isHangulName } from '~/lib/domain'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
 
@@ -15,6 +16,10 @@ export const useGrammarStore = defineStore('grammar', () => {
       .map((g, idx) => ({ g, idx }))
       .filter(({ g }) => !excludedDeckIds.value.includes(g.deckId))
       .map(({ idx }) => idx),
+  )
+
+  const customGrammars = computed(() =>
+    items.value.filter((g) => g.deckId === CUSTOM_DECK_ID),
   )
 
   function grammarByKo(ko: string): Grammar | undefined {
@@ -66,14 +71,53 @@ export const useGrammarStore = defineStore('grammar', () => {
     await storage.write(STORAGE_KEYS.decks, decks.value)
   }
 
+  /**
+   * Add a user-authored grammar. The single meaning text is expected pre-built
+   * into all 8 locale slots by the caller (see CustomGrammarAddForm). Returns
+   * the new Grammar, or null when the ko is not Korean or already exists.
+   */
+  async function addCustomGrammar(p: {
+    ko: string
+    meaning: LocalizedString
+    example?: string
+  }): Promise<Grammar | null> {
+    const ko = p.ko.trim()
+    if (!isHangulName(ko)) return null
+    if (items.value.some((g) => g.ko === ko)) return null
+    const example = p.example?.trim()
+    const grammar: Grammar = {
+      ko,
+      meaning: p.meaning,
+      deckId: CUSTOM_DECK_ID,
+      ...(example ? { example } : {}),
+    }
+    items.value = [...items.value, grammar]
+    const storage = useStorageAdapter()
+    await storage.write(STORAGE_KEYS.grammar, items.value)
+    return grammar
+  }
+
+  /** Remove a user-authored grammar by ko. Returns false if not a custom item. */
+  async function removeCustomGrammar(ko: string): Promise<boolean> {
+    const target = items.value.find((g) => g.ko === ko && g.deckId === CUSTOM_DECK_ID)
+    if (!target) return false
+    items.value = items.value.filter((g) => g !== target)
+    const storage = useStorageAdapter()
+    await storage.write(STORAGE_KEYS.grammar, items.value)
+    return true
+  }
+
   return {
     items,
     decks,
     excludedDeckIds,
     activeIndices,
+    customGrammars,
     grammarByKo,
     hydrate,
     toggleDeck,
     toggleDeckCollapsed,
+    addCustomGrammar,
+    removeCustomGrammar,
   }
 })
