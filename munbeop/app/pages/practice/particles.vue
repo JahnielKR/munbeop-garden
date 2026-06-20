@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import DrillCard from '~/components/particle-lab/DrillCard.vue'
 import DrillSummary from '~/components/particle-lab/DrillSummary.vue'
+import DrillSetPicker from '~/components/particle-lab/DrillSetPicker.vue'
 import ExploreMode from '~/components/particle-lab/ExploreMode.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
@@ -21,7 +22,7 @@ type Mode = 'explore' | 'drill'
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
-const drill = useParticleDrill()
+const drill = useParticleDrill(typeof route.query.set === 'string' ? route.query.set : undefined)
 
 const mode = ref<Mode>(route.query.mode === 'drill' ? 'drill' : 'explore')
 
@@ -39,6 +40,12 @@ if (mode.value === 'drill') {
 }
 
 async function restartDrill() {
+  await drill.start()
+}
+
+async function onSelectSet(id: string) {
+  drill.selectSet(id)
+  await router.replace({ query: { ...route.query, mode: 'drill', set: id } })
   await drill.start()
 }
 </script>
@@ -76,14 +83,21 @@ async function restartDrill() {
     <ExploreMode v-if="mode === 'explore'" />
 
     <template v-else>
+      <DrillSetPicker
+        v-if="drill.phase.value === 'question' && drill.index.value === 0"
+        :sets="drill.availableSets"
+        :selected="drill.selectedSetId.value"
+        @select="onSelectSet"
+      />
       <ProgressDots
         v-if="drill.phase.value !== 'done'"
-        :total="drill.items.length"
+        :total="drill.items.value.length"
         :progress="drill.index.value"
       />
       <DrillCard
         v-if="drill.phase.value !== 'done'"
         :item="drill.item.value"
+        :set="drill.set.value"
         :phase="drill.phase.value"
         :verdict="drill.verdict.value"
         :picked="drill.picked.value"
@@ -96,6 +110,7 @@ async function restartDrill() {
         v-else
         :score="drill.score.value"
         :failed-items="drill.failedItems.value"
+        :set="drill.set.value"
         :garden-grew="drill.gardenGrew.value"
         @restart="restartDrill"
         @explore="mode = 'explore'"

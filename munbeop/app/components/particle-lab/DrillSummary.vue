@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DrillItem } from '~/lib/domain'
+import type { ClashSet, DrillItem } from '~/lib/domain'
 import type { DrillScore } from '~/lib/particle-lab'
 import { correctForm } from '~/lib/particle-lab'
 import { useLocalized } from '~/composables/useLocalized'
@@ -8,6 +8,7 @@ import { useLocalized } from '~/composables/useLocalized'
 interface Props {
   score: DrillScore
   failedItems: DrillItem[]
+  set: ClashSet
   gardenGrew: boolean
 }
 defineProps<Props>()
@@ -31,7 +32,7 @@ const { tl } = useLocalized()
       <ul class="summary__list">
         <li v-for="item in failedItems" :key="item.id" class="summary__item">
           <span lang="ko" class="summary__item-ko">
-            {{ item.lead ?? '' }}{{ item.noun }}<strong>{{ correctForm(item) }}</strong>{{ item.rest }}
+            {{ item.lead ?? '' }}{{ item.noun }}<strong>{{ correctForm(item, set) }}</strong>{{ item.rest }}
           </span>
           <span class="summary__item-reason">{{ tl(item.reason) }}</span>
         </li>

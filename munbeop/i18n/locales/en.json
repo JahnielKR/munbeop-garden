@@ -22,6 +22,7 @@
       "see_sheet": "OPEN FULL SHEET"
     },
     "drill": {
+      "set_picker_label": "Pick a clash",
       "cue_label": "Situation",
       "options_label": "Pick the particle",
       "blocked_title": "BLOCKED! · 받침",

@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import type { DrillChoice, DrillItem, DrillVerdict, LocaleCode } from '~/lib/domain'
+import type { ClashSet, DrillItem, DrillVerdict, LocaleCode } from '~/lib/domain'
 import { localized } from '~/lib/domain'
 import {
   correctSentence,
@@ -8,7 +8,7 @@ import {
   type DrillItemResult,
 } from '~/lib/particle-lab'
 import { PARTICLE_DRILLS } from '~/seed/particle-drills'
-import { particleById } from '~/seed/particles'
+import { CLASH_SETS, clashSetById, DEFAULT_CLASH_SET_ID } from '~/seed/clash-sets'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 
@@ -21,26 +21,37 @@ const EASY_THRESHOLD = 0.7
 /** Min ended-correct items per family for that family's 'easy' entry (D6). */
 const MIN_FAMILY_CORRECT = 3
 
-export function useParticleDrill() {
+export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
   const logStore = useLogStore()
   const srsStore = useSrsStore()
   const { t, locale } = useI18n()
 
-  const items = PARTICLE_DRILLS
+  const availableSets = CLASH_SETS
+  const selectedSetId = ref(clashSetById(initialSetId) ? initialSetId : DEFAULT_CLASH_SET_ID)
+  const set = computed<ClashSet>(() => clashSetById(selectedSetId.value)!)
+  const items = computed<DrillItem[]>(() =>
+    PARTICLE_DRILLS.filter((it) => it.setId === selectedSetId.value),
+  )
+
   const index = ref(0)
   const phase = ref<DrillPhase>('question')
   const verdict = ref<DrillVerdict | null>(null)
-  const picked = ref<DrillChoice | null>(null)
-  const blockedChoices = ref<Set<DrillChoice>>(new Set())
+  const picked = ref<string | null>(null)
+  const blockedChoices = ref<Set<string>>(new Set())
   const results = ref<DrillItemResult[]>([])
   const slipsThisItem = ref(0)
   const gardenGrew = ref(false)
 
-  const item = computed<DrillItem>(() => items[index.value]!)
+  const item = computed<DrillItem>(() => items.value[index.value]!)
   const score = computed(() => scoreOf(results.value))
   const failedItems = computed(() =>
-    items.filter((i) => results.value.some((r) => r.itemId === i.id && !r.correct)),
+    items.value.filter((i) => results.value.some((r) => r.itemId === i.id && !r.correct)),
   )
+
+  /** Switch the active clash set. Caller restarts the round. */
+  function selectSet(id: string) {
+    if (clashSetById(id)) selectedSetId.value = id
+  }
 
   async function start() {
     index.value = 0
@@ -51,17 +62,13 @@ export function useParticleDrill() {
     results.value = []
     slipsThisItem.value = 0
     gardenGrew.value = false
-    await Promise.all(
-      (['topic', 'subject'] as const).map((id) =>
-        srsStore.markSeen(particleById(id)!.grammarKo),
-      ),
-    )
+    await Promise.all(set.value.families.map((f) => srsStore.markSeen(f.grammarKo)))
   }
 
-  async function answer(choice: DrillChoice) {
+  async function answer(choice: string) {
     if (phase.value !== 'question') return
     picked.value = choice
-    const v = judge(item.value, choice)
+    const v = judge(item.value, choice, set.value)
     verdict.value = v
     if (v.kind === 'correct') {
       results.value.push({
@@ -96,7 +103,7 @@ export function useParticleDrill() {
 
   async function next() {
     if (phase.value === 'done') return
-    if (index.value + 1 >= items.length) {
+    if (index.value + 1 >= items.value.length) {
       phase.value = 'done'
       await finish()
       return
@@ -110,11 +117,11 @@ export function useParticleDrill() {
   }
 
   /** Semantic error → one hard/incorrect diary entry with auto note (D6a). */
-  async function logMistake(it: DrillItem, choice: DrillChoice) {
-    const grammarKo = particleById(it.family)!.grammarKo
+  async function logMistake(it: DrillItem, choice: string) {
+    const grammarKo = set.value.families[it.familyIndex].grammarKo
     await logStore.add({
       ko: grammarKo,
-      sentence: correctSentence(it),
+      sentence: correctSentence(it, set.value),
       feedback: 'hard',
       errorNote: `${t('particles.drill.diary_note', { choice })} ${localized(it.reason, locale.value as LocaleCode)}`,
       errorDimension: 'particle',
@@ -128,30 +135,32 @@ export function useParticleDrill() {
   /** Session end: accuracy gate, then one easy/correct entry per family (D6b). */
   async function finish() {
     if (score.value.accuracy < EASY_THRESHOLD) return
-    for (const family of ['topic', 'subject'] as const) {
-      const corrects = items.filter(
+    for (const [idx, family] of set.value.families.entries()) {
+      const corrects = items.value.filter(
         (i) =>
-          i.family === family &&
+          i.familyIndex === idx &&
           results.value.some((r) => r.itemId === i.id && r.correct),
       )
       if (corrects.length < MIN_FAMILY_CORRECT) continue
-      const grammarKo = particleById(family)!.grammarKo
       await logStore.add({
-        ko: grammarKo,
-        sentence: correctSentence(corrects[0]!),
+        ko: family.grammarKo,
+        sentence: correctSentence(corrects[0]!, set.value),
         feedback: 'easy',
         errorNote: null,
         reviewState: 'correct',
         contextId: LAB_CONTEXT.id,
         contextName: LAB_CONTEXT.name,
       })
-      await srsStore.recalculate(grammarKo)
+      await srsStore.recalculate(family.grammarKo)
       gardenGrew.value = true
     }
   }
 
   return {
     items,
+    set,
+    selectedSetId,
+    availableSets,
     index,
     phase,
     verdict,
@@ -161,6 +170,7 @@ export function useParticleDrill() {
     score,
     failedItems,
     gardenGrew,
+    selectSet,
     start,
     answer,
     retry,

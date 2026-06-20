@@ -22,6 +22,7 @@
       "see_sheet": "ดูรายละเอียดเต็ม"
     },
     "drill": {
+      "set_picker_label": "เลือกคู่ปะทะ",
       "cue_label": "สถานการณ์",
       "options_label": "เลือกอนุภาค",
       "blocked_title": "ถูกบล็อก! · 받침",

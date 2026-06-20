@@ -8,7 +8,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     cue: L('You introduce yourself for the first time.', 'Te presentas por primera vez.', 'Tu te présentes pour la première fois.', 'Você se apresenta pela primeira vez.', 'คุณแนะนำตัวครั้งแรก', 'Kamu memperkenalkan diri untuk pertama kali.', 'Bạn tự giới thiệu lần đầu.', '初めて自己紹介する。'),
     noun: '저',
     rest: ' 학생이에요.',
-    family: 'topic',
+    setId: 'topic-subject',
+    familyIndex: 0,
     reason: L(
       'Introducing yourself sets the TOPIC: "as for me…" → 은/는.',
       'Presentarte establece el TEMA: "en cuanto a mí…" → 은/는.',
@@ -26,7 +27,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     cue: L('You answer: "WHO came?"', 'Respondes a: «¿QUIÉN vino?»', 'Tu réponds à : « QUI est venu ? »', 'Você responde: "QUEM veio?"', 'คุณตอบคำถาม: "ใครมา?"', 'Kamu menjawab: "SIAPA yang datang?"', 'Bạn trả lời: "AI đã đến?"', '「誰が来たの？」に答える。'),
     noun: '친구',
     rest: ' 왔어요.',
-    family: 'subject',
+    setId: 'topic-subject',
+    familyIndex: 1,
     reason: L(
       'Answers to "who?/what?" point at NEW info → 이/가.',
       'Las respuestas a "¿quién?/¿qué?" señalan info NUEVA → 이/가.',
@@ -44,7 +46,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     cue: L('You talk about your older brother in general.', 'Hablas de tu hermano mayor en general.', 'Tu parles de ton grand frère en général.', 'Você fala do seu irmão mais velho em geral.', 'คุณเล่าเรื่องพี่ชายแบบทั่วไป', 'Kamu bercerita tentang kakak laki-lakimu secara umum.', 'Bạn kể về anh trai một cách chung chung.', '兄について一般的な話をする。'),
     noun: '형',
     rest: ' 회사원이에요.',
-    family: 'topic',
+    setId: 'topic-subject',
+    familyIndex: 0,
     reason: L(
       'A general statement about someone known → topic 은/는. 형 ends in a consonant → 은.',
       'Una afirmación general sobre alguien conocido → tema 은/는. 형 termina en consonante → 은.',
@@ -62,7 +65,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     cue: L('"What\'s on the table?" — existence with 있다.', '«¿Qué hay en la mesa?» — existencia con 있다.', '« Qu\'y a-t-il sur la table ? » — existence avec 있다.', '"O que tem na mesa?" — existência com 있다.', '"บนโต๊ะมีอะไร?" — การมีอยู่กับ 있다', '"Ada apa di meja?" — keberadaan dengan 있다.', '"Trên bàn có gì?" — tồn tại với 있다.', '「机に何がある？」— 있다 の存在文。'),
     noun: '책',
     rest: ' 있어요.',
-    family: 'subject',
+    setId: 'topic-subject',
+    familyIndex: 1,
     reason: L(
       'Existence with 있다/없다 takes 이/가. 책 ends in a consonant → 이.',
       'La existencia con 있다/없다 lleva 이/가. 책 termina en consonante → 이.',
@@ -80,7 +84,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     cue: L('You look out the window and report the weather (new info).', 'Miras por la ventana y comentas el clima (info nueva).', 'Tu regardes par la fenêtre et annonces la météo (info nouvelle).', 'Você olha pela janela e comenta o tempo (info nova).', 'คุณมองออกหน้าต่างแล้วบอกสภาพอากาศ (ข้อมูลใหม่)', 'Kamu melihat ke jendela dan melaporkan cuaca (info baru).', 'Bạn nhìn ra cửa sổ và nói về thời tiết (thông tin mới).', '窓の外を見て天気を伝える（新情報）。'),
     noun: '비',
     rest: ' 와요.',
-    family: 'subject',
+    setId: 'topic-subject',
+    familyIndex: 1,
     reason: L(
       'Weather phenomena appear as NEW info → 이/가. «비는 와요» would sound contrastive.',
       'Los fenómenos del clima aparecen como info NUEVA → 이/가. «비는 와요» sonaría a contraste.',
@@ -98,7 +103,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     cue: L('A general truth: cats (as a species) are cute.', 'Una verdad general: los gatos (como especie) son lindos.', 'Une vérité générale : les chats (en général) sont mignons.', 'Uma verdade geral: gatos (como espécie) são fofos.', 'ความจริงทั่วไป: แมว (โดยรวม) น่ารัก', 'Kebenaran umum: kucing (sebagai spesies) itu lucu.', 'Chân lý chung: mèo (nói chung) dễ thương.', '一般論：猫（という種）はかわいい。'),
     noun: '고양이',
     rest: ' 귀여워요.',
-    family: 'topic',
+    setId: 'topic-subject',
+    familyIndex: 0,
     reason: L(
       'General truths and categories take topic 은/는: "cats (in general)…".',
       'Las verdades generales y categorías llevan tema 은/는: "los gatos (en general)…".',
@@ -116,7 +122,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     cue: L('You apologize: you have no time (없다).', 'Te disculpas: no tienes tiempo (없다).', 'Tu t\'excuses : tu n\'as pas le temps (없다).', 'Você se desculpa: não tem tempo (없다).', 'คุณขอโทษ: ไม่มีเวลา (없다)', 'Kamu minta maaf: tidak punya waktu (없다).', 'Bạn xin lỗi: không có thời gian (없다).', '謝る：時間がない（없다）。'),
     noun: '시간',
     rest: ' 없어요.',
-    family: 'subject',
+    setId: 'topic-subject',
+    familyIndex: 1,
     reason: L(
       '있다/없다 (have/not have, exist) pair with 이/가. 시간 ends in a consonant → 이.',
       '있다/없다 (tener/no tener, existir) van con 이/가. 시간 termina en consonante → 이.',
@@ -134,7 +141,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     cue: L('Contrast: coffee yes, tea no.', 'Contraste: el café sí, el té no.', 'Contraste : le café oui, le thé non.', 'Contraste: café sim, chá não.', 'เปรียบต่าง: กาแฟใช่ ชาไม่', 'Kontras: kopi iya, teh tidak.', 'Đối chiếu: cà phê thì thích, trà thì không.', '対比：コーヒーは好き、お茶は嫌い。'),
     noun: '커피',
     rest: ' 좋아하지만 차는 안 마셔요.',
-    family: 'topic',
+    setId: 'topic-subject',
+    familyIndex: 0,
     reason: L(
       'Explicit contrast between two things is the signature use of 은/는.',
       'El contraste explícito entre dos cosas es el uso estrella de 은/는.',
@@ -152,7 +160,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     cue: L('You suddenly notice a smell (new sensory info).', 'De repente notas un olor (info sensorial nueva).', 'Tu remarques soudain une odeur (info sensorielle nouvelle).', 'Você de repente nota um cheiro (info sensorial nova).', 'จู่ๆ คุณได้กลิ่น (ข้อมูลใหม่ทางประสาทสัมผัส)', 'Tiba-tiba kamu mencium bau (info indrawi baru).', 'Bạn chợt nhận ra một mùi hương (thông tin cảm giác mới).', 'ふと匂いに気づく（新しい感覚情報）。'),
     noun: '냄새',
     rest: ' 좋아요!',
-    family: 'subject',
+    setId: 'topic-subject',
+    familyIndex: 1,
     reason: L(
       'Something you just perceived = new info bursting in → 이/가.',
       'Algo que acabas de percibir = info nueva que irrumpe → 이/가.',
@@ -170,7 +179,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     cue: L('You\'re still talking about the water you already mentioned.', 'Sigues hablando del agua que ya mencionaron.', 'Vous parlez encore de l\'eau déjà mentionnée.', 'Vocês continuam falando da água já mencionada.', 'ยังคุยเรื่องน้ำที่พูดถึงไปแล้ว', 'Kalian masih membicarakan air yang sudah disebut.', 'Vẫn đang nói về nước đã nhắc đến trước đó.', 'さっき話に出た水について話を続けている。'),
     noun: '물',
     rest: ' 맛있어요.',
-    family: 'topic',
+    setId: 'topic-subject',
+    familyIndex: 0,
     reason: L(
       'Already-mentioned info becomes the TOPIC → 은/는. 물 ends in a consonant → 은.',
       'Lo ya mencionado pasa a ser TEMA → 은/는. 물 termina en consonante → 은.',
@@ -189,7 +199,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     lead: '옛날에 ',
     noun: '호랑이',
     rest: ' 살았어요.',
-    family: 'subject',
+    setId: 'topic-subject',
+    familyIndex: 1,
     reason: L(
       'First mention of a character = brand-new info → 이/가. (Later mentions switch to 은/는.)',
       'La primera mención de un personaje = info totalmente nueva → 이/가. (Las siguientes cambian a 은/는.)',
@@ -208,7 +219,8 @@ export const PARTICLE_DRILLS: DrillItem[] = [
     lead: '코끼리는 ',
     noun: '코',
     rest: ' 길어요.',
-    family: 'subject',
+    setId: 'topic-subject',
+    familyIndex: 1,
     reason: L(
       'Classic double pattern: topic with 는 + highlighted feature with 가. "As for elephants, the NOSE is long."',
       'Patrón doble clásico: tema con 는 + rasgo destacado con 가. "El elefante, la NARIZ la tiene larga."',

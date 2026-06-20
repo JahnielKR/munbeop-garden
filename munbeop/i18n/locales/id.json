@@ -22,6 +22,7 @@
       "see_sheet": "BUKA KARTU LENGKAP"
     },
     "drill": {
+      "set_picker_label": "Pilih duel",
       "cue_label": "Situasi",
       "options_label": "Pilih partikelnya",
       "blocked_title": "TERBLOKIR! · 받침",
