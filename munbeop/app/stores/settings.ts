@@ -5,6 +5,7 @@ import { useStorageAdapter } from '~/composables/useStorageAdapter'
 import { useAuthStore } from '~/stores/auth'
 import { useLocaleStore } from '~/stores/locale'
 import { useTheme, type Theme } from '~/composables/useTheme'
+import { clampGoal, DEFAULT_DAILY_GOAL } from '~/lib/stats/goal'
 
 /**
  * useSettings — account-synced UI preferences (theme, locale).
@@ -19,6 +20,7 @@ import { useTheme, type Theme } from '~/composables/useTheme'
 interface Settings {
   theme: Theme
   locale: LocaleCode
+  dailyGoal: number
 }
 
 function isTheme(v: unknown): v is Theme {
@@ -32,6 +34,7 @@ export const useSettingsStore = defineStore('settings', () => {
   const { theme, setTheme: applyTheme } = useTheme()
   const localeStore = useLocaleStore()
   const authStore = useAuthStore()
+  const dailyGoal = ref(DEFAULT_DAILY_GOAL)
 
   async function hydrate(): Promise<void> {
     if (!authStore.user) return
@@ -41,6 +44,7 @@ export const useSettingsStore = defineStore('settings', () => {
       if (!cloud) return
       if (isTheme(cloud.theme)) applyTheme(cloud.theme)
       if (isLocale(cloud.locale)) await localeStore.set(cloud.locale)
+      if (typeof cloud.dailyGoal === 'number') dailyGoal.value = clampGoal(cloud.dailyGoal)
     } catch {
       // Table may not exist yet (migration not deployed) or a network blip —
       // keep device values; the app must not break.
@@ -53,6 +57,7 @@ export const useSettingsStore = defineStore('settings', () => {
       await storage.write(STORAGE_KEYS.settings, {
         theme: theme.value,
         locale: localeStore.current,
+        dailyGoal: dailyGoal.value,
       } satisfies Settings)
     } catch {
       // A failed cloud write must not throw into the UI.
@@ -69,5 +74,10 @@ export const useSettingsStore = defineStore('settings', () => {
     await persistCloud()
   }
 
-  return { hydrate, setTheme, setLocale }
+  async function setDailyGoal(n: number): Promise<void> {
+    dailyGoal.value = clampGoal(n)
+    await persistCloud()
+  }
+
+  return { hydrate, setTheme, setLocale, dailyGoal, setDailyGoal }
 })
