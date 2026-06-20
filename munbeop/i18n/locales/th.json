@@ -179,6 +179,25 @@
     "back_to_sign_in": "กลับไปที่หน้าเข้าสู่ระบบ"
   },
   "settings": {
+    "custom_grammar": {
+      "title": "ไวยากรณ์ของคุณเอง",
+      "subtitle": "เพิ่มรูปจากชีวิตจริงของคุณ — จะโผล่มาในการฝึกเหมือนรูปอื่นๆ",
+      "ko_label": "รูป (เกาหลี)",
+      "ko_placeholder": "เช่น -거든요",
+      "meaning_label": "ความหมาย",
+      "meaning_placeholder": "เช่น การให้เหตุผลหรือบริบท",
+      "example_label": "ตัวอย่าง (ไม่บังคับ)",
+      "example_placeholder": "เช่น 바빠서 못 갔거든요",
+      "add": "ปลูกเลย",
+      "error_korean": "ใช้รูปภาษาเกาหลี เช่น -거든요",
+      "error_duplicate": "มีรูปนี้อยู่แล้ว",
+      "delete": "ลบ",
+      "delete_confirm_title": "ลบไวยากรณ์นี้?",
+      "delete_confirm_body": "“{ko}” จะถูกลบออกจากรูปของคุณ",
+      "empty": "ยังไม่มีรูปของคุณเอง ปลูกอันแรกด้านล่าง",
+      "created": "เพิ่มไวยากรณ์แล้ว",
+      "deleted": "ลบไวยากรณ์แล้ว"
+    },
     "dark_mode": "โหมดมืด",
     "appearance": { "theme": { "label": "ธีม", "light": "สว่าง", "auto": "อัตโนมัติ", "dark": "มืด" } },
     "contexts": {

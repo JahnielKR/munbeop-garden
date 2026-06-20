@@ -179,6 +179,25 @@
     "back_to_sign_in": "Kembali ke halaman masuk"
   },
   "settings": {
+    "custom_grammar": {
+      "title": "Tata bahasamu sendiri",
+      "subtitle": "Tambahkan pola dari kehidupan nyatamu — muncul saat latihan seperti yang lain.",
+      "ko_label": "Pola (Korea)",
+      "ko_placeholder": "mis. -거든요",
+      "meaning_label": "Arti",
+      "meaning_placeholder": "mis. memberi alasan atau konteks",
+      "example_label": "Contoh (opsional)",
+      "example_placeholder": "mis. 바빠서 못 갔거든요",
+      "add": "Tanam",
+      "error_korean": "Gunakan pola Korea, mis. -거든요.",
+      "error_duplicate": "Pola itu sudah ada.",
+      "delete": "Hapus",
+      "delete_confirm_title": "Hapus tata bahasa ini?",
+      "delete_confirm_body": "“{ko}” akan dihapus dari polamu.",
+      "empty": "Belum ada pola milikmu. Tanam yang pertama di bawah.",
+      "created": "Tata bahasa ditambahkan.",
+      "deleted": "Tata bahasa dihapus."
+    },
     "dark_mode": "Mode gelap",
     "appearance": { "theme": { "label": "Tema", "light": "Terang", "auto": "Otomatis", "dark": "Gelap" } },
     "contexts": {

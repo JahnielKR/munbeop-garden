@@ -179,6 +179,25 @@
     "back_to_sign_in": "Retour à la connexion"
   },
   "settings": {
+    "custom_grammar": {
+      "title": "Ta propre grammaire",
+      "subtitle": "Ajoute des structures de ta vie réelle — elles apparaissent en pratique comme les autres.",
+      "ko_label": "Structure (coréen)",
+      "ko_placeholder": "p. ex. -거든요",
+      "meaning_label": "Sens",
+      "meaning_placeholder": "p. ex. donner une raison ou un contexte",
+      "example_label": "Exemple (optionnel)",
+      "example_placeholder": "p. ex. 바빠서 못 갔거든요",
+      "add": "Plante-la",
+      "error_korean": "Utilise la structure en coréen, p. ex. -거든요.",
+      "error_duplicate": "Cette structure existe déjà.",
+      "delete": "Supprimer",
+      "delete_confirm_title": "Supprimer cette grammaire ?",
+      "delete_confirm_body": "« {ko} » sera retiré de tes structures.",
+      "empty": "Pas encore de structures à toi. Plante la première ci-dessous.",
+      "created": "Grammaire ajoutée.",
+      "deleted": "Grammaire supprimée."
+    },
     "dark_mode": "Mode sombre",
     "appearance": { "theme": { "label": "Thème", "light": "Clair", "auto": "Auto", "dark": "Sombre" } },
     "contexts": {

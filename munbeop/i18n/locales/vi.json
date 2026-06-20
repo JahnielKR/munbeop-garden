@@ -179,6 +179,25 @@
     "back_to_sign_in": "Quay lại đăng nhập"
   },
   "settings": {
+    "custom_grammar": {
+      "title": "Ngữ pháp của riêng bạn",
+      "subtitle": "Thêm các mẫu từ đời thực — chúng xuất hiện khi luyện tập như những mẫu khác.",
+      "ko_label": "Mẫu (tiếng Hàn)",
+      "ko_placeholder": "vd. -거든요",
+      "meaning_label": "Nghĩa",
+      "meaning_placeholder": "vd. đưa ra lý do hoặc bối cảnh",
+      "example_label": "Ví dụ (tùy chọn)",
+      "example_placeholder": "vd. 바빠서 못 갔거든요",
+      "add": "Trồng nó",
+      "error_korean": "Dùng mẫu tiếng Hàn, vd. -거든요.",
+      "error_duplicate": "Mẫu đó đã tồn tại.",
+      "delete": "Xóa",
+      "delete_confirm_title": "Xóa ngữ pháp này?",
+      "delete_confirm_body": "“{ko}” sẽ bị xóa khỏi các mẫu của bạn.",
+      "empty": "Bạn chưa có mẫu nào của riêng mình. Trồng cái đầu tiên bên dưới.",
+      "created": "Đã thêm ngữ pháp.",
+      "deleted": "Đã xóa ngữ pháp."
+    },
     "dark_mode": "Chế độ tối",
     "appearance": { "theme": { "label": "Chủ đề", "light": "Sáng", "auto": "Tự động", "dark": "Tối" } },
     "contexts": {
