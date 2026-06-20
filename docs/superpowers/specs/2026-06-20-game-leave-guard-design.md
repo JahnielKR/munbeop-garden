@@ -55,7 +55,7 @@ and the single modal.
 
 - **Particle Lab** (`pages/practice/particles.vue`): `mode === 'drill' && drill.phase.value !== 'done'`. Explore mode is read-only → never dirty. Also **adds** the `<GameExitButton>` it currently lacks.
 - **Ruleta** (`pages/practice/ruleta.vue`): `phase.value !== 'pick'` — its current `:confirm` logic, moved into the predicate. Drop the `:confirm` prop.
-- **Escape-room** (`pages/escape-room/index.vue`): `escapeStore.status === 'playing'` (the store's `Status` is `'idle' | 'playing' | 'gameover' | 'completed'`; only an active run is dirty).
+- **Escape-room gameplay** (`pages/escape-room/play.vue`): `escapeStore.status === 'playing'` (the store's `Status` is `'idle' | 'playing' | 'gameover' | 'completed'`; only an active run is dirty). The escape-room *index* (`index.vue`) is just the level menu — nothing in progress — so it keeps its plain `<GameExitButton>` with no guard.
 
 ### Out of scope (deliberate)
 
@@ -72,7 +72,7 @@ and the single modal.
 | Edit | `munbeop/app/components/games/GameExitButton.vue` (use guard, drop own modal + `confirm` prop) |
 | Edit | `munbeop/app/pages/practice/particles.vue` (guard + `<GameLeaveConfirm>` + `<GameExitButton>`) |
 | Edit | `munbeop/app/pages/practice/ruleta.vue` (guard + `<GameLeaveConfirm>`; drop `:confirm`) |
-| Edit | `munbeop/app/pages/escape-room/index.vue` (guard + `<GameLeaveConfirm>`) |
+| Edit | `munbeop/app/pages/escape-room/play.vue` (guard + `<GameLeaveConfirm>`) |
 | Create | `munbeop/tests/unit/games/game-leave-guard.test.ts` (guard logic) |
 | Create | `munbeop/tests/components/games/GameLeaveConfirm.test.ts` |
 | Edit | `munbeop/tests/components/games/GameExitButton.test.ts` (update to the guarded flow) |
