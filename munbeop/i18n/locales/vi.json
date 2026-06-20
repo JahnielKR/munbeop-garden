@@ -1,4 +1,18 @@
 {
+  "onboarding": {
+    "title": "Trồng câu đầu tiên của bạn",
+    "intro": "Trong mungarden bạn tự viết câu tiếng Hàn. Hãy cùng làm câu đầu tiên — chỉ cần điền vào chỗ trống.",
+    "prompt": "Hoàn thành câu bằng mẫu này:",
+    "reveal_label": "Xem đáp án",
+    "celebrate": "Hạt giống đầu tiên của bạn đã được gieo. 화이팅!",
+    "cta": "Vào khu vườn của tôi",
+    "skip": "Để sau",
+    "empty": {
+      "title": "Khu vườn của bạn chỉ là đất trống",
+      "body": "Trồng câu tiếng Hàn đầu tiên để cây đầu tiên của bạn lớn lên.",
+      "cta": "Gieo hạt đầu tiên"
+    }
+  },
   "journal": {
     "mark_reviewed": "Đánh dấu đã ôn",
     "reviewed": "Đã ôn",

@@ -1,4 +1,18 @@
 {
+  "onboarding": {
+    "title": "Plante ta première phrase",
+    "intro": "Dans mungarden, tu écris toi-même les phrases en coréen. Faisons la première ensemble — il suffit de remplir le blanc.",
+    "prompt": "Complète la phrase avec ce motif :",
+    "reveal_label": "Voir la réponse",
+    "celebrate": "Ta première graine est plantée. 화이팅 !",
+    "cta": "Entrer dans mon jardin",
+    "skip": "Plus tard",
+    "empty": {
+      "title": "Ton jardin n'est que terre nue",
+      "body": "Plante ta première phrase en coréen pour faire pousser ton premier arbre.",
+      "cta": "Planter la première graine"
+    }
+  },
   "journal": {
     "mark_reviewed": "Marquer révisé",
     "reviewed": "Révisé",

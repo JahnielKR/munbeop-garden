@@ -1,4 +1,18 @@
 {
+  "onboarding": {
+    "title": "Plante sua primeira frase",
+    "intro": "No mungarden você escreve as frases em coreano você mesmo. Vamos fazer a primeira juntos — é só preencher a lacuna.",
+    "prompt": "Complete a frase usando este padrão:",
+    "reveal_label": "Ver resposta",
+    "celebrate": "Sua primeira semente está plantada. 화이팅!",
+    "cta": "Entrar no meu jardim",
+    "skip": "Agora não",
+    "empty": {
+      "title": "Seu jardim é só terra nua",
+      "body": "Plante sua primeira frase em coreano para crescer sua primeira árvore.",
+      "cta": "Plantar a primeira semente"
+    }
+  },
   "journal": {
     "mark_reviewed": "Marcar como revisado",
     "reviewed": "Revisado",
