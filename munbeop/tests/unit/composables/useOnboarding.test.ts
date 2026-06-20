@@ -1,8 +1,15 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
+import { useOnboarding } from '~/composables/useOnboarding'
+import { useGrammarStore } from '~/stores/grammar'
+import { useLogStore } from '~/stores/log'
+import { useSrsStore } from '~/stores/srs'
+import { useAppStatus } from '~/stores/appStatus'
+import type { Grammar } from '~/lib/domain'
 
 // Deterministic, storage-free adapter so add()/markSeen()/recalculate() resolve
 // without touching real storage. Assertions read store state instead.
+// (vi.mock is hoisted above the imports by Vitest, so the stores pick it up.)
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({
     read: vi.fn().mockResolvedValue(undefined),
@@ -11,13 +18,6 @@ vi.mock('~/composables/useStorageAdapter', () => ({
     upsertOne: vi.fn().mockResolvedValue(undefined),
   }),
 }))
-
-import { useOnboarding } from '~/composables/useOnboarding'
-import { useGrammarStore } from '~/stores/grammar'
-import { useLogStore } from '~/stores/log'
-import { useSrsStore } from '~/stores/srs'
-import { useAppStatus } from '~/stores/appStatus'
-import type { Grammar } from '~/lib/domain'
 
 const L = (s: string) => ({ en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s })
 const STARTER_KO = '-아/어서'
