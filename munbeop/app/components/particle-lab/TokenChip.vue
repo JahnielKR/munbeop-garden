@@ -113,6 +113,9 @@ const ariaLabel = computed(() => {
   color: var(--text);
   border-color: var(--border-strong);
 }
+.chip--recipient { background: var(--plum); color: var(--always-dark); }
+.chip--means { background: var(--teal); color: var(--always-dark); }
+.chip--connective { background: var(--rose); color: var(--always-dark); }
 
 /* OFF = ghost: dashed border, faded, no fill. */
 .chip--off {

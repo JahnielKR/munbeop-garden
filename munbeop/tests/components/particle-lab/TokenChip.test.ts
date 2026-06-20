@@ -47,4 +47,10 @@ describe('TokenChip', () => {
     await w.get('[data-testid="particle-chip"]').trigger('click')
     expect(w.emitted('toggle')).toBeTruthy()
   })
+
+  it('colors a recipient particle with its role class', () => {
+    const tok: LabToken = { kind: 'particle', text: '한테', particleId: 'recipient', toggleable: true }
+    const w = mountChip(tok)
+    expect(w.get('[data-testid="particle-chip"]').classes()).toContain('chip--recipient')
+  })
 })

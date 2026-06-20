@@ -30,6 +30,11 @@ describe('explore resolver', () => {
     expect(indexOfParticle(PARTICLE_SENTENCES, 'place-action')).toBeGreaterThan(0)
   })
 
+  it('finds a first sentence for every new Explore particle', () => {
+    for (const id of ['only', 'recipient', 'by-means', 'and', 'from', 'until'] as const)
+      expect(indexOfParticle(PARTICLE_SENTENCES, id), id).toBeGreaterThanOrEqual(0)
+  })
+
   it('every explicit reading references particles that exist in its sentence', () => {
     for (const s of PARTICLE_SENTENCES) {
       const present = particleIds(s)

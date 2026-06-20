@@ -37,6 +37,9 @@
   --gold: #e8923c;         /* ámbar brasa — primary action; 35° del rojo */
   --red: #ff4757;          /* warmer red on the abyssal-blue surface */
   --red-deep: #e84118;
+  --plum: #c2a2ea;         /* lavanda lunar — recipient (한테) */
+  --teal: #4fc6bd;         /* turquesa luciérnaga — means ((으)로) */
+  --rose: #ec8fb5;         /* rosa neón suave — connective (와/과) */
   --hover-bg: rgba(232, 146, 60, 0.22); /* destello de brasa translúcido */
   --shadow-cream: #f1ece4; /* cream pixel shadow — keeps silhouettes visible */
 

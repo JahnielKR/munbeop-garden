@@ -80,6 +80,9 @@ const defs = computed<ParticleDef[]>(
 .legend__swatch--object { background: var(--sky); }
 .legend__swatch--place { background: var(--red); }
 .legend__swatch--addition { background: var(--paper-deep); }
+.legend__swatch--recipient { background: var(--plum); }
+.legend__swatch--means { background: var(--teal); }
+.legend__swatch--connective { background: var(--rose); }
 .legend__ko {
   font-family: var(--font-ko);
   font-weight: 700;
