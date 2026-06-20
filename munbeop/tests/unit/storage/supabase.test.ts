@@ -17,6 +17,7 @@ function makeMockClient() {
     user_custom_contexts: [],
     user_inactive_contexts: [],
     user_settings: [],
+    user_custom_decks: [],
   }
   const writes: Array<{ table: string; op: 'upsert' | 'delete' | 'insert'; payload: unknown }> = []
   // Per-table injected error: when set, reads/writes for that table resolve
@@ -176,6 +177,96 @@ describe('SupabaseAdapter', () => {
       const upsert = client.writes.find((w) => w.table === 'user_log' && w.op === 'upsert')
       const rows = upsert!.payload as Array<{ error_dimension: string | null }>
       expect(rows[0]?.error_dimension).toBe('ending')
+    })
+  })
+
+  describe('customDecks round-trip', () => {
+    it('write: deletes then upserts snake_case rows into user_custom_decks', async () => {
+      client.data.user_custom_decks = [{ id: 'old', user_id: USER }]
+      await adapter.write(STORAGE_KEYS.customDecks, [
+        {
+          id: 'cd1',
+          name: 'My Deck',
+          colorId: 'jade',
+          icon: 'deck-star',
+          grammarKos: ['-(으)니까', '-아서/어서'],
+          order: 2,
+          createdAt: '2026-06-20T00:00:00Z',
+        },
+      ])
+      const ops = client.writes.filter((w) => w.table === 'user_custom_decks')
+      expect(ops[0]?.op).toBe('delete')
+      const upsert = ops.find((w) => w.op === 'upsert')
+      expect(upsert).toBeDefined()
+      const rows = upsert!.payload as Array<{
+        user_id: string
+        id: string
+        name: string
+        color_id: string
+        icon: string
+        image_url: string | null
+        grammar_kos: string[]
+        position: number
+        created_at: string
+      }>
+      expect(rows[0]?.user_id).toBe(USER)
+      expect(rows[0]?.id).toBe('cd1')
+      expect(rows[0]?.color_id).toBe('jade')
+      expect(rows[0]?.icon).toBe('deck-star')
+      expect(rows[0]?.image_url).toBeNull()
+      expect(rows[0]?.grammar_kos).toEqual(['-(으)니까', '-아서/어서'])
+      expect(rows[0]?.position).toBe(2)
+      expect(rows[0]?.created_at).toBe('2026-06-20T00:00:00Z')
+    })
+
+    it('read: maps snake_case rows into camelCase CustomDeck[]', async () => {
+      client.data.user_custom_decks = [
+        {
+          id: 'cd1',
+          name: 'My Deck',
+          color_id: 'gold',
+          icon: 'deck-heart',
+          image_url: 'https://example.com/cover.png',
+          grammar_kos: ['-(으)니까'],
+          position: 1,
+          created_at: '2026-06-20T00:00:00Z',
+        },
+      ]
+      const decks = (await adapter.read(STORAGE_KEYS.customDecks, [])) as Array<{
+        id: string
+        name: string
+        colorId: string
+        icon: string
+        imageUrl?: string
+        grammarKos: string[]
+        order: number
+        createdAt: string
+      }>
+      expect(decks[0]?.id).toBe('cd1')
+      expect(decks[0]?.colorId).toBe('gold')
+      expect(decks[0]?.icon).toBe('deck-heart')
+      expect(decks[0]?.imageUrl).toBe('https://example.com/cover.png')
+      expect(decks[0]?.grammarKos).toEqual(['-(으)니까'])
+      expect(decks[0]?.order).toBe(1)
+      expect(decks[0]?.createdAt).toBe('2026-06-20T00:00:00Z')
+    })
+
+    it('read: a row with image_url null yields no imageUrl key', async () => {
+      client.data.user_custom_decks = [
+        {
+          id: 'cd2',
+          name: 'No Cover',
+          color_id: 'sky',
+          icon: 'deck-star',
+          image_url: null,
+          grammar_kos: [],
+          position: 0,
+          created_at: '2026-06-20T00:00:00Z',
+        },
+      ]
+      const decks = (await adapter.read(STORAGE_KEYS.customDecks, [])) as Array<Record<string, unknown>>
+      expect('imageUrl' in decks[0]!).toBe(false)
+      expect(decks[0]?.grammarKos).toEqual([])
     })
   })
 

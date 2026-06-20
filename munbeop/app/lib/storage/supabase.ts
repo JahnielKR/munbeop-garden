@@ -2,7 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database, Json } from '~/types/database.types'
 import type { StorageAdapter } from './adapter'
 import { STORAGE_KEYS, type StorageKey } from './keys'
-import type { Grammar, Context, Deck, LogEntry, SrsState } from '~/lib/domain'
+import type { Grammar, Context, Deck, CustomDeck, LogEntry, SrsState } from '~/lib/domain'
 import { CUSTOM_DECK_ID } from '~/lib/domain'
 
 /**
@@ -172,6 +172,25 @@ export class SupabaseAdapter implements StorageAdapter {
         return (decks.length ? decks : fallback) as T
       }
 
+      case STORAGE_KEYS.customDecks: {
+        const { data, error } = await this.client
+          .from('user_custom_decks')
+          .select('id, name, color_id, icon, image_url, grammar_kos, position, created_at')
+          .eq('user_id', this.userId)
+        assertOk('read', key, error)
+        const decks: CustomDeck[] = (data ?? []).map((r) => ({
+          id: r.id,
+          name: r.name,
+          colorId: r.color_id,
+          icon: r.icon,
+          grammarKos: (r.grammar_kos as string[]) ?? [],
+          order: r.position,
+          createdAt: r.created_at,
+          ...(r.image_url ? { imageUrl: r.image_url } : {}),
+        }))
+        return (decks.length ? decks : fallback) as T
+      }
+
       case STORAGE_KEYS.customContexts: {
         const { data, error } = await this.client
           .from('user_custom_contexts')
@@ -287,6 +306,29 @@ export class SupabaseAdapter implements StorageAdapter {
         return
       }
 
+      case STORAGE_KEYS.customDecks: {
+        const decks = value as CustomDeck[]
+        const del = await this.client.from('user_custom_decks').delete().eq('user_id', this.userId)
+        assertOk('write', key, del.error)
+        if (decks.length) {
+          const { error } = await this.client.from('user_custom_decks').upsert(
+            decks.map((d) => ({
+              user_id: this.userId,
+              id: d.id,
+              name: d.name,
+              color_id: d.colorId,
+              icon: d.icon,
+              image_url: d.imageUrl ?? null,
+              grammar_kos: d.grammarKos as unknown as Json,
+              position: d.order,
+              created_at: d.createdAt,
+            })),
+          )
+          assertOk('write', key, error)
+        }
+        return
+      }
+
       case STORAGE_KEYS.customContexts: {
         const contexts = value as Context[]
         const del = await this.client.from('user_custom_contexts').delete().eq('user_id', this.userId)
@@ -388,6 +430,7 @@ export class SupabaseAdapter implements StorageAdapter {
       'user_inactive_contexts',
       'user_settings',
       'user_escape_room',
+      'user_custom_decks',
     ] as const
     const results = await Promise.all(
       tables.map((t) => this.client.from(t).delete().eq('user_id', this.userId)),
