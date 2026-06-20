@@ -30,6 +30,9 @@ import { SPECIES_BY_LEVEL, SPECIES_KO, SPECIES_PARTICLE } from '~/lib/garden'
 import { gardenStateKey, useGardenState } from '~/composables/useGardenState'
 import { useGardenCelebration } from '~/composables/useGardenCelebration'
 import { useToast } from '~/composables/useToast'
+import EmptyPlot from '~/components/garden/EmptyPlot.vue'
+import GuidedFirstSentence from '~/components/onboarding/GuidedFirstSentence.vue'
+import { useOnboarding } from '~/composables/useOnboarding'
 import type { TopikLevel } from '~/lib/domain'
 
 definePageMeta({ surface: 'game' })
@@ -46,6 +49,18 @@ const {
   milestones,
   setActiveLevel,
 } = useGardenState()
+
+// First-run onboarding: a distinct empty plot + one guided sentence. The
+// overlay auto-opens once data is ready for a brand-new (empty-log) user;
+// the empty plot doubles as the manual entry point after a skip.
+const onboarding = useOnboarding()
+watch(
+  () => onboarding.shouldShow.value,
+  (show) => {
+    if (show) onboarding.start()
+  },
+  { immediate: true },
+)
 
 // hero ↔ grove toggle (same page, spec §5.2)
 const view = ref<'hero' | 'grove'>('hero')
@@ -161,7 +176,13 @@ const bomiAnchor = computed(() => {
     </header>
 
     <Transition name="garden-fade" mode="out-in">
-      <div v-if="view === 'hero'" key="hero" class="page__view">
+      <EmptyPlot
+        v-if="view === 'hero' && onboarding.showEmptyPlot.value"
+        key="empty"
+        @start="onboarding.start()"
+      />
+
+      <div v-else-if="view === 'hero'" key="hero" class="page__view">
         <div ref="stageWrap">
           <GardenStage :pct="active.pct" :scale="treeScale" :cold="weatherKind === 'rain'">
             <template #weather>
@@ -209,6 +230,12 @@ const bomiAnchor = computed(() => {
         @select="onGroveSelect"
       />
     </Transition>
+
+    <GuidedFirstSentence
+      :open="onboarding.open.value"
+      @complete="onboarding.complete($event)"
+      @skip="onboarding.skip()"
+    />
   </div>
 </template>
 

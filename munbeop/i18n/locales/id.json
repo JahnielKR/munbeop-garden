@@ -1,4 +1,18 @@
 {
+  "onboarding": {
+    "title": "Tanam kalimat pertamamu",
+    "intro": "Di mungarden kamu menulis kalimat Korea sendiri. Ayo buat yang pertama bersama — cukup isi bagian yang kosong.",
+    "prompt": "Lengkapi kalimat menggunakan pola ini:",
+    "reveal_label": "Lihat jawaban",
+    "celebrate": "Benih pertamamu sudah ditanam. 화이팅!",
+    "cta": "Masuk ke kebunku",
+    "skip": "Nanti saja",
+    "empty": {
+      "title": "Kebunmu masih tanah kosong",
+      "body": "Tanam kalimat Korea pertamamu untuk menumbuhkan pohon pertamamu.",
+      "cta": "Tanam benih pertama"
+    }
+  },
   "journal": {
     "mark_reviewed": "Tandai sudah ditinjau",
     "reviewed": "Sudah ditinjau",
