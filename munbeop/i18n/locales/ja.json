@@ -22,6 +22,7 @@
       "see_sheet": "詳細カードを開く"
     },
     "drill": {
+      "set_picker_label": "対決を選ぶ",
       "cue_label": "場面",
       "options_label": "助詞を選ぼう",
       "blocked_title": "ブロック！ · 받침",

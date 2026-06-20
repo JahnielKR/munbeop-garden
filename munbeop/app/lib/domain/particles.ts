@@ -55,23 +55,42 @@ export interface LabSentence {
   readings: LabReading[]
 }
 
-/** ── Drill (은/는 vs 이/가) ─────────────────────────────────────────── */
+/** ── Drill (clash sets) ─────────────────────────────────────────────── */
 
-export type DrillFamily = 'topic' | 'subject'
-export type DrillChoice = '은' | '는' | '이' | '가'
+interface ClashFamilyBase {
+  /** Stable id, e.g. 'topic', 'place-static', 'recipient'. */
+  id: string
+  /** Short label for chips / feedback. */
+  label: LocalizedString
+  /** Grammar.ko this family maps to — SRS, diary, study sheet. */
+  grammarKo: string
+}
+export type ClashFamily =
+  | (ClashFamilyBase & { invariant: true; form: string })
+  | (ClashFamilyBase & { invariant: false; afterConsonant: string; afterVowel: string })
+
+export interface ClashSet {
+  id: string
+  /** Short bilingual name for the set picker. */
+  name: LocalizedString
+  families: [ClashFamily, ClashFamily]
+}
 
 export interface DrillItem {
   id: string
   /** Disambiguating situation shown above the sentence. */
   cue: LocalizedString
-  /** Optional Korean text rendered before the gap noun (e.g. '코끼리는 '). */
+  /** Optional Korean rendered before the gap noun (e.g. '코끼리는 '). */
   lead?: string
   /** Noun that receives the particle. */
   noun: string
   /** Sentence remainder after the gap, leading space included. */
   rest: string
-  family: DrillFamily
-  /** Why this family wins here. Shown on answer; reused as auto diary note. */
+  /** Which ClashSet this item belongs to. */
+  setId: string
+  /** Which of the set's two families is correct here. */
+  familyIndex: 0 | 1
+  /** Why this family wins. Shown on answer; reused as auto diary note. */
   reason: LocalizedString
   /** Translation of the correct full sentence. */
   trans: LocalizedString
@@ -79,5 +98,5 @@ export interface DrillItem {
 
 export type DrillVerdict =
   | { kind: 'correct' }
-  | { kind: 'blocked'; expected: DrillChoice; nounHasBatchim: boolean }
-  | { kind: 'wrong-family'; expected: DrillChoice; family: DrillFamily }
+  | { kind: 'blocked'; expected: string; nounHasBatchim: boolean }
+  | { kind: 'wrong-family'; expected: string; familyId: string }

@@ -22,6 +22,7 @@
       "see_sheet": "XEM THẺ ĐẦY ĐỦ"
     },
     "drill": {
+      "set_picker_label": "Chọn cặp",
       "cue_label": "Tình huống",
       "options_label": "Chọn tiểu từ",
       "blocked_title": "BỊ CHẶN! · 받침",

@@ -22,6 +22,7 @@
       "see_sheet": "VOIR LA FICHE COMPLÈTE"
     },
     "drill": {
+      "set_picker_label": "Choisis un duel",
       "cue_label": "Situation",
       "options_label": "Choisis la particule",
       "blocked_title": "BLOQUÉ ! · 받침",

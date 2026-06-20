@@ -1,27 +1,29 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { DrillChoice, DrillItem, DrillVerdict } from '~/lib/domain'
-import { DRILL_CHOICES, correctForm, correctSentence } from '~/lib/particle-lab'
+import type { ClashSet, DrillItem, DrillVerdict } from '~/lib/domain'
+import { correctForm, correctSentence, deriveOptions } from '~/lib/particle-lab'
 import { useLocalized } from '~/composables/useLocalized'
 import DrillOption from './DrillOption.vue'
 
-/** One drill question: cue, gap sentence, four options, phase feedback. */
+/** One drill question: cue, gap sentence, 2–4 options, phase feedback. */
 interface Props {
   item: DrillItem
+  set: ClashSet
   phase: 'question' | 'blocked' | 'right' | 'wrong'
   verdict: DrillVerdict | null
-  picked: DrillChoice | null
-  blockedChoices: ReadonlySet<DrillChoice>
+  picked: string | null
+  blockedChoices: ReadonlySet<string>
 }
 const props = defineProps<Props>()
-const emit = defineEmits<{ answer: [choice: DrillChoice]; retry: []; next: [] }>()
+const emit = defineEmits<{ answer: [choice: string]; retry: []; next: [] }>()
 const { t } = useI18n()
 const { tl } = useLocalized()
 
 const revealed = computed(() => props.phase === 'right' || props.phase === 'wrong')
-const answer = computed(() => correctForm(props.item))
+const answer = computed(() => correctForm(props.item, props.set))
+const options = computed(() => deriveOptions(props.set))
 
-function stateOf(choice: DrillChoice): 'idle' | 'blocked' | 'correct' | 'wrong' {
+function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
   if (props.blockedChoices.has(choice)) return 'blocked'
   if (revealed.value && choice === answer.value) return 'correct'
   if (props.phase === 'wrong' && choice === props.picked) return 'wrong'
@@ -51,7 +53,7 @@ function stateOf(choice: DrillChoice): 'idle' | 'blocked' | 'correct' | 'wrong' 
 
     <div class="drill__options" role="group" :aria-label="t('particles.drill.options_label')">
       <DrillOption
-        v-for="c in DRILL_CHOICES"
+        v-for="c in options"
         :key="c"
         :choice="c"
         :state="stateOf(c)"
@@ -91,7 +93,7 @@ function stateOf(choice: DrillChoice): 'idle' | 'blocked' | 'correct' | 'wrong' 
         <h4 class="feedback__title">
           {{ phase === 'right' ? `✅ ${t('particles.drill.right_title')}` : `❌ ${t('particles.drill.wrong_title')}` }}
         </h4>
-        <p class="feedback__sentence" lang="ko">{{ correctSentence(item) }}</p>
+        <p class="feedback__sentence" lang="ko">{{ correctSentence(item, set) }}</p>
         <p class="feedback__trans">{{ tl(item.trans) }}</p>
         <p class="feedback__body">{{ tl(item.reason) }}</p>
         <p v-if="phase === 'wrong'" class="feedback__diary">

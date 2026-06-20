@@ -1,47 +1,44 @@
-import type {
-  DrillChoice,
-  DrillFamily,
-  DrillItem,
-  DrillVerdict,
-} from '../domain/particles'
+import type { ClashFamily, ClashSet, DrillItem, DrillVerdict } from '../domain/particles'
 import { hasBatchim } from './hangul'
 
-export const DRILL_CHOICES: readonly DrillChoice[] = ['은', '는', '이', '가']
-
-const FAMILY_OF: Record<DrillChoice, DrillFamily> = {
-  은: 'topic',
-  는: 'topic',
-  이: 'subject',
-  가: 'subject',
+/** Every surface form a family can take (1 for invariant, 2 for allomorph). */
+export function formsOf(f: ClashFamily): string[] {
+  return f.invariant ? [f.form] : [f.afterConsonant, f.afterVowel]
 }
 
-export function familyOf(choice: DrillChoice): DrillFamily {
-  return FAMILY_OF[choice]
+/** The token a family takes for `noun` (받침-selected for allomorph families). */
+export function familyFormFor(f: ClashFamily, noun: string): string {
+  if (f.invariant) return f.form
+  return hasBatchim(noun) ? f.afterConsonant : f.afterVowel
 }
 
-/** The exact form this item expects, derived from family + 받침 of the noun. */
-export function correctForm(item: DrillItem): DrillChoice {
-  const batchim = hasBatchim(item.noun)
-  if (item.family === 'topic') return batchim ? '은' : '는'
-  return batchim ? '이' : '가'
+export function correctForm(item: DrillItem, set: ClashSet): string {
+  return familyFormFor(set.families[item.familyIndex], item.noun)
 }
 
-/** Full correct sentence (lead + noun+particle + rest). */
-export function correctSentence(item: DrillItem): string {
-  return `${item.lead ?? ''}${item.noun}${correctForm(item)}${item.rest}`
+/** Full correct sentence (lead + noun+form + rest). */
+export function correctSentence(item: DrillItem, set: ClashSet): string {
+  return `${item.lead ?? ''}${item.noun}${correctForm(item, set)}${item.rest}`
+}
+
+/** Answer options: family-0 forms then family-1 forms, de-duplicated. */
+export function deriveOptions(set: ClashSet): string[] {
+  return [...new Set([...formsOf(set.families[0]), ...formsOf(set.families[1])])]
 }
 
 /**
  * Two-layer judgement:
- *  - right family, wrong allomorph → 'blocked' (orthographic slip, retry)
+ *  - right family, wrong allomorph → 'blocked' (받침 slip, retry)
  *  - wrong family                  → 'wrong-family' (semantic error, ends item)
  */
-export function judge(item: DrillItem, choice: DrillChoice): DrillVerdict {
-  const expected = correctForm(item)
+export function judge(item: DrillItem, choice: string, set: ClashSet): DrillVerdict {
+  const expected = correctForm(item, set)
   if (choice === expected) return { kind: 'correct' }
-  if (familyOf(choice) === item.family)
+  const correct = set.families[item.familyIndex]
+  if (formsOf(correct).includes(choice)) {
     return { kind: 'blocked', expected, nounHasBatchim: hasBatchim(item.noun) }
-  return { kind: 'wrong-family', expected, family: item.family }
+  }
+  return { kind: 'wrong-family', expected, familyId: correct.id }
 }
 
 export interface DrillItemResult {

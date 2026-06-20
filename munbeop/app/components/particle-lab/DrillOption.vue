@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import type { DrillChoice } from '~/lib/domain'
-
-/** One of the four 은/는/이/가 answer buttons. */
+/** One answer button (a particle form: 은/는/이/가/에/에서/도/만/…). */
 interface Props {
-  choice: DrillChoice
+  choice: string
   state: 'idle' | 'blocked' | 'correct' | 'wrong'
   disabled?: boolean
 }

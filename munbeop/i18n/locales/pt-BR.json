@@ -22,6 +22,7 @@
       "see_sheet": "VER FICHA COMPLETA"
     },
     "drill": {
+      "set_picker_label": "Escolha um choque",
       "cue_label": "Situação",
       "options_label": "Escolha a partícula",
       "blocked_title": "BLOQUEADO! · 받침",
