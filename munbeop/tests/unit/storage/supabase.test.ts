@@ -210,6 +210,20 @@ describe('SupabaseAdapter', () => {
       expect(row.user_id).toBe(USER)
       expect(row.prefs).toEqual({ theme: 'dark', locale: 'ja' })
     })
+
+    it('grammar: upserts only custom-deck rows to user_custom_grammars (not the catalog)', async () => {
+      const L = (s: string) => ({ en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s })
+      await adapter.write(STORAGE_KEYS.grammar, [
+        { ko: 'CATALOG', meaning: L('x'), deckId: 'topik-1' },
+        { ko: 'MINE', meaning: L('y'), deckId: 'custom' },
+      ] as never)
+      const ops = client.writes.filter((w) => w.table === 'user_custom_grammars')
+      expect(ops[0]?.op).toBe('delete')
+      const upsert = ops.find((w) => w.op === 'upsert')
+      const rows = upsert!.payload as Array<{ ko: string }>
+      expect(rows).toHaveLength(1)
+      expect(rows[0]?.ko).toBe('MINE')
+    })
   })
 
   describe('error handling', () => {
