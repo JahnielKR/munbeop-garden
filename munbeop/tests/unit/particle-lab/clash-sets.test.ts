@@ -34,4 +34,11 @@ describe('clash sets integrity', () => {
     const ids = PARTICLE_DRILLS.map((i) => i.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
+
+  it('every set has at least 10 items after the replay expansion', () => {
+    for (const set of CLASH_SETS) {
+      const items = PARTICLE_DRILLS.filter((i) => i.setId === set.id)
+      expect(items.length, set.id).toBeGreaterThanOrEqual(10)
+    }
+  })
 })
