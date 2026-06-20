@@ -1,5 +1,16 @@
 {
+  "dimension": {
+    "prompt": "O que escapou?",
+    "particle": "조사 · partícula",
+    "ending": "어미 · terminação",
+    "register": "높임 · registro",
+    "word_order": "어순 · ordem",
+    "other": "기타 · outro"
+  },
   "journal": {
+    "revisit_title": "Plantas para revisar",
+    "revisit_count": "{n} para revisar",
+    "revisit_practice": "Praticar 화이팅",
     "mark_reviewed": "Marcar como revisado",
     "reviewed": "Revisado",
     "note_label": "Nota"

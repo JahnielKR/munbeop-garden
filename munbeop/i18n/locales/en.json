@@ -1,5 +1,16 @@
 {
+  "dimension": {
+    "prompt": "What slipped?",
+    "particle": "조사 · particle",
+    "ending": "어미 · ending",
+    "register": "높임 · register",
+    "word_order": "어순 · word order",
+    "other": "기타 · other"
+  },
   "journal": {
+    "revisit_title": "Plants to revisit",
+    "revisit_count": "{n} to revisit",
+    "revisit_practice": "Practice 화이팅",
     "mark_reviewed": "Mark reviewed",
     "reviewed": "Reviewed",
     "note_label": "Note"

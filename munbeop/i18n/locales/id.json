@@ -1,5 +1,16 @@
 {
+  "dimension": {
+    "prompt": "Apa yang meleset?",
+    "particle": "조사 · partikel",
+    "ending": "어미 · akhiran",
+    "register": "높임 · tingkat bahasa",
+    "word_order": "어순 · urutan kata",
+    "other": "기타 · lainnya"
+  },
   "journal": {
+    "revisit_title": "Tanaman untuk ditinjau",
+    "revisit_count": "{n} untuk ditinjau",
+    "revisit_practice": "Latihan 화이팅",
     "mark_reviewed": "Tandai sudah ditinjau",
     "reviewed": "Sudah ditinjau",
     "note_label": "Catatan"
