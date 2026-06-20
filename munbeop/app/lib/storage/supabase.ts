@@ -146,7 +146,7 @@ export class SupabaseAdapter implements StorageAdapter {
           sentence: r.sentence,
           feedback: r.feedback as LogEntry['feedback'],
           errorNote: r.error_note,
-          errorDimension: r.error_dimension ?? null,
+          errorDimension: (r.error_dimension ?? null) as LogEntry['errorDimension'],
           reviewState: r.review_state as LogEntry['reviewState'],
           contextId: r.context_id,
           contextName: r.context_name,

@@ -146,6 +146,7 @@ async function onSubmit(payload: {
   sentence: string
   feedback: 'easy' | 'hard'
   errorNote: string | null
+  errorDimension?: import('~/lib/domain').ErrorDimension | null
 }) {
   const entry = await persistEntry(payload)
   if (entry) {
