@@ -17,7 +17,7 @@ export interface GameLeaveGuard {
 export const GAME_LEAVE_GUARD: InjectionKey<GameLeaveGuard> = Symbol('game-leave-guard')
 
 interface MinimalRouter {
-  push: (to: RouteLocationRaw) => Promise<unknown> | void
+  push: (to: RouteLocationRaw) => Promise<unknown>
 }
 
 /**
