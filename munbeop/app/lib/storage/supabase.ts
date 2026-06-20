@@ -319,7 +319,7 @@ export class SupabaseAdapter implements StorageAdapter {
               color_id: d.colorId,
               icon: d.icon,
               image_url: d.imageUrl ?? null,
-              grammar_kos: d.grammarKos as unknown as Json,
+              grammar_kos: d.grammarKos as Json,
               position: d.order,
               created_at: d.createdAt,
             })),

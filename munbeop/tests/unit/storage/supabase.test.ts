@@ -268,6 +268,14 @@ describe('SupabaseAdapter', () => {
       expect('imageUrl' in decks[0]!).toBe(false)
       expect(decks[0]?.grammarKos).toEqual([])
     })
+
+    it('write: empty array records a delete op but NO upsert op', async () => {
+      client.data.user_custom_decks = [{ id: 'old', user_id: USER }]
+      await adapter.write(STORAGE_KEYS.customDecks, [])
+      const ops = client.writes.filter((w) => w.table === 'user_custom_decks')
+      expect(ops[0]?.op).toBe('delete')
+      expect(ops.some((w) => w.op === 'upsert')).toBe(false)
+    })
   })
 
   describe('write', () => {
