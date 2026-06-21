@@ -42,7 +42,9 @@
       "summary_repeat": "CHƠI LẠI",
       "summary_explore": "KHÁM PHÁ",
       "summary_replay_failed": "ÔN LẠI LỖI ({n})",
-      "replay_mode_label": "Chế độ ôn · lỗi không được ghi lại nữa"
+      "replay_mode_label": "Chế độ ôn · lỗi không được ghi lại nữa",
+      "contraction_title": "Rút gọn!",
+      "contraction_rule": "{pronoun} + 가 rút thành {answer}, không phải {trap}."
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "Ngữ pháp này là một tiểu từ: bật/tắt nó trong câu thật để cảm nhận nó thêm gì.",

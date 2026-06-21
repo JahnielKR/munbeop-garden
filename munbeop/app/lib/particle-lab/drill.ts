@@ -1,6 +1,19 @@
 import type { ClashFamily, ClashSet, DrillItem, DrillVerdict } from '../domain/particles'
 import { hasBatchim } from './hangul'
 
+/** Pronouns whose subject form fuses with 가. */
+export const CONTRACTIONS: Record<string, string> = {
+  나: '내가',
+  저: '제가',
+  너: '네가',
+  누구: '누가',
+}
+
+/** The naive (wrong) uncontracted subject form, e.g. 나 → 나가. */
+export function contractionTrap(noun: string): string {
+  return `${noun}가`
+}
+
 /** Every surface form a family can take (1 for invariant, 2 for allomorph). */
 export function formsOf(f: ClashFamily): string[] {
   return f.invariant ? [f.form] : [f.afterConsonant, f.afterVowel]
@@ -13,17 +26,46 @@ export function familyFormFor(f: ClashFamily, noun: string): string {
 }
 
 export function correctForm(item: DrillItem, set: ClashSet): string {
+  if (set.kind === 'contraction') return CONTRACTIONS[item.noun] ?? contractionTrap(item.noun)
   return familyFormFor(set.families[item.familyIndex], item.noun)
 }
 
-/** Full correct sentence (lead + noun+form + rest). */
-export function correctSentence(item: DrillItem, set: ClashSet): string {
-  return `${item.lead ?? ''}${item.noun}${correctForm(item, set)}${item.rest}`
+export interface SentenceParts {
+  before: string
+  answer: string
+  after: string
 }
 
-/** Answer options: family-0 forms then family-1 forms, de-duplicated. */
+/**
+ * Render pieces for the gap sentence: `${before}${answer}${after}`.
+ * Particle items keep the noun in `before`; contraction items put the whole
+ * fused subject in `answer` (so the pronoun isn't shown twice).
+ */
+export function sentenceParts(item: DrillItem, set: ClashSet): SentenceParts {
+  const answer = correctForm(item, set)
+  if (set.kind === 'contraction') {
+    return { before: item.lead ?? '', answer, after: item.rest }
+  }
+  return { before: `${item.lead ?? ''}${item.noun}`, answer, after: item.rest }
+}
+
+/** Full correct sentence. */
+export function correctSentence(item: DrillItem, set: ClashSet): string {
+  const p = sentenceParts(item, set)
+  return `${p.before}${p.answer}${p.after}`
+}
+
+/** Set-wide answer options: family-0 forms then family-1 forms, de-duplicated. */
 export function deriveOptions(set: ClashSet): string[] {
   return [...new Set([...formsOf(set.families[0]), ...formsOf(set.families[1])])]
+}
+
+/** Answer options for THIS item: contraction = [answer, trap] sorted; particle = set-wide. */
+export function optionsFor(item: DrillItem, set: ClashSet): string[] {
+  if (set.kind === 'contraction') {
+    return [correctForm(item, set), contractionTrap(item.noun)].sort()
+  }
+  return deriveOptions(set)
 }
 
 /**
@@ -34,6 +76,7 @@ export function deriveOptions(set: ClashSet): string[] {
 export function judge(item: DrillItem, choice: string, set: ClashSet): DrillVerdict {
   const expected = correctForm(item, set)
   if (choice === expected) return { kind: 'correct' }
+  if (set.kind === 'contraction') return { kind: 'contraction', expected }
   const correct = set.families[item.familyIndex]
   if (formsOf(correct).includes(choice)) {
     return { kind: 'blocked', expected, nounHasBatchim: hasBatchim(item.noun) }

@@ -42,7 +42,9 @@
       "summary_repeat": "MAIN LAGI",
       "summary_explore": "JELAJAH",
       "summary_replay_failed": "ULANGI YANG SALAH ({n})",
-      "replay_mode_label": "Mode ulasan · kesalahan tidak dicatat lagi"
+      "replay_mode_label": "Mode ulasan · kesalahan tidak dicatat lagi",
+      "contraction_title": "Kontraksi!",
+      "contraction_rule": "{pronoun} + 가 menjadi {answer}, bukan {trap}."
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "Tata bahasa ini adalah partikel: nyalakan dan matikan dalam kalimat nyata.",

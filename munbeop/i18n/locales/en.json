@@ -42,7 +42,9 @@
       "summary_repeat": "PLAY AGAIN",
       "summary_explore": "EXPLORE",
       "summary_replay_failed": "REVIEW MISTAKES ({n})",
-      "replay_mode_label": "Review mode · mistakes aren't logged again"
+      "replay_mode_label": "Review mode · mistakes aren't logged again",
+      "contraction_title": "Contraction!",
+      "contraction_rule": "{pronoun} + 가 contracts to {answer} — not {trap}."
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "This grammar is a particle: toggle it inside real sentences to feel what it adds.",

@@ -68,3 +68,48 @@ describe('DrillCard', () => {
     expect(fb.text()).toContain('existence takes subject')
   })
 })
+
+describe('DrillCard — contraction', () => {
+  const CONTRACTION: ClashSet = {
+    id: 'contraction', kind: 'contraction', name: LS('축약'),
+    families: [
+      { id: 'subject', grammarKo: '이/가', invariant: false, afterConsonant: '이', afterVowel: '가', label: LS('subject') },
+      { id: 'subject', grammarKo: '이/가', invariant: false, afterConsonant: '이', afterVowel: '가', label: LS('subject') },
+    ],
+  }
+  const contractionItem: DrillItem = {
+    id: 'ct-na', cue: LS('You volunteer to go'), noun: '나', rest: ' 갈게요.',
+    setId: 'contraction', familyIndex: 0, reason: LS('나+가 → 내가'), trans: LS('I will go'),
+  }
+  const mountC = (overrides: Record<string, unknown> = {}) =>
+    mount(DrillCard, {
+      props: {
+        item: contractionItem, set: CONTRACTION, phase: 'question', verdict: null,
+        picked: null, blockedChoices: new Set(), ...overrides,
+      },
+    })
+
+  it('renders the fused-form options', () => {
+    const w = mountC()
+    for (const c of ['내가', '나가'])
+      expect(w.find(`[data-testid="drill-option-${c}"]`).exists()).toBe(true)
+  })
+
+  it('reveals the fused sentence without a double pronoun', () => {
+    const w = mountC({ phase: 'right', verdict: { kind: 'correct' } })
+    const text = w.get('[data-testid="drill-card"]').text()
+    expect(text).toContain('내가 갈게요.')
+    expect(text).not.toContain('나내가')
+  })
+
+  it('shows the contraction explanation (not the 받침 one) when the naive form is picked', () => {
+    const w = mountC({
+      phase: 'blocked',
+      verdict: { kind: 'contraction', expected: '내가' },
+      picked: '나가',
+      blockedChoices: new Set(['나가']),
+    })
+    expect(w.find('[data-testid="drill-contraction"]').exists()).toBe(true)
+    expect(w.find('[data-testid="drill-blocked"]').exists()).toBe(false)
+  })
+})

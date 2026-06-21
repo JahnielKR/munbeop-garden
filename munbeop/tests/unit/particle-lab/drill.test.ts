@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { ClashSet, DrillItem, LocalizedString } from '~/lib/domain'
-import { correctForm, correctSentence, deriveOptions, judge, scoreOf } from '~/lib/particle-lab'
+import { correctForm, correctSentence, deriveOptions, judge, optionsFor, scoreOf, sentenceParts } from '~/lib/particle-lab'
 
 const LS = (s: string): LocalizedString => ({
   en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s,
@@ -28,6 +28,16 @@ const mulSubject = item('topic-subject', 1, '물', ' 맛있어요.')
 const jeoTopic = item('topic-subject', 0, '저', ' 학생이에요.')
 const kokkiri = item('topic-subject', 1, '코', ' 길어요.', '코끼리는 ')
 const ddoChip = item('place', 1, '도서관', ' 공부해요.')
+
+const CONTRACTION: ClashSet = {
+  id: 'contraction', kind: 'contraction', name: LS('c'),
+  families: [
+    { id: 'subject', grammarKo: '이/가', invariant: false, afterConsonant: '이', afterVowel: '가', label: LS('subject') },
+    { id: 'subject', grammarKo: '이/가', invariant: false, afterConsonant: '이', afterVowel: '가', label: LS('subject') },
+  ],
+}
+const naega = item('contraction', 0, '나', ' 갈게요.')
+const nuga = item('contraction', 0, '누구', ' 왔어요?')
 
 describe('drill engine (clash sets)', () => {
   it('derives the expected form from family + batchim', () => {
@@ -74,5 +84,29 @@ describe('drill engine (clash sets)', () => {
     ])
     expect(score).toEqual({ total: 4, correct: 3, batchimSlips: 3, accuracy: 0.75 })
     expect(scoreOf([])).toEqual({ total: 0, correct: 0, batchimSlips: 0, accuracy: 0 })
+  })
+
+  it('contraction: correctForm is the fused subject form', () => {
+    expect(correctForm(naega, CONTRACTION)).toBe('내가')
+    expect(correctForm(nuga, CONTRACTION)).toBe('누가')
+  })
+
+  it('contraction: options are the [answer, trap] pair, sorted', () => {
+    expect(optionsFor(naega, CONTRACTION)).toEqual(['나가', '내가'])
+    expect(optionsFor(nuga, CONTRACTION)).toEqual(['누가', '누구가'])
+  })
+
+  it('contraction: assembles the fused form without re-prepending the pronoun', () => {
+    expect(correctSentence(naega, CONTRACTION)).toBe('내가 갈게요.')
+    expect(sentenceParts(naega, CONTRACTION)).toEqual({ before: '', answer: '내가', after: ' 갈게요.' })
+  })
+
+  it('contraction: judges fused correct, naive form a contraction slip', () => {
+    expect(judge(naega, '내가', CONTRACTION)).toEqual({ kind: 'correct' })
+    expect(judge(naega, '나가', CONTRACTION)).toEqual({ kind: 'contraction', expected: '내가' })
+  })
+
+  it('optionsFor returns set-wide options for particle sets', () => {
+    expect(optionsFor(mulSubject, TOPIC_SUBJECT)).toEqual(['은', '는', '이', '가'])
   })
 })

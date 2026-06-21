@@ -42,7 +42,9 @@
       "summary_repeat": "REJOUER",
       "summary_explore": "EXPLORER",
       "summary_replay_failed": "REVOIR LES ERREURS ({n})",
-      "replay_mode_label": "Mode révision · les erreurs ne sont pas réenregistrées"
+      "replay_mode_label": "Mode révision · les erreurs ne sont pas réenregistrées",
+      "contraction_title": "Contraction !",
+      "contraction_rule": "{pronoun} + 가 se contracte en {answer}, pas {trap}."
     },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "Cette grammaire est une particule : allume-la et éteins-la dans de vraies phrases.",
