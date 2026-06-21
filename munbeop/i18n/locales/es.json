@@ -263,11 +263,21 @@
       "filter_all_categories": "Todas las categorías",
       "active_zone": "Filtrando por: {zone}",
       "category": {
-        "particle": "Partícula", "ending": "Terminación", "conj": "Conjunción",
-        "expr": "Expresión", "aux": "Auxiliar", "verb": "Verbo", "voice": "Voz",
-        "lex": "Léxico", "nominal": "Nominalizador", "modifier": "Modificador",
-        "copula": "Cópula", "negation": "Negación", "adv": "Adverbial",
-        "indirect": "Estilo indirecto", "meta": "Meta"
+        "particle": "Partícula",
+        "ending": "Terminación",
+        "conj": "Conjunción",
+        "expr": "Expresión",
+        "aux": "Auxiliar",
+        "verb": "Verbo",
+        "voice": "Voz",
+        "lex": "Léxico",
+        "nominal": "Nominalizador",
+        "modifier": "Modificador",
+        "copula": "Cópula",
+        "negation": "Negación",
+        "adv": "Adverbial",
+        "indirect": "Estilo indirecto",
+        "meta": "Meta"
       }
     }
   },
@@ -339,11 +349,22 @@
       "deleted": "Gramática eliminada."
     },
     "dark_mode": "Modo oscuro",
-    "appearance": { "theme": { "label": "Tema", "light": "Claro", "auto": "Auto", "dark": "Oscuro" } },
+    "appearance": {
+      "theme": {
+        "label": "Tema",
+        "light": "Claro",
+        "auto": "Auto",
+        "dark": "Oscuro"
+      }
+    },
     "contexts": {
       "title": "Contextos de práctica",
       "subtitle": "Elige qué situaciones aparecen en la práctica.",
-      "category": { "formalidad": "Formalidad", "situacional": "Situacional", "custom": "Tus contextos" },
+      "category": {
+        "formalidad": "Formalidad",
+        "situacional": "Situacional",
+        "custom": "Tus contextos"
+      },
       "add": "Añadir contexto",
       "name_label": "Nombre (coreano)",
       "name_placeholder": "ej. 반말",
@@ -361,11 +382,53 @@
       "deleted": "Contexto eliminado.",
       "cancel": "Cancelar"
     },
-    "about": { "title": "Acerca de y legal", "contact": "Contacto" },
-    "data": { "title": "Datos y privacidad", "export": "Exportar mis datos (.json)", "exported": "Tus datos se están descargando.", "export_error": "No se pudieron exportar tus datos. Inténtalo de nuevo." },
-    "tabs": { "account": "Cuenta", "appearance": "Apariencia", "learning": "Aprendizaje", "data": "Datos", "about": "Acerca de" },
-    "account": { "danger": { "title": "Zona de peligro", "description": "Borra permanentemente tu cuenta y todos tus datos. No se puede deshacer.", "button": "Borrar cuenta", "modal_title": "¿Borrar tu cuenta?", "modal_body": "Esto borra permanentemente tu cuenta, tus frases, progreso, mazos y gramática personalizada. No se puede deshacer.", "confirm_label": "Escribe DELETE para confirmar", "confirm_button": "Borrar para siempre", "cancel": "Cancelar", "error": "No se pudo borrar tu cuenta. Inténtalo de nuevo." }, "security": { "title": "Acceso y seguridad" }, "password": { "submit": "Actualizar contraseña", "wrong_current": "La contraseña actual es incorrecta." }, "email": { "title": "Nuevo correo", "submit": "Actualizar correo", "hint": "Te enviaremos un enlace de confirmación al nuevo correo.", "sent": "Enlace de confirmación enviado: revisá tu nuevo correo.", "error": "No se pudo actualizar tu correo. Inténtalo de nuevo." } },
-    "menu": { "account": "Menú de cuenta" }
+    "about": {
+      "title": "Acerca de y legal",
+      "contact": "Contacto"
+    },
+    "data": {
+      "title": "Datos y privacidad",
+      "export": "Exportar mis datos (.json)",
+      "exported": "Tus datos se están descargando.",
+      "export_error": "No se pudieron exportar tus datos. Inténtalo de nuevo."
+    },
+    "tabs": {
+      "account": "Cuenta",
+      "appearance": "Apariencia",
+      "learning": "Aprendizaje",
+      "data": "Datos",
+      "about": "Acerca de"
+    },
+    "account": {
+      "danger": {
+        "title": "Zona de peligro",
+        "description": "Borra permanentemente tu cuenta y todos tus datos. No se puede deshacer.",
+        "button": "Borrar cuenta",
+        "modal_title": "¿Borrar tu cuenta?",
+        "modal_body": "Esto borra permanentemente tu cuenta, tus frases, progreso, mazos y gramática personalizada. No se puede deshacer.",
+        "confirm_label": "Escribe DELETE para confirmar",
+        "confirm_button": "Borrar para siempre",
+        "cancel": "Cancelar",
+        "error": "No se pudo borrar tu cuenta. Inténtalo de nuevo."
+      },
+      "security": {
+        "title": "Acceso y seguridad"
+      },
+      "password": {
+        "submit": "Actualizar contraseña",
+        "wrong_current": "La contraseña actual es incorrecta."
+      },
+      "email": {
+        "title": "Nuevo correo",
+        "submit": "Actualizar correo",
+        "hint": "Te enviaremos un enlace de confirmación al nuevo correo.",
+        "sent": "Enlace de confirmación enviado: revisá tu nuevo correo.",
+        "error": "No se pudo actualizar tu correo. Inténtalo de nuevo."
+      }
+    },
+    "menu": {
+      "account": "Menú de cuenta"
+    }
   },
   "welcome": {
     "brand": {
@@ -473,7 +536,11 @@
     "exit_confirm_title": "¿Salir del juego?",
     "exit_confirm_body": "Perderás el progreso de esta ronda.",
     "exit_confirm_leave": "Salir",
-    "exit_confirm_cancel": "Cancelar"
+    "exit_confirm_cancel": "Cancelar",
+    "conjugation": {
+      "name": "활용 연습 · Conjugación",
+      "desc": "Elige la forma conjugada correcta. Vence los errores sistemáticos que cometen los estudiantes."
+    }
   },
   "escape": {
     "book_lead": "Hojea la libreta y elige tu historia.",

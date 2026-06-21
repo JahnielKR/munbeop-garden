@@ -263,11 +263,21 @@
       "filter_all_categories": "All categories",
       "active_zone": "Filtering by: {zone}",
       "category": {
-        "particle": "Particle", "ending": "Ending", "conj": "Conjunction",
-        "expr": "Expression", "aux": "Auxiliary", "verb": "Verb", "voice": "Voice",
-        "lex": "Lexical", "nominal": "Nominalizer", "modifier": "Modifier",
-        "copula": "Copula", "negation": "Negation", "adv": "Adverbial",
-        "indirect": "Indirect speech", "meta": "Meta"
+        "particle": "Particle",
+        "ending": "Ending",
+        "conj": "Conjunction",
+        "expr": "Expression",
+        "aux": "Auxiliary",
+        "verb": "Verb",
+        "voice": "Voice",
+        "lex": "Lexical",
+        "nominal": "Nominalizer",
+        "modifier": "Modifier",
+        "copula": "Copula",
+        "negation": "Negation",
+        "adv": "Adverbial",
+        "indirect": "Indirect speech",
+        "meta": "Meta"
       }
     }
   },
@@ -339,11 +349,22 @@
       "deleted": "Grammar removed."
     },
     "dark_mode": "Dark mode",
-    "appearance": { "theme": { "label": "Theme", "light": "Light", "auto": "Auto", "dark": "Dark" } },
+    "appearance": {
+      "theme": {
+        "label": "Theme",
+        "light": "Light",
+        "auto": "Auto",
+        "dark": "Dark"
+      }
+    },
     "contexts": {
       "title": "Practice contexts",
       "subtitle": "Pick which situations show up in practice.",
-      "category": { "formalidad": "Formality", "situacional": "Situational", "custom": "Your contexts" },
+      "category": {
+        "formalidad": "Formality",
+        "situacional": "Situational",
+        "custom": "Your contexts"
+      },
       "add": "Add context",
       "name_label": "Name (Korean)",
       "name_placeholder": "e.g. 반말",
@@ -361,11 +382,53 @@
       "deleted": "Context deleted.",
       "cancel": "Cancel"
     },
-    "about": { "title": "About & legal", "contact": "Contact" },
-    "data": { "title": "Data & privacy", "export": "Export my data (.json)", "exported": "Your data is downloading.", "export_error": "Couldn't export your data. Please try again." },
-    "tabs": { "account": "Account", "appearance": "Appearance", "learning": "Learning", "data": "Data", "about": "About" },
-    "account": { "danger": { "title": "Danger zone", "description": "Permanently delete your account and all your data. This can't be undone.", "button": "Delete account", "modal_title": "Delete your account?", "modal_body": "This permanently deletes your account, your sentences, progress, decks, and custom grammar. This cannot be undone.", "confirm_label": "Type DELETE to confirm", "confirm_button": "Delete forever", "cancel": "Cancel", "error": "Couldn't delete your account. Please try again." }, "security": { "title": "Login & security" }, "password": { "submit": "Update password", "wrong_current": "Current password is incorrect." }, "email": { "title": "New email", "submit": "Update email", "hint": "We'll send a confirmation link to the new address.", "sent": "Confirmation link sent — check your new inbox.", "error": "Couldn't update your email. Please try again." } },
-    "menu": { "account": "Account menu" }
+    "about": {
+      "title": "About & legal",
+      "contact": "Contact"
+    },
+    "data": {
+      "title": "Data & privacy",
+      "export": "Export my data (.json)",
+      "exported": "Your data is downloading.",
+      "export_error": "Couldn't export your data. Please try again."
+    },
+    "tabs": {
+      "account": "Account",
+      "appearance": "Appearance",
+      "learning": "Learning",
+      "data": "Data",
+      "about": "About"
+    },
+    "account": {
+      "danger": {
+        "title": "Danger zone",
+        "description": "Permanently delete your account and all your data. This can't be undone.",
+        "button": "Delete account",
+        "modal_title": "Delete your account?",
+        "modal_body": "This permanently deletes your account, your sentences, progress, decks, and custom grammar. This cannot be undone.",
+        "confirm_label": "Type DELETE to confirm",
+        "confirm_button": "Delete forever",
+        "cancel": "Cancel",
+        "error": "Couldn't delete your account. Please try again."
+      },
+      "security": {
+        "title": "Login & security"
+      },
+      "password": {
+        "submit": "Update password",
+        "wrong_current": "Current password is incorrect."
+      },
+      "email": {
+        "title": "New email",
+        "submit": "Update email",
+        "hint": "We'll send a confirmation link to the new address.",
+        "sent": "Confirmation link sent — check your new inbox.",
+        "error": "Couldn't update your email. Please try again."
+      }
+    },
+    "menu": {
+      "account": "Account menu"
+    }
   },
   "welcome": {
     "brand": {
@@ -473,7 +536,11 @@
     "exit_confirm_title": "Leave the game?",
     "exit_confirm_body": "You'll lose your progress in this round.",
     "exit_confirm_leave": "Leave",
-    "exit_confirm_cancel": "Cancel"
+    "exit_confirm_cancel": "Cancel",
+    "conjugation": {
+      "name": "활용 연습 · Conjugation",
+      "desc": "Pick the correct conjugated form. Beat the systematic mistakes learners make."
+    }
   },
   "conjugation": {
     "title": "Conjugation Lab",

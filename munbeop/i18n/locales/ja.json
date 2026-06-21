@@ -263,11 +263,21 @@
       "filter_all_categories": "すべてのカテゴリ",
       "active_zone": "絞り込み: {zone}",
       "category": {
-        "particle": "助詞", "ending": "語尾", "conj": "接続",
-        "expr": "表現", "aux": "補助", "verb": "動詞", "voice": "態",
-        "lex": "語彙", "nominal": "名詞化", "modifier": "連体修飾",
-        "copula": "コピュラ", "negation": "否定", "adv": "副詞的",
-        "indirect": "間接話法", "meta": "メタ"
+        "particle": "助詞",
+        "ending": "語尾",
+        "conj": "接続",
+        "expr": "表現",
+        "aux": "補助",
+        "verb": "動詞",
+        "voice": "態",
+        "lex": "語彙",
+        "nominal": "名詞化",
+        "modifier": "連体修飾",
+        "copula": "コピュラ",
+        "negation": "否定",
+        "adv": "副詞的",
+        "indirect": "間接話法",
+        "meta": "メタ"
       }
     }
   },
@@ -339,11 +349,22 @@
       "deleted": "文法を削除しました。"
     },
     "dark_mode": "ダークモード",
-    "appearance": { "theme": { "label": "テーマ", "light": "ライト", "auto": "自動", "dark": "ダーク" } },
+    "appearance": {
+      "theme": {
+        "label": "テーマ",
+        "light": "ライト",
+        "auto": "自動",
+        "dark": "ダーク"
+      }
+    },
     "contexts": {
       "title": "練習シーン",
       "subtitle": "練習に出てくる場面を選びます。",
-      "category": { "formalidad": "敬語レベル", "situacional": "シチュエーション", "custom": "あなたのシーン" },
+      "category": {
+        "formalidad": "敬語レベル",
+        "situacional": "シチュエーション",
+        "custom": "あなたのシーン"
+      },
       "add": "シーンを追加",
       "name_label": "名前（韓国語）",
       "name_placeholder": "例: 반말",
@@ -361,11 +382,53 @@
       "deleted": "シーンを削除しました。",
       "cancel": "キャンセル"
     },
-    "about": { "title": "情報と規約", "contact": "お問い合わせ" },
-    "data": { "title": "データとプライバシー", "export": "データをエクスポート (.json)", "exported": "データをダウンロードしています。", "export_error": "データをエクスポートできませんでした。もう一度お試しください。" },
-    "tabs": { "account": "アカウント", "appearance": "表示", "learning": "学習", "data": "データ", "about": "情報" },
-    "account": { "danger": { "title": "危険な操作", "description": "アカウントとすべてのデータを完全に削除します。元に戻せません。", "button": "アカウントを削除", "modal_title": "アカウントを削除しますか？", "modal_body": "アカウント、文章、進捗、デッキ、カスタム文法を完全に削除します。元に戻せません。", "confirm_label": "確認のため DELETE と入力", "confirm_button": "完全に削除", "cancel": "キャンセル", "error": "アカウントを削除できませんでした。もう一度お試しください。" }, "security": { "title": "ログインとセキュリティ" }, "password": { "submit": "パスワードを更新", "wrong_current": "現在のパスワードが正しくありません。" }, "email": { "title": "新しいメール", "submit": "メールを更新", "hint": "新しいアドレスに確認リンクを送ります。", "sent": "確認リンクを送信しました。新しい受信箱を確認してください。", "error": "メールを更新できませんでした。もう一度お試しください。" } },
-    "menu": { "account": "アカウントメニュー" }
+    "about": {
+      "title": "情報と規約",
+      "contact": "お問い合わせ"
+    },
+    "data": {
+      "title": "データとプライバシー",
+      "export": "データをエクスポート (.json)",
+      "exported": "データをダウンロードしています。",
+      "export_error": "データをエクスポートできませんでした。もう一度お試しください。"
+    },
+    "tabs": {
+      "account": "アカウント",
+      "appearance": "表示",
+      "learning": "学習",
+      "data": "データ",
+      "about": "情報"
+    },
+    "account": {
+      "danger": {
+        "title": "危険な操作",
+        "description": "アカウントとすべてのデータを完全に削除します。元に戻せません。",
+        "button": "アカウントを削除",
+        "modal_title": "アカウントを削除しますか？",
+        "modal_body": "アカウント、文章、進捗、デッキ、カスタム文法を完全に削除します。元に戻せません。",
+        "confirm_label": "確認のため DELETE と入力",
+        "confirm_button": "完全に削除",
+        "cancel": "キャンセル",
+        "error": "アカウントを削除できませんでした。もう一度お試しください。"
+      },
+      "security": {
+        "title": "ログインとセキュリティ"
+      },
+      "password": {
+        "submit": "パスワードを更新",
+        "wrong_current": "現在のパスワードが正しくありません。"
+      },
+      "email": {
+        "title": "新しいメール",
+        "submit": "メールを更新",
+        "hint": "新しいアドレスに確認リンクを送ります。",
+        "sent": "確認リンクを送信しました。新しい受信箱を確認してください。",
+        "error": "メールを更新できませんでした。もう一度お試しください。"
+      }
+    },
+    "menu": {
+      "account": "アカウントメニュー"
+    }
   },
   "welcome": {
     "brand": {
@@ -473,7 +536,11 @@
     "exit_confirm_title": "ゲームを終了しますか？",
     "exit_confirm_body": "このラウンドの進行状況が失われます。",
     "exit_confirm_leave": "終了",
-    "exit_confirm_cancel": "キャンセル"
+    "exit_confirm_cancel": "キャンセル",
+    "conjugation": {
+      "name": "활용 연습 · 活用",
+      "desc": "正しい活用形を選んでください。学習者がよくする系統的なミスに打ち勝とう。"
+    }
   },
   "escape": {
     "book_lead": "ノートをめくって物語を選ぼう。",

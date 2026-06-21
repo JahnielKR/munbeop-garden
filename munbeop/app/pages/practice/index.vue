@@ -40,6 +40,12 @@ const { t } = useI18n()
         emoji="🧩"
       />
       <GameCard
+        to="/practice/conjugation"
+        :name="t('games.conjugation.name')"
+        :description="t('games.conjugation.desc')"
+        emoji="🔀"
+      />
+      <GameCard
         to="/practice"
         :name="t('games.third.name')"
         :description="t('games.third.desc')"

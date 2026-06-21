@@ -263,11 +263,21 @@
       "filter_all_categories": "Semua kategori",
       "active_zone": "Memfilter: {zone}",
       "category": {
-        "particle": "Partikel", "ending": "Akhiran", "conj": "Konjungsi",
-        "expr": "Ekspresi", "aux": "Kata bantu", "verb": "Kata kerja", "voice": "Diatesis",
-        "lex": "Leksikal", "nominal": "Penominal", "modifier": "Pewatas",
-        "copula": "Kopula", "negation": "Negasi", "adv": "Keterangan",
-        "indirect": "Kalimat tak langsung", "meta": "Meta"
+        "particle": "Partikel",
+        "ending": "Akhiran",
+        "conj": "Konjungsi",
+        "expr": "Ekspresi",
+        "aux": "Kata bantu",
+        "verb": "Kata kerja",
+        "voice": "Diatesis",
+        "lex": "Leksikal",
+        "nominal": "Penominal",
+        "modifier": "Pewatas",
+        "copula": "Kopula",
+        "negation": "Negasi",
+        "adv": "Keterangan",
+        "indirect": "Kalimat tak langsung",
+        "meta": "Meta"
       }
     }
   },
@@ -339,11 +349,22 @@
       "deleted": "Tata bahasa dihapus."
     },
     "dark_mode": "Mode gelap",
-    "appearance": { "theme": { "label": "Tema", "light": "Terang", "auto": "Otomatis", "dark": "Gelap" } },
+    "appearance": {
+      "theme": {
+        "label": "Tema",
+        "light": "Terang",
+        "auto": "Otomatis",
+        "dark": "Gelap"
+      }
+    },
     "contexts": {
       "title": "Konteks latihan",
       "subtitle": "Pilih situasi mana yang muncul saat latihan.",
-      "category": { "formalidad": "Formalitas", "situacional": "Situasional", "custom": "Konteks kamu" },
+      "category": {
+        "formalidad": "Formalitas",
+        "situacional": "Situasional",
+        "custom": "Konteks kamu"
+      },
       "add": "Tambah konteks",
       "name_label": "Nama (Korea)",
       "name_placeholder": "mis. 반말",
@@ -361,11 +382,53 @@
       "deleted": "Konteks dihapus.",
       "cancel": "Batal"
     },
-    "about": { "title": "Tentang & legal", "contact": "Kontak" },
-    "data": { "title": "Data & privasi", "export": "Ekspor data saya (.json)", "exported": "Data kamu sedang diunduh.", "export_error": "Gagal mengekspor data kamu. Coba lagi." },
-    "tabs": { "account": "Akun", "appearance": "Tampilan", "learning": "Belajar", "data": "Data", "about": "Tentang" },
-    "account": { "danger": { "title": "Zona berbahaya", "description": "Hapus akun dan semua datamu secara permanen. Tidak bisa dibatalkan.", "button": "Hapus akun", "modal_title": "Hapus akunmu?", "modal_body": "Ini menghapus permanen akunmu, kalimatmu, progres, dek, dan tata bahasa kustommu. Tidak bisa dibatalkan.", "confirm_label": "Ketik DELETE untuk konfirmasi", "confirm_button": "Hapus selamanya", "cancel": "Batal", "error": "Gagal menghapus akunmu. Coba lagi." }, "security": { "title": "Masuk & keamanan" }, "password": { "submit": "Perbarui kata sandi", "wrong_current": "Kata sandi saat ini salah." }, "email": { "title": "Email baru", "submit": "Perbarui email", "hint": "Kami akan mengirim link konfirmasi ke email baru.", "sent": "Link konfirmasi terkirim — cek kotak masuk barumu.", "error": "Gagal memperbarui emailmu. Coba lagi." } },
-    "menu": { "account": "Menu akun" }
+    "about": {
+      "title": "Tentang & legal",
+      "contact": "Kontak"
+    },
+    "data": {
+      "title": "Data & privasi",
+      "export": "Ekspor data saya (.json)",
+      "exported": "Data kamu sedang diunduh.",
+      "export_error": "Gagal mengekspor data kamu. Coba lagi."
+    },
+    "tabs": {
+      "account": "Akun",
+      "appearance": "Tampilan",
+      "learning": "Belajar",
+      "data": "Data",
+      "about": "Tentang"
+    },
+    "account": {
+      "danger": {
+        "title": "Zona berbahaya",
+        "description": "Hapus akun dan semua datamu secara permanen. Tidak bisa dibatalkan.",
+        "button": "Hapus akun",
+        "modal_title": "Hapus akunmu?",
+        "modal_body": "Ini menghapus permanen akunmu, kalimatmu, progres, dek, dan tata bahasa kustommu. Tidak bisa dibatalkan.",
+        "confirm_label": "Ketik DELETE untuk konfirmasi",
+        "confirm_button": "Hapus selamanya",
+        "cancel": "Batal",
+        "error": "Gagal menghapus akunmu. Coba lagi."
+      },
+      "security": {
+        "title": "Masuk & keamanan"
+      },
+      "password": {
+        "submit": "Perbarui kata sandi",
+        "wrong_current": "Kata sandi saat ini salah."
+      },
+      "email": {
+        "title": "Email baru",
+        "submit": "Perbarui email",
+        "hint": "Kami akan mengirim link konfirmasi ke email baru.",
+        "sent": "Link konfirmasi terkirim — cek kotak masuk barumu.",
+        "error": "Gagal memperbarui emailmu. Coba lagi."
+      }
+    },
+    "menu": {
+      "account": "Menu akun"
+    }
   },
   "welcome": {
     "brand": {
@@ -473,7 +536,11 @@
     "exit_confirm_title": "Keluar dari permainan?",
     "exit_confirm_body": "Kamu akan kehilangan progres ronde ini.",
     "exit_confirm_leave": "Keluar",
-    "exit_confirm_cancel": "Batal"
+    "exit_confirm_cancel": "Batal",
+    "conjugation": {
+      "name": "활용 연습 · Konjugasi",
+      "desc": "Pilih bentuk konjugasi yang benar. Kalahkan kesalahan sistematis yang dibuat pelajar."
+    }
   },
   "escape": {
     "book_lead": "Buka buku catatan dan pilih ceritamu.",
