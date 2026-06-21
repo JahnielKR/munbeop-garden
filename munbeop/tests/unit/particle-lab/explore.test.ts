@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { ParticleId } from '~/lib/domain'
-import { indexOfParticle, particleIds, readingFor, toggleableIds } from '~/lib/particle-lab'
+import { indexOfParticle, particleIds, readingFor, toggleableIds, tokenText } from '~/lib/particle-lab'
 import { PARTICLE_SENTENCES } from '~/seed/particle-sentences'
 
 const s02 = PARTICLE_SENTENCES.find((s) => s.id === 's02-goyangi')!
@@ -33,6 +33,17 @@ describe('explore resolver', () => {
   it('finds a first sentence for every new Explore particle', () => {
     for (const id of ['only', 'recipient', 'by-means', 'and', 'from', 'until'] as const)
       expect(indexOfParticle(PARTICLE_SENTENCES, id), id).toBeGreaterThanOrEqual(0)
+  })
+
+  it('tokenText returns the level form for words, the base text otherwise', () => {
+    const word = { kind: 'word' as const, text: '학생이에요', byLevel: { formal: '학생입니다', casual: '학생이야' } }
+    expect(tokenText(word, 'formal')).toBe('학생입니다')
+    expect(tokenText(word, 'casual')).toBe('학생이야')
+    expect(tokenText(word, 'polite')).toBe('학생이에요')
+    const plain = { kind: 'word' as const, text: '가요' }
+    expect(tokenText(plain, 'formal')).toBe('가요')
+    const particle = { kind: 'particle' as const, text: '는', particleId: 'topic' as const, toggleable: true }
+    expect(tokenText(particle, 'casual')).toBe('는')
   })
 
   it('every explicit reading references particles that exist in its sentence', () => {

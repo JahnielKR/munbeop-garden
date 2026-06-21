@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import type { LabSentence, ParticleId } from '~/lib/domain'
+import type { LabSentence, ParticleId, SpeechLevel } from '~/lib/domain'
 import { indexOfParticle, particleIds, readingFor } from '~/lib/particle-lab'
 import { PARTICLE_SENTENCES } from '~/seed/particle-sentences'
 
@@ -11,6 +11,11 @@ export function useParticleExplore() {
   const sentences = PARTICLE_SENTENCES
   const index = ref(0)
   const off = ref<Set<ParticleId>>(new Set())
+  // Sticky global preference — unlike `off`, it is NOT reset on navigation.
+  const level = ref<SpeechLevel>('polite')
+  function setLevel(l: SpeechLevel) {
+    level.value = l
+  }
 
   const sentence = computed<LabSentence>(() => sentences[index.value]!)
   const reading = computed(() => readingFor(sentence.value, off.value))
@@ -47,6 +52,8 @@ export function useParticleExplore() {
     index,
     sentence,
     off,
+    level,
+    setLevel,
     trans,
     nuance,
     isFallback,
