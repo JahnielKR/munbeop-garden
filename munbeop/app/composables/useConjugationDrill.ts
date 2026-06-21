@@ -77,7 +77,7 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
   }
 
   async function next() {
-    if (phase.value === 'done') return
+    if (phase.value === 'question' || phase.value === 'done') return
     if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
       return

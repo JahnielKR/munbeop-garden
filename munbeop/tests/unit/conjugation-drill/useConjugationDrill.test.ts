@@ -4,8 +4,6 @@ import { setActivePinia, createPinia } from 'pinia'
 
 const add = vi.fn()
 vi.mock('~/stores/log', () => ({ useLogStore: () => ({ add }) }))
-const srsSpy = vi.fn()
-vi.mock('~/stores/srs', () => ({ useSrsStore: () => ({ markSeen: srsSpy, recalculate: srsSpy }) }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (k: string) => k, locale: { value: 'en' } }) }))
 
 import { useConjugationDrill } from '~/composables/useConjugationDrill'
@@ -13,7 +11,6 @@ import { useConjugationDrill } from '~/composables/useConjugationDrill'
 beforeEach(() => {
   setActivePinia(createPinia())
   add.mockClear()
-  srsSpy.mockClear()
 })
 
 describe('useConjugationDrill', () => {
@@ -26,7 +23,7 @@ describe('useConjugationDrill', () => {
     expect(d.phase.value).toBe('question')
   })
 
-  it('a wrong answer logs ONE mistake with errorDimension=ending and 활용 LAB, and never touches SRS', async () => {
+  it('a wrong answer logs ONE mistake with errorDimension=ending and 활용 LAB', async () => {
     const d = useConjugationDrill()
     d.start()
     const item = d.item.value
@@ -41,7 +38,6 @@ describe('useConjugationDrill', () => {
       reviewState: 'incorrect',
       feedback: 'hard',
     })
-    expect(srsSpy).not.toHaveBeenCalled()
   })
 
   it('a correct answer advances without logging', async () => {
@@ -67,5 +63,17 @@ describe('useConjugationDrill', () => {
     await d.replayFailed()
     expect(d.mode.value).toBe('replay')
     expect(d.sessionItems.value.length).toBe(1)
+  })
+
+  it('a wrong answer in replay mode does NOT log to the feed', async () => {
+    const d = useConjugationDrill()
+    d.start()
+    const it = d.item.value
+    await d.answer(it.options.find((o) => o !== it.correct)!) // miss item 0 (logs once, normal)
+    await d.replayFailed()
+    add.mockClear()
+    const r = d.item.value
+    await d.answer(r.options.find((o) => o !== r.correct)!) // wrong in replay
+    expect(add).not.toHaveBeenCalled()
   })
 })
