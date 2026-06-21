@@ -1,6 +1,6 @@
 // tests/unit/conjugation-drill/drill.test.ts
 import { describe, it, expect } from 'vitest'
-import { DRILL_CLASSES, verbsForClass, buildItem, scoreOf } from '~/lib/conjugation-drill'
+import { DRILL_CLASSES, verbsForClass, buildItem, scoreOf, buildRound } from '~/lib/conjugation-drill'
 import { VERBS } from '~/lib/korean'
 
 describe('drill classes', () => {
@@ -33,5 +33,16 @@ describe('scoreOf', () => {
     expect(s.correct).toBe(1)
     expect(s.total).toBe(2)
     expect(s.accuracy).toBeCloseTo(0.5)
+  })
+})
+
+describe('buildRound', () => {
+  it('returns n items, each with 4 options, using the injected shuffle', () => {
+    const round = buildRound('mixed', 5, (xs) => xs) // identity shuffle = deterministic
+    expect(round).toHaveLength(5)
+    for (const item of round) {
+      expect(item.options).toHaveLength(4)
+      expect(item.options).toContain(item.correct)
+    }
   })
 })

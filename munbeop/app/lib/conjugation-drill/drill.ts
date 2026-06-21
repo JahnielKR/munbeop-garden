@@ -5,6 +5,11 @@ import { buildDistractors } from './distractors'
 
 export type DrillClassId = VerbClass | 'mixed'
 
+/**
+ * A drill class option. `id` and `klass` carry the same value today but are
+ * kept distinct by intent: `id` is the route/`?set=` token + picker key,
+ * `klass` is the verb-filter / mastery key (cast to VerbClass for the 9 real classes).
+ */
 export interface DrillClassDef {
   id: DrillClassId
   klass: DrillClassId
@@ -76,7 +81,9 @@ export interface DrillResult {
   correct: boolean
 }
 
-export function scoreOf(results: DrillResult[]) {
+export interface DrillScore { correct: number; total: number; accuracy: number }
+
+export function scoreOf(results: DrillResult[]): DrillScore {
   const correct = results.filter((r) => r.correct).length
   const total = results.length
   return { correct, total, accuracy: total === 0 ? 0 : correct / total }
