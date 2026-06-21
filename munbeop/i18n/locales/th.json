@@ -7,6 +7,7 @@
     "mode_drill": "ศึก 은/는 · 이/가",
     "mode_spacing": "เว้นวรรค",
     "explore": {
+      "play_audio": "ฟังการออกเสียง",
       "tap_hint": "แตะอนุภาคเพื่อเปิด/ปิด แตะที่คำอธิบายเพื่อดูรายละเอียด",
       "formality_label": "ระดับความสุภาพ",
       "formality_formal": "ทางการ",

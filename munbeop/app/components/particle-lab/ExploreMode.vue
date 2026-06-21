@@ -8,6 +8,7 @@ import { useParticleExplore } from '~/composables/useParticleExplore'
 import ParticleLegend from './ParticleLegend.vue'
 import ParticlePopover from './ParticlePopover.vue'
 import ParticleSentence from './ParticleSentence.vue'
+import SentenceAudioButton from './SentenceAudioButton.vue'
 import TranslationPanel from './TranslationPanel.vue'
 
 /** Explore mode orchestrator: nav + sentence + dynamic translation + legend. */
@@ -73,6 +74,8 @@ onMounted(() => {
         {{ lv.ko }}
       </button>
     </div>
+
+    <SentenceAudioButton :sentence-id="explore.sentence.value.id" />
 
     <ParticleSentence
       :sentence="explore.sentence.value"

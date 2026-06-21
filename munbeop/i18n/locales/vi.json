@@ -7,6 +7,7 @@
     "mode_drill": "Trận 은/는 · 이/가",
     "mode_spacing": "Khoảng cách",
     "explore": {
+      "play_audio": "Nghe phát âm",
       "tap_hint": "Chạm vào tiểu từ để bật/tắt. Chạm chú giải để xem thẻ chi tiết.",
       "formality_label": "Mức trang trọng",
       "formality_formal": "trang trọng",

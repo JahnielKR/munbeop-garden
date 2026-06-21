@@ -7,6 +7,7 @@
     "mode_drill": "Duel 은/는 · 이/가",
     "mode_spacing": "Spasi",
     "explore": {
+      "play_audio": "Putar pelafalan",
       "tap_hint": "Ketuk partikel untuk menyalakan/mematikan. Ketuk legenda untuk kartunya.",
       "formality_label": "Tingkat formalitas",
       "formality_formal": "formal",

@@ -7,6 +7,7 @@
     "mode_drill": "Choque 은/는 · 이/가",
     "mode_spacing": "Espaciado",
     "explore": {
+      "play_audio": "Escuchar pronunciación",
       "tap_hint": "Toca una partícula para apagarla o encenderla. Toca la leyenda para ver su ficha.",
       "formality_label": "Formalidad",
       "formality_formal": "formal",
