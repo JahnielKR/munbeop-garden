@@ -3,6 +3,7 @@
     "title": "Particle Lab",
     "lead": "Particles mark each word's role. Tap them off and see what the sentence loses.",
     "mode_label": "Mode",
+    "progress_label": "Progress",
     "mode_explore": "Explore",
     "mode_drill": "Clash 은/는 · 이/가",
     "mode_spacing": "Spacing",
@@ -54,6 +55,8 @@
     },
     "spacing": {
       "lead": "Tap between the blocks where a space belongs. Particles stick to the word before them.",
+      "gap_space": "Space here",
+      "gap_join": "No space here",
       "level_label": "Level",
       "level_beginner": "beginner — words & particles split",
       "level_advanced": "advanced — syllables only",

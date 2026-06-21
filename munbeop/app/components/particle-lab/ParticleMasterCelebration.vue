@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+
 /** One-shot reward card when 조사 마스터 is earned. No pixel-art asset. */
 interface Props {
   total: number
@@ -6,6 +8,33 @@ interface Props {
 defineProps<Props>()
 const emit = defineEmits<{ dismiss: [] }>()
 const { t } = useI18n()
+
+// Dialog focus management (mirrors ui/Modal.vue): focus in, trap on the single
+// control, Escape to close, restore focus to the trigger on unmount.
+const dismissBtn = ref<HTMLButtonElement | null>(null)
+let previouslyFocused: HTMLElement | null = null
+
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    e.preventDefault()
+    emit('dismiss')
+  } else if (e.key === 'Tab') {
+    // single focusable element → keep focus on it
+    e.preventDefault()
+    dismissBtn.value?.focus()
+  }
+}
+onMounted(() => {
+  previouslyFocused = (typeof document !== 'undefined'
+    ? (document.activeElement as HTMLElement | null)
+    : null)
+  dismissBtn.value?.focus()
+  window.addEventListener('keydown', onKeydown)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', onKeydown)
+  previouslyFocused?.focus()
+})
 </script>
 
 <template>
@@ -14,14 +43,26 @@ const { t } = useI18n()
     data-testid="particle-master-celebration"
     @click.self="emit('dismiss')"
   >
-    <section class="cel__card" role="dialog" aria-modal="true" aria-labelledby="cel-title">
+    <section
+      class="cel__card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cel-title"
+      aria-describedby="cel-body"
+    >
       <span class="cel__badge" aria-hidden="true">🏅</span>
       <h2 id="cel-title" class="cel__title" lang="ko">조사 마스터!</h2>
       <p class="cel__label">{{ t('particles.master.label') }}</p>
-      <p class="cel__body" aria-live="polite">
+      <p id="cel-body" class="cel__body">
         {{ t('particles.master.celebrate_body', { total }) }}
       </p>
-      <button type="button" class="cel__btn" autofocus @click="emit('dismiss')">
+      <button
+        ref="dismissBtn"
+        type="button"
+        class="cel__btn"
+        data-testid="cel-dismiss"
+        @click="emit('dismiss')"
+      >
         {{ t('particles.master.dismiss') }}
       </button>
     </section>

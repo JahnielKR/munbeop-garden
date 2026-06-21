@@ -46,7 +46,11 @@ onMounted(() => {
       >
         ◄
       </button>
-      <ProgressDots :total="explore.sentences.length" :progress="explore.index.value" />
+      <ProgressDots
+        :total="explore.sentences.length"
+        :progress="explore.index.value"
+        :label="t('particles.progress_label')"
+      />
       <button
         type="button"
         class="explore__arrow"

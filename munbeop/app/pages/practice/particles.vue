@@ -144,14 +144,16 @@ function onSelectLevel(l: 1 | 2) {
       <p
         v-if="drill.mode.value === 'replay' && drill.phase.value !== 'done'"
         class="lab__replay-note"
+        role="status"
         data-testid="drill-replay-note"
       >
-        🔁 {{ t('particles.drill.replay_mode_label') }}
+        <span aria-hidden="true">🔁</span> {{ t('particles.drill.replay_mode_label') }}
       </p>
       <ProgressDots
         v-if="drill.phase.value !== 'done'"
         :total="drill.sessionItems.value.length"
         :progress="drill.index.value"
+        :label="t('particles.progress_label')"
       />
       <DrillCard
         v-if="drill.phase.value !== 'done'"
@@ -186,14 +188,16 @@ function onSelectLevel(l: 1 | 2) {
       <p
         v-if="spacing.mode.value === 'replay' && spacing.phase.value !== 'done'"
         class="lab__replay-note"
+        role="status"
         data-testid="spacing-replay-note"
       >
-        🔁 {{ t('particles.spacing.replay_mode_label') }}
+        <span aria-hidden="true">🔁</span> {{ t('particles.spacing.replay_mode_label') }}
       </p>
       <ProgressDots
         v-if="spacing.phase.value !== 'done'"
         :total="spacing.sessionItems.value.length"
         :progress="spacing.index.value"
+        :label="t('particles.progress_label')"
       />
       <SpacingCard
         v-if="spacing.phase.value !== 'done'"

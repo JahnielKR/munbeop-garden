@@ -3,6 +3,7 @@
     "title": "Particle Lab",
     "lead": "助詞は各単語の役割を示す。タップで消して、文が何を失うか見てみよう。",
     "mode_label": "モード",
+    "progress_label": "進捗",
     "mode_explore": "探検",
     "mode_drill": "対決 은/는 · 이/가",
     "mode_spacing": "分かち書き",
@@ -54,6 +55,8 @@
     },
     "spacing": {
       "lead": "ブロックの間でスペースが入る所をタップ。助詞は前の語にくっつきます。",
+      "gap_space": "ここにスペース",
+      "gap_join": "ここはスペースなし",
       "level_label": "レベル",
       "level_beginner": "初級 — 語と助詞を分けて表示",
       "level_advanced": "上級 — 音節だけ",

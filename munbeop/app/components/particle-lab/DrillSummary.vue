@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import type { ClashSet, DrillItem } from '~/lib/domain'
 import type { DrillScore } from '~/lib/particle-lab'
 import { sentenceParts } from '~/lib/particle-lab'
@@ -16,18 +17,22 @@ const emit = defineEmits<{ restart: []; explore: []; 'replay-failed': [] }>()
 const { t } = useI18n()
 const { tl } = useLocalized()
 
+/** Move focus into the summary when it replaces the card (orientation). */
+const root = ref<HTMLElement | null>(null)
+onMounted(() => root.value?.focus())
+
 /** Render pieces for a review-list item (handles contraction items). */
 const part = (item: DrillItem) => sentenceParts(item, props.set)
 </script>
 
 <template>
-  <section class="summary" data-testid="drill-summary">
-    <h2 class="summary__ko" lang="ko">수고했어요! 🎉</h2>
-    <p class="summary__score">
+  <section ref="root" tabindex="-1" class="summary" data-testid="drill-summary">
+    <h2 class="summary__ko" lang="ko">수고했어요! <span aria-hidden="true">🎉</span></h2>
+    <p class="summary__score" role="status">
       {{ t('particles.drill.summary_score', { n: score.correct, total: score.total }) }}
     </p>
     <p v-if="score.batchimSlips > 0" class="summary__slips">
-      🧱 {{ t('particles.drill.summary_slips', { n: score.batchimSlips }) }}
+      <span aria-hidden="true">🧱</span> {{ t('particles.drill.summary_slips', { n: score.batchimSlips }) }}
     </p>
 
     <div v-if="failedItems.length > 0" class="summary__review">
@@ -44,7 +49,7 @@ const part = (item: DrillItem) => sentenceParts(item, props.set)
     <p v-else class="summary__perfect">{{ t('particles.drill.summary_perfect') }}</p>
 
     <p v-if="gardenGrew" class="summary__garden">
-      🌱 {{ t('particles.drill.summary_garden_note') }}
+      <span aria-hidden="true">🌱</span> {{ t('particles.drill.summary_garden_note') }}
     </p>
 
     <div class="summary__actions">
@@ -55,7 +60,7 @@ const part = (item: DrillItem) => sentenceParts(item, props.set)
         data-testid="drill-replay-failed"
         @click="emit('replay-failed')"
       >
-        🔁 {{ t('particles.drill.summary_replay_failed', { n: failedItems.length }) }}
+        <span aria-hidden="true">🔁</span> {{ t('particles.drill.summary_replay_failed', { n: failedItems.length }) }}
       </button>
       <button
         type="button"
@@ -64,13 +69,13 @@ const part = (item: DrillItem) => sentenceParts(item, props.set)
         data-testid="drill-restart"
         @click="emit('restart')"
       >
-        🔁 {{ t('particles.drill.summary_repeat') }}
+        <span aria-hidden="true">🔁</span> {{ t('particles.drill.summary_repeat') }}
       </button>
       <button type="button" class="summary__btn" @click="emit('explore')">
-        🧩 {{ t('particles.drill.summary_explore') }}
+        <span aria-hidden="true">🧩</span> {{ t('particles.drill.summary_explore') }}
       </button>
       <NuxtLink to="/log" class="summary__btn summary__link">
-        📓 {{ t('nav.log') }}
+        <span aria-hidden="true">📓</span> {{ t('nav.log') }}
       </NuxtLink>
     </div>
   </section>
@@ -142,13 +147,17 @@ const part = (item: DrillItem) => sentenceParts(item, props.set)
 .summary__perfect {
   margin: 0;
   font-family: var(--font-ui);
-  color: var(--success);
+  color: var(--heading-accent);
 }
 .summary__garden {
   margin: 0;
   font-family: var(--font-ui);
   font-size: var(--text-sm);
-  color: var(--success);
+  color: var(--heading-accent);
+}
+.summary:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 .summary__actions {
   display: flex;
