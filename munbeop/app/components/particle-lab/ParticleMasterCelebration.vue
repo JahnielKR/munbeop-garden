@@ -111,7 +111,9 @@ onBeforeUnmount(() => {
   font-size: var(--text-xs);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--gold);
+  /* Caption text — ink-soft so it reads on the tan card in light theme
+   * (gold-on-surface was ~1.5:1). Gold stays on the card border + badge. */
+  color: var(--text-soft);
 }
 .cel__body {
   margin: 0;

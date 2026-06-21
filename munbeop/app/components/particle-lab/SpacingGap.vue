@@ -61,7 +61,9 @@ const isCorrect = computed(() => props.value === props.gap.correct)
   min-width: 28px;
   background: var(--paper);
   border-bottom-color: var(--accent);
-  color: var(--accent);
+  /* The brand cue lives in the gold underline; the mark itself stays ink so
+   * it clears contrast on the cream gap fill (gold-on-cream was ~1.9:1). */
+  color: var(--text);
 }
 .gap:hover:not(:disabled) {
   color: var(--text);
@@ -71,11 +73,13 @@ const isCorrect = computed(() => props.value === props.gap.correct)
 }
 .gap--correct {
   border-bottom-color: var(--jade);
-  color: var(--jade);
+  /* Status reads from the colored underline; the glyph stays ink so the
+   * small ␣/· mark is legible in light theme (jade-on-tan was ~2.5:1). */
+  color: var(--text);
 }
 .gap--wrong {
   border-bottom-color: var(--danger);
-  color: var(--danger);
+  color: var(--text);
 }
 .gap:focus-visible {
   outline: 2px solid var(--focus-ring);

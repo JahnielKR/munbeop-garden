@@ -275,7 +275,7 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
   background: var(--accent);
   color: var(--text-on-accent);
   border: 3px solid var(--ink-line);
-  box-shadow: 3px 3px 0 var(--shadow-cream);
+  box-shadow: var(--shadow-button);
   font-family: var(--font-pixel-small);
   font-size: var(--text-xs);
   letter-spacing: 0.06em;
@@ -286,7 +286,7 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
 }
 .feedback__btn:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 var(--shadow-cream);
+  box-shadow: var(--shadow-button-hover);
 }
 .feedback__btn:focus-visible {
   outline: 2px solid var(--focus-ring);

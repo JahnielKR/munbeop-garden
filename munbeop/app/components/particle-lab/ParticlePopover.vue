@@ -139,9 +139,9 @@ async function openSheet() {
   background: var(--jade);
   color: var(--always-dark);
   border: 3px solid var(--ink-line);
-  box-shadow: 4px 4px 0 var(--shadow-cream);
+  box-shadow: var(--shadow-button);
   font-family: var(--font-pixel-small);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.06em;
   cursor: pointer;
   transition:
@@ -150,11 +150,11 @@ async function openSheet() {
 }
 .popover__cta:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 5px 5px 0 var(--shadow-cream);
+  box-shadow: var(--shadow-button-hover);
 }
 .popover__cta:active {
   transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 var(--shadow-cream);
+  box-shadow: var(--shadow-button-pressed);
 }
 .popover__cta:focus-visible {
   outline: 2px solid var(--focus-ring);
