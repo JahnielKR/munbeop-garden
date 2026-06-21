@@ -53,4 +53,11 @@ describe('TokenChip', () => {
     const w = mountChip(tok)
     expect(w.get('[data-testid="particle-chip"]').classes()).toContain('chip--recipient')
   })
+
+  it('renders the level form for a word with byLevel', () => {
+    const tok: LabToken = { kind: 'word', text: '학생이에요', byLevel: { formal: '학생입니다', casual: '학생이야' } }
+    expect(mount(TokenChip, { props: { token: tok, level: 'formal' } }).text()).toContain('학생입니다')
+    expect(mount(TokenChip, { props: { token: tok, level: 'casual' } }).text()).toContain('학생이야')
+    expect(mount(TokenChip, { props: { token: tok } }).text()).toContain('학생이에요')
+  })
 })

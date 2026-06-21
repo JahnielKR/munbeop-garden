@@ -7,6 +7,10 @@
     "mode_drill": "Duel 은/는 · 이/가",
     "explore": {
       "tap_hint": "Ketuk partikel untuk menyalakan/mematikan. Ketuk legenda untuk kartunya.",
+      "formality_label": "Tingkat formalitas",
+      "formality_formal": "formal",
+      "formality_polite": "sopan",
+      "formality_casual": "santai",
       "translation_label": "번역 · Terjemahan",
       "nuance_generic": "Beberapa partikel mati: gaya telegram — umum di banmal lisan, aneh di tulisan.",
       "legend_title": "조사 · Partikel",

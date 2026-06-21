@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { LabToken } from '~/lib/domain'
+import type { LabToken, SpeechLevel } from '~/lib/domain'
+import { tokenText } from '~/lib/particle-lab'
 import { useLocalized } from '~/composables/useLocalized'
 import { particleById } from '~/seed/particles'
 
@@ -13,10 +14,13 @@ interface Props {
   /** Particle currently toggled OFF (ghost look). */
   off?: boolean
   showGloss?: boolean
+  level?: SpeechLevel
 }
-const props = withDefaults(defineProps<Props>(), { off: false, showGloss: true })
+const props = withDefaults(defineProps<Props>(), { off: false, showGloss: true, level: 'polite' })
 const emit = defineEmits<{ toggle: [] }>()
 const { tl } = useLocalized()
+
+const displayText = computed(() => tokenText(props.token, props.level))
 
 const role = computed(() =>
   props.token.kind === 'particle'
@@ -43,10 +47,10 @@ const ariaLabel = computed(() => {
     data-testid="particle-chip"
     @click="emit('toggle')"
   >
-    {{ token.text }}
+    {{ displayText }}
   </button>
   <span v-else class="word" data-testid="word-token">
-    <span class="word__ko" lang="ko">{{ token.text }}</span>
+    <span class="word__ko" lang="ko">{{ displayText }}</span>
     <span v-if="showGloss && token.gloss" class="word__gloss">{{ tl(token.gloss) }}</span>
   </span>
 </template>

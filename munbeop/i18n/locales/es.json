@@ -7,6 +7,10 @@
     "mode_drill": "Choque 은/는 · 이/가",
     "explore": {
       "tap_hint": "Toca una partícula para apagarla o encenderla. Toca la leyenda para ver su ficha.",
+      "formality_label": "Formalidad",
+      "formality_formal": "formal",
+      "formality_polite": "educado",
+      "formality_casual": "informal",
       "translation_label": "번역 · Traducción",
       "nuance_generic": "Varias partículas apagadas: estilo telegrama, común en banmal hablado pero raro por escrito.",
       "legend_title": "조사 · Partículas",
