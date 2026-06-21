@@ -7,6 +7,10 @@
     "mode_drill": "Choque 은/는 · 이/가",
     "explore": {
       "tap_hint": "Toque numa partícula para ligar/desligar. Toque na legenda para ver a ficha.",
+      "formality_label": "Formalidade",
+      "formality_formal": "formal",
+      "formality_polite": "polido",
+      "formality_casual": "informal",
       "translation_label": "번역 · Tradução",
       "nuance_generic": "Várias partículas desligadas: estilo telegrama — comum no banmal falado, estranho na escrita.",
       "legend_title": "조사 · Partículas",

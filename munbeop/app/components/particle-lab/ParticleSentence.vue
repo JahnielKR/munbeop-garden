@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { LabSentence, ParticleId } from '~/lib/domain'
+import type { LabSentence, ParticleId, SpeechLevel } from '~/lib/domain'
 import TokenChip from './TokenChip.vue'
 
 /**
@@ -10,8 +10,9 @@ interface Props {
   sentence: LabSentence
   off: ReadonlySet<ParticleId>
   showGloss?: boolean
+  level?: SpeechLevel
 }
-withDefaults(defineProps<Props>(), { showGloss: true })
+withDefaults(defineProps<Props>(), { showGloss: true, level: 'polite' })
 const emit = defineEmits<{ toggle: [id: ParticleId] }>()
 </script>
 
@@ -24,6 +25,7 @@ const emit = defineEmits<{ toggle: [id: ParticleId] }>()
         :token="tok"
         :off="tok.kind === 'particle' && off.has(tok.particleId)"
         :show-gloss="showGloss"
+        :level="level"
         @toggle="tok.kind === 'particle' ? emit('toggle', tok.particleId) : undefined"
       />
     </span>

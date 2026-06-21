@@ -7,6 +7,10 @@
     "mode_drill": "対決 은/는 · 이/가",
     "explore": {
       "tap_hint": "助詞をタップでオン・オフ。凡例をタップすると詳細カード。",
+      "formality_label": "丁寧さ",
+      "formality_formal": "フォーマル",
+      "formality_polite": "丁寧",
+      "formality_casual": "タメ口",
       "translation_label": "번역 · 訳",
       "nuance_generic": "複数の助詞オフ：電報スタイル — 話し言葉のパンマルでは普通、書き言葉では不自然。",
       "legend_title": "조사 · 助詞",

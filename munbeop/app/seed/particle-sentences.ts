@@ -14,6 +14,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '저',
+          byLevel: { casual: '나' },
           gloss: L('I (humble)', 'yo', 'je', 'eu', 'ฉัน', 'saya', 'tôi', '私'),
         },
         { kind: 'particle', text: '는', particleId: 'topic', toggleable: true },
@@ -22,6 +23,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '학생이에요',
+          byLevel: { formal: '학생입니다', casual: '학생이야' },
           gloss: L(
             'am a student',
             'soy estudiante',
@@ -104,6 +106,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '마셔요',
+          byLevel: { formal: '마십니다', casual: '마셔' },
           gloss: L('drinks', 'bebe', 'boit', 'bebe', 'ดื่ม', 'minum', 'uống', '飲みます'),
         },
       ],
@@ -192,6 +195,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '가요',
+          byLevel: { formal: '갑니다', casual: '가' },
           gloss: L('go', 'voy', 'vais', 'vou', 'ไป', 'pergi', 'đi', '行きます'),
         },
       ],
@@ -266,6 +270,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '공부해요',
+          byLevel: { formal: '공부합니다', casual: '공부해' },
           gloss: L('study', 'estudio', 'étudie', 'estudo', 'เรียน', 'belajar', 'học', '勉強します'),
         },
       ],
@@ -323,6 +328,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '저',
+          byLevel: { casual: '나' },
           gloss: L('I (humble)', 'yo', 'je', 'eu', 'ฉัน', 'saya', 'tôi', '私'),
         },
         { kind: 'particle', text: '도', particleId: 'also', toggleable: true },
@@ -339,6 +345,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '좋아해요',
+          byLevel: { formal: '좋아합니다', casual: '좋아해' },
           gloss: L('like', 'me gusta', 'aime', 'gosto', 'ชอบ', 'suka', 'thích', '好きです'),
         },
       ],
@@ -435,6 +442,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '먹어요',
+          byLevel: { formal: '먹습니다', casual: '먹어' },
           gloss: L('eat', 'como', 'mange', 'como', 'กิน', 'makan', 'ăn', '食べます'),
         },
       ],
@@ -523,6 +531,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '와요',
+          byLevel: { formal: '옵니다', casual: '와' },
           gloss: L('comes', 'viene', 'vient', 'vem', 'มา', 'datang', 'đến', '来ます'),
         },
       ],
@@ -596,6 +605,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '써요',
+          byLevel: { formal: '씁니다', casual: '써' },
           gloss: L('write', 'escribo', 'écris', 'escrevo', 'เขียน', 'menulis', 'viết', '書きます'),
         },
       ],
@@ -692,6 +702,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '가요',
+          byLevel: { formal: '갑니다', casual: '가' },
           gloss: L('go', 'voy', 'vais', 'vou', 'ไป', 'pergi', 'đi', '行きます'),
         },
       ],
@@ -780,6 +791,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '먹어요',
+          byLevel: { formal: '먹습니다', casual: '먹어' },
           gloss: L('eat', 'como', 'mange', 'como', 'กิน', 'makan', 'ăn', '食べます'),
         },
       ],
@@ -853,6 +865,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '사요',
+          byLevel: { formal: '삽니다', casual: '사' },
           gloss: L('buy', 'compro', 'achète', 'compro', 'ซื้อ', 'membeli', 'mua', '買います'),
         },
       ],
@@ -963,6 +976,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '일해요',
+          byLevel: { formal: '일합니다', casual: '일해' },
           gloss: L(
             'work',
             'trabajo',
@@ -1068,6 +1082,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '써요',
+          byLevel: { formal: '씁니다', casual: '써' },
           gloss: L('write', 'escribo', 'écris', 'escrevo', 'เขียน', 'menulis', 'viết', '書きます'),
         },
       ],
@@ -1148,6 +1163,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '저',
+          byLevel: { casual: '나' },
           gloss: L('I (humble)', 'yo', 'je', 'eu', 'ฉัน', 'saya', 'tôi', '私'),
         },
         { kind: 'particle', text: '도', particleId: 'also', toggleable: true },
@@ -1164,6 +1180,7 @@ export const PARTICLE_SENTENCES: LabSentence[] = [
         {
           kind: 'word',
           text: '마셔요',
+          byLevel: { formal: '마십니다', casual: '마셔' },
           gloss: L('drink', 'bebo', 'bois', 'bebo', 'ดื่ม', 'minum', 'uống', '飲みます'),
         },
       ],

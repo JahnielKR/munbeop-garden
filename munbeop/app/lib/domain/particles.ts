@@ -44,8 +44,10 @@ export interface ParticleDef {
   hint: LocalizedString
 }
 
+export type SpeechLevel = 'formal' | 'polite' | 'casual'
+
 export type LabToken =
-  | { kind: 'word'; text: string; gloss?: LocalizedString }
+  | { kind: 'word'; text: string; gloss?: LocalizedString; byLevel?: Partial<Record<SpeechLevel, string>> }
   | { kind: 'particle'; text: string; particleId: ParticleId; toggleable: boolean }
 
 /** One 어절 (space-delimited block): word + attached particle chips. */

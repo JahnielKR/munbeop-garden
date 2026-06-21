@@ -7,6 +7,10 @@
     "mode_drill": "Trận 은/는 · 이/가",
     "explore": {
       "tap_hint": "Chạm vào tiểu từ để bật/tắt. Chạm chú giải để xem thẻ chi tiết.",
+      "formality_label": "Mức trang trọng",
+      "formality_formal": "trang trọng",
+      "formality_polite": "lịch sự",
+      "formality_casual": "thân mật",
       "translation_label": "번역 · Bản dịch",
       "nuance_generic": "Tắt nhiều tiểu từ: kiểu điện tín — thường gặp trong banmal nói, lạ khi viết.",
       "legend_title": "조사 · Tiểu từ",

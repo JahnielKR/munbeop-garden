@@ -1,4 +1,10 @@
-import type { LabReading, LabSentence, ParticleId } from '../domain/particles'
+import type { LabReading, LabSentence, LabToken, ParticleId, SpeechLevel } from '../domain/particles'
+
+/** Surface form of a token at a speech level (polite = the base `text`). */
+export function tokenText(token: LabToken, level: SpeechLevel): string {
+  if (token.kind === 'word' && token.byLevel && token.byLevel[level]) return token.byLevel[level]!
+  return token.text
+}
 
 function keyOf(ids: Iterable<ParticleId>): string {
   return [...ids].sort().join('+')

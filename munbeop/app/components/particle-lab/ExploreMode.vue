@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import type { ParticleId } from '~/lib/domain'
+import type { ParticleId, SpeechLevel } from '~/lib/domain'
 import { PARTICLE_IDS } from '~/lib/domain'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
 import { useLocalized } from '~/composables/useLocalized'
@@ -16,6 +16,12 @@ const { t } = useI18n()
 const { tl } = useLocalized()
 const explore = useParticleExplore()
 const infoId = ref<ParticleId | null>(null)
+
+const LEVELS: { id: SpeechLevel; ko: string; aria: string }[] = [
+  { id: 'formal', ko: '합니다체', aria: 'particles.explore.formality_formal' },
+  { id: 'polite', ko: '해요체', aria: 'particles.explore.formality_polite' },
+  { id: 'casual', ko: '반말', aria: 'particles.explore.formality_casual' },
+]
 
 onMounted(() => {
   const raw = route.query.focus
@@ -51,9 +57,27 @@ onMounted(() => {
       </button>
     </div>
 
+    <div class="explore__formality" role="group" :aria-label="t('particles.explore.formality_label')">
+      <button
+        v-for="lv in LEVELS"
+        :key="lv.id"
+        type="button"
+        class="explore__level"
+        :class="{ 'explore__level--active': explore.level.value === lv.id }"
+        :aria-pressed="explore.level.value === lv.id"
+        :aria-label="t(lv.aria)"
+        :data-testid="`level-${lv.id}`"
+        lang="ko"
+        @click="explore.setLevel(lv.id)"
+      >
+        {{ lv.ko }}
+      </button>
+    </div>
+
     <ParticleSentence
       :sentence="explore.sentence.value"
       :off="explore.off.value"
+      :level="explore.level.value"
       @toggle="explore.toggle"
     />
 
@@ -106,6 +130,38 @@ onMounted(() => {
   cursor: not-allowed;
 }
 .explore__arrow:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.explore__formality {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  align-self: center;
+}
+.explore__level {
+  padding: 6px 12px;
+  background: transparent;
+  border: none;
+  font-family: var(--font-ko);
+  font-size: var(--text-sm);
+  color: var(--text-soft);
+  cursor: pointer;
+  transition:
+    background var(--motion-quick) var(--ease-out),
+    color var(--motion-quick) var(--ease-out);
+}
+.explore__level:hover {
+  color: var(--text);
+}
+.explore__level--active {
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+.explore__level:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }

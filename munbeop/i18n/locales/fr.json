@@ -7,6 +7,10 @@
     "mode_drill": "Duel 은/는 · 이/가",
     "explore": {
       "tap_hint": "Touche une particule pour l'éteindre ou l'allumer. Touche la légende pour sa fiche.",
+      "formality_label": "Registre",
+      "formality_formal": "formel",
+      "formality_polite": "poli",
+      "formality_casual": "familier",
       "translation_label": "번역 · Traduction",
       "nuance_generic": "Plusieurs particules éteintes : style télégramme — courant en banmal oral, étrange à l'écrit.",
       "legend_title": "조사 · Particules",

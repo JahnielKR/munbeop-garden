@@ -7,6 +7,10 @@
     "mode_drill": "ศึก 은/는 · 이/가",
     "explore": {
       "tap_hint": "แตะอนุภาคเพื่อเปิด/ปิด แตะที่คำอธิบายเพื่อดูรายละเอียด",
+      "formality_label": "ระดับความสุภาพ",
+      "formality_formal": "ทางการ",
+      "formality_polite": "สุภาพ",
+      "formality_casual": "กันเอง",
       "translation_label": "번역 · คำแปล",
       "nuance_generic": "ปิดหลายอนุภาค: สไตล์โทรเลข — พบบ่อยในบันมัลพูด แต่แปลกในภาษาเขียน",
       "legend_title": "조사 · อนุภาค",

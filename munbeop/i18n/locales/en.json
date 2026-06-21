@@ -7,6 +7,10 @@
     "mode_drill": "Clash 은/는 · 이/가",
     "explore": {
       "tap_hint": "Tap a particle to toggle it. Tap the legend for its full card.",
+      "formality_label": "Formality",
+      "formality_formal": "formal",
+      "formality_polite": "polite",
+      "formality_casual": "casual",
       "translation_label": "번역 · Translation",
       "nuance_generic": "Several particles off: telegram style — common in spoken banmal, odd in writing.",
       "legend_title": "조사 · Particles",
