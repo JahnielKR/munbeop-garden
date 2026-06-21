@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type { ConjItem } from '~/lib/conjugation-drill'
 import ConjugationOption from './ConjugationOption.vue'
 
@@ -23,7 +23,8 @@ function optionState(opt: string): 'idle' | 'correct' | 'wrong' | 'muted' {
   return 'muted'
 }
 
-// a11y (Particle Lab #10 pattern): focus the card each new question.
+// a11y (Particle Lab #10 pattern): focus the card on first mount + each new question.
+onMounted(() => void card.value?.focus())
 watch(
   () => [props.item.id, props.phase] as const,
   async ([, phase]) => {
@@ -40,7 +41,7 @@ watch(
     <div class="card__prompt">
       <span class="card__dict" lang="ko">{{ item.dict }}</span>
       <span class="card__gloss">{{ $t('conjugation.gloss_hint', { gloss: item.gloss }) }}</span>
-      <span class="card__ending" lang="ko">{{ $t('conjugation.prompt', { ending: item.ending }) }}</span>
+      <span class="card__ending">{{ $t('conjugation.prompt', { ending: item.ending }) }}</span>
     </div>
 
     <p v-if="phase === 'question'" class="card__hint">{{ $t('conjugation.pick_hint') }}</p>
@@ -65,7 +66,7 @@ watch(
       <p v-if="!verdict" class="card__correct" lang="ko">
         {{ $t('conjugation.reveal_correct', { correct: item.correct }) }}
       </p>
-      <p class="card__rule">{{ $t(`conjugation.rule.${item.klass}`) }}</p>
+      <p v-if="!verdict" class="card__rule">{{ $t(`conjugation.rule.${item.klass}`) }}</p>
       <button type="button" class="card__next" @click="emit('next')">→</button>
     </div>
   </div>
