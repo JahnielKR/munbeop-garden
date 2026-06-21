@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { buildPuzzle, correctSpacing, type SpacingLevel, type SpacingPuzzle } from '~/lib/particle-lab'
+import {
+  buildPuzzle,
+  correctSpacing,
+  gradePuzzle,
+  type GapValue,
+  type SpacingLevel,
+  type SpacingPuzzle,
+} from '~/lib/particle-lab'
 import { PARTICLE_SENTENCES } from '~/seed/particle-sentences'
 
 /** The standard 한글 맞춤법 띄어쓰기 surface of each Explore sentence. */
@@ -79,5 +86,34 @@ describe('buildPuzzle — invariant', () => {
         expect(reassemble(p)).toBe(correctSpacing(s))
       }
     }
+  })
+})
+
+describe('gradePuzzle', () => {
+  const p = buildPuzzle(byId('s01-jeoneun'), 1) // gaps: [join, space]
+
+  it('marks all correct when answers match', () => {
+    const r = gradePuzzle(p, ['join', 'space'])
+    expect(r.correct).toBe(true)
+    expect(r.gaps.map((g) => g.correct)).toEqual([true, true])
+  })
+
+  it('flags the specific wrong gap', () => {
+    const r = gradePuzzle(p, ['space', 'space'] as GapValue[]) // spaced before the particle
+    expect(r.correct).toBe(false)
+    expect(r.gaps[0]).toEqual({
+      index: 0,
+      given: 'space',
+      correct: false,
+      gap: { correct: 'join', kind: 'particle' },
+    })
+    expect(r.gaps[1]!.correct).toBe(true)
+  })
+
+  it('treats a missing answer as join (default)', () => {
+    const r = gradePuzzle(p, []) // nothing tapped → all join → the eojeol space is missed
+    expect(r.correct).toBe(false)
+    expect(r.gaps[0]!.correct).toBe(true) // join is right for the particle gap
+    expect(r.gaps[1]!.correct).toBe(false) // missing space at the eojeol boundary
   })
 })

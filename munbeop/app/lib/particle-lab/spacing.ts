@@ -95,3 +95,12 @@ export function buildPuzzle(sentence: LabSentence, level: SpacingLevel): Spacing
   })
   return { sentenceId: sentence.id, blocks, gaps }
 }
+
+/** Compare the user's gap choices against the puzzle. Unset gaps default to 'join'. */
+export function gradePuzzle(puzzle: SpacingPuzzle, answers: GapValue[]): SpacingResult {
+  const gaps: GapResult[] = puzzle.gaps.map((gap, index) => {
+    const given = answers[index] ?? 'join'
+    return { index, given, correct: given === gap.correct, gap }
+  })
+  return { gaps, correct: gaps.every((g) => g.correct) }
+}
