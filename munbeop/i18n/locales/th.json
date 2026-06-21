@@ -71,6 +71,15 @@
       "replay_failed": "ทบทวนที่ผิด ({n})",
       "replay_mode_label": "โหมดทบทวน · ข้อผิดพลาดไม่ถูกบันทึกซ้ำ"
     },
+    "master": {
+      "label": "เซียนคำชี้",
+      "progress": "เชี่ยวชาญ {done}/{total} คำชี้",
+      "earned": "เชี่ยวชาญแล้ว! 🏅",
+      "celebrate_body": "คุณเชี่ยวชาญคำชี้ทั้ง {total} ตัวที่แล็บสอนแล้ว 화이팅!",
+      "dismiss": "เยี่ยม!",
+      "pip_done": "{ko} — เชี่ยวชาญแล้ว",
+      "pip_todo": "{ko} — ยังไม่"
+    },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "ไวยากรณ์นี้คืออนุภาค: ลองเปิด-ปิดในประโยคจริงเพื่อสัมผัสว่ามันเพิ่มอะไร",
     "sheet_section_cta": "เปิดในแล็บ"

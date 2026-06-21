@@ -71,6 +71,15 @@
       "replay_failed": "ÔN LỖI SAI ({n})",
       "replay_mode_label": "Chế độ ôn · lỗi không bị ghi lại nữa"
     },
+    "master": {
+      "label": "Bậc thầy tiểu từ",
+      "progress": "Đã thành thạo {done}/{total} tiểu từ",
+      "earned": "Đã thành thạo! 🏅",
+      "celebrate_body": "Bạn đã thành thạo cả {total} tiểu từ mà lab dạy. 화이팅!",
+      "dismiss": "Tuyệt!",
+      "pip_done": "{ko} — đã thành thạo",
+      "pip_todo": "{ko} — chưa"
+    },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "Ngữ pháp này là một tiểu từ: bật/tắt nó trong câu thật để cảm nhận nó thêm gì.",
     "sheet_section_cta": "MỞ TRONG LAB"

@@ -71,6 +71,15 @@
       "replay_failed": "まちがいを復習 ({n})",
       "replay_mode_label": "復習モード · まちがいは再記録されません"
     },
+    "master": {
+      "label": "助詞マスター",
+      "progress": "{done}/{total} 助詞をマスター",
+      "earned": "マスター！🏅",
+      "celebrate_body": "ラボが教える {total} 個の助詞をすべてマスター。화이팅！",
+      "dismiss": "やった！",
+      "pip_done": "{ko} — マスター済み",
+      "pip_todo": "{ko} — まだ"
+    },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "この文法は助詞：実際の文の中でオン・オフして働きを体感しよう。",
     "sheet_section_cta": "ラボで開く"
