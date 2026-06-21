@@ -27,10 +27,12 @@ const role = computed(() =>
     ? (particleById(props.token.particleId)?.role ?? 'addition')
     : null,
 )
-const ariaLabel = computed(() => {
-  if (props.token.kind !== 'particle') return undefined
+/** Localized role label, exposed to the accessible name via a visually-hidden
+ *  span (NOT under lang="ko"), so it isn't pronounced with Korean phonology. */
+const roleLabel = computed(() => {
+  if (props.token.kind !== 'particle') return ''
   const def = particleById(props.token.particleId)
-  return def ? `${props.token.text} · ${tl(def.label)}` : props.token.text
+  return def ? tl(def.label) : ''
 })
 </script>
 
@@ -42,12 +44,11 @@ const ariaLabel = computed(() => {
     :class="[`chip--${role}`, { 'chip--off': off }]"
     :disabled="!token.toggleable"
     :aria-pressed="!off"
-    :aria-label="ariaLabel"
-    lang="ko"
     data-testid="particle-chip"
     @click="emit('toggle')"
   >
-    {{ displayText }}
+    <span lang="ko">{{ displayText }}</span>
+    <span class="sr-only">{{ roleLabel }}</span>
   </button>
   <span v-else class="word" data-testid="word-token">
     <span class="word__ko" lang="ko">{{ displayText }}</span>
@@ -105,6 +106,18 @@ const ariaLabel = computed(() => {
 }
 .chip:disabled {
   cursor: default;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Role colors — Badge.vue pattern: brand bg + always-dark text (§2.2). */

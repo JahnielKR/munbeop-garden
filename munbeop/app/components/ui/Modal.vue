@@ -5,6 +5,8 @@ interface Props {
   open: boolean
   closeLabel: string
   title?: string
+  /** id of an element that names the dialog (takes precedence over `title`). */
+  labelledby?: string
 }
 const props = defineProps<Props>()
 const emit = defineEmits<{ close: [] }>()
@@ -95,7 +97,8 @@ function onOverlayClick() {
           class="modal"
           role="dialog"
           aria-modal="true"
-          :aria-label="title"
+          :aria-label="labelledby ? undefined : title"
+          :aria-labelledby="labelledby"
         >
           <button
             type="button"

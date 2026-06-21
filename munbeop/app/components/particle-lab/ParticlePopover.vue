@@ -53,11 +53,12 @@ async function openSheet() {
     :open="def !== undefined"
     :close-label="t('particles.popover.close')"
     :title="def?.ko"
+    labelledby="particle-popover-ko"
     @close="emit('close')"
   >
     <div v-if="def" class="popover" data-testid="particle-popover">
       <div class="popover__head">
-        <span class="popover__ko" lang="ko">{{ def.ko }}</span>
+        <span id="particle-popover-ko" class="popover__ko" lang="ko">{{ def.ko }}</span>
         <Badge :variant="badgeVariant">{{ tl(def.label) }}</Badge>
       </div>
 
