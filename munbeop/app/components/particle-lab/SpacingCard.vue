@@ -87,7 +87,8 @@ const wrongRules = computed(() => {
       data-testid="spacing-feedback"
     >
       <h4 class="spacing__verdict">
-        {{ result?.correct ? `✅ ${t('particles.spacing.correct')}` : `✏️ ${t('particles.spacing.try_again')}` }}
+        <span aria-hidden="true">{{ result?.correct ? '✅' : '✏️' }}</span>
+        {{ result?.correct ? t('particles.spacing.correct') : t('particles.spacing.try_again') }}
       </h4>
       <p class="spacing__answer" lang="ko">{{ correctText }}</p>
       <ul v-if="wrongRules.length" class="spacing__rules">
@@ -99,7 +100,7 @@ const wrongRules = computed(() => {
         data-testid="spacing-next"
         @click="emit('next')"
       >
-        {{ t('particles.spacing.next') }} ►
+        {{ t('particles.spacing.next') }} <span aria-hidden="true">►</span>
       </button>
     </div>
   </section>

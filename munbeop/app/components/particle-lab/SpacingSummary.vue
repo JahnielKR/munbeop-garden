@@ -16,7 +16,7 @@ const { tl } = useLocalized()
 
 <template>
   <section class="summary" data-testid="spacing-summary">
-    <h2 class="summary__ko" lang="ko">수고했어요! 🎉</h2>
+    <h2 class="summary__ko" lang="ko">수고했어요! <span aria-hidden="true">🎉</span></h2>
     <p class="summary__score">
       {{ t('particles.spacing.summary_score', { n: score.correct, total: score.total }) }}
     </p>
@@ -40,7 +40,7 @@ const { tl } = useLocalized()
         data-testid="spacing-replay-failed"
         @click="emit('replay-failed')"
       >
-        🔁 {{ t('particles.spacing.replay_failed', { n: failedItems.length }) }}
+        <span aria-hidden="true">🔁</span> {{ t('particles.spacing.replay_failed', { n: failedItems.length }) }}
       </button>
       <button
         type="button"
@@ -49,10 +49,10 @@ const { tl } = useLocalized()
         data-testid="spacing-restart"
         @click="emit('restart')"
       >
-        🔁 {{ t('particles.spacing.summary_repeat') }}
+        <span aria-hidden="true">🔁</span> {{ t('particles.spacing.summary_repeat') }}
       </button>
       <button type="button" class="summary__btn" @click="emit('explore')">
-        🧩 {{ t('particles.spacing.summary_explore') }}
+        <span aria-hidden="true">🧩</span> {{ t('particles.spacing.summary_explore') }}
       </button>
     </div>
   </section>
