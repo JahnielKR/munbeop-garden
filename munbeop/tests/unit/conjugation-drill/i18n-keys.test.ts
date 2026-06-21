@@ -9,7 +9,7 @@ import th from '../../../i18n/locales/th.json'
 import vi from '../../../i18n/locales/vi.json'
 
 const LOCALES = { en, es, fr, id, ja, ptBR, th, vi }
-const keys = (o: Record<string, unknown>) => Object.keys((o as any).conjugation ?? {})
+const keys = (o: Record<string, unknown>) => Object.keys((o.conjugation as Record<string, unknown>) ?? {})
 
 describe('conjugation i18n parity', () => {
   it('every locale has the same conjugation.* keys as en', () => {

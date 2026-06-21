@@ -9,7 +9,7 @@ const failed = [
 function factory(failedItems = failed) {
   return mount(ConjugationSummary, {
     props: { score: { correct: 7, total: 8, accuracy: 0.875 }, failedItems },
-    global: { mocks: { $t: (k: string, p?: any) => (p ? `${k}:${JSON.stringify(p)}` : k) } },
+    global: { mocks: { $t: (k: string, p?: Record<string, unknown>) => (p ? `${k}:${JSON.stringify(p)}` : k) } },
   })
 }
 

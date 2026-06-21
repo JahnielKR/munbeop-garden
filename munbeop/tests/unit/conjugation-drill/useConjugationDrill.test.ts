@@ -1,12 +1,11 @@
 // tests/unit/conjugation-drill/useConjugationDrill.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
+import { useConjugationDrill } from '~/composables/useConjugationDrill'
 
 const add = vi.fn()
 vi.mock('~/stores/log', () => ({ useLogStore: () => ({ add }) }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (k: string) => k, locale: { value: 'en' } }) }))
-
-import { useConjugationDrill } from '~/composables/useConjugationDrill'
 
 beforeEach(() => {
   setActivePinia(createPinia())

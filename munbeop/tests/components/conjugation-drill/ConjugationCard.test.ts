@@ -11,7 +11,7 @@ const item = {
 function factory(phase = 'question', picked: string | null = null) {
   return mount(ConjugationCard, {
     props: { item, options: item.options, phase, verdict: phase === 'wrong' ? false : phase === 'right' ? true : null, picked },
-    global: { mocks: { $t: (k: string, p?: any) => (p ? `${k}:${JSON.stringify(p)}` : k) } },
+    global: { mocks: { $t: (k: string, p?: Record<string, unknown>) => (p ? `${k}:${JSON.stringify(p)}` : k) } },
   })
 }
 

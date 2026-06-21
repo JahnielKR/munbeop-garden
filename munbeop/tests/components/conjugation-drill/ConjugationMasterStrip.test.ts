@@ -10,7 +10,7 @@ describe('ConjugationMasterStrip', () => {
   it('shows progress and a pip per class', () => {
     const w = mount(ConjugationMasterStrip, {
       props: { perClass, doneCount: 1, total: 9, earned: false },
-      global: { mocks: { $t: (k: string, p?: any) => (p ? `${k}:${JSON.stringify(p)}` : k) } },
+      global: { mocks: { $t: (k: string, p?: Record<string, unknown>) => (p ? `${k}:${JSON.stringify(p)}` : k) } },
     })
     expect(w.findAll('[data-testid="conj-pip"]')).toHaveLength(2)
     expect(w.text()).toContain('conjugation.master.progress')
