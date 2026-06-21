@@ -2,12 +2,21 @@
 interface Props {
   total: number
   progress: number
+  /** Accessible name for the progressbar (screen readers). */
+  label?: string
 }
 defineProps<Props>()
 </script>
 
 <template>
-  <div class="dots" role="progressbar" :aria-valuenow="progress" :aria-valuemax="total">
+  <div
+    class="dots"
+    role="progressbar"
+    :aria-valuemin="0"
+    :aria-valuenow="progress"
+    :aria-valuemax="total"
+    :aria-label="label"
+  >
     <span
       v-for="i in total"
       :key="i"
