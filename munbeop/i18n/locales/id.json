@@ -252,6 +252,11 @@
         "usage_notes": "Catatan penggunaan rinci segera hadir."
       }
     },
+    "examples": {
+      "register_formal": "Ragam formal",
+      "register_polite": "Ragam sopan",
+      "register_casual": "Ragam santai"
+    },
     "search": {
       "placeholder": "Cari pola atau artinya…",
       "result_count": "{n} hasil",

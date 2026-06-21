@@ -252,6 +252,11 @@
         "usage_notes": "Notas de uso detalhadas chegam em breve."
       }
     },
+    "examples": {
+      "register_formal": "Registro formal",
+      "register_polite": "Registro polido",
+      "register_casual": "Registro informal"
+    },
     "search": {
       "placeholder": "Busque um padrão ou seu significado…",
       "result_count": "{n} resultados",
