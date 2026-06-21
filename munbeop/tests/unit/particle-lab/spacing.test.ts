@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { correctSpacing } from '~/lib/particle-lab'
+import { buildPuzzle, correctSpacing, type SpacingLevel, type SpacingPuzzle } from '~/lib/particle-lab'
 import { PARTICLE_SENTENCES } from '~/seed/particle-sentences'
 
 /** The standard 한글 맞춤법 띄어쓰기 surface of each Explore sentence. */
@@ -20,9 +20,64 @@ const GOLD: Record<string, string> = {
   's14-jeodo': '저도 커피를 마셔요',
 }
 
+const byId = (id: string) => PARTICLE_SENTENCES.find((s) => s.id === id)!
+
+/** Rebuild the sentence from a puzzle using each gap's CORRECT value. */
+function reassemble(p: SpacingPuzzle): string {
+  return p.blocks
+    .map((b, i) => (i < p.blocks.length - 1 ? b + (p.gaps[i]!.correct === 'space' ? ' ' : '') : b))
+    .join('')
+}
+
 describe('correctSpacing', () => {
   it('reproduces the standard spacing for all 14 sentences', () => {
     for (const s of PARTICLE_SENTENCES) expect(correctSpacing(s)).toBe(GOLD[s.id])
     expect(Object.keys(GOLD)).toHaveLength(PARTICLE_SENTENCES.length)
+  })
+})
+
+describe('buildPuzzle — level 1 (chunked tokens)', () => {
+  it('splits s01 into word/particle blocks with the right gaps', () => {
+    const p = buildPuzzle(byId('s01-jeoneun'), 1)
+    expect(p.blocks).toEqual(['저', '는', '학생이에요'])
+    expect(p.gaps).toEqual([
+      { correct: 'join', kind: 'particle' },
+      { correct: 'space', kind: 'eojeol' },
+    ])
+  })
+
+  it('spaces a number from its counter (s12: 아홉 | 시)', () => {
+    const p = buildPuzzle(byId('s12-ahopsibuteo'), 1)
+    // blocks: 아홉 | 시 | 부터 | 다섯 | 시 | 까지 | 일해요
+    expect(p.blocks).toEqual(['아홉', '시', '부터', '다섯', '시', '까지', '일해요'])
+    expect(p.gaps[0]).toEqual({ correct: 'space', kind: 'eojeol' }) // 아홉 | 시
+    expect(p.gaps[1]).toEqual({ correct: 'join', kind: 'particle' }) // 시 | 부터
+  })
+})
+
+describe('buildPuzzle — level 2 (syllables)', () => {
+  it('splits s01 into syllables, joining inside the predicate', () => {
+    const p = buildPuzzle(byId('s01-jeoneun'), 2)
+    expect(p.blocks).toEqual(['저', '는', '학', '생', '이', '에', '요'])
+    expect(p.gaps).toEqual([
+      { correct: 'join', kind: 'particle' }, // 저 | 는
+      { correct: 'space', kind: 'eojeol' }, // 는 | 학
+      { correct: 'join', kind: 'word-internal' }, // 학 | 생
+      { correct: 'join', kind: 'word-internal' }, // 생 | 이
+      { correct: 'join', kind: 'word-internal' }, // 이 | 에
+      { correct: 'join', kind: 'word-internal' }, // 에 | 요
+    ])
+  })
+})
+
+describe('buildPuzzle — invariant', () => {
+  it('reassembles to correctSpacing at both levels, with gaps = blocks - 1', () => {
+    for (const s of PARTICLE_SENTENCES) {
+      for (const level of [1, 2] as SpacingLevel[]) {
+        const p = buildPuzzle(s, level)
+        expect(p.gaps).toHaveLength(p.blocks.length - 1)
+        expect(reassemble(p)).toBe(correctSpacing(s))
+      }
+    }
   })
 })
