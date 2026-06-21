@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import ExamplesSection from '~/components/library/GrammarStudySheet/ExamplesSection.vue'
 
+// vi.mock is hoisted above imports by Vitest, so ExamplesSection still gets the mock.
 vi.mock('~/lib/grammar-examples', () => ({
   examplesFor: (ko: string) =>
     ko === '-아/어요'
@@ -10,8 +12,6 @@ vi.mock('~/lib/grammar-examples', () => ({
         ]
       : [],
 }))
-
-import ExamplesSection from '~/components/library/GrammarStudySheet/ExamplesSection.vue'
 
 const mountWith = (grammar: Record<string, unknown>) =>
   mount(ExamplesSection, {
