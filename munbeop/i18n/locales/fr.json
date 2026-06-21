@@ -597,7 +597,7 @@
     "replay_mode_label": "Mode révision — tes réponses manquées",
     "summary_score": "{correct} / {total} correctes",
     "diary_note": "Tu as choisi {chosen} ; la forme est {correct}.",
-    "exit": "Retour à la pratique",
+    "next": "Suivant",
     "progress_label": "Progression des questions",
     "rule": {
       "regular": "Régulier : ajoute la terminaison à la base avec harmonie vocalique.",

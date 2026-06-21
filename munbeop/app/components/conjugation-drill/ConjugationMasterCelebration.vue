@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
         ref="dismissBtn"
         type="button"
         class="cel__btn"
-        data-testid="cel-dismiss"
+        data-testid="conj-cel-dismiss"
         @click="emit('dismiss')"
       >
         {{ t('conjugation.master.dismiss') }}

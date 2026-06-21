@@ -597,7 +597,7 @@
     "replay_mode_label": "Modo repaso — tus respuestas falladas",
     "summary_score": "{correct} / {total} correctas",
     "diary_note": "Elegiste {chosen}; la forma es {correct}.",
-    "exit": "Volver a práctica",
+    "next": "Siguiente",
     "progress_label": "Progreso de preguntas",
     "rule": {
       "regular": "Regular: añade la terminación a la raíz con armonía vocálica.",

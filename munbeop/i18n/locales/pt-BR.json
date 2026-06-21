@@ -597,7 +597,7 @@
     "replay_mode_label": "Modo revisão — seus itens errados",
     "summary_score": "{correct} / {total} corretas",
     "diary_note": "Você escolheu {chosen}; a forma é {correct}.",
-    "exit": "Voltar à Prática",
+    "next": "Próximo",
     "progress_label": "Progresso das perguntas",
     "rule": {
       "regular": "Regular: adicione a terminação ao radical com harmonia vocálica.",

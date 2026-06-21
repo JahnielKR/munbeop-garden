@@ -557,7 +557,7 @@
     "replay_mode_label": "Review mode — your missed items",
     "summary_score": "{correct} / {total} correct",
     "diary_note": "You picked {chosen}; the form is {correct}.",
-    "exit": "Back to Practice",
+    "next": "Next",
     "progress_label": "Question progress",
     "rule": {
       "regular": "Regular: add the ending to the stem with vowel harmony.",

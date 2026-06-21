@@ -597,7 +597,7 @@
     "replay_mode_label": "โหมดทบทวน — ข้อที่พลาดไป",
     "summary_score": "{correct} / {total} ถูกต้อง",
     "diary_note": "คุณเลือก {chosen}; รูปแบบที่ถูกต้องคือ {correct}",
-    "exit": "กลับไปฝึก",
+    "next": "ถัดไป",
     "progress_label": "ความคืบหน้าของคำถาม",
     "rule": {
       "regular": "ปกติ: เติมคำลงท้ายที่ก้านคำตามความกลมกลืนของสระ",

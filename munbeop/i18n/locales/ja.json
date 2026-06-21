@@ -597,7 +597,7 @@
     "replay_mode_label": "復習モード — 間違えた問題",
     "summary_score": "{correct} / {total} 正解",
     "diary_note": "{chosen} を選んだけど、正しい形は {correct} だよ。",
-    "exit": "練習に戻る",
+    "next": "次へ",
     "progress_label": "問題の進捗",
     "rule": {
       "regular": "規則活用: 母音調和に従って語幹に語尾を付ける。",

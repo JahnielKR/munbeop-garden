@@ -597,7 +597,7 @@
     "replay_mode_label": "Mode ulangan — item yang kamu lewatkan",
     "summary_score": "{correct} / {total} benar",
     "diary_note": "Kamu memilih {chosen}; bentuk yang benar adalah {correct}.",
-    "exit": "Kembali ke Latihan",
+    "next": "Berikutnya",
     "progress_label": "Kemajuan soal",
     "rule": {
       "regular": "Reguler: tambahkan akhiran pada stem dengan harmoni vokal.",

@@ -67,7 +67,7 @@ watch(
         {{ $t('conjugation.reveal_correct', { correct: item.correct }) }}
       </p>
       <p v-if="!verdict" class="card__rule">{{ $t(`conjugation.rule.${item.klass}`) }}</p>
-      <button type="button" class="card__next" @click="emit('next')">→</button>
+      <button type="button" class="card__next" :aria-label="$t('conjugation.next')" @click="emit('next')"><span aria-hidden="true">→</span></button>
     </div>
   </div>
 </template>

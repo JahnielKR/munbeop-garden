@@ -597,7 +597,7 @@
     "replay_mode_label": "Chế độ ôn tập — những câu bạn đã sai",
     "summary_score": "{correct} / {total} đúng",
     "diary_note": "Bạn đã chọn {chosen}; dạng đúng là {correct}.",
-    "exit": "Quay lại Luyện tập",
+    "next": "Tiếp theo",
     "progress_label": "Tiến độ câu hỏi",
     "rule": {
       "regular": "Quy tắc thường: thêm đuôi vào gốc từ theo hài hòa nguyên âm.",
