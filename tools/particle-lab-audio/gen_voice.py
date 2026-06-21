@@ -46,7 +46,7 @@ CAST: list[tuple[str, str, str, str, str]] = [
     ("s04-doseogwan",   "도서관에서 공부해요.",            "ko-KR-SunHiNeural",  "-2%",  "+5Hz"),
     ("s05-jeodo",       "저도 커피를 좋아해요.",           "ko-KR-SunHiNeural",  "+0%",  "-5Hz"),
     ("s06-achime",      "아침에 빵을 먹어요.",             "ko-KR-HyunsuMultilingualNeural", "+0%", "+5Hz"),
-    ("s07-biga",        "비가 와요.",                     "ko-KR-SunHiNeural",  "-12%", "-25Hz"),
+    ("s07-biga",        "비가 와요.",                     "ko-KR-SunHiNeural",  "+0%",  "-4Hz"),
     ("s08-chinguhante", "친구한테 편지를 써요.",           "ko-KR-SunHiNeural",  "+0%",  "+6Hz"),
     ("s09-beoseuro",    "버스로 학교에 가요.",             "ko-KR-SunHiNeural",  "+5%",  "+24Hz"),
     ("s10-ppangman",    "빵만 먹어요.",                   "ko-KR-SunHiNeural",  "+6%",  "+28Hz"),
