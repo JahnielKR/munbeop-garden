@@ -1,4 +1,5 @@
 import type { LocalizedString } from './i18n'
+import type { SpeechLevel } from './particles'
 
 export interface Grammar {
   /** Korean grammar pattern, e.g. "-(으)니까". Unique identifier in v1. NOT translated. */
@@ -18,6 +19,22 @@ export interface Grammar {
    * the "Coming soon" placeholder in the study sheet.
    */
   usageNotes?: LocalizedString
+}
+
+/**
+ * One example sentence for a grammar point, tagged with the speech level
+ * (register) of its predicate. Many per point — the bank that supersedes the
+ * single `Grammar.example`. Sourced statically from `app/seed/grammar-examples/`.
+ */
+export interface GrammarExample {
+  /** FK → Grammar.ko (the v1 stable id). NOT translated. */
+  ko: string
+  /** The Korean example sentence. NOT translated. */
+  sentence: string
+  /** Translation per locale. */
+  trans: LocalizedString
+  /** Register of the sentence's predicate (reuses the formality axis). */
+  level: SpeechLevel
 }
 
 export interface Deck {
