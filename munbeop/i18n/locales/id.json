@@ -514,5 +514,44 @@
     "clear": "Hapus",
     "completion_placeholder": "Ketik partikelnya…",
     "creation_help": "Ketuk ubin secara berurutan untuk menyusun kalimat"
+  },
+  "conjugation": {
+    "title": "Lab Konjugasi",
+    "lead": "Pilih bentuk konjugasi yang benar. Pilihan salah adalah kesalahan yang benar-benar dilakukan pelajar.",
+    "pick_class": "PILIH KELAS",
+    "prompt": "Konjugasikan ke {ending}",
+    "gloss_hint": "({gloss})",
+    "pick_hint": "Ketuk bentuk yang benar.",
+    "correct": "Benar!",
+    "wrong": "Belum tepat",
+    "reveal_correct": "Bentuk benar: {correct}",
+    "restart": "Ronde baru",
+    "replay_failed": "Ulangi kesalahan ({n})",
+    "replay_mode_label": "Mode ulangan — item yang kamu lewatkan",
+    "summary_score": "{correct} / {total} benar",
+    "diary_note": "Kamu memilih {chosen}; bentuk yang benar adalah {correct}.",
+    "exit": "Kembali ke Latihan",
+    "progress_label": "Kemajuan soal",
+    "rule": {
+      "regular": "Reguler: tambahkan akhiran pada stem dengan harmoni vokal.",
+      "p_irr": "ㅂ-ireguler: ㅂ menjadi 우 sebelum vokal (덥다 → 더워요).",
+      "t_irr": "ㄷ-ireguler: ㄷ menjadi ㄹ sebelum vokal (듣다 → 들어요).",
+      "eu_elision": "Elisi ㅡ: ㅡ pada stem gugur sebelum -아/어 (바쁘다 → 바빠요).",
+      "reu_irr": "르-ireguler: 르 menambahkan ㄹ ekstra sebelum -아/어 (빠르다 → 빨라요).",
+      "h_irr": "ㅎ-ireguler: ㅎ gugur; vokal melebur menjadi ㅐ (그렇다 → 그래요).",
+      "s_irr": "ㅅ-ireguler: ㅅ gugur sebelum vokal, tanpa kontraksi (짓다 → 지어요).",
+      "l_drop": "Gugur ㄹ: ㄹ stem gugur sebelum ㄴ/ㅂ/ㅅ (살다 → 사니까), tetap sebelum ㅁ.",
+      "hada": "하다: 하 menjadi 해 (공부하다 → 공부해요)."
+    },
+    "master": {
+      "label": "Conjugation Master",
+      "title": "활용 마스터!",
+      "progress": "{done}/{total} kelas diselesaikan",
+      "earned": "Semua 9 kelas diselesaikan!",
+      "celebrate_body": "Kamu menyelesaikan semua {total} kelas konjugasi. 화이팅!",
+      "dismiss": "Oke!",
+      "pip_done": "{ko} — selesai",
+      "pip_todo": "{ko} — belum"
+    }
   }
 }

@@ -514,5 +514,44 @@
     "clear": "クリア",
     "completion_placeholder": "助詞を入力…",
     "creation_help": "タイルを順番にタップして文を作ろう"
+  },
+  "conjugation": {
+    "title": "活用ラボ",
+    "lead": "正しい活用形を選ぼう。間違いの選択肢は学習者が実際によくするミスだよ。",
+    "pick_class": "クラスを選ぶ",
+    "prompt": "{ending} に活用しよう",
+    "gloss_hint": "({gloss})",
+    "pick_hint": "正しい形をタップしよう。",
+    "correct": "正解！",
+    "wrong": "惜しい",
+    "reveal_correct": "正しい形: {correct}",
+    "restart": "新しいラウンド",
+    "replay_failed": "ミスを復習する ({n})",
+    "replay_mode_label": "復習モード — 間違えた問題",
+    "summary_score": "{correct} / {total} 正解",
+    "diary_note": "{chosen} を選んだけど、正しい形は {correct} だよ。",
+    "exit": "練習に戻る",
+    "progress_label": "問題の進捗",
+    "rule": {
+      "regular": "規則活用: 母音調和に従って語幹に語尾を付ける。",
+      "p_irr": "ㅂ不規則: 母音の前でㅂが우になる (덥다 → 더워요)。",
+      "t_irr": "ㄷ不規則: 母音の前でㄷがㄹになる (듣다 → 들어요)。",
+      "eu_elision": "ㅡ脱落: -아/어の前で語幹のㅡが落ちる (바쁘다 → 바빠요)。",
+      "reu_irr": "르不規則: -아/어の前で르がㄹを追加する (빠르다 → 빨라요)。",
+      "h_irr": "ㅎ不規則: ㅎが落ち、母音がㅐに融合する (그렇다 → 그래요)。",
+      "s_irr": "ㅅ不規則: 母音の前でㅅが落ちる、縮約なし (짓다 → 지어요)。",
+      "l_drop": "ㄹ脱落: ㄴ/ㅂ/ㅅの前で語幹のㄹが落ちる (살다 → 사니까)、ㅁの前では残る。",
+      "hada": "하다: 하が해になる (공부하다 → 공부해요)。"
+    },
+    "master": {
+      "label": "Conjugation Master",
+      "title": "활용 마스터!",
+      "progress": "{done}/{total} クラスクリア",
+      "earned": "全9クラスクリア！",
+      "celebrate_body": "{total} の活用クラスを全てクリアした。화이팅!",
+      "dismiss": "やった！",
+      "pip_done": "{ko} — クリア済み",
+      "pip_todo": "{ko} — まだ"
+    }
   }
 }

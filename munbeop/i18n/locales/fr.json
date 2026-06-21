@@ -514,5 +514,44 @@
     "clear": "Effacer",
     "completion_placeholder": "Écris la particule…",
     "creation_help": "Touche les tuiles dans l'ordre pour former la phrase"
+  },
+  "conjugation": {
+    "title": "Labo de conjugaison",
+    "lead": "Choisis la forme conjuguée correcte. Les mauvaises options sont les erreurs que les apprenants font vraiment.",
+    "pick_class": "CHOISIR UNE CLASSE",
+    "prompt": "Conjugue en {ending}",
+    "gloss_hint": "({gloss})",
+    "pick_hint": "Touche la bonne forme.",
+    "correct": "Correct !",
+    "wrong": "Pas tout à fait",
+    "reveal_correct": "Forme correcte : {correct}",
+    "restart": "Nouveau tour",
+    "replay_failed": "Revoir les erreurs ({n})",
+    "replay_mode_label": "Mode révision — tes réponses manquées",
+    "summary_score": "{correct} / {total} correctes",
+    "diary_note": "Tu as choisi {chosen} ; la forme est {correct}.",
+    "exit": "Retour à la pratique",
+    "progress_label": "Progression des questions",
+    "rule": {
+      "regular": "Régulier : ajoute la terminaison à la base avec harmonie vocalique.",
+      "p_irr": "ㅂ-irrégulier : ㅂ devient 우 devant une voyelle (덥다 → 더워요).",
+      "t_irr": "ㄷ-irrégulier : ㄷ devient ㄹ devant une voyelle (듣다 → 들어요).",
+      "eu_elision": "Élision ㅡ : le ㅡ de la base tombe avant -아/어 (바쁘다 → 바빠요).",
+      "reu_irr": "르-irrégulier : 르 ajoute un ㄹ supplémentaire avant -아/어 (빠르다 → 빨라요).",
+      "h_irr": "ㅎ-irrégulier : ㅎ tombe ; la voyelle fusionne en ㅐ (그렇다 → 그래요).",
+      "s_irr": "ㅅ-irrégulier : ㅅ tombe devant une voyelle, sans contraction (짓다 → 지어요).",
+      "l_drop": "Chute du ㄹ : le ㄹ de la base tombe avant ㄴ/ㅂ/ㅅ (살다 → 사니까), conservé avant ㅁ.",
+      "hada": "하다 : 하 devient 해 (공부하다 → 공부해요)."
+    },
+    "master": {
+      "label": "Conjugation Master",
+      "title": "활용 마스터!",
+      "progress": "{done}/{total} classes réussies",
+      "earned": "Les 9 classes réussies !",
+      "celebrate_body": "Tu as réussi les {total} classes de conjugaison. 화이팅!",
+      "dismiss": "Super !",
+      "pip_done": "{ko} — réussie",
+      "pip_todo": "{ko} — pas encore"
+    }
   }
 }

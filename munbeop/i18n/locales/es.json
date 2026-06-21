@@ -514,5 +514,44 @@
     "clear": "Borrar",
     "completion_placeholder": "Escribe la partícula…",
     "creation_help": "Toca las fichas en orden para formar la oración"
+  },
+  "conjugation": {
+    "title": "Laboratorio de conjugación",
+    "lead": "Elige la forma conjugada correcta. Las opciones incorrectas son los errores que los estudiantes cometen de verdad.",
+    "pick_class": "ELIGE UNA CLASE",
+    "prompt": "Conjuga en {ending}",
+    "gloss_hint": "({gloss})",
+    "pick_hint": "Toca la forma correcta.",
+    "correct": "¡Correcto!",
+    "wrong": "No exactamente",
+    "reveal_correct": "Forma correcta: {correct}",
+    "restart": "Nueva ronda",
+    "replay_failed": "Repasar errores ({n})",
+    "replay_mode_label": "Modo repaso — tus respuestas falladas",
+    "summary_score": "{correct} / {total} correctas",
+    "diary_note": "Elegiste {chosen}; la forma es {correct}.",
+    "exit": "Volver a práctica",
+    "progress_label": "Progreso de preguntas",
+    "rule": {
+      "regular": "Regular: añade la terminación a la raíz con armonía vocálica.",
+      "p_irr": "ㅂ-irregular: ㅂ se convierte en 우 ante vocal (덥다 → 더워요).",
+      "t_irr": "ㄷ-irregular: ㄷ se convierte en ㄹ ante vocal (듣다 → 들어요).",
+      "eu_elision": "Elisión ㅡ: la ㅡ de la raíz cae ante -아/어 (바쁘다 → 바빠요).",
+      "reu_irr": "르-irregular: 르 añade una ㄹ extra ante -아/어 (빠르다 → 빨라요).",
+      "h_irr": "ㅎ-irregular: ㅎ cae; la vocal se fusiona en ㅐ (그렇다 → 그래요).",
+      "s_irr": "ㅅ-irregular: ㅅ cae ante vocal, sin contracción (짓다 → 지어요).",
+      "l_drop": "Caída ㄹ: la ㄹ de la raíz cae ante ㄴ/ㅂ/ㅅ (살다 → 사니까), se mantiene ante ㅁ.",
+      "hada": "하다: 하 se convierte en 해 (공부하다 → 공부해요)."
+    },
+    "master": {
+      "label": "Conjugation Master",
+      "title": "활용 마스터!",
+      "progress": "{done}/{total} clases completadas",
+      "earned": "¡Las 9 clases completadas!",
+      "celebrate_body": "Completaste las {total} clases de conjugación. 화이팅!",
+      "dismiss": "¡Genial!",
+      "pip_done": "{ko} — completada",
+      "pip_todo": "{ko} — pendiente"
+    }
   }
 }

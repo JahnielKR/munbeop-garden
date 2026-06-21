@@ -475,6 +475,45 @@
     "exit_confirm_leave": "Leave",
     "exit_confirm_cancel": "Cancel"
   },
+  "conjugation": {
+    "title": "Conjugation Lab",
+    "lead": "Pick the correct conjugated form. The wrong options are the mistakes learners actually make.",
+    "pick_class": "PICK A CLASS",
+    "prompt": "Conjugate into {ending}",
+    "gloss_hint": "({gloss})",
+    "pick_hint": "Tap the correct form.",
+    "correct": "Correct!",
+    "wrong": "Not quite",
+    "reveal_correct": "Correct form: {correct}",
+    "restart": "New round",
+    "replay_failed": "Review mistakes ({n})",
+    "replay_mode_label": "Review mode — your missed items",
+    "summary_score": "{correct} / {total} correct",
+    "diary_note": "You picked {chosen}; the form is {correct}.",
+    "exit": "Back to Practice",
+    "progress_label": "Question progress",
+    "rule": {
+      "regular": "Regular: add the ending to the stem with vowel harmony.",
+      "p_irr": "ㅂ-irregular: ㅂ becomes 우 before a vowel (덥다 → 더워요).",
+      "t_irr": "ㄷ-irregular: ㄷ becomes ㄹ before a vowel (듣다 → 들어요).",
+      "eu_elision": "ㅡ-elision: stem ㅡ drops before -아/어 (바쁘다 → 바빠요).",
+      "reu_irr": "르-irregular: 르 adds an extra ㄹ before -아/어 (빠르다 → 빨라요).",
+      "h_irr": "ㅎ-irregular: ㅎ drops; the vowel fuses to ㅐ (그렇다 → 그래요).",
+      "s_irr": "ㅅ-irregular: ㅅ drops before a vowel, no contraction (짓다 → 지어요).",
+      "l_drop": "ㄹ-drop: stem ㄹ drops before ㄴ/ㅂ/ㅅ (살다 → 사니까), kept before ㅁ.",
+      "hada": "하다: 하 becomes 해 (공부하다 → 공부해요)."
+    },
+    "master": {
+      "label": "Conjugation Master",
+      "title": "활용 마스터!",
+      "progress": "{done}/{total} classes cleared",
+      "earned": "All 9 classes cleared!",
+      "celebrate_body": "You cleared all {total} conjugation classes. 화이팅!",
+      "dismiss": "Nice!",
+      "pip_done": "{ko} — cleared",
+      "pip_todo": "{ko} — not yet"
+    }
+  },
   "escape": {
     "book_lead": "Flip through the notebook and pick your story.",
     "level_n": "Level {n}",
