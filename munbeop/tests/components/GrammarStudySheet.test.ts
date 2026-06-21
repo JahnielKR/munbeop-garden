@@ -11,6 +11,9 @@ vi.mock('~/stores/srs', () => ({
 vi.mock('~/stores/log', () => ({
   useLogStore: () => ({ entries: [] }),
 }))
+vi.mock('~/lib/grammar-examples', () => ({
+  examplesFor: () => [],
+}))
 
 const pushSpy = vi.fn()
 vi.stubGlobal('useRouter', () => ({ push: pushSpy }))
@@ -49,12 +52,15 @@ describe('GrammarStudySheet', () => {
     expect(wrapper.html()).toContain('library.modal.coming_soon.usage_notes')
   })
 
-  it('always renders ComingSoon for audio, examples, achievements in v1', () => {
+  it('renders ComingSoon for audio and achievements; shows ExamplesSection for examples', () => {
     const wrapper = mount(GrammarStudySheet, { props: { grammar: seededGrammar } })
     const html = wrapper.html()
     expect(html).toContain('library.modal.coming_soon.audio')
-    expect(html).toContain('library.modal.coming_soon.examples')
     expect(html).toContain('library.modal.coming_soon.achievements')
+    // ExamplesSection replaces the coming-soon placeholder; it falls back to
+    // the canonical example when the bank is empty.
+    expect(html).not.toContain('library.modal.coming_soon.examples')
+    expect(html).toContain('비가 오니까 우산을 챙겨요.')
   })
 
   it('practice CTA pushes /practice/ruleta?focus=<ko> (the hub lives at /practice)', async () => {

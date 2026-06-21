@@ -252,6 +252,11 @@
         "usage_notes": "詳しい使い方ノートは近日対応予定。"
       }
     },
+    "examples": {
+      "register_formal": "フォーマルな言い方",
+      "register_polite": "丁寧な言い方",
+      "register_casual": "カジュアルな言い方"
+    },
     "search": {
       "placeholder": "文型や意味を検索…",
       "result_count": "{n} 件",

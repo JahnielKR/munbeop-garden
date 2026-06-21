@@ -252,6 +252,11 @@
         "usage_notes": "Detailed usage notes for this grammar are coming soon."
       }
     },
+    "examples": {
+      "register_formal": "Formal register",
+      "register_polite": "Polite register",
+      "register_casual": "Casual register"
+    },
     "search": {
       "placeholder": "Search a pattern or its meaning…",
       "result_count": "{n} results",

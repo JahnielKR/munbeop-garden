@@ -252,6 +252,11 @@
         "usage_notes": "Ghi chú cách dùng chi tiết sắp ra mắt."
       }
     },
+    "examples": {
+      "register_formal": "Cách nói trang trọng",
+      "register_polite": "Cách nói lịch sự",
+      "register_casual": "Cách nói thân mật"
+    },
     "search": {
       "placeholder": "Tìm một mẫu câu hoặc nghĩa của nó…",
       "result_count": "{n} kết quả",

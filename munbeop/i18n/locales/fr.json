@@ -252,6 +252,11 @@
         "usage_notes": "Les notes d'usage détaillées arrivent bientôt."
       }
     },
+    "examples": {
+      "register_formal": "Registre formel",
+      "register_polite": "Registre poli",
+      "register_casual": "Registre familier"
+    },
     "search": {
       "placeholder": "Cherchez un schéma ou son sens…",
       "result_count": "{n} résultats",

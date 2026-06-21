@@ -7,6 +7,7 @@ import SrsProgressSection from './GrammarStudySheet/SrsProgressSection.vue'
 import PracticeCtaSection from './GrammarStudySheet/PracticeCtaSection.vue'
 import ParticleLabSection from './GrammarStudySheet/ParticleLabSection.vue'
 import ComingSoonSection from './GrammarStudySheet/ComingSoonSection.vue'
+import ExamplesSection from './GrammarStudySheet/ExamplesSection.vue'
 
 interface Props {
   grammar: Grammar
@@ -27,10 +28,7 @@ const { t } = useI18n()
       :title="t('library.modal.section.audio')"
       :body="t('library.modal.coming_soon.audio')"
     />
-    <ComingSoonSection
-      :title="t('library.modal.section.examples')"
-      :body="t('library.modal.coming_soon.examples')"
-    />
+    <ExamplesSection :grammar="grammar" />
     <ComingSoonSection
       :title="t('library.modal.section.achievements')"
       :body="t('library.modal.coming_soon.achievements')"

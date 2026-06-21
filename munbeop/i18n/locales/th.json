@@ -252,6 +252,11 @@
         "usage_notes": "หมายเหตุการใช้งานโดยละเอียดกำลังจะมา"
       }
     },
+    "examples": {
+      "register_formal": "ระดับทางการ",
+      "register_polite": "ระดับสุภาพ",
+      "register_casual": "ระดับกันเอง"
+    },
     "search": {
       "placeholder": "ค้นหารูปประโยคหรือความหมาย…",
       "result_count": "{n} ผลลัพธ์",
