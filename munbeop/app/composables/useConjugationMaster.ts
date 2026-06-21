@@ -18,13 +18,14 @@ function readSet(key: string): Set<string> {
 
 export function useConjugationMaster() {
   const cleared = ref<Set<string>>(readSet(STORAGE_KEY))
+  const earnedSticky = ref(typeof localStorage !== 'undefined' && !!localStorage.getItem(EARNED_KEY))
   const celebrate = ref(false)
 
   const view = computed(() => masteryOf(cleared.value))
   const perClass = computed(() => view.value.perClass)
   const doneCount = computed(() => view.value.doneCount)
   const total = computed(() => view.value.total)
-  const earned = computed(() => view.value.earned)
+  const earned = computed(() => view.value.earned || earnedSticky.value)
 
   /** Call at round end with the class and the round accuracy. */
   function recordRound(klass: VerbClass, accuracy: number) {
@@ -38,6 +39,7 @@ export function useConjugationMaster() {
     }
     if (view.value.earned && typeof localStorage !== 'undefined' && !localStorage.getItem(EARNED_KEY)) {
       localStorage.setItem(EARNED_KEY, '1')
+      earnedSticky.value = true
       celebrate.value = true
     }
   }
