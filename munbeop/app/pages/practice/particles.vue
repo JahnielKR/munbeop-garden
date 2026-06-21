@@ -8,11 +8,14 @@ import ExploreMode from '~/components/particle-lab/ExploreMode.vue'
 import SpacingCard from '~/components/particle-lab/SpacingCard.vue'
 import SpacingSummary from '~/components/particle-lab/SpacingSummary.vue'
 import SpacingLevelPicker from '~/components/particle-lab/SpacingLevelPicker.vue'
+import ParticleMasterStrip from '~/components/particle-lab/ParticleMasterStrip.vue'
+import ParticleMasterCelebration from '~/components/particle-lab/ParticleMasterCelebration.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
 import { useParticleDrill } from '~/composables/useParticleDrill'
 import { useParticleSpacing } from '~/composables/useParticleSpacing'
+import { useParticleMaster } from '~/composables/useParticleMaster'
 import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
 
 /**
@@ -29,6 +32,7 @@ const router = useRouter()
 const { t } = useI18n()
 const drill = useParticleDrill(typeof route.query.set === 'string' ? route.query.set : undefined)
 const spacing = useParticleSpacing()
+const master = useParticleMaster()
 
 const initialMode: Mode =
   route.query.mode === 'drill' ? 'drill' : route.query.mode === 'spacing' ? 'spacing' : 'explore'
@@ -87,6 +91,13 @@ function onSelectLevel(l: 1 | 2) {
     <GameLeaveConfirm />
     <BilingualTitle ko="조사 연구소" :latin="t('particles.title')" />
     <p class="lab__lead">{{ t('particles.lead') }}</p>
+
+    <ParticleMasterStrip
+      :per-particle="master.perParticle.value"
+      :done-count="master.doneCount.value"
+      :total="master.total.value"
+      :earned="master.earned.value"
+    />
 
     <div class="lab__tabs" role="group" :aria-label="t('particles.mode_label')">
       <button
@@ -204,6 +215,12 @@ function onSelectLevel(l: 1 | 2) {
         @explore="mode = 'explore'"
       />
     </template>
+
+    <ParticleMasterCelebration
+      v-if="master.celebrate.value"
+      :total="master.total.value"
+      @dismiss="master.dismiss"
+    />
   </div>
 </template>
 
