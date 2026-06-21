@@ -73,7 +73,7 @@ const fallback = computed(() =>
 }
 .example__ko {
   margin: 0 0 2px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 15px;
   color: var(--ink);
   line-height: 1.5;
@@ -83,8 +83,8 @@ const fallback = computed(() =>
   gap: 8px;
 }
 .example__chip {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 8px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10px;
   letter-spacing: 0.04em;
   color: var(--ink-soft);
   border: 1px solid var(--ink-line);
