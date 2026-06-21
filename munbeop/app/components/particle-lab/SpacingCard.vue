@@ -4,6 +4,7 @@ import type { LocalizedString } from '~/lib/domain'
 import type { GapValue, SpacingPuzzle, SpacingResult } from '~/lib/particle-lab'
 import { useLocalized } from '~/composables/useLocalized'
 import SpacingGap from './SpacingGap.vue'
+import SentenceAudioButton from './SentenceAudioButton.vue'
 
 /** One spacing puzzle: blocks interleaved with tappable gaps + reveal feedback. */
 interface Props {
@@ -65,6 +66,8 @@ const wrongRules = computed(() => {
     </div>
 
     <p class="spacing__trans">{{ tl(trans) }}</p>
+
+    <SentenceAudioButton :sentence-id="puzzle.sentenceId" />
 
     <button
       v-if="!revealed"

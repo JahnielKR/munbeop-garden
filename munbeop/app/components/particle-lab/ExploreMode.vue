@@ -75,7 +75,10 @@ onMounted(() => {
       </button>
     </div>
 
-    <SentenceAudioButton :sentence-id="explore.sentence.value.id" />
+    <SentenceAudioButton
+      :sentence-id="explore.sentence.value.id"
+      :level="explore.level.value"
+    />
 
     <ParticleSentence
       :sentence="explore.sentence.value"

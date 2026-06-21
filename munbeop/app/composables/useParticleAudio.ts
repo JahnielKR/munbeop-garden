@@ -7,6 +7,8 @@
  * so a missing OGG simply does nothing.
  */
 
+import type { SpeechLevel } from '~/lib/domain'
+
 const VOICE_VOL = 0.95
 
 let voice: HTMLAudioElement | null = null
@@ -38,13 +40,13 @@ function safePlay(a: HTMLAudioElement | null) {
   }
 }
 
-/** Public asset path for a sentence's audio clip. */
-export function sentenceAudioSrc(id: string): string {
-  return `/particle-lab/audio/sentence-${id}.ogg`
+/** Public asset path for a sentence's audio clip at a speech level. */
+export function sentenceAudioSrc(id: string, level: SpeechLevel = 'polite'): string {
+  return `/particle-lab/audio/sentence-${id}-${level}.ogg`
 }
 
 export function useParticleAudio() {
-  function playSentence(id: string) {
+  function playSentence(id: string, level: SpeechLevel = 'polite') {
     if (!audioAvailable() || !id) return
     if (voice) {
       try {
@@ -53,7 +55,7 @@ export function useParticleAudio() {
         /* dead element */
       }
     }
-    const a = makeAudio(sentenceAudioSrc(id))
+    const a = makeAudio(sentenceAudioSrc(id, level))
     if (!a) return
     a.volume = VOICE_VOL
     voice = a

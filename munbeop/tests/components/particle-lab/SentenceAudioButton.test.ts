@@ -32,11 +32,17 @@ describe('SentenceAudioButton', () => {
     expect(btn.attributes('aria-label')).toBe('particles.explore.play_audio')
   })
 
-  it('plays the sentence clip on click', async () => {
+  it('plays the polite clip by default on click', async () => {
     const w = mount(SentenceAudioButton, { props: { sentenceId: 's03-hakgyo' } })
     await w.get('[data-testid="sentence-audio"]').trigger('click')
     expect(created.length).toBe(1)
-    expect(created[0]!.src).toContain('sentence-s03-hakgyo.ogg')
+    expect(created[0]!.src).toContain('sentence-s03-hakgyo-polite.ogg')
     expect(created[0]!.play).toHaveBeenCalled()
+  })
+
+  it('plays the clip for the given level', async () => {
+    const w = mount(SentenceAudioButton, { props: { sentenceId: 's03-hakgyo', level: 'casual' } })
+    await w.get('[data-testid="sentence-audio"]').trigger('click')
+    expect(created[0]!.src).toContain('sentence-s03-hakgyo-casual.ogg')
   })
 })

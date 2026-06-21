@@ -33,16 +33,24 @@ describe('useParticleAudio', () => {
     vi.unstubAllGlobals()
   })
 
-  it('derives the public path from the sentence id', () => {
-    expect(sentenceAudioSrc('s01-jeoneun')).toBe('/particle-lab/audio/sentence-s01-jeoneun.ogg')
+  it('derives the public path from the sentence id and level', () => {
+    expect(sentenceAudioSrc('s01-jeoneun')).toBe('/particle-lab/audio/sentence-s01-jeoneun-polite.ogg')
+    expect(sentenceAudioSrc('s01-jeoneun', 'formal')).toBe('/particle-lab/audio/sentence-s01-jeoneun-formal.ogg')
+    expect(sentenceAudioSrc('s05-jeodo', 'casual')).toBe('/particle-lab/audio/sentence-s05-jeodo-casual.ogg')
   })
 
   it('playSentence creates an Audio at the derived src and plays it', () => {
     const { playSentence } = useParticleAudio()
-    playSentence('s01-jeoneun')
+    playSentence('s01-jeoneun', 'formal')
     expect(created.length).toBe(1)
-    expect(created[0]!.src).toContain('/particle-lab/audio/sentence-s01-jeoneun.ogg')
+    expect(created[0]!.src).toContain('/particle-lab/audio/sentence-s01-jeoneun-formal.ogg')
     expect(created[0]!.play).toHaveBeenCalled()
+  })
+
+  it('defaults to the polite level', () => {
+    const { playSentence } = useParticleAudio()
+    playSentence('s02-goyangi')
+    expect(created[0]!.src).toContain('sentence-s02-goyangi-polite.ogg')
   })
 
   it('a new playSentence cancels the previous one', () => {
@@ -51,7 +59,7 @@ describe('useParticleAudio', () => {
     const first = created[0]!
     playSentence('s02-goyangi')
     expect(first.pause).toHaveBeenCalled()
-    expect(created[created.length - 1]!.src).toContain('sentence-s02-goyangi.ogg')
+    expect(created[created.length - 1]!.src).toContain('sentence-s02-goyangi-polite.ogg')
   })
 
   it('stop pauses the active clip', () => {
