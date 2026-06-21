@@ -46,6 +46,19 @@ describe('explore resolver', () => {
     expect(tokenText(particle, 'casual')).toBe('는')
   })
 
+  it('every sentence renders differently at formal and casual vs polite, with no empty token', () => {
+    const assemble = (s: (typeof PARTICLE_SENTENCES)[number], level: 'formal' | 'polite' | 'casual') =>
+      s.eojeols.flatMap((e) => e.map((t) => tokenText(t, level))).join('')
+    for (const s of PARTICLE_SENTENCES) {
+      const polite = assemble(s, 'polite')
+      expect(assemble(s, 'formal'), `${s.id} formal`).not.toBe(polite)
+      expect(assemble(s, 'casual'), `${s.id} casual`).not.toBe(polite)
+      for (const level of ['formal', 'polite', 'casual'] as const)
+        for (const e of s.eojeols)
+          for (const t of e) expect(tokenText(t, level).length, `${s.id} empty`).toBeGreaterThan(0)
+    }
+  })
+
   it('every explicit reading references particles that exist in its sentence', () => {
     for (const s of PARTICLE_SENTENCES) {
       const present = particleIds(s)
