@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import type { ClashSet, DrillItem, DrillVerdict } from '~/lib/domain'
 import { correctSentence, optionsFor, sentenceParts } from '~/lib/particle-lab'
 import { useLocalized } from '~/composables/useLocalized'
@@ -24,6 +24,19 @@ const parts = computed(() => sentenceParts(props.item, props.set))
 const answer = computed(() => parts.value.answer)
 const options = computed(() => optionsFor(props.item, props.set))
 
+/** When the phase leaves 'question', move focus to the feedback action button
+ *  (Retry / Next) so keyboard users don't have to Tab past disabled options. */
+const actionBtn = ref<HTMLButtonElement | null>(null)
+watch(
+  () => props.phase,
+  async (p) => {
+    if (p !== 'question') {
+      await nextTick()
+      actionBtn.value?.focus()
+    }
+  },
+)
+
 function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
   if (props.blockedChoices.has(choice)) return 'blocked'
   if (revealed.value && choice === answer.value) return 'correct'
@@ -40,7 +53,7 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
   >
     <div class="drill__cue">
       <span class="drill__cue-label">{{ t('particles.drill.cue_label') }}</span>
-      <p class="drill__cue-text">💬 {{ tl(item.cue) }}</p>
+      <p class="drill__cue-text"><span aria-hidden="true">💬</span> {{ tl(item.cue) }}</p>
     </div>
 
     <p class="drill__sentence" lang="ko">
@@ -68,7 +81,7 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
         class="feedback feedback--blocked"
         data-testid="drill-blocked"
       >
-        <h4 class="feedback__title">🧱 {{ t('particles.drill.blocked_title') }}</h4>
+        <h4 class="feedback__title"><span aria-hidden="true">🧱</span> {{ t('particles.drill.blocked_title') }}</h4>
         <p class="feedback__body">
           {{
             t(
@@ -79,7 +92,7 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
             )
           }}
         </p>
-        <button type="button" class="feedback__btn" @click="emit('retry')">
+        <button ref="actionBtn" type="button" class="feedback__btn" @click="emit('retry')">
           {{ t('particles.drill.retry') }}
         </button>
       </div>
@@ -89,7 +102,7 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
         class="feedback feedback--blocked"
         data-testid="drill-contraction"
       >
-        <h4 class="feedback__title">🔗 {{ t('particles.drill.contraction_title') }}</h4>
+        <h4 class="feedback__title"><span aria-hidden="true">🔗</span> {{ t('particles.drill.contraction_title') }}</h4>
         <p class="feedback__body">
           {{
             t('particles.drill.contraction_rule', {
@@ -99,7 +112,7 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
             })
           }}
         </p>
-        <button type="button" class="feedback__btn" @click="emit('retry')">
+        <button ref="actionBtn" type="button" class="feedback__btn" @click="emit('retry')">
           {{ t('particles.drill.retry') }}
         </button>
       </div>
@@ -111,16 +124,17 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
         data-testid="drill-feedback"
       >
         <h4 class="feedback__title">
-          {{ phase === 'right' ? `✅ ${t('particles.drill.right_title')}` : `❌ ${t('particles.drill.wrong_title')}` }}
+          <span aria-hidden="true">{{ phase === 'right' ? '✅' : '❌' }}</span>
+          {{ phase === 'right' ? t('particles.drill.right_title') : t('particles.drill.wrong_title') }}
         </h4>
         <p class="feedback__sentence" lang="ko">{{ correctSentence(item, set) }}</p>
         <p class="feedback__trans">{{ tl(item.trans) }}</p>
         <p class="feedback__body">{{ tl(item.reason) }}</p>
         <p v-if="phase === 'wrong'" class="feedback__diary">
-          📓 {{ t('particles.drill.saved_to_diary') }}
+          <span aria-hidden="true">📓</span> {{ t('particles.drill.saved_to_diary') }}
         </p>
-        <button type="button" class="feedback__btn" @click="emit('next')">
-          {{ t('particles.drill.next') }} ►
+        <button ref="actionBtn" type="button" class="feedback__btn" @click="emit('next')">
+          {{ t('particles.drill.next') }} <span aria-hidden="true">►</span>
         </button>
       </div>
     </div>
