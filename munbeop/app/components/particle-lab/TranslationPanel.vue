@@ -14,17 +14,19 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <section class="panel" data-testid="translation-panel" aria-live="polite">
+  <section class="panel" data-testid="translation-panel">
     <h3 class="panel__title">{{ t('particles.explore.translation_label') }}</h3>
-    <Transition name="panel" mode="out-in">
-      <p :key="text" class="panel__trans">{{ text }}</p>
-    </Transition>
-    <Transition name="panel" mode="out-in">
-      <p v-if="nuance" :key="nuance" class="panel__nuance">💡 {{ nuance }}</p>
-      <p v-else-if="fallback" key="fallback" class="panel__nuance">
-        💡 {{ t('particles.explore.nuance_generic') }}
-      </p>
-    </Transition>
+    <div aria-live="polite" aria-atomic="true">
+      <Transition name="panel" mode="out-in">
+        <p :key="text" class="panel__trans">{{ text }}</p>
+      </Transition>
+      <Transition name="panel" mode="out-in">
+        <p v-if="nuance" :key="nuance" class="panel__nuance"><span aria-hidden="true">💡</span> {{ nuance }}</p>
+        <p v-else-if="fallback" key="fallback" class="panel__nuance">
+          <span aria-hidden="true">💡</span> {{ t('particles.explore.nuance_generic') }}
+        </p>
+      </Transition>
+    </div>
   </section>
 </template>
 
