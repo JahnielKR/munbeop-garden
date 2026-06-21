@@ -260,6 +260,7 @@ function onSelectLevel(l: 1 | 2) {
   max-width: 560px;
 }
 .lab__tab {
+  min-width: 0;
   padding: 10px 12px;
   background: transparent;
   border: none;

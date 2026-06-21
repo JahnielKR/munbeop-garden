@@ -122,7 +122,17 @@ onMounted(() => {
   justify-content: center;
   gap: 8px;
 }
+/* Keep the arrows flanking the dots, but let the 14-dot row shrink and wrap
+ * INTERNALLY into two rows on narrow phones (arrows + dots was ~384px and got
+ * clipped at 360px). Scoped to Explore so the shared ProgressDots is untouched
+ * for drill/spacing. */
+.explore__nav :deep(.dots) {
+  min-width: 0;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+}
 .explore__arrow {
+  flex: 0 0 auto;
   padding: 6px 10px;
   background: var(--surface);
   border: 2px solid var(--border);

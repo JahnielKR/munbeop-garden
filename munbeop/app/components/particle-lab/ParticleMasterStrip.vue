@@ -69,9 +69,8 @@ const { t } = useI18n()
   letter-spacing: 0.04em;
   color: var(--text-soft);
 }
-.master--earned .master__caption {
-  color: var(--gold);
-}
+/* The earned caption keeps --text-soft for legibility (gold-on-surface was
+ * ~1.5:1 in light theme); the earned cue is the gold border + 🏅 + gold pips. */
 .master__pips {
   display: flex;
   flex-wrap: wrap;
@@ -86,7 +85,9 @@ const { t } = useI18n()
   font-family: var(--font-ko);
   font-size: var(--text-xs);
   color: var(--text-soft);
-  background: var(--paper);
+  /* Raised tier so an unlit slot separates from the --surface strip
+   * (--paper barely lifted off the strip — ~1.2:1 body separation). */
+  background: var(--paper-deep);
   transition:
     background var(--motion-quick) var(--ease-out),
     color var(--motion-quick) var(--ease-out);

@@ -81,7 +81,9 @@ const { tl } = useLocalized()
 .summary__review {
   text-align: left;
   background: var(--paper);
-  border-left: 4px solid var(--accent);
+  /* Match DrillSummary's review accent (and the per-gap wrong color) so the
+   * "mistakes to review" panel reads as one family across modes. */
+  border-left: 4px solid var(--danger);
   padding: 12px 14px;
 }
 .summary__review-title {
