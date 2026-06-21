@@ -11,6 +11,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 const emit = defineEmits<{ toggle: [index: number] }>()
+const { t } = useI18n()
 
 const isSpace = computed(() => props.value === 'space')
 const isCorrect = computed(() => props.value === props.gap.correct)
@@ -28,6 +29,7 @@ const isCorrect = computed(() => props.value === props.gap.correct)
     }"
     :disabled="revealed"
     :aria-pressed="isSpace"
+    :aria-label="isSpace ? t('particles.spacing.gap_space') : t('particles.spacing.gap_join')"
     :data-testid="`spacing-gap-${index}`"
     @click="emit('toggle', index)"
   >
@@ -40,7 +42,7 @@ const isCorrect = computed(() => props.value === props.gap.correct)
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 18px;
+  min-width: 28px;
   align-self: stretch;
   margin: 0 1px;
   padding: 0 2px;
@@ -56,7 +58,7 @@ const isCorrect = computed(() => props.value === props.gap.correct)
     color var(--motion-quick) var(--ease-out);
 }
 .gap--space {
-  min-width: 22px;
+  min-width: 28px;
   background: var(--paper);
   border-bottom-color: var(--accent);
   color: var(--accent);
