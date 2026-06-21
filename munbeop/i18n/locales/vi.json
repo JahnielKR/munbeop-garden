@@ -263,11 +263,21 @@
       "filter_all_categories": "Tất cả các loại",
       "active_zone": "Đang lọc: {zone}",
       "category": {
-        "particle": "Tiểu từ", "ending": "Đuôi từ", "conj": "Liên từ",
-        "expr": "Cấu trúc", "aux": "Trợ động từ", "verb": "Động từ", "voice": "Dạng",
-        "lex": "Từ vựng", "nominal": "Danh từ hóa", "modifier": "Định ngữ",
-        "copula": "Hệ từ", "negation": "Phủ định", "adv": "Trạng từ",
-        "indirect": "Lời nói gián tiếp", "meta": "Meta"
+        "particle": "Tiểu từ",
+        "ending": "Đuôi từ",
+        "conj": "Liên từ",
+        "expr": "Cấu trúc",
+        "aux": "Trợ động từ",
+        "verb": "Động từ",
+        "voice": "Dạng",
+        "lex": "Từ vựng",
+        "nominal": "Danh từ hóa",
+        "modifier": "Định ngữ",
+        "copula": "Hệ từ",
+        "negation": "Phủ định",
+        "adv": "Trạng từ",
+        "indirect": "Lời nói gián tiếp",
+        "meta": "Meta"
       }
     }
   },
@@ -339,11 +349,22 @@
       "deleted": "Đã xóa ngữ pháp."
     },
     "dark_mode": "Chế độ tối",
-    "appearance": { "theme": { "label": "Chủ đề", "light": "Sáng", "auto": "Tự động", "dark": "Tối" } },
+    "appearance": {
+      "theme": {
+        "label": "Chủ đề",
+        "light": "Sáng",
+        "auto": "Tự động",
+        "dark": "Tối"
+      }
+    },
     "contexts": {
       "title": "Ngữ cảnh luyện tập",
       "subtitle": "Chọn những tình huống xuất hiện khi luyện tập.",
-      "category": { "formalidad": "Mức trang trọng", "situacional": "Theo tình huống", "custom": "Ngữ cảnh của bạn" },
+      "category": {
+        "formalidad": "Mức trang trọng",
+        "situacional": "Theo tình huống",
+        "custom": "Ngữ cảnh của bạn"
+      },
       "add": "Thêm ngữ cảnh",
       "name_label": "Tên (tiếng Hàn)",
       "name_placeholder": "vd. 반말",
@@ -361,11 +382,53 @@
       "deleted": "Đã xóa ngữ cảnh.",
       "cancel": "Hủy"
     },
-    "about": { "title": "Giới thiệu & pháp lý", "contact": "Liên hệ" },
-    "data": { "title": "Dữ liệu & quyền riêng tư", "export": "Xuất dữ liệu của tôi (.json)", "exported": "Dữ liệu của bạn đang được tải xuống.", "export_error": "Không thể xuất dữ liệu của bạn. Thử lại." },
-    "tabs": { "account": "Tài khoản", "appearance": "Giao diện", "learning": "Học tập", "data": "Dữ liệu", "about": "Giới thiệu" },
-    "account": { "danger": { "title": "Vùng nguy hiểm", "description": "Xóa vĩnh viễn tài khoản và toàn bộ dữ liệu của bạn. Không thể hoàn tác.", "button": "Xóa tài khoản", "modal_title": "Xóa tài khoản của bạn?", "modal_body": "Thao tác này xóa vĩnh viễn tài khoản, câu, tiến độ, bộ thẻ và ngữ pháp tùy chỉnh của bạn. Không thể hoàn tác.", "confirm_label": "Nhập DELETE để xác nhận", "confirm_button": "Xóa vĩnh viễn", "cancel": "Hủy", "error": "Không thể xóa tài khoản của bạn. Thử lại." }, "security": { "title": "Đăng nhập & bảo mật" }, "password": { "submit": "Cập nhật mật khẩu", "wrong_current": "Mật khẩu hiện tại không đúng." }, "email": { "title": "Email mới", "submit": "Cập nhật email", "hint": "Chúng tôi sẽ gửi liên kết xác nhận đến email mới.", "sent": "Đã gửi liên kết xác nhận — kiểm tra hộp thư mới của bạn.", "error": "Không thể cập nhật email. Thử lại." } },
-    "menu": { "account": "Menu tài khoản" }
+    "about": {
+      "title": "Giới thiệu & pháp lý",
+      "contact": "Liên hệ"
+    },
+    "data": {
+      "title": "Dữ liệu & quyền riêng tư",
+      "export": "Xuất dữ liệu của tôi (.json)",
+      "exported": "Dữ liệu của bạn đang được tải xuống.",
+      "export_error": "Không thể xuất dữ liệu của bạn. Thử lại."
+    },
+    "tabs": {
+      "account": "Tài khoản",
+      "appearance": "Giao diện",
+      "learning": "Học tập",
+      "data": "Dữ liệu",
+      "about": "Giới thiệu"
+    },
+    "account": {
+      "danger": {
+        "title": "Vùng nguy hiểm",
+        "description": "Xóa vĩnh viễn tài khoản và toàn bộ dữ liệu của bạn. Không thể hoàn tác.",
+        "button": "Xóa tài khoản",
+        "modal_title": "Xóa tài khoản của bạn?",
+        "modal_body": "Thao tác này xóa vĩnh viễn tài khoản, câu, tiến độ, bộ thẻ và ngữ pháp tùy chỉnh của bạn. Không thể hoàn tác.",
+        "confirm_label": "Nhập DELETE để xác nhận",
+        "confirm_button": "Xóa vĩnh viễn",
+        "cancel": "Hủy",
+        "error": "Không thể xóa tài khoản của bạn. Thử lại."
+      },
+      "security": {
+        "title": "Đăng nhập & bảo mật"
+      },
+      "password": {
+        "submit": "Cập nhật mật khẩu",
+        "wrong_current": "Mật khẩu hiện tại không đúng."
+      },
+      "email": {
+        "title": "Email mới",
+        "submit": "Cập nhật email",
+        "hint": "Chúng tôi sẽ gửi liên kết xác nhận đến email mới.",
+        "sent": "Đã gửi liên kết xác nhận — kiểm tra hộp thư mới của bạn.",
+        "error": "Không thể cập nhật email. Thử lại."
+      }
+    },
+    "menu": {
+      "account": "Menu tài khoản"
+    }
   },
   "welcome": {
     "brand": {
@@ -473,7 +536,11 @@
     "exit_confirm_title": "Thoát trò chơi?",
     "exit_confirm_body": "Bạn sẽ mất tiến trình của vòng này.",
     "exit_confirm_leave": "Thoát",
-    "exit_confirm_cancel": "Hủy"
+    "exit_confirm_cancel": "Hủy",
+    "conjugation": {
+      "name": "활용 연습 · Chia động từ",
+      "desc": "Chọn dạng chia động từ đúng. Vượt qua các lỗi hệ thống mà người học thường mắc."
+    }
   },
   "escape": {
     "book_lead": "Lật cuốn sổ và chọn câu chuyện của bạn.",
@@ -514,5 +581,44 @@
     "clear": "Xóa",
     "completion_placeholder": "Gõ trợ từ…",
     "creation_help": "Chạm các ô theo thứ tự để ghép câu"
+  },
+  "conjugation": {
+    "title": "Phòng thí nghiệm chia động từ",
+    "lead": "Chọn dạng chia đúng. Các lựa chọn sai là lỗi mà người học thực sự hay mắc phải.",
+    "pick_class": "CHỌN LOẠI",
+    "prompt": "Chia động từ theo {ending}",
+    "gloss_hint": "({gloss})",
+    "pick_hint": "Chạm vào dạng đúng.",
+    "correct": "Chính xác!",
+    "wrong": "Chưa đúng",
+    "reveal_correct": "Dạng đúng: {correct}",
+    "restart": "Vòng mới",
+    "replay_failed": "Ôn lại lỗi ({n})",
+    "replay_mode_label": "Chế độ ôn tập — những câu bạn đã sai",
+    "summary_score": "{correct} / {total} đúng",
+    "diary_note": "Bạn đã chọn {chosen}; dạng đúng là {correct}.",
+    "next": "Tiếp theo",
+    "progress_label": "Tiến độ câu hỏi",
+    "rule": {
+      "regular": "Quy tắc thường: thêm đuôi vào gốc từ theo hài hòa nguyên âm.",
+      "p_irr": "ㅂ-bất quy tắc: ㅂ thành 우 trước nguyên âm (덥다 → 더워요).",
+      "t_irr": "ㄷ-bất quy tắc: ㄷ thành ㄹ trước nguyên âm (듣다 → 들어요).",
+      "eu_elision": "Lược bỏ ㅡ: ㅡ ở gốc từ rụng trước -아/어 (바쁘다 → 바빠요).",
+      "reu_irr": "르-bất quy tắc: 르 thêm một ㄹ trước -아/어 (빠르다 → 빨라요).",
+      "h_irr": "ㅎ-bất quy tắc: ㅎ rụng; nguyên âm hợp nhất thành ㅐ (그렇다 → 그래요).",
+      "s_irr": "ㅅ-bất quy tắc: ㅅ rụng trước nguyên âm, không co rút (짓다 → 지어요).",
+      "l_drop": "Rụng ㄹ: ㄹ ở gốc từ rụng trước ㄴ/ㅂ/ㅅ (살다 → 사니까), giữ lại trước ㅁ.",
+      "hada": "하다: 하 thành 해 (공부하다 → 공부해요)."
+    },
+    "master": {
+      "label": "Bậc thầy chia động từ",
+      "title": "활용 마스터!",
+      "progress": "{done}/{total} loại đã hoàn thành",
+      "earned": "Hoàn thành cả 9 loại!",
+      "celebrate_body": "Bạn đã hoàn thành cả {total} loại chia động từ. 화이팅!",
+      "dismiss": "Tuyệt!",
+      "pip_done": "{ko} — đã hoàn thành",
+      "pip_todo": "{ko} — chưa xong"
+    }
   }
 }

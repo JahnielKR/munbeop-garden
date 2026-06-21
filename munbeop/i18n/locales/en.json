@@ -263,11 +263,21 @@
       "filter_all_categories": "All categories",
       "active_zone": "Filtering by: {zone}",
       "category": {
-        "particle": "Particle", "ending": "Ending", "conj": "Conjunction",
-        "expr": "Expression", "aux": "Auxiliary", "verb": "Verb", "voice": "Voice",
-        "lex": "Lexical", "nominal": "Nominalizer", "modifier": "Modifier",
-        "copula": "Copula", "negation": "Negation", "adv": "Adverbial",
-        "indirect": "Indirect speech", "meta": "Meta"
+        "particle": "Particle",
+        "ending": "Ending",
+        "conj": "Conjunction",
+        "expr": "Expression",
+        "aux": "Auxiliary",
+        "verb": "Verb",
+        "voice": "Voice",
+        "lex": "Lexical",
+        "nominal": "Nominalizer",
+        "modifier": "Modifier",
+        "copula": "Copula",
+        "negation": "Negation",
+        "adv": "Adverbial",
+        "indirect": "Indirect speech",
+        "meta": "Meta"
       }
     }
   },
@@ -339,11 +349,22 @@
       "deleted": "Grammar removed."
     },
     "dark_mode": "Dark mode",
-    "appearance": { "theme": { "label": "Theme", "light": "Light", "auto": "Auto", "dark": "Dark" } },
+    "appearance": {
+      "theme": {
+        "label": "Theme",
+        "light": "Light",
+        "auto": "Auto",
+        "dark": "Dark"
+      }
+    },
     "contexts": {
       "title": "Practice contexts",
       "subtitle": "Pick which situations show up in practice.",
-      "category": { "formalidad": "Formality", "situacional": "Situational", "custom": "Your contexts" },
+      "category": {
+        "formalidad": "Formality",
+        "situacional": "Situational",
+        "custom": "Your contexts"
+      },
       "add": "Add context",
       "name_label": "Name (Korean)",
       "name_placeholder": "e.g. 반말",
@@ -361,11 +382,53 @@
       "deleted": "Context deleted.",
       "cancel": "Cancel"
     },
-    "about": { "title": "About & legal", "contact": "Contact" },
-    "data": { "title": "Data & privacy", "export": "Export my data (.json)", "exported": "Your data is downloading.", "export_error": "Couldn't export your data. Please try again." },
-    "tabs": { "account": "Account", "appearance": "Appearance", "learning": "Learning", "data": "Data", "about": "About" },
-    "account": { "danger": { "title": "Danger zone", "description": "Permanently delete your account and all your data. This can't be undone.", "button": "Delete account", "modal_title": "Delete your account?", "modal_body": "This permanently deletes your account, your sentences, progress, decks, and custom grammar. This cannot be undone.", "confirm_label": "Type DELETE to confirm", "confirm_button": "Delete forever", "cancel": "Cancel", "error": "Couldn't delete your account. Please try again." }, "security": { "title": "Login & security" }, "password": { "submit": "Update password", "wrong_current": "Current password is incorrect." }, "email": { "title": "New email", "submit": "Update email", "hint": "We'll send a confirmation link to the new address.", "sent": "Confirmation link sent — check your new inbox.", "error": "Couldn't update your email. Please try again." } },
-    "menu": { "account": "Account menu" }
+    "about": {
+      "title": "About & legal",
+      "contact": "Contact"
+    },
+    "data": {
+      "title": "Data & privacy",
+      "export": "Export my data (.json)",
+      "exported": "Your data is downloading.",
+      "export_error": "Couldn't export your data. Please try again."
+    },
+    "tabs": {
+      "account": "Account",
+      "appearance": "Appearance",
+      "learning": "Learning",
+      "data": "Data",
+      "about": "About"
+    },
+    "account": {
+      "danger": {
+        "title": "Danger zone",
+        "description": "Permanently delete your account and all your data. This can't be undone.",
+        "button": "Delete account",
+        "modal_title": "Delete your account?",
+        "modal_body": "This permanently deletes your account, your sentences, progress, decks, and custom grammar. This cannot be undone.",
+        "confirm_label": "Type DELETE to confirm",
+        "confirm_button": "Delete forever",
+        "cancel": "Cancel",
+        "error": "Couldn't delete your account. Please try again."
+      },
+      "security": {
+        "title": "Login & security"
+      },
+      "password": {
+        "submit": "Update password",
+        "wrong_current": "Current password is incorrect."
+      },
+      "email": {
+        "title": "New email",
+        "submit": "Update email",
+        "hint": "We'll send a confirmation link to the new address.",
+        "sent": "Confirmation link sent — check your new inbox.",
+        "error": "Couldn't update your email. Please try again."
+      }
+    },
+    "menu": {
+      "account": "Account menu"
+    }
   },
   "welcome": {
     "brand": {
@@ -473,7 +536,50 @@
     "exit_confirm_title": "Leave the game?",
     "exit_confirm_body": "You'll lose your progress in this round.",
     "exit_confirm_leave": "Leave",
-    "exit_confirm_cancel": "Cancel"
+    "exit_confirm_cancel": "Cancel",
+    "conjugation": {
+      "name": "활용 연습 · Conjugation",
+      "desc": "Pick the correct conjugated form. Beat the systematic mistakes learners make."
+    }
+  },
+  "conjugation": {
+    "title": "Conjugation Lab",
+    "lead": "Pick the correct conjugated form. The wrong options are the mistakes learners actually make.",
+    "pick_class": "PICK A CLASS",
+    "prompt": "Conjugate into {ending}",
+    "gloss_hint": "({gloss})",
+    "pick_hint": "Tap the correct form.",
+    "correct": "Correct!",
+    "wrong": "Not quite",
+    "reveal_correct": "Correct form: {correct}",
+    "restart": "New round",
+    "replay_failed": "Review mistakes ({n})",
+    "replay_mode_label": "Review mode — your missed items",
+    "summary_score": "{correct} / {total} correct",
+    "diary_note": "You picked {chosen}; the form is {correct}.",
+    "next": "Next",
+    "progress_label": "Question progress",
+    "rule": {
+      "regular": "Regular: add the ending to the stem with vowel harmony.",
+      "p_irr": "ㅂ-irregular: ㅂ becomes 우 before a vowel (덥다 → 더워요).",
+      "t_irr": "ㄷ-irregular: ㄷ becomes ㄹ before a vowel (듣다 → 들어요).",
+      "eu_elision": "ㅡ-elision: stem ㅡ drops before -아/어 (바쁘다 → 바빠요).",
+      "reu_irr": "르-irregular: 르 adds an extra ㄹ before -아/어 (빠르다 → 빨라요).",
+      "h_irr": "ㅎ-irregular: ㅎ drops; the vowel fuses to ㅐ (그렇다 → 그래요).",
+      "s_irr": "ㅅ-irregular: ㅅ drops before a vowel, no contraction (짓다 → 지어요).",
+      "l_drop": "ㄹ-drop: stem ㄹ drops before ㄴ/ㅂ/ㅅ (살다 → 사니까), kept before ㅁ.",
+      "hada": "하다: 하 becomes 해 (공부하다 → 공부해요)."
+    },
+    "master": {
+      "label": "Conjugation Master",
+      "title": "활용 마스터!",
+      "progress": "{done}/{total} classes cleared",
+      "earned": "All 9 classes cleared!",
+      "celebrate_body": "You cleared all {total} conjugation classes. 화이팅!",
+      "dismiss": "Nice!",
+      "pip_done": "{ko} — cleared",
+      "pip_todo": "{ko} — not yet"
+    }
   },
   "escape": {
     "book_lead": "Flip through the notebook and pick your story.",

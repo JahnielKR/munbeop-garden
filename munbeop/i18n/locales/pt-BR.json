@@ -263,11 +263,21 @@
       "filter_all_categories": "Todas as categorias",
       "active_zone": "Filtrando por: {zone}",
       "category": {
-        "particle": "Partícula", "ending": "Terminação", "conj": "Conjunção",
-        "expr": "Expressão", "aux": "Auxiliar", "verb": "Verbo", "voice": "Voz",
-        "lex": "Lexical", "nominal": "Nominalizador", "modifier": "Modificador",
-        "copula": "Cópula", "negation": "Negação", "adv": "Adverbial",
-        "indirect": "Discurso indireto", "meta": "Meta"
+        "particle": "Partícula",
+        "ending": "Terminação",
+        "conj": "Conjunção",
+        "expr": "Expressão",
+        "aux": "Auxiliar",
+        "verb": "Verbo",
+        "voice": "Voz",
+        "lex": "Lexical",
+        "nominal": "Nominalizador",
+        "modifier": "Modificador",
+        "copula": "Cópula",
+        "negation": "Negação",
+        "adv": "Adverbial",
+        "indirect": "Discurso indireto",
+        "meta": "Meta"
       }
     }
   },
@@ -339,11 +349,22 @@
       "deleted": "Gramática removida."
     },
     "dark_mode": "Modo escuro",
-    "appearance": { "theme": { "label": "Tema", "light": "Claro", "auto": "Auto", "dark": "Escuro" } },
+    "appearance": {
+      "theme": {
+        "label": "Tema",
+        "light": "Claro",
+        "auto": "Auto",
+        "dark": "Escuro"
+      }
+    },
     "contexts": {
       "title": "Contextos de prática",
       "subtitle": "Escolha quais situações aparecem na prática.",
-      "category": { "formalidad": "Formalidade", "situacional": "Situacional", "custom": "Seus contextos" },
+      "category": {
+        "formalidad": "Formalidade",
+        "situacional": "Situacional",
+        "custom": "Seus contextos"
+      },
       "add": "Adicionar contexto",
       "name_label": "Nome (coreano)",
       "name_placeholder": "ex. 반말",
@@ -361,11 +382,53 @@
       "deleted": "Contexto excluído.",
       "cancel": "Cancelar"
     },
-    "about": { "title": "Sobre e jurídico", "contact": "Contato" },
-    "data": { "title": "Dados e privacidade", "export": "Exportar meus dados (.json)", "exported": "Seus dados estão sendo baixados.", "export_error": "Não foi possível exportar seus dados. Tente novamente." },
-    "tabs": { "account": "Conta", "appearance": "Aparência", "learning": "Aprendizado", "data": "Dados", "about": "Sobre" },
-    "account": { "danger": { "title": "Zona de perigo", "description": "Exclui permanentemente sua conta e todos os seus dados. Não dá para desfazer.", "button": "Excluir conta", "modal_title": "Excluir sua conta?", "modal_body": "Isto exclui permanentemente sua conta, suas frases, progresso, baralhos e gramática personalizada. Não pode ser desfeito.", "confirm_label": "Digite DELETE para confirmar", "confirm_button": "Excluir para sempre", "cancel": "Cancelar", "error": "Não foi possível excluir sua conta. Tente novamente." }, "security": { "title": "Acesso e segurança" }, "password": { "submit": "Atualizar senha", "wrong_current": "A senha atual está incorreta." }, "email": { "title": "Novo e-mail", "submit": "Atualizar e-mail", "hint": "Enviaremos um link de confirmação para o novo e-mail.", "sent": "Link de confirmação enviado — confira sua nova caixa de entrada.", "error": "Não foi possível atualizar seu e-mail. Tente novamente." } },
-    "menu": { "account": "Menu da conta" }
+    "about": {
+      "title": "Sobre e jurídico",
+      "contact": "Contato"
+    },
+    "data": {
+      "title": "Dados e privacidade",
+      "export": "Exportar meus dados (.json)",
+      "exported": "Seus dados estão sendo baixados.",
+      "export_error": "Não foi possível exportar seus dados. Tente novamente."
+    },
+    "tabs": {
+      "account": "Conta",
+      "appearance": "Aparência",
+      "learning": "Aprendizado",
+      "data": "Dados",
+      "about": "Sobre"
+    },
+    "account": {
+      "danger": {
+        "title": "Zona de perigo",
+        "description": "Exclui permanentemente sua conta e todos os seus dados. Não dá para desfazer.",
+        "button": "Excluir conta",
+        "modal_title": "Excluir sua conta?",
+        "modal_body": "Isto exclui permanentemente sua conta, suas frases, progresso, baralhos e gramática personalizada. Não pode ser desfeito.",
+        "confirm_label": "Digite DELETE para confirmar",
+        "confirm_button": "Excluir para sempre",
+        "cancel": "Cancelar",
+        "error": "Não foi possível excluir sua conta. Tente novamente."
+      },
+      "security": {
+        "title": "Acesso e segurança"
+      },
+      "password": {
+        "submit": "Atualizar senha",
+        "wrong_current": "A senha atual está incorreta."
+      },
+      "email": {
+        "title": "Novo e-mail",
+        "submit": "Atualizar e-mail",
+        "hint": "Enviaremos um link de confirmação para o novo e-mail.",
+        "sent": "Link de confirmação enviado — confira sua nova caixa de entrada.",
+        "error": "Não foi possível atualizar seu e-mail. Tente novamente."
+      }
+    },
+    "menu": {
+      "account": "Menu da conta"
+    }
   },
   "welcome": {
     "brand": {
@@ -473,7 +536,11 @@
     "exit_confirm_title": "Sair do jogo?",
     "exit_confirm_body": "Você perderá o progresso desta rodada.",
     "exit_confirm_leave": "Sair",
-    "exit_confirm_cancel": "Cancelar"
+    "exit_confirm_cancel": "Cancelar",
+    "conjugation": {
+      "name": "활용 연습 · Conjugação",
+      "desc": "Escolha a forma conjugada correta. Supere os erros sistemáticos que os estudantes cometem."
+    }
   },
   "escape": {
     "book_lead": "Folheie o caderno e escolha sua história.",
@@ -514,5 +581,44 @@
     "clear": "Limpar",
     "completion_placeholder": "Digite a partícula…",
     "creation_help": "Toque nas peças em ordem para montar a frase"
+  },
+  "conjugation": {
+    "title": "Laboratório de Conjugação",
+    "lead": "Escolha a forma conjugada correta. As opções erradas são os erros que os estudantes realmente cometem.",
+    "pick_class": "ESCOLHA UMA CLASSE",
+    "prompt": "Conjugue em {ending}",
+    "gloss_hint": "({gloss})",
+    "pick_hint": "Toque na forma correta.",
+    "correct": "Correto!",
+    "wrong": "Quase lá",
+    "reveal_correct": "Forma correta: {correct}",
+    "restart": "Nova rodada",
+    "replay_failed": "Revisar erros ({n})",
+    "replay_mode_label": "Modo revisão — seus itens errados",
+    "summary_score": "{correct} / {total} corretas",
+    "diary_note": "Você escolheu {chosen}; a forma é {correct}.",
+    "next": "Próximo",
+    "progress_label": "Progresso das perguntas",
+    "rule": {
+      "regular": "Regular: adicione a terminação ao radical com harmonia vocálica.",
+      "p_irr": "ㅂ-irregular: ㅂ vira 우 antes de vogal (덥다 → 더워요).",
+      "t_irr": "ㄷ-irregular: ㄷ vira ㄹ antes de vogal (듣다 → 들어요).",
+      "eu_elision": "Elisão de ㅡ: o ㅡ do radical cai antes de -아/어 (바쁘다 → 바빠요).",
+      "reu_irr": "르-irregular: 르 adiciona um ㄹ extra antes de -아/어 (빠르다 → 빨라요).",
+      "h_irr": "ㅎ-irregular: ㅎ cai; a vogal se funde em ㅐ (그렇다 → 그래요).",
+      "s_irr": "ㅅ-irregular: ㅅ cai antes de vogal, sem contração (짓다 → 지어요).",
+      "l_drop": "Queda do ㄹ: o ㄹ do radical cai antes de ㄴ/ㅂ/ㅅ (살다 → 사니까), mantido antes de ㅁ.",
+      "hada": "하다: 하 vira 해 (공부하다 → 공부해요)."
+    },
+    "master": {
+      "label": "Mestria da conjugação",
+      "title": "활용 마스터!",
+      "progress": "{done}/{total} classes concluídas",
+      "earned": "Todas as 9 classes concluídas!",
+      "celebrate_body": "Você concluiu todas as {total} classes de conjugação. 화이팅!",
+      "dismiss": "Ótimo!",
+      "pip_done": "{ko} — concluída",
+      "pip_todo": "{ko} — ainda não"
+    }
   }
 }

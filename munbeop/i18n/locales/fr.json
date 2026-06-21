@@ -263,11 +263,21 @@
       "filter_all_categories": "Toutes les catégories",
       "active_zone": "Filtre : {zone}",
       "category": {
-        "particle": "Particule", "ending": "Terminaison", "conj": "Conjonction",
-        "expr": "Expression", "aux": "Auxiliaire", "verb": "Verbe", "voice": "Voix",
-        "lex": "Lexical", "nominal": "Nominalisateur", "modifier": "Déterminant",
-        "copula": "Copule", "negation": "Négation", "adv": "Adverbial",
-        "indirect": "Discours indirect", "meta": "Méta"
+        "particle": "Particule",
+        "ending": "Terminaison",
+        "conj": "Conjonction",
+        "expr": "Expression",
+        "aux": "Auxiliaire",
+        "verb": "Verbe",
+        "voice": "Voix",
+        "lex": "Lexical",
+        "nominal": "Nominalisateur",
+        "modifier": "Déterminant",
+        "copula": "Copule",
+        "negation": "Négation",
+        "adv": "Adverbial",
+        "indirect": "Discours indirect",
+        "meta": "Méta"
       }
     }
   },
@@ -339,11 +349,22 @@
       "deleted": "Grammaire supprimée."
     },
     "dark_mode": "Mode sombre",
-    "appearance": { "theme": { "label": "Thème", "light": "Clair", "auto": "Auto", "dark": "Sombre" } },
+    "appearance": {
+      "theme": {
+        "label": "Thème",
+        "light": "Clair",
+        "auto": "Auto",
+        "dark": "Sombre"
+      }
+    },
     "contexts": {
       "title": "Contextes de pratique",
       "subtitle": "Choisis les situations qui apparaissent en pratique.",
-      "category": { "formalidad": "Formalité", "situacional": "Situationnel", "custom": "Tes contextes" },
+      "category": {
+        "formalidad": "Formalité",
+        "situacional": "Situationnel",
+        "custom": "Tes contextes"
+      },
       "add": "Ajouter un contexte",
       "name_label": "Nom (coréen)",
       "name_placeholder": "ex. 반말",
@@ -361,11 +382,53 @@
       "deleted": "Contexte supprimé.",
       "cancel": "Annuler"
     },
-    "about": { "title": "À propos & mentions légales", "contact": "Contact" },
-    "data": { "title": "Données et confidentialité", "export": "Exporter mes données (.json)", "exported": "Le téléchargement de vos données a commencé.", "export_error": "Impossible d'exporter vos données. Réessaie." },
-    "tabs": { "account": "Compte", "appearance": "Apparence", "learning": "Apprentissage", "data": "Données", "about": "À propos" },
-    "account": { "danger": { "title": "Zone de danger", "description": "Supprime définitivement ton compte et toutes tes données. Action irréversible.", "button": "Supprimer le compte", "modal_title": "Supprimer ton compte ?", "modal_body": "Ceci supprime définitivement ton compte, tes phrases, ta progression, tes paquets et ta grammaire personnalisée. Action irréversible.", "confirm_label": "Tape DELETE pour confirmer", "confirm_button": "Supprimer définitivement", "cancel": "Annuler", "error": "Impossible de supprimer ton compte. Réessaie." }, "security": { "title": "Connexion et sécurité" }, "password": { "submit": "Mettre à jour le mot de passe", "wrong_current": "Le mot de passe actuel est incorrect." }, "email": { "title": "Nouvel e-mail", "submit": "Mettre à jour l'e-mail", "hint": "Nous enverrons un lien de confirmation à la nouvelle adresse.", "sent": "Lien de confirmation envoyé — vérifie ta nouvelle boîte mail.", "error": "Impossible de mettre à jour ton e-mail. Réessaie." } },
-    "menu": { "account": "Menu du compte" }
+    "about": {
+      "title": "À propos & mentions légales",
+      "contact": "Contact"
+    },
+    "data": {
+      "title": "Données et confidentialité",
+      "export": "Exporter mes données (.json)",
+      "exported": "Le téléchargement de vos données a commencé.",
+      "export_error": "Impossible d'exporter vos données. Réessaie."
+    },
+    "tabs": {
+      "account": "Compte",
+      "appearance": "Apparence",
+      "learning": "Apprentissage",
+      "data": "Données",
+      "about": "À propos"
+    },
+    "account": {
+      "danger": {
+        "title": "Zone de danger",
+        "description": "Supprime définitivement ton compte et toutes tes données. Action irréversible.",
+        "button": "Supprimer le compte",
+        "modal_title": "Supprimer ton compte ?",
+        "modal_body": "Ceci supprime définitivement ton compte, tes phrases, ta progression, tes paquets et ta grammaire personnalisée. Action irréversible.",
+        "confirm_label": "Tape DELETE pour confirmer",
+        "confirm_button": "Supprimer définitivement",
+        "cancel": "Annuler",
+        "error": "Impossible de supprimer ton compte. Réessaie."
+      },
+      "security": {
+        "title": "Connexion et sécurité"
+      },
+      "password": {
+        "submit": "Mettre à jour le mot de passe",
+        "wrong_current": "Le mot de passe actuel est incorrect."
+      },
+      "email": {
+        "title": "Nouvel e-mail",
+        "submit": "Mettre à jour l'e-mail",
+        "hint": "Nous enverrons un lien de confirmation à la nouvelle adresse.",
+        "sent": "Lien de confirmation envoyé — vérifie ta nouvelle boîte mail.",
+        "error": "Impossible de mettre à jour ton e-mail. Réessaie."
+      }
+    },
+    "menu": {
+      "account": "Menu du compte"
+    }
   },
   "welcome": {
     "brand": {
@@ -473,7 +536,11 @@
     "exit_confirm_title": "Quitter le jeu ?",
     "exit_confirm_body": "Vous perdrez votre progression dans cette manche.",
     "exit_confirm_leave": "Quitter",
-    "exit_confirm_cancel": "Annuler"
+    "exit_confirm_cancel": "Annuler",
+    "conjugation": {
+      "name": "활용 연습 · Conjugaison",
+      "desc": "Choisissez la forme conjuguée correcte. Battez les erreurs systématiques des apprenants."
+    }
   },
   "escape": {
     "book_lead": "Feuillette le carnet et choisis ton histoire.",
@@ -514,5 +581,44 @@
     "clear": "Effacer",
     "completion_placeholder": "Écris la particule…",
     "creation_help": "Touche les tuiles dans l'ordre pour former la phrase"
+  },
+  "conjugation": {
+    "title": "Labo de conjugaison",
+    "lead": "Choisis la forme conjuguée correcte. Les mauvaises options sont les erreurs que les apprenants font vraiment.",
+    "pick_class": "CHOISIR UNE CLASSE",
+    "prompt": "Conjugue en {ending}",
+    "gloss_hint": "({gloss})",
+    "pick_hint": "Touche la bonne forme.",
+    "correct": "Correct !",
+    "wrong": "Pas tout à fait",
+    "reveal_correct": "Forme correcte : {correct}",
+    "restart": "Nouveau tour",
+    "replay_failed": "Revoir les erreurs ({n})",
+    "replay_mode_label": "Mode révision — tes réponses manquées",
+    "summary_score": "{correct} / {total} correctes",
+    "diary_note": "Tu as choisi {chosen} ; la forme est {correct}.",
+    "next": "Suivant",
+    "progress_label": "Progression des questions",
+    "rule": {
+      "regular": "Régulier : ajoute la terminaison à la base avec harmonie vocalique.",
+      "p_irr": "ㅂ-irrégulier : ㅂ devient 우 devant une voyelle (덥다 → 더워요).",
+      "t_irr": "ㄷ-irrégulier : ㄷ devient ㄹ devant une voyelle (듣다 → 들어요).",
+      "eu_elision": "Élision ㅡ : le ㅡ de la base tombe avant -아/어 (바쁘다 → 바빠요).",
+      "reu_irr": "르-irrégulier : 르 ajoute un ㄹ supplémentaire avant -아/어 (빠르다 → 빨라요).",
+      "h_irr": "ㅎ-irrégulier : ㅎ tombe ; la voyelle fusionne en ㅐ (그렇다 → 그래요).",
+      "s_irr": "ㅅ-irrégulier : ㅅ tombe devant une voyelle, sans contraction (짓다 → 지어요).",
+      "l_drop": "Chute du ㄹ : le ㄹ de la base tombe avant ㄴ/ㅂ/ㅅ (살다 → 사니까), conservé avant ㅁ.",
+      "hada": "하다 : 하 devient 해 (공부하다 → 공부해요)."
+    },
+    "master": {
+      "label": "Maîtrise de la conjugaison",
+      "title": "활용 마스터!",
+      "progress": "{done}/{total} classes réussies",
+      "earned": "Les 9 classes réussies !",
+      "celebrate_body": "Tu as réussi les {total} classes de conjugaison. 화이팅!",
+      "dismiss": "Super !",
+      "pip_done": "{ko} — réussie",
+      "pip_todo": "{ko} — pas encore"
+    }
   }
 }
