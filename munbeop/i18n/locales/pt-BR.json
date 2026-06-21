@@ -7,6 +7,7 @@
     "mode_drill": "Choque 은/는 · 이/가",
     "mode_spacing": "Espaçamento",
     "explore": {
+      "play_audio": "Ouvir a pronúncia",
       "tap_hint": "Toque numa partícula para ligar/desligar. Toque na legenda para ver a ficha.",
       "formality_label": "Formalidade",
       "formality_formal": "formal",

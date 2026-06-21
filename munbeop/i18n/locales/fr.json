@@ -7,6 +7,7 @@
     "mode_drill": "Duel 은/는 · 이/가",
     "mode_spacing": "Espacement",
     "explore": {
+      "play_audio": "Écouter la prononciation",
       "tap_hint": "Touche une particule pour l'éteindre ou l'allumer. Touche la légende pour sa fiche.",
       "formality_label": "Registre",
       "formality_formal": "formel",

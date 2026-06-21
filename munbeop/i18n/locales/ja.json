@@ -7,6 +7,7 @@
     "mode_drill": "対決 은/는 · 이/가",
     "mode_spacing": "分かち書き",
     "explore": {
+      "play_audio": "発音を聞く",
       "tap_hint": "助詞をタップでオン・オフ。凡例をタップすると詳細カード。",
       "formality_label": "丁寧さ",
       "formality_formal": "フォーマル",
