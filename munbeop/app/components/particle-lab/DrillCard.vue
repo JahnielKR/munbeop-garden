@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type { ClashSet, DrillItem, DrillVerdict } from '~/lib/domain'
 import { correctSentence, optionsFor, sentenceParts } from '~/lib/particle-lab'
 import { useLocalized } from '~/composables/useLocalized'
@@ -24,18 +24,21 @@ const parts = computed(() => sentenceParts(props.item, props.set))
 const answer = computed(() => parts.value.answer)
 const options = computed(() => optionsFor(props.item, props.set))
 
-/** When the phase leaves 'question', move focus to the feedback action button
- *  (Retry / Next) so keyboard users don't have to Tab past disabled options. */
+/**
+ * Keep keyboard focus oriented as the card swaps content:
+ *  - leaving 'question' (blocked/right/wrong) → the feedback action (Retry/Next),
+ *  - back to 'question' (and on a fresh round's mount) → the card itself, so the
+ *    new question is announced and Tab resumes from the options (not <body>).
+ */
 const actionBtn = ref<HTMLButtonElement | null>(null)
-watch(
-  () => props.phase,
-  async (p) => {
-    if (p !== 'question') {
-      await nextTick()
-      actionBtn.value?.focus()
-    }
-  },
-)
+const cardEl = ref<HTMLElement | null>(null)
+async function focusForPhase(p: typeof props.phase) {
+  await nextTick()
+  if (p === 'question') cardEl.value?.focus()
+  else actionBtn.value?.focus()
+}
+watch(() => props.phase, (p) => void focusForPhase(p))
+onMounted(() => void focusForPhase(props.phase))
 
 function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
   if (props.blockedChoices.has(choice)) return 'blocked'
@@ -47,6 +50,8 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
 
 <template>
   <section
+    ref="cardEl"
+    tabindex="-1"
     class="drill"
     :class="{ 'drill--shake': phase === 'blocked' }"
     data-testid="drill-card"
@@ -146,6 +151,10 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+.drill:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
 }
 .drill--shake {
   animation: drill-shake var(--motion-base) steps(3) 2;
