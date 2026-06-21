@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import type { ConjItem } from '~/lib/conjugation-drill'
 
 interface Props {
@@ -6,12 +7,16 @@ interface Props {
   failedItems: ConjItem[]
 }
 defineProps<Props>()
-defineEmits<{ restart: []; 'replay-failed': []; explore: [] }>()
+defineEmits<{ restart: []; 'replay-failed': [] }>()
+
+/** Move focus into the summary when it replaces the card (orientation). */
+const root = ref<HTMLElement | null>(null)
+onMounted(() => root.value?.focus())
 </script>
 
 <template>
-  <section class="summary">
-    <p class="summary__score">{{ $t('conjugation.summary_score', { correct: score.correct, total: score.total }) }}</p>
+  <section ref="root" tabindex="-1" class="summary">
+    <p class="summary__score" role="status">{{ $t('conjugation.summary_score', { correct: score.correct, total: score.total }) }}</p>
 
     <div v-if="failedItems.length" class="summary__review">
       <h3 class="summary__review-title">{{ $t('conjugation.replay_failed', { n: failedItems.length }) }}</h3>
@@ -52,10 +57,11 @@ defineEmits<{ restart: []; 'replay-failed': []; explore: [] }>()
 .summary__actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 .summary__btn {
   min-width: 0; padding: 10px 16px; background: var(--surface); color: var(--text);
-  border: 3px solid var(--ink-line); box-shadow: var(--shadow-button);
+  border: 3px solid var(--border-strong); box-shadow: var(--shadow-button);
   font-family: var(--font-pixel-small); font-size: var(--text-xs); letter-spacing: 0.06em; cursor: pointer;
 }
 .summary__btn--primary { background: var(--accent); color: var(--text-on-accent); }
 .summary__btn:hover { transform: translate(-1px, -1px); box-shadow: var(--shadow-button-hover); }
 .summary__btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 </style>
