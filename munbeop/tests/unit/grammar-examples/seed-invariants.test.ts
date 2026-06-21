@@ -22,4 +22,15 @@ describe('grammar-examples seed invariants', () => {
       }
     })
   }
+
+  // Coverage: the TOPIK-1 batch must cover all 12 target points, ≥2 each.
+  const TOPIK_1_BATCH = [
+    '-아/어요', '-았/었어요', '-ㅂ/습니다', '-(으)세요', '-(으)ㄹ 거예요', '-고',
+    '-아/어서', '-지만', '-(으)면', '-ㄴ/는데', '-고 싶다', '-고 있다',
+  ]
+  for (const ko of TOPIK_1_BATCH) {
+    it(`covers ${ko} with ≥2 examples`, () => {
+      expect(GRAMMAR_EXAMPLES.filter((e) => e.ko === ko).length).toBeGreaterThanOrEqual(2)
+    })
+  }
 })
