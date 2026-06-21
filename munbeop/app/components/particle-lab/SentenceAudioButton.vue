@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { SpeechLevel } from '~/lib/domain'
 import { useParticleAudio } from '~/composables/useParticleAudio'
 
-/** 🔊 button that plays a sentence's pre-generated TTS clip. */
+/** 🔊 button that plays a sentence's pre-generated TTS clip at a speech level. */
 interface Props {
   sentenceId: string
+  level?: SpeechLevel
 }
 const props = defineProps<Props>()
 const { t } = useI18n()
@@ -16,7 +18,7 @@ const { playSentence } = useParticleAudio()
     class="audio-btn"
     :aria-label="t('particles.explore.play_audio')"
     data-testid="sentence-audio"
-    @click="playSentence(props.sentenceId)"
+    @click="playSentence(props.sentenceId, props.level ?? 'polite')"
   >
     <span aria-hidden="true">🔊</span>
   </button>
