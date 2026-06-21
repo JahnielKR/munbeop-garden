@@ -71,6 +71,15 @@
       "replay_failed": "REVOIR LES ERREURS ({n})",
       "replay_mode_label": "Mode révision · les erreurs ne sont pas réenregistrées"
     },
+    "master": {
+      "label": "Maîtrise des particules",
+      "progress": "{done}/{total} particules maîtrisées",
+      "earned": "Maîtrisées ! 🏅",
+      "celebrate_body": "Tu as maîtrisé les {total} particules enseignées par le labo. 화이팅 !",
+      "dismiss": "Super !",
+      "pip_done": "{ko} — maîtrisée",
+      "pip_todo": "{ko} — pas encore"
+    },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "Cette grammaire est une particule : allume-la et éteins-la dans de vraies phrases.",
     "sheet_section_cta": "OUVRIR DANS LE LAB"

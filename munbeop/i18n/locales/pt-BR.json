@@ -71,6 +71,15 @@
       "replay_failed": "REVER ERROS ({n})",
       "replay_mode_label": "Modo revisão · os erros não são registrados de novo"
     },
+    "master": {
+      "label": "Mestria das partículas",
+      "progress": "{done}/{total} partículas dominadas",
+      "earned": "Dominadas! 🏅",
+      "celebrate_body": "Você dominou as {total} partículas que o lab ensina. 화이팅!",
+      "dismiss": "Boa!",
+      "pip_done": "{ko} — dominada",
+      "pip_todo": "{ko} — ainda não"
+    },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "Esta gramática é uma partícula: ligue e desligue em frases reais para sentir o que ela acrescenta.",
     "sheet_section_cta": "ABRIR NO LAB"

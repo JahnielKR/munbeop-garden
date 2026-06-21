@@ -71,6 +71,15 @@
       "replay_failed": "REVIEW MISTAKES ({n})",
       "replay_mode_label": "Review mode · mistakes aren't logged again"
     },
+    "master": {
+      "label": "Particle Master",
+      "progress": "{done}/{total} particles mastered",
+      "earned": "Mastered! 🏅",
+      "celebrate_body": "You've mastered all {total} particles the lab teaches. 화이팅!",
+      "dismiss": "Nice!",
+      "pip_done": "{ko} — mastered",
+      "pip_todo": "{ko} — not yet"
+    },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "This grammar is a particle: toggle it inside real sentences to feel what it adds.",
     "sheet_section_cta": "OPEN IN THE LAB"

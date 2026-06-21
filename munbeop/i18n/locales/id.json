@@ -71,6 +71,15 @@
       "replay_failed": "TINJAU KESALAHAN ({n})",
       "replay_mode_label": "Mode tinjau · kesalahan tidak dicatat lagi"
     },
+    "master": {
+      "label": "Penguasaan partikel",
+      "progress": "{done}/{total} partikel dikuasai",
+      "earned": "Dikuasai! 🏅",
+      "celebrate_body": "Kamu menguasai seluruh {total} partikel yang diajarkan lab. 화이팅!",
+      "dismiss": "Mantap!",
+      "pip_done": "{ko} — dikuasai",
+      "pip_todo": "{ko} — belum"
+    },
     "sheet_section_title": "Particle Lab",
     "sheet_section_body": "Tata bahasa ini adalah partikel: nyalakan dan matikan dalam kalimat nyata.",
     "sheet_section_cta": "BUKA DI LAB"
