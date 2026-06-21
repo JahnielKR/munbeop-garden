@@ -3,6 +3,7 @@
     "title": "Particle Lab",
     "lead": "Tiểu từ đánh dấu vai trò của từng từ. Chạm để tắt và xem câu mất đi điều gì.",
     "mode_label": "Chế độ",
+    "progress_label": "Tiến độ",
     "mode_explore": "Khám phá",
     "mode_drill": "Trận 은/는 · 이/가",
     "mode_spacing": "Khoảng cách",
@@ -54,6 +55,8 @@
     },
     "spacing": {
       "lead": "Chạm vào giữa các khối nơi cần dấu cách. Tiểu từ dính liền với từ phía trước.",
+      "gap_space": "Dấu cách ở đây",
+      "gap_join": "Không có dấu cách ở đây",
       "level_label": "Cấp độ",
       "level_beginner": "cơ bản — tách từ và tiểu từ",
       "level_advanced": "nâng cao — chỉ âm tiết",

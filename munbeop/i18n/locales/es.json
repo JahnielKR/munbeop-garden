@@ -3,6 +3,7 @@
     "title": "Particle Lab",
     "lead": "Las partículas marcan el rol de cada palabra. Tócalas para apagarlas y mira qué pierde la frase.",
     "mode_label": "Modo",
+    "progress_label": "Progreso",
     "mode_explore": "Explorar",
     "mode_drill": "Choque 은/는 · 이/가",
     "mode_spacing": "Espaciado",
@@ -54,6 +55,8 @@
     },
     "spacing": {
       "lead": "Toca entre los bloques donde va un espacio. Las partículas se pegan a la palabra anterior.",
+      "gap_space": "Espacio aquí",
+      "gap_join": "Sin espacio aquí",
       "level_label": "Nivel",
       "level_beginner": "principiante — palabras y partículas separadas",
       "level_advanced": "avanzado — solo sílabas",

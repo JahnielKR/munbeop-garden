@@ -3,6 +3,7 @@
     "title": "Particle Lab",
     "lead": "Partikel menandai peran tiap kata. Ketuk untuk mematikannya dan lihat apa yang hilang.",
     "mode_label": "Mode",
+    "progress_label": "Kemajuan",
     "mode_explore": "Jelajah",
     "mode_drill": "Duel 은/는 · 이/가",
     "mode_spacing": "Spasi",
@@ -54,6 +55,8 @@
     },
     "spacing": {
       "lead": "Ketuk di antara blok tempat spasi seharusnya. Partikel menempel pada kata sebelumnya.",
+      "gap_space": "Spasi di sini",
+      "gap_join": "Tanpa spasi di sini",
       "level_label": "Tingkat",
       "level_beginner": "pemula — kata & partikel terpisah",
       "level_advanced": "lanjutan — hanya suku kata",

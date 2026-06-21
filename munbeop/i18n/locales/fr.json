@@ -3,6 +3,7 @@
     "title": "Particle Lab",
     "lead": "Les particules marquent le rôle de chaque mot. Touche-les pour voir ce que la phrase perd.",
     "mode_label": "Mode",
+    "progress_label": "Progression",
     "mode_explore": "Explorer",
     "mode_drill": "Duel 은/는 · 이/가",
     "mode_spacing": "Espacement",
@@ -54,6 +55,8 @@
     },
     "spacing": {
       "lead": "Touche entre les blocs là où il faut une espace. Les particules se collent au mot qui précède.",
+      "gap_space": "Espace ici",
+      "gap_join": "Pas d’espace ici",
       "level_label": "Niveau",
       "level_beginner": "débutant — mots et particules séparés",
       "level_advanced": "avancé — syllabes seules",
