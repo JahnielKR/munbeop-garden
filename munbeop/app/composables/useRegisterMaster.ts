@@ -1,6 +1,6 @@
 // app/composables/useRegisterMaster.ts
 import { computed, ref } from 'vue'
-import { masteryOf, masteryKey } from '~/lib/register-transform'
+import { masteryOf, masteryKey, isMasterySet } from '~/lib/register-transform'
 import type { RegisterMode } from '~/lib/domain'
 
 const STORAGE_KEY = 'register-lab.cleared'
@@ -29,6 +29,7 @@ export function useRegisterMaster() {
 
   /** Call at round end with the mode, the focused set, and the round accuracy. */
   function recordRound(mode: RegisterMode, set: string, accuracy: number) {
+    if (!isMasterySet(mode, set)) return
     if (accuracy < CLEAR_THRESHOLD) return
     const key = masteryKey(mode, set)
     if (cleared.value.has(key)) return

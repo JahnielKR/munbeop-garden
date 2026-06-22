@@ -646,7 +646,7 @@
     "mode_honor": "높임말 · Honorifics",
     "pick_set": "PICK A SET",
     "prompt_level": "Rewrite into the target register.",
-    "prompt_honor": "Honor the subject.",
+    "prompt_honor": "Make it honorific.",
     "pick_hint": "Tap the natural form.",
     "correct": "Correct!",
     "wrong": "Not quite",

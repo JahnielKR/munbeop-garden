@@ -646,7 +646,7 @@
     "mode_honor": "높임말 · 敬語",
     "pick_set": "セットを選ぶ",
     "prompt_level": "ターゲットレジスターに書き直してください。",
-    "prompt_honor": "主語を敬ってください。",
+    "prompt_honor": "敬語にしてください。",
     "pick_hint": "自然な形をタップしてください。",
     "correct": "正解！",
     "wrong": "もう少し",
