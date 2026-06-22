@@ -8,6 +8,7 @@ import PracticeCtaSection from './GrammarStudySheet/PracticeCtaSection.vue'
 import ParticleLabSection from './GrammarStudySheet/ParticleLabSection.vue'
 import ComingSoonSection from './GrammarStudySheet/ComingSoonSection.vue'
 import ExamplesSection from './GrammarStudySheet/ExamplesSection.vue'
+import ConfusedWithSection from './GrammarStudySheet/ConfusedWithSection.vue'
 
 interface Props {
   grammar: Grammar
@@ -29,6 +30,7 @@ const { t } = useI18n()
       :body="t('library.modal.coming_soon.audio')"
     />
     <ExamplesSection :grammar="grammar" />
+    <ConfusedWithSection :grammar="grammar" />
     <ComingSoonSection
       :title="t('library.modal.section.achievements')"
       :body="t('library.modal.coming_soon.achievements')"
