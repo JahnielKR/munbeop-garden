@@ -148,6 +148,11 @@
       "sub": "Yang paling “sulit” — latih sekarang.",
       "practice": "Latih",
       "hard_count": "sulit ×{n}"
+    },
+    "struggling": {
+      "title": "Tanaman yang perlu dirawat",
+      "sub": "Sedikit perhatian ekstra membantunya tumbuh.",
+      "care": "Rawat"
     }
   },
   "errors": {
@@ -223,7 +228,9 @@
       "confirm_delete": "Hapus dek ini? Tidak bisa dibatalkan.",
       "empty_title": "Buat dek pertamamu",
       "empty_hint": "Pilih tata bahasa yang kamu mau dari level mana pun, beri nama, lalu mainkan."
-    }
+    },
+    "rescue_offer": "Rawat tanaman ini dulu?",
+    "rescue_offer_dismiss": "Nanti saja"
   },
   "library": {
     "lead": "Semua tata bahasa yang bisa muncul di kartu-kartumu. Masing-masing tumbuh seiring latihanmu.",
@@ -690,5 +697,19 @@
     "diary_note": "Kamu memilih {chosen}; {correct} cocok di sini.",
     "next": "Berikutnya",
     "progress_label": "Kemajuan pertanyaan"
+  },
+  "rescue": {
+    "title": "Rawat tanaman ini",
+    "header": "Yang paling sering meleset di sini: {dimension}",
+    "header_plain": "Mari beri yang satu ini perhatian ekstra",
+    "stage_reread": "Baca ulang",
+    "stage_examples": "Lihat penggunaannya",
+    "stage_discriminate": "Bedakan",
+    "stage_produce": "Tulis sendiri",
+    "produce_body": "Sekarang praktikkan: tulis kalimat baru dengan pola ini.",
+    "produce_cta": "Latihan 화이팅",
+    "next": "Berikutnya",
+    "back": "Kembali",
+    "empty": "Pilih tanaman untuk dirawat dari Statistik kamu."
   }
 }

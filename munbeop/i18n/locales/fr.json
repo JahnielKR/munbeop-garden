@@ -148,6 +148,11 @@
       "sub": "Le plus “difficile” — entraîne-toi maintenant.",
       "practice": "S'entraîner",
       "hard_count": "difficile ×{n}"
+    },
+    "struggling": {
+      "title": "Plantes à choyer",
+      "sub": "Un peu d'attention les aide à grandir.",
+      "care": "Soigner"
     }
   },
   "errors": {
@@ -223,7 +228,9 @@
       "confirm_delete": "Supprimer ce deck ? C'est irréversible.",
       "empty_title": "Crée ton premier deck",
       "empty_hint": "Choisis la grammaire que tu veux, de n'importe quel niveau, nomme-la et joue."
-    }
+    },
+    "rescue_offer": "Soigner cette plante d’abord ?",
+    "rescue_offer_dismiss": "Pas maintenant"
   },
   "library": {
     "lead": "Toutes les grammaires qui peuvent sortir dans tes tirages de cartes. Chacune grandit selon ta pratique.",
@@ -690,5 +697,19 @@
     "diary_note": "Vous avez choisi {chosen} ; {correct} convient ici.",
     "next": "Suivant",
     "progress_label": "Progression de la question"
+  },
+  "rescue": {
+    "title": "Prends soin de cette plante",
+    "header": "Ce qui a le plus coincé ici : {dimension}",
+    "header_plain": "Offrons-lui un peu d'attention en plus",
+    "stage_reread": "Relire",
+    "stage_examples": "La voir en contexte",
+    "stage_discriminate": "Les distinguer",
+    "stage_produce": "Écris-la toi-même",
+    "produce_body": "À toi de jouer : écris de nouvelles phrases avec ce motif.",
+    "produce_cta": "S'entraîner 화이팅",
+    "next": "Suivant",
+    "back": "Retour",
+    "empty": "Choisis une plante à soigner depuis tes Statistiques."
   }
 }
