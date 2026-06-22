@@ -1,12 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { reactive } from 'vue'
 import type { SrsState } from '~/lib/domain'
+import { useReadyCount } from '~/composables/useReadyCount'
 
 // Shared reactive srs state the mocked store reads from.
 const state = reactive({ map: {} as Record<string, SrsState> })
 vi.mock('~/stores/srs', () => ({ useSrsStore: () => ({ get map() { return state.map } }) }))
-
-import { useReadyCount } from '~/composables/useReadyCount'
 
 // lastSeen = epoch (0) → always far past its interval → due regardless of "now".
 const due = (over: Partial<SrsState> = {}): SrsState => ({
