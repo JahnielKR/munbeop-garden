@@ -558,6 +558,10 @@
     "register": {
       "name": "높임법 연구소 · Honoríficos",
       "desc": "Cambia entre 반말, 해요체 y 합쇼체, y honra al sujeto con 께서 y 드시다/주무시다."
+    },
+    "cloze": {
+      "name": "빈칸 연습 · Cloze",
+      "desc": "Elige un mazo y escoge la gramática que encaja en cada hueco. Una ronda más ligera que complementa la escritura."
     }
   },
   "escape": {
@@ -668,5 +672,22 @@
       "pip_done": "{ko} — superado",
       "pip_todo": "{ko} — aún no"
     }
+  },
+  "cloze": {
+    "title": "Laboratorio de huecos",
+    "lead": "Elige un mazo y luego escoge la gramática que encaja en cada hueco — una ronda rápida de reconocimiento que complementa la escritura.",
+    "pick_deck": "ELIGE UN MAZO",
+    "deck_empty": "Este mazo aún no tiene huecos — prueba otro.",
+    "pick_hint": "Toca la forma que encaja en el hueco.",
+    "correct": "¡Correcto!",
+    "wrong": "Casi",
+    "reveal_correct": "Aquí encaja: {correct}",
+    "restart": "Nueva ronda",
+    "replay_failed": "Repasar errores ({n})",
+    "replay_mode_label": "Modo repaso — tus fallos",
+    "summary_score": "{correct} / {total} correctas",
+    "diary_note": "Elegiste {chosen}; aquí encaja {correct}.",
+    "next": "Siguiente",
+    "progress_label": "Progreso de la pregunta"
   }
 }

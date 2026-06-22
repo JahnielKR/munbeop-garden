@@ -558,6 +558,10 @@
     "register": {
       "name": "높임법 연구소 · Honorifiques",
       "desc": "Passe entre 반말, 해요체 et 합쇼체, et honore le sujet avec 께서 et 드시다/주무시다."
+    },
+    "cloze": {
+      "name": "빈칸 연습 · Cloze",
+      "desc": "Choisissez un jeu et sélectionnez la grammaire qui convient dans chaque blanc. Un exercice plus léger qui complète l'écriture."
     }
   },
   "escape": {
@@ -668,5 +672,22 @@
       "pip_done": "{ko} — complété",
       "pip_todo": "{ko} — pas encore"
     }
+  },
+  "cloze": {
+    "title": "Labo de lacunes",
+    "lead": "Choisissez un jeu, puis sélectionnez la grammaire qui convient dans chaque blanc — un exercice de reconnaissance rapide qui complète l'écriture.",
+    "pick_deck": "CHOISIR UN JEU",
+    "deck_empty": "Ce jeu n'a pas encore d'exercices de lacunes — essayez-en un autre.",
+    "pick_hint": "Appuyez sur la forme qui convient dans le blanc.",
+    "correct": "Correct !",
+    "wrong": "Pas tout à fait",
+    "reveal_correct": "Convient ici : {correct}",
+    "restart": "Nouveau tour",
+    "replay_failed": "Revoir les erreurs ({n})",
+    "replay_mode_label": "Mode révision — vos erreurs",
+    "summary_score": "{correct} / {total} correct",
+    "diary_note": "Vous avez choisi {chosen} ; {correct} convient ici.",
+    "next": "Suivant",
+    "progress_label": "Progression de la question"
   }
 }
