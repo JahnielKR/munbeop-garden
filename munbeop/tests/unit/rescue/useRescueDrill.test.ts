@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
-import type { ConfusablePair, Grammar, GrammarExample, Leech, LocalizedString } from '~/lib/domain'
+import type { ConfusablePair, Grammar, GrammarExample, LocalizedString } from '~/lib/domain'
+import type { Leech } from '~/lib/srs'
 
 const L = (s: string): LocalizedString => ({
   en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s,
