@@ -284,6 +284,15 @@
         "indirect": "Estilo indirecto",
         "meta": "Meta"
       }
+    },
+    "confused": {
+      "title": "Se confunde con",
+      "test_cta": "Ponme a prueba",
+      "correct": "¡Correcto!",
+      "wrong": "No del todo",
+      "next": "Siguiente",
+      "restart": "Intentar de nuevo",
+      "score": "{correct} / {total} correctas"
     }
   },
   "mastery": {
