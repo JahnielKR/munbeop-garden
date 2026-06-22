@@ -37,6 +37,34 @@ export interface GrammarExample {
   level: SpeechLevel
 }
 
+/** One "which fits?" discrimination question for a confusable pair. */
+export interface DiscriminationItem {
+  /** Korean sentence with the literal blank marker "{}" where the pattern goes. */
+  sentence: string
+  /** Surface form of pair member A in this sentence (e.g. 와서 / 안). */
+  optionA: string
+  /** Surface form of pair member B in this sentence (e.g. 오니까 / 못). */
+  optionB: string
+  /** Which member is correct/natural here. */
+  answer: 'a' | 'b'
+  trans: LocalizedString
+  /** One line: why the answer fits and the other doesn't. */
+  why: LocalizedString
+}
+
+/** Two near-interchangeable grammar points + items that discriminate them. */
+export interface ConfusablePair {
+  /** Stable id, e.g. 'an-mot'. */
+  id: string
+  /** Member A — a Grammar.ko. */
+  a: string
+  /** Member B — a Grammar.ko. */
+  b: string
+  /** How the two differ (shown with the relation chips). */
+  note: LocalizedString
+  items: DiscriminationItem[]
+}
+
 export interface Deck {
   id: string
   name: string
