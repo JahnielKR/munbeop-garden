@@ -10,6 +10,7 @@ import ThemePicker from '~/components/settings/ThemePicker.vue'
 import ContextManager from '~/components/settings/ContextManager.vue'
 import CustomGrammarManager from '~/components/settings/CustomGrammarManager.vue'
 import DailyGoalSetting from '~/components/settings/DailyGoalSetting.vue'
+import ReviewReminderSetting from '~/components/settings/ReviewReminderSetting.vue'
 import AboutSection from '~/components/settings/AboutSection.vue'
 import { useSettingsStore } from '~/stores/settings'
 import { useDataExport } from '~/composables/useDataExport'
@@ -72,6 +73,7 @@ const active = ref('account')
       class="panel"
     >
       <DailyGoalSetting />
+      <ReviewReminderSetting />
       <ContextManager />
       <CustomGrammarManager />
     </section>
