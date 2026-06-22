@@ -284,6 +284,15 @@
         "indirect": "คำพูดทางอ้อม",
         "meta": "เมตา"
       }
+    },
+    "confused": {
+      "title": "มักสับสนกับ",
+      "test_cta": "ทดสอบตัวเอง",
+      "correct": "ถูกต้อง!",
+      "wrong": "ยังไม่ถูก",
+      "next": "ถัดไป",
+      "restart": "ลองอีกครั้ง",
+      "score": "ถูก {correct} / {total} ข้อ"
     }
   },
   "mastery": {

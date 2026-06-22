@@ -284,6 +284,15 @@
         "indirect": "Discurso indireto",
         "meta": "Meta"
       }
+    },
+    "confused": {
+      "title": "Frequentemente confundido com",
+      "test_cta": "Teste-se",
+      "correct": "Correto!",
+      "wrong": "Não exatamente",
+      "next": "Próximo",
+      "restart": "Tentar novamente",
+      "score": "{correct} / {total} corretas"
     }
   },
   "mastery": {

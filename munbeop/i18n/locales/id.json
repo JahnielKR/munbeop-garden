@@ -284,6 +284,15 @@
         "indirect": "Kalimat tak langsung",
         "meta": "Meta"
       }
+    },
+    "confused": {
+      "title": "Sering tertukar dengan",
+      "test_cta": "Uji dirimu",
+      "correct": "Benar!",
+      "wrong": "Belum tepat",
+      "next": "Lanjut",
+      "restart": "Coba lagi",
+      "score": "{correct} / {total} benar"
     }
   },
   "mastery": {

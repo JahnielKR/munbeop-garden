@@ -284,6 +284,15 @@
         "indirect": "間接話法",
         "meta": "メタ"
       }
+    },
+    "confused": {
+      "title": "よく混同される表現",
+      "test_cta": "腕試しする",
+      "correct": "正解！",
+      "wrong": "惜しい",
+      "next": "次へ",
+      "restart": "もう一度",
+      "score": "{correct} / {total} 正解"
     }
   },
   "mastery": {

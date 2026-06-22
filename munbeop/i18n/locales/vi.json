@@ -284,6 +284,15 @@
         "indirect": "Lời nói gián tiếp",
         "meta": "Meta"
       }
+    },
+    "confused": {
+      "title": "Thường bị nhầm lẫn với",
+      "test_cta": "Tự kiểm tra",
+      "correct": "Chính xác!",
+      "wrong": "Chưa đúng",
+      "next": "Tiếp theo",
+      "restart": "Thử lại",
+      "score": "{correct} / {total} câu đúng"
     }
   },
   "mastery": {
