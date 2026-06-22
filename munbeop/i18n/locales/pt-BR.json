@@ -517,6 +517,10 @@
       "mugunghwa": "Rosa-de-sharon",
       "maple": "Bordo de outono",
       "ginkgo": "Ginkgo dourado"
+    },
+    "ready": {
+      "label": "{n} plantas prontas para revisar",
+      "aria": "Revisar as {n} plantas prontas para cuidar"
     }
   },
   "pricing": {
