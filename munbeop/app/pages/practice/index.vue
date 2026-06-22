@@ -46,12 +46,10 @@ const { t } = useI18n()
         emoji="🔀"
       />
       <GameCard
-        to="/practice"
-        :name="t('games.third.name')"
-        :description="t('games.third.desc')"
-        emoji="🌱"
-        locked
-        :locked-label="t('games.coming_soon')"
+        to="/practice/register"
+        :name="t('games.register.name')"
+        :description="t('games.register.desc')"
+        emoji="🙇"
       />
     </div>
   </div>
