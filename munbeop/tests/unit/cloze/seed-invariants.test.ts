@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { CLOZE_ITEMS } from '~/seed/cloze'
+import { itemsForKos } from '~/lib/cloze'
 import { DEFAULT_GRAMMAR } from '~/seed/grammars'
 import { LOCALE_CODES, ERROR_DIMENSIONS } from '~/lib/domain'
 
@@ -30,4 +31,27 @@ describe('cloze seed invariants', () => {
       expect(nonEmptyLocales(it_.why), 'why 8 locales').toBe(true)
     })
   }
+})
+
+describe('cloze coverage', () => {
+  it('has ~50 items spanning TOPIK 1 and 2', async () => {
+    const { N1_CLOZE } = await import('~/seed/cloze/n1')
+    const { N2_CLOZE } = await import('~/seed/cloze/n2')
+    expect(N1_CLOZE.length).toBeGreaterThanOrEqual(24)
+    expect(N2_CLOZE.length).toBeGreaterThanOrEqual(8)
+    expect(N1_CLOZE.length + N2_CLOZE.length).toBeGreaterThanOrEqual(44)
+  })
+  it('covers the Step-7 confusable points (both an-mot sides + the connective/aspect pairs)', () => {
+    for (const ko of [
+      '안 + V / -지 않다',
+      '못 + V / -지 못하다',
+      '-아/어서',
+      '-(으)니까',
+      '-고',
+      '-고 있다',
+      '-아/어 있다',
+    ]) {
+      expect(itemsForKos([ko]).length, ko).toBeGreaterThanOrEqual(1)
+    }
+  })
 })
