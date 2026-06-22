@@ -450,6 +450,11 @@
     },
     "menu": {
       "account": "Menú de cuenta"
+    },
+    "review_reminders": {
+      "title": "Recordatorios de repaso",
+      "label": "Recuérdame revisar cuando vuelva",
+      "hint": "Un aviso gentil cuando vuelves tras una pausa y hay plantas listas. Apagado por defecto; sin rastreo — solo corre en tu navegador."
     }
   },
   "welcome": {
@@ -739,5 +744,11 @@
       "things": "Cosas",
       "money_order": "Dinero y orden"
     }
+  },
+  "reminder": {
+    "banner": "{n} plantas listas para revisar",
+    "dismiss": "Descartar",
+    "notif_title": "Tu jardín te extraña 🌱",
+    "notif_body": "{n} plantas están listas para revisar."
   }
 }

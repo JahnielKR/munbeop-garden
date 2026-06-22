@@ -450,6 +450,11 @@
     },
     "menu": {
       "account": "Account menu"
+    },
+    "review_reminders": {
+      "title": "Review reminders",
+      "label": "Remind me to revisit when I come back",
+      "hint": "A gentle nudge when you return after a break and plants are ready. Off by default; no tracking — it only runs in your browser."
     }
   },
   "welcome": {
@@ -739,5 +744,11 @@
       "things": "Things",
       "money_order": "Money & order"
     }
+  },
+  "reminder": {
+    "banner": "{n} plants ready to revisit",
+    "dismiss": "Dismiss",
+    "notif_title": "Your garden misses you 🌱",
+    "notif_body": "{n} plants are ready to revisit."
   }
 }

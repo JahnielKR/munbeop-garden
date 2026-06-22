@@ -450,6 +450,11 @@
     },
     "menu": {
       "account": "Menu du compte"
+    },
+    "review_reminders": {
+      "title": "Rappels de révision",
+      "label": "Me rappeler de réviser à mon retour",
+      "hint": "Un petit rappel à ton retour après une pause, quand des plantes sont prêtes. Désactivé par défaut ; aucun suivi — tout reste dans ton navigateur."
     }
   },
   "welcome": {
@@ -739,5 +744,11 @@
       "things": "Objets",
       "money_order": "Argent et ordre"
     }
+  },
+  "reminder": {
+    "banner": "{n} plantes prêtes à revoir",
+    "dismiss": "Ignorer",
+    "notif_title": "Ton jardin te réclame 🌱",
+    "notif_body": "{n} plantes sont prêtes à revoir."
   }
 }

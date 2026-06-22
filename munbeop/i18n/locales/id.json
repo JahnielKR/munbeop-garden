@@ -450,6 +450,11 @@
     },
     "menu": {
       "account": "Menu akun"
+    },
+    "review_reminders": {
+      "title": "Pengingat tinjauan",
+      "label": "Ingatkan untuk meninjau saat aku kembali",
+      "hint": "Dorongan lembut saat kamu kembali setelah jeda dan ada tanaman yang siap. Mati secara default; tanpa pelacakan — hanya berjalan di browsermu."
     }
   },
   "welcome": {
@@ -739,5 +744,11 @@
       "things": "Benda",
       "money_order": "Uang & urutan"
     }
+  },
+  "reminder": {
+    "banner": "{n} tanaman siap ditinjau",
+    "dismiss": "Tutup",
+    "notif_title": "Tamanmu merindukanmu 🌱",
+    "notif_body": "{n} tanaman siap ditinjau."
   }
 }
