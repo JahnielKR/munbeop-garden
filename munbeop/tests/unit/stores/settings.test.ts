@@ -63,18 +63,18 @@ describe('useSettingsStore', () => {
   it('setTheme applies the theme and writes the full blob to the adapter', async () => {
     await useSettingsStore().setTheme('dark')
     expect(useTheme().theme.value).toBe('dark')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'dark', locale: 'en', dailyGoal: 3 })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'dark', locale: 'en', dailyGoal: 3, reviewReminders: false })
   })
 
   it('setTheme accepts the system preference and writes it to the adapter', async () => {
     await useSettingsStore().setTheme('system')
     expect(useTheme().theme.value).toBe('system')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'system', locale: 'en', dailyGoal: 3 })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'system', locale: 'en', dailyGoal: 3, reviewReminders: false })
   })
 
   it('setLocale applies the locale and writes the full blob to the adapter', async () => {
     await useSettingsStore().setLocale('ja')
     expect(useLocaleStore().current).toBe('ja')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'ja', dailyGoal: 3 })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'ja', dailyGoal: 3, reviewReminders: false })
   })
 })
