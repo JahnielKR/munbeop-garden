@@ -574,6 +574,10 @@
     "cloze": {
       "name": "빈칸 연습 · Cloze",
       "desc": "デッキを選んで各空欄に合う文法を選びましょう。ライティングを補う軽めのラウンドです。"
+    },
+    "counters": {
+      "name": "助数詞ラボ",
+      "desc": "数 + 助数詞：韓国語式に数える。"
     }
   },
   "escape": {
@@ -715,5 +719,25 @@
     "next": "次へ",
     "back": "戻る",
     "empty": "統計から手入れする植物を選んでください。"
+  },
+  "counters": {
+    "title": "助数詞ラボ",
+    "lead": "韓国語式に数えよう：正しい数 + 助数詞を選ぶ。",
+    "correct": "맞아요!",
+    "wrong": "다시 봐요",
+    "next": "次へ",
+    "score": "{correct} / {total}",
+    "replay_failed": "間違いをやり直す",
+    "replay_mode": "復習",
+    "restart": "新しいラウンド",
+    "progress": "問題",
+    "set": {
+      "people_animals": "人と動物",
+      "books_paper": "本と紙",
+      "food_drink": "飲食",
+      "time_age": "時間と年齢",
+      "things": "物",
+      "money_order": "お金と順番"
+    }
   }
 }

@@ -574,6 +574,10 @@
     "cloze": {
       "name": "빈칸 연습 · Cloze",
       "desc": "Chọn bộ bài và chọn ngữ pháp phù hợp với mỗi chỗ trống. Vòng nhẹ nhàng hơn bổ sung cho việc viết."
+    },
+    "counters": {
+      "name": "Phòng lab loại từ",
+      "desc": "Số + loại từ: đếm kiểu Hàn."
     }
   },
   "escape": {
@@ -715,5 +719,25 @@
     "next": "Tiếp",
     "back": "Quay lại",
     "empty": "Chọn một cây để chăm sóc từ trang Thống kê của bạn."
+  },
+  "counters": {
+    "title": "Phòng lab loại từ",
+    "lead": "Đếm kiểu Hàn: chọn đúng số + loại từ.",
+    "correct": "맞아요!",
+    "wrong": "다시 봐요",
+    "next": "Tiếp",
+    "score": "{correct} / {total}",
+    "replay_failed": "Làm lại câu sai",
+    "replay_mode": "Ôn lại",
+    "restart": "Vòng mới",
+    "progress": "Câu",
+    "set": {
+      "people_animals": "Người & động vật",
+      "books_paper": "Sách & giấy",
+      "food_drink": "Đồ ăn & thức uống",
+      "time_age": "Thời gian & tuổi",
+      "things": "Đồ vật",
+      "money_order": "Tiền & thứ tự"
+    }
   }
 }

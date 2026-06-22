@@ -574,6 +574,10 @@
     "cloze": {
       "name": "빈칸 연습 · Cloze",
       "desc": "Pick a deck and choose the grammar that fits each blank. A lighter round that complements writing."
+    },
+    "counters": {
+      "name": "Counter Lab",
+      "desc": "Numbers + classifiers: count things the Korean way."
     }
   },
   "conjugation": {
@@ -715,5 +719,25 @@
     "next": "Next",
     "back": "Back",
     "empty": "Pick a plant to care for from your Stats."
+  },
+  "counters": {
+    "title": "Counter Lab",
+    "lead": "Count it the Korean way: pick the right number + classifier.",
+    "correct": "맞아요!",
+    "wrong": "다시 봐요",
+    "next": "Next",
+    "score": "{correct} / {total}",
+    "replay_failed": "Retry the misses",
+    "replay_mode": "Replay",
+    "restart": "New round",
+    "progress": "Question",
+    "set": {
+      "people_animals": "People & animals",
+      "books_paper": "Books & paper",
+      "food_drink": "Food & drink",
+      "time_age": "Time & age",
+      "things": "Things",
+      "money_order": "Money & order"
+    }
   }
 }
