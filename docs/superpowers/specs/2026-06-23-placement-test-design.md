@@ -21,7 +21,7 @@ questions). Everything else is thin wiring around them.
 |---|----------|--------|
 | 1 | What the result does | **Set the starting deck** — write `startingDeckId` to the synced settings blob; the ruleta `DeckPicker` highlights it. No SRS/log writes. |
 | 2 | Level-estimation mechanic | **Ascending ladder with early-stop** — climb TOPIK 1→6, a few questions per level, stop at the first level you fail. |
-| 3 | Item source | **Dedicated authored bank** — static seed, ~5 items/level × 6, validated by a Korean-lens content workflow + native (wife) review. |
+| 3 | Item source | **Dedicated authored bank** — static seed, ~6 items/level × 6, validated by a Korean-lens content workflow + native (wife) review. |
 | 4 | Entry point | **Standalone lab** `/practice/placement` (hub card, re-takeable) **+ a "Find your level" CTA on the new-user `EmptyPlot`**. No entanglement with the guided-sentence overlay. |
 | 5 | Item format | **Cloze-of-usage** — Korean sentence with a `{}` blank, 4 Korean options (correct surface form + 3 sibling distractors), single-correct by construction. Modeled on the proven `ClozeItem`. |
 | 6 | Recommended starting deck | **Frontier** = first level NOT cleared (study what you don't know yet), floored at TOPIK 1, capped at TOPIK 6. |
@@ -53,8 +53,8 @@ questions). Everything else is thin wiring around them.
 ### Config (`app/lib/placement/config.ts`)
 
 ```
-Q_PER_LEVEL    = 3   // questions asked per level
-PASS_THRESHOLD = 2   // correct answers needed to clear a level (>= 2 of 3)
+Q_PER_LEVEL    = 4   // questions asked per level
+PASS_THRESHOLD = 3   // correct answers needed to clear a level (>= 3 of 4)
 MIN_LEVEL      = 1
 MAX_LEVEL      = 6
 ```
@@ -80,7 +80,7 @@ Worked examples:
 | Clears 1–3, fails 4 | 3 | 4 | `topik-4` |
 | Clears all 6 | 6 | 6 | `topik-6` |
 
-Length: 3 questions (beginner who fails level 1) to 18 (clears everything).
+Length: 4 questions (beginner who fails level 1) to 24 (clears everything).
 
 `ladder.ts` is **pure and deterministic** — no `Date.now`, no `Math.random`.
 Item selection randomness lives in the composable / `select.ts` (runtime only).
@@ -101,7 +101,7 @@ Item selection randomness lives in the composable / `select.ts` (runtime only).
     why: LocalizedString
   }
   ```
-- `app/seed/placement/{index,n1,n2,n3,n4,n5,n6}.ts` — authored bank, ~5
+- `app/seed/placement/{index,n1,n2,n3,n4,n5,n6}.ts` — authored bank, ~6
   items/level (≥ `Q_PER_LEVEL`, with margin for retakes), using the 8-locale
   `L()` helper. `index.ts` exposes `PLACEMENT_ITEMS_BY_LEVEL`.
 
@@ -156,13 +156,13 @@ Item selection randomness lives in the composable / `select.ts` (runtime only).
   Hangul; exactly 3 distractors, pairwise distinct and ≠ `answer`; `level` ∈
   1..6; `ko` exists in `DEFAULT_GRAMMAR`; `trans` and `why` carry all 8 locales;
   each level has ≥ `Q_PER_LEVEL` items.
-- **Semantic gate:** native (wife) review of all ~30 items — the documented
+- **Semantic gate:** native (wife) review of all ~36 items — the documented
   final content gate.
 
 ## 8. Testing
 
 - `ladder.test.ts` — golden: clears-all→6, fails-level-1→floor(1),
-  clears-3-fails-4→frontier(4), exact 2/3 threshold edges (pass at 2, fail at 1).
+  clears-3-fails-4→frontier(4), exact 3/4 threshold edges (pass at 3, fail at 2).
 - `select.test.ts` — returns `Q_PER_LEVEL` distinct items from the right level.
 - `seed-invariants.test.ts` — the content gate above.
 - Component tests — `PlacementCard` emits the picked option and renders the
