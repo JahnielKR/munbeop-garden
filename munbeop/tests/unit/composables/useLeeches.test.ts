@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { reactive } from 'vue'
 import type { Grammar, LogEntry, LocalizedString } from '~/lib/domain'
+import { useLeeches } from '~/composables/useLeeches'
 
 const L = (s: string): LocalizedString => ({
   en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s,
@@ -10,8 +11,6 @@ const L = (s: string): LocalizedString => ({
 const state = reactive({ entries: [] as LogEntry[], items: [] as Grammar[] })
 vi.mock('~/stores/log', () => ({ useLogStore: () => ({ get entries() { return state.entries } }) }))
 vi.mock('~/stores/grammar', () => ({ useGrammarStore: () => ({ get items() { return state.items } }) }))
-
-import { useLeeches } from '~/composables/useLeeches'
 
 let clock = 0
 const e = (over: Partial<LogEntry> = {}): LogEntry => ({

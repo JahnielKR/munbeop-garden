@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
 import type { ConfusablePair, Grammar, GrammarExample, LocalizedString } from '~/lib/domain'
 import type { Leech } from '~/lib/srs'
+import { useRescueDrill } from '~/composables/useRescueDrill'
 
 const L = (s: string): LocalizedString => ({
   en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s,
@@ -17,8 +18,6 @@ vi.mock('~/lib/grammar-pairs', () => ({ pairsFor: (ko: string) => pairsFor(ko) }
 vi.mock('~/lib/grammar-examples', () => ({ examplesFor: (ko: string) => examplesFor(ko) }))
 vi.mock('~/stores/grammar', () => ({ useGrammarStore: () => ({ grammarByKo }) }))
 vi.mock('~/composables/useLeeches', () => ({ useLeeches: () => ({ leeches }) }))
-
-import { useRescueDrill } from '~/composables/useRescueDrill'
 
 const grammar: Grammar = { ko: '-는데', meaning: L('contrast/background'), deckId: 'topik-2' }
 const pair = { id: 'p', a: '-는데', b: '-지만', note: L('n'), items: [] } as ConfusablePair
