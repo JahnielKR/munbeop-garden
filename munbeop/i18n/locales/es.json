@@ -524,6 +524,10 @@
       "mugunghwa": "Mugunghwa",
       "maple": "Arce otoñal",
       "ginkgo": "Ginkgo dorado"
+    },
+    "ready": {
+      "label": "{n} plantas listas para revisar",
+      "aria": "Revisar las {n} plantas listas para cuidar"
     }
   },
   "pricing": {

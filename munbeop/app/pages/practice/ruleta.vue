@@ -16,11 +16,13 @@ import {
   buildDeckOptions, buildCustomDeckOptions, deckColorVar, type DrawCard,
 } from '~/components/games/ruleta/cards'
 import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
+import { dueKos, revisitPool } from '~/lib/srs'
 import { useLeeches } from '~/composables/useLeeches'
 import { useBomiStore } from '~/stores/bomi'
 import { useGrammarStore } from '~/stores/grammar'
 import { useContextsStore } from '~/stores/contexts'
 import { useCustomDecksStore } from '~/stores/customDecks'
+import { useSrsStore } from '~/stores/srs'
 
 definePageMeta({ surface: 'game' })
 
@@ -42,6 +44,7 @@ const bomi = useBomiStore()
 const grammarStore = useGrammarStore()
 const contextsStore = useContextsStore()
 const customDecks = useCustomDecksStore()
+const srsStore = useSrsStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -181,6 +184,31 @@ onMounted(async () => {
       return
     }
     phase.value = 'play'
+    return
+  }
+
+  // Revisit round from the garden's "ready to revisit" hint: build a due-first
+  // pool (padded to >=3 from the active pool) and start a session over it. The
+  // weighted draw still front-loads the due items via getWeight's timeFactor.
+  // Mutually exclusive with ?focus= (focus returns above and keeps priority).
+  if (route.query.revisit === 'due') {
+    try {
+      await Promise.all([grammarStore.hydrate(), contextsStore.hydrate(), srsStore.hydrate()])
+    } catch (err) {
+      console.error('ruleta: revisit-round hydration failed', err)
+      return
+    }
+    const activeKos = grammarStore.activeIndices
+      .map((idx) => grammarStore.items[idx]?.ko)
+      .filter((ko): ko is string => !!ko)
+    const pool = revisitPool(dueKos(srsStore.map, Date.now()), activeKos, 3)
+    if (pool.length < 3) return // nothing to revisit yet — fall back to the picker
+    await start({ customDeckGrammarKos: pool })
+    if (error.value) {
+      toast.error(error.value)
+      return
+    }
+    phase.value = 'play'
   }
 })
 
@@ -229,7 +257,7 @@ async function onRestart() {
   // Consume a leftover ?focus= param: without this, every deck picked
   // after restarting a focused round would silently rebuild the same
   // single-grammar session.
-  if (route.query.focus !== undefined) {
+  if (route.query.focus !== undefined || route.query.revisit !== undefined) {
     await router.replace({ query: {} })
   }
   phase.value = 'pick'

@@ -524,6 +524,10 @@
       "mugunghwa": "Rose de Sharon",
       "maple": "Érable d'automne",
       "ginkgo": "Ginkgo doré"
+    },
+    "ready": {
+      "label": "{n} plantes prêtes à revoir",
+      "aria": "Revoir les {n} plantes à soigner"
     }
   },
   "pricing": {

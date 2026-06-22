@@ -524,6 +524,10 @@
       "mugunghwa": "Mugunghwa",
       "maple": "Mapel musim gugur",
       "ginkgo": "Ginkgo emas"
+    },
+    "ready": {
+      "label": "{n} tanaman siap ditinjau",
+      "aria": "Tinjau {n} tanaman yang siap dirawat"
     }
   },
   "pricing": {

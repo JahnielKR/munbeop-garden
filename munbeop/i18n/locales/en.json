@@ -524,6 +524,10 @@
       "mugunghwa": "Rose of Sharon",
       "maple": "Autumn maple",
       "ginkgo": "Golden ginkgo"
+    },
+    "ready": {
+      "label": "{n} plants ready to revisit",
+      "aria": "Revisit the {n} plants ready to tend"
     }
   },
   "pricing": {
