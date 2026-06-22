@@ -57,6 +57,12 @@ const { t } = useI18n()
         :description="t('games.cloze.desc')"
         emoji="📝"
       />
+      <GameCard
+        to="/practice/counters"
+        :name="t('games.counters.name')"
+        :description="t('games.counters.desc')"
+        emoji="🔢"
+      />
     </div>
   </div>
 </template>

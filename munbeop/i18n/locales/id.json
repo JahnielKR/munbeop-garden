@@ -574,6 +574,10 @@
     "cloze": {
       "name": "빈칸 연습 · Cloze",
       "desc": "Pilih dek dan pilih tata bahasa yang cocok di setiap bagian kosong. Ronde yang lebih ringan sebagai pelengkap menulis."
+    },
+    "counters": {
+      "name": "Lab Penggolong",
+      "desc": "Angka + penggolong: menghitung ala Korea."
     }
   },
   "escape": {
@@ -715,5 +719,25 @@
     "next": "Berikutnya",
     "back": "Kembali",
     "empty": "Pilih tanaman untuk dirawat dari Statistik kamu."
+  },
+  "counters": {
+    "title": "Lab Penggolong",
+    "lead": "Hitung ala Korea: pilih angka + penggolong yang tepat.",
+    "correct": "맞아요!",
+    "wrong": "다시 봐요",
+    "next": "Berikutnya",
+    "score": "{correct} / {total}",
+    "replay_failed": "Ulangi yang salah",
+    "replay_mode": "Ulangan",
+    "restart": "Ronde baru",
+    "progress": "Soal",
+    "set": {
+      "people_animals": "Orang & hewan",
+      "books_paper": "Buku & kertas",
+      "food_drink": "Makanan & minuman",
+      "time_age": "Waktu & usia",
+      "things": "Benda",
+      "money_order": "Uang & urutan"
+    }
   }
 }

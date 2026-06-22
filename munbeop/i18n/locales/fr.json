@@ -574,6 +574,10 @@
     "cloze": {
       "name": "빈칸 연습 · Cloze",
       "desc": "Choisissez un jeu et sélectionnez la grammaire qui convient dans chaque blanc. Un exercice plus léger qui complète l'écriture."
+    },
+    "counters": {
+      "name": "Labo des classificateurs",
+      "desc": "Nombres + classificateurs : compter à la coréenne."
     }
   },
   "escape": {
@@ -715,5 +719,25 @@
     "next": "Suivant",
     "back": "Retour",
     "empty": "Choisis une plante à soigner depuis tes Statistiques."
+  },
+  "counters": {
+    "title": "Labo des classificateurs",
+    "lead": "Compte à la coréenne : choisis le bon nombre + classificateur.",
+    "correct": "맞아요!",
+    "wrong": "다시 봐요",
+    "next": "Suivant",
+    "score": "{correct} / {total}",
+    "replay_failed": "Réessayer les erreurs",
+    "replay_mode": "Révision",
+    "restart": "Nouvelle manche",
+    "progress": "Question",
+    "set": {
+      "people_animals": "Personnes et animaux",
+      "books_paper": "Livres et papier",
+      "food_drink": "Nourriture et boisson",
+      "time_age": "Temps et âge",
+      "things": "Objets",
+      "money_order": "Argent et ordre"
+    }
   }
 }

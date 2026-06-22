@@ -574,6 +574,10 @@
     "cloze": {
       "name": "빈칸 연습 · Cloze",
       "desc": "Elige un mazo y escoge la gramática que encaja en cada hueco. Una ronda más ligera que complementa la escritura."
+    },
+    "counters": {
+      "name": "Laboratorio de contadores",
+      "desc": "Números + clasificadores: cuenta a la coreana."
     }
   },
   "escape": {
@@ -715,5 +719,25 @@
     "next": "Siguiente",
     "back": "Atrás",
     "empty": "Elige una planta para cuidar desde tus Estadísticas."
+  },
+  "counters": {
+    "title": "Laboratorio de contadores",
+    "lead": "Cuenta a la coreana: elige el número + clasificador correcto.",
+    "correct": "맞아요!",
+    "wrong": "다시 봐요",
+    "next": "Siguiente",
+    "score": "{correct} / {total}",
+    "replay_failed": "Reintentar los fallos",
+    "replay_mode": "Repaso",
+    "restart": "Nueva ronda",
+    "progress": "Pregunta",
+    "set": {
+      "people_animals": "Personas y animales",
+      "books_paper": "Libros y papel",
+      "food_drink": "Comida y bebida",
+      "time_age": "Tiempo y edad",
+      "things": "Cosas",
+      "money_order": "Dinero y orden"
+    }
   }
 }
