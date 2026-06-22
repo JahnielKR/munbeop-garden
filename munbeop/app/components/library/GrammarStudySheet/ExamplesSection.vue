@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import type { Grammar, SpeechLevel } from '~/lib/domain'
 import { examplesFor } from '~/lib/grammar-examples'
+import ExampleAudioButton from './ExampleAudioButton.vue'
 
 interface Props {
   grammar: Grammar
@@ -38,6 +39,7 @@ const fallback = computed(() =>
     <ul class="examples">
       <li v-for="(ex, i) in bank" :key="i" class="example">
         <p class="example__ko" lang="ko">
+          <ExampleAudioButton :sentence="ex.sentence" />
           <span class="example__sentence">{{ ex.sentence }}</span>
           <span class="example__chip" lang="ko" :aria-label="t(REGISTER_ARIA[ex.level])">{{ REGISTER_KO[ex.level] }}</span>
         </p>
