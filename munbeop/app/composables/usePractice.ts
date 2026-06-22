@@ -12,6 +12,7 @@ import { useContextsStore, MIN_ACTIVE_CONTEXTS } from '~/stores/contexts'
 import { useGrammarStore } from '~/stores/grammar'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
+import { useLeeches } from '~/composables/useLeeches'
 
 type PracticeSession = Session<number, Context>
 
@@ -22,6 +23,7 @@ export function usePractice() {
   const logStore = useLogStore()
   const route = useRoute()
   const { t } = useI18n()
+  const { leechKos } = useLeeches()
 
   const session = ref<PracticeSession | null>(null)
   const error = ref<string | null>(null)
@@ -99,6 +101,9 @@ export function usePractice() {
         grammarPool: pool,
         contextPool: activeContexts,
         weightOf: (idx) => srsStore.weightFor(grammarStore.items[idx]!.ko),
+        // Stop a single leech from dominating the hand — at most one of the
+        // three picks may be a leech (the SRS weight already over-draws them).
+        capPredicate: (idx) => leechKos.value.has(grammarStore.items[idx]!.ko),
       })
       // Mark every picked grammar as seen — runs in parallel against storage.
       await Promise.all(
