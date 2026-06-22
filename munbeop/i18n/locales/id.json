@@ -255,7 +255,8 @@
     "examples": {
       "register_formal": "Ragam formal",
       "register_polite": "Ragam sopan",
-      "register_casual": "Ragam santai"
+      "register_casual": "Ragam santai",
+      "play_audio": "Putar pelafalan"
     },
     "search": {
       "placeholder": "Cari pola atau artinya…",

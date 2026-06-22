@@ -255,7 +255,8 @@
     "examples": {
       "register_formal": "Cách nói trang trọng",
       "register_polite": "Cách nói lịch sự",
-      "register_casual": "Cách nói thân mật"
+      "register_casual": "Cách nói thân mật",
+      "play_audio": "Nghe phát âm"
     },
     "search": {
       "placeholder": "Tìm một mẫu câu hoặc nghĩa của nó…",
