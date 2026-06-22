@@ -32,4 +32,14 @@ describe('grammar-pairs seed invariants', () => {
       }
     })
   }
+
+  // Coverage: the batch must cover all 4 target pairs, ≥3 items each.
+  const TARGET_IDS = ['an-mot', 'aseo-nikka', 'go-aseo', 'goitda-aitda']
+  for (const id of TARGET_IDS) {
+    it(`covers ${id} with ≥3 items`, () => {
+      const pair = GRAMMAR_PAIRS.find((p) => p.id === id)
+      expect(pair, `pair ${id} present`).toBeDefined()
+      expect(pair!.items.length).toBeGreaterThanOrEqual(3)
+    })
+  }
 })
