@@ -38,9 +38,10 @@ export interface Leech {
 export function detectLeeches(
   log: readonly LogEntry[],
   grammars: readonly Grammar[],
-  now: number,
 ): Leech[]
 ```
+
+(No `now` param: the recent window is the most-recent N entries **by date** — order-based, not a time span — so detection needs no clock and stays pure. Self-healing still holds: recent easy reviews slide the window past the old hard ones.)
 
 Algorithm (per `ko`):
 - Collect that `ko`'s entries, **excluding `reviewState === 'incorrect'`** (mirrors `recalculateMastery`), sorted by `date`; take the most recent `LEECH_WINDOW` (= 8).
