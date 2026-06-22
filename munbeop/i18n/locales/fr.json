@@ -554,6 +554,10 @@
     "conjugation": {
       "name": "활용 연습 · Conjugaison",
       "desc": "Choisissez la forme conjuguée correcte. Battez les erreurs systématiques des apprenants."
+    },
+    "register": {
+      "name": "높임법 연구소 · Honorifiques",
+      "desc": "Passe entre 반말, 해요체 et 합쇼체, et honore le sujet avec 께서 et 드시다/주무시다."
     }
   },
   "escape": {
@@ -632,6 +636,36 @@
       "celebrate_body": "Tu as réussi les {total} classes de conjugaison. 화이팅!",
       "dismiss": "Super !",
       "pip_done": "{ko} — réussie",
+      "pip_todo": "{ko} — pas encore"
+    }
+  },
+  "register": {
+    "title": "Laboratoire des honorifiques",
+    "lead": "Réécris la phrase dans le bon registre. Les mauvaises options sont les erreurs honorifiques que les apprenants font vraiment.",
+    "mode_level": "말단계 · Niveau de langue",
+    "mode_honor": "높임말 · Honorifiques",
+    "pick_set": "CHOISIS UN SET",
+    "prompt_level": "Réécris dans le registre cible.",
+    "prompt_honor": "Mets la phrase à la forme honorifique.",
+    "pick_hint": "Touche la forme naturelle.",
+    "correct": "Correct !",
+    "wrong": "Presque",
+    "reveal_correct": "Forme naturelle : {correct}",
+    "restart": "Nouvelle partie",
+    "replay_failed": "Revoir les erreurs ({n})",
+    "replay_mode_label": "Mode révision — tes erreurs",
+    "summary_score": "{correct} / {total} correctes",
+    "diary_note": "Tu as choisi {chosen} ; la forme naturelle est {correct}.",
+    "next": "Suivant",
+    "progress_label": "Progression de la question",
+    "master": {
+      "label": "Maître des honorifiques",
+      "title": "높임법 마스터!",
+      "progress": "{done}/{total} sets complétés",
+      "earned": "Les 7 sets complétés !",
+      "celebrate_body": "Tu as complété les {total} sets de registre et d'honorifiques. 화이팅!",
+      "dismiss": "Super !",
+      "pip_done": "{ko} — complété",
       "pip_todo": "{ko} — pas encore"
     }
   }

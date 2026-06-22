@@ -554,6 +554,10 @@
     "conjugation": {
       "name": "활용 연습 · 活用",
       "desc": "正しい活用形を選んでください。学習者がよくする系統的なミスに打ち勝とう。"
+    },
+    "register": {
+      "name": "높임법 연구소 · 敬語",
+      "desc": "반말、해요체、합쇼체を使い分け、께서と드시다/주무시다で主語を敬いましょう。"
     }
   },
   "escape": {
@@ -632,6 +636,36 @@
       "celebrate_body": "{total} の活用クラスを全てクリアした。화이팅!",
       "dismiss": "やった！",
       "pip_done": "{ko} — クリア済み",
+      "pip_todo": "{ko} — まだ"
+    }
+  },
+  "register": {
+    "title": "丁寧語ラボ",
+    "lead": "文を正しいレジスターで書き直してください。誤った選択肢は、学習者が実際に犯す敬語のミスです。",
+    "mode_level": "말단계 · 話し言葉レベル",
+    "mode_honor": "높임말 · 敬語",
+    "pick_set": "セットを選ぶ",
+    "prompt_level": "ターゲットレジスターに書き直してください。",
+    "prompt_honor": "敬語にしてください。",
+    "pick_hint": "自然な形をタップしてください。",
+    "correct": "正解！",
+    "wrong": "もう少し",
+    "reveal_correct": "自然な形：{correct}",
+    "restart": "新しいラウンド",
+    "replay_failed": "ミスを復習する（{n}）",
+    "replay_mode_label": "復習モード — 間違えた問題",
+    "summary_score": "{correct} / {total} 正解",
+    "diary_note": "{chosen}を選びました。自然な形は{correct}です。",
+    "next": "次へ",
+    "progress_label": "問題の進捗",
+    "master": {
+      "label": "敬語マスター",
+      "title": "높임법 마스터!",
+      "progress": "{done}/{total}セット完了",
+      "earned": "全7セット完了！",
+      "celebrate_body": "レジスター＆敬語の全{total}セットを完了しました。화이팅!",
+      "dismiss": "やった！",
+      "pip_done": "{ko} — 完了",
       "pip_todo": "{ko} — まだ"
     }
   }

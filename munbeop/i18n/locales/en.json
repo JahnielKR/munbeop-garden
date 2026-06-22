@@ -554,6 +554,10 @@
     "conjugation": {
       "name": "활용 연습 · Conjugation",
       "desc": "Pick the correct conjugated form. Beat the systematic mistakes learners make."
+    },
+    "register": {
+      "name": "높임법 연구소 · Honorifics",
+      "desc": "Shift between 반말, 해요체 and 합쇼체, and honor the subject with 께서 and 드시다/주무시다."
     }
   },
   "conjugation": {
@@ -634,5 +638,35 @@
     "clear": "Clear",
     "completion_placeholder": "Type the missing piece…",
     "creation_help": "Tap the tiles in order to build the sentence"
+  },
+  "register": {
+    "title": "Honorifics Lab",
+    "lead": "Rewrite the sentence in the right register. The wrong options are the honorific mistakes learners actually make.",
+    "mode_level": "말단계 · Speech level",
+    "mode_honor": "높임말 · Honorifics",
+    "pick_set": "PICK A SET",
+    "prompt_level": "Rewrite into the target register.",
+    "prompt_honor": "Make it honorific.",
+    "pick_hint": "Tap the natural form.",
+    "correct": "Correct!",
+    "wrong": "Not quite",
+    "reveal_correct": "Natural form: {correct}",
+    "restart": "New round",
+    "replay_failed": "Review mistakes ({n})",
+    "replay_mode_label": "Review mode — your missed items",
+    "summary_score": "{correct} / {total} correct",
+    "diary_note": "You picked {chosen}; the natural form is {correct}.",
+    "next": "Next",
+    "progress_label": "Question progress",
+    "master": {
+      "label": "Honorifics Master",
+      "title": "높임법 마스터!",
+      "progress": "{done}/{total} sets cleared",
+      "earned": "All 7 sets cleared!",
+      "celebrate_body": "You cleared all {total} register & honorific sets. 화이팅!",
+      "dismiss": "Nice!",
+      "pip_done": "{ko} — cleared",
+      "pip_todo": "{ko} — not yet"
+    }
   }
 }
