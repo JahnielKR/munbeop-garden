@@ -558,6 +558,10 @@
     "register": {
       "name": "높임법 연구소 · Kính ngữ",
       "desc": "Chuyển đổi giữa 반말, 해요체 và 합쇼체, và tôn kính chủ ngữ với 께서 và 드시다/주무시다."
+    },
+    "cloze": {
+      "name": "빈칸 연습 · Cloze",
+      "desc": "Chọn bộ bài và chọn ngữ pháp phù hợp với mỗi chỗ trống. Vòng nhẹ nhàng hơn bổ sung cho việc viết."
     }
   },
   "escape": {
@@ -668,5 +672,22 @@
       "pip_done": "{ko} — đã hoàn thành",
       "pip_todo": "{ko} — chưa xong"
     }
+  },
+  "cloze": {
+    "title": "Phòng lab điền từ",
+    "lead": "Chọn bộ bài rồi chọn ngữ pháp phù hợp với mỗi chỗ trống — vòng nhận diện nhanh bổ sung cho việc viết.",
+    "pick_deck": "CHỌN BỘ BÀI",
+    "deck_empty": "Bộ bài này chưa có mục điền từ — thử bộ khác.",
+    "pick_hint": "Chạm vào dạng phù hợp với chỗ trống.",
+    "correct": "Đúng rồi!",
+    "wrong": "Gần đúng",
+    "reveal_correct": "Phù hợp ở đây: {correct}",
+    "restart": "Vòng mới",
+    "replay_failed": "Ôn lại lỗi sai ({n})",
+    "replay_mode_label": "Chế độ ôn tập — các mục bị sai",
+    "summary_score": "{correct} / {total} đúng",
+    "diary_note": "Bạn đã chọn {chosen}; {correct} phù hợp ở đây.",
+    "next": "Tiếp theo",
+    "progress_label": "Tiến độ câu hỏi"
   }
 }

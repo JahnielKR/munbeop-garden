@@ -558,6 +558,10 @@
     "register": {
       "name": "높임법 연구소 · Honorifics",
       "desc": "Shift between 반말, 해요체 and 합쇼체, and honor the subject with 께서 and 드시다/주무시다."
+    },
+    "cloze": {
+      "name": "빈칸 연습 · Cloze",
+      "desc": "Pick a deck and choose the grammar that fits each blank. A lighter round that complements writing."
     }
   },
   "conjugation": {
@@ -638,6 +642,23 @@
     "clear": "Clear",
     "completion_placeholder": "Type the missing piece…",
     "creation_help": "Tap the tiles in order to build the sentence"
+  },
+  "cloze": {
+    "title": "Cloze Lab",
+    "lead": "Pick a deck, then choose the grammar that fits each blank — a quick recognition round that complements writing.",
+    "pick_deck": "PICK A DECK",
+    "deck_empty": "This deck has no cloze items yet — try another.",
+    "pick_hint": "Tap the form that fits the blank.",
+    "correct": "Correct!",
+    "wrong": "Not quite",
+    "reveal_correct": "Fits here: {correct}",
+    "restart": "New round",
+    "replay_failed": "Review mistakes ({n})",
+    "replay_mode_label": "Review mode — your missed items",
+    "summary_score": "{correct} / {total} correct",
+    "diary_note": "You picked {chosen}; {correct} fits here.",
+    "next": "Next",
+    "progress_label": "Question progress"
   },
   "register": {
     "title": "Honorifics Lab",

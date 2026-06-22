@@ -558,6 +558,10 @@
     "register": {
       "name": "높임법 연구소 · 敬語",
       "desc": "반말、해요체、합쇼체を使い分け、께서と드시다/주무시다で主語を敬いましょう。"
+    },
+    "cloze": {
+      "name": "빈칸 연습 · Cloze",
+      "desc": "デッキを選んで各空欄に合う文法を選びましょう。ライティングを補う軽めのラウンドです。"
     }
   },
   "escape": {
@@ -668,5 +672,22 @@
       "pip_done": "{ko} — 完了",
       "pip_todo": "{ko} — まだ"
     }
+  },
+  "cloze": {
+    "title": "穴埋めラボ",
+    "lead": "デッキを選び、各空欄に合う文法を選びましょう — ライティングを補うクイック認識ラウンドです。",
+    "pick_deck": "デッキを選ぶ",
+    "deck_empty": "このデッキにはまだ穴埋め項目がありません — 別のデッキをお試しください。",
+    "pick_hint": "空欄に合う形をタップしてください。",
+    "correct": "正解！",
+    "wrong": "もう少し",
+    "reveal_correct": "ここに合う形：{correct}",
+    "restart": "新しいラウンド",
+    "replay_failed": "間違いを復習する ({n})",
+    "replay_mode_label": "復習モード — 間違えた項目",
+    "summary_score": "{correct} / {total} 正解",
+    "diary_note": "{chosen}を選びました；ここには{correct}が合います。",
+    "next": "次へ",
+    "progress_label": "問題の進捗"
   }
 }

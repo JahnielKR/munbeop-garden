@@ -558,6 +558,10 @@
     "register": {
       "name": "높임법 연구소 · Honorifik",
       "desc": "Beralih antara 반말, 해요체 dan 합쇼체, dan hormati subjek dengan 께서 dan 드시다/주무시다."
+    },
+    "cloze": {
+      "name": "빈칸 연습 · Cloze",
+      "desc": "Pilih dek dan pilih tata bahasa yang cocok di setiap bagian kosong. Ronde yang lebih ringan sebagai pelengkap menulis."
     }
   },
   "escape": {
@@ -668,5 +672,22 @@
       "pip_done": "{ko} — selesai",
       "pip_todo": "{ko} — belum"
     }
+  },
+  "cloze": {
+    "title": "Laboratorium isian",
+    "lead": "Pilih dek lalu pilih tata bahasa yang cocok di setiap bagian kosong — ronde pengenalan cepat yang melengkapi menulis.",
+    "pick_deck": "PILIH DEK",
+    "deck_empty": "Dek ini belum memiliki item isian — coba yang lain.",
+    "pick_hint": "Ketuk bentuk yang cocok di bagian kosong.",
+    "correct": "Benar!",
+    "wrong": "Hampir",
+    "reveal_correct": "Cocok di sini: {correct}",
+    "restart": "Ronde baru",
+    "replay_failed": "Tinjau kesalahan ({n})",
+    "replay_mode_label": "Mode tinjau — item yang salah",
+    "summary_score": "{correct} / {total} benar",
+    "diary_note": "Kamu memilih {chosen}; {correct} cocok di sini.",
+    "next": "Berikutnya",
+    "progress_label": "Kemajuan pertanyaan"
   }
 }

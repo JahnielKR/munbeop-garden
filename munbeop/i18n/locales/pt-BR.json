@@ -558,6 +558,10 @@
     "register": {
       "name": "높임법 연구소 · Honoríficos",
       "desc": "Alterne entre 반말, 해요체 e 합쇼체, e honre o sujeito com 께서 e 드시다/주무시다."
+    },
+    "cloze": {
+      "name": "빈칸 연습 · Cloze",
+      "desc": "Escolha um baralho e selecione a gramática que encaixa em cada lacuna. Uma rodada mais leve que complementa a escrita."
     }
   },
   "escape": {
@@ -668,5 +672,22 @@
       "pip_done": "{ko} — concluído",
       "pip_todo": "{ko} — ainda não"
     }
+  },
+  "cloze": {
+    "title": "Laboratório de lacunas",
+    "lead": "Escolha um baralho e selecione a gramática que encaixa em cada lacuna — uma rodada rápida de reconhecimento que complementa a escrita.",
+    "pick_deck": "ESCOLHA UM BARALHO",
+    "deck_empty": "Este baralho ainda não tem itens de lacuna — tente outro.",
+    "pick_hint": "Toque na forma que encaixa na lacuna.",
+    "correct": "Correto!",
+    "wrong": "Quase",
+    "reveal_correct": "Encaixa aqui: {correct}",
+    "restart": "Nova rodada",
+    "replay_failed": "Revisar erros ({n})",
+    "replay_mode_label": "Modo revisão — seus erros",
+    "summary_score": "{correct} / {total} correto",
+    "diary_note": "Você escolheu {chosen}; {correct} encaixa aqui.",
+    "next": "Próximo",
+    "progress_label": "Progresso da questão"
   }
 }
