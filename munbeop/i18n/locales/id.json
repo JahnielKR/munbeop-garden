@@ -554,6 +554,10 @@
     "conjugation": {
       "name": "활용 연습 · Konjugasi",
       "desc": "Pilih bentuk konjugasi yang benar. Kalahkan kesalahan sistematis yang dibuat pelajar."
+    },
+    "register": {
+      "name": "높임법 연구소 · Honorifik",
+      "desc": "Beralih antara 반말, 해요체 dan 합쇼체, dan hormati subjek dengan 께서 dan 드시다/주무시다."
     }
   },
   "escape": {
@@ -631,6 +635,36 @@
       "earned": "Semua 9 kelas diselesaikan!",
       "celebrate_body": "Kamu menyelesaikan semua {total} kelas konjugasi. 화이팅!",
       "dismiss": "Oke!",
+      "pip_done": "{ko} — selesai",
+      "pip_todo": "{ko} — belum"
+    }
+  },
+  "register": {
+    "title": "Laboratorium Honorifik",
+    "lead": "Tulis ulang kalimat dalam register yang tepat. Pilihan salah adalah kesalahan honorifik yang benar-benar dilakukan pelajar.",
+    "mode_level": "말단계 · Tingkat bicara",
+    "mode_honor": "높임말 · Honorifik",
+    "pick_set": "PILIH SET",
+    "prompt_level": "Tulis ulang ke register yang dituju.",
+    "prompt_honor": "Hormati subjek.",
+    "pick_hint": "Ketuk bentuk yang alami.",
+    "correct": "Benar!",
+    "wrong": "Hampir",
+    "reveal_correct": "Bentuk alami: {correct}",
+    "restart": "Ronde baru",
+    "replay_failed": "Tinjau kesalahan ({n})",
+    "replay_mode_label": "Mode tinjau — item yang terlewat",
+    "summary_score": "{correct} / {total} benar",
+    "diary_note": "Kamu memilih {chosen}; bentuk alaminya adalah {correct}.",
+    "next": "Berikutnya",
+    "progress_label": "Kemajuan pertanyaan",
+    "master": {
+      "label": "Master Honorifik",
+      "title": "높임법 마스터!",
+      "progress": "{done}/{total} set selesai",
+      "earned": "Semua 7 set selesai!",
+      "celebrate_body": "Kamu menyelesaikan semua {total} set register & honorifik. 화이팅!",
+      "dismiss": "Bagus!",
       "pip_done": "{ko} — selesai",
       "pip_todo": "{ko} — belum"
     }

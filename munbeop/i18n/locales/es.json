@@ -554,6 +554,10 @@
     "conjugation": {
       "name": "활용 연습 · Conjugación",
       "desc": "Elige la forma conjugada correcta. Vence los errores sistemáticos que cometen los estudiantes."
+    },
+    "register": {
+      "name": "높임법 연구소 · Honoríficos",
+      "desc": "Cambia entre 반말, 해요체 y 합쇼체, y honra al sujeto con 께서 y 드시다/주무시다."
     }
   },
   "escape": {
@@ -633,6 +637,36 @@
       "dismiss": "¡Genial!",
       "pip_done": "{ko} — completada",
       "pip_todo": "{ko} — pendiente"
+    }
+  },
+  "register": {
+    "title": "Laboratorio de honoríficos",
+    "lead": "Reescribe la frase en el registro correcto. Las opciones erróneas son los fallos honoríficos que de verdad cometen los estudiantes.",
+    "mode_level": "말단계 · Nivel de habla",
+    "mode_honor": "높임말 · Honoríficos",
+    "pick_set": "ELIGE UN SET",
+    "prompt_level": "Reescribe en el registro objetivo.",
+    "prompt_honor": "Honra al sujeto.",
+    "pick_hint": "Toca la forma natural.",
+    "correct": "¡Correcto!",
+    "wrong": "Casi",
+    "reveal_correct": "Forma natural: {correct}",
+    "restart": "Nueva ronda",
+    "replay_failed": "Repasar errores ({n})",
+    "replay_mode_label": "Modo repaso — tus fallos",
+    "summary_score": "{correct} / {total} correctas",
+    "diary_note": "Elegiste {chosen}; la forma natural es {correct}.",
+    "next": "Siguiente",
+    "progress_label": "Progreso de la pregunta",
+    "master": {
+      "label": "Maestro de honoríficos",
+      "title": "높임법 마스터!",
+      "progress": "{done}/{total} sets superados",
+      "earned": "¡Los 7 sets superados!",
+      "celebrate_body": "Superaste los {total} sets de registro y honoríficos. 화이팅!",
+      "dismiss": "¡Bien!",
+      "pip_done": "{ko} — superado",
+      "pip_todo": "{ko} — aún no"
     }
   }
 }

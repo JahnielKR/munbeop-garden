@@ -554,6 +554,10 @@
     "conjugation": {
       "name": "활용 연습 · Chia động từ",
       "desc": "Chọn dạng chia động từ đúng. Vượt qua các lỗi hệ thống mà người học thường mắc."
+    },
+    "register": {
+      "name": "높임법 연구소 · Kính ngữ",
+      "desc": "Chuyển đổi giữa 반말, 해요체 và 합쇼체, và tôn kính chủ ngữ với 께서 và 드시다/주무시다."
     }
   },
   "escape": {
@@ -630,6 +634,36 @@
       "progress": "{done}/{total} loại đã hoàn thành",
       "earned": "Hoàn thành cả 9 loại!",
       "celebrate_body": "Bạn đã hoàn thành cả {total} loại chia động từ. 화이팅!",
+      "dismiss": "Tuyệt!",
+      "pip_done": "{ko} — đã hoàn thành",
+      "pip_todo": "{ko} — chưa xong"
+    }
+  },
+  "register": {
+    "title": "Phòng thí nghiệm kính ngữ",
+    "lead": "Viết lại câu theo cấp độ ngôn ngữ đúng. Các lựa chọn sai là những lỗi kính ngữ mà người học thực sự hay mắc phải.",
+    "mode_level": "말단계 · Cấp độ nói",
+    "mode_honor": "높임말 · Kính ngữ",
+    "pick_set": "CHỌN BỘ",
+    "prompt_level": "Viết lại theo cấp độ mục tiêu.",
+    "prompt_honor": "Tôn kính chủ ngữ.",
+    "pick_hint": "Chạm vào dạng tự nhiên.",
+    "correct": "Chính xác!",
+    "wrong": "Gần đúng rồi",
+    "reveal_correct": "Dạng tự nhiên: {correct}",
+    "restart": "Vòng mới",
+    "replay_failed": "Ôn lại lỗi ({n})",
+    "replay_mode_label": "Chế độ ôn tập — các mục bị sai",
+    "summary_score": "{correct} / {total} đúng",
+    "diary_note": "Bạn đã chọn {chosen}; dạng tự nhiên là {correct}.",
+    "next": "Tiếp theo",
+    "progress_label": "Tiến độ câu hỏi",
+    "master": {
+      "label": "Bậc thầy kính ngữ",
+      "title": "높임법 마스터!",
+      "progress": "Đã hoàn thành {done}/{total} bộ",
+      "earned": "Hoàn thành cả 7 bộ!",
+      "celebrate_body": "Bạn đã hoàn thành tất cả {total} bộ về cấp độ & kính ngữ. 화이팅!",
       "dismiss": "Tuyệt!",
       "pip_done": "{ko} — đã hoàn thành",
       "pip_todo": "{ko} — chưa xong"
