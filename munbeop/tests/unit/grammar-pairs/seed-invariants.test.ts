@@ -26,6 +26,7 @@ describe('grammar-pairs seed invariants', () => {
         expect(it.optionB.trim().length, `${p.id} optionB`).toBeGreaterThan(0)
         expect(it.optionA).toMatch(HANGUL)
         expect(it.optionB).toMatch(HANGUL)
+        expect(it.optionA, `${p.id} optionA===optionB`).not.toBe(it.optionB)
         expect(nonEmptyLocales(it.trans), `${p.id} item trans`).toBe(true)
         expect(nonEmptyLocales(it.why), `${p.id} item why`).toBe(true)
       }
