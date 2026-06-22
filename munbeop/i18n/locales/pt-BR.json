@@ -148,6 +148,11 @@
       "sub": "O mais “difícil” — pratique agora.",
       "practice": "Praticar",
       "hard_count": "difícil ×{n}"
+    },
+    "struggling": {
+      "title": "Plantas que precisam de cuidado",
+      "sub": "Um cuidado extra ajuda elas a crescer.",
+      "care": "Cuidar"
     }
   },
   "errors": {
@@ -223,7 +228,9 @@
       "confirm_delete": "Excluir este deck? Não dá para desfazer.",
       "empty_title": "Crie seu primeiro deck",
       "empty_hint": "Escolha a gramática que quiser, de qualquer nível, dê um nome e jogue."
-    }
+    },
+    "rescue_offer": "Cuidar desta planta primeiro?",
+    "rescue_offer_dismiss": "Agora não"
   },
   "library": {
     "lead": "Todas as gramáticas que podem sair nas suas cartas. Cada uma cresce conforme você pratica.",
@@ -694,5 +701,19 @@
     "diary_note": "Você escolheu {chosen}; {correct} encaixa aqui.",
     "next": "Próximo",
     "progress_label": "Progresso da questão"
+  },
+  "rescue": {
+    "title": "Cuide desta planta",
+    "header": "O que mais escapou aqui: {dimension}",
+    "header_plain": "Vamos dar um carinho extra a esta",
+    "stage_reread": "Reler",
+    "stage_examples": "Ver em uso",
+    "stage_discriminate": "Diferenciar",
+    "stage_produce": "Escreva você",
+    "produce_body": "Agora coloque em prática: escreva frases novas com este padrão.",
+    "produce_cta": "Praticar 화이팅",
+    "next": "Próximo",
+    "back": "Voltar",
+    "empty": "Escolha uma planta para cuidar nas suas Estatísticas."
   }
 }

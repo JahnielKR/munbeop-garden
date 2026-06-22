@@ -148,6 +148,11 @@
       "sub": "Khó nhất — luyện ngay.",
       "practice": "Luyện",
       "hard_count": "khó ×{n}"
+    },
+    "struggling": {
+      "title": "Cây cần được chăm sóc",
+      "sub": "Chút quan tâm thêm giúp chúng lớn lên.",
+      "care": "Chăm sóc"
     }
   },
   "errors": {
@@ -223,7 +228,9 @@
       "confirm_delete": "Xóa bộ thẻ này? Không thể hoàn tác.",
       "empty_title": "Tạo bộ thẻ đầu tiên của bạn",
       "empty_hint": "Chọn ngữ pháp bạn muốn từ bất kỳ cấp độ nào, đặt tên và chơi."
-    }
+    },
+    "rescue_offer": "Chăm sóc cây này trước nhé?",
+    "rescue_offer_dismiss": "Để sau"
   },
   "library": {
     "lead": "Tất cả các ngữ pháp có thể xuất hiện trong các lượt rút bài của bạn. Mỗi cái lớn lên khi bạn luyện tập.",
@@ -694,5 +701,19 @@
     "diary_note": "Bạn đã chọn {chosen}; {correct} phù hợp ở đây.",
     "next": "Tiếp theo",
     "progress_label": "Tiến độ câu hỏi"
+  },
+  "rescue": {
+    "title": "Chăm sóc cây này",
+    "header": "Điều hay sai nhất ở đây: {dimension}",
+    "header_plain": "Hãy chăm sóc cây này thêm một chút",
+    "stage_reread": "Đọc lại",
+    "stage_examples": "Xem cách dùng",
+    "stage_discriminate": "Phân biệt",
+    "stage_produce": "Tự viết",
+    "produce_body": "Giờ áp dụng nào: viết câu mới với mẫu này.",
+    "produce_cta": "Luyện tập 화이팅",
+    "next": "Tiếp",
+    "back": "Quay lại",
+    "empty": "Chọn một cây để chăm sóc từ trang Thống kê của bạn."
   }
 }

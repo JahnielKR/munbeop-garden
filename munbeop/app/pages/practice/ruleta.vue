@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted } from 'vue'
 import GrammarCard from '~/components/practice/GrammarCard.vue'
+import RescueOfferBanner from '~/components/practice/RescueOfferBanner.vue'
 import CompletionBanner from '~/components/practice/CompletionBanner.vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Bomi from '~/components/bomi/Bomi.vue'
@@ -16,6 +17,7 @@ import {
 } from '~/components/games/ruleta/cards'
 import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
 import { dueKos, revisitPool } from '~/lib/srs'
+import { useLeeches } from '~/composables/useLeeches'
 import { useBomiStore } from '~/stores/bomi'
 import { useGrammarStore } from '~/stores/grammar'
 import { useContextsStore } from '~/stores/contexts'
@@ -45,6 +47,18 @@ const customDecks = useCustomDecksStore()
 const srsStore = useSrsStore()
 const route = useRoute()
 const router = useRouter()
+
+const { leechKos } = useLeeches()
+const dismissedRescue = ref<Set<string>>(new Set())
+
+function showRescueOffer(pickIdx: number): boolean {
+  const g = grammarOf(pickIdx)
+  return !!g && leechKos.value.has(g.ko) && !dismissedRescue.value.has(g.ko)
+}
+function dismissRescue(pickIdx: number) {
+  const g = grammarOf(pickIdx)
+  if (g) dismissedRescue.value = new Set(dismissedRescue.value).add(g.ko)
+}
 
 const builderOpen = ref(false)
 const editingDeckId = ref<string | null>(null)
@@ -278,6 +292,11 @@ async function onRestart() {
 
     <div v-else ref="playWrap" tabindex="-1" class="session phase-wrap">
       <div v-for="(pick, i) in session?.picks" :key="i" class="card-slot">
+        <RescueOfferBanner
+          v-if="grammarOf(i) && currentContextOf(i) && pick.progress < 3 && showRescueOffer(i)"
+          :ko="grammarOf(i)!.ko"
+          @dismiss="dismissRescue(i)"
+        />
         <GrammarCard
           v-if="grammarOf(i) && currentContextOf(i) && pick.progress < 3"
           :grammar="grammarOf(i)!"

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
+import StrugglingPlants from '~/components/stats/StrugglingPlants.vue'
 import { NuxtLink } from '#components'
 import { useStats } from '~/composables/useStats'
+import { useLeeches } from '~/composables/useLeeches'
 import { useLocalized } from '~/composables/useLocalized'
 
 const { t } = useI18n()
@@ -19,6 +21,7 @@ const {
   toughest,
   hasData,
 } = useStats()
+const { leeches } = useLeeches()
 
 const focusLink = (ko: string) => `/practice/ruleta?focus=${encodeURIComponent(ko)}`
 const pct = (part: number, total: number) => (total ? Math.round((part / total) * 100) : 0)
@@ -134,6 +137,8 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
           </div>
         </div>
       </section>
+
+      <StrugglingPlants :leeches="leeches" />
     </template>
   </div>
 </template>

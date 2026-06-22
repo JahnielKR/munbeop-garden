@@ -148,6 +148,11 @@
       "sub": "Lo más “difícil” — practícalo ahora.",
       "practice": "Practicar",
       "hard_count": "difícil ×{n}"
+    },
+    "struggling": {
+      "title": "Plantas que necesitan cariño",
+      "sub": "Un poco de cuidado extra las ayuda a crecer.",
+      "care": "Cuidar"
     }
   },
   "errors": {
@@ -223,7 +228,9 @@
       "confirm_delete": "¿Eliminar este mazo? No se puede deshacer.",
       "empty_title": "Crea tu primer mazo",
       "empty_hint": "Elige las gramáticas que quieras de cualquier nivel, ponle nombre y juega."
-    }
+    },
+    "rescue_offer": "¿Cuidar esta planta primero?",
+    "rescue_offer_dismiss": "Ahora no"
   },
   "library": {
     "lead": "Todas las gramáticas que pueden salir en tus cartas. Cada una crece según las practicas.",
@@ -694,5 +701,19 @@
     "diary_note": "Elegiste {chosen}; aquí encaja {correct}.",
     "next": "Siguiente",
     "progress_label": "Progreso de la pregunta"
+  },
+  "rescue": {
+    "title": "Cuida esta planta",
+    "header": "Lo que más se te escapó aquí: {dimension}",
+    "header_plain": "Démosle a esta un poco de cariño extra",
+    "stage_reread": "Releer",
+    "stage_examples": "Verlo en uso",
+    "stage_discriminate": "Distinguirlos",
+    "stage_produce": "Escríbelo tú",
+    "produce_body": "Ahora ponlo en práctica: escribe frases nuevas con este patrón.",
+    "produce_cta": "Practicar 화이팅",
+    "next": "Siguiente",
+    "back": "Atrás",
+    "empty": "Elige una planta para cuidar desde tus Estadísticas."
   }
 }

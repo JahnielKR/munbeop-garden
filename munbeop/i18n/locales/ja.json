@@ -148,6 +148,11 @@
       "sub": "「難しかった」の上位 — 今すぐ練習。",
       "practice": "練習",
       "hard_count": "難しい ×{n}"
+    },
+    "struggling": {
+      "title": "手入れが必要な植物",
+      "sub": "少しの手入れで育ちます。",
+      "care": "手入れ"
     }
   },
   "errors": {
@@ -223,7 +228,9 @@
       "confirm_delete": "このデッキを削除しますか？元に戻せません。",
       "empty_title": "最初のデッキを作ろう",
       "empty_hint": "好きな文法をどのレベルからでも選び、名前を付けてプレイ。"
-    }
+    },
+    "rescue_offer": "先にこの植物を手入れする？",
+    "rescue_offer_dismiss": "あとで"
   },
   "library": {
     "lead": "カードを引くと出てくる全文法。練習するたびに育ちます。",
@@ -694,5 +701,19 @@
     "diary_note": "{chosen}を選びました；ここには{correct}が合います。",
     "next": "次へ",
     "progress_label": "問題の進捗"
+  },
+  "rescue": {
+    "title": "この植物を手入れする",
+    "header": "ここで一番つまずいたのは：{dimension}",
+    "header_plain": "この子に少し手をかけてあげましょう",
+    "stage_reread": "読み直す",
+    "stage_examples": "使い方を見る",
+    "stage_discriminate": "見分ける",
+    "stage_produce": "自分で書く",
+    "produce_body": "さあ実践です。このパターンで新しい文を書いてみましょう。",
+    "produce_cta": "練習 화이팅",
+    "next": "次へ",
+    "back": "戻る",
+    "empty": "統計から手入れする植物を選んでください。"
   }
 }

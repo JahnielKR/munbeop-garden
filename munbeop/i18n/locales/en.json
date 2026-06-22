@@ -148,6 +148,11 @@
       "sub": "Most “felt hard” — drill these now.",
       "practice": "Practice",
       "hard_count": "hard ×{n}"
+    },
+    "struggling": {
+      "title": "Plants that need care",
+      "sub": "A little extra care helps these grow.",
+      "care": "Care"
     }
   },
   "errors": {
@@ -223,7 +228,9 @@
       "confirm_delete": "Delete this deck? This can't be undone.",
       "empty_title": "Create your first deck",
       "empty_hint": "Pick the grammar you want from any level, name it, and play."
-    }
+    },
+    "rescue_offer": "Care for this plant first?",
+    "rescue_offer_dismiss": "Not now"
   },
   "library": {
     "lead": "All the grammar points that can show up in your card draws. Each one grows as you practice.",
@@ -694,5 +701,19 @@
       "pip_done": "{ko} — cleared",
       "pip_todo": "{ko} — not yet"
     }
+  },
+  "rescue": {
+    "title": "Care for this plant",
+    "header": "What slipped most here: {dimension}",
+    "header_plain": "Let's give this one a little extra care",
+    "stage_reread": "Re-read",
+    "stage_examples": "See it in use",
+    "stage_discriminate": "Tell them apart",
+    "stage_produce": "Write it yourself",
+    "produce_body": "Now put it to work — write fresh sentences with this pattern.",
+    "produce_cta": "Practice 화이팅",
+    "next": "Next",
+    "back": "Back",
+    "empty": "Pick a plant to care for from your Stats."
   }
 }
