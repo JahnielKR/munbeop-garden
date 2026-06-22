@@ -255,7 +255,8 @@
     "examples": {
       "register_formal": "フォーマルな言い方",
       "register_polite": "丁寧な言い方",
-      "register_casual": "カジュアルな言い方"
+      "register_casual": "カジュアルな言い方",
+      "play_audio": "発音を再生"
     },
     "search": {
       "placeholder": "文型や意味を検索…",

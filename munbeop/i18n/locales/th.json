@@ -255,7 +255,8 @@
     "examples": {
       "register_formal": "ระดับทางการ",
       "register_polite": "ระดับสุภาพ",
-      "register_casual": "ระดับกันเอง"
+      "register_casual": "ระดับกันเอง",
+      "play_audio": "ฟังการออกเสียง"
     },
     "search": {
       "placeholder": "ค้นหารูปประโยคหรือความหมาย…",

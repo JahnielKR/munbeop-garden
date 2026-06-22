@@ -255,7 +255,8 @@
     "examples": {
       "register_formal": "Registro formal",
       "register_polite": "Registro cortés",
-      "register_casual": "Registro informal"
+      "register_casual": "Registro informal",
+      "play_audio": "Reproducir pronunciación"
     },
     "search": {
       "placeholder": "Busca un patrón o su significado…",

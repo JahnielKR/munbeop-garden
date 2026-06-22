@@ -255,7 +255,8 @@
     "examples": {
       "register_formal": "Formal register",
       "register_polite": "Polite register",
-      "register_casual": "Casual register"
+      "register_casual": "Casual register",
+      "play_audio": "Play pronunciation"
     },
     "search": {
       "placeholder": "Search a pattern or its meaning…",
