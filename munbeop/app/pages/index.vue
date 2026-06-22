@@ -31,6 +31,8 @@ import { gardenStateKey, useGardenState } from '~/composables/useGardenState'
 import { useGardenCelebration } from '~/composables/useGardenCelebration'
 import { useToast } from '~/composables/useToast'
 import DailyGoalRing from '~/components/garden/DailyGoalRing.vue'
+import ReadyToRevisit from '~/components/garden/ReadyToRevisit.vue'
+import { useReadyCount } from '~/composables/useReadyCount'
 import { useSettingsStore } from '~/stores/settings'
 import { useLogStore } from '~/stores/log'
 import { todayCount } from '~/lib/stats/goal'
@@ -60,6 +62,10 @@ const logStore = useLogStore()
 const goalCount = computed(() =>
   todayCount(logStore.entries.map((e) => new Date(e.date).getTime()), Date.now()),
 )
+
+// "N plants ready to revisit" — forward-looking SRS-due nudge, distinct from
+// the rain (which is the /log flagged-mistake loop). Hidden at 0.
+const { displayCount, hasMore, readyCount } = useReadyCount()
 
 // First-run onboarding: a distinct empty plot + one guided sentence. The
 // overlay auto-opens once data is ready for a brand-new (empty-log) user;
@@ -229,6 +235,8 @@ const bomiAnchor = computed(() => {
         />
 
         <DailyGoalRing class="page__goal" :count="goalCount" :goal="settings.dailyGoal" />
+
+        <ReadyToRevisit v-if="readyCount >= 1" :count="displayCount" :has-more="hasMore" />
 
         <NuxtLink v-if="weatherKind === 'rain'" class="page__rain-hint" to="/log">
           {{ t('garden.weather.rain_hint') }}
