@@ -21,6 +21,7 @@ interface Settings {
   theme: Theme
   locale: LocaleCode
   dailyGoal: number
+  reviewReminders: boolean
 }
 
 function isTheme(v: unknown): v is Theme {
@@ -35,6 +36,7 @@ export const useSettingsStore = defineStore('settings', () => {
   const localeStore = useLocaleStore()
   const authStore = useAuthStore()
   const dailyGoal = ref(DEFAULT_DAILY_GOAL)
+  const reviewReminders = ref(false)
 
   async function hydrate(): Promise<void> {
     if (!authStore.user) return
@@ -45,6 +47,7 @@ export const useSettingsStore = defineStore('settings', () => {
       if (isTheme(cloud.theme)) applyTheme(cloud.theme)
       if (isLocale(cloud.locale)) await localeStore.set(cloud.locale)
       if (typeof cloud.dailyGoal === 'number') dailyGoal.value = clampGoal(cloud.dailyGoal)
+      if (typeof cloud.reviewReminders === 'boolean') reviewReminders.value = cloud.reviewReminders
     } catch {
       // Table may not exist yet (migration not deployed) or a network blip —
       // keep device values; the app must not break.
@@ -58,6 +61,7 @@ export const useSettingsStore = defineStore('settings', () => {
         theme: theme.value,
         locale: localeStore.current,
         dailyGoal: dailyGoal.value,
+        reviewReminders: reviewReminders.value,
       } satisfies Settings)
     } catch {
       // A failed cloud write must not throw into the UI.
@@ -79,5 +83,17 @@ export const useSettingsStore = defineStore('settings', () => {
     await persistCloud()
   }
 
-  return { hydrate, setTheme, setLocale, dailyGoal, setDailyGoal }
+  async function setReviewReminders(on: boolean): Promise<void> {
+    reviewReminders.value = on
+    if (on && typeof Notification !== 'undefined' && Notification.permission === 'default') {
+      try {
+        await Notification.requestPermission()
+      } catch {
+        // Permission prompt unavailable (e.g. insecure context) — the in-app banner still works.
+      }
+    }
+    await persistCloud()
+  }
+
+  return { hydrate, setTheme, setLocale, dailyGoal, setDailyGoal, reviewReminders, setReviewReminders }
 })

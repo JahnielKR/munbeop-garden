@@ -450,6 +450,11 @@
     },
     "menu": {
       "account": "Menu tài khoản"
+    },
+    "review_reminders": {
+      "title": "Nhắc ôn tập",
+      "label": "Nhắc tôi ôn lại khi quay lại",
+      "hint": "Một lời nhắc nhẹ nhàng khi bạn quay lại sau một khoảng nghỉ và có cây sẵn sàng. Mặc định tắt; không theo dõi — chỉ chạy trong trình duyệt của bạn."
     }
   },
   "welcome": {
@@ -739,5 +744,11 @@
       "things": "Đồ vật",
       "money_order": "Tiền & thứ tự"
     }
+  },
+  "reminder": {
+    "banner": "{n} cây sẵn sàng để ôn lại",
+    "dismiss": "Bỏ qua",
+    "notif_title": "Khu vườn nhớ bạn 🌱",
+    "notif_body": "{n} cây đã sẵn sàng để ôn lại."
   }
 }
