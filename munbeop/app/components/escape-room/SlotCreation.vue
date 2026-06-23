@@ -166,7 +166,7 @@ function submit() {
   gap: 6px;
   min-height: 56px;
   padding: 8px 10px;
-  background: #fff;
+  background: var(--surface-elevated);
   border: 2px dashed var(--border-strong, #6b5b4a);
 }
 .slot-creation__placeholder {
@@ -205,7 +205,8 @@ function submit() {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 16px;
   padding: 8px 14px;
-  background: #fff;
+  background: var(--surface-elevated);
+  color: var(--text);
   border: 2px solid var(--border-strong, #6b5b4a);
   box-shadow: 2px 2px 0 rgba(60, 42, 24, 0.3);
   cursor: pointer;

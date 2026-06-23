@@ -46,9 +46,11 @@
   /* ---- Aliases that re-point ---- */
   --bg: var(--paper);
   --surface: var(--paper-warm);
+  --surface-elevated: var(--paper-deep);  /* raised focal tier — midnight card floats over the abyssal panel */
   --surface-hover: var(--hover-bg);
   --text: var(--ink);
   --text-soft: var(--ink-soft);
+  --text-muted: var(--text-soft);         /* quiet secondary text — translations, hints */
   --border: var(--ink-line);
   --border-strong: var(--ink-line);
   --shadow-color: var(--shadow-cream);
