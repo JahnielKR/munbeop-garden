@@ -535,7 +535,8 @@
     "ready": {
       "label": "{n} cây sẵn sàng để ôn lại",
       "aria": "Ôn lại {n} cây cần chăm sóc"
-    }
+    },
+    "loading": "Đang vun trồng khu vườn của bạn…"
   },
   "pricing": {
     "title": "Gói & Giá"

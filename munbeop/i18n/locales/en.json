@@ -535,7 +535,8 @@
     "ready": {
       "label": "{n} plants ready to revisit",
       "aria": "Revisit the {n} plants ready to tend"
-    }
+    },
+    "loading": "Growing your garden…"
   },
   "pricing": {
     "title": "Plans & Pricing"
