@@ -1,6 +1,13 @@
 import { describe, it, expect } from 'vitest'
+import { existsSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve } from 'node:path'
 import { LEVEL_03 } from '~/seed/escape-room/level-03'
 import { validateLevel } from '~/lib/escape-room/rules'
+
+const HERE = dirname(fileURLToPath(import.meta.url))
+/** Absolute path to a level-03 audio asset given its seed-relative path ('audio/...'). */
+const audioPath = (rel: string) => resolve(HERE, '../../../public/escape-room/level-03/', rel)
 
 describe('LEVEL_03 — El mercado nocturno', () => {
   it('passes validateLevel with zero issues', () => {
@@ -157,5 +164,49 @@ describe('LEVEL_03 — El mercado nocturno', () => {
     expect(LEVEL_03.tagline.es.length).toBeGreaterThan(40)
     expect(LEVEL_03.voiceIntro.length).toBeGreaterThan(0)
     expect(LEVEL_03.voiceOutro.length).toBeGreaterThan(0)
+  })
+
+  // ─── Audio wiring ───────────────────────────────────────────────────────────
+
+  it('wires the intro/outro voice, the twist beat, and the 3-voice slot audio', () => {
+    expect(LEVEL_03.voiceIntroAudio).toBe('audio/voice/voice-intro.ogg')
+    expect(LEVEL_03.voiceOutroAudio).toBe('audio/voice/voice-outro.ogg')
+    expect((LEVEL_03.scriptedBeats ?? [])[0]?.voiceAudio).toBe('audio/voice/voice-beat-slot4.ogg')
+    // slot-1 candidates each speak their drawn favor (이모); slot-6 each the farewell (도윤)
+    const slot1 = LEVEL_03.slots[0]
+    slot1?.candidates.forEach((c, i) =>
+      expect(c.voiceAudio).toBe(`audio/voice/voice-slot1-favor-${i + 1}.ogg`),
+    )
+    expect(slot1?.reactionVoiceAudio).toBe('audio/voice/voice-slot1-correct.ogg')
+    const slot6 = LEVEL_03.slots[5]
+    expect(slot6?.type).toBe('creation')
+    if (slot6?.type !== 'creation') throw new Error('unreachable')
+    slot6.candidates.forEach((c, i) => {
+      expect(c.voiceAudio).toBe(`audio/voice/voice-slot6-farewell-${i + 1}.ogg`)
+      expect(c.softRejectVoiceAudio).toBe('audio/voice/voice-slot6-softreject.ogg')
+    })
+  })
+
+  it('every referenced audio file exists on disk under public/escape-room/level-03', () => {
+    const refs = new Set<string>()
+    const add = (p?: string) => {
+      if (p) refs.add(p)
+    }
+    add(LEVEL_03.voiceIntroAudio)
+    add(LEVEL_03.voiceOutroAudio)
+    for (const slot of LEVEL_03.slots) {
+      add(slot.reactionVoiceAudio)
+      for (const c of slot.candidates) {
+        add(c.voiceAudio)
+        if (slot.type === 'creation') add(c.softRejectVoiceAudio)
+      }
+    }
+    for (const beat of LEVEL_03.scriptedBeats ?? []) add(beat.voiceAudio)
+    for (const room of LEVEL_03.rooms) {
+      add(room.ambientAudio)
+      for (const h of room.hotspots) add(h.sfx)
+    }
+    const missing = [...refs].filter((p) => !existsSync(audioPath(p)))
+    expect(missing).toEqual([])
   })
 })

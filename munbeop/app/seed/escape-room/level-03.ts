@@ -447,6 +447,7 @@ const SCRIPTED_BEATS: ScriptedBeat[] = [
   {
     afterSlotId: 'slot-4',
     voiceLine: '도윤이… 사실 내 친아들 아니에요. 십 년 전에, 배고픈 아이가 시장에 왔어요. 그냥 계속 밥을 줬어요. 그러다 보니까… 내 아들이 됐어요.',
+    voiceAudio: 'audio/voice/voice-beat-slot4.ogg',
     narrative: t(
       '이모 ha bajado la voz, pero no ha dejado de trabajar. Echa un cucharón de masa en la plancha, lo aplasta con el dorso del cucharón, y mientras el azúcar de dentro empieza a sisear te cuenta, casi distraída, lo que el chico no sabe que tú vas a oír: 도윤 no es su hijo de sangre. Hace diez años apareció en el mercado un crío hambriento, sin nada. Ella le dio de comer. Al día siguiente volvió, y ella le volvió a dar de comer. Y así, un plato detrás de otro, sin que nadie firmara nada, el crío se quedó y se volvió su hijo.\n\n' +
         'Por eso, dice, lo de 하나 está bien —ojalá el chico se atreva, ojalá—. Pero no es lo que de verdad le aprieta el pecho esta noche. A 도윤 lo mandan al ejército al amanecer, y es orgulloso, y de los que se van con la mano levantada y un «ya nos vemos» como si nada. Lo que ella necesita, y lo que él jamás diría si alguien se lo pidiera de frente, es mucho más pequeño y mucho más difícil que una declaración de amor: que el chico se dé la vuelta, antes de subir al autobús, y le diga gracias a ella.\n\n' +
@@ -481,6 +482,8 @@ export const LEVEL_03: Level = {
   ),
   voiceIntro: '어서 와요! 우리 가게 문 닫는 거 좀 도와줘요. 그럼 가방 돌려줄게요.',
   voiceOutro: '고마워요. 진짜 도와줬어요. 야 도윤아, 머리 짧게 깎고 와. 자리 빼놓을게!',
+  voiceIntroAudio: 'audio/voice/voice-intro.ogg',
+  voiceOutroAudio: 'audio/voice/voice-outro.ogg',
   grammarCodes: ['G039', 'G038', 'G053', 'G021', 'G019', 'G013'],
   topikLevel: 2,
 
@@ -498,9 +501,9 @@ export const LEVEL_03: Level = {
         // distinct, equally-diegetic trigger: the 군대 box on the counter.
         { id: 'imo', rect: [145, 80, 60, 90], triggersSlot: 'slot-1' },
         { id: 'gunbox', rect: [55, 120, 50, 50], triggersSlot: 'slot-5' },
-        { id: 'hotteok', rect: [120, 178, 55, 30], cosmeticDetail: t('설탕이 녹아요. 조심하세요.') },
+        { id: 'hotteok', rect: [120, 178, 55, 30], cosmeticDetail: t('설탕이 녹아요. 조심하세요.'), sfx: 'audio/sfx-griddle-sizzle.ogg' },
         { id: 'backpack', rect: [15, 180, 40, 35], cosmeticDetail: t('이모가 내 가방을 안 줘요.') },
-        { id: 'bulb', rect: [195, 28, 24, 28], cosmeticDetail: t('시장이 시끄러워요.') },
+        { id: 'bulb', rect: [195, 28, 24, 28], cosmeticDetail: t('시장이 시끄러워요.'), sfx: 'audio/sfx-neon-buzz.ogg' },
       ],
     },
     {
@@ -525,7 +528,7 @@ export const LEVEL_03: Level = {
         { id: 'gift', rect: [120, 155, 55, 38], triggersSlot: 'slot-4' },
         { id: 'merch', rect: [15, 25, 80, 45], cosmeticDetail: t('없는 게 없어요.') },
         { id: 'vendor', rect: [240, 120, 35, 60], cosmeticDetail: t('주인이 졸고 있어요.') },
-        { id: 'bulb-flicker', rect: [150, 22, 22, 24], cosmeticDetail: t('불이 깜빡깜빡해요.') },
+        { id: 'bulb-flicker', rect: [150, 22, 22, 24], cosmeticDetail: t('불이 깜빡깜빡해요.'), sfx: 'audio/sfx-neon-buzz.ogg' },
       ],
     },
     {
@@ -535,20 +538,60 @@ export const LEVEL_03: Level = {
       ambientAudio: 'audio/ambient-busstop.ogg',
       hotspots: [
         { id: 'doyun', rect: [90, 90, 70, 90], triggersSlot: 'slot-6' },
-        { id: 'gate', rect: [215, 25, 95, 45], cosmeticDetail: t('또 오세요.') },
+        { id: 'gate', rect: [215, 25, 95, 45], cosmeticDetail: t('또 오세요.'), sfx: 'audio/sfx-market-bell.ogg' },
         { id: 'bench', rect: [65, 185, 55, 25], cosmeticDetail: t('버스가 곧 와요.') },
         { id: 'lane', rect: [10, 105, 70, 40], cosmeticDetail: t('마지막 버스예요.') },
       ],
     },
   ],
 
+  // Audio path fields are injected here (the seed stays a faithful content
+  // transcription above; the OGGs live under public/escape-room/level-03/audio/).
+  // The NPC speaks the drawn slot-1 favor / slot-6 farewell via per-candidate
+  // voiceAudio (mapped in); slot reactions + the twist beat carry their own voice.
   slots: [
-    { id: 'slot-1', type: 'selection', grammarFocus: ['G039'], candidates: SLOT_1_CANDIDATES },
-    { id: 'slot-2', type: 'completion', grammarFocus: ['G038'], candidates: SLOT_2_CANDIDATES },
+    {
+      id: 'slot-1',
+      type: 'selection',
+      grammarFocus: ['G039'],
+      reactionVoiceAudio: 'audio/voice/voice-slot1-correct.ogg',
+      candidates: SLOT_1_CANDIDATES.map((c, i) => ({
+        ...c,
+        voiceAudio: `audio/voice/voice-slot1-favor-${i + 1}.ogg`,
+      })),
+    },
+    {
+      id: 'slot-2',
+      type: 'completion',
+      grammarFocus: ['G038'],
+      reactionVoiceAudio: 'audio/voice/voice-slot2-correct.ogg',
+      candidates: SLOT_2_CANDIDATES,
+    },
     { id: 'slot-3', type: 'selection', grammarFocus: ['G053'], candidates: SLOT_3_CANDIDATES },
-    { id: 'slot-4', type: 'completion', grammarFocus: ['G021'], candidates: SLOT_4_CANDIDATES },
-    { id: 'slot-5', type: 'selection', grammarFocus: ['G019'], candidates: SLOT_5_CANDIDATES },
-    { id: 'slot-6', type: 'creation', grammarFocus: ['G013', 'G039'], candidates: SLOT_6_CANDIDATES },
+    {
+      id: 'slot-4',
+      type: 'completion',
+      grammarFocus: ['G021'],
+      reactionVoiceAudio: 'audio/voice/voice-slot4-correct.ogg',
+      candidates: SLOT_4_CANDIDATES,
+    },
+    {
+      id: 'slot-5',
+      type: 'selection',
+      grammarFocus: ['G019'],
+      reactionVoiceAudio: 'audio/voice/voice-slot5-correct.ogg',
+      candidates: SLOT_5_CANDIDATES,
+    },
+    {
+      id: 'slot-6',
+      type: 'creation',
+      grammarFocus: ['G013', 'G039'],
+      candidates: SLOT_6_CANDIDATES.map((c, i) => ({
+        ...c,
+        voiceAudio: `audio/voice/voice-slot6-farewell-${i + 1}.ogg`,
+        softRejectVoiceAudio: 'audio/voice/voice-slot6-softreject.ogg',
+      })),
+    },
   ],
 
   scriptedBeats: SCRIPTED_BEATS,
