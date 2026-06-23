@@ -541,7 +541,8 @@
     "ready": {
       "label": "{n} plantas listas para revisar",
       "aria": "Revisar las {n} plantas listas para cuidar"
-    }
+    },
+    "loading": "Cultivando tu jardín…"
   },
   "pricing": {
     "title": "Planes y Precios"

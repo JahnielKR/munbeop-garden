@@ -541,7 +541,8 @@
     "ready": {
       "label": "{n} tanaman siap ditinjau",
       "aria": "Tinjau {n} tanaman yang siap dirawat"
-    }
+    },
+    "loading": "Menumbuhkan tamanmu…"
   },
   "pricing": {
     "title": "Paket & Harga"

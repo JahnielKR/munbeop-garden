@@ -541,7 +541,8 @@
     "ready": {
       "label": "{n} plantes prêtes à revoir",
       "aria": "Revoir les {n} plantes à soigner"
-    }
+    },
+    "loading": "Culture de ton jardin…"
   },
   "pricing": {
     "title": "Tarifs"
