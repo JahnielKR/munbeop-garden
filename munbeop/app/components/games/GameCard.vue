@@ -103,7 +103,7 @@ const tag = computed(() => (props.locked ? 'div' : NuxtLink))
   width: 100%;
   height: 100%;
   object-fit: cover;
-  image-rendering: pixelated;
+  image-rendering: auto;
 }
 .game-card__emoji {
   font-size: 56px;

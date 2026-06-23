@@ -31,43 +31,43 @@ const { t } = useI18n()
         to="/escape-room"
         :name="t('games.escape.name')"
         :description="t('games.escape.desc')"
-        image="/escape-room/covers/level-01.png"
+        image="/games/escape-cover.png"
       />
       <GameCard
         to="/practice/particles"
         :name="t('games.particles.name')"
         :description="t('games.particles.desc')"
-        emoji="🧩"
+        image="/games/particles-cover.png"
       />
       <GameCard
         to="/practice/conjugation"
         :name="t('games.conjugation.name')"
         :description="t('games.conjugation.desc')"
-        emoji="🔀"
+        image="/games/conjugation-cover.png"
       />
       <GameCard
         to="/practice/register"
         :name="t('games.register.name')"
         :description="t('games.register.desc')"
-        emoji="🙇"
+        image="/games/register-cover.png"
       />
       <GameCard
         to="/practice/cloze"
         :name="t('games.cloze.name')"
         :description="t('games.cloze.desc')"
-        emoji="📝"
+        image="/games/cloze-cover.png"
       />
       <GameCard
         to="/practice/counters"
         :name="t('games.counters.name')"
         :description="t('games.counters.desc')"
-        emoji="🔢"
+        image="/games/counters-cover.png"
       />
       <GameCard
         to="/practice/placement"
         :name="t('games.placement.name')"
         :description="t('games.placement.desc')"
-        emoji="🧭"
+        image="/games/placement-cover.png"
       />
     </div>
   </div>
