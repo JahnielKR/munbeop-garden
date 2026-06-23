@@ -151,12 +151,16 @@ def build():
     beds[(L3, "ambient-manmulsang.ogg", -24)] = lambda: mix(lp(win(src("market"), 5, 12), 1100),  # muffled market
                                                             hum(12, 120, 0.06))            # + bulb hum
     beds[(L3, "ambient-busstop.ogg", -22)]    = lambda: win(src("city"), 2, 12)            # traffic/street
-    # ---- L3 hotteok: needs a griddle sizzle (no CC0) -> Pixabay drop ----
-    # build only if the owner dropped a griddle clip; else leave the procedural OGG.
+    # ---- L3 hotteok: the warm hub. The griddle SIZZLE is a separate SFX
+    # (sfx-griddle-sizzle, out of scope), so the AMBIENT bed is a warm, CLOSE
+    # market hum — the crowd lowpassed (warmer/nearer) on a distinct window so it
+    # reads different from the broad meokja alley. If a CC0 griddle clip is dropped
+    # in drop/griddle.*, it is layered on top.
     drop = sorted(list(DROP.glob("griddle.*")) + list(DROP.glob("hotteok.*")))
-    if drop:
-        beds[(L3, "ambient-hotteok.ogg", -22)] = lambda d=drop[0]: mix(
-            win(decode(d), 0, 12), 0.4*lp(win(src("market"), 8, 12), 1600))  # griddle + far crowd
+    def _hotteok():
+        base = lp(win(src("market"), 16, 12), 2400)
+        return mix(win(decode(drop[0]), 0, 12), 0.5 * base) if drop else base
+    beds[(L3, "ambient-hotteok.ogg", -22)] = _hotteok
     return beds, bool(drop)
 
 

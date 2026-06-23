@@ -11,4 +11,13 @@ All Wikimedia sources below are **Public Domain** (no attribution / no share-ali
 - **thunder** — [File:Rain and thunder.ogg](https://upload.wikimedia.org/wikipedia/commons/4/42/Rain_and_thunder.ogg) · Public domain · User:Caesar
 
 The manmulsang bed adds a faint deterministic synth hum (no source needed).
-The hotteok griddle has no CC0 source — drop a Pixabay clip in `drop/griddle.*` and re-run.
+
+**hotteok** = a warm, close market crowd (the PD `market` source, low-passed + a
+distinct window so it reads nearer/warmer than the broad meokja alley). The
+griddle *sizzle* itself is the separate existing SFX `sfx-griddle-sizzle.ogg`
+(out of scope here). If a CC0 griddle clip is ever dropped in `drop/griddle.*`,
+re-running `build_beds.py` layers it on top of this crowd bed.
+
+Note: `thunder` was fetched as a candidate but is not used in any shipped bed.
+
+Build deps (build-time only, not shipped): `numpy scipy soundfile imageio-ffmpeg`.
