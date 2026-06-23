@@ -102,7 +102,7 @@ def paint_room_shell(d):
                 t = 1.0 - abs(x - wall_x) / far   # 1 at the wall, → 0 at the centre
                 if (x + y) % 2 != 0:              # checker subset only
                     continue
-                m = 2 if t > 0.6 else (4 if t > 0.3 else 8)
+                m = 3 if t > 0.6 else (6 if t > 0.3 else 12)   # gentler temp wash
                 if ((x * 3 + y * 7) % m) == 0:
                     d.point((x, y), fill=col)
     temp_wash(0, 150, PAL["rain"][3], wall_x=0)      # cool from the window, fades in
@@ -457,7 +457,9 @@ def paint_penumbra(d):
             dx = abs(x - W / 2) / (W / 2)            # 0 centre → 1 sides
             dy = 1.0 - y / FLOOR_Y                   # 1 ceiling → 0 floor line
             w = 0.55 * dx + 0.65 * dy
-            m = 8 if w < 0.35 else (4 if w < 0.7 else 2)
+            # sparser stipple (was 8/4/2) so the wall reads calm, not a busy
+            # diagonal cross-hatch — the brazier/window stay the bright points.
+            m = 14 if w < 0.4 else (7 if w < 0.72 else 3)
             if ((x * 5 + y * 3) % m) == 0:
                 d.point((x, y), fill=cool)
 
