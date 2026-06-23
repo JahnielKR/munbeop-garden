@@ -117,7 +117,8 @@ function submit() {
   font-size: 18px;
   padding: 10px 14px;
   border: 2px solid var(--border-strong, #6b5b4a);
-  background: #fff;
+  background: var(--surface-elevated);
+  color: var(--text);
   min-height: 44px;
 }
 .slot-completion__input:focus-visible {

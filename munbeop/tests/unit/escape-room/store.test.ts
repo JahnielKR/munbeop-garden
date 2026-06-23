@@ -75,6 +75,19 @@ describe('useEscapeRoomStore', () => {
     expect(store.resolvedSlots).toContain('slot-2')
   })
 
+  it('answerCompletion accepts a differently-spaced but equivalent answer', () => {
+    const store = useEscapeRoomStore()
+    const level = makeLevel()
+    const s2 = level.slots[1]
+    if (s2.type === 'completion') {
+      s2.candidates = s2.candidates.map((c) => ({ ...c, answer: '먹어 보세요' }))
+    }
+    store.startRun(level, 'seed-x', 0)
+    // 보조용언 spacing is optional (한글 맞춤법 §47): the closed form still matches.
+    expect(store.answerCompletion('slot-2', '먹어보세요')).toBe('correct')
+    expect(store.resolvedSlots).toContain('slot-2')
+  })
+
   it('answerCreation compares correctOrder array exactly', () => {
     const store = useEscapeRoomStore()
     store.startRun(makeLevel(), 'seed-x', 0)

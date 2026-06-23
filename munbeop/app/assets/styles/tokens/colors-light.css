@@ -62,9 +62,11 @@
   /* ---- 3. Semantic aliases ---- */
   --bg: var(--paper);
   --surface: var(--paper-warm);
+  --surface-elevated: var(--paper-deep);  /* raised focal tier — puzzle prompt card, input, tiles */
   --surface-hover: var(--hover-bg);
   --text: var(--ink);
   --text-soft: var(--ink-soft);
+  --text-muted: var(--text-soft);         /* quiet secondary text — translations, hints */
   --border: var(--ink-line);             /* wood-frame outline by default */
   --border-strong: var(--ink-line);
   --shadow-color: var(--shadow-cream);   /* dark-ink extruded shadow */
