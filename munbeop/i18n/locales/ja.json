@@ -303,7 +303,8 @@
       "next": "次へ",
       "restart": "もう一度",
       "score": "{correct} / {total} 正解"
-    }
+    },
+    "paths_link": "あなたのTOPIKパス →"
   },
   "mastery": {
     "seedling": "새싹 · 新規",
@@ -783,5 +784,14 @@
       "cta": "TOPIK {level}を練習する",
       "retake": "テストをやり直す"
     }
+  },
+  "paths": {
+    "title": "あなたのTOPIKパス",
+    "lead": "各レベルを順番に — どこまで進んだか、次に何を学ぶかが分かります。",
+    "progress_label": "{learned} / {total}",
+    "next_label": "次は",
+    "practice_cta": "練習する",
+    "complete": "パス完了！🎉",
+    "list_toggle": "パス全体を見る"
   }
 }

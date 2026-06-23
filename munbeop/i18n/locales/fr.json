@@ -303,7 +303,8 @@
       "next": "Suivant",
       "restart": "Réessayer",
       "score": "{correct} / {total} correct"
-    }
+    },
+    "paths_link": "Tes parcours TOPIK →"
   },
   "mastery": {
     "seedling": "새싹 · Nouvelle",
@@ -783,5 +784,14 @@
       "cta": "Pratiquer TOPIK {level}",
       "retake": "Repasser le test"
     }
+  },
+  "paths": {
+    "title": "Tes parcours TOPIK",
+    "lead": "Chaque niveau dans l’ordre : vois ta progression et quoi étudier ensuite.",
+    "progress_label": "{learned} / {total}",
+    "next_label": "À suivre",
+    "practice_cta": "S’entraîner",
+    "complete": "Parcours terminé ! 🎉",
+    "list_toggle": "Voir le parcours complet"
   }
 }
