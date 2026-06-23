@@ -414,7 +414,13 @@
       "title": "Data & privacy",
       "export": "Export my data (.json)",
       "exported": "Your data is downloading.",
-      "export_error": "Couldn't export your data. Please try again."
+      "export_error": "Couldn't export your data. Please try again.",
+      "import": "Import a backup (.json)",
+      "import_confirm_title": "Restore this backup?",
+      "import_confirm_body": "This replaces all your current data with the backup file. This can't be undone.",
+      "import_confirm_cta": "Replace my data",
+      "import_error": "Couldn't import that file. Please try again.",
+      "import_invalid": "That doesn't look like a Mungarden backup file."
     },
     "tabs": {
       "account": "Account",

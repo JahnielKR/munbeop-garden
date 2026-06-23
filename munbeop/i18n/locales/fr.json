@@ -414,7 +414,13 @@
       "title": "Données et confidentialité",
       "export": "Exporter mes données (.json)",
       "exported": "Le téléchargement de vos données a commencé.",
-      "export_error": "Impossible d'exporter vos données. Réessaie."
+      "export_error": "Impossible d'exporter vos données. Réessaie.",
+      "import": "Importer une sauvegarde (.json)",
+      "import_confirm_title": "Restaurer cette sauvegarde ?",
+      "import_confirm_body": "Cela remplace toutes tes données actuelles par le fichier de sauvegarde. C’est irréversible.",
+      "import_confirm_cta": "Remplacer mes données",
+      "import_error": "Impossible d’importer ce fichier. Réessaie.",
+      "import_invalid": "Ce fichier ne ressemble pas à une sauvegarde Mungarden."
     },
     "tabs": {
       "account": "Compte",

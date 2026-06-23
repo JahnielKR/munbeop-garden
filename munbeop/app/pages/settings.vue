@@ -12,6 +12,7 @@ import CustomGrammarManager from '~/components/settings/CustomGrammarManager.vue
 import DailyGoalSetting from '~/components/settings/DailyGoalSetting.vue'
 import ReviewReminderSetting from '~/components/settings/ReviewReminderSetting.vue'
 import AboutSection from '~/components/settings/AboutSection.vue'
+import DataImport from '~/components/settings/DataImport.vue'
 import { useSettingsStore } from '~/stores/settings'
 import { useDataExport } from '~/composables/useDataExport'
 
@@ -87,6 +88,7 @@ const active = ref('account')
     >
       <BilingualTitle ko="데이터" :latin="t('settings.data.title')" level="h2" />
       <Button size="sm" @click="exportData">{{ t('settings.data.export') }}</Button>
+      <DataImport />
     </section>
 
     <section

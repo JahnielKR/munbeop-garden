@@ -414,7 +414,13 @@
       "title": "データとプライバシー",
       "export": "データをエクスポート (.json)",
       "exported": "データをダウンロードしています。",
-      "export_error": "データをエクスポートできませんでした。もう一度お試しください。"
+      "export_error": "データをエクスポートできませんでした。もう一度お試しください。",
+      "import": "バックアップを読み込む (.json)",
+      "import_confirm_title": "このバックアップを復元しますか？",
+      "import_confirm_body": "現在のすべてのデータがバックアップファイルで置き換えられます。元に戻せません。",
+      "import_confirm_cta": "データを置き換える",
+      "import_error": "そのファイルを読み込めませんでした。もう一度お試しください。",
+      "import_invalid": "Mungarden のバックアップファイルではないようです。"
     },
     "tabs": {
       "account": "アカウント",

@@ -414,7 +414,13 @@
       "title": "Data & privasi",
       "export": "Ekspor data saya (.json)",
       "exported": "Data kamu sedang diunduh.",
-      "export_error": "Gagal mengekspor data kamu. Coba lagi."
+      "export_error": "Gagal mengekspor data kamu. Coba lagi.",
+      "import": "Impor cadangan (.json)",
+      "import_confirm_title": "Pulihkan cadangan ini?",
+      "import_confirm_body": "Ini mengganti semua datamu saat ini dengan file cadangan. Tidak bisa dibatalkan.",
+      "import_confirm_cta": "Ganti dataku",
+      "import_error": "Gagal mengimpor file itu. Coba lagi.",
+      "import_invalid": "Itu sepertinya bukan file cadangan Mungarden."
     },
     "tabs": {
       "account": "Akun",

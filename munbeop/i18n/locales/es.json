@@ -414,7 +414,13 @@
       "title": "Datos y privacidad",
       "export": "Exportar mis datos (.json)",
       "exported": "Tus datos se están descargando.",
-      "export_error": "No se pudieron exportar tus datos. Inténtalo de nuevo."
+      "export_error": "No se pudieron exportar tus datos. Inténtalo de nuevo.",
+      "import": "Importar un respaldo (.json)",
+      "import_confirm_title": "¿Restaurar este respaldo?",
+      "import_confirm_body": "Esto reemplaza todos tus datos actuales con el archivo de respaldo. No se puede deshacer.",
+      "import_confirm_cta": "Reemplazar mis datos",
+      "import_error": "No se pudo importar ese archivo. Inténtalo de nuevo.",
+      "import_invalid": "Eso no parece un archivo de respaldo de Mungarden."
     },
     "tabs": {
       "account": "Cuenta",

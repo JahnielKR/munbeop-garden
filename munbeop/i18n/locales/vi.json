@@ -414,7 +414,13 @@
       "title": "Dữ liệu & quyền riêng tư",
       "export": "Xuất dữ liệu của tôi (.json)",
       "exported": "Dữ liệu của bạn đang được tải xuống.",
-      "export_error": "Không thể xuất dữ liệu của bạn. Thử lại."
+      "export_error": "Không thể xuất dữ liệu của bạn. Thử lại.",
+      "import": "Nhập bản sao lưu (.json)",
+      "import_confirm_title": "Khôi phục bản sao lưu này?",
+      "import_confirm_body": "Thao tác này thay thế toàn bộ dữ liệu hiện tại của bạn bằng tệp sao lưu. Không thể hoàn tác.",
+      "import_confirm_cta": "Thay thế dữ liệu của tôi",
+      "import_error": "Không thể nhập tệp đó. Thử lại.",
+      "import_invalid": "Tệp đó không giống tệp sao lưu Mungarden."
     },
     "tabs": {
       "account": "Tài khoản",

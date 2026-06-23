@@ -1,6 +1,6 @@
-import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
 import { useToast } from '~/composables/useToast'
+import { APP_ID, EXPORT_KEYS, type ExportPayload } from '~/lib/data-transfer/keys'
 
 /**
  * useDataExport — one-click "take my data" JSON download.
@@ -10,22 +10,7 @@ import { useToast } from '~/composables/useToast'
  * labelled object. downloadJson() turns it into a file the browser saves.
  * exportData() wires the two together with a success/error toast.
  */
-const EXPORT_KEYS = [
-  STORAGE_KEYS.grammar,
-  STORAGE_KEYS.srs,
-  STORAGE_KEYS.log,
-  STORAGE_KEYS.decks,
-  STORAGE_KEYS.customContexts,
-  STORAGE_KEYS.inactiveContextIds,
-  STORAGE_KEYS.settings,
-  STORAGE_KEYS.escapeRoom,
-] as const
-
-export interface ExportPayload {
-  exportedAt: string
-  app: string
-  data: Record<string, unknown>
-}
+export type { ExportPayload }
 
 export function useDataExport() {
   const { t } = useI18n()
@@ -38,7 +23,7 @@ export function useDataExport() {
     )
     return {
       exportedAt: new Date().toISOString(),
-      app: 'munbeop-garden',
+      app: APP_ID,
       data: Object.fromEntries(entries),
     }
   }
