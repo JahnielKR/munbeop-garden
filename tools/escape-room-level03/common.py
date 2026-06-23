@@ -228,38 +228,41 @@ def neon_sign(d, x: int, y: int, w: int = 28, h: int = 16, color: str = "pink",
 
 
 def _neon_strokes(d, x, y, w, h, mid, core, dead: bool = False) -> None:
-    """Abstract stroke clusters for neon_sign — never a legible glyph. Internal.
+    """Abstract neon GLOW for neon_sign — reads as a lit sign, NEVER a glyph.
 
-    A row of vertical "syllable" blocks, each a deterministic scribble of bars +
-    a ring/dot, evoking hangul jamo without composing one. The pattern per block
-    is seeded by the sign's (x,y) so neighbouring signs differ (reads as "a row
-    of signs", not a repeated barcode). core = the bright tube, mid = shaded side.
+    A soft colored interior glow with a few SHORT, irregular, offset white-hot
+    accent marks (some diagonal) — deliberately NOT a row of aligned vertical
+    stems, so it never reads as digits/jamo at 1x (the old stem-per-block grid
+    read as "111/ㅑㅑㅑ"). Seeded by (x,y) so neighbours differ. mid = the bright
+    tube colour, core = white hot-points.
     """
     r = random.Random(x * 31 + y * 7 + w)
-    n = 2 if w < 22 else 3
-    bw = (w - 4) // n
-    for i in range(n):
-        bx = x + 2 + i * bw
-        cx = bx + bw // 2
-        variant = r.randint(0, 3)
-        # every block has a vertical stem (the spine of a syllable)
-        vline(d, cx, y + 2, h - 4, core)
-        vline(d, cx + 1, y + 2, h - 4, mid)
-        if variant == 0:                                   # top bar + bottom ring
-            hline(d, bx + 1, y + 3, bw - 2, core)
-            d.ellipse([cx - 2, y + h - 6, cx + 2, y + h - 3],
-                      outline=core if not dead else mid)
-        elif variant == 1:                                 # mid bar + side tick
-            hline(d, bx + 1, y + h // 2, bw - 2, core)
-            vline(d, bx + 1, y + 3, 3, mid)
-            d.point((bx + bw - 3, y + h - 4), fill=core)
-        elif variant == 2:                                 # two stacked bars
-            hline(d, bx + 1, y + 4, bw - 2, core)
-            hline(d, bx + 1, y + h - 5, bw - 3, mid)
-            d.point((cx - 1, y + h // 2), fill=core)
-        else:                                              # ring on top + stem
-            d.ellipse([cx - 2, y + 3, cx + 2, y + 6], outline=core if not dead else mid)
-            hline(d, bx + 1, y + h - 5, bw - 2, core)
+    if dead:
+        for _ in range(3):                                 # faint dead ticks, no glow
+            ax = x + 2 + r.randint(0, max(1, w - 4))
+            ay = y + 2 + r.randint(0, max(1, h - 4))
+            d.point((ax, ay), fill=mid)
+        return
+    # the lit colored panel: the sign glows as a soft block, not a glyph
+    dither(d, x + 1, y + 1, w - 2, h - 2, mid, phase=0)
+    # a few short irregular white-hot accents (never a full-height stem row)
+    marks = 2 if w < 24 else 3
+    for _ in range(marks):
+        mx = x + 2 + r.randint(0, max(1, w - 5))
+        my = y + 2 + r.randint(0, max(1, h - 5))
+        kind = r.randint(0, 3)
+        if kind == 0:                                      # short offset vertical (≤ half)
+            ln = r.randint(2, max(2, (h - 4) // 2))
+            vline(d, mx, my, min(ln, y + h - 2 - my), core)
+        elif kind == 1:                                    # short horizontal
+            ln = r.randint(2, max(2, (w - 4) // 2))
+            hline(d, mx, my, min(ln, x + w - 2 - mx), core)
+        elif kind == 2:                                    # a hot dot
+            d.point((mx, my), fill=core)
+        else:                                              # a short diagonal (breaks the grid)
+            for k in range(3):
+                if mx + k < x + w - 1 and my + k < y + h - 1:
+                    d.point((mx + k, my + k), fill=core)
 
 
 def neon_alley(d, x: int, y: int, w: int, h: int, lit_cols: int = 99,
