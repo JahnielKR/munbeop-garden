@@ -10,6 +10,7 @@ import type {
 } from '~/lib/domain'
 import { drawRun, type DrawnRun } from '~/lib/escape-room/shuffle'
 import { scoreRun, type RunOutcome } from '~/lib/escape-room/scoring'
+import { normalizeCompletionAnswer } from '~/lib/escape-room/answer'
 
 /**
  * Escape Room — Pinia store driving a single run.
@@ -139,7 +140,9 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
     if (status.value !== 'playing') return 'wrong'
     const cand = drawnCandidate<CompletionCandidate>(slotId)
     if (!cand) return recordError()
-    return text.trim() === cand.answer.trim() ? resolveSlot(slotId) : recordError()
+    return normalizeCompletionAnswer(text) === normalizeCompletionAnswer(cand.answer)
+      ? resolveSlot(slotId)
+      : recordError()
   }
 
   function answerCreation(slotId: string, order: number[]): AnswerResult {
