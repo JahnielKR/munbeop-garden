@@ -21,7 +21,6 @@ export function usePlacement() {
   const phase = ref<PlacementPhase>('question')
   const picked = ref<string | null>(null)
   const outcome = ref<PlacementOutcome | null>(null)
-  const answered = ref(0)
 
   const item = computed<PlacementItem>(() => levelItems.value[indexInLevel.value]!)
 
@@ -36,7 +35,6 @@ export function usePlacement() {
   function start() {
     ladder.value = createLadder()
     outcome.value = null
-    answered.value = 0
     loadLevel(ladder.value.currentLevel)
   }
 
@@ -49,7 +47,6 @@ export function usePlacement() {
   async function next() {
     if (phase.value === 'question' || phase.value === 'done') return
     const correct = phase.value === 'right'
-    answered.value += 1
     const prevLevel = ladder.value.currentLevel
     ladder.value = recordAnswer(ladder.value, correct)
 
@@ -69,5 +66,5 @@ export function usePlacement() {
     }
   }
 
-  return { ladder, item, displayOptions, phase, picked, outcome, answered, start, answer, next }
+  return { ladder, item, displayOptions, phase, picked, outcome, start, answer, next }
 }
