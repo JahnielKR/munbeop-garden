@@ -327,20 +327,33 @@ def paint_griddle(d):
 def paint_imo(d):
     """순자 이모, imo(griddle), standing behind the plate at the imo rect.
 
-    imo(griddle) measured from the builder: at origin (mx,my) the round body
-    spans x mx+2..mx+26, y my+4..my+54 with visual center ~ (mx+14, my+30).
-    Hotspot [145,80,60,90], center (175,125): origin (161,92) lands the head at
-    ~y96, the round apron body centered ~ (175,122), busy hands reaching DOWN to
-    the plate at ~ (168,123) — the figure mass centers ~ (175,122), inside the
-    rect, and she reads as standing behind the griddle working it. A warm contact
-    + her own ember key from the plate below.
+    Reworked builder ~30×56: origin (160,98) lands the head ~(176,102), the round
+    apron body centered ~(176,126), busy hands reaching down to the plate ~(174,
+    141) — mass center ~(176,126), inside rect [145,80,60,90] (center 175,125).
+    A soft warm backlight halo + her own ember key from the plate below make her
+    the highest-contrast figure of the scene (L3-d).
     """
-    mx, my = 161, 100
+    mx, my = 160, 98
+    # a soft warm backlight halo behind her upper body so she pops off the dim
+    # back panel (the griddle glow bouncing up behind her). Radial dithered, warm.
+    hcx, hcy = mx + 16, my + 16
+    for yy in range(my - 4, my + 40):
+        for xx in range(mx - 10, mx + 42):
+            if (xx + yy) % 2 != 0:
+                continue
+            dxn = (xx - hcx) / 24.0
+            dyn = (yy - hcy) / 22.0
+            t = 1.0 - (dxn * dxn + dyn * dyn)
+            if t <= 0:
+                continue
+            m = 3 if t > 0.5 else (5 if t > 0.2 else 9)
+            if ((xx * 3 + yy * 5) % m) == 0:
+                d.point((xx, yy), fill=PAL["ember"][3])
     C.imo(d, mx, my, pose="griddle")
     # the griddle light catching the underside of her apron + hands (gold rim) —
     # she is the warmest figure, apron lit ember by her own plate (L3-d)
-    dither(d, mx + 4, my + 40, 18, 6, PAL["ember"][2], phase=1)
-    hline(d, mx + 6, my + 46, 14, PAL["gold_light"][2])
+    dither(d, mx + 8, my + 44, 14, 6, PAL["ember"][2], phase=1)
+    hline(d, mx + 9, my + 50, 12, PAL["gold_light"][2])
 
 
 def paint_cat(d):

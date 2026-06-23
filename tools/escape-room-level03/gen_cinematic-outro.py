@@ -207,14 +207,19 @@ def the_bus(d):
     # 16). Window at ~bx+52 gives a clean frame; doyun(window) is ~24x26.
     win_x = bx + 52
     win_y = by + 12
-    # a faint warm halo of the window light bleeding onto the bus SKIN around the
-    # pane (NOT inside it — the builder lights the window itself; an interior veil
-    # would bury his bust). A thin ring just outside the frame so the lit window
-    # glows against the cold body without touching 도윤.
-    dither(d, win_x - 3, win_y - 3, 30, 3, PAL["ember"][3], phase=1)      # above
-    dither(d, win_x - 3, win_y + 26, 30, 3, PAL["ember"][3], phase=0)     # below
-    vline(d, win_x - 2, win_y - 1, 28, PAL["ember"][3])                   # left
-    vline(d, win_x + 25, win_y - 1, 28, PAL["ember"][3])                  # right
+    # a SOFT warm glow bleeding from the lit window onto the cold bus skin — the
+    # griddle's warmth gently following him, a dithered halo that FADES out, NOT a
+    # hard orange frame (L3-b: nothing is singled out harshly / the owner's call).
+    for xx in range(win_x - 3, win_x + 27):
+        for yy in range(win_y - 3, win_y + 29):
+            if win_x - 1 <= xx <= win_x + 24 and win_y - 1 <= yy <= win_y + 25:
+                continue                                                  # not over the pane/bust
+            dist = max(win_x - xx, xx - (win_x + 24), 0) + max(win_y - yy, yy - (win_y + 25), 0)
+            if dist == 0 or dist > 3:
+                continue
+            step = 2 if dist == 1 else (3 if dist == 2 else 5)            # sparser outward = fades
+            if 0 <= xx < W and (xx * 3 + yy * 5) % step == 0:
+                d.point((xx, yy), fill=PAL["ember"][3])
     C.doyun(d, win_x, win_y, pose="window")                              # the bust, on top
 
 

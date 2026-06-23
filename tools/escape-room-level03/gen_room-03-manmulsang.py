@@ -252,7 +252,7 @@ def dozing_vendor(d):
     d.polygon([(x + 5, y + 22), (x + 25, y + 22), (x + 27, y + 47),
                (x + 3, y + 47)], fill=coat, outline=OUTLINE)
     C.dither(d, x + 17, y + 28, 8, 18, coat_sh, phase=0)   # shaded right
-    C.vline(d, x + 5, y + 23, 24, PAL["stone"][1])         # lit left seam
+    C.vline(d, x + 5, y + 23, 24, PAL["ember"][3])         # warm bulb-rim on his near side
     # folded arms across the lap
     fill(d, x + 7, y + 34, 16, 5, coat)
     C.hline(d, x + 7, y + 34, 16, PAL["stone"][1])

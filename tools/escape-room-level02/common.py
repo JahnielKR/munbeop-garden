@@ -312,77 +312,160 @@ def lantern_wall(d, x: int, y: int, cols: int = 7, rows: int = 7,
 # ── 우담 the monk + the temple cat (cross-consistency anchors) ────────────────
 
 def monk(d, x: int, y: int, pose: str = "seated_tea") -> None:
-    """우담: shaved head, gray robe (회색 승복) + persimmon kasaya, serene, ~28.
+    """우담: shaved-head monk, gray 승복 robe + persimmon kasaya, serene, ~28.
 
-    (x,y) = top-left of the bounding cell (poses fit ~30×46 seated, ~22×40
-    gassho). MUST read as the SAME person in both poses (head shape, kasaya
-    color, brow). Consumers: room-01-dasil, cinematic-outro.
+    (x,y) = top-left of the bounding cell (poses fit ~32×46 seated, ~22×40
+    gassho). MUST read as the SAME person in both poses (round shaved head,
+    persimmon kasaya band, calm downcast face). Consumers: room-01-dasil,
+    room-04-jongnu(+clear), cinematic-outro.
+
+    Palette: robe = the cold 'rain' ramp (grey 회색 승복), kasaya = the warm
+    'ember' ramp (persimmon 가사), skin = 'wood_light'. The kasaya is the single
+    identity color — a strong warm band on a cold-grey body in every pose.
     """
-    head_w = 9
     skin = PAL["wood_light"][0]
     skin_sh = PAL["wood_light"][1]
-    robe, robe_sh = PAL["rain"][1], PAL["rain"][2]
-    kasaya, kasaya_sh = PAL["ember"][2], PAL["ember"][3]
+    robe = PAL["rain"][1]            # lit grey robe
+    robe_sh = PAL["rain"][2]         # robe fold shade
+    robe_dk = PAL["rain"][3]         # deep fold / inner sleeve
+    kasaya = PAL["ember"][2]         # persimmon 가사 band (identity)
+    kasaya_hi = PAL["ember"][1]      # lit kasaya edge
+    kasaya_sh = PAL["ember"][3]      # kasaya shade / knot
 
     if pose == "seated_tea":
-        # cross-legged, leaning slightly forward, hands on a teapot.
-        hx = x + 15
-        drop_shadow(d, x + 4, y + 44, 24, 2)
-        # robe: a wide low triangle (lap) + torso
-        d.polygon([(x + 3, y + 44), (x + 27, y + 44), (x + 22, y + 24),
-                   (x + 8, y + 24)], fill=robe, outline=OUTLINE)
-        fill(d, x + 9, y + 18, 13, 10, robe)            # torso
-        # fold shading on the lap (dither, lower-right)
-        dither(d, x + 13, y + 34, 11, 7, robe_sh, phase=0)
-        # center seam — stop it ABOVE the hands so it never bisects them into a
-        # flat "patch"; resume below the hands on the lap.
-        vline(d, x + 15, y + 25, 5, robe_sh)
-        vline(d, x + 15, y + 34, 9, robe_sh)
-        # persimmon kasaya sash crossing the chest (the identity color)
-        d.line([x + 8, y + 20, x + 22, y + 26], fill=kasaya)
-        d.line([x + 8, y + 21, x + 22, y + 27], fill=kasaya_sh)
-        # shoulders/arms reaching to the teapot in front
-        fill(d, x + 7, y + 22, 4, 9, robe)
-        fill(d, x + 20, y + 22, 4, 9, robe)
-        # hands (skin) cupped low-center, meeting at the middle as if cradling a
-        # cup/pot. Articulated (knuckle sheen + thumb tick + shaded underside +
-        # soft outline) so the gesture reads as HANDS, not a flat label patch —
-        # even before the room script slots a teapot between/under them.
-        _monk_hands(d, x + 10, y + 29, skin, skin_sh)
-        _monk_head(d, hx, y + 8, head_w, skin, skin_sh, tilt=1)
-    else:  # gassho — small standing figure, palms together, head bowed (outro)
-        drop_shadow(d, x + 2, y + 38, 16, 2)
-        # robe column (narrow), slight A-line at the hem
-        d.polygon([(x + 3, y + 38), (x + 17, y + 38), (x + 15, y + 18),
-                   (x + 5, y + 18)], fill=robe, outline=OUTLINE)
-        vline(d, x + 10, y + 19, 18, robe_sh)
-        dither(d, x + 11, y + 28, 5, 9, robe_sh, phase=1)
-        # kasaya band across the chest
-        hline(d, x + 5, y + 21, 10, kasaya)
-        hline(d, x + 5, y + 22, 10, kasaya_sh)
-        # palms pressed together in front of the chest (합장) — a bright skin
-        # blade with a dark seam so the gesture reads even on the dark card
-        fill(d, x + 8, y + 19, 4, 8, skin)
-        vline(d, x + 8, y + 19, 8, PAL["wood_light"][0])  # lit thumb edge
-        vline(d, x + 11, y + 20, 6, skin_sh)              # shaded outer hand
-        vline(d, x + 10, y + 20, 6, OUTLINE)              # the seam between palms
-        frame(d, x + 7, y + 18, 6, 10, OUTLINE)
-        _monk_head(d, x + 4, y + 6, head_w, skin, skin_sh, tilt=2)
+        _monk_seated(d, x, y, skin, skin_sh, robe, robe_sh, robe_dk,
+                     kasaya, kasaya_hi, kasaya_sh)
+    else:  # gassho — small standing figure, palms together, head bowed
+        _monk_gassho(d, x, y, skin, skin_sh, robe, robe_sh, robe_dk,
+                     kasaya, kasaya_hi, kasaya_sh)
 
 
-def _monk_head(d, x: int, y: int, w: int, skin, skin_sh, tilt: int = 0) -> None:
-    """Shared shaved head for monk(): same face hint in every pose. Internal."""
+def _monk_seated(d, x, y, skin, skin_sh, robe, robe_sh, robe_dk,
+                 kasaya, kasaya_hi, kasaya_sh) -> None:
+    """우담 seated cross-legged at the tea table — the FOCAL, structured pose.
+
+    A serene seated monk built from distinct cloth blocks (NOT one grey mass):
+    a wide grey-robe lap, a clear shouldered torso with sleeve arms, and the
+    persimmon kasaya draped over the LEFT shoulder and crossing the chest as a
+    strong diagonal band — the identity color. Bigger head (~13px) with a calm
+    downcast face. Hands cradle a vessel low-center. Spans ~x+1..x+31, y+2..y+46.
+    """
+    cx = x + 16
+    drop_shadow(d, x + 3, y + 45, 26, 2)
+
+    # ── the lap: a wide low grey-robe triangle (cross-legged knees) ──
+    d.polygon([(x + 1, y + 46), (x + 31, y + 46), (x + 25, y + 27),
+               (x + 7, y + 27)], fill=robe, outline=OUTLINE)
+    # a center fold dividing the two knees + soft fold shading toward the floor
+    vline(d, cx, y + 33, 13, robe_sh)
+    dither(d, x + 4, y + 40, 11, 5, robe_sh, phase=0)      # left-knee shade
+    dither(d, x + 18, y + 40, 11, 5, robe_dk, phase=1)     # right-knee deeper shade
+    hline(d, x + 6, y + 28, 19, PAL["rain"][0])            # lit thigh ridge
+
+    # ── the torso: a clear shouldered block (wider at the shoulders) ──
+    d.polygon([(x + 8, y + 27), (x + 24, y + 27), (x + 25, y + 17),
+               (x + 7, y + 17)], fill=robe, outline=OUTLINE)
+    vline(d, x + 7, y + 17, 10, PAL["rain"][0])            # lit left shoulder edge
+    dither(d, x + 17, y + 19, 7, 8, robe_sh, phase=1)      # right-torso fold shade
+    # the collar of the under-robe (cream V) so the neck reads as dressed
+    d.line([(x + 12, y + 18), (cx, y + 22)], fill=PAL["white"][0])
+    d.line([(x + 20, y + 18), (cx, y + 22)], fill=PAL["white"][1])
+    d.point((cx, y + 22), fill=PAL["white"][2])
+
+    # ── sleeve arms coming OFF the shoulders, skin hands at the cuffs ──
+    # left sleeve (lit), angling in toward the lap-center
+    d.polygon([(x + 6, y + 19), (x + 11, y + 19), (x + 14, y + 30),
+               (x + 9, y + 31)], fill=robe, outline=OUTLINE)
+    vline(d, x + 6, y + 20, 10, PAL["rain"][0])            # lit outer sleeve
+    # right sleeve (shaded), mirror
+    d.polygon([(x + 26, y + 19), (x + 21, y + 19), (x + 18, y + 30),
+               (x + 23, y + 31)], fill=robe_sh, outline=OUTLINE)
+    dither(d, x + 21, y + 21, 4, 9, robe_dk, phase=0)      # deep inner-sleeve shade
+
+    # ── the persimmon KASAYA: over the LEFT shoulder, crossing to lower-right ──
+    # a folded warm band — the one identity color, strong on the cold grey.
+    d.polygon([(x + 6, y + 16), (x + 12, y + 15), (x + 24, y + 26),
+               (x + 22, y + 29), (x + 9, y + 19)], fill=kasaya, outline=OUTLINE)
+    d.line([(x + 7, y + 16), (x + 22, y + 27)], fill=kasaya_hi)   # lit upper fold
+    d.line([(x + 9, y + 19), (x + 23, y + 28)], fill=kasaya_sh)   # shaded under fold
+    # the shoulder lump where the kasaya gathers over the left shoulder
+    fill(d, x + 6, y + 14, 5, 4, kasaya)
+    hline(d, x + 6, y + 14, 5, kasaya_hi)
+    d.point((x + 5, y + 16), fill=kasaya_sh)
+    frame(d, x + 6, y + 14, 5, 4, OUTLINE)
+
+    # ── hands cradling a vessel, low-center at the cuffs ──
+    _monk_hands(d, x + 11, y + 30, skin, skin_sh)
+
+    # ── the head, downcast, set on the shoulders ──
+    _monk_head(d, x + 9, y + 2, 13, skin, skin_sh, bowed=1)
+
+
+def _monk_gassho(d, x, y, skin, skin_sh, robe, robe_sh, robe_dk,
+                 kasaya, kasaya_hi, kasaya_sh) -> None:
+    """우담 standing in 합장 — a CLEAN upright praying figure (the mood beat).
+
+    A readable backlit silhouette, NOT a blob: a slim grey-robe column with a
+    soft A-line hem, the persimmon kasaya band across the chest, the two palms
+    pressed together as a bright skin blade with a dark seam, and the round
+    shaved head bowed over them. Spans ~x+2..x+20, y+2..y+40. Kept simple so it
+    reads against a dark/backlit background in jongnu and the outro.
+    """
+    drop_shadow(d, x + 2, y + 39, 16, 2)
+    # robe column with a gentle A-line hem
+    d.polygon([(x + 2, y + 39), (x + 18, y + 39), (x + 16, y + 17),
+               (x + 4, y + 17)], fill=robe, outline=OUTLINE)
+    vline(d, x + 4, y + 18, 21, PAL["rain"][0])            # lit left edge (backlit rim)
+    dither(d, x + 11, y + 22, 5, 16, robe_sh, phase=1)     # right-side fold shade
+    vline(d, x + 10, y + 28, 11, robe_dk)                  # center hem fold
+    # the kasaya band across the chest (over the left shoulder, the identity color)
+    d.polygon([(x + 4, y + 19), (x + 8, y + 18), (x + 16, y + 24),
+               (x + 14, y + 27), (x + 6, y + 22)], fill=kasaya, outline=OUTLINE)
+    d.line([(x + 5, y + 19), (x + 15, y + 25)], fill=kasaya_hi)
+    d.point((x + 4, y + 21), fill=kasaya_sh)
+    # palms pressed together (합장) — a bright skin blade with a dark center seam
+    fill(d, x + 8, y + 19, 4, 9, skin)
+    vline(d, x + 8, y + 19, 9, PAL["wood_light"][0])       # lit thumb edge
+    vline(d, x + 11, y + 20, 7, skin_sh)                   # shaded outer hand
+    vline(d, x + 10, y + 20, 7, OUTLINE)                   # the seam between palms
+    d.point((x + 9, y + 19), fill=PAL["wood_light"][0])    # lit fingertip
+    frame(d, x + 7, y + 18, 6, 11, OUTLINE)
+    # the round shaved head, bowed over the hands
+    _monk_head(d, x + 3, y + 2, 12, skin, skin_sh, bowed=2)
+
+
+def _monk_head(d, x: int, y: int, w: int, skin, skin_sh, bowed: int = 0) -> None:
+    """Shared shaved head for monk(): the SAME calm face in every pose. Internal.
+
+    A bigger round shaved head (w≈12-13) with a real serene face: a shaved-head
+    sheen catch on the crown, soft brow ridge, two downcast (relaxed flat) eyes,
+    a nose tick and a small calm mouth. `bowed` lowers the features so the gaze
+    reads as cast-down (1=seated tea, 2=deep gassho bow).
+    """
+    r = w
     # rounded shaved head
-    d.ellipse([x, y, x + w, y + w], fill=skin, outline=OUTLINE)
+    d.ellipse([x, y, x + r, y + r], fill=skin, outline=OUTLINE)
+    # shaved-head SHEEN: a lit crown catch (the scalp catching the key light)
+    hline(d, x + 4, y + 1, r - 7, PAL["wood_light"][0])
+    d.point((x + 4, y + 2), fill=PAL["wood_light"][0])
     # cheek/jaw shading on the right for volume
-    dither(d, x + w - 3, y + 3, 3, w - 4, skin_sh, phase=0)
-    cy = y + w // 2
-    # serene face hint: two soft closed/down eyes + faint brow, slight smile
-    d.point((x + 3, cy), fill=OUTLINE)
-    d.point((x + w - 3, cy), fill=OUTLINE)
-    d.point((x + 3 + tilt, cy + 2), fill=skin_sh)         # cheek
-    hline(d, x + 3, cy + 3, w - 5, skin_sh)               # gentle smile shadow
-    d.point((x + w // 2, cy + 1), fill=skin_sh)           # nose tick
+    dither(d, x + r - 4, y + 4, 4, r - 5, skin_sh, phase=0)
+    # ears (small skin lobes on the sides) so the bald head reads as a head
+    d.point((x, y + r // 2), fill=skin)
+    d.point((x + r, y + r // 2), fill=skin)
+    d.point((x + r, y + r // 2 + 1), fill=skin_sh)
+
+    fy = y + r // 2 + bowed                                # feature row, lowered if bowed
+    # soft brow ridge (a faint shade line, not a hard bar)
+    hline(d, x + 3, fy - 2, r - 5, skin_sh)
+    # two downcast relaxed eyes (short flat 2px lashes read calm, not square dots)
+    hline(d, x + 3, fy, 2, OUTLINE)
+    hline(d, x + r - 5, fy, 2, OUTLINE)
+    d.point((x + 4, fy + 1), fill=skin_sh)                 # soft lower lid
+    d.point((x + r - 4, fy + 1), fill=skin_sh)
+    # nose tick + a small calm mouth
+    d.point((x + r // 2, fy + 1), fill=skin_sh)
+    hline(d, x + r // 2 - 1, fy + 3, 3, skin_sh)           # gentle mouth shade
 
 
 def _monk_hands(d, x: int, y: int, skin, skin_sh) -> None:
@@ -447,26 +530,49 @@ def cat(d, x: int, y: int, frame: int = 0) -> None:
         d.point((x + 5, y + 13), fill=fur_hi)            # curled tip
     else:
         # sitting profile, upright; frame 1 head-left, frame 2 head up-right.
-        # haunch + chest column
-        d.ellipse([x + 3, y + 7, x + 14, y + 15], fill=fur, outline=OUTLINE)  # haunch
-        fill(d, x + 5, y + 5, 6, 9, fur)                 # upright chest
-        dither(d, x + 8, y + 9, 5, 5, fur_sh, phase=1)
-        hx = x + 3 if frame == 1 else x + 6              # head bias by look-dir
-        d.ellipse([hx, y, hx + 7, y + 7], fill=fur, outline=OUTLINE)          # head
-        dither(d, hx + 4, y + 2, 3, 4, fur_sh, phase=0)
-        _cat_ear(d, hx + 1, y - 1, fur, +1)              # left ear
-        _cat_ear(d, hx + 6, y - 1, fur, -1)              # right ear
+        # Built for a CLEAN silhouette at 1x: a rounded haunch, an upright chest,
+        # two front legs, a round head with two crisp ears, and a clearly-attached
+        # upright tail wrapping the right side.
+        # --- haunch: a rounded seated base ---
+        d.ellipse([x + 3, y + 8, x + 14, y + 15], fill=fur, outline=OUTLINE)
+        # --- chest column rising from the haunch (upright, a touch narrower) ---
+        fill(d, x + 5, y + 6, 7, 8, fur)
+        d.point((x + 4, y + 7), fill=fur)                    # round the chest corner
+        d.point((x + 12, y + 7), fill=fur)
+        d.point((x + 5, y + 7), fill=fur_hi)                 # a single lit chest catch
+        dither(d, x + 9, y + 9, 4, 5, fur_sh, phase=1)       # right-belly shade (form)
+        # --- two short front legs planted, with a dark seam so they read as two ---
+        vline(d, x + 6, y + 13, 3, fur)
+        vline(d, x + 9, y + 13, 3, fur)
+        vline(d, x + 8, y + 13, 3, fur_sh)                   # gap shade between legs
+        d.point((x + 6, y + 15), fill=OUTLINE)               # paw feet
+        d.point((x + 10, y + 15), fill=OUTLINE)
+        # --- the upright tail: a connected J wrapping up the right flank. Drawn
+        # AFTER the haunch and rooted INSIDE the haunch fill (x+12,y+12), then the
+        # haunch's right outline is repainted with fur where the tail crosses it so
+        # body+tail read as ONE silhouette (no separating line, no floater). Kept
+        # within the ~16px cell (rightmost x+16). ---
+        for ty in range(y + 9, y + 13):                      # erase the haunch edge here
+            d.point((x + 14, ty), fill=fur)
+        d.line([x + 12, y + 12, x + 15, y + 8], fill=fur)    # base wrapping up the flank
+        d.line([x + 13, y + 13, x + 16, y + 8], fill=fur)
+        d.line([x + 15, y + 8, x + 13, y + 5], fill=fur)     # the upper curl, hooking in
+        d.line([x + 16, y + 8, x + 16, y + 11], fill=OUTLINE)  # tail outer edge (reads it)
+        d.line([x + 15, y + 5, x + 13, y + 4], fill=OUTLINE)   # the curled-tip outline
+        d.point((x + 15, y + 10), fill=fur_hi)               # tail highlight
+        d.point((x + 13, y + 5), fill=fur_hi)                # curled tip catch
+        # --- head: a clean round ball, biased by look direction ---
+        hx = x + 2 if frame == 1 else x + 5
+        d.ellipse([hx, y, hx + 7, y + 7], fill=fur, outline=OUTLINE)
+        dither(d, hx + 4, y + 2, 3, 4, fur_sh, phase=0)      # right-side cheek shade
+        d.point((hx + 1, y + 1), fill=fur_hi)                # lit upper-left cheek
+        _cat_ear(d, hx + 1, y - 1, fur, +1)                  # left ear
+        _cat_ear(d, hx + 6, y - 1, fur, -1)                  # right ear
         # eyes catch a faint warm glint, biased toward the look direction
         ex = hx + 1 if frame == 1 else hx + 3
         d.point((ex, y + 3), fill=PAL["gold_light"][1])
         d.point((ex + 3, y + 3), fill=PAL["gold_light"][1])
-        d.point((hx + 3, y + 5), fill=fur_sh)            # muzzle/nose
-        # front legs + a curved upright tail on the right
-        vline(d, x + 6, y + 13, 2, fur_sh)
-        vline(d, x + 9, y + 13, 2, fur_sh)
-        d.line([x + 14, y + 13, x + 15, y + 6], fill=fur)
-        d.line([x + 15, y + 6, x + 13, y + 3], fill=fur)
-        d.point((x + 15, y + 9), fill=fur_hi)            # tail highlight
+        d.point((hx + 3, y + 5), fill=fur_sh)                # muzzle/nose
 
 
 # ── The bronze bell + its striker (the 종루) ──────────────────────────────────
