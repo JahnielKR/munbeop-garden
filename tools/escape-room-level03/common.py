@@ -408,76 +408,117 @@ def _hotteok_disc(d, cx: int, cy: int, r: int = 7) -> None:
 # ── The three people (cross-consistency anchors: same in scene + outro) ───────
 
 def imo(d, x: int, y: int, pose: str = "griddle") -> None:
-    """순자 이모 (~60): apron, head-kerchief, busy hands, short and round.
+    """순자 이모 (~60): short + round, grey cardigan, ember apron, red kerchief.
 
-    The warmest figure of the level — apron lit ember by her griddle. MUST read
-    as the SAME person in scene and in cinematic-outro (round body, kerchief,
-    apron color, kind creased face). pose "griddle" = working behind the plate;
-    "wave" = on the platform, one arm raised (outro). (x,y)=top-left of ~28×54.
+    Reworked to read clearly as a kind, round, OLDER woman rather than an orange
+    blob: a grey cardigan + cream collar frame the lit ember apron BIB (straps +
+    waist tie + pocket break the orange mass), the arms read as arms (sleeves with
+    skin cuffs), and a slightly bigger creased face under a tied red 머릿수건 with
+    grey hair at the temples. MUST read as the SAME person in scene and in
+    cinematic-outro. pose "griddle" = both forearms reaching down to the plate;
+    "wave" = one arm raised (outro). (x,y)=top-left of ~30×56.
     Consumers: room-01-hotteok, cinematic-outro.
     """
     skin, skin_sh = PAL["wood_light"][0], PAL["wood_light"][1]
     apron, apron_lit, apron_sh = PAL["ember"][2], PAL["ember"][1], PAL["ember"][3]
+    card, card_sh, card_hi = PAL["stone"][1], PAL["stone"][2], PAL["stone"][0]  # grey cardigan
     kerch, kerch_sh = PAL["tteok"][1], PAL["tteok"][2]    # red head-kerchief (identity)
-    cx = x + 14
-    drop_shadow(d, x + 3, y + 52, 22, 2)
-    # round body: a wide low torso (she is short and round)
-    d.ellipse([x + 2, y + 24, x + 26, y + 52], fill=apron, outline=OUTLINE)
-    fill(d, x + 6, y + 18, 16, 12, apron)                 # upper torso/shoulders
-    # apron lit warm on the left (griddle side), shaded right
-    vline(d, x + 6, y + 20, 28, apron_lit)
-    dither(d, x + 18, y + 26, 7, 22, apron_sh, phase=0)
-    hline(d, x + 6, y + 30, 16, apron_sh)                 # apron waist tie
-    d.point((x + 13, y + 31), fill=apron_sh)
-    # arms — both busy in front (griddle) or one raised (wave)
+    cx = x + 15
+    drop_shadow(d, x + 4, y + 54, 22, 2)
+    # ── torso: a grey cardigan, narrow at the shoulders rounding to a soft belly ──
+    d.polygon([(x + 5, y + 22), (x + 25, y + 22), (x + 27, y + 40),
+               (x + 24, y + 53), (x + 6, y + 53), (x + 3, y + 40)],
+              fill=card, outline=OUTLINE)
+    dither(d, x + 19, y + 26, 7, 25, card_sh, phase=0)    # cardigan shade (right)
+    hline(d, x + 7, y + 23, 16, card_hi)                  # lit shoulder seam
+    # a soft cream blouse collar at the neck
+    fill(d, x + 11, y + 19, 8, 4, PAL["white"][1])
+    hline(d, x + 11, y + 19, 8, PAL["white"][0])
+    # ── the ember apron BIB over the front (her identity, lit by the griddle) ──
+    fill(d, x + 9, y + 26, 12, 27, apron)
+    vline(d, x + 9, y + 26, 27, apron_lit)                # lit left edge (griddle side)
+    vline(d, x + 20, y + 27, 25, apron_sh)               # a clean shaded right edge
+    d.line([x + 10, y + 26, x + 8, y + 21], fill=apron)   # straps to the shoulders
+    d.line([x + 20, y + 26, x + 22, y + 21], fill=apron_sh)
+    # waist tie band across the bib + a small centred knot (clear, not dithered)
+    hline(d, x + 9, y + 39, 12, apron_sh)
+    hline(d, x + 9, y + 40, 12, PAL["tteok"][3])
+    fill(d, x + 13, y + 38, 4, 4, apron_lit)             # the knot
+    frame(d, x + 13, y + 38, 4, 4, apron_sh)
+    hline(d, x + 11, y + 47, 8, apron_sh)                 # a pocket line low on the bib
+    # ── arms (grey cardigan sleeves) + hands ──
     if pose == "wave":
-        # right arm raised high, left at side
-        d.line([x + 20, y + 20, x + 26, y + 8], fill=apron_lit)
-        d.line([x + 21, y + 20, x + 27, y + 8], fill=apron)
-        fill(d, x + 25, y + 5, 4, 4, skin)                # raised hand
-        frame(d, x + 25, y + 5, 4, 4, OUTLINE)
-        fill(d, x + 4, y + 26, 4, 12, apron)              # left arm at side
+        # right arm raised high (greeting), left resting on the apron
+        d.line([x + 24, y + 24, x + 29, y + 10], fill=card)
+        d.line([x + 25, y + 24, x + 30, y + 10], fill=card_sh)
+        fill(d, x + 27, y + 6, 5, 5, skin)                # raised hand
+        frame(d, x + 27, y + 6, 5, 5, OUTLINE)
+        d.point((x + 29, y + 5), fill=skin)               # waving fingers
+        fill(d, x + 3, y + 30, 5, 12, card)               # left arm down the side
+        dither(d, x + 3, y + 34, 2, 8, card_sh, phase=0)
+        fill(d, x + 3, y + 41, 5, 4, skin)                # resting hand
+        frame(d, x + 3, y + 41, 5, 4, OUTLINE)
     else:
-        # both forearms reaching to the plate in front (busy hands)
-        fill(d, x + 4, y + 24, 5, 9, apron_lit)
-        fill(d, x + 19, y + 24, 5, 9, apron)
-        _busy_hands(d, x + 7, y + 31, skin, skin_sh)
-    # head + red kerchief
-    _imo_head(d, cx - 5, y + 4, skin, skin_sh, kerch, kerch_sh)
+        # both upper arms angle out from the shoulders, forearms reach DOWN-IN to
+        # the plate in front (busy hands), sleeves grey with skin cuffs/hands.
+        d.polygon([(x + 4, y + 24), (x + 9, y + 26), (x + 11, y + 40),
+                   (x + 6, y + 42)], fill=card, outline=OUTLINE)        # left arm
+        d.polygon([(x + 21, y + 26), (x + 26, y + 24), (x + 24, y + 42),
+                   (x + 19, y + 40)], fill=card, outline=OUTLINE)       # right arm
+        dither(d, x + 20, y + 28, 4, 12, card_sh, phase=0)
+        _busy_hands(d, x + 10, y + 42, skin, skin_sh)
+    # ── head + kerchief ──
+    _imo_head(d, cx - 7, y + 2, skin, skin_sh, kerch, kerch_sh)
 
 
 def _imo_head(d, x, y, skin, skin_sh, kerch, kerch_sh) -> None:
-    """이모's round face under a tied red head-kerchief. Internal, shared by poses."""
-    w = 11
-    d.ellipse([x, y + 2, x + w, y + 2 + w], fill=skin, outline=OUTLINE)  # round face
-    dither(d, x + w - 4, y + 5, 3, w - 3, skin_sh, phase=0)              # cheek shade
+    """이모's round creased face under a tied red 머릿수건, grey hair at the temples.
+
+    (x,y) = top-left of a ~14×17 head cell. Internal, shared by poses."""
+    w = 13
+    grey = PAL["stone"][1]
+    # grey hair showing at the temples under the kerchief (age cue)
+    fill(d, x + 1, y + 7, 2, 5, grey)
+    fill(d, x + w - 2, y + 7, 2, 5, grey)
+    # round face
+    d.ellipse([x + 1, y + 3, x + w - 1, y + 3 + (w - 3)], fill=skin, outline=OUTLINE)
+    dither(d, x + w - 4, y + 6, 3, w - 6, skin_sh, phase=0)              # cheek shade (right)
     # the tied kerchief (머릿수건) over the crown — the identity color
-    d.pieslice([x - 1, y - 1, x + w + 1, y + 9], 180, 360, fill=kerch, outline=OUTLINE)
-    hline(d, x, y + 1, w + 1, kerch_sh)
-    d.point((x + w + 1, y + 2), fill=kerch)               # knot tail at the side
-    d.point((x + w + 2, y + 3), fill=kerch_sh)
-    # warm kind face: crinkled smiling eyes + rosy cheeks + a clear smile
-    ey = y + 8
-    d.line([x + 2, ey, x + 4, ey + 1], fill=OUTLINE)      # left smiling eye
-    d.line([x + 7, ey, x + 9, ey + 1], fill=OUTLINE)      # right smiling eye
-    d.point((x + 2, ey - 1), fill=skin_sh)
-    d.point((x + 9, ey - 1), fill=skin_sh)
-    d.point((x + 3, ey + 2), fill=PAL["tteok"][0])        # rosy cheek
-    d.point((x + 8, ey + 2), fill=PAL["tteok"][0])
-    d.line([x + 4, ey + 4, x + 7, ey + 4], fill=PAL["wood_dark"][2])     # smile
+    d.pieslice([x, y - 1, x + w, y + 10], 180, 360, fill=kerch, outline=OUTLINE)
+    hline(d, x + 1, y, w - 1, kerch_sh)                   # fold shadow
+    d.point((x + 3, y + 2), fill=PAL["tteok"][0])         # a lit highlight on the crown
+    d.point((x + w, y + 3), fill=kerch)                   # knot tail at the side
+    d.point((x + w + 1, y + 4), fill=kerch_sh)
+    # warm kind face: crinkled smiling eyes (2px) + rosy cheeks + a clear smile
+    ey = y + 9
+    hline(d, x + 2, ey, 3, OUTLINE)                       # left eye (relaxed, smiling)
+    hline(d, x + 7, ey, 3, OUTLINE)                       # right eye
+    d.point((x + 3, ey - 1), fill=skin_sh)               # soft lid above
+    d.point((x + 8, ey - 1), fill=skin_sh)
+    d.point((x + 2, ey + 2), fill=PAL["tteok"][0])        # rosy cheeks
+    d.point((x + 10, ey + 2), fill=PAL["tteok"][0])
+    d.point((x + 6, ey + 1), fill=skin_sh)               # nose tick
+    d.line([x + 4, ey + 4, x + 8, ey + 4], fill=PAL["wood_dark"][2])     # smile
     d.point((x + 3, ey + 3), fill=PAL["wood_dark"][2])
-    d.point((x + 8, ey + 3), fill=PAL["wood_dark"][2])
+    d.point((x + 9, ey + 3), fill=PAL["wood_dark"][2])
 
 
 def _busy_hands(d, x, y, skin, skin_sh) -> None:
-    """Two working hands meeting low-centre (~10×4), for imo(griddle). Internal."""
+    """Two rounded working hands reaching to the plate (~11×5 span, 3px gap). Internal."""
+    # left hand
     fill(d, x, y + 1, 4, 3, skin)
-    d.point((x + 1, y), fill=skin)
-    hline(d, x, y + 3, 4, skin_sh)
-    fill(d, x + 6, y + 1, 4, 3, skin)
+    d.point((x + 1, y), fill=skin)                # knuckles
+    d.point((x + 2, y), fill=skin)
+    hline(d, x, y + 3, 4, skin_sh)                # shaded underside
+    hline(d, x, y + 4, 4, OUTLINE)                # base outline
+    d.point((x - 1, y + 2), fill=OUTLINE)         # rounded outer edge
+    # right hand (3px gap between them)
+    fill(d, x + 7, y + 1, 4, 3, skin)
     d.point((x + 8, y), fill=skin)
-    hline(d, x + 6, y + 3, 4, skin_sh)
-    hline(d, x, y + 4, 10, OUTLINE)
+    d.point((x + 9, y), fill=skin)
+    hline(d, x + 7, y + 3, 4, skin_sh)
+    hline(d, x + 7, y + 4, 4, OUTLINE)
+    d.point((x + 11, y + 2), fill=OUTLINE)
 
 
 def doyun(d, x: int, y: int, pose: str = "stand") -> None:
