@@ -2,6 +2,7 @@ import type { Level, LocalizedString, TopikLevel } from '~/lib/domain'
 import { t } from './locale'
 import { LEVEL_01 } from './level-01'
 import { LEVEL_02 } from './level-02'
+import { LEVEL_03 } from './level-03'
 
 /**
  * Level registry — the notebook's table of contents.
@@ -63,14 +64,13 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
   {
     id: 'level-03',
     number: 3,
-    title: t('El mercado nocturno'),
-    tagline: t(
-      'Entre letreros de neón y vapor de tteokbokki, una ajumma te retiene la mochila: "Me ayudas a cerrar el puesto, y te la devuelvo." El mercado cierra en veinte minutos.',
-    ),
+    title: LEVEL_03.title,
+    tagline: LEVEL_03.tagline,
     mood: t('Energético · Callejero'),
     cover: '/escape-room/covers/level-03.png',
     topikLevel: 2,
-    status: 'coming-soon',
+    status: 'playable',
+    level: LEVEL_03,
   },
   {
     id: 'level-04',
