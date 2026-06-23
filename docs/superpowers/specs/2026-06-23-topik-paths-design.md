@@ -43,22 +43,22 @@ This re-opens the deferred Step 14 in a form that sidesteps its original blocker
   import type { SrsState } from '~/lib/domain'
   export function isLearned(state: SrsState | undefined): boolean
   // state?.mastery === 'plant' || state?.mastery === 'tree'
-  export interface PathProgress { total: number; learned: number; pct: number; nextKo: string | null }
+  export interface PathItem { ko: string; learned: boolean }
+  export interface PathProgress { items: PathItem[]; total: number; learned: number; pct: number; nextKo: string | null }
   export function pathProgress(kos: string[], srsMap: Record<string, SrsState>): PathProgress
-  // learned = count of kos with isLearned; pct = total ? learned/total : 0 (0..1);
-  // nextKo = first ko (in order) that is NOT learned, else null.
+  // items = kos mapped to their learned flag (preserves order); learned = count;
+  // pct = total ? learned/total : 0 (0..1); nextKo = first not-learned ko, else null.
   ```
 - `app/composables/usePaths.ts` — reads `grammarStore.items` + `grammarStore.decks`
   + `srsStore.map`; returns the TOPIK paths in deck order:
-  `{ deckId, name, kos, progress }[]` where `kos` = items with that `deckId` in
-  array order and `progress = pathProgress(kos, srsMap)`. Only the six `topik-*`
-  decks (skip custom/excluded).
-- `app/components/paths/PathCard.vue` — props `{ name, kos, progress }`:
-  a progress bar (`pct`) + `learned/total` label; the next-up point with a
-  "practice next" CTA (`NuxtLink` to `/practice/ruleta?focus=<nextKo>`); a
-  collapsible (`<details>`) ordered list of the `kos`, each marked learned/pending
-  with the next-up highlighted (display only). When `nextKo === null`, show a
-  "path complete" state instead of the CTA.
+  `{ deckId, name, progress }[]` where `progress = pathProgress(kos, srsMap)` and
+  `kos` = items with that `deckId` in array order. Only the six `topik-*` decks.
+- `app/components/paths/PathCard.vue` — props `{ name, progress }`:
+  a progress bar (`pct`) + `learned/total` label; the next-up point (`nextKo`) with
+  a "practice next" CTA (`NuxtLink` to `/practice/ruleta?focus=<nextKo>`); a
+  collapsible (`<details>`) ordered list of `progress.items`, each marked
+  learned/pending with the next-up highlighted (display only). When
+  `nextKo === null`, show a "path complete" state instead of the CTA.
 - `app/pages/paths.vue` — `definePageMeta({ surface: 'study' })`; hydrates the
   grammar store idempotently on mount (like `cloze.vue`); renders one `PathCard`
   per path from `usePaths()`.
