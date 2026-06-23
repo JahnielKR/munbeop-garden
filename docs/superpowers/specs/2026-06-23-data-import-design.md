@@ -47,11 +47,14 @@ export and import share one source of truth.
   `<input type="file" accept="application/json">`. On file pick: read text →
   `parseImportPayload`; if `!ok` → error toast (`import_invalid`/`import_error`),
   no modal. If `ok` → open a confirm `Modal` (`~/components/ui/Modal.vue`); on
-  confirm → `applyImport` → success toast → `window.location.reload()`. Resets
-  the input value after each pick so the same file can be re-selected.
+  confirm → `applyImport`; on success → `reloadPage()` (the restored data IS the
+  feedback — no success toast, which a reload would swallow); on failure →
+  error toast, no reload. Resets the input value after each pick so the same file
+  can be re-selected. `reloadPage()` lives in `app/lib/data-transfer/reload.ts`
+  (a thin `window.location.reload()` seam the component test can mock).
 - `app/pages/settings.vue` — render `<DataImport />` next to the export button in
   the 데이터 section.
-- i18n `settings.data.{import, import_confirm_title, import_confirm_body, import_confirm_cta, imported, import_error, import_invalid}` ×8.
+- i18n `settings.data.{import, import_confirm_title, import_confirm_body, import_confirm_cta, import_error, import_invalid}` ×8 (no success key — the reload is the feedback).
 
 ### Data flow
 file → `FileReader`/`file.text()` → `parseImportPayload` (validate) → confirm
@@ -70,8 +73,8 @@ re-hydrate from restored storage.
   wrong `app` → `reason:'app'`; missing/`non-object` `data` → `reason:'shape'`;
   payload with only a subset of keys → still `ok`.
 - `useDataImport.test.ts`: `applyImport` calls `storage.write` once per present
-  key, skips absent keys, never writes unknown keys; success toast on success,
-  error toast when a write throws (mock adapter + toast).
+  key, skips absent keys, never writes unknown keys; returns `true` on success;
+  on a thrown write it shows an error toast and returns `false` (mock adapter + toast).
 - `DataImport.test.ts` (component): invalid file → error toast, no modal; valid
   file → confirm modal appears; confirm → `applyImport` called + reload invoked
   (reload injected/mocked so the test can assert it). Cancel → nothing written.
