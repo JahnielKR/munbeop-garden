@@ -53,4 +53,10 @@ describe('DeckPicker', () => {
     await locked.trigger('click')
     expect(w.emitted('select')).toBeUndefined()
   })
+
+  it('marks the recommended deck with a "your level" badge', () => {
+    const w = mount(DeckPicker, { props: { options: OPTIONS, recommendedId: 'topik-1' } })
+    expect(w.get('[data-testid="deck-topik-1"]').text()).toContain('practice.your_level')
+    expect(w.get('[data-testid="deck-all"]').text()).not.toContain('practice.your_level')
+  })
 })

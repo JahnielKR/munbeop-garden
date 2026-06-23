@@ -23,6 +23,7 @@ import { useGrammarStore } from '~/stores/grammar'
 import { useContextsStore } from '~/stores/contexts'
 import { useCustomDecksStore } from '~/stores/customDecks'
 import { useSrsStore } from '~/stores/srs'
+import { useSettingsStore } from '~/stores/settings'
 
 definePageMeta({ surface: 'game' })
 
@@ -45,6 +46,7 @@ const grammarStore = useGrammarStore()
 const contextsStore = useContextsStore()
 const customDecks = useCustomDecksStore()
 const srsStore = useSrsStore()
+const settings = useSettingsStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -277,7 +279,7 @@ async function onRestart() {
 
     <div v-if="phase === 'pick'" ref="pickWrap" tabindex="-1" class="phase-wrap">
       <p class="lead">{{ t('practice.deck_lead') }}</p>
-      <DeckPicker :options="deckOptions" @select="onDeckSelect" />
+      <DeckPicker :options="deckOptions" :recommended-id="settings.startingDeckId" @select="onDeckSelect" />
       <CustomDeckShelf
         :options="customDeckOptions"
         @select="onCustomDeckSelect"
