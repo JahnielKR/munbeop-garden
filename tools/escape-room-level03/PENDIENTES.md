@@ -43,3 +43,22 @@ no bloqueante: el nivel ya está jugable con estos PNGs (deja de usar el gradien
 - Determinismo confirmado por los agentes (md5 estable por asset); `out/` y
   `__pycache__/` ignorados por `.gitignore`.
 - `common.py` quedó FROZEN: ningún `gen_*.py` lo modificó.
+
+## Actualización 2026-06-23 — rework de personajes + escenarios (rama claude/admiring-haslett-f5348d)
+
+Cerrado en este pase:
+- **Los personajes ahora leen como PERSONAS** (el hueco principal reportado por el
+  owner). `imo`, `doyun`, `hana`, `market_cat` reescritos en `common.py` con ropa
+  estructurada (siluetas claras, caras legibles 2px+, señas de edad/rol, paletas
+  distintas) + staging en charco de luz en su escena focal. Ancla de identidad a 8×
+  OK; los tres humanos son personas distintas. Determinismo byte-idéntico.
+- **room-02-meokja · muro de neón** («111/444»): RESUELTO. `_neon_strokes` reescrito
+  a glow de color abstracto (sin la rejilla de tallos) → nunca lee como glifo a 1×;
+  `neon_alley` ganó velo de profundidad (filas del fondo atenuadas).
+- **cinematic-outro · marco naranja de la ventana de 도윤**: RESUELTO (decisión del
+  owner): anillo ember duro → halo dithered cálido que se desvanece (honra L3-b).
+- **Tendero de manmulsang**: borde cálido del bulbo en su lado cercano.
+
+Nota: `common.py` ya NO está "frozen" — se reescribieron deliberadamente los builders
+de personaje + `_neon_strokes`/`neon_alley`. Pendiente futuro: pase 1× de QA fino,
+variantes scene-swap sin cablear, audio (Effort 2).

@@ -192,3 +192,16 @@ unas pocas son retoques opcionales de gusto. Se marca cada caso.
   byte-idénticos en una segunda ejecución. **No se introdujo `#000000` puro** (OUTLINE=`#2a1c14`); todos los
   tonos nuevos están en paleta (`stone/rain/wood_dark/ember/hanji/gold_light`). Las dos hojas de contacto de
   familia (`gen_family_contact_sheet.py`) también re-renderizan byte-idénticas.
+
+## Actualización 2026-06-23 — rework de personajes + escenarios (rama claude/admiring-haslett-f5348d)
+
+Cerrado en este pase:
+- **Monje 우담 reescrito** para leer como persona: poses `seated_tea`/`gassho`
+  estructuradas (hombros, pliegues, banda kasaya identidad, cara serena más grande).
+  `seated_tea` ahora en charco de luz de ventana en room-01-dasil (punto de máximo
+  contraste); `gassho` queda silueta limpia a contraluz en jongnu/outro. Regla de
+  las «dos sombras» del outro preservada. Absorbe el retoque opcional del `tilt`.
+- **Gato del templo**: silueta más nítida (orejas/anca/cola); avatar re-sincronizado.
+- **room-01-dasil · rayado diagonal**: CALMADO (stipple de penumbra/temp_wash más
+  disperso) → la pared lee como hanji limpio estilo L1.
+- Determinismo byte-idéntico; ancla de identidad del monje a 8× OK.
