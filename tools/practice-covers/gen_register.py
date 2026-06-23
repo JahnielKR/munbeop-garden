@@ -72,7 +72,7 @@ def cushion(d, cx, w, ramp):
 
 def draw_table(d):
     """Low tea table (소반) center with a teapot and two cups."""
-    cx = 160
+    cx = 168
     top_y = 110
     fill(d, cx - 34, top_y, 68, 7, WOODL[1])
     hline(d, cx - 34, top_y, 68, WOODL[0])
@@ -103,66 +103,80 @@ def draw_table(d):
 
 
 def draw_elder(d):
-    """Seated elder on the right, facing left toward the bow."""
-    cx = 238
-    cushion(d, cx, 56, BLUE)
-    # seated lower body (durumagi), trapezoid
-    for i, yy in enumerate(range(98, 122, 2)):
-        half = 14 + i
+    """Seated elder on the right — grey beard + a 갓 (scholar's hat), facing left."""
+    cx = 240
+    cushion(d, cx, 70, BLUE)
+    # seated lower body (durumagi robe), trapezoid
+    for i, yy in enumerate(range(94, 122, 2)):
+        half = 16 + i
         fill(d, cx - half, yy, half * 2, 2, GRAY[1] if i % 2 else GRAY[0])
-    fill(d, cx - 24, 118, 48, 6, GRAY[2])
-    frame(d, cx - 26, 96, 52, 28, OUTLINE)
-    # jeogori jacket
-    fill(d, cx - 16, 82, 32, 20, HANJI[0])
-    hline(d, cx - 16, 82, 32, HANJI[1])
-    fill(d, cx - 16, 98, 32, 4, HANJI[2])
-    # collar + sash
-    d.line([cx - 8, 84, cx, 96], fill=BLUE[2])
-    d.line([cx + 8, 84, cx, 96], fill=BLUE[2])
-    fill(d, cx - 14, 92, 28, 3, RED[2])  # sash
-    frame(d, cx - 16, 82, 32, 20, OUTLINE)
-    # arms folded in lap
-    fill(d, cx - 14, 100, 28, 7, HANJI[1])
-    frame(d, cx - 14, 100, 28, 7, OUTLINE)
+    fill(d, cx - 30, 118, 60, 6, GRAY[2])
+    frame(d, cx - 32, 92, 64, 32, OUTLINE)
+    # jeogori jacket + vest
+    fill(d, cx - 20, 74, 40, 24, HANJI[0])
+    hline(d, cx - 20, 74, 40, HANJI[1])
+    fill(d, cx - 20, 94, 40, 4, HANJI[2])
+    fill(d, cx - 9, 76, 18, 20, BLUE[1])         # vest
+    d.line([cx - 9, 76, cx, 90], fill=BLUE[2])
+    d.line([cx + 9, 76, cx, 90], fill=BLUE[2])
+    fill(d, cx - 18, 88, 36, 3, RED[2])           # sash
+    frame(d, cx - 20, 74, 40, 24, OUTLINE)
+    # hands folded in lap
+    fill(d, cx - 13, 96, 26, 8, HANJI[1])
+    frame(d, cx - 13, 96, 26, 8, OUTLINE)
     # head (facing left)
-    d.ellipse([cx - 11, 60, cx + 9, 82], fill=SKIN, outline=OUTLINE)
-    # grey hair cap + topknot
-    d.ellipse([cx - 11, 58, cx + 9, 72], fill=GRAY[3])
-    fill(d, cx - 3, 54, 6, 6, GRAY[3])
-    frame(d, cx - 4, 53, 8, 6, OUTLINE)
-    # face: eyes (left side), brow, grey beard
-    d.point((cx - 6, 70), fill=OUTLINE)
-    d.point((cx - 1, 70), fill=OUTLINE)
-    hline(d, cx - 7, 67, 3, GRAY[3])
-    hline(d, cx - 2, 67, 3, GRAY[3])
-    fill(d, cx - 6, 76, 10, 5, GRAY[2])  # beard
-    d.point((cx - 4, 73), fill=RED[1])   # mouth hint
+    d.ellipse([cx - 13, 52, cx + 11, 76], fill=SKIN, outline=OUTLINE)
+    # long grey beard flowing down
+    for i, w in enumerate((14, 11, 8, 5)):
+        fill(d, cx - w // 2 - 1, 70 + i * 3, w, 3, GRAY[2] if i % 2 else GRAY[3])
+    # face: gentle eyes + brows (facing the bow, on the left)
+    d.point((cx - 8, 62), fill=OUTLINE); d.point((cx - 7, 62), fill=OUTLINE)
+    d.point((cx - 2, 62), fill=OUTLINE); d.point((cx - 1, 62), fill=OUTLINE)
+    hline(d, cx - 9, 59, 4, GRAY[3]); hline(d, cx - 3, 59, 4, GRAY[3])
+    # 갓 — black horsehair scholar's hat (brim + crown): "respected elder"
+    d.ellipse([cx - 18, 46, cx + 16, 56], fill=NIGHT[3], outline=OUTLINE)  # brim
+    dither(d, cx - 14, 49, 28, 4, NIGHT[2], phase=0)
+    fill(d, cx - 8, 34, 16, 14, NIGHT[3])         # crown
+    fill(d, cx - 8, 34, 16, 3, NIGHT[2])
+    dither(d, cx - 6, 38, 12, 8, NIGHT[2], phase=1)
+    frame(d, cx - 9, 33, 18, 15, OUTLINE)
 
 
 def draw_youth(d):
-    """Younger person on the left, in a deep bow (절) toward the elder."""
-    cx = 76
-    cushion(d, cx, 62, RED)
-    # folded legs / seat (kneeling base)
-    d.ellipse([cx - 22, 110, cx + 18, 126], fill=GRAY[1], outline=OUTLINE)
-    dither(d, cx - 6, 118, 22, 6, GRAY[2], phase=0)
-    # rounded bowed back (hanbok jeogori) — a dome folding toward the elder
-    d.ellipse([cx - 18, 90, cx + 22, 122], fill=RED[1], outline=OUTLINE)
-    d.ellipse([cx - 14, 92, cx + 6, 110], fill=RED[0])     # lit upper back
-    dither(d, cx + 4, 104, 16, 14, RED[2], phase=1)         # shaded lower back
-    # white collar following the curve of the back
-    d.line([cx - 12, 96, cx + 6, 112], fill=HANJI[1])
-    d.line([cx - 11, 97, cx + 7, 113], fill=HANJI[0])
-    # head bowed low at the front, lower than the back
-    hx, hy = cx + 14, 106
-    d.ellipse([hx, hy, hx + 18, hy + 18], fill=SKIN, outline=OUTLINE)
-    d.ellipse([hx, hy - 1, hx + 18, hy + 9], fill=WOODD[3])  # hair (crown, bowed)
-    fill(d, hx + 6, hy - 4, 6, 5, WOODD[3])                  # topknot
-    frame(d, hx, hy, 18, 18, OUTLINE)
-    # hands flat on the mat in front (respect)
-    fill(d, hx + 13, hy + 14, 16, 5, SKIN)
-    hline(d, hx + 13, hy + 14, 16, HANJI[1])
-    frame(d, hx + 12, hy + 13, 18, 6, OUTLINE)
+    """Younger person on the left — kneeling, head bowed, hands joined (공수).
+
+    Built like the elder (clear head + torso + base) but smaller, lower and
+    head-bowed, so the deference reads at a glance."""
+    cx = 92
+    cushion(d, cx, 66, RED)
+    # folded legs / seat (blue hanbok pants)
+    for i, yy in enumerate(range(104, 122, 2)):
+        half = 13 + i
+        fill(d, cx - half, yy, half * 2, 2, BLUE[1] if i % 2 else BLUE[0])
+    fill(d, cx - 22, 118, 44, 6, BLUE[2])
+    frame(d, cx - 24, 102, 48, 22, OUTLINE)
+    # jeogori torso, leaning a touch toward the elder
+    fill(d, cx - 15, 86, 32, 20, RED[1])
+    hline(d, cx - 15, 86, 32, RED[0])
+    fill(d, cx - 15, 102, 32, 4, RED[2])
+    d.line([cx - 2, 88, cx + 2, 100], fill=HANJI[1])   # collar V
+    d.line([cx + 6, 88, cx + 2, 100], fill=HANJI[1])
+    frame(d, cx - 15, 86, 32, 20, OUTLINE)
+    # head, clearly bowed (low + dark hair sweeping over the crown)
+    hx, hy = cx - 4, 68
+    d.ellipse([hx, hy, hx + 20, hy + 20], fill=SKIN, outline=OUTLINE)
+    d.ellipse([hx, hy - 2, hx + 20, hy + 12], fill=WOODD[3])   # hair over the bowed crown
+    fill(d, hx + 7, hy - 5, 6, 5, WOODD[3])                    # topknot
+    # downcast eyes near the lower-front of the face (toward the elder)
+    d.point((hx + 11, hy + 14), fill=OUTLINE); d.point((hx + 12, hy + 14), fill=OUTLINE)
+    d.point((hx + 15, hy + 14), fill=OUTLINE); d.point((hx + 16, hy + 14), fill=OUTLINE)
+    frame(d, hx, hy, 20, 20, OUTLINE)
+    # joined hands (공수) raised in front of the chest — the formal greeting
+    jx = cx + 2
+    fill(d, jx, 95, 16, 9, SKIN)
+    hline(d, jx, 95, 16, HANJI[1])
+    vline(d, jx + 8, 95, 9, WOODD[2])     # seam between the two joined hands
+    frame(d, jx - 1, 94, 18, 11, OUTLINE)
 
 
 def main():
