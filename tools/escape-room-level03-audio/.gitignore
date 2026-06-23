@@ -1,0 +1,6 @@
+# Review-only renders (spectrogram contact sheets, scratch WAV/MP3, test artifacts)
+# and Python bytecode. The shipped audio lives under
+# munbeop/public/escape-room/level-02/audio/; regenerate via the gen_*.py scripts.
+out/
+__pycache__/
+*.pyc
