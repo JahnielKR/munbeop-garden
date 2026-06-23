@@ -63,18 +63,32 @@ describe('useSettingsStore', () => {
   it('setTheme applies the theme and writes the full blob to the adapter', async () => {
     await useSettingsStore().setTheme('dark')
     expect(useTheme().theme.value).toBe('dark')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'dark', locale: 'en', dailyGoal: 3, reviewReminders: false })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'dark', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null })
   })
 
   it('setTheme accepts the system preference and writes it to the adapter', async () => {
     await useSettingsStore().setTheme('system')
     expect(useTheme().theme.value).toBe('system')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'system', locale: 'en', dailyGoal: 3, reviewReminders: false })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'system', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null })
   })
 
   it('setLocale applies the locale and writes the full blob to the adapter', async () => {
     await useSettingsStore().setLocale('ja')
     expect(useLocaleStore().current).toBe('ja')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'ja', dailyGoal: 3, reviewReminders: false })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'ja', dailyGoal: 3, reviewReminders: false, startingDeckId: null })
+  })
+
+  it('setStartingDeck stores the deck and writes the full blob', async () => {
+    const s = useSettingsStore()
+    await s.setStartingDeck('topik-4')
+    expect(s.startingDeckId).toBe('topik-4')
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: 'topik-4' })
+  })
+
+  it('hydrate applies a stored startingDeckId', async () => {
+    signIn()
+    mockRead.mockResolvedValue({ startingDeckId: 'topik-3' })
+    await useSettingsStore().hydrate()
+    expect(useSettingsStore().startingDeckId).toBe('topik-3')
   })
 })

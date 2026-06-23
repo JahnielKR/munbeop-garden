@@ -22,6 +22,7 @@ interface Settings {
   locale: LocaleCode
   dailyGoal: number
   reviewReminders: boolean
+  startingDeckId: string | null
 }
 
 function isTheme(v: unknown): v is Theme {
@@ -37,6 +38,7 @@ export const useSettingsStore = defineStore('settings', () => {
   const authStore = useAuthStore()
   const dailyGoal = ref(DEFAULT_DAILY_GOAL)
   const reviewReminders = ref(false)
+  const startingDeckId = ref<string | null>(null)
 
   async function hydrate(): Promise<void> {
     if (!authStore.user) return
@@ -48,6 +50,7 @@ export const useSettingsStore = defineStore('settings', () => {
       if (isLocale(cloud.locale)) await localeStore.set(cloud.locale)
       if (typeof cloud.dailyGoal === 'number') dailyGoal.value = clampGoal(cloud.dailyGoal)
       if (typeof cloud.reviewReminders === 'boolean') reviewReminders.value = cloud.reviewReminders
+      if (typeof cloud.startingDeckId === 'string') startingDeckId.value = cloud.startingDeckId
     } catch {
       // Table may not exist yet (migration not deployed) or a network blip —
       // keep device values; the app must not break.
@@ -62,6 +65,7 @@ export const useSettingsStore = defineStore('settings', () => {
         locale: localeStore.current,
         dailyGoal: dailyGoal.value,
         reviewReminders: reviewReminders.value,
+        startingDeckId: startingDeckId.value,
       } satisfies Settings)
     } catch {
       // A failed cloud write must not throw into the UI.
@@ -83,6 +87,11 @@ export const useSettingsStore = defineStore('settings', () => {
     await persistCloud()
   }
 
+  async function setStartingDeck(deckId: string): Promise<void> {
+    startingDeckId.value = deckId
+    await persistCloud()
+  }
+
   async function setReviewReminders(on: boolean): Promise<void> {
     reviewReminders.value = on
     if (on && typeof Notification !== 'undefined' && Notification.permission === 'default') {
@@ -95,5 +104,5 @@ export const useSettingsStore = defineStore('settings', () => {
     await persistCloud()
   }
 
-  return { hydrate, setTheme, setLocale, dailyGoal, setDailyGoal, reviewReminders, setReviewReminders }
+  return { hydrate, setTheme, setLocale, dailyGoal, setDailyGoal, reviewReminders, setReviewReminders, startingDeckId, setStartingDeck }
 })
