@@ -218,11 +218,31 @@ def paint_people(d) -> None:
     # 하나 a step further right still (ponytail, tteok apron)
     C.hana(d, 194, 102, pose="serve")
     # 도윤 front-and-center by the bench, the slot-6 figure (drawn last = on top).
+    # FOCAL LIGHT POOL: a soft warm radial halo behind/around him (the arch's bulb
+    # garland + the bus-stop's own light spilling down) so the thin dark figure
+    # becomes the highest-contrast element and pops off the blue-black street.
+    # Dithered, warm, densest at his core and fading out (NOT a hard cone).
+    hcx, hcy = 125, 118
+    for yy in range(96, 150):
+        for xx in range(102, 150):
+            if (xx + yy) % 2 != 0:
+                continue
+            dxn = (xx - hcx) / 24.0
+            dyn = (yy - hcy) / 28.0
+            t = 1.0 - (dxn * dxn + dyn * dyn)
+            if t <= 0:
+                continue
+            m = 3 if t > 0.5 else (5 if t > 0.2 else 9)
+            if ((xx * 3 + yy * 5) % m) == 0:
+                d.point((xx, yy), fill=PAL["ember"][3])
     # a faint warm rim down his left side (the arch bulbs catch him) so the thin
-    # dark figure separates from the night void and reads as the focal figure.
+    # dark figure separates cleanly from the night void.
     for yy in range(102, 140):
-        d.point((113, yy), fill=PAL["ember"][3])
+        d.point((112, yy), fill=PAL["ember"][3])
     C.doyun(d, 114, 92, pose="stand")
+    # the warm griddle/bulb key catches the underside of his duffel + a hand
+    d.point((128, 122), fill=PAL["ember"][2])             # duffel under-rim
+    d.point((116, 124), fill=PAL["gold_light"][2])        # the strap hand, lit
 
 
 # ── Foreground: wet asphalt returning the neon + the last griddle's steam ────

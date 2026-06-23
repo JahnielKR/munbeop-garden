@@ -230,8 +230,31 @@ def paint_hana(d) -> None:
     hana(serve) is ~22x52, top-left anchored; she reaches LEFT with a ladle. Her
     hotspot is [65,95,65,80] (center ~97,135). Place her torso/head centered in
     that rect: top-left x so her body column (cx=x+11) sits ~ x=95.
+
+    FOCAL LIGHT POOL: a warm radial halo behind/around her upper body (her bare
+    stall bulb + the red 떡볶이 heat bouncing up) so the slim figure becomes the
+    highest-contrast element of the alley and pops off the cold neon depth. The
+    neon WALL is NOT retuned here (per the assignment); this is a figure-local
+    warm pool only. Dithered, warm, densest at her core, fading out.
     """
-    C.hana(d, 84, 100, pose="serve")
+    hx, hy = 84, 100
+    hcx, hcy = hx + 11, hy + 22
+    for yy in range(hy - 2, hy + 42):
+        for xx in range(hx - 8, hx + 30):
+            if (xx + yy) % 2 != 0:
+                continue
+            dxn = (xx - hcx) / 22.0
+            dyn = (yy - hcy) / 26.0
+            t = 1.0 - (dxn * dxn + dyn * dyn)
+            if t <= 0:
+                continue
+            m = 3 if t > 0.5 else (5 if t > 0.2 else 9)
+            if ((xx * 3 + yy * 5) % m) == 0:
+                d.point((xx, yy), fill=PAL["ember"][3])
+    C.hana(d, hx, hy, pose="serve")
+    # the warm bar light catching her apron underside + the ladle hand (gold rim)
+    dither(d, hx + 8, hy + 36, 7, 4, PAL["ember"][2], phase=1)
+    d.point((hx + 1, hy + 30), fill=PAL["gold_light"][2])   # the ladle hand, lit
 
 
 # ── Atmosphere passes ────────────────────────────────────────────────────────

@@ -522,118 +522,228 @@ def _busy_hands(d, x, y, skin, skin_sh) -> None:
 
 
 def doyun(d, x: int, y: int, pose: str = "stand") -> None:
-    """도윤 (19): skinny, tense, awkward. In the outro, BUZZED (군대) at the window.
+    """도윤 (19): tall, lanky, tense. In the outro, BUZZED (군대) at the window.
 
-    Tall thin silhouette, dark jacket. pose "stand" = at the bus stop, military
-    duffel on the shoulder, still with HAIR (a dark mop). pose "window" = in the
-    bus window, head SHAVED to near-zero (an unmistakably different scalp), one
-    hand half-raised to the glass. Same lanky build + jaw both ways = the SAME
-    boy one hour later. (x,y)=top-left of ~22×52 (window pose ~24×26 bust).
+    Reworked to read as a real, quiet, lanky BOY rather than a dark blob: a
+    structured zip jacket (stood collar + a lit center placket + a hem + sleeves
+    that read as ARMS with skin hands drawn OUTSIDE the torso) over long thin
+    legs, narrow shoulders, and a bigger young face (smooth skin, a faint jaw
+    shadow, slightly down-tense brows, a small flat mouth — no creases = young).
+    The SAME face/jaw helper (_doyun_face) draws both poses so the dark mop and
+    the near-shaved scalp read as the SAME boy one hour later. pose "stand" = at
+    the bus stop, military duffel on the shoulder, still with HAIR (a dark mop);
+    pose "window" = the bus-window bust, head SHAVED to near-zero, one hand
+    half-raised to the glass. (x,y)=top-left of ~22×52 (window pose ~24×26 bust).
     Consumers: room-04-busstop, cinematic-outro.
     """
     skin, skin_sh = PAL["wood_light"][0], PAL["wood_light"][1]
-    jkt, jkt_sh = PAL["ink"][0], PAL["ink"][1]            # dark 군대 jacket
+    jkt, jkt_lit, jkt_sh = PAL["ink"][1], PAL["ink"][0], PAL["ink"][2]   # dark 군대 jacket
     hair = PAL["ink"][2]
     if pose == "window":
         # a bust framed in a yellow bus window: shaved head, neon stripe on face
         cx = x + 12
         fill(d, x, y, 24, 26, PAL["gold_light"][1])       # lit window behind him
         frame(d, x, y, 24, 26, PAL["metal"][3])
-        # shoulders
-        fill(d, x + 3, y + 17, 18, 9, jkt)
-        hline(d, x + 3, y + 17, 18, jkt_sh)
-        # SHAVED head (near-zero): bare scalp, only a faint stubble dither, no mop
-        d.ellipse([cx - 6, y + 4, cx + 6, y + 17], fill=skin, outline=OUTLINE)
-        dither(d, cx - 5, y + 4, 11, 4, skin_sh, phase=0)  # stubble shadow = buzzed
-        d.point((cx + 3, y + 8), fill=skin_sh)            # cheek
-        # face hint, quiet: eyes + a small mouth
-        d.point((cx - 3, y + 10), fill=OUTLINE)
-        d.point((cx + 2, y + 10), fill=OUTLINE)
-        hline(d, cx - 1, y + 13, 3, skin_sh)
-        # the neon stripe crossing the reflected face (pink-green), NOT on eyes
+        # shoulders + a stood jacket collar so the bust reads as clothed, not a slab
+        fill(d, x + 3, y + 18, 18, 8, jkt)
+        hline(d, x + 3, y + 18, 18, jkt_lit)              # lit collar seam
+        d.polygon([(cx - 4, y + 18), (cx, y + 21), (cx + 4, y + 18)], fill=jkt_lit)  # open collar V
+        d.point((cx, y + 20), fill=PAL["white"][2])       # a pale tee at the throat
+        # the SAME young face/jaw as the stand pose, then a near-shaved scalp on top
+        _doyun_face(d, cx, y + 4, skin, skin_sh, shaved=True)
+        # the neon stripe crossing the reflected face (pink-green), low on the jaw
         for xx in range(cx - 6, cx + 7):
-            d.point((xx, y + 15), fill=PAL["neon_pink"][1] if xx < cx
+            d.point((xx, y + 16), fill=PAL["neon_pink"][1] if xx < cx
                     else PAL["neon_green"][1])
-        # one hand half-raised to the glass
-        fill(d, x + 16, y + 11, 4, 5, skin)
-        frame(d, x + 16, y + 11, 4, 5, OUTLINE)
+        # one hand half-raised to the glass (skin, OUTSIDE the shoulder slab)
+        fill(d, x + 17, y + 11, 4, 5, skin)
+        hline(d, x + 17, y + 11, 4, PAL["wood_light"][0])
+        frame(d, x + 17, y + 11, 4, 5, OUTLINE)
         return
     # standing at the stop, still with hair, tense, duffel on shoulder
     cx = x + 11
     drop_shadow(d, x + 2, y + 50, 18, 2, cool=True)
-    # long thin legs
-    fill(d, x + 6, y + 36, 4, 14, PAL["ink"][2])
-    fill(d, x + 12, y + 36, 4, 14, PAL["ink"][2])
-    # narrow torso jacket
-    fill(d, x + 5, y + 18, 12, 20, jkt)
-    vline(d, x + 5, y + 18, 20, PAL["ink"][0])
-    dither(d, x + 12, y + 22, 5, 14, jkt_sh, phase=0)
-    # a stiff arm, hand fidgeting at the side (tense)
-    fill(d, x + 3, y + 20, 4, 13, jkt)
-    fill(d, x + 3, y + 32, 4, 4, skin)
+    # long thin legs (skinny jeans), a knee break + a thin cuff so they read as legs
+    for lx in (x + 6, x + 12):
+        fill(d, lx, y + 37, 4, 13, PAL["ink"][2])
+        vline(d, lx, y + 37, 13, PAL["ink"][1])           # lit shin edge
+        hline(d, lx, y + 48, 4, OUTLINE)                  # cuff/ankle break
+    # ── the structured zip jacket: narrow at the shoulders, a clean hem ──
+    d.polygon([(x + 4, y + 19), (x + 17, y + 19), (x + 18, y + 37),
+               (x + 3, y + 37)], fill=jkt, outline=OUTLINE)
+    dither(d, x + 12, y + 22, 5, 14, jkt_sh, phase=0)     # shaded right side
+    vline(d, x + 10, y + 20, 17, jkt_lit)                 # the lit center zip placket
+    vline(d, x + 11, y + 20, 17, jkt_sh)                  # placket seam shadow
+    d.point((x + 10, y + 28), fill=PAL["metal"][1])       # the zip pull (a metal glint)
+    hline(d, x + 4, y + 36, 14, jkt_sh)                   # the jacket hem line
+    # a stood collar framing the neck (two short flaps + a pale tee at the throat)
+    d.polygon([(x + 6, y + 19), (x + 10, y + 17), (x + 10, y + 21)], fill=jkt_lit)
+    d.polygon([(x + 15, y + 19), (x + 11, y + 17), (x + 11, y + 21)], fill=jkt)
+    frame(d, x + 6, y + 17, 5, 3, OUTLINE)
+    d.point((x + 10, y + 19), fill=PAL["white"][2])       # tee at the collar gap
+    # ── arms: sleeves OFF the shoulders, skin hands at the ends (one fidgeting) ──
+    # left sleeve hangs down the side, hand fidgeting low + forward (tense)
+    d.polygon([(x + 2, y + 21), (x + 5, y + 20), (x + 6, y + 33), (x + 2, y + 34)],
+              fill=jkt, outline=OUTLINE)
+    fill(d, x + 2, y + 33, 4, 4, skin)                    # left hand
+    hline(d, x + 2, y + 33, 4, PAL["wood_light"][0])
+    frame(d, x + 2, y + 33, 4, 4, OUTLINE)
+    # right sleeve tucked across the front (hand gripping the duffel strap = tense)
+    d.polygon([(x + 16, y + 20), (x + 19, y + 21), (x + 15, y + 33), (x + 12, y + 32)],
+              fill=jkt, outline=OUTLINE)
+    fill(d, x + 12, y + 30, 4, 4, skin)                   # right hand on the strap
+    frame(d, x + 12, y + 30, 4, 4, OUTLINE)
     # the military duffel slung on the right shoulder (olive = stone-dk + ember tie)
-    d.polygon([(x + 15, y + 16), (x + 22, y + 20), (x + 21, y + 32),
-               (x + 16, y + 30)], fill=PAL["stone"][3], outline=OUTLINE)
-    hline(d, x + 16, y + 17, 6, PAL["stone"][2])
-    d.line([x + 9, y + 18, x + 18, y + 16], fill=PAL["ember"][3])  # strap
-    # head + a dark mop of hair (the with-hair read)
-    d.ellipse([cx - 5, y + 5, cx + 5, y + 17], fill=skin, outline=OUTLINE)
-    d.pieslice([cx - 6, y + 2, cx + 6, y + 14], 180, 360, fill=hair, outline=OUTLINE)
-    fill(d, cx - 6, y + 7, 12, 2, hair)                   # fringe across the brow
-    dither(d, cx + 2, y + 9, 3, 5, skin_sh, phase=0)
-    d.point((cx - 2, y + 11), fill=OUTLINE)               # eyes
-    d.point((cx + 2, y + 11), fill=OUTLINE)
-    hline(d, cx - 1, y + 14, 3, skin_sh)                  # tense, small mouth
+    d.polygon([(x + 16, y + 15), (x + 23, y + 19), (x + 22, y + 31),
+               (x + 17, y + 29)], fill=PAL["stone"][3], outline=OUTLINE)
+    hline(d, x + 17, y + 16, 6, PAL["stone"][2])
+    dither(d, x + 19, y + 21, 3, 8, PAL["ink"][2], phase=0)   # the bag's shaded fold
+    d.line([x + 9, y + 17, x + 18, y + 15], fill=PAL["ember"][3])  # strap over the shoulder
+    d.line([x + 9, y + 18, x + 18, y + 16], fill=PAL["ember"][2])
+    # ── head: the bigger young face, then the dark mop of hair on top ──
+    _doyun_face(d, cx, y + 5, skin, skin_sh, shaved=False)
+
+
+def _doyun_face(d, cx: int, y: int, skin, skin_sh, shaved: bool) -> None:
+    """도윤's bigger young face: smooth jaw, down-tense brows, small mouth.
+
+    (cx, y) = head center-x + top. The SAME jaw/eyes/mouth for both poses so the
+    mop and the shaved scalp read as one boy one hour later; only the hair on top
+    differs (shaved=True = a faint stubble dither + a thin temple shadow; else a
+    dark mop with a brow fringe). Internal, shared by doyun()'s two poses."""
+    hair = PAL["ink"][2]
+    # the face oval (slightly long = lanky), smooth — no creases (young cue)
+    d.ellipse([cx - 6, y, cx + 6, y + 13], fill=skin, outline=OUTLINE)
+    dither(d, cx + 2, y + 4, 4, 7, skin_sh, phase=0)      # right-cheek shade
+    hline(d, cx - 2, y + 12, 4, skin_sh)                  # a soft jaw shadow (boyish chin)
+    if shaved:
+        # near-zero buzz: bare scalp, only a thin stubble band high on the crown +
+        # a temple shade (subtle — the scalp shows skin, unmistakably NOT a mop)
+        dither(d, cx - 4, y + 1, 9, 2, skin_sh, phase=0)
+        d.point((cx - 5, y + 3), fill=skin_sh)            # temple
+        d.point((cx + 4, y + 3), fill=skin_sh)
+    else:
+        # a dark mop: a crown cap + a fringe falling across the brow (with-hair)
+        d.pieslice([cx - 7, y - 3, cx + 7, y + 9], 180, 360, fill=hair, outline=OUTLINE)
+        fill(d, cx - 6, y + 2, 12, 2, hair)               # fringe across the brow
+        d.point((cx + 5, y + 1), fill=PAL["ink"][1])      # a lit hair tuft (volume)
+    # brows: a short down-tilt over each eye (tense/anxious, the boy's whole read)
+    d.point((cx - 4, y + 5), fill=PAL["ink"][2])
+    d.point((cx - 3, y + 6), fill=PAL["ink"][2])
+    d.point((cx + 4, y + 5), fill=PAL["ink"][2])
+    d.point((cx + 3, y + 6), fill=PAL["ink"][2])
+    # eyes: 2px, quiet, set a touch low under the brows (down-cast)
+    fill(d, cx - 4, y + 7, 2, 2, OUTLINE)
+    fill(d, cx + 3, y + 7, 2, 2, OUTLINE)
+    d.point((cx - 4, y + 7), fill=PAL["ink"][1])          # a soft (not hard-black) top
+    d.point((cx + 3, y + 7), fill=PAL["ink"][1])
+    d.point((cx, y + 9), fill=skin_sh)                    # a slim nose tick
+    hline(d, cx - 1, y + 11, 3, PAL["ink"][1])            # a small, closed, tense mouth
 
 
 def hana(d, x: int, y: int, pose: str = "serve") -> None:
-    """하나 (~19): ponytail, food apron, quick energy. Lean and tall.
+    """하나 (~19): slim, energetic, a high BLACK ponytail. A bunsik-bar server.
 
-    Distinct from 이모 (young, slim, high ponytail, tteok-red apron over a light
-    tee) and from 도윤 (female, apron not jacket, ponytail not mop). pose "serve"
-    = leaning over her bunsik bar with a ladle; "wave" = on the platform, arm up
-    (outro). (x,y)=top-left of ~22×52. Consumers: room-02-meokja, cinematic-outro.
+    Reworked to read as a bright, slim young GIRL rather than a white box with a
+    red box on it — and to stay clearly DISTINCT from 이모 (old, round, kerchief,
+    grey cardigan) and 도윤 (male, dark jacket, mop). Her identity is the high
+    black PONYTAIL (a bold tail swinging off the crown) + a structured tteok-red
+    apron BIB (shoulder straps over a white short-sleeve tee, a waist tie + knot,
+    a pocket line) + a bright young face (quick eyes, a clear smile, a fringe).
+    Arms read as arms: short tee sleeves with skin forearms/hands OUTSIDE the
+    torso. pose "serve" = leaning over her bunsik bar reaching out with a ladle;
+    "wave" = on the platform, arm up (outro). (x,y)=top-left of ~22×52.
+    Consumers: room-02-meokja, cinematic-outro.
     """
     skin, skin_sh = PAL["wood_light"][0], PAL["wood_light"][1]
-    tee = PAL["white"][0]
+    tee, tee_sh = PAL["white"][0], PAL["white"][2]
     apron, apron_lit, apron_sh = PAL["tteok"][1], PAL["tteok"][0], PAL["tteok"][2]
-    hair = PAL["ink"][2]
     cx = x + 11
-    drop_shadow(d, x + 3, y + 50, 16, 2)
-    # legs
-    fill(d, x + 6, y + 38, 4, 12, PAL["ink"][1])
-    fill(d, x + 11, y + 38, 4, 12, PAL["ink"][1])
-    # light tee torso under a tteok-red apron
-    fill(d, x + 5, y + 18, 13, 22, tee)
-    hline(d, x + 5, y + 18, 13, PAL["white"][1])
-    fill(d, x + 7, y + 24, 9, 16, apron)                  # apron bib over the tee
-    vline(d, x + 7, y + 24, 16, apron_lit)
-    dither(d, x + 13, y + 28, 3, 12, apron_sh, phase=0)
-    hline(d, x + 7, y + 24, 9, apron_lit)                 # apron top hem
+    drop_shadow(d, x + 4, y + 50, 14, 2)
+    # slim legs (dark jeans), a thin lit shin edge + a cuff break so they read
+    for lx in (x + 7, x + 12):
+        fill(d, lx, y + 38, 4, 12, PAL["ink"][1])
+        vline(d, lx, y + 38, 12, PAL["ink"][0])
+        hline(d, lx, y + 48, 4, OUTLINE)
+    # ── a slim white tee torso, narrow at the waist (a young, lean silhouette) ──
+    d.polygon([(x + 6, y + 18), (x + 16, y + 18), (x + 16, y + 38),
+               (x + 6, y + 38)], fill=tee, outline=OUTLINE)
+    hline(d, x + 6, y + 18, 11, PAL["white"][1])          # lit shoulder line
+    dither(d, x + 13, y + 22, 3, 14, tee_sh, phase=0)     # tee shade (right)
+    fill(d, x + 9, y + 18, 4, 3, tee_sh)                  # a soft round neckline
+    hline(d, x + 9, y + 18, 4, OUTLINE)
+    # ── the structured tteok-red apron BIB over the tee (straps + tie + pocket) ──
+    fill(d, x + 8, y + 23, 7, 16, apron)                  # the bib panel
+    vline(d, x + 8, y + 23, 16, apron_lit)                # lit left edge
+    dither(d, x + 13, y + 26, 2, 13, apron_sh, phase=0)   # shaded right edge
+    hline(d, x + 8, y + 23, 7, apron_lit)                 # bib top hem
+    d.line([x + 9, y + 23, x + 8, y + 19], fill=apron)    # left shoulder strap
+    d.line([x + 13, y + 23, x + 14, y + 19], fill=apron_sh)   # right shoulder strap
+    hline(d, x + 8, y + 33, 7, apron_sh)                  # waist tie band
+    fill(d, x + 10, y + 32, 3, 3, apron_lit)              # the centred tie knot
+    frame(d, x + 10, y + 32, 3, 3, apron_sh)
+    hline(d, x + 9, y + 37, 5, apron_sh)                  # a pocket line low on the bib
     if pose == "wave":
-        d.line([x + 16, y + 20, x + 21, y + 8], fill=tee)     # raised arm
-        d.line([x + 17, y + 20, x + 22, y + 8], fill=PAL["white"][1])
-        fill(d, x + 20, y + 5, 4, 4, skin)
-        frame(d, x + 20, y + 5, 4, 4, OUTLINE)
-        fill(d, x + 3, y + 24, 4, 11, tee)                # left arm down
+        # right arm raised high (greeting): short tee sleeve + a skin forearm/hand
+        fill(d, x + 15, y + 18, 4, 4, tee)                # sleeve cap on the shoulder
+        d.line([x + 17, y + 19, x + 22, y + 8], fill=skin)   # raised forearm
+        d.line([x + 18, y + 19, x + 23, y + 8], fill=skin_sh)
+        fill(d, x + 20, y + 4, 4, 4, skin)                # waving hand
+        frame(d, x + 20, y + 4, 4, 4, OUTLINE)
+        d.point((x + 22, y + 3), fill=skin)               # fingers
+        fill(d, x + 3, y + 22, 4, 4, tee)                 # left tee sleeve cap
+        fill(d, x + 3, y + 25, 4, 9, skin)                # left forearm down the side
+        frame(d, x + 3, y + 30, 4, 4, OUTLINE)            # left hand
     else:
-        # leaning, one arm reaching out with a ladle
-        fill(d, x + 2, y + 22, 4, 10, tee)
-        fill(d, x + 1, y + 30, 4, 4, skin)
-        d.line([x - 2, y + 33, x + 2, y + 31], fill=PAL["metal"][2])  # ladle handle
-        d.ellipse([x - 5, y + 32, x - 1, y + 36], fill=PAL["metal"][1], outline=OUTLINE)
-        fill(d, x + 16, y + 24, 4, 9, tee)                # right arm at side
-    # head + high ponytail (the identity silhouette)
-    d.ellipse([cx - 5, y + 5, cx + 5, y + 16], fill=skin, outline=OUTLINE)
-    d.pieslice([cx - 6, y + 3, cx + 6, y + 12], 180, 360, fill=hair)   # hair crown
-    # the ponytail swinging off the back-right (energy)
-    d.line([cx + 5, y + 6, cx + 10, y + 12], fill=hair)
-    d.line([cx + 6, y + 6, cx + 11, y + 13], fill=PAL["ink"][1])
-    d.point((cx + 11, y + 14), fill=hair)
-    dither(d, cx + 2, y + 9, 3, 4, skin_sh, phase=0)
-    d.point((cx - 2, y + 10), fill=OUTLINE)               # bright quick eyes
-    d.point((cx + 2, y + 10), fill=OUTLINE)
-    d.line([cx - 1, y + 13, cx + 1, y + 13], fill=PAL["tteok"][1])  # small smile
+        # leaning, left arm reaching out with a ladle (a tee sleeve + skin forearm)
+        fill(d, x + 3, y + 21, 4, 4, tee)                 # left tee sleeve cap
+        fill(d, x + 1, y + 25, 5, 5, skin)                # forearm reaching out
+        hline(d, x + 1, y + 25, 5, PAL["wood_light"][0])
+        fill(d, x + 1, y + 29, 4, 4, skin)                # the hand
+        frame(d, x + 1, y + 29, 4, 4, OUTLINE)
+        d.line([x - 2, y + 32, x + 2, y + 30], fill=PAL["metal"][2])  # ladle handle
+        d.ellipse([x - 5, y + 31, x - 1, y + 35], fill=PAL["metal"][1], outline=OUTLINE)
+        fill(d, x + 15, y + 21, 4, 4, tee)                # right tee sleeve cap
+        fill(d, x + 16, y + 25, 4, 8, skin)               # right forearm at her side
+        frame(d, x + 16, y + 29, 4, 4, OUTLINE)           # right hand
+    # ── head + the high black ponytail (the identity silhouette) ──
+    _hana_head(d, cx, y + 4, skin, skin_sh)
+
+
+def _hana_head(d, cx: int, y: int, skin, skin_sh) -> None:
+    """하나's bright young face + a bold high ponytail. (cx,y)=head center-x + top.
+
+    The ponytail is her identity silhouette: a thick black tail tied high on the
+    crown, swinging off the back-right (energy). The face is young + quick: a side
+    fringe, bright eyes, rosy cheeks, a clear smile. Internal to hana()."""
+    hair, hair_hi = PAL["ink"][2], PAL["ink"][1]
+    # the face oval (small + young), smooth, with a right-cheek shade
+    d.ellipse([cx - 5, y, cx + 5, y + 12], fill=skin, outline=OUTLINE)
+    dither(d, cx + 2, y + 4, 3, 6, skin_sh, phase=0)
+    # the hair: a crown cap + a side fringe sweeping across the brow (young)
+    d.pieslice([cx - 6, y - 2, cx + 6, y + 8], 180, 360, fill=hair, outline=OUTLINE)
+    fill(d, cx - 6, y + 2, 7, 2, hair)                    # fringe sweeping left-to-right
+    d.point((cx - 5, y + 4), fill=hair)                   # a strand by the temple
+    d.point((cx + 3, y), fill=hair_hi)                    # a lit crown tuft (volume)
+    # the high PONYTAIL: tied at the crown-back, a THICK tail swinging off right
+    d.line([cx + 4, y - 1, cx + 8, y + 1], fill=hair)     # the tie pulling up + back
+    fill(d, cx + 7, y, 3, 3, hair)                        # the bound base of the tail
+    d.line([cx + 9, y + 1, cx + 12, y + 8], fill=hair)    # the tail swinging out-down
+    d.line([cx + 8, y + 2, cx + 11, y + 9], fill=hair)    # (2px thick = a bold tail)
+    d.line([cx + 10, y + 2, cx + 13, y + 9], fill=hair_hi)   # a lit edge on the tail
+    d.point((cx + 12, y + 9), fill=hair)                  # the wispy tip
+    d.point((cx + 13, y + 10), fill=hair)
+    # the bright quick face: eyes (2px), rosy cheeks, a clear smile
+    ey = y + 6
+    fill(d, cx - 3, ey, 2, 2, OUTLINE)                    # left eye
+    fill(d, cx + 2, ey, 2, 2, OUTLINE)                    # right eye
+    d.point((cx - 3, ey), fill=PAL["ink"][1])             # soft (not pure-black) top
+    d.point((cx + 2, ey), fill=PAL["ink"][1])
+    d.point((cx - 4, ey + 2), fill=PAL["tteok"][0])       # rosy cheeks (energetic)
+    d.point((cx + 4, ey + 2), fill=PAL["tteok"][0])
+    d.point((cx, ey + 2), fill=skin_sh)                   # a slim nose tick
+    d.line([cx - 1, ey + 4, cx + 1, ey + 4], fill=PAL["tteok"][2])   # a small smile
+    d.point((cx + 2, ey + 4), fill=PAL["tteok"][1])       # one lifted corner (a grin)
 
 
 # ── Stalls + market structure ────────────────────────────────────────────────
@@ -936,49 +1046,65 @@ def market_cat(d, x: int, y: int, frame_i: int = 0) -> None:
     """
     fur, fur_sh, fur_hi = PAL["wood_dark"][1], PAL["wood_dark"][2], PAL["wood_light"][2]
     drop_shadow(d, x + 2, y + 15, 13, 1)
-    # sitting body (loaf haunch + upright chest), shared across frames
+    # ── sitting body: a CRISP loaf haunch + an upright chest (one clean mass) ──
+    # the haunch (a rounded loaf at the base), fully outlined so the silhouette
+    # reads at 1x; the upright chest tucked on top, sharing the outline.
     d.ellipse([x + 3, y + 8, x + 15, y + 16], fill=fur, outline=OUTLINE)   # haunch
-    fill(d, x + 5, y + 6, 6, 9, fur)                     # upright chest
-    dither(d, x + 8, y + 10, 5, 5, fur_sh, phase=1)
-    hx = x + 5
+    d.polygon([(x + 5, y + 6), (x + 11, y + 6), (x + 12, y + 13),
+               (x + 4, y + 13)], fill=fur, outline=OUTLINE)               # upright chest
+    fill(d, x + 5, y + 7, 6, 6, fur)                     # re-fill the seam clean
+    vline(d, x + 5, y + 7, 6, fur_hi)                    # lit chest edge (a soft rim)
+    dither(d, x + 9, y + 9, 3, 5, fur_sh, phase=1)       # a small belly shade (right)
+    hx = x + 4
     if frame_i == 2:
         # head tipped UP toward the steam, one front paw raised to the mouth (lick)
-        d.ellipse([hx, y - 1, hx + 7, y + 6], fill=fur, outline=OUTLINE)   # head up
+        d.ellipse([hx, y - 1, hx + 8, y + 7], fill=fur, outline=OUTLINE)   # head up
         _cat_ear(d, hx + 1, y - 2, fur, +1)
-        _cat_ear(d, hx + 6, y - 2, fur, -1)
-        # eyes looking up
+        _cat_ear(d, hx + 7, y - 2, fur, -1)
+        # eyes looking up (a clean dark socket under each gold catch-light)
         d.point((hx + 2, y + 1), fill=PAL["gold_light"][1])
-        d.point((hx + 5, y + 1), fill=PAL["gold_light"][1])
-        d.point((hx + 3, y + 3), fill=fur_sh)            # muzzle
+        d.point((hx + 6, y + 1), fill=PAL["gold_light"][1])
+        d.point((hx + 4, y + 3), fill=PAL["wood_dark"][3])   # muzzle/nose
         # the raised paw at the mouth (the lick)
         fill(d, hx + 2, y + 4, 2, 3, fur_hi)
+        frame(d, hx + 2, y + 4, 2, 3, OUTLINE)
         d.point((hx + 2, y + 3), fill=PAL["white"][1])   # tongue tip on the paw
     else:
-        d.ellipse([hx, y, hx + 7, y + 7], fill=fur, outline=OUTLINE)       # head
+        d.ellipse([hx, y, hx + 8, y + 8], fill=fur, outline=OUTLINE)       # head
         _cat_ear(d, hx + 1, y - 1, fur, +1)
-        _cat_ear(d, hx + 6, y - 1, fur, -1)
-        d.point((hx + 2, y + 3), fill=PAL["gold_light"][1])  # warm eyes
-        d.point((hx + 5, y + 3), fill=PAL["gold_light"][1])
-        d.point((hx + 3, y + 5), fill=fur_sh)            # muzzle
-        # front legs
-        vline(d, x + 6, y + 13, 3, fur_sh)
-        vline(d, x + 9, y + 13, 3, fur_sh)
-    # the tail: curled-right in frame 0/2, FLICKED out-left in frame 1
+        _cat_ear(d, hx + 7, y - 1, fur, -1)
+        dither(d, hx + 5, y + 2, 3, 5, fur_sh, phase=0)  # cheek shade (right)
+        # warm eyes (a 1px dark rim under each so they read as eyes, not specks)
+        d.point((hx + 2, y + 3), fill=PAL["gold_light"][1])
+        d.point((hx + 6, y + 3), fill=PAL["gold_light"][1])
+        d.point((hx + 2, y + 4), fill=PAL["wood_dark"][3])
+        d.point((hx + 6, y + 4), fill=PAL["wood_dark"][3])
+        d.point((hx + 4, y + 5), fill=PAL["wood_dark"][3])   # nose/muzzle
+        # two front legs planted, a clean gap between them (reads as a sitting cat)
+        vline(d, x + 6, y + 13, 3, fur)
+        vline(d, x + 7, y + 13, 3, fur_sh)
+        vline(d, x + 10, y + 13, 3, fur)
+        vline(d, x + 11, y + 13, 3, fur_sh)
+        hline(d, x + 6, y + 15, 6, OUTLINE)              # the paws' ground line
+    # the tail: curled-right in frame 0/2, FLICKED up-right in frame 1 — drawn 2px
+    # thick with a lit edge so it reads as a tail, not a stray line, at 1x.
     if frame_i == 1:
-        d.line([x + 14, y + 13, x + 17, y + 6], fill=fur)     # tail up-right
-        d.line([x + 17, y + 6, x + 15, y + 2], fill=fur)
-        d.point((x + 15, y + 2), fill=fur_hi)
+        d.line([x + 13, y + 13, x + 17, y + 5], fill=fur)     # tail flicked up-right
+        d.line([x + 14, y + 13, x + 18, y + 5], fill=fur_sh)
+        d.line([x + 17, y + 5, x + 15, y + 1], fill=fur)
+        d.point((x + 15, y + 1), fill=fur_hi)                 # the tip
     else:
-        d.line([x + 14, y + 14, x + 16, y + 8], fill=fur)     # tail curled at side
-        d.line([x + 16, y + 8, x + 15, y + 5], fill=fur)
-        d.point((x + 15, y + 5), fill=fur_hi)
+        d.line([x + 13, y + 14, x + 16, y + 8], fill=fur)     # tail curled at the side
+        d.line([x + 14, y + 14, x + 17, y + 8], fill=fur_sh)
+        d.line([x + 16, y + 8, x + 14, y + 4], fill=fur)
+        d.point((x + 14, y + 4), fill=fur_hi)                 # the tip
 
 
 def _cat_ear(d, tipx: int, tipy: int, fur, sgn: int) -> None:
     """One triangular cat ear, apex at (tipx,tipy), base 3px down. Internal."""
     d.polygon([(tipx, tipy), (tipx - 2 * sgn, tipy + 3), (tipx + sgn, tipy + 3)],
               fill=fur, outline=OUTLINE)
-    d.point((tipx - sgn, tipy + 2), fill=PAL["neon_pink"][1])  # inner-ear pink fleck
+    d.point((tipx - sgn, tipy + 2), fill=PAL["neon_pink"][2])  # inner-ear pink fleck
 
 
 # ── Hand props (close-ups + outro) ───────────────────────────────────────────
