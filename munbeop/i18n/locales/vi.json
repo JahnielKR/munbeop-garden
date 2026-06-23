@@ -107,7 +107,8 @@
     "empty": {
       "title": "Khu vườn của bạn chỉ là đất trống",
       "body": "Trồng câu tiếng Hàn đầu tiên để cây đầu tiên của bạn lớn lên.",
-      "cta": "Gieo hạt đầu tiên"
+      "cta": "Gieo hạt đầu tiên",
+      "placement_cta": "Tìm cấp độ của bạn"
     }
   },
   "journal": {
@@ -230,7 +231,8 @@
       "empty_hint": "Chọn ngữ pháp bạn muốn từ bất kỳ cấp độ nào, đặt tên và chơi."
     },
     "rescue_offer": "Chăm sóc cây này trước nhé?",
-    "rescue_offer_dismiss": "Để sau"
+    "rescue_offer_dismiss": "Để sau",
+    "your_level": "Cấp độ của bạn"
   },
   "library": {
     "lead": "Tất cả các ngữ pháp có thể xuất hiện trong các lượt rút bài của bạn. Mỗi cái lớn lên khi bạn luyện tập.",
@@ -583,6 +585,10 @@
     "counters": {
       "name": "Phòng lab loại từ",
       "desc": "Số + loại từ: đếm kiểu Hàn."
+    },
+    "placement": {
+      "name": "Kiểm tra xếp lớp",
+      "desc": "Tìm cấp độ TOPIK của bạn chỉ trong vài câu hỏi."
     }
   },
   "escape": {
@@ -750,5 +756,25 @@
     "dismiss": "Bỏ qua",
     "notif_title": "Khu vườn nhớ bạn 🌱",
     "notif_body": "{n} cây đã sẵn sàng để ôn lại."
+  },
+  "placement": {
+    "title": "Kiểm tra xếp lớp",
+    "lead": "Trả lời một vài câu hỏi nhanh và chúng tôi sẽ bắt đầu ở cấp độ phù hợp với bạn.",
+    "intro_detail": "Khoảng 4–24 câu hỏi trắc nghiệm. Không có đồng hồ đếm ngược.",
+    "start": "Tìm cấp độ của tôi",
+    "pick_hint": "Chọn dạng phù hợp với chỗ trống.",
+    "correct": "Đúng rồi",
+    "wrong": "Chưa đúng",
+    "reveal_correct": "Đáp án: {correct}",
+    "next": "Tiếp",
+    "progress_label": "Câu",
+    "level_tag": "TOPIK {level}",
+    "result": {
+      "your_level": "Cấp độ của bạn: TOPIK {level}",
+      "just_starting": "Bạn đang mới bắt đầu — chào mừng!",
+      "start_with": "Bắt đầu với TOPIK {level}",
+      "cta": "Luyện tập TOPIK {level}",
+      "retake": "Làm lại bài kiểm tra"
+    }
   }
 }

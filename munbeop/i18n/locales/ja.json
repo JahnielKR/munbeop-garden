@@ -107,7 +107,8 @@
     "empty": {
       "title": "あなたの庭はまだ何もない土です",
       "body": "最初の韓国語の文を植えて、最初の木を育てましょう。",
-      "cta": "最初の種を植える"
+      "cta": "最初の種を植える",
+      "placement_cta": "自分のレベルを確認する"
     }
   },
   "journal": {
@@ -230,7 +231,8 @@
       "empty_hint": "好きな文法をどのレベルからでも選び、名前を付けてプレイ。"
     },
     "rescue_offer": "先にこの植物を手入れする？",
-    "rescue_offer_dismiss": "あとで"
+    "rescue_offer_dismiss": "あとで",
+    "your_level": "あなたのレベル"
   },
   "library": {
     "lead": "カードを引くと出てくる全文法。練習するたびに育ちます。",
@@ -583,6 +585,10 @@
     "counters": {
       "name": "助数詞ラボ",
       "desc": "数 + 助数詞：韓国語式に数える。"
+    },
+    "placement": {
+      "name": "レベルチェック",
+      "desc": "いくつかの質問でTOPIKのレベルを確認しよう。"
     }
   },
   "escape": {
@@ -750,5 +756,25 @@
     "dismiss": "閉じる",
     "notif_title": "庭があなたを待っています 🌱",
     "notif_body": "{n}本の植物が復習できます。"
+  },
+  "placement": {
+    "title": "レベルチェック",
+    "lead": "いくつかの質問に答えると、あなたに合ったレベルからスタートできます。",
+    "intro_detail": "約4〜24問の選択式。タイマーなし。",
+    "start": "レベルを確認する",
+    "pick_hint": "空欄に合う形を選んでください。",
+    "correct": "正解",
+    "wrong": "惜しい",
+    "reveal_correct": "答え：{correct}",
+    "next": "次へ",
+    "progress_label": "問題",
+    "level_tag": "TOPIK {level}",
+    "result": {
+      "your_level": "あなたのレベル：TOPIK {level}",
+      "just_starting": "まだ始めたばかりです — ようこそ！",
+      "start_with": "TOPIK {level}から始めよう",
+      "cta": "TOPIK {level}を練習する",
+      "retake": "テストをやり直す"
+    }
   }
 }
