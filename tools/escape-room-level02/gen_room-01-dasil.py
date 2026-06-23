@@ -364,17 +364,66 @@ def paint_cushions(d):
 
 # ── CENTER-RIGHT: 우담 the monk (SLOT1 [120,95,55,75]) ───────────────────────
 
+def paint_light_pool(d):
+    """A warm window LIGHT POOL behind 우담 so the FOCAL monk pops off the wall.
+
+    The recipe's halo: the seated host is the highest-contrast element of the
+    scene. Two moves, both kept ON-PALETTE and dithered (no smooth alpha):
+      1) CALM the busy diagonal wall hatching directly behind him — restamp a
+         clean warm hanji patch over the penumbra/grain dither right where his
+         head + shoulders sit, so he no longer competes with the wall texture.
+      2) Pool a soft warm radial halo (gold→ember, dithered, frayed) over that
+         clean patch — a precious warm key gathering on the host, the warmest
+         point of the cold tea room outside the brazier corner.
+    Drawn BEFORE the cushion + figure so it sits behind him on the wall/floor.
+    """
+    hcx, hcy = 147, 124          # halo centre ≈ the monk's chest/head on the wall
+    rw0, rh0 = 40, 36            # the clean-patch / halo footprint on the wall
+
+    # 1) CALM the wall behind him: re-lay clean warm hanji ONLY inside an ellipse
+    # (an elliptical mask, NOT a hard rectangle) so the diagonal penumbra hatching
+    # dissolves toward the centre and frays back to texture at the rim — no seam.
+    for yy in range(hcy - rh0, hcy + rh0):
+        if yy < 0 or yy >= FLOOR_Y:
+            continue
+        t = abs(yy - hcy) / rh0
+        half = int(rw0 * (1 - t * t) ** 0.5)
+        for xx in range(hcx - half, hcx + half):
+            if xx < 0 or xx >= W:
+                continue
+            edge = max(abs(xx - hcx) / max(half, 1), t)   # 0 centre → 1 rim
+            # near the centre: always clean; toward the rim: keep some hatching so
+            # the calm patch melts into the busy wall instead of cutting a hole.
+            if edge < 0.72 or ((xx * 3 + yy * 5) % 4 == 0):
+                d.point((xx, yy), fill=PAL["hanji"][2])
+
+    # 2) the warm radial halo over that calm patch: out→in lobes, dithered so the
+    # warmth gathers on the host and frays into the wall (gold core → ember → warm).
+    for rw, rh, col, ph in ((37, 33, PAL["wood_light"][3], 0),
+                            (28, 25, PAL["ember"][3], 1),
+                            (19, 17, PAL["ember"][2], 0),
+                            (11, 10, PAL["gold_light"][2], 1)):
+        for yy in range(hcy - rh, hcy + rh):
+            if yy < 0 or yy >= FLOOR_Y:
+                continue
+            t = abs(yy - hcy) / rh
+            half = int(rw * (1 - t * t) ** 0.5)
+            if half > 0:
+                dither(d, hcx - half, yy, half * 2, 1, col, phase=(ph + yy) % 2)
+
+
 def paint_monk(d):
     """우담, monk(seated_tea), seated ON THE FLOOR at the tea table.
 
-    monk(seated_tea) measured: at origin (mx,my) the figure spans x mx+3..mx+28,
-    y my+8..my+46, visual center ≈ (mx+15.5, my+27). Hotspot [120,95,55,75],
-    center (147,132) → origin (132,105) lands head at ~y113, lap bottom at ~y151
-    (right at the floor/table line), hands at ~(142,134); the figure mass centers
-    ≈ (147,132), inside the rect. He sits low so he reads as a PERSON seated at
+    monk(seated_tea) measured: at origin (mx,my) the figure spans x mx+1..mx+31,
+    y my+2..my+46, visual center ≈ (mx+16, my+26). Hotspot [120,95,55,75],
+    center (147,132) → origin (132,105) lands head at ~y107, lap bottom at ~y151
+    (right at the floor/table line), hands at ~(143,135); the figure mass centers
+    ≈ (148,131), inside the rect. He sits low so he reads as a PERSON seated at
     the table — NOT a portrait hung on the wall (round-1 failure). His own
     cushion + floor-contact shadow ground him; the table (painted after) occludes
-    his lower lap, seating him AT it.
+    his lower lap, seating him AT it. The warm light pool (paint_light_pool, drawn
+    earlier) backlights him so he is the scene's highest-contrast element.
     """
     # his floor cushion (the master/host seat) — a warm persimmon 방석 so it reads
     # as a SEAT cushion under him, NOT a dark bench merging with the table top
@@ -424,6 +473,7 @@ def build():
     paint_guestbook_stand(d)     # back-right entrance + guestbook
     paint_brazier_and_cat(d)     # right warm key + cat
     paint_cushions(d)            # the player + second floor cushions (far back)
+    paint_light_pool(d)          # warm halo behind the monk (he is the focal point)
     paint_monk(d)                # the monk seated (on his own cushion), behind…
     paint_table(d)               # …the low table, drawn IN FRONT of the monk
     paint_tea_service(d)         # the teapot at his hands + the two cups, on top
