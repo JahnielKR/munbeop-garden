@@ -937,6 +937,8 @@ Este es el argumento de venta del nivel, y es literal. Contraste explícito con 
 
 No hay **ni una sola** extensión de dominio, store, `rules.ts` ni UI. Donde L2 documentó en su §12.1 una extensión acotada de `answerCreation` para el tercer estado `'soft-reject'`, aquí ese estado **ya existe** y solo se alimenta con datos. El único trabajo de código es escribir el seed y registrarlo como jugable.
 
+> **Nota (implementación 2026-06-23):** la única salvedad al «cero motor» es UN ajuste de **robustez de comparación** de 1 línea: `completion` se compara ignorando espacios internos (`normalizeCompletionAnswer`, `app/lib/escape-room/answer.ts`), para que `먹어보세요` y `먹어 보세요` (espaciado de 보조용언, 한글 맞춤법 §47) cuenten ambos como correctos. No es una mecánica de juego nueva — es tolerancia de tecleo; resuelve la cuestión abierta de §12.7 (espacios en Slots 2 y 4) y beneficia a todo `completion` futuro. El seed `level-03.ts` y el flip de `registry.ts` a `playable` son el resto del trabajo de código.
+
 ### §12.2 Seed y registro
 
 - **Archivo del seed:** `munbeop/app/seed/escape-room/level-03.ts`, exportando un `Level` con `id: 'level-03'`, `topikLevel: 2`, `grammarCodes: ['G039','G038','G053','G021','G019','G013']`, 4 `rooms`, 6 `slots` (`candidates.length === 5` en cada uno), 1 entrada en `scriptedBeats` (`afterSlotId: 'slot-4'`) y `rewards` con los 4 tiers.
@@ -963,7 +965,7 @@ No hay motor nuevo: el sorteo es el `shuffle` estándar de 1 candidato por slot.
 ### §12.7 Flags de verificación (bloquean producción, no diseño)
 
 - [ ] **Revisión nativa del coreano (wife review):** las 30 líneas testeadas (5 por slot) + las líneas fijas de NPC + el `voiceLine` del giro. Foco en (a) naturalidad callejera del 해요체 de mercado, (b) que el Slot 4 no tenga «2 respuestas válidas» (el aviso de L2/Step 15), (c) ortografía de `물어보세요` cerrado vs. los `보세요` separados (§8.2 nota 2.2), (d) que `다녀오겠습니다` / `안녕히 계세요` / `잘 있어요` se sientan como el contraste vuelvo/no-vuelvo que el diseño asume.
-- [ ] **`completion` y espacios internos (Slots 2 y 4):** decidir si el motor normaliza espacios antes de comparar (§8.2 ⚙️). Si NO se implementa, confirmar que las `answer` canónicas (`물어보세요` cerrado; `먹어 보세요`/`가 보세요`/`시켜 보세요`/`마셔 보세요` separados; los cinco `-지만` sin espacio) coinciden letra a letra con lo que un jugador nativo teclearía. Es la única fuente de falso-negativo plausible del nivel.
+- [x] **`completion` y espacios internos (Slots 2 y 4): RESUELTO.** El motor ahora normaliza espacios internos antes de comparar (`normalizeCompletionAnswer`, ver §12.1 nota de implementación), así `물어보세요`/`물어 보세요` y `먹어 보세요`/`먹어보세요` cuentan ambos. Las `answer` canónicas del seed siguen siendo las del dossier; el ajuste solo elimina el falso-negativo por espaciado.
 - [ ] **`softRejectTiles ∩ correctOrder = ∅` en los 5 candidatos del Slot 6:** test unitario en `tests/unit/escape-room/` (heredado de L2). La tabla de §8.6 ya lo verifica a mano; el test lo blinda.
 - [ ] **`{farewell}` exactamente una vez por locale** en el `outro`; join natural para los 5 candidatos del Slot 6 (test heredado de L2).
 - [ ] **Legibilidad de carteles de neón a 320×240:** trazos de hangul SUGERIDOS, ilegibles; el texto real solo en close-ups/UI (Neodgm ≥ 16px). Revisar a zoom 1× (regla de arte transversal).
