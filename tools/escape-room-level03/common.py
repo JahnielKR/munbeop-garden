@@ -288,6 +288,16 @@ def neon_alley(d, x: int, y: int, w: int, h: int, lit_cols: int = 99,
             lit = lit_n < lit_cols and r.random() > 0.18
             lit_n += 1
             neon_sign(d, sx, sy, max(sw, 12), max(sh, 8), color=c, lit=lit)
+    # depth veil: darken the receding (upper) rows so the wall reads as a market
+    # in fuga (far = dimmer), not a flat bright grid. Denser asphalt dither up top.
+    for vy in range(y, y + h):
+        t = 1.0 - (vy - y) / max(h - 1, 1)
+        if t <= 0.15:
+            continue
+        m = 2 if t > 0.6 else 4
+        for vx in range(x, x + w):
+            if (vx * 5 + vy * 3) % m == 0:
+                d.point((vx, vy), fill=PAL["asphalt"][2])
 
 
 def wet_reflect(d, x: int, y: int, w: int, h: int, color: str = "pink",
