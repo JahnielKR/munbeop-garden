@@ -9,8 +9,10 @@ import type { DeckOption } from './cards'
  */
 interface Props {
   options: DeckOption[]
+  /** Deck id to highlight as the placement-recommended starting level. */
+  recommendedId?: string | null
 }
-defineProps<Props>()
+withDefaults(defineProps<Props>(), { recommendedId: null })
 defineEmits<{ select: [deckId: string | null] }>()
 
 const { t } = useI18n()
@@ -38,7 +40,7 @@ function stackStyle(i: number) {
       :key="opt.id ?? 'all'"
       type="button"
       class="deck"
-      :class="{ 'deck--locked': opt.disabled }"
+      :class="{ 'deck--locked': opt.disabled, 'deck--recommended': !!opt.id && opt.id === recommendedId }"
       :disabled="opt.disabled"
       :data-testid="`deck-${opt.id ?? 'all'}`"
       @click="$emit('select', opt.id)"
@@ -53,6 +55,7 @@ function stackStyle(i: number) {
         />
       </span>
       <span class="deck__name">{{ opt.name }}</span>
+      <span v-if="!!opt.id && opt.id === recommendedId" class="deck__badge">{{ t('practice.your_level') }}</span>
       <span class="deck__count">{{ t('practice.deck_count', { n: opt.count }) }}</span>
       <span v-if="opt.reason" class="deck__locked-label">
         {{ opt.reason === 'excluded' ? t('practice.deck_excluded') : t('practice.deck_too_few') }}
@@ -137,5 +140,10 @@ function stackStyle(i: number) {
   font-size: 11px;
   color: var(--text-soft, var(--ink-soft));
   text-align: center;
+}
+.deck--recommended { border-color: var(--accent); box-shadow: var(--shadow-button-hover, 7px 8px 0 rgba(60, 42, 24, 0.35)); }
+.deck__badge {
+  font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: 10px; letter-spacing: 0.04em;
+  color: var(--text-on-accent, #fff7eb); background: var(--accent, #c97c5d); padding: 2px 8px;
 }
 </style>

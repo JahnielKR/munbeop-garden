@@ -107,7 +107,8 @@
     "empty": {
       "title": "Your garden is bare soil",
       "body": "Plant your first Korean sentence to grow your first tree.",
-      "cta": "Plant the first seed"
+      "cta": "Plant the first seed",
+      "placement_cta": "Find your level"
     }
   },
   "journal": {
@@ -230,7 +231,8 @@
       "empty_hint": "Pick the grammar you want from any level, name it, and play."
     },
     "rescue_offer": "Care for this plant first?",
-    "rescue_offer_dismiss": "Not now"
+    "rescue_offer_dismiss": "Not now",
+    "your_level": "Your level"
   },
   "library": {
     "lead": "All the grammar points that can show up in your card draws. Each one grows as you practice.",
@@ -583,6 +585,10 @@
     "counters": {
       "name": "Counter Lab",
       "desc": "Numbers + classifiers: count things the Korean way."
+    },
+    "placement": {
+      "name": "Placement",
+      "desc": "Find your TOPIK level in a few questions."
     }
   },
   "conjugation": {
@@ -750,5 +756,25 @@
     "dismiss": "Dismiss",
     "notif_title": "Your garden misses you 🌱",
     "notif_body": "{n} plants are ready to revisit."
+  },
+  "placement": {
+    "title": "Placement Test",
+    "lead": "Answer a few quick questions and we'll start you at the right level.",
+    "intro_detail": "About 4–24 multiple-choice questions. No timer.",
+    "start": "Find my level",
+    "pick_hint": "Pick the form that fits the blank.",
+    "correct": "Correct",
+    "wrong": "Not quite",
+    "reveal_correct": "Answer: {correct}",
+    "next": "Next",
+    "progress_label": "Question",
+    "level_tag": "TOPIK {level}",
+    "result": {
+      "your_level": "Your level: TOPIK {level}",
+      "just_starting": "You're just starting out — welcome!",
+      "start_with": "Start with TOPIK {level}",
+      "cta": "Practice TOPIK {level}",
+      "retake": "Retake test"
+    }
   }
 }

@@ -107,7 +107,8 @@
     "empty": {
       "title": "Seu jardim é só terra nua",
       "body": "Plante sua primeira frase em coreano para crescer sua primeira árvore.",
-      "cta": "Plantar a primeira semente"
+      "cta": "Plantar a primeira semente",
+      "placement_cta": "Descubra seu nível"
     }
   },
   "journal": {
@@ -230,7 +231,8 @@
       "empty_hint": "Escolha a gramática que quiser, de qualquer nível, dê um nome e jogue."
     },
     "rescue_offer": "Cuidar desta planta primeiro?",
-    "rescue_offer_dismiss": "Agora não"
+    "rescue_offer_dismiss": "Agora não",
+    "your_level": "Seu nível"
   },
   "library": {
     "lead": "Todas as gramáticas que podem sair nas suas cartas. Cada uma cresce conforme você pratica.",
@@ -583,6 +585,10 @@
     "counters": {
       "name": "Laboratório de contadores",
       "desc": "Números + classificadores: contar à maneira coreana."
+    },
+    "placement": {
+      "name": "Teste de nível",
+      "desc": "Descubra seu nível TOPIK em poucas perguntas."
     }
   },
   "escape": {
@@ -750,5 +756,25 @@
     "dismiss": "Dispensar",
     "notif_title": "Seu jardim sente sua falta 🌱",
     "notif_body": "{n} plantas estão prontas para revisar."
+  },
+  "placement": {
+    "title": "Teste de nível",
+    "lead": "Responda algumas perguntas rápidas e começaremos no nível certo.",
+    "intro_detail": "Cerca de 4–24 questões de múltipla escolha. Sem cronômetro.",
+    "start": "Descobrir meu nível",
+    "pick_hint": "Escolha a forma que encaixa na lacuna.",
+    "correct": "Correto",
+    "wrong": "Quase lá",
+    "reveal_correct": "Resposta: {correct}",
+    "next": "Próximo",
+    "progress_label": "Questão",
+    "level_tag": "TOPIK {level}",
+    "result": {
+      "your_level": "Seu nível: TOPIK {level}",
+      "just_starting": "Você está começando agora — bem-vindo/a!",
+      "start_with": "Comece com TOPIK {level}",
+      "cta": "Praticar TOPIK {level}",
+      "retake": "Refazer teste"
+    }
   }
 }

@@ -107,7 +107,8 @@
     "empty": {
       "title": "Kebunmu masih tanah kosong",
       "body": "Tanam kalimat Korea pertamamu untuk menumbuhkan pohon pertamamu.",
-      "cta": "Tanam benih pertama"
+      "cta": "Tanam benih pertama",
+      "placement_cta": "Temukan levelmu"
     }
   },
   "journal": {
@@ -230,7 +231,8 @@
       "empty_hint": "Pilih tata bahasa yang kamu mau dari level mana pun, beri nama, lalu mainkan."
     },
     "rescue_offer": "Rawat tanaman ini dulu?",
-    "rescue_offer_dismiss": "Nanti saja"
+    "rescue_offer_dismiss": "Nanti saja",
+    "your_level": "Levelmu"
   },
   "library": {
     "lead": "Semua tata bahasa yang bisa muncul di kartu-kartumu. Masing-masing tumbuh seiring latihanmu.",
@@ -583,6 +585,10 @@
     "counters": {
       "name": "Lab Penggolong",
       "desc": "Angka + penggolong: menghitung ala Korea."
+    },
+    "placement": {
+      "name": "Tes Penempatan",
+      "desc": "Temukan level TOPIK-mu dalam beberapa pertanyaan."
     }
   },
   "escape": {
@@ -750,5 +756,25 @@
     "dismiss": "Tutup",
     "notif_title": "Tamanmu merindukanmu 🌱",
     "notif_body": "{n} tanaman siap ditinjau."
+  },
+  "placement": {
+    "title": "Tes Penempatan",
+    "lead": "Jawab beberapa pertanyaan singkat dan kami akan memulaimu di level yang tepat.",
+    "intro_detail": "Sekitar 4–24 soal pilihan ganda. Tanpa batas waktu.",
+    "start": "Temukan levelku",
+    "pick_hint": "Pilih bentuk yang cocok di bagian kosong.",
+    "correct": "Benar",
+    "wrong": "Belum tepat",
+    "reveal_correct": "Jawaban: {correct}",
+    "next": "Berikutnya",
+    "progress_label": "Soal",
+    "level_tag": "TOPIK {level}",
+    "result": {
+      "your_level": "Levelmu: TOPIK {level}",
+      "just_starting": "Kamu baru mulai — selamat datang!",
+      "start_with": "Mulai dengan TOPIK {level}",
+      "cta": "Latihan TOPIK {level}",
+      "retake": "Ulangi tes"
+    }
   }
 }
