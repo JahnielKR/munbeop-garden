@@ -303,7 +303,8 @@
       "next": "ถัดไป",
       "restart": "ลองอีกครั้ง",
       "score": "ถูก {correct} / {total} ข้อ"
-    }
+    },
+    "paths_link": "เส้นทาง TOPIK ของคุณ →"
   },
   "mastery": {
     "seedling": "새싹 · ใหม่",
@@ -783,5 +784,14 @@
       "cta": "ฝึกกับ TOPIK {level}",
       "retake": "ทำแบบทดสอบใหม่"
     }
+  },
+  "paths": {
+    "title": "เส้นทาง TOPIK ของคุณ",
+    "lead": "แต่ละระดับตามลำดับ — ดูความคืบหน้าและสิ่งที่ควรเรียนต่อ",
+    "progress_label": "{learned} / {total}",
+    "next_label": "ถัดไป",
+    "practice_cta": "ฝึกเลย",
+    "complete": "จบเส้นทางแล้ว! 🎉",
+    "list_toggle": "ดูเส้นทางทั้งหมด"
   }
 }

@@ -303,7 +303,8 @@
       "next": "Next",
       "restart": "Try again",
       "score": "{correct} / {total} correct"
-    }
+    },
+    "paths_link": "Your TOPIK paths →"
   },
   "mastery": {
     "seedling": "Sprout · 새싹",
@@ -783,5 +784,14 @@
       "cta": "Practice TOPIK {level}",
       "retake": "Retake test"
     }
+  },
+  "paths": {
+    "title": "Your TOPIK paths",
+    "lead": "Each level in order — see how far you are and what to study next.",
+    "progress_label": "{learned} / {total}",
+    "next_label": "Up next",
+    "practice_cta": "Practice it",
+    "complete": "Path complete! 🎉",
+    "list_toggle": "Show the full path"
   }
 }

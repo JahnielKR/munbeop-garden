@@ -7,6 +7,7 @@ import LibrarySearchBar from '~/components/library/LibrarySearchBar.vue'
 import { useGrammarStore } from '~/stores/grammar'
 import { useGrammarModal } from '~/composables/useGrammarModal'
 import { useLibrarySearch } from '~/composables/useLibrarySearch'
+import { NuxtLink } from '#components'
 
 const grammarStore = useGrammarStore()
 const { t } = useI18n()
@@ -43,6 +44,7 @@ async function onCardClick(ko: string) {
   <div class="page">
     <BilingualTitle ko="도서관" :latin="t('title.library')" />
     <p class="lead">{{ t('library.lead') }}</p>
+    <NuxtLink class="paths-link" to="/paths">{{ t('library.paths_link') }}</NuxtLink>
 
     <LibrarySearchBar
       v-model:query="query"
@@ -141,6 +143,17 @@ async function onCardClick(ko: string) {
 .lead {
   font-family: 'Inter', sans-serif;
   color: var(--ink-soft);
+}
+.paths-link {
+  align-self: flex-start;
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  color: var(--link);
+  text-decoration: underline;
+}
+.paths-link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .empty {

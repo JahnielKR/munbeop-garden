@@ -303,7 +303,8 @@
       "next": "Lanjut",
       "restart": "Coba lagi",
       "score": "{correct} / {total} benar"
-    }
+    },
+    "paths_link": "Jalur TOPIK kamu →"
   },
   "mastery": {
     "seedling": "새싹 · Baru",
@@ -783,5 +784,14 @@
       "cta": "Latihan TOPIK {level}",
       "retake": "Ulangi tes"
     }
+  },
+  "paths": {
+    "title": "Jalur TOPIK kamu",
+    "lead": "Tiap level berurutan — lihat progresmu dan apa yang dipelajari berikutnya.",
+    "progress_label": "{learned} / {total}",
+    "next_label": "Berikutnya",
+    "practice_cta": "Latih",
+    "complete": "Jalur selesai! 🎉",
+    "list_toggle": "Lihat seluruh jalur"
   }
 }

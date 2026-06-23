@@ -303,7 +303,8 @@
       "next": "Tiếp theo",
       "restart": "Thử lại",
       "score": "{correct} / {total} câu đúng"
-    }
+    },
+    "paths_link": "Lộ trình TOPIK của bạn →"
   },
   "mastery": {
     "seedling": "새싹 · Mới",
@@ -783,5 +784,14 @@
       "cta": "Luyện tập TOPIK {level}",
       "retake": "Làm lại bài kiểm tra"
     }
+  },
+  "paths": {
+    "title": "Lộ trình TOPIK của bạn",
+    "lead": "Từng cấp độ theo thứ tự — xem bạn đã đi tới đâu và học gì tiếp theo.",
+    "progress_label": "{learned} / {total}",
+    "next_label": "Tiếp theo",
+    "practice_cta": "Luyện ngay",
+    "complete": "Hoàn thành lộ trình! 🎉",
+    "list_toggle": "Xem toàn bộ lộ trình"
   }
 }
