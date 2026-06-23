@@ -37,6 +37,9 @@ import { useSettingsStore } from '~/stores/settings'
 import { useLogStore } from '~/stores/log'
 import { todayCount } from '~/lib/stats/goal'
 import EmptyPlot from '~/components/garden/EmptyPlot.vue'
+import GardenSkeleton from '~/components/garden/GardenSkeleton.vue'
+import { heroState } from '~/lib/garden/loading'
+import { useAppStatus } from '~/stores/appStatus'
 import GuidedFirstSentence from '~/components/onboarding/GuidedFirstSentence.vue'
 import { useOnboarding } from '~/composables/useOnboarding'
 import type { TopikLevel } from '~/lib/domain'
@@ -59,6 +62,8 @@ const {
 // Daily goal ring (today's practiced count vs the user's goal).
 const settings = useSettingsStore()
 const logStore = useLogStore()
+const appStatus = useAppStatus()
+const hero = computed(() => heroState(appStatus.status, logStore.entries.length === 0))
 const goalCount = computed(() =>
   todayCount(logStore.entries.map((e) => new Date(e.date).getTime()), Date.now()),
 )
@@ -193,8 +198,10 @@ const bomiAnchor = computed(() => {
     </header>
 
     <Transition name="garden-fade" mode="out-in">
+      <GardenSkeleton v-if="view === 'hero' && hero === 'loading'" key="skeleton" />
+
       <EmptyPlot
-        v-if="view === 'hero' && onboarding.showEmptyPlot.value"
+        v-else-if="view === 'hero' && hero === 'empty'"
         key="empty"
         @start="onboarding.start()"
       />
