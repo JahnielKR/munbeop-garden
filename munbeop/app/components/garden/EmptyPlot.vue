@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Button from '~/components/ui/Button.vue'
+import { NuxtLink } from '#components'
 
 /**
  * Distinct zero-progress state for the garden home: an inviting bare plot,
@@ -18,6 +19,7 @@ const { t } = useI18n()
     <h2 class="plot__title">{{ t('onboarding.empty.title') }}</h2>
     <p class="plot__body">{{ t('onboarding.empty.body') }}</p>
     <Button @click="$emit('start')">{{ t('onboarding.empty.cta') }}</Button>
+    <NuxtLink class="plot__placement" to="/practice/placement">{{ t('onboarding.empty.placement_cta') }}</NuxtLink>
   </section>
 </template>
 
@@ -54,4 +56,9 @@ const { t } = useI18n()
   color: var(--text-soft);
   line-height: 1.6;
 }
+.plot__placement {
+  font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: 13px; color: var(--link);
+  text-decoration: underline;
+}
+.plot__placement:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 </style>
