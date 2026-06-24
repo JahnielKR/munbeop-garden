@@ -52,15 +52,22 @@ describe('GrammarStudySheet', () => {
     expect(wrapper.html()).toContain('library.modal.coming_soon.usage_notes')
   })
 
-  it('renders ComingSoon for audio and achievements; shows ExamplesSection for examples', () => {
+  it('renders ComingSoon for achievements; shows ExamplesSection for examples', () => {
     const wrapper = mount(GrammarStudySheet, { props: { grammar: seededGrammar } })
     const html = wrapper.html()
-    expect(html).toContain('library.modal.coming_soon.audio')
     expect(html).toContain('library.modal.coming_soon.achievements')
     // ExamplesSection replaces the coming-soon placeholder; it falls back to
     // the canonical example when the bank is empty.
     expect(html).not.toContain('library.modal.coming_soon.examples')
     expect(html).toContain('비가 오니까 우산을 챙겨요.')
+  })
+
+  it('replaces the audio placeholder with the pronunciation section for a guided point', () => {
+    // -(으)니까 has no guide → no section; -지만 does → row-1 chips render.
+    expect(mount(GrammarStudySheet, { props: { grammar: seededGrammar } }).find('.pron-section').exists()).toBe(false)
+    const guided = mount(GrammarStudySheet, { props: { grammar: { ...seededGrammar, ko: '-지만' } } })
+    expect(guided.find('.pron-section').exists()).toBe(true)
+    expect(guided.find('.pron-parts').text()).toContain('지')
   })
 
   it('practice CTA pushes /practice/ruleta?focus=<ko> (the hub lives at /practice)', async () => {

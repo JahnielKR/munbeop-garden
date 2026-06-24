@@ -244,7 +244,6 @@
         "usage_notes": "使い方ノート",
         "your_progress": "あなたの進捗",
         "examples": "例文",
-        "audio": "発音",
         "achievements": "アチーブメント",
         "practice_cta": "今すぐ練習する"
       },
@@ -255,7 +254,6 @@
         "times_practiced": "練習回数"
       },
       "coming_soon": {
-        "audio": "発音音声は近日対応予定。화이팅!",
         "examples": "例文の追加は近日対応予定。",
         "achievements": "この文法で獲得できるアチーブメントは近日対応予定。",
         "usage_notes": "詳しい使い方ノートは近日対応予定。"
@@ -309,6 +307,13 @@
       "include": "このデッキを練習に含める",
       "exclude": "このデッキを休ませる（練習でスキップ）",
       "label": "このデッキを練習する"
+    },
+    "pronunciation": {
+      "title": "発音",
+      "by_parts": "音節ごとに",
+      "in_sentence": "文の中で",
+      "play_all": "すべて再生",
+      "play_syllable": "この音節を再生"
     }
   },
   "mastery": {

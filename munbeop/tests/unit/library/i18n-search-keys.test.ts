@@ -63,3 +63,17 @@ describe('library.focus i18n parity', () => {
     })
   }
 })
+
+describe('library.pronunciation i18n parity', () => {
+  const PRON_KEYS = ['title', 'by_parts', 'in_sentence', 'play_all', 'play_syllable'] as const
+  for (const [code, msgs] of Object.entries(locales)) {
+    it(`${code} defines every library.pronunciation string`, () => {
+      const pron = (msgs as { library?: { pronunciation?: Record<string, unknown> } })?.library?.pronunciation
+      expect(pron, code).toBeTruthy()
+      for (const k of PRON_KEYS) {
+        expect(typeof pron?.[k], `${code}.${k}`).toBe('string')
+        expect((pron?.[k] as string).length, `${code}.${k}`).toBeGreaterThan(0)
+      }
+    })
+  }
+})

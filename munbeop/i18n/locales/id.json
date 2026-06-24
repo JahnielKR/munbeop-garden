@@ -244,7 +244,6 @@
         "usage_notes": "Catatan penggunaan",
         "your_progress": "Progres kamu",
         "examples": "Contoh",
-        "audio": "Pelafalan",
         "achievements": "Pencapaian",
         "practice_cta": "Latih sekarang"
       },
@@ -255,7 +254,6 @@
         "times_practiced": "Berapa kali dilatih"
       },
       "coming_soon": {
-        "audio": "Audio pelafalan segera hadir. 화이팅!",
         "examples": "Lebih banyak kalimat contoh segera hadir.",
         "achievements": "Pencapaian yang bisa kamu raih segera hadir.",
         "usage_notes": "Catatan penggunaan rinci segera hadir."
@@ -309,6 +307,13 @@
       "include": "Sertakan dek ini dalam latihan",
       "exclude": "Istirahatkan dek ini (lewati saat latihan)",
       "label": "Latih dek ini"
+    },
+    "pronunciation": {
+      "title": "Pelafalan",
+      "by_parts": "Suku kata demi suku kata",
+      "in_sentence": "Dalam kalimat",
+      "play_all": "Putar semua bagian",
+      "play_syllable": "Putar suku kata ini"
     }
   },
   "mastery": {

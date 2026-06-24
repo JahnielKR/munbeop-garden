@@ -244,7 +244,6 @@
         "usage_notes": "Notas de uso",
         "your_progress": "Seu progresso",
         "examples": "Exemplos",
-        "audio": "Pronúncia",
         "achievements": "Conquistas",
         "practice_cta": "Pratique agora"
       },
@@ -255,7 +254,6 @@
         "times_practiced": "Vezes praticada"
       },
       "coming_soon": {
-        "audio": "O áudio de pronúncia chega em breve. 화이팅!",
         "examples": "Mais frases de exemplo chegam em breve.",
         "achievements": "As conquistas que você pode ganhar chegam em breve.",
         "usage_notes": "Notas de uso detalhadas chegam em breve."
@@ -309,6 +307,13 @@
       "include": "Incluir este baralho na prática",
       "exclude": "Descansar este baralho (pular na prática)",
       "label": "Praticar este baralho"
+    },
+    "pronunciation": {
+      "title": "Pronúncia",
+      "by_parts": "Sílaba por sílaba",
+      "in_sentence": "Em uma frase",
+      "play_all": "Reproduzir todas as partes",
+      "play_syllable": "Reproduzir esta sílaba"
     }
   },
   "mastery": {
