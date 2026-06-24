@@ -6,16 +6,15 @@ import UsageNotesSection from './GrammarStudySheet/UsageNotesSection.vue'
 import SrsProgressSection from './GrammarStudySheet/SrsProgressSection.vue'
 import PracticeCtaSection from './GrammarStudySheet/PracticeCtaSection.vue'
 import ParticleLabSection from './GrammarStudySheet/ParticleLabSection.vue'
-import ComingSoonSection from './GrammarStudySheet/ComingSoonSection.vue'
 import PronunciationSection from './GrammarStudySheet/PronunciationSection.vue'
 import ExamplesSection from './GrammarStudySheet/ExamplesSection.vue'
 import ConfusedWithSection from './GrammarStudySheet/ConfusedWithSection.vue'
+import AchievementsSection from './GrammarStudySheet/AchievementsSection.vue'
 
 interface Props {
   grammar: Grammar
 }
 defineProps<Props>()
-const { t } = useI18n()
 </script>
 
 <template>
@@ -29,10 +28,7 @@ const { t } = useI18n()
     <PronunciationSection :grammar="grammar" />
     <ExamplesSection :grammar="grammar" />
     <ConfusedWithSection :grammar="grammar" />
-    <ComingSoonSection
-      :title="t('library.modal.section.achievements')"
-      :body="t('library.modal.coming_soon.achievements')"
-    />
+    <AchievementsSection :grammar="grammar" />
   </article>
 </template>
 

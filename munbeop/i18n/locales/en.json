@@ -244,7 +244,6 @@
         "usage_notes": "Usage notes",
         "your_progress": "Your progress",
         "examples": "Examples",
-        "achievements": "Achievements",
         "practice_cta": "Practice this now"
       },
       "srs": {
@@ -255,7 +254,6 @@
       },
       "coming_soon": {
         "examples": "More example sentences are coming soon.",
-        "achievements": "Achievements you can earn with this grammar are coming soon.",
         "usage_notes": "Detailed usage notes for this grammar are coming soon."
       }
     },
@@ -314,6 +312,33 @@
       "in_sentence": "In a sentence",
       "play_all": "Play all parts",
       "play_syllable": "Play this syllable"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "sprouted": {
+        "name": "Sprouted",
+        "desc": "Practice this point once"
+      },
+      "practiced_10": {
+        "name": "Practiced 10×",
+        "desc": "Practice it 10 times"
+      },
+      "practiced_25": {
+        "name": "Practiced 25×",
+        "desc": "Practice it 25 times"
+      },
+      "streak_5": {
+        "name": "On a roll",
+        "desc": "Five easy reviews in a row"
+      },
+      "comeback": {
+        "name": "Comeback",
+        "desc": "Bounce back after a tough streak"
+      },
+      "mastered": {
+        "name": "Mastered",
+        "desc": "Reach tree mastery"
+      }
     }
   },
   "mastery": {

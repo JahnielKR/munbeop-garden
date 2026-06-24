@@ -244,7 +244,6 @@
         "usage_notes": "Notas de uso",
         "your_progress": "Tu progreso",
         "examples": "Ejemplos",
-        "achievements": "Logros",
         "practice_cta": "Practícala ahora"
       },
       "srs": {
@@ -255,7 +254,6 @@
       },
       "coming_soon": {
         "examples": "Más oraciones de ejemplo llegarán pronto.",
-        "achievements": "Los logros que puedes ganar con esta gramática llegarán pronto.",
         "usage_notes": "Las notas de uso detalladas llegarán pronto."
       }
     },
@@ -314,6 +312,33 @@
       "in_sentence": "En una oración",
       "play_all": "Reproducir todas las partes",
       "play_syllable": "Reproducir esta sílaba"
+    },
+    "achievements": {
+      "title": "Logros",
+      "sprouted": {
+        "name": "Brotó",
+        "desc": "Practica este punto una vez"
+      },
+      "practiced_10": {
+        "name": "Practicado 10×",
+        "desc": "Practícalo 10 veces"
+      },
+      "practiced_25": {
+        "name": "Practicado 25×",
+        "desc": "Practícalo 25 veces"
+      },
+      "streak_5": {
+        "name": "En racha",
+        "desc": "Cinco repasos fáciles seguidos"
+      },
+      "comeback": {
+        "name": "Remontada",
+        "desc": "Te recuperas tras una racha difícil"
+      },
+      "mastered": {
+        "name": "Dominado",
+        "desc": "Alcanza la maestría árbol"
+      }
     }
   },
   "mastery": {

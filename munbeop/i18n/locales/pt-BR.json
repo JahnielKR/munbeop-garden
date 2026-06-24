@@ -244,7 +244,6 @@
         "usage_notes": "Notas de uso",
         "your_progress": "Seu progresso",
         "examples": "Exemplos",
-        "achievements": "Conquistas",
         "practice_cta": "Pratique agora"
       },
       "srs": {
@@ -255,7 +254,6 @@
       },
       "coming_soon": {
         "examples": "Mais frases de exemplo chegam em breve.",
-        "achievements": "As conquistas que você pode ganhar chegam em breve.",
         "usage_notes": "Notas de uso detalhadas chegam em breve."
       }
     },
@@ -314,6 +312,33 @@
       "in_sentence": "Em uma frase",
       "play_all": "Reproduzir todas as partes",
       "play_syllable": "Reproduzir esta sílaba"
+    },
+    "achievements": {
+      "title": "Conquistas",
+      "sprouted": {
+        "name": "Brotou",
+        "desc": "Pratique este ponto uma vez"
+      },
+      "practiced_10": {
+        "name": "Praticado 10×",
+        "desc": "Pratique-o 10 vezes"
+      },
+      "practiced_25": {
+        "name": "Praticado 25×",
+        "desc": "Pratique-o 25 vezes"
+      },
+      "streak_5": {
+        "name": "Embalado",
+        "desc": "Cinco revisões fáceis seguidas"
+      },
+      "comeback": {
+        "name": "Virada",
+        "desc": "Recupere-se após uma sequência difícil"
+      },
+      "mastered": {
+        "name": "Dominado",
+        "desc": "Alcance a maestria árvore"
+      }
     }
   },
   "mastery": {

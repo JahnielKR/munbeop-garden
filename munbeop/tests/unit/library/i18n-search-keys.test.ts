@@ -77,3 +77,21 @@ describe('library.pronunciation i18n parity', () => {
     })
   }
 })
+
+describe('library.achievements i18n parity', () => {
+  const BADGE_IDS = ['sprouted', 'practiced_10', 'practiced_25', 'streak_5', 'comeback', 'mastered'] as const
+  for (const [code, msgs] of Object.entries(locales)) {
+    it(`${code} defines title + every badge name/desc`, () => {
+      const ach = (msgs as { library?: { achievements?: Record<string, unknown> } })?.library?.achievements
+      expect(ach, code).toBeTruthy()
+      expect(typeof ach?.title, `${code}.title`).toBe('string')
+      for (const id of BADGE_IDS) {
+        const badge = ach?.[id] as { name?: unknown; desc?: unknown } | undefined
+        expect(typeof badge?.name, `${code}.${id}.name`).toBe('string')
+        expect((badge?.name as string).length, `${code}.${id}.name`).toBeGreaterThan(0)
+        expect(typeof badge?.desc, `${code}.${id}.desc`).toBe('string')
+        expect((badge?.desc as string).length, `${code}.${id}.desc`).toBeGreaterThan(0)
+      }
+    })
+  }
+})

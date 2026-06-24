@@ -244,7 +244,6 @@
         "usage_notes": "Ghi chú cách dùng",
         "your_progress": "Tiến độ của bạn",
         "examples": "Ví dụ",
-        "achievements": "Thành tựu",
         "practice_cta": "Luyện ngay"
       },
       "srs": {
@@ -255,7 +254,6 @@
       },
       "coming_soon": {
         "examples": "Thêm câu ví dụ sắp ra mắt.",
-        "achievements": "Các thành tựu bạn có thể đạt được sắp ra mắt.",
         "usage_notes": "Ghi chú cách dùng chi tiết sắp ra mắt."
       }
     },
@@ -314,6 +312,33 @@
       "in_sentence": "Trong câu",
       "play_all": "Phát tất cả các phần",
       "play_syllable": "Phát âm tiết này"
+    },
+    "achievements": {
+      "title": "Thành tích",
+      "sprouted": {
+        "name": "Nảy mầm",
+        "desc": "Luyện điểm này một lần"
+      },
+      "practiced_10": {
+        "name": "Luyện 10×",
+        "desc": "Luyện 10 lần"
+      },
+      "practiced_25": {
+        "name": "Luyện 25×",
+        "desc": "Luyện 25 lần"
+      },
+      "streak_5": {
+        "name": "Đang đà",
+        "desc": "Năm lần ôn dễ liên tiếp"
+      },
+      "comeback": {
+        "name": "Trở lại",
+        "desc": "Vượt qua sau chuỗi khó khăn"
+      },
+      "mastered": {
+        "name": "Thành thạo",
+        "desc": "Đạt cấp độ cây"
+      }
     }
   },
   "mastery": {
