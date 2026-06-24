@@ -186,6 +186,9 @@ export function validateLevel(level: Level): ValidationIssue[] {
   // ─── Hotspot triggersSlot references ──────────────────────────────────────
   for (let r = 0; r < level.rooms.length; r++) {
     const room = level.rooms[r]!
+    if (room.solvedImage !== undefined && room.solvedImage.trim().length === 0) {
+      issues.push({ path: `rooms[${r}].solvedImage`, message: 'solvedImage must not be empty when present' })
+    }
     for (let h = 0; h < room.hotspots.length; h++) {
       const hotspot = room.hotspots[h]!
       checkOptionalAudio(hotspot.sfx, `rooms[${r}].hotspots[${h}].sfx`)

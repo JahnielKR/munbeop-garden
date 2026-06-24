@@ -15,6 +15,18 @@ describe('LEVEL_02 — El templo de la lluvia', () => {
     expect(validateLevel(LEVEL_02)).toEqual([])
   })
 
+  it('wires the 2 solved-variant scenes, which exist on disk', () => {
+    const variants = LEVEL_02.rooms.filter((r) => r.solvedImage)
+    expect(variants.map((r) => r.id)).toEqual(['room-daeungjeon', 'room-jongnu'])
+    expect(variants.map((r) => r.solvedImage)).toEqual([
+      'rooms/room-02-daeungjeon-complete.png',
+      'rooms/room-04-jongnu-clear.png',
+    ])
+    for (const r of variants) {
+      expect(existsSync(audioPath(r.solvedImage!)), r.solvedImage).toBe(true)
+    }
+  })
+
   it('has id "level-02"', () => {
     expect(LEVEL_02.id).toBe('level-02')
   })

@@ -154,6 +154,13 @@ export interface Room {
   /** Looping ambient track, same path convention as `image`. */
   ambientAudio: string
   hotspots: Hotspot[]
+  /**
+   * Optional "the scene reacts" variant, shown once every slot this room's
+   * hotspots trigger has been resolved (e.g. the stall closing, the gift
+   * wrapped, the bus arriving). Same path convention as `image`; falls back to
+   * `image` until then, and if the file is missing.
+   */
+  solvedImage?: string
 }
 
 // ─── Rewards (4 tiers) ──────────────────────────────────────────────────────

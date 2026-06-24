@@ -187,6 +187,19 @@ describe('LEVEL_03 — El mercado nocturno', () => {
     })
   })
 
+  it('wires the 3 solved-variant scenes, which exist on disk', () => {
+    const variants = LEVEL_03.rooms.filter((r) => r.solvedImage)
+    expect(variants.map((r) => r.id)).toEqual(['room-hotteok', 'room-manmulsang', 'room-busstop'])
+    expect(variants.map((r) => r.solvedImage)).toEqual([
+      'rooms/room-01-hotteok-closing.png',
+      'rooms/room-03-manmulsang-wrapped.png',
+      'rooms/room-04-busstop-bus.png',
+    ])
+    for (const r of variants) {
+      expect(existsSync(audioPath(r.solvedImage!)), r.solvedImage).toBe(true)
+    }
+  })
+
   it('every referenced audio file exists on disk under public/escape-room/level-03', () => {
     const refs = new Set<string>()
     const add = (p?: string) => {

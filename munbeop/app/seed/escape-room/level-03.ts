@@ -492,6 +492,7 @@ export const LEVEL_03: Level = {
       id: 'room-hotteok',
       title: t('El puesto de 호떡 (순자 이모)'),
       image: 'rooms/room-01-hotteok.png',
+      solvedImage: 'rooms/room-01-hotteok-closing.png',
       ambientAudio: 'audio/ambient-hotteok.ogg',
       hotspots: [
         // The figure of 이모 triggers Slot 1. NOTE: the dossier wants the SAME
@@ -522,6 +523,7 @@ export const LEVEL_03: Level = {
       id: 'room-manmulsang',
       title: t('El callejón del bazar (만물상 골목)'),
       image: 'rooms/room-03-manmulsang.png',
+      solvedImage: 'rooms/room-03-manmulsang-wrapped.png',
       ambientAudio: 'audio/ambient-manmulsang.ogg',
       hotspots: [
         { id: 'counter', rect: [105, 95, 80, 50], triggersSlot: 'slot-3' },
@@ -535,6 +537,7 @@ export const LEVEL_03: Level = {
       id: 'room-busstop',
       title: t('La parada del bus (버스 정류장)'),
       image: 'rooms/room-04-busstop.png',
+      solvedImage: 'rooms/room-04-busstop-bus.png',
       ambientAudio: 'audio/ambient-busstop.ogg',
       hotspots: [
         { id: 'doyun', rect: [90, 90, 70, 90], triggersSlot: 'slot-6' },

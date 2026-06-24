@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import type { Room } from '~/lib/domain'
 import Hotspot from './Hotspot.vue'
 
@@ -21,20 +21,33 @@ interface Props {
   room: Room
   /** Path prefix where assets live, e.g. `/escape-room/level-01/`. */
   imageBase: string
+  /** Slot ids resolved so far — drives the solved-variant swap. */
+  resolvedSlots?: readonly string[]
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), { resolvedSlots: () => [] })
 defineEmits<{ hotspot: [id: string] }>()
 
 const fullSrc = (path: string) => `${props.imageBase}${path}`
 
-/** Hide the <img> while its file doesn't exist; the container's sunrise
- * gradient stands in. Reset per room so future art shows when it lands. */
-const imageMissing = ref(false)
-watch(
-  () => props.room.id,
-  () => (imageMissing.value = false),
+/** Slot ids this room's hotspots can resolve. */
+const roomSlotIds = computed(() =>
+  props.room.hotspots.flatMap((h) => (h.triggersSlot ? [h.triggersSlot] : [])),
 )
+/** Once every slot in this room is resolved, show its solved variant (if any). */
+const isSolved = computed(
+  () =>
+    !!props.room.solvedImage &&
+    roomSlotIds.value.length > 0 &&
+    roomSlotIds.value.every((s) => props.resolvedSlots.includes(s)),
+)
+const effectiveImage = computed(() => (isSolved.value ? props.room.solvedImage! : props.room.image))
+
+/** Hide the <img> while its file doesn't exist; the container's sunrise
+ * gradient stands in. Reset on any image change (room switch OR solved-variant
+ * swap) so the new art gets a fresh load attempt. */
+const imageMissing = ref(false)
+watch(effectiveImage, () => (imageMissing.value = false))
 </script>
 
 <template>
@@ -43,7 +56,7 @@ watch(
       v-show="!imageMissing"
       class="room__bg"
       data-testid="room-bg"
-      :src="fullSrc(room.image)"
+      :src="fullSrc(effectiveImage)"
       :alt="room.id"
       @error="imageMissing = true"
     >
