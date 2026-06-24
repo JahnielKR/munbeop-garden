@@ -304,7 +304,12 @@
       "restart": "Réessayer",
       "score": "{correct} / {total} correct"
     },
-    "paths_link": "Tes parcours TOPIK →"
+    "paths_link": "Tes parcours TOPIK →",
+    "focus": {
+      "include": "Inclure ce paquet dans la pratique",
+      "exclude": "Mettre ce paquet en pause (ignorer en pratique)",
+      "label": "S'entraîner sur ce paquet"
+    }
   },
   "mastery": {
     "seedling": "새싹 · Nouvelle",

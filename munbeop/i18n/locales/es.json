@@ -304,7 +304,12 @@
       "restart": "Intentar de nuevo",
       "score": "{correct} / {total} correctas"
     },
-    "paths_link": "Tus rutas TOPIK →"
+    "paths_link": "Tus rutas TOPIK →",
+    "focus": {
+      "include": "Incluir este mazo en la práctica",
+      "exclude": "Descansar este mazo (omitir en la práctica)",
+      "label": "Practicar este mazo"
+    }
   },
   "mastery": {
     "seedling": "새싹 · Nueva",

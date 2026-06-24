@@ -304,7 +304,12 @@
       "restart": "Tentar novamente",
       "score": "{correct} / {total} corretas"
     },
-    "paths_link": "Suas trilhas TOPIK →"
+    "paths_link": "Suas trilhas TOPIK →",
+    "focus": {
+      "include": "Incluir este baralho na prática",
+      "exclude": "Descansar este baralho (pular na prática)",
+      "label": "Praticar este baralho"
+    }
   },
   "mastery": {
     "seedling": "새싹 · Nova",

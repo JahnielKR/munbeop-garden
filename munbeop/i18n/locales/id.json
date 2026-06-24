@@ -304,7 +304,12 @@
       "restart": "Coba lagi",
       "score": "{correct} / {total} benar"
     },
-    "paths_link": "Jalur TOPIK kamu →"
+    "paths_link": "Jalur TOPIK kamu →",
+    "focus": {
+      "include": "Sertakan dek ini dalam latihan",
+      "exclude": "Istirahatkan dek ini (lewati saat latihan)",
+      "label": "Latih dek ini"
+    }
   },
   "mastery": {
     "seedling": "새싹 · Baru",

@@ -304,7 +304,12 @@
       "restart": "Thử lại",
       "score": "{correct} / {total} câu đúng"
     },
-    "paths_link": "Lộ trình TOPIK của bạn →"
+    "paths_link": "Lộ trình TOPIK của bạn →",
+    "focus": {
+      "include": "Đưa bộ thẻ này vào luyện tập",
+      "exclude": "Cho bộ thẻ này nghỉ (bỏ qua khi luyện tập)",
+      "label": "Luyện tập bộ thẻ này"
+    }
   },
   "mastery": {
     "seedling": "새싹 · Mới",
