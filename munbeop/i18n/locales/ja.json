@@ -304,7 +304,12 @@
       "restart": "もう一度",
       "score": "{correct} / {total} 正解"
     },
-    "paths_link": "あなたのTOPIKパス →"
+    "paths_link": "あなたのTOPIKパス →",
+    "focus": {
+      "include": "このデッキを練習に含める",
+      "exclude": "このデッキを休ませる（練習でスキップ）",
+      "label": "このデッキを練習する"
+    }
   },
   "mastery": {
     "seedling": "새싹 · 新規",

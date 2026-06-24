@@ -35,6 +35,14 @@ const orphans = computed(() => {
 async function onToggleDeck(deckId: string) {
   await grammarStore.toggleDeckCollapsed(deckId)
 }
+/** Whether a deck is currently excluded from the practice draw (focus mode). */
+function isExcluded(deckId: string): boolean {
+  return grammarStore.excludedDeckIds.includes(deckId)
+}
+/** Toggle a deck in/out of the practice draw. Library visibility is unchanged. */
+async function onToggleFocus(deckId: string) {
+  await grammarStore.toggleDeck(deckId)
+}
 async function onCardClick(ko: string) {
   await open(ko)
 }
@@ -76,19 +84,32 @@ async function onCardClick(ko: string) {
         v-for="section in sections"
         :key="section.deck.id"
         class="deck-section"
-        :class="`deck-section--${section.deck.colorId}`"
+        :class="[`deck-section--${section.deck.colorId}`, { 'deck-section--excluded': isExcluded(section.deck.id) }]"
       >
-        <button
-          type="button"
-          class="deck-header"
-          :aria-expanded="!section.deck.collapsed"
-          :aria-controls="`deck-body-${section.deck.id}`"
-          @click="onToggleDeck(section.deck.id)"
-        >
-          <span class="deck-header__caret" :class="{ 'deck-header__caret--open': !section.deck.collapsed }" aria-hidden="true">▸</span>
-          <h2 class="deck-title">{{ section.deck.name }}</h2>
-          <span class="deck-count">{{ section.items.length }}</span>
-        </button>
+        <div class="deck-header-row">
+          <button
+            type="button"
+            class="deck-header"
+            :aria-expanded="!section.deck.collapsed"
+            :aria-controls="`deck-body-${section.deck.id}`"
+            @click="onToggleDeck(section.deck.id)"
+          >
+            <span class="deck-header__caret" :class="{ 'deck-header__caret--open': !section.deck.collapsed }" aria-hidden="true">▸</span>
+            <h2 class="deck-title">{{ section.deck.name }}</h2>
+            <span class="deck-count">{{ section.items.length }}</span>
+          </button>
+          <button
+            type="button"
+            class="deck-focus"
+            :class="{ 'deck-focus--off': isExcluded(section.deck.id) }"
+            :aria-pressed="!isExcluded(section.deck.id)"
+            :aria-label="t('library.focus.label')"
+            :title="isExcluded(section.deck.id) ? t('library.focus.include') : t('library.focus.exclude')"
+            @click="onToggleFocus(section.deck.id)"
+          >
+            <span class="deck-focus__icon" aria-hidden="true">{{ isExcluded(section.deck.id) ? '🌙' : '🌱' }}</span>
+          </button>
+        </div>
 
         <Transition name="collapse">
           <div v-show="!section.deck.collapsed" :id="`deck-body-${section.deck.id}`" class="deck-body">
@@ -165,6 +186,59 @@ async function onCardClick(ko: string) {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+/* Header row: the collapse button (flexes to fill) + the focus toggle.
+   Kept as separate sibling buttons so neither nests inside the other. */
+.deck-header-row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+.deck-header-row .deck-header {
+  flex: 1;
+  min-width: 0;
+}
+
+/* "Focus mode" toggle — rests a deck out of the practice draw without
+   hiding it from the Library. Mirrors the .deck-header pixel chrome. */
+.deck-focus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  padding: 0 14px;
+  background: var(--paper-deep, var(--paper));
+  border: 3px solid var(--ink-line);
+  box-shadow: 3px 3px 0 var(--shadow-cream);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    transform var(--motion-quick, 120ms) var(--ease-out, ease),
+    box-shadow var(--motion-quick, 120ms) var(--ease-out, ease),
+    opacity var(--motion-quick, 120ms) var(--ease-out, ease);
+}
+.deck-focus:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--shadow-cream);
+}
+.deck-focus:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--shadow-cream);
+}
+.deck-focus:focus-visible {
+  outline: 2px solid var(--focus-ring, var(--gold));
+  outline-offset: 3px;
+}
+.deck-focus--off {
+  opacity: 0.6;
+}
+
+/* A rested deck dims its header so a glance reads "not in practice";
+   the cards stay full-strength because the Library still shows them. */
+.deck-section--excluded .deck-header {
+  opacity: 0.5;
 }
 
 /* Header block — full-width pixel-art rectangle.

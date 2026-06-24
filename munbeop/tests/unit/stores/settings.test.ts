@@ -63,26 +63,26 @@ describe('useSettingsStore', () => {
   it('setTheme applies the theme and writes the full blob to the adapter', async () => {
     await useSettingsStore().setTheme('dark')
     expect(useTheme().theme.value).toBe('dark')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'dark', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'dark', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [] })
   })
 
   it('setTheme accepts the system preference and writes it to the adapter', async () => {
     await useSettingsStore().setTheme('system')
     expect(useTheme().theme.value).toBe('system')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'system', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'system', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [] })
   })
 
   it('setLocale applies the locale and writes the full blob to the adapter', async () => {
     await useSettingsStore().setLocale('ja')
     expect(useLocaleStore().current).toBe('ja')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'ja', dailyGoal: 3, reviewReminders: false, startingDeckId: null })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'ja', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [] })
   })
 
   it('setStartingDeck stores the deck and writes the full blob', async () => {
     const s = useSettingsStore()
     await s.setStartingDeck('topik-4')
     expect(s.startingDeckId).toBe('topik-4')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: 'topik-4' })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: 'topik-4', excludedDeckIds: [] })
   })
 
   it('hydrate applies a stored startingDeckId', async () => {
@@ -90,5 +90,23 @@ describe('useSettingsStore', () => {
     mockRead.mockResolvedValue({ startingDeckId: 'topik-3' })
     await useSettingsStore().hydrate()
     expect(useSettingsStore().startingDeckId).toBe('topik-3')
+  })
+
+  it('toggleDeck excludes then re-includes a deck and persists the blob', async () => {
+    const s = useSettingsStore()
+    await s.toggleDeck('topik-2')
+    expect(s.excludedDeckIds).toEqual(['topik-2'])
+    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: ['topik-2'] })
+
+    await s.toggleDeck('topik-2')
+    expect(s.excludedDeckIds).toEqual([])
+    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [] })
+  })
+
+  it('hydrate applies stored excludedDeckIds (filtering non-strings)', async () => {
+    signIn()
+    mockRead.mockResolvedValue({ excludedDeckIds: ['topik-1', 5, 'topik-5'] })
+    await useSettingsStore().hydrate()
+    expect(useSettingsStore().excludedDeckIds).toEqual(['topik-1', 'topik-5'])
   })
 })

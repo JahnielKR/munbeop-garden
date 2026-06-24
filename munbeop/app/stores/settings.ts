@@ -23,6 +23,9 @@ interface Settings {
   dailyGoal: number
   reviewReminders: boolean
   startingDeckId: string | null
+  /** Deck ids the user has excluded from the practice draw ("focus mode").
+   * Library still shows them; only the weighted draw skips them. */
+  excludedDeckIds: string[]
 }
 
 function isTheme(v: unknown): v is Theme {
@@ -39,6 +42,7 @@ export const useSettingsStore = defineStore('settings', () => {
   const dailyGoal = ref(DEFAULT_DAILY_GOAL)
   const reviewReminders = ref(false)
   const startingDeckId = ref<string | null>(null)
+  const excludedDeckIds = ref<string[]>([])
 
   async function hydrate(): Promise<void> {
     if (!authStore.user) return
@@ -51,6 +55,8 @@ export const useSettingsStore = defineStore('settings', () => {
       if (typeof cloud.dailyGoal === 'number') dailyGoal.value = clampGoal(cloud.dailyGoal)
       if (typeof cloud.reviewReminders === 'boolean') reviewReminders.value = cloud.reviewReminders
       if (typeof cloud.startingDeckId === 'string') startingDeckId.value = cloud.startingDeckId
+      if (Array.isArray(cloud.excludedDeckIds))
+        excludedDeckIds.value = cloud.excludedDeckIds.filter((x): x is string => typeof x === 'string')
     } catch {
       // Table may not exist yet (migration not deployed) or a network blip —
       // keep device values; the app must not break.
@@ -66,6 +72,7 @@ export const useSettingsStore = defineStore('settings', () => {
         dailyGoal: dailyGoal.value,
         reviewReminders: reviewReminders.value,
         startingDeckId: startingDeckId.value,
+        excludedDeckIds: excludedDeckIds.value,
       } satisfies Settings)
     } catch {
       // A failed cloud write must not throw into the UI.
@@ -92,6 +99,14 @@ export const useSettingsStore = defineStore('settings', () => {
     await persistCloud()
   }
 
+  /** Toggle a deck's exclusion from the practice draw, then persist. */
+  async function toggleDeck(deckId: string): Promise<void> {
+    excludedDeckIds.value = excludedDeckIds.value.includes(deckId)
+      ? excludedDeckIds.value.filter((id) => id !== deckId)
+      : [...excludedDeckIds.value, deckId]
+    await persistCloud()
+  }
+
   async function setReviewReminders(on: boolean): Promise<void> {
     reviewReminders.value = on
     if (on && typeof Notification !== 'undefined' && Notification.permission === 'default') {
@@ -104,5 +119,5 @@ export const useSettingsStore = defineStore('settings', () => {
     await persistCloud()
   }
 
-  return { hydrate, setTheme, setLocale, dailyGoal, setDailyGoal, reviewReminders, setReviewReminders, startingDeckId, setStartingDeck }
+  return { hydrate, setTheme, setLocale, dailyGoal, setDailyGoal, reviewReminders, setReviewReminders, startingDeckId, setStartingDeck, excludedDeckIds, toggleDeck }
 })

@@ -3,13 +3,18 @@ import type { Grammar, Deck, LocalizedString } from '~/lib/domain'
 import { CUSTOM_DECK_ID, isHangulName } from '~/lib/domain'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
+import { useSettingsStore } from '~/stores/settings'
 
 export const useGrammarStore = defineStore('grammar', () => {
   const items = ref<Grammar[]>([])
   const decks = ref<Deck[]>([])
-  // Plain array (not Set) — Set is not consistently serializable across SSR/CSR
-  // payload boundaries and was causing devalue parse failures on hydration.
-  const excludedDeckIds = ref<string[]>([])
+  // "Focus mode" deck exclusions live in the account-synced settings blob
+  // (persistence owner). We re-expose them here as a read-only computed so the
+  // existing consumers (activeIndices, the ruleta/cloze DeckPickers) keep
+  // reading grammarStore.excludedDeckIds unchanged, while writes go through
+  // the settings store via toggleDeck().
+  const settings = useSettingsStore()
+  const excludedDeckIds = computed(() => settings.excludedDeckIds)
 
   const activeIndices = computed(() =>
     items.value
@@ -47,12 +52,10 @@ export const useGrammarStore = defineStore('grammar', () => {
     }
   }
 
-  function toggleDeck(deckId: string) {
-    if (excludedDeckIds.value.includes(deckId)) {
-      excludedDeckIds.value = excludedDeckIds.value.filter((id) => id !== deckId)
-    } else {
-      excludedDeckIds.value = [...excludedDeckIds.value, deckId]
-    }
+  /** Exclude/include a deck from the practice draw. Delegates to the settings
+   * store, which owns persistence of the focus-mode exclusions. */
+  function toggleDeck(deckId: string): Promise<void> {
+    return settings.toggleDeck(deckId)
   }
 
   /**

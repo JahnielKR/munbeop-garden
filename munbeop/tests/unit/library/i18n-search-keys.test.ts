@@ -49,3 +49,17 @@ describe('library.orphan_section i18n parity', () => {
     })
   }
 })
+
+describe('library.focus i18n parity', () => {
+  const FOCUS_KEYS = ['include', 'exclude', 'label'] as const
+  for (const [code, msgs] of Object.entries(locales)) {
+    it(`${code} defines every library.focus string`, () => {
+      const focus = (msgs as { library?: { focus?: Record<string, unknown> } })?.library?.focus
+      expect(focus, code).toBeTruthy()
+      for (const k of FOCUS_KEYS) {
+        expect(typeof focus?.[k], `${code}.${k}`).toBe('string')
+        expect((focus?.[k] as string).length, `${code}.${k}`).toBeGreaterThan(0)
+      }
+    })
+  }
+})

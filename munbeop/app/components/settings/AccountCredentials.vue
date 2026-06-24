@@ -7,6 +7,7 @@
  */
 import { useAuthStore } from '~/stores/auth'
 import { isEmailIdentity } from '~/lib/auth/identity'
+import { MIN_PASSWORD_LENGTH } from '~/lib/auth/password'
 import { useToast } from '~/composables/useToast'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Field from '~/components/ui/Field.vue'
@@ -21,7 +22,7 @@ const { reauthenticate, updatePassword, updateEmail } = useAuth()
 const isEmailUser = computed(() => isEmailIdentity(authStore.user))
 
 // ── Change password ──────────────────────────────────────────────────────
-const MIN_LEN = 8
+const MIN_LEN = MIN_PASSWORD_LENGTH
 const currentPassword = ref('')
 const newPassword = ref('')
 const pwBusy = ref(false)

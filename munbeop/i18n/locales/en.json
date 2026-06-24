@@ -304,7 +304,12 @@
       "restart": "Try again",
       "score": "{correct} / {total} correct"
     },
-    "paths_link": "Your TOPIK paths →"
+    "paths_link": "Your TOPIK paths →",
+    "focus": {
+      "include": "Include this deck in practice",
+      "exclude": "Rest this deck (skip in practice)",
+      "label": "Practice this deck"
+    }
   },
   "mastery": {
     "seedling": "Sprout · 새싹",

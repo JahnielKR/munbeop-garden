@@ -304,7 +304,12 @@
       "restart": "ลองอีกครั้ง",
       "score": "ถูก {correct} / {total} ข้อ"
     },
-    "paths_link": "เส้นทาง TOPIK ของคุณ →"
+    "paths_link": "เส้นทาง TOPIK ของคุณ →",
+    "focus": {
+      "include": "รวมชุดนี้ในการฝึก",
+      "exclude": "พักชุดนี้ (ข้ามในการฝึก)",
+      "label": "ฝึกชุดนี้"
+    }
   },
   "mastery": {
     "seedling": "새싹 · ใหม่",
