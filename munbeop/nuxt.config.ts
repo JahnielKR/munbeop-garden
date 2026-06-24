@@ -48,7 +48,14 @@ export default defineNuxtConfig({
     bundle: {
       optimizeTranslationDirective: false,
     },
-    lazy: false,
+    // Lazy-load locale messages: only the active (and fallback 'en') locale's
+    // JSON ships in the entry bundle; the other six split into async chunks
+    // fetched on demand when the user switches. Safe here because every locale
+    // switch goes through i18n's setLocale() (LocaleSwitcher.vue,
+    // lib/i18n/sync-locale.ts) — which triggers the async message load — and
+    // never assigns locale.value directly. fallbackLocale 'en'
+    // (i18n/i18n.config.ts) is loaded eagerly by @nuxtjs/i18n.
+    lazy: true,
   },
   app: {
     head: {
