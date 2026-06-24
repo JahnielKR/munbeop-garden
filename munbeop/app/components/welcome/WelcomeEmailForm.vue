@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
+import { isPasswordLongEnough } from '~/lib/auth/password'
 
 const props = defineProps<{ mode: 'signin' | 'signup' | 'magic' }>()
 const emit = defineEmits<{
@@ -15,6 +16,15 @@ const router = useRouter()
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
+
+// Sign-up requires the min-length password policy (mirrors reset-password +
+// AccountCredentials). Sign-in must NOT gate on length — existing accounts may
+// predate the policy. Magic-link has no password field.
+const canSubmit = computed(() => {
+  if (loading.value) return false
+  if (props.mode === 'signup') return isPasswordLongEnough(password.value)
+  return true
+})
 
 watch(() => props.mode, () => { password.value = '' })
 
@@ -90,11 +100,14 @@ async function submit() {
         :autocomplete="props.mode === 'signup' ? 'new-password' : 'current-password'"
         required
       >
+      <span v-if="props.mode === 'signup'" class="email-form__hint">
+        {{ t('auth.password_min') }}
+      </span>
     </label>
     <button
       type="submit"
       class="email-form__submit"
-      :disabled="loading"
+      :disabled="!canSubmit"
     >
       {{
         props.mode === 'signup'
@@ -123,6 +136,11 @@ async function submit() {
   font-family: 'Press Start 2P', monospace;
   font-size: 9px;
   letter-spacing: 0.06em;
+  color: var(--text-soft);
+}
+.email-form__hint {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
   color: var(--text-soft);
 }
 .email-form__input {

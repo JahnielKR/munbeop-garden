@@ -4,6 +4,7 @@ import Field from '~/components/ui/Field.vue'
 import Input from '~/components/ui/Input.vue'
 import { NuxtLink } from '#components'
 import { useToast } from '~/composables/useToast'
+import { MIN_PASSWORD_LENGTH } from '~/lib/auth/password'
 
 // Standalone surface (no AppShell): the user arrives here from a recovery
 // email, often before any in-app session feels "theirs". /auth/* is already
@@ -19,8 +20,7 @@ const { updatePassword } = useAuth()
 const status = ref<'checking' | 'ready' | 'invalid'>('checking')
 const password = ref('')
 const busy = ref(false)
-const MIN_LEN = 8
-const canSubmit = computed(() => password.value.length >= MIN_LEN && !busy.value)
+const canSubmit = computed(() => password.value.length >= MIN_PASSWORD_LENGTH && !busy.value)
 
 onMounted(async () => {
   // PKCE: the recovery link's tokens are auto-exchanged for a session before
