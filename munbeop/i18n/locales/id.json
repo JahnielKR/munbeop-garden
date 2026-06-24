@@ -244,7 +244,6 @@
         "usage_notes": "Catatan penggunaan",
         "your_progress": "Progres kamu",
         "examples": "Contoh",
-        "achievements": "Pencapaian",
         "practice_cta": "Latih sekarang"
       },
       "srs": {
@@ -255,7 +254,6 @@
       },
       "coming_soon": {
         "examples": "Lebih banyak kalimat contoh segera hadir.",
-        "achievements": "Pencapaian yang bisa kamu raih segera hadir.",
         "usage_notes": "Catatan penggunaan rinci segera hadir."
       }
     },
@@ -314,6 +312,33 @@
       "in_sentence": "Dalam kalimat",
       "play_all": "Putar semua bagian",
       "play_syllable": "Putar suku kata ini"
+    },
+    "achievements": {
+      "title": "Pencapaian",
+      "sprouted": {
+        "name": "Bertunas",
+        "desc": "Latih poin ini sekali"
+      },
+      "practiced_10": {
+        "name": "Dilatih 10×",
+        "desc": "Latih 10 kali"
+      },
+      "practiced_25": {
+        "name": "Dilatih 25×",
+        "desc": "Latih 25 kali"
+      },
+      "streak_5": {
+        "name": "Lancar",
+        "desc": "Lima ulasan mudah berturut-turut"
+      },
+      "comeback": {
+        "name": "Bangkit",
+        "desc": "Bangkit setelah rentetan sulit"
+      },
+      "mastered": {
+        "name": "Dikuasai",
+        "desc": "Capai tingkat pohon"
+      }
     }
   },
   "mastery": {

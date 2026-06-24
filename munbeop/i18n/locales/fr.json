@@ -244,7 +244,6 @@
         "usage_notes": "Notes d'usage",
         "your_progress": "Ta progression",
         "examples": "Exemples",
-        "achievements": "Succès",
         "practice_cta": "Pratique-la maintenant"
       },
       "srs": {
@@ -255,7 +254,6 @@
       },
       "coming_soon": {
         "examples": "D'autres phrases d'exemple arrivent bientôt.",
-        "achievements": "Les succès que tu peux gagner arriveront bientôt.",
         "usage_notes": "Les notes d'usage détaillées arrivent bientôt."
       }
     },
@@ -314,6 +312,33 @@
       "in_sentence": "Dans une phrase",
       "play_all": "Lire toutes les parties",
       "play_syllable": "Lire cette syllabe"
+    },
+    "achievements": {
+      "title": "Réussites",
+      "sprouted": {
+        "name": "Germé",
+        "desc": "Pratique ce point une fois"
+      },
+      "practiced_10": {
+        "name": "Pratiqué 10×",
+        "desc": "Pratique-le 10 fois"
+      },
+      "practiced_25": {
+        "name": "Pratiqué 25×",
+        "desc": "Pratique-le 25 fois"
+      },
+      "streak_5": {
+        "name": "En série",
+        "desc": "Cinq révisions faciles d'affilée"
+      },
+      "comeback": {
+        "name": "Retour",
+        "desc": "Se rétablir après une série difficile"
+      },
+      "mastered": {
+        "name": "Maîtrisé",
+        "desc": "Atteindre la maîtrise arbre"
+      }
     }
   },
   "mastery": {
