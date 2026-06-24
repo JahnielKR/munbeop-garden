@@ -37,4 +37,29 @@ describe('Scene', () => {
     await hotspots[1]!.trigger('click')
     expect(w.emitted('hotspot')).toEqual([['note-2']])
   })
+
+  describe('solved-variant swap', () => {
+    const solvedRoom: Room = { ...room, solvedImage: 'rooms/test-solved.png' }
+    const base = '/escape-room/level-02/'
+    const src = (w: ReturnType<typeof mount>) =>
+      w.get('[data-testid="room-bg"]').attributes('src')
+
+    it('shows the base image until every room slot is resolved', () => {
+      expect(src(mount(Scene, { props: { room: solvedRoom, imageBase: base } })))
+        .toBe(`${base}rooms/test.png`)
+      // partial: only one of the two slots resolved
+      expect(src(mount(Scene, { props: { room: solvedRoom, imageBase: base, resolvedSlots: ['slot-1'] } })))
+        .toBe(`${base}rooms/test.png`)
+    })
+
+    it('swaps to solvedImage once all the room’s slots are resolved', () => {
+      expect(src(mount(Scene, { props: { room: solvedRoom, imageBase: base, resolvedSlots: ['slot-1', 'slot-2'] } })))
+        .toBe(`${base}rooms/test-solved.png`)
+    })
+
+    it('never swaps a room that declares no solvedImage', () => {
+      expect(src(mount(Scene, { props: { room, imageBase: base, resolvedSlots: ['slot-1', 'slot-2'] } })))
+        .toBe(`${base}rooms/test.png`)
+    })
+  })
 })

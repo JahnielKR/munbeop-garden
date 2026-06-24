@@ -588,6 +588,7 @@ export const LEVEL_02: Level = {
       id: 'room-daeungjeon',
       title: t('El salón principal (대웅전)'),
       image: 'rooms/room-02-daeungjeon.png',
+      solvedImage: 'rooms/room-02-daeungjeon-complete.png',
       ambientAudio: 'audio/ambient-daeungjeon.ogg',
       hotspots: [
         { id: 'ritual-sheet', rect: [28, 128, 52, 44], triggersSlot: 'slot-2', sfx: 'audio/sfx-paper-page.ogg' },
@@ -612,6 +613,7 @@ export const LEVEL_02: Level = {
       id: 'room-jongnu',
       title: t('El pabellón de la campana (종루)'),
       image: 'rooms/room-04-jongnu.png',
+      solvedImage: 'rooms/room-04-jongnu-clear.png',
       ambientAudio: 'audio/ambient-jongnu.ogg',
       hotspots: [
         { id: 'bell-rope', rect: [120, 100, 80, 80], triggersSlot: 'slot-6' },

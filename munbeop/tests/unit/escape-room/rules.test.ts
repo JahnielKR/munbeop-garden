@@ -25,6 +25,16 @@ describe('validateLevel', () => {
     expect(SELECTION_OPTIONS_COUNT).toBe(4)
   })
 
+  it('flags an empty room solvedImage but accepts a non-empty one', () => {
+    const level = makeLevel()
+    const withSolved = (img: string): Level => ({
+      ...level,
+      rooms: level.rooms.map((r, i) => (i === 0 ? { ...r, solvedImage: img } : r)),
+    })
+    expect(issueContains(validateLevel(withSolved('   ')), 'solvedImage')).toBe(true)
+    expect(validateLevel(withSolved('rooms/x-solved.png'))).toEqual([])
+  })
+
   it('flags a slot whose pool size is not 5', () => {
     const level = makeLevel()
     const slot = level.slots[0]

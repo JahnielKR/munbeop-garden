@@ -360,7 +360,7 @@ function exitToBook() {
     </nav>
 
     <!-- Active scene -->
-    <Scene v-if="activeRoom" :room="activeRoom" :image-base="imageBase" @hotspot="onHotspot" />
+    <Scene v-if="activeRoom" :room="activeRoom" :image-base="imageBase" :resolved-slots="store.resolvedSlots" @hotspot="onHotspot" />
 
     <!-- Puzzle overlay -->
     <div v-if="activeSlot && activeCandidate" class="er__overlay" data-testid="puzzle-overlay">
