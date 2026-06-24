@@ -244,7 +244,6 @@
         "usage_notes": "Notas de uso",
         "your_progress": "Tu progreso",
         "examples": "Ejemplos",
-        "audio": "Pronunciación",
         "achievements": "Logros",
         "practice_cta": "Practícala ahora"
       },
@@ -255,7 +254,6 @@
         "times_practiced": "Veces practicada"
       },
       "coming_soon": {
-        "audio": "El audio de pronunciación llegará pronto. 화이팅!",
         "examples": "Más oraciones de ejemplo llegarán pronto.",
         "achievements": "Los logros que puedes ganar con esta gramática llegarán pronto.",
         "usage_notes": "Las notas de uso detalladas llegarán pronto."
@@ -309,6 +307,13 @@
       "include": "Incluir este mazo en la práctica",
       "exclude": "Descansar este mazo (omitir en la práctica)",
       "label": "Practicar este mazo"
+    },
+    "pronunciation": {
+      "title": "Pronunciación",
+      "by_parts": "Sílaba por sílaba",
+      "in_sentence": "En una oración",
+      "play_all": "Reproducir todas las partes",
+      "play_syllable": "Reproducir esta sílaba"
     }
   },
   "mastery": {

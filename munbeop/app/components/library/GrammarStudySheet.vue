@@ -7,6 +7,7 @@ import SrsProgressSection from './GrammarStudySheet/SrsProgressSection.vue'
 import PracticeCtaSection from './GrammarStudySheet/PracticeCtaSection.vue'
 import ParticleLabSection from './GrammarStudySheet/ParticleLabSection.vue'
 import ComingSoonSection from './GrammarStudySheet/ComingSoonSection.vue'
+import PronunciationSection from './GrammarStudySheet/PronunciationSection.vue'
 import ExamplesSection from './GrammarStudySheet/ExamplesSection.vue'
 import ConfusedWithSection from './GrammarStudySheet/ConfusedWithSection.vue'
 
@@ -25,10 +26,7 @@ const { t } = useI18n()
     <SrsProgressSection :grammar="grammar" />
     <PracticeCtaSection :grammar="grammar" />
     <ParticleLabSection :grammar="grammar" />
-    <ComingSoonSection
-      :title="t('library.modal.section.audio')"
-      :body="t('library.modal.coming_soon.audio')"
-    />
+    <PronunciationSection :grammar="grammar" />
     <ExamplesSection :grammar="grammar" />
     <ConfusedWithSection :grammar="grammar" />
     <ComingSoonSection

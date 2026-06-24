@@ -244,7 +244,6 @@
         "usage_notes": "Ghi chú cách dùng",
         "your_progress": "Tiến độ của bạn",
         "examples": "Ví dụ",
-        "audio": "Phát âm",
         "achievements": "Thành tựu",
         "practice_cta": "Luyện ngay"
       },
@@ -255,7 +254,6 @@
         "times_practiced": "Số lần đã luyện"
       },
       "coming_soon": {
-        "audio": "Âm thanh phát âm sắp ra mắt. 화이팅!",
         "examples": "Thêm câu ví dụ sắp ra mắt.",
         "achievements": "Các thành tựu bạn có thể đạt được sắp ra mắt.",
         "usage_notes": "Ghi chú cách dùng chi tiết sắp ra mắt."
@@ -309,6 +307,13 @@
       "include": "Đưa bộ thẻ này vào luyện tập",
       "exclude": "Cho bộ thẻ này nghỉ (bỏ qua khi luyện tập)",
       "label": "Luyện tập bộ thẻ này"
+    },
+    "pronunciation": {
+      "title": "Phát âm",
+      "by_parts": "Từng âm tiết",
+      "in_sentence": "Trong câu",
+      "play_all": "Phát tất cả các phần",
+      "play_syllable": "Phát âm tiết này"
     }
   },
   "mastery": {

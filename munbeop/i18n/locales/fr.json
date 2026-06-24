@@ -244,7 +244,6 @@
         "usage_notes": "Notes d'usage",
         "your_progress": "Ta progression",
         "examples": "Exemples",
-        "audio": "Prononciation",
         "achievements": "Succès",
         "practice_cta": "Pratique-la maintenant"
       },
@@ -255,7 +254,6 @@
         "times_practiced": "Fois pratiquée"
       },
       "coming_soon": {
-        "audio": "L'audio de prononciation arrive bientôt. 화이팅!",
         "examples": "D'autres phrases d'exemple arrivent bientôt.",
         "achievements": "Les succès que tu peux gagner arriveront bientôt.",
         "usage_notes": "Les notes d'usage détaillées arrivent bientôt."
@@ -309,6 +307,13 @@
       "include": "Inclure ce paquet dans la pratique",
       "exclude": "Mettre ce paquet en pause (ignorer en pratique)",
       "label": "S'entraîner sur ce paquet"
+    },
+    "pronunciation": {
+      "title": "Prononciation",
+      "by_parts": "Syllabe par syllabe",
+      "in_sentence": "Dans une phrase",
+      "play_all": "Lire toutes les parties",
+      "play_syllable": "Lire cette syllabe"
     }
   },
   "mastery": {
