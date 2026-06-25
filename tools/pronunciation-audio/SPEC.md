@@ -1,9 +1,9 @@
 # pronunciation-audio
 
-Build-time TTS for the study-sheet pronunciation section, row 1 ("the grammar
-sounded out by parts"). One OGG per UNIQUE syllable across all
-`app/seed/pronunciation` guides; row 2 (the grammar in a short sentence) reuses
-the existing grammar-examples audio, so it is NOT generated here.
+Build-time TTS for the study-sheet pronunciation section ("the grammar sounded
+out by parts"). One OGG per UNIQUE syllable across all `app/seed/pronunciation`
+guides. Example sentences live in the separate Examples section and reuse the
+grammar-examples audio, so nothing sentence-level is generated here.
 
 ## Pipeline
 

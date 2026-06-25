@@ -2,40 +2,24 @@
 import { computed } from 'vue'
 import type { Grammar } from '~/lib/domain'
 import { guideFor } from '~/lib/pronunciation'
-import { examplesFor } from '~/lib/grammar-examples'
 import { usePronunciationAudio } from '~/composables/usePronunciationAudio'
-import ExampleAudioButton from './ExampleAudioButton.vue'
 
 interface Props {
   grammar: Grammar
 }
 const props = defineProps<Props>()
 const { t } = useI18n()
-const { tl } = useLocalized()
 const { playSyllable, playAll } = usePronunciationAudio()
 
 const guide = computed(() => guideFor(props.grammar.ko))
-
-/** Row 2: the grammar living in the SHORTEST available example (reuses the
- *  examples bank's audio). Falls back to the canonical example (no audio). */
-const sentence = computed(() => {
-  const bank = examplesFor(props.grammar.ko)
-  if (bank.length) {
-    const shortest = [...bank].sort((a, b) => a.sentence.length - b.sentence.length)[0]!
-    return { ko: shortest.sentence, trans: tl(shortest.trans), hasAudio: true }
-  }
-  if (props.grammar.example) {
-    return { ko: props.grammar.example, trans: props.grammar.trans ? tl(props.grammar.trans) : '', hasAudio: false }
-  }
-  return null
-})
 </script>
 
 <template>
   <section v-if="guide" class="pron-section">
     <h3 class="section-title">{{ t('library.pronunciation.title') }}</h3>
 
-    <!-- Row 1 — the grammar alone, sounded out by parts. -->
+    <!-- The grammar alone, sounded out by parts. The example sentences and their
+         audio live in the Examples section, so no in-a-sentence row here. -->
     <div class="pron-row">
       <span class="pron-row__label">{{ t('library.pronunciation.by_parts') }}</span>
       <div class="pron-parts">
@@ -56,16 +40,6 @@ const sentence = computed(() => {
           @click="playAll(guide.parts)"
         ><span aria-hidden="true">▶</span></button>
       </div>
-    </div>
-
-    <!-- Row 2 — the grammar in a short sentence, natural. -->
-    <div v-if="sentence" class="pron-row">
-      <span class="pron-row__label">{{ t('library.pronunciation.in_sentence') }}</span>
-      <p class="pron-sentence" lang="ko">
-        <ExampleAudioButton v-if="sentence.hasAudio" :sentence="sentence.ko" />
-        <span class="pron-sentence__ko">{{ sentence.ko }}</span>
-      </p>
-      <p v-if="sentence.trans" class="pron-sentence__trans">{{ sentence.trans }}</p>
     </div>
   </section>
 </template>
@@ -128,22 +102,4 @@ const sentence = computed(() => {
 .pron-all:hover { transform: translate(-1px, -1px); }
 .pron-all:active { transform: translate(0, 0); }
 .pron-all:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-.pron-sentence {
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 15px;
-  color: var(--ink);
-  line-height: 1.5;
-}
-.pron-sentence__trans {
-  margin: 2px 0 0;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: var(--ink-soft);
-  line-height: 1.5;
-}
 </style>
