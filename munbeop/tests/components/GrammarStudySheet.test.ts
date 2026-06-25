@@ -66,8 +66,9 @@ describe('GrammarStudySheet', () => {
   })
 
   it('replaces the audio placeholder with the pronunciation section for a guided point', () => {
-    // -(으)니까 has no guide → no section; -지만 does → row-1 chips render.
-    expect(mount(GrammarStudySheet, { props: { grammar: seededGrammar } }).find('.pron-section').exists()).toBe(false)
+    // 의문사 is a skipped category label → no guide → no section; -지만 has one → chips render.
+    const unguided = mount(GrammarStudySheet, { props: { grammar: { ...seededGrammar, ko: '의문사' } } })
+    expect(unguided.find('.pron-section').exists()).toBe(false)
     const guided = mount(GrammarStudySheet, { props: { grammar: { ...seededGrammar, ko: '-지만' } } })
     expect(guided.find('.pron-section').exists()).toBe(true)
     expect(guided.find('.pron-parts').text()).toContain('지')
