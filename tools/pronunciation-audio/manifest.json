@@ -21,6 +21,13 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "9fcc7114",
+    "syllable": "걸",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "1ad5817a",
     "syllable": "것",
     "voice": "ko-KR-SunHiNeural",
@@ -42,8 +49,22 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "21d58c7f",
+    "syllable": "겸",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "13d1a4de",
     "syllable": "고",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "2bc4531c",
+    "syllable": "구",
     "voice": "ko-KR-SunHiNeural",
     "rate": "-10%",
     "pitch": "+0Hz"
@@ -65,6 +86,20 @@
   {
     "id": "adbb3dfd",
     "syllable": "기",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "a5bb3165",
+    "syllable": "길",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "77ba3d64",
+    "syllable": "김",
     "voice": "ko-KR-SunHiNeural",
     "rate": "-10%",
     "pitch": "+0Hz"
@@ -98,6 +133,13 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "9bd74041",
+    "syllable": "냐",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "2de35f0a",
     "syllable": "네",
     "voice": "ko-KR-SunHiNeural",
@@ -107,6 +149,13 @@
   {
     "id": "10deb435",
     "syllable": "놓",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "45c0f290",
+    "syllable": "느",
     "voice": "ko-KR-SunHiNeural",
     "rate": "-10%",
     "pitch": "+0Hz"
@@ -196,6 +245,13 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "c4fe903c",
+    "syllable": "듯",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "ba0b4ade",
     "syllable": "따",
     "voice": "ko-KR-SunHiNeural",
@@ -217,8 +273,22 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "21f3e9b0",
+    "syllable": "람",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "15f3d6cc",
     "syllable": "래",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "41f41c10",
+    "syllable": "랬",
     "voice": "ko-KR-SunHiNeural",
     "rate": "-10%",
     "pitch": "+0Hz"
@@ -268,6 +338,13 @@
   {
     "id": "128cc6e4",
     "syllable": "록",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "378d0123",
+    "syllable": "론",
     "voice": "ko-KR-SunHiNeural",
     "rate": "-10%",
     "pitch": "+0Hz"
@@ -350,6 +427,13 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "3580320a",
+    "syllable": "물",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "3b7f8fe5",
     "syllable": "미",
     "voice": "ko-KR-SunHiNeural",
@@ -357,8 +441,22 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "5db3a0ce",
+    "syllable": "바",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "5bb39da8",
     "syllable": "밖",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "59b39a82",
+    "syllable": "반",
     "voice": "ko-KR-SunHiNeural",
     "rate": "-10%",
     "pitch": "+0Hz"
@@ -392,6 +490,13 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "cdbd4b7a",
+    "syllable": "봤",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "9db882bc",
     "syllable": "부",
     "voice": "ko-KR-SunHiNeural",
@@ -399,8 +504,29 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "a5b88f54",
+    "syllable": "불",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "4ba23b57",
     "syllable": "비",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "27a202ab",
+    "syllable": "빠",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "a3a7430d",
+    "syllable": "뿐",
     "voice": "ko-KR-SunHiNeural",
     "rate": "-10%",
     "pitch": "+0Hz"
@@ -497,6 +623,13 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "310e3e2c",
+    "syllable": "앞",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "130e0ef2",
     "syllable": "야",
     "voice": "ko-KR-SunHiNeural",
@@ -562,6 +695,13 @@
   {
     "id": "6cecb5f5",
     "syllable": "요",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "88ece209",
+    "syllable": "우",
     "voice": "ko-KR-SunHiNeural",
     "rate": "-10%",
     "pitch": "+0Hz"
@@ -651,6 +791,13 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "282cf0ac",
+    "syllable": "정",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "de27ff00",
     "syllable": "좋",
     "voice": "ko-KR-SunHiNeural",
@@ -693,8 +840,29 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "6b53bdfe",
+    "syllable": "채",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "314f9119",
     "syllable": "처",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "304f8f86",
+    "syllable": "척",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "373e516a",
+    "syllable": "치",
     "voice": "ko-KR-SunHiNeural",
     "rate": "-10%",
     "pitch": "+0Hz"
@@ -716,6 +884,20 @@
   {
     "id": "f8036f11",
     "syllable": "테",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "040381f5",
+    "syllable": "텐",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "2f07973d",
+    "syllable": "통",
     "voice": "ko-KR-SunHiNeural",
     "rate": "-10%",
     "pitch": "+0Hz"
@@ -758,6 +940,13 @@
   {
     "id": "9fdbd519",
     "syllable": "해",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
+    "id": "b1dfc306",
+    "syllable": "했",
     "voice": "ko-KR-SunHiNeural",
     "rate": "-10%",
     "pitch": "+0Hz"
