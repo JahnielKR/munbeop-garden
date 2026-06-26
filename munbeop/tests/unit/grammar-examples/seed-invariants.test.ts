@@ -33,4 +33,19 @@ describe('grammar-examples seed invariants', () => {
       expect(GRAMMAR_EXAMPLES.filter((e) => e.ko === ko).length).toBeGreaterThanOrEqual(2)
     })
   }
+
+  // Per-allomorph coverage: a point whose pattern has phonologically distinct
+  // surface forms must demonstrate each one, so the learner sees the form
+  // change with the stem — not just three sentences of the same shape.
+  const ALLOMORPH_COVERAGE: Array<{ ko: string; label: string; match: RegExp }> = [
+    { ko: '-아/어요', label: '하다 → 해요', match: /해요[.!?]/ },
+    { ko: '-았/었어요', label: '하다 → 했어요', match: /했어요[.!?]/ },
+    { ko: '-ㄴ/는데', label: '받침 형용사 → 은데', match: /은데/ },
+  ]
+  for (const { ko, label, match } of ALLOMORPH_COVERAGE) {
+    it(`${ko} demonstrates the ${label} allomorph`, () => {
+      const hit = GRAMMAR_EXAMPLES.some((e) => e.ko === ko && match.test(e.sentence))
+      expect(hit).toBe(true)
+    })
+  }
 })
