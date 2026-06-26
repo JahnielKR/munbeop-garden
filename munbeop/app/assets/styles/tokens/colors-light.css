@@ -89,4 +89,11 @@
   --text-on-danger: var(--always-cream); /* cream text on red */
   --text-on-info: var(--always-cream);   /* cream text on rust-orange link */
   --text-on-warning: var(--always-dark);
+
+  /* ---- Activity heatmap ramp ---- */
+  --heat-0: #e7e3d4;
+  --heat-1: #cfe6a8;
+  --heat-2: #9ecb5f;
+  --heat-3: #639922;
+  --heat-4: #3b6d11;
 }

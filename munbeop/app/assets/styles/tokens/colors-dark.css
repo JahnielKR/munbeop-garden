@@ -70,4 +70,11 @@
   --text-on-danger: var(--always-dark);  /* dark text on bright red — 5.2:1 (cream was 2.9:1 ✗) */
   --text-on-info: var(--always-dark);    /* dark text on moonlight blue — 6.8:1 */
   --text-on-warning: var(--always-dark);
+
+  /* ---- Activity heatmap ramp ---- */
+  --heat-0: #24271f;
+  --heat-1: #2e5a1e;
+  --heat-2: #3f7d22;
+  --heat-3: #5aa62e;
+  --heat-4: #7fce4a;
 }
