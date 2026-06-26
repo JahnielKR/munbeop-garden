@@ -11,7 +11,11 @@ const items = ref([
   { ko: '은/는', meaning: { en: 'topic', es: '', fr: '', 'pt-BR': '', th: '', id: '', vi: '', ja: '' }, deckId: 'topik-1' },
 ])
 vi.mock('~/stores/grammar', () => ({
-  useGrammarStore: () => ({ get items() { return items.value } }),
+  useGrammarStore: () => ({
+    get items() { return items.value },
+    // The Library searches the catalog only — custom-deck grammars are excluded.
+    get catalogItems() { return items.value.filter((g) => g.deckId !== 'custom') },
+  }),
 }))
 
 describe('useLibrarySearch', () => {
@@ -63,5 +67,14 @@ describe('useLibrarySearch', () => {
 
   it('results returns the single item when unfiltered', () => {
     expect(use().results.value.map((g) => g.ko)).toEqual(['은/는'])
+  })
+
+  it('results exclude user custom-deck grammars', () => {
+    items.value = [
+      ...items.value,
+      { ko: '나만의', meaning: { en: 'mine', es: '', fr: '', 'pt-BR': '', th: '', id: '', vi: '', ja: '' }, deckId: 'custom' },
+    ]
+    expect(use().results.value.map((g) => g.ko)).toEqual(['은/는'])
+    items.value = items.value.filter((g) => g.deckId !== 'custom')
   })
 })

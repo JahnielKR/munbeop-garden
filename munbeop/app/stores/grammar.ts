@@ -27,6 +27,13 @@ export const useGrammarStore = defineStore('grammar', () => {
     items.value.filter((g) => g.deckId === CUSTOM_DECK_ID),
   )
 
+  // The Library shows the official catalog only — user-authored custom grammars
+  // (the 'custom' deck) are managed in settings + practiced via the Ruleta, but
+  // must NOT surface in the grammar catalog browser.
+  const catalogItems = computed(() =>
+    items.value.filter((g) => g.deckId !== CUSTOM_DECK_ID),
+  )
+
   function grammarByKo(ko: string): Grammar | undefined {
     return items.value.find((g) => g.ko === ko)
   }
@@ -119,6 +126,7 @@ export const useGrammarStore = defineStore('grammar', () => {
     excludedDeckIds,
     activeIndices,
     customGrammars,
+    catalogItems,
     grammarByKo,
     hydrate,
     toggleDeck,

@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useGrammarStore } from '~/stores/grammar'
 import { STORAGE_KEYS } from '~/lib/storage'
+import { CUSTOM_DECK_ID } from '~/lib/domain'
 import type { Grammar, Deck } from '~/lib/domain'
 
 // Controllable fake storage so we can exercise both the empty-fallback path
@@ -59,6 +60,23 @@ describe('useGrammarStore.hydrate', () => {
     await store.hydrate()
     expect(store.items.filter((g) => g.ko === '-아/어요')).toHaveLength(1)
     expect(store.items).toHaveLength(2)
+  })
+
+  it('catalogItems excludes user custom-deck grammars (the Library shows the catalog only)', async () => {
+    const mk = (ko: string, deckId: string): Grammar => ({
+      ko,
+      meaning: { en: ko, es: '', fr: '', 'pt-BR': '', th: '', id: '', vi: '', ja: '' },
+      deckId,
+    })
+    const deck: Deck = { id: 'topik-1', name: 'T1', colorId: 'sky', order: 1, collapsed: false }
+    stored = {
+      [STORAGE_KEYS.grammar]: [mk('-아/어요', 'topik-1'), mk('나만의 문법', CUSTOM_DECK_ID)],
+      [STORAGE_KEYS.decks]: [deck],
+    }
+    const store = useGrammarStore()
+    await store.hydrate()
+    expect(store.items).toHaveLength(2) // both stored (custom still managed elsewhere)
+    expect(store.catalogItems.map((g) => g.ko)).toEqual(['-아/어요']) // but the Library view excludes custom
   })
 
   it('uses stored data as-is and does not overwrite it with the seed', async () => {
