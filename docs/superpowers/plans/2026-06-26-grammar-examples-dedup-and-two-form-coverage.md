@@ -1,11 +1,16 @@
-# Plan — Fix duplicated study-sheet examples + per-form example coverage
+# Plan — Study-sheet examples: kill the duplicate, per-form coverage, + remove duplicate grammar entries
 
 **Status:** ready for a future session. Investigation done 2026-06-26; nothing implemented yet.
-**Owner ask (verbatim intent):** in the grammar study sheet, the example shown
-"above" (Meaning) is identical to the one "below" (Examples), and two-form
-grammars (e.g. `좋아하다 / 싫어하다`, `은/는`) only ever show ONE form. Fix both:
-(1) the above example must differ from the below one; (2) a grammar that names
-two forms must show at least one example **per form**.
+**Owner ask (verbatim intent):**
+1. In the grammar study sheet, the example shown "above" (Meaning) is identical
+   to the one "below" (Examples) — they must differ.
+2. A grammar that names two forms (e.g. `좋아하다 / 싫어하다`, `은/는`) must show at
+   least one example **per form**.
+3. A grammar that names **three or more** forms (e.g. `와/과 · 하고 · (이)랑`,
+   `에게 / 한테 / 께`) needs an example for **each** form.
+4. (Added later) Some grammars appear **duplicated** in the Library (`을/를`,
+   `이/가`, `에`, … shown twice) — remove the duplicate grammar. **This is a
+   SEPARATE root cause (junk DATA in `user_custom_grammars`), see §6.**
 
 ---
 
@@ -87,7 +92,11 @@ pronunciation rollout.
   (`은/는`, `이/가`, `을/를`, `에게 / 한테 / 께`, `부터 / 까지`,
   `와/과 · 하고 · (이)랑`), different variant endings (`-군요 / -구나`,
   `-처럼 / -같이`, `-(으)로서 / -(으)로써`, `-는다면 / -(이)라면`,
-  `-다는데 / -다더라 / -다더니`), or sets (`이 / 그 / 저`). → ≥1 example per form.
+  `-다는데 / -다더라 / -다더니`), or sets (`이 / 그 / 저`). → **≥1 example per
+  named form**. A 3+-form set (`와/과 · 하고 · (이)랑`, `에게 / 한테 / 께`,
+  `이 / 그 / 저`, `아직 / 벌써 / 이미`, `-다는데 / -다더라 / -다더니`,
+  `-건대 / 생각건대 / 바라건대`) needs **≥3 examples, one per form** — raise
+  `MAX_EXAMPLES` (currently 4) if a 3-form set plus register variety overflows it.
 - EXCLUDE as one-example (Tier 2): pure phonological/automatic alternation of a
   single form — `-아/어…` (아/어 ablaut), `-(으)…` (epenthesis), `-(으)ㄴ/는 …`
   (tense modifier), `-ㅂ/습니다`, `-ㄴ/는데`. A single example is fine; optionally
@@ -128,3 +137,57 @@ pronunciation rollout.
 - Audio: reuse the pronunciation-pipeline lessons — generate only-missing clips, UTF-8 stdout on Windows, soundfile/libsndfile (no ffmpeg).
 - The pronunciation feature (this branch's prior work, PR #74) is unrelated and already merged; this is a separate concern in the **Examples** section.
 - `worktree` had no `node_modules` → `pnpm install` (pnpm, not npm) before running tests.
+
+---
+
+## 6. Duplicate grammar entries — DATA cleanup (separate root cause)
+
+Owner sees some grammars **twice** in the Library (`을/를`, `이/가`, `에`, many
+more). This is NOT a seed/catalog bug — it is junk DATA in Supabase.
+
+### Root cause (confirmed via Supabase queries 2026-06-26)
+The Supabase storage adapter reads the `grammar` key as **`grammars` (catalog) ∪
+`user_custom_grammars` (this user)** and does **not** dedupe by `ko`
+(`app/lib/storage/supabase.ts:42-43,96-100`). A logged-in user's custom grammars
+have `deckId = 'custom'` (∉ TOPIK decks) so they render in the Library's
+**"기타 / orphans"** section (`pages/library.vue:30-33,128-144`) — alongside the
+identical catalog entry in its TOPIK deck. That is the visible duplicate.
+
+Measured state:
+- `grammars` (catalog) = **300 rows / 300 distinct ko / 0 duplicates** — CLEAN.
+  `DEFAULT_GRAMMAR` and `topik-spine.json` are also dup-free.
+- `user_custom_grammars` = **328 rows across 3 users**; **314 rows exactly
+  duplicate a catalog `ko`**; 0 intra-user (user,ko) dups. The only 7 non-catalog
+  `ko` are near-variant junk: `는/은`, `못`, `-지 않다`, `-(으)러`,
+  `-아/어야 되다`, `한테/한테서`, `에서/부터~까지`.
+- ⇒ Almost certainly a bad bulk import (the data-import feature, PR #59) that
+  loaded a near-complete grammar list into `user_custom_grammars` without
+  checking it against the catalog. ~96% of the table is catalog duplicates.
+
+### Fix
+- **A) Data cleanup (Supabase — destructive, needs owner confirmation; affects 3
+  users incl. test accounts / wife). Back up first.**
+  ```sql
+  -- dump first: SELECT * FROM user_custom_grammars;  (save the rows)
+  -- remove the 314 exact catalog duplicates:
+  DELETE FROM user_custom_grammars u
+  WHERE EXISTS (SELECT 1 FROM grammars g WHERE g.ko = u.ko);
+  -- then review the 7 non-catalog variants (는/은, 못, -지 않다, -(으)러,
+  -- -아/어야 되다, 한테/한테서, 에서/부터~까지) — they duplicate catalog concepts
+  -- under different ko strings; almost certainly also import junk → delete unless
+  -- the owner wants to keep any as intentional self-study entries.
+  ```
+  Run via `apply_migration` after confirmation. (LocalStorage-only users, if any,
+  need a parallel one-time dedupe-on-hydrate; see B.)
+- **B) Defensive code — make duplicates impossible to render even with stray data.**
+  In the `STORAGE_KEYS.grammar` read (`supabase.ts` ~line 96-100), drop any
+  `user_custom_grammars` row whose `ko` already exists in `grammars` (catalog
+  wins). Mirror it with a dedupe-by-ko on hydrate in `stores/grammar.ts:hydrate`
+  for the localStorage adapter. Add a unit test (`grammar` read returns unique
+  ko; catalog beats custom on collision).
+- **C) Guard the import path.** The UI `addCustomGrammar` already rejects a ko
+  that exists (`stores/grammar.ts:89`), but the bulk import bypassed it — dedupe
+  the import against the catalog before inserting, so this cannot recur.
+
+**Sequencing:** B + C are cheap code fixes (land with Part A rendering work). A is
+a one-off prod data cleanup — do it with the owner present, after a backup.
