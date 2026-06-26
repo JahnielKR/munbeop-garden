@@ -120,5 +120,16 @@
   { "id": "3141d72f", "sentence": "너 다음 달에 군대 간다며?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
   { "id": "0242b9aa", "sentence": "저는 이 일이 생각보다 어렵다고 생각해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
   { "id": "17870905", "sentence": "이번 겨울이 유난히 춥다고 들었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "cd249227", "sentence": "요즘 들어 시간이 정말 빠르다고 느껴요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" }
+  { "id": "cd249227", "sentence": "요즘 들어 시간이 정말 빠르다고 느껴요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "010b3539", "sentence": "불이 다 꺼진 걸 보니 가족들이 벌써 잠든 듯해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "2c0a6a0e", "sentence": "그 식당은 평일인데도 줄이 긴 걸 보면 꽤 유명한 듯싶어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "747b49cf", "sentence": "친구가 약속을 잊었다고 할까 봐 미리 문자를 보냈어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "dc5f18c6", "sentence": "네가 또 바쁘다고 할 줄 알았어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
+  { "id": "8c234491", "sentence": "내일 비가 많이 온다는데 우산 챙기는 게 좋겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "b4b0ccaf", "sentence": "그 영화 진짜 무섭다더라, 혼자 보지 마.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
+  { "id": "231b4763", "sentence": "오늘 하루 종일 안 바쁘다더니 왜 이렇게 연락이 안 됐어?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
+  { "id": "ff308c11", "sentence": "다음 주 월요일에 본사로 회장님을 직접 찾아 뵙겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
+  { "id": "6c6f1413", "sentence": "부장님, 그럼 회의 끝나고 로비에서 봬요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "5f1b4a92", "sentence": "할머니는 시골에서 작은 텃밭을 가꾸며 사세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "2ad79d05", "sentence": "요즘은 매일 운동하며 건강하게 지내고 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" }
 ]
