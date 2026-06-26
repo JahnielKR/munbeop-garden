@@ -151,4 +151,21 @@ describe('grammar-examples seed invariants', () => {
       })
     }
   }
+
+  // Per-FORM coverage for the TOPIK-5 Tier-1 grammars (plan Part B, level 5).
+  const TIER5_FORM_COVERAGE: Array<{ ko: string; forms: Array<{ label: string; re: RegExp }> }> = [
+    { ko: '-(으)ㄴ/는 듯하다 / 듯싶다', forms: [{ label: '듯하다', re: /듯(하|해|합)/ }, { label: '듯싶다', re: /듯싶/ }] },
+    { ko: '-다고 할까 봐 / -다고 할 줄 알았다', forms: [{ label: '할까 봐', re: /할까 봐/ }, { label: '할 줄 알았다', re: /할 줄 알/ }] },
+    { ko: '-다는데 / -다더라 / -다더니', forms: [{ label: '다는데', re: /다는데/ }, { label: '다더라', re: /다더라/ }, { label: '다더니', re: /다더니/ }] },
+    { ko: '-아/어 뵙다 / 봬요', forms: [{ label: '뵙다', re: /뵙/ }, { label: '봬요', re: /봬요|봬/ }] },
+    { ko: '-(으)며 살다 / 지내다', forms: [{ label: '며 살다', re: /며 (살|사)/ }, { label: '며 지내다', re: /지내/ }] },
+  ]
+  for (const { ko, forms } of TIER5_FORM_COVERAGE) {
+    for (const { label, re } of forms) {
+      it(`${ko} demonstrates the ${label} form`, () => {
+        const exs = GRAMMAR_EXAMPLES.filter((e) => e.ko === ko)
+        expect(exs.some((e) => re.test(e.sentence))).toBe(true)
+      })
+    }
+  }
 })
