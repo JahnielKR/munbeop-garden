@@ -1,11 +1,10 @@
 import { setActivePinia, createPinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { useSrsStore } from '~/stores/srs'
 
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({ read: vi.fn(async () => ({})), upsertOne: vi.fn(), write: vi.fn(), append: vi.fn(), remove: vi.fn(), clear: vi.fn() }),
 }))
-
-import { useSrsStore } from '~/stores/srs'
 
 describe('useSrsStore.peek', () => {
   beforeEach(() => setActivePinia(createPinia()))

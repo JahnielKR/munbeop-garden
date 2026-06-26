@@ -1,13 +1,11 @@
 import { setActivePinia, createPinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { useStats } from '~/composables/useStats'
+import { useActivityStore } from '~/stores/activity'
 
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({ read: vi.fn(async () => ({})), upsertOne: vi.fn(), write: vi.fn(), append: vi.fn(), remove: vi.fn(), clear: vi.fn() }),
 }))
-
-import { useStats } from '~/composables/useStats'
-import { useActivityStore } from '~/stores/activity'
-import { useLogStore } from '~/stores/log'
 
 describe('useStats activity + streaks', () => {
   beforeEach(() => setActivePinia(createPinia()))
