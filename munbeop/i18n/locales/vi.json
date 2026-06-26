@@ -376,6 +376,7 @@
     },
     "confused": {
       "title": "Thường bị nhầm lẫn với",
+      "open_hint": "Mở ngữ pháp này",
       "test_cta": "Tự kiểm tra",
       "correct": "Chính xác!",
       "wrong": "Chưa đúng",

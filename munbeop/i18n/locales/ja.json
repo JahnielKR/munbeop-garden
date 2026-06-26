@@ -376,6 +376,7 @@
     },
     "confused": {
       "title": "よく混同される表現",
+      "open_hint": "この文法を開く",
       "test_cta": "腕試しする",
       "correct": "正解！",
       "wrong": "惜しい",

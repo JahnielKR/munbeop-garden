@@ -376,6 +376,7 @@
     },
     "confused": {
       "title": "Often confused with",
+      "open_hint": "Open this grammar",
       "test_cta": "Test yourself",
       "correct": "Correct!",
       "wrong": "Not quite",

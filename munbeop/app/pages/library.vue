@@ -151,7 +151,7 @@ async function onCardClick(ko: string) {
       :close-label="t('library.modal.close')"
       @close="close"
     >
-      <GrammarStudySheet v-if="selected" :key="selected.ko" :grammar="selected" />
+      <GrammarStudySheet v-if="selected" :key="selected.ko" :grammar="selected" @navigate="open" />
     </Modal>
   </div>
 </template>

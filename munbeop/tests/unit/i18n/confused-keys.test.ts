@@ -14,6 +14,7 @@ function dig(o: unknown, p: string): unknown {
 }
 const KEYS = [
   'library.confused.title',
+  'library.confused.open_hint',
   'library.confused.test_cta',
   'library.confused.correct',
   'library.confused.wrong',

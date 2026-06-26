@@ -15,6 +15,7 @@ interface Props {
   grammar: Grammar
 }
 defineProps<Props>()
+const emit = defineEmits<{ navigate: [ko: string] }>()
 </script>
 
 <template>
@@ -27,7 +28,7 @@ defineProps<Props>()
     <ParticleLabSection :grammar="grammar" />
     <PronunciationSection :grammar="grammar" />
     <ExamplesSection :grammar="grammar" />
-    <ConfusedWithSection :grammar="grammar" />
+    <ConfusedWithSection :grammar="grammar" @navigate="(ko) => emit('navigate', ko)" />
     <AchievementsSection :grammar="grammar" />
   </article>
 </template>

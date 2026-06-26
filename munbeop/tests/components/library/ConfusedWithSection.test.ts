@@ -32,6 +32,11 @@ describe('ConfusedWithSection', () => {
     const w = factory('-네요')
     expect(w.find('.confused-section').exists()).toBe(false)
   })
+  it('emits navigate with the other ko when the chip is clicked', async () => {
+    const w = factory('안 + V / -지 않다')
+    await w.find('.confused__chip').trigger('click')
+    expect(w.emitted('navigate')?.[0]).toEqual(['못 + V / -지 못하다'])
+  })
   it('toggles the drill open', async () => {
     const w = factory('안 + V / -지 않다')
     expect(w.findComponent({ name: 'PairDrill' }).exists()).toBe(false)
