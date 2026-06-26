@@ -45,6 +45,8 @@ describe('grammar-pairs seed invariants', () => {
     'naboda-ngaboda', 'eoyahaetda-georeotda', 'daga-go',
     'dagohaeseo-haedo', 'tase-inhae', 'semida-semchida',
     'jieonjeong-jirado', 'ppunida-ttareumida', 'kkasipda-jisipda',
+    'jeuksi-jamaja', 'madange-isang', 'beobida-maryeonida',
+    'malmiama-inhae', 'nora-neunda', 'ndeul-aeodo',
   ]
   for (const id of TARGET_IDS) {
     it(`covers ${id} with ≥3 items`, () => {
