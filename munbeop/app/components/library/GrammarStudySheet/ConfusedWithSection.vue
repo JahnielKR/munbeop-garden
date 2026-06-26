@@ -8,6 +8,7 @@ interface Props {
   grammar: Grammar
 }
 const props = defineProps<Props>()
+const emit = defineEmits<{ navigate: [ko: string] }>()
 const { t } = useI18n()
 const { tl } = useLocalized()
 
@@ -23,7 +24,13 @@ function toggle(id: string) {
     <h3 class="section-title">{{ t('library.confused.title') }}</h3>
     <div v-for="row in rows" :key="row.pair.id" class="confused">
       <p class="confused__head">
-        <span class="confused__chip" lang="ko">{{ row.otherKo }}</span>
+        <button
+          type="button"
+          class="confused__chip"
+          lang="ko"
+          :title="t('library.confused.open_hint')"
+          @click="emit('navigate', row.otherKo)"
+        >{{ row.otherKo }}</button>
       </p>
       <p class="confused__note">{{ tl(row.pair.note) }}</p>
       <button
@@ -60,8 +67,26 @@ function toggle(id: string) {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 14px;
   color: var(--ink);
+  background: var(--paper-deep, transparent);
   border: 1px solid var(--ink-line);
   padding: 2px 7px;
+  cursor: pointer;
+  transition:
+    background var(--motion-quick) var(--ease-out),
+    transform var(--motion-quick) var(--ease-out);
+}
+/* A small chevron hints the chip opens that grammar's study sheet. */
+.confused__chip::after {
+  content: ' ›';
+  color: var(--ink-soft);
+}
+.confused__chip:hover {
+  background: var(--paper);
+  transform: translate(-1px, -1px);
+}
+.confused__chip:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 .confused__note {
   margin: 0 0 6px;

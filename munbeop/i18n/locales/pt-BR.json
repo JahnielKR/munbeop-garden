@@ -376,6 +376,7 @@
     },
     "confused": {
       "title": "Frequentemente confundido com",
+      "open_hint": "Abrir esta gramática",
       "test_cta": "Teste-se",
       "correct": "Correto!",
       "wrong": "Não exatamente",

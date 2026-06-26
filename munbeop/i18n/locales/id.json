@@ -376,6 +376,7 @@
     },
     "confused": {
       "title": "Sering tertukar dengan",
+      "open_hint": "Buka tata bahasa ini",
       "test_cta": "Uji dirimu",
       "correct": "Benar!",
       "wrong": "Belum tepat",
