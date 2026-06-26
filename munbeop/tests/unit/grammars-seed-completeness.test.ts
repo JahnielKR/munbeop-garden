@@ -12,8 +12,14 @@ describe('usageNotes seed completeness', () => {
   // ACTIVE: every seeded level must carry detailed usageNotes in all 8 locales.
   // As later levels are seeded they move from the "must stay empty" block below
   // into this one.
-  describe('TOPIK 1–4 (seeded)', () => {
-    const inScope = [...TOPIK_1_GRAMMAR, ...TOPIK_2_GRAMMAR, ...TOPIK_3_GRAMMAR, ...TOPIK_4_GRAMMAR]
+  describe('TOPIK 1–5 (seeded)', () => {
+    const inScope = [
+      ...TOPIK_1_GRAMMAR,
+      ...TOPIK_2_GRAMMAR,
+      ...TOPIK_3_GRAMMAR,
+      ...TOPIK_4_GRAMMAR,
+      ...TOPIK_5_GRAMMAR,
+    ]
     for (const g of inScope) {
       it(`${g.ko} has usageNotes in all 8 locales`, () => {
         expect(g.usageNotes, `${g.ko} missing usageNotes`).toBeDefined()
@@ -29,11 +35,8 @@ describe('usageNotes seed completeness', () => {
     }
   })
 
-  describe('TOPIK 5-6 (not yet seeded — must stay empty)', () => {
-    const outOfScope = [
-      ...TOPIK_5_GRAMMAR,
-      ...TOPIK_6_GRAMMAR,
-    ]
+  describe('TOPIK 6 (not yet seeded — must stay empty)', () => {
+    const outOfScope = [...TOPIK_6_GRAMMAR]
     for (const g of outOfScope) {
       it(`${g.ko} has usageNotes === undefined`, () => {
         expect(
