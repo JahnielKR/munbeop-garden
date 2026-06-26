@@ -27,11 +27,12 @@ describe('ExamplesSection', () => {
     expect(w.text()).toContain('해요체') // polite chip
     expect(w.text()).toContain('합니다체') // formal chip
   })
-  it('falls back to the canonical example when the bank is empty', () => {
+  it('renders nothing when the bank is empty, even if a canonical example exists', () => {
+    // The canonical example lives ONLY in MeaningSection; ExamplesSection must
+    // not echo it (that "above == below" duplicate is the bug we removed).
     const w = mountWith({ ko: '-고', example: '밥을 먹고 잤어요.', trans: { en: 'I ate and slept.' } })
-    expect(w.findAll('.example')).toHaveLength(1)
-    expect(w.text()).toContain('밥을 먹고 잤어요.')
-    expect(w.text()).not.toContain('해요체') // no chip on the fallback
+    expect(w.find('.examples-section').exists()).toBe(false)
+    expect(w.text()).not.toContain('밥을 먹고 잤어요.')
   })
   it('renders nothing when there is neither a bank nor a canonical example', () => {
     const w = mountWith({ ko: '-고' })

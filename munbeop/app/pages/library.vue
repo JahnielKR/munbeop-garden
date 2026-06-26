@@ -21,15 +21,16 @@ const sections = computed(() => {
   return sortedDecks
     .map((deck) => ({
       deck,
-      items: grammarStore.items.filter((g) => g.deckId === deck.id),
+      items: grammarStore.catalogItems.filter((g) => g.deckId === deck.id),
     }))
     .filter((s) => s.items.length > 0)
 })
 
-/** Items whose deckId matches no current deck — rendered under a fallback section. */
+/** Catalog items whose deckId matches no current deck — rendered under a
+ *  fallback section. User custom grammars are excluded (catalogItems). */
 const orphans = computed(() => {
   const known = new Set(grammarStore.decks.map((d) => d.id))
-  return grammarStore.items.filter((g) => !known.has(g.deckId))
+  return grammarStore.catalogItems.filter((g) => !known.has(g.deckId))
 })
 
 async function onToggleDeck(deckId: string) {
