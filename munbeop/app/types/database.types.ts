@@ -68,6 +68,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_activity: {
+        Row: {
+          count: number
+          day: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          count?: number
+          day: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          count?: number
+          day?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_custom_contexts: {
         Row: {
           created_at: string
@@ -88,39 +109,6 @@ export type Database = {
           id?: string
           name?: string
           scene?: Json
-          user_id?: string
-        }
-        Relationships: []
-      }
-      user_custom_grammars: {
-        Row: {
-          created_at: string
-          deck_id: string
-          example: string | null
-          id: number
-          ko: string
-          meaning: Json
-          trans: Json | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          deck_id?: string
-          example?: string | null
-          id?: number
-          ko: string
-          meaning: Json
-          trans?: Json | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          deck_id?: string
-          example?: string | null
-          id?: number
-          ko?: string
-          meaning?: Json
-          trans?: Json | null
           user_id?: string
         }
         Relationships: []
@@ -157,6 +145,39 @@ export type Database = {
           image_url?: string | null
           name?: string
           position?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_custom_grammars: {
+        Row: {
+          created_at: string
+          deck_id: string
+          example: string | null
+          id: number
+          ko: string
+          meaning: Json
+          trans: Json | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deck_id?: string
+          example?: string | null
+          id?: number
+          ko: string
+          meaning: Json
+          trans?: Json | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deck_id?: string
+          example?: string | null
+          id?: number
+          ko?: string
+          meaning?: Json
+          trans?: Json | null
           user_id?: string
         }
         Relationships: []
