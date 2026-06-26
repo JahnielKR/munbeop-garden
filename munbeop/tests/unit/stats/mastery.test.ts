@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { masteryByLevel, toughestGrammar } from '~/lib/stats/mastery'
+import { pathProgress } from '~/lib/paths/progress'
 import type { Grammar, SrsState } from '~/lib/domain'
 
 const L = (over: Record<string, string>) => ({ en: '', es: '', fr: '', 'pt-BR': '', th: '', id: '', vi: '', ja: '', ...over })
@@ -22,6 +23,25 @@ describe('masteryByLevel', () => {
   it('ignores non-TOPIK decks (general / custom)', () => {
     const levels = masteryByLevel([g('x', 'general'), g('y', 'my-deck')], {})
     expect(levels.every((l) => l.total === 0)).toBe(true)
+  })
+
+  it('counts only learned (plant+tree) toward pct; seedlings are 0%', () => {
+    const grammars = [g('a', 'topik-1'), g('b', 'topik-1'), g('c', 'topik-1'), g('d', 'topik-1')]
+    // 4 grammars: 2 merely seen (seedling), 1 plant, 1 tree → learned 2/4 = 50%
+    const map = {
+      a: srs({ mastery: 'seedling' }),
+      b: srs({ mastery: 'seedling' }),
+      c: srs({ mastery: 'plant' }),
+      d: srs({ mastery: 'tree' }),
+    }
+    const l1 = masteryByLevel(grammars, map).find((l) => l.level === 1)!
+    expect(l1).toMatchObject({ seedling: 2, plant: 1, tree: 1, total: 4, pct: 50 })
+  })
+
+  it('an all-seedling level (browsed but never learned) reads 0%', () => {
+    const grammars = [g('a', 'topik-1'), g('b', 'topik-1')]
+    const map = { a: srs({ mastery: 'seedling' }), b: srs({ mastery: 'seedling' }) }
+    expect(masteryByLevel(grammars, map).find((l) => l.level === 1)!.pct).toBe(0)
   })
 })
 
@@ -47,5 +67,15 @@ describe('toughestGrammar', () => {
 
   it('is empty when nothing has been found hard', () => {
     expect(toughestGrammar({}, [], 5)).toEqual([])
+  })
+})
+
+describe('masteryByLevel ↔ pathProgress parity', () => {
+  it('level pct equals pathProgress pct for the same topik-N kos', () => {
+    const grammars = [g('a', 'topik-3'), g('b', 'topik-3'), g('c', 'topik-3')]
+    const map = { a: srs({ mastery: 'tree' }), b: srs({ mastery: 'plant' }), c: srs({ mastery: 'seedling' }) }
+    const lvl = masteryByLevel(grammars, map).find((l) => l.level === 3)!
+    const path = pathProgress(['a', 'b', 'c'], map)
+    expect(lvl.pct).toBe(Math.round(path.pct * 100)) // both = 2/3 → 67
   })
 })

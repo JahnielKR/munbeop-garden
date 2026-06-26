@@ -7,7 +7,7 @@ export interface LevelMastery {
   tree: number
   /** Grammar items in this TOPIK level (touched or not). */
   total: number
-  /** Touched (seedling + plant + tree) as a rounded percentage of total. */
+  /** Learned (plant + tree) as a rounded percentage of total — matches /paths. */
   pct: number
 }
 
@@ -48,8 +48,8 @@ export function masteryByLevel(
     else if (mastery === 'tree') bucket.tree += 1
   }
   for (const l of levels) {
-    const touched = l.seedling + l.plant + l.tree
-    l.pct = l.total ? Math.round((touched / l.total) * 100) : 0
+    const learned = l.plant + l.tree
+    l.pct = l.total ? Math.round((learned / l.total) * 100) : 0
   }
   return levels
 }
