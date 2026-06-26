@@ -34,5 +34,8 @@
   { "id": "66256861", "sentence": "빵을 먹고 싶어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
   { "id": "2d1d9284", "sentence": "저는 지금 밥을 먹고 있습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
   { "id": "06c8d6c1", "sentence": "친구가 책을 읽고 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "4970411d", "sentence": "동생이 음악을 듣고 있어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" }
+  { "id": "4970411d", "sentence": "동생이 음악을 듣고 있어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
+  { "id": "eb3e989c", "sentence": "주말마다 방을 청소해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "7a348cc6", "sentence": "저는 오늘 아침에 공원에서 운동했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "1fc8f5fd", "sentence": "이 식당은 음식이 좋은데 너무 비싸요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" }
 ]
