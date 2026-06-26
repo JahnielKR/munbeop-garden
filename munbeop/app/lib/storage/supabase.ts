@@ -3,6 +3,7 @@ import type { Database, Json } from '~/types/database.types'
 import type { StorageAdapter } from './adapter'
 import { STORAGE_KEYS, type StorageKey } from './keys'
 import type { Grammar, Context, Deck, CustomDeck, LogEntry, SrsState } from '~/lib/domain'
+import type { ActivityDay } from '~/lib/stats/activity'
 import { CUSTOM_DECK_ID } from '~/lib/domain'
 
 /**
@@ -243,6 +244,17 @@ export class SupabaseAdapter implements StorageAdapter {
         return (rows.length && rows[0]?.progress != null ? rows[0].progress : fallback) as T
       }
 
+      case STORAGE_KEYS.activity: {
+        const { data, error } = await this.client
+          .from('user_activity')
+          .select('day, count')
+          .eq('user_id', this.userId)
+        assertOk('read', key, error)
+        const map: Record<string, ActivityDay> = {}
+        for (const row of data ?? []) map[row.day] = { count: row.count }
+        return (Object.keys(map).length ? map : fallback) as T
+      }
+
       case STORAGE_KEYS.locale:
         return fallback
       default:
@@ -386,6 +398,23 @@ export class SupabaseAdapter implements StorageAdapter {
         return
       }
 
+      case STORAGE_KEYS.activity: {
+        const map = value as Record<string, ActivityDay>
+        const del = await this.client.from('user_activity').delete().eq('user_id', this.userId)
+        assertOk('write', key, del.error)
+        const rows = Object.entries(map).map(([day, v]) => ({
+          user_id: this.userId,
+          day,
+          count: v.count,
+          updated_at: new Date().toISOString(),
+        }))
+        if (rows.length) {
+          const { error } = await this.client.from('user_activity').upsert(rows)
+          assertOk('write', key, error)
+        }
+        return
+      }
+
       case STORAGE_KEYS.locale:
         // Locale stays in localStorage even when authed — it's a per-device pref.
         return
@@ -417,6 +446,18 @@ export class SupabaseAdapter implements StorageAdapter {
         assertOk('write', key, error)
         return
       }
+      case STORAGE_KEYS.activity: {
+        const v = entry.value as ActivityDay
+        const { error } = await this.client.from('user_activity').upsert({
+          user_id: this.userId,
+          day: entry.id,
+          count: v.count,
+          updated_at: new Date().toISOString(),
+        })
+        assertOk('write', key, error)
+        return
+      }
+
       default:
         throw new Error(`SupabaseAdapter.upsertOne(${key}) is not supported`)
     }
@@ -437,6 +478,7 @@ export class SupabaseAdapter implements StorageAdapter {
       'user_settings',
       'user_escape_room',
       'user_custom_decks',
+      'user_activity',
     ] as const
     const results = await Promise.all(
       tables.map((t) => this.client.from(t).delete().eq('user_id', this.userId)),
