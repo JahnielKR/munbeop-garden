@@ -318,6 +318,10 @@
         "name": "Nảy mầm",
         "desc": "Luyện điểm này một lần"
       },
+      "taking_root": {
+        "name": "Bén rễ",
+        "desc": "Đưa điểm này lên mức cây con"
+      },
       "practiced_10": {
         "name": "Luyện 10×",
         "desc": "Luyện 10 lần"
@@ -326,9 +330,17 @@
         "name": "Luyện 25×",
         "desc": "Luyện 25 lần"
       },
+      "practiced_50": {
+        "name": "Luyện 50 lần",
+        "desc": "Luyện điểm này 50 lần"
+      },
       "streak_5": {
         "name": "Đang đà",
         "desc": "Năm lần ôn dễ liên tiếp"
+      },
+      "flawless": {
+        "name": "Hoàn hảo",
+        "desc": "8+ lần ôn, không lần nào khó"
       },
       "comeback": {
         "name": "Trở lại",

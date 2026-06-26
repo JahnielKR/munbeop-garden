@@ -318,6 +318,10 @@
         "name": "Brotou",
         "desc": "Pratique este ponto uma vez"
       },
+      "taking_root": {
+        "name": "Criando raízes",
+        "desc": "Leve este ponto ao estágio planta"
+      },
       "practiced_10": {
         "name": "Praticado 10×",
         "desc": "Pratique-o 10 vezes"
@@ -326,9 +330,17 @@
         "name": "Praticado 25×",
         "desc": "Pratique-o 25 vezes"
       },
+      "practiced_50": {
+        "name": "Praticado 50×",
+        "desc": "Pratique 50 vezes"
+      },
       "streak_5": {
         "name": "Embalado",
         "desc": "Cinco revisões fáceis seguidas"
+      },
+      "flawless": {
+        "name": "Impecável",
+        "desc": "8+ revisões, nenhuma difícil"
       },
       "comeback": {
         "name": "Virada",

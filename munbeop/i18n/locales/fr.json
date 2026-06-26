@@ -318,6 +318,10 @@
         "name": "Germé",
         "desc": "Pratique ce point une fois"
       },
+      "taking_root": {
+        "name": "Prend racine",
+        "desc": "Fais grandir ce point jusqu’au stade plante"
+      },
       "practiced_10": {
         "name": "Pratiqué 10×",
         "desc": "Pratique-le 10 fois"
@@ -326,9 +330,17 @@
         "name": "Pratiqué 25×",
         "desc": "Pratique-le 25 fois"
       },
+      "practiced_50": {
+        "name": "Pratiqué 50×",
+        "desc": "Pratique-le 50 fois"
+      },
       "streak_5": {
         "name": "En série",
         "desc": "Cinq révisions faciles d'affilée"
+      },
+      "flawless": {
+        "name": "Sans faute",
+        "desc": "8+ révisions, aucune difficile"
       },
       "comeback": {
         "name": "Retour",

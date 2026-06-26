@@ -318,6 +318,10 @@
         "name": "Brotó",
         "desc": "Practica este punto una vez"
       },
+      "taking_root": {
+        "name": "Echando raíces",
+        "desc": "Lleva este punto a planta"
+      },
       "practiced_10": {
         "name": "Practicado 10×",
         "desc": "Practícalo 10 veces"
@@ -326,9 +330,17 @@
         "name": "Practicado 25×",
         "desc": "Practícalo 25 veces"
       },
+      "practiced_50": {
+        "name": "Practicado 50×",
+        "desc": "Practícalo 50 veces"
+      },
       "streak_5": {
         "name": "En racha",
         "desc": "Cinco repasos fáciles seguidos"
+      },
+      "flawless": {
+        "name": "Impecable",
+        "desc": "8+ repasos, ni uno difícil"
       },
       "comeback": {
         "name": "Remontada",

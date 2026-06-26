@@ -318,6 +318,10 @@
         "name": "Bertunas",
         "desc": "Latih poin ini sekali"
       },
+      "taking_root": {
+        "name": "Berakar",
+        "desc": "Tumbuhkan poin ini ke tahap tanaman"
+      },
       "practiced_10": {
         "name": "Dilatih 10×",
         "desc": "Latih 10 kali"
@@ -326,9 +330,17 @@
         "name": "Dilatih 25×",
         "desc": "Latih 25 kali"
       },
+      "practiced_50": {
+        "name": "Berlatih 50×",
+        "desc": "Latih 50 kali"
+      },
       "streak_5": {
         "name": "Lancar",
         "desc": "Lima ulasan mudah berturut-turut"
+      },
+      "flawless": {
+        "name": "Sempurna",
+        "desc": "8+ ulasan, tak satu pun sulit"
       },
       "comeback": {
         "name": "Bangkit",

@@ -318,6 +318,10 @@
         "name": "Sprouted",
         "desc": "Practice this point once"
       },
+      "taking_root": {
+        "name": "Taking root",
+        "desc": "Reach plant growth on this point"
+      },
       "practiced_10": {
         "name": "Practiced 10×",
         "desc": "Practice it 10 times"
@@ -326,9 +330,17 @@
         "name": "Practiced 25×",
         "desc": "Practice it 25 times"
       },
+      "practiced_50": {
+        "name": "Practiced 50×",
+        "desc": "Practice it 50 times"
+      },
       "streak_5": {
         "name": "On a roll",
         "desc": "Five easy reviews in a row"
+      },
+      "flawless": {
+        "name": "Flawless",
+        "desc": "8+ reviews, never once hard"
       },
       "comeback": {
         "name": "Comeback",

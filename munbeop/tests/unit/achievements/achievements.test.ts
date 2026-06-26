@@ -74,8 +74,32 @@ describe('achievementsFor', () => {
     expect(earnedSet(srs({ hardCount: 0 }), log).has('comeback')).toBe(false)
   })
 
-  it('always returns the six badges in a stable order', () => {
+  it('takes root once the point reaches plant (or tree) mastery', () => {
+    expect(earnedSet(srs({ mastery: 'seedling' }), [entry('easy')]).has('taking_root')).toBe(false)
+    expect(earnedSet(srs({ mastery: 'plant' }), [entry('easy')]).has('taking_root')).toBe(true)
+    expect(earnedSet(srs({ mastery: 'tree' }), [entry('easy')]).has('taking_root')).toBe(true)
+  })
+
+  it('unlocks the 50× tier only at fifty practices', () => {
+    const fortyNine = Array.from({ length: 49 }, () => entry('hard'))
+    expect(earnedSet(srs(), fortyNine).has('practiced_50')).toBe(false)
+    const fifty = Array.from({ length: 50 }, () => entry('hard'))
+    expect(earnedSet(srs(), fifty).has('practiced_50')).toBe(true)
+  })
+
+  it('earns flawless on 8+ reviews with no hard history, never with one', () => {
+    const eight = Array.from({ length: 8 }, () => entry('easy'))
+    expect(earnedSet(srs({ hardCount: 0 }), eight).has('flawless')).toBe(true)
+    const seven = Array.from({ length: 7 }, () => entry('easy'))
+    expect(earnedSet(srs({ hardCount: 0 }), seven).has('flawless')).toBe(false)
+    expect(earnedSet(srs({ hardCount: 1 }), eight).has('flawless')).toBe(false)
+  })
+
+  it('always returns the nine badges in a stable order', () => {
     const ids = achievementsFor(srs(), []).map((a) => a.id)
-    expect(ids).toEqual(['sprouted', 'practiced_10', 'practiced_25', 'streak_5', 'comeback', 'mastered'])
+    expect(ids).toEqual([
+      'sprouted', 'taking_root', 'practiced_10', 'practiced_25', 'practiced_50',
+      'streak_5', 'flawless', 'comeback', 'mastered',
+    ])
   })
 })

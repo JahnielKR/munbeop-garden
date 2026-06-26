@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Grammar } from '~/lib/domain'
-import { achievementsFor, type AchievementId } from '~/lib/achievements'
+import { achievementsFor } from '~/lib/achievements'
 import { useSrsStore } from '~/stores/srs'
 import { useLogStore } from '~/stores/log'
 
@@ -12,15 +12,6 @@ const props = defineProps<Props>()
 const { t } = useI18n()
 const srs = useSrsStore()
 const log = useLogStore()
-
-const ICONS: Record<AchievementId, string> = {
-  sprouted: '🌱',
-  practiced_10: '🔁',
-  practiced_25: '📚',
-  streak_5: '🔥',
-  comeback: '💪',
-  mastered: '🌳',
-}
 
 const badges = computed(() =>
   achievementsFor(
@@ -46,7 +37,15 @@ const badges = computed(() =>
           ? t(`library.achievements.${b.id}.name`)
           : t(`library.achievements.${b.id}.desc`)"
       >
-        <span class="ach__icon" aria-hidden="true">{{ ICONS[b.id] }}</span>
+        <img
+          class="ach__icon pixel"
+          :src="`/img/achievements/${b.id}.png`"
+          alt=""
+          aria-hidden="true"
+          width="32"
+          height="32"
+          draggable="false"
+        >
         <span class="ach__name">{{ t(`library.achievements.${b.id}.name`) }}</span>
       </li>
     </ul>
@@ -82,8 +81,8 @@ const badges = computed(() =>
   transition: opacity var(--motion-quick) var(--ease-out);
 }
 .ach__icon {
-  font-size: 22px;
-  line-height: 1;
+  width: 32px;
+  height: 32px;
 }
 .ach__name {
   font-family: 'Inter', sans-serif;
