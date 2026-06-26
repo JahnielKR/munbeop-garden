@@ -22,19 +22,13 @@ const REGISTER_ARIA: Record<SpeechLevel, string> = {
   casual: 'library.examples.register_casual',
 }
 
+// Only the authored bank renders here. The canonical `grammar.example` lives in
+// MeaningSection alone — echoing it here produced the "above == below" duplicate.
 const bank = computed(() => examplesFor(props.grammar.ko))
-const fallback = computed(() =>
-  bank.value.length === 0 && props.grammar.example
-    ? {
-        sentence: props.grammar.example,
-        trans: props.grammar.trans ? tl(props.grammar.trans) : '',
-      }
-    : null,
-)
 </script>
 
 <template>
-  <section v-if="bank.length || fallback" class="examples-section">
+  <section v-if="bank.length" class="examples-section">
     <h3 class="section-title">{{ t('library.modal.section.examples') }}</h3>
     <ul class="examples">
       <li v-for="(ex, i) in bank" :key="i" class="example">
@@ -44,10 +38,6 @@ const fallback = computed(() =>
           <span class="example__chip" lang="ko" :aria-label="t(REGISTER_ARIA[ex.level])">{{ REGISTER_KO[ex.level] }}</span>
         </p>
         <p class="example__trans">{{ tl(ex.trans) }}</p>
-      </li>
-      <li v-if="fallback" class="example">
-        <p class="example__ko" lang="ko">{{ fallback.sentence }}</p>
-        <p v-if="fallback.trans" class="example__trans">{{ fallback.trans }}</p>
       </li>
     </ul>
   </section>
