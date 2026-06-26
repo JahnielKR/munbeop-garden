@@ -131,4 +131,24 @@ describe('grammar-examples seed invariants', () => {
       })
     }
   }
+
+  // Per-FORM coverage for the TOPIK-4 Tier-1 grammars (plan Part B, level 4) —
+  // incl. the -다고 + cognition-verb slot (≥2 representative verbs shown).
+  const TIER4_FORM_COVERAGE: Array<{ ko: string; forms: Array<{ label: string; re: RegExp }> }> = [
+    { ko: '-냐고 하다 / -(으)냐고 묻다', forms: [{ label: '냐고 하다', re: /냐고 (하|했|해)/ }, { label: '냐고 묻다', re: /냐고 (묻|물)/ }] },
+    { ko: '-(으)ㄹ 듯하다 / -(으)ㄹ 듯이', forms: [{ label: '듯하다', re: /듯(하|해|합)/ }, { label: '듯이', re: /듯이/ }] },
+    { ko: '-(으)로서 / -(으)로써', forms: [{ label: '로서', re: /로서/ }, { label: '로써', re: /로써/ }] },
+    { ko: '-아/어 봤자 / 봐야', forms: [{ label: '봤자', re: /봤자/ }, { label: '봐야', re: /봐야/ }] },
+    { ko: '-고 보다 / -고 보니(까)', forms: [{ label: '고 보다', re: /고 (봐|보다|본|볼)/ }, { label: '고 보니', re: /고 보니/ }] },
+    { ko: '-다면서요? / -다며?', forms: [{ label: '다면서요', re: /다면서요/ }, { label: '다며', re: /다며/ }] },
+    { ko: '-다고 + 생각하다 / 믿다 / 듣다 / 보다 / 알다 / 느끼다 / 여기다', forms: [{ label: '생각하다', re: /다고 생각/ }, { label: '듣다', re: /다고 (들|듣)/ }, { label: '느끼다', re: /다고 느/ }] },
+  ]
+  for (const { ko, forms } of TIER4_FORM_COVERAGE) {
+    for (const { label, re } of forms) {
+      it(`${ko} demonstrates the ${label} form`, () => {
+        const exs = GRAMMAR_EXAMPLES.filter((e) => e.ko === ko)
+        expect(exs.some((e) => re.test(e.sentence))).toBe(true)
+      })
+    }
+  }
 })
