@@ -48,6 +48,7 @@ export function mergedDailyCounts(
 }
 
 /** Ramp level 0..4 for a day's count. */
+// Ramp: 1-2 light, 3-4 moderate, 5-7 solid, 8+ heavy.
 export function intensityBucket(count: number): 0 | 1 | 2 | 3 | 4 {
   if (count <= 0) return 0
   if (count <= 2) return 1

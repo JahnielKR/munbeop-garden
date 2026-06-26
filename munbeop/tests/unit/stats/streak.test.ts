@@ -27,6 +27,9 @@ describe('currentStreak', () => {
   it('breaks on two consecutive missed days even with one grace', () => {
     expect(currentStreak(new Set([k(26), k(23)]), today, 1)).toBe(1)
   })
+  it("treats a single day as streak 1 (dedup is the caller's job via Set)", () => {
+    expect(currentStreak(new Set([k(26)]), today)).toBe(1)
+  })
 })
 
 describe('longestStreak', () => {
@@ -39,5 +42,8 @@ describe('longestStreak', () => {
   })
   it('is 1 for a single day', () => {
     expect(longestStreak(new Set([k(10)]))).toBe(1)
+  })
+  it('counts a run across a month boundary', () => {
+    expect(longestStreak(new Set(['2026-06-30', '2026-07-01', '2026-07-02']))).toBe(3)
   })
 })
