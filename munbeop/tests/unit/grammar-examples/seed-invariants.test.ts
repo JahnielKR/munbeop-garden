@@ -87,4 +87,31 @@ describe('grammar-examples seed invariants', () => {
     const offenders = GRAMMAR_EXAMPLES.filter((e) => e.sentence === canonical.get(e.ko))
     expect(offenders.map((e) => `${e.ko}: ${e.sentence}`)).toEqual([])
   })
+
+  // Per-FORM coverage for the TOPIK-2 Tier-1 two-form grammars (plan Part B,
+  // level 2). Each grammar with ≥2 named surface forms must show an example per
+  // form; each regex matches the form as it surfaces in ≥1 of its examples.
+  const TIER2_FORM_COVERAGE: Array<{ ko: string; forms: Array<{ label: string; re: RegExp }> }> = [
+    { ko: '-(으)ㄴ 후에 / 다음에', forms: [{ label: '후에', re: /후에/ }, { label: '다음에', re: /다음에/ }] },
+    { ko: '-(으)ㄹ 수 있다/없다', forms: [{ label: '수 있다', re: /수 있/ }, { label: '수 없다', re: /수 없/ }] },
+    { ko: '-(으)ㄹ 필요가 있다/없다', forms: [{ label: '필요가 있다', re: /필요가 있/ }, { label: '필요가 없다', re: /필요가 없/ }] },
+    { ko: '-고 나서 / -고 나면', forms: [{ label: '고 나서', re: /고 나서/ }, { label: '고 나면', re: /고 나면/ }] },
+    { ko: '-군요 / -구나', forms: [{ label: '군요', re: /군요/ }, { label: '구나', re: /구나/ }] },
+    { ko: '-기 쉽다/어렵다', forms: [{ label: '기 쉽다', re: /기 쉬/ }, { label: '기 어렵다', re: /기 어려/ }] },
+    { ko: '-다고요? / -(이)라고요?', forms: [{ label: '다고요', re: /다고요/ }, { label: '(이)라고요', re: /라고요/ }] },
+    { ko: '-아/어 놓다 / -아/어 두다', forms: [{ label: '놓다', re: /놓/ }, { label: '두다', re: /뒀|두었|둬/ }] },
+    { ko: '-아/어야 하다 / 되다', forms: [{ label: '하다', re: /야 해|야 하/ }, { label: '되다', re: /야 돼|야 되/ }] },
+    { ko: '-처럼 / -같이', forms: [{ label: '처럼', re: /처럼/ }, { label: '같이', re: /같이/ }] },
+    { ko: '때문에 / 기 때문에', forms: [{ label: 'N때문에', re: /[^기] 때문에/ }, { label: '기 때문에', re: /기 때문에/ }] },
+    { ko: '아무 N(이)나 / 아무 N도', forms: [{ label: '(이)나', re: /아무 [가-힣]+이나|아무 [가-힣]+나/ }, { label: '도', re: /아무 [가-힣]+도/ }] },
+    { ko: '아직 / 벌써 / 이미', forms: [{ label: '아직', re: /아직/ }, { label: '벌써', re: /벌써/ }, { label: '이미', re: /이미/ }] },
+  ]
+  for (const { ko, forms } of TIER2_FORM_COVERAGE) {
+    for (const { label, re } of forms) {
+      it(`${ko} demonstrates the ${label} form`, () => {
+        const exs = GRAMMAR_EXAMPLES.filter((e) => e.ko === ko)
+        expect(exs.some((e) => re.test(e.sentence))).toBe(true)
+      })
+    }
+  }
 })
