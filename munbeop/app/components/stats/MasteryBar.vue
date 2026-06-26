@@ -21,11 +21,11 @@ const seg = computed(() => ({ s: w(props.seedling), p: w(props.plant), t: w(prop
 
 <style scoped>
 .row { display: flex; align-items: center; gap: 10px; }
-.label { width: 64px; font-family: var(--font-mono, monospace); font-size: 12px; color: var(--text); }
+.label { width: 64px; font-family: var(--font-mono, monospace); font-size: var(--text-sm); color: var(--text); }
 .bar { flex: 1; height: 14px; display: flex; overflow: hidden; border: 2px solid var(--border); background: var(--surface); }
 .bar__seg { height: 100%; }
 .seg--seedling { background: var(--heat-1); }
 .seg--plant { background: var(--heat-2); }
 .seg--tree { background: var(--heat-4); }
-.pct { width: 78px; text-align: right; font-family: var(--font-mono, monospace); font-size: 12px; color: var(--text); }
+.pct { width: 78px; text-align: right; font-family: var(--font-mono, monospace); font-size: var(--text-sm); color: var(--text); }
 </style>
