@@ -114,4 +114,21 @@ describe('grammar-examples seed invariants', () => {
       })
     }
   }
+
+  // Per-FORM coverage for the TOPIK-3 Tier-1 two-form grammars (plan Part B,
+  // level 3).
+  const TIER3_FORM_COVERAGE: Array<{ ko: string; forms: Array<{ label: string; re: RegExp }> }> = [
+    { ko: '-(으)ㄴ/는 줄 알다/몰랐다', forms: [{ label: '줄 알다', re: /줄 알/ }, { label: '줄 몰랐다', re: /줄 몰랐/ }] },
+    { ko: '-(으)ㄹ 줄 알다/모르다', forms: [{ label: '줄 알다', re: /줄 알/ }, { label: '줄 모르다', re: /줄 몰라|줄 모르/ }] },
+    { ko: '-기 위해(서) / -을/를 위해(서)', forms: [{ label: '기 위해', re: /기 위해/ }, { label: '을/를 위해', re: /[을를] 위해/ }] },
+    { ko: '-는다면 / -(이)라면', forms: [{ label: '는다면', re: /다면/ }, { label: '(이)라면', re: /라면/ }] },
+  ]
+  for (const { ko, forms } of TIER3_FORM_COVERAGE) {
+    for (const { label, re } of forms) {
+      it(`${ko} demonstrates the ${label} form`, () => {
+        const exs = GRAMMAR_EXAMPLES.filter((e) => e.ko === ko)
+        expect(exs.some((e) => re.test(e.sentence))).toBe(true)
+      })
+    }
+  }
 })
