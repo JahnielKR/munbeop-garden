@@ -18,27 +18,30 @@ const guide = computed(() => guideFor(props.grammar.ko))
   <section v-if="guide" class="pron-section">
     <h3 class="section-title">{{ t('library.pronunciation.title') }}</h3>
 
-    <!-- The grammar alone, sounded out by parts. The example sentences and their
-         audio live in the Examples section, so no in-a-sentence row here. -->
+    <!-- The grammar alone, sounded out by parts. A point with true allomorphs
+         (은/는, (으)로, -아/어요) shows one chip row per form, each with its own
+         play-all. Example sentences and their audio live in the Examples section. -->
     <div class="pron-row">
       <span class="pron-row__label">{{ t('library.pronunciation.by_parts') }}</span>
-      <div class="pron-parts">
-        <button
-          v-for="(syl, i) in guide.parts"
-          :key="i"
-          type="button"
-          class="pron-chip"
-          lang="ko"
-          :title="t('library.pronunciation.play_syllable')"
-          @click="playSyllable(syl)"
-        >{{ syl }}</button>
-        <button
-          type="button"
-          class="pron-all"
-          :aria-label="t('library.pronunciation.play_all')"
-          :title="t('library.pronunciation.play_all')"
-          @click="playAll(guide.parts)"
-        ><span aria-hidden="true">▶</span></button>
+      <div class="pron-forms">
+        <div v-for="(form, fi) in guide.forms" :key="fi" class="pron-parts">
+          <button
+            v-for="(syl, i) in form.parts"
+            :key="i"
+            type="button"
+            class="pron-chip"
+            lang="ko"
+            :title="t('library.pronunciation.play_syllable')"
+            @click="playSyllable(syl)"
+          >{{ syl }}</button>
+          <button
+            type="button"
+            class="pron-all"
+            :aria-label="t('library.pronunciation.play_all')"
+            :title="t('library.pronunciation.play_all')"
+            @click="playAll(form.parts)"
+          ><span aria-hidden="true">▶</span></button>
+        </div>
       </div>
     </div>
   </section>
@@ -64,6 +67,11 @@ const guide = computed(() => guideFor(props.grammar.ko))
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-soft);
+}
+.pron-forms {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 .pron-parts {
   display: flex;

@@ -13,5 +13,7 @@ export function guideFor(ko: string): PronunciationGuide | undefined {
  * (one clip per syllable, deduped) and the manifest↔seed contract test.
  */
 export function allSyllables(): string[] {
-  return [...new Set(PRONUNCIATION_GUIDES.flatMap((g) => g.parts))].sort()
+  return [
+    ...new Set(PRONUNCIATION_GUIDES.flatMap((g) => g.forms.flatMap((f) => f.parts))),
+  ].sort()
 }

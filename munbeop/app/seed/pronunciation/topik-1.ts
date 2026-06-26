@@ -13,78 +13,83 @@ import type { PronunciationGuide } from '~/lib/domain'
  * (안 vs 못 (비교)). Those render no pronunciation section, as before.
  *
  * Drafting convention (PENDING wife native-review — the content gate). Each
- * `parts` entry is exactly one Hangul syllable; a suffix can't be sounded
- * verbatim, so we pick the chosen didactic spoken realization:
- *  - -아/어 alternation → the 어/었 realization (어요, 었어요, 어서, 어도 되다).
- *  - epenthetic (으)/(이)/(스) → the consonant-stem syllabic form so the inserted
- *    vowel is voiced and a dangling ㄹ/ㄴ rides on it (으세요, 을 거예요, 을래요,
- *    은 적이, 으러, 으로, 이나).
- *  - -ㄴ/는데 → the 는데 (vowel-stem) form.
- *  - a synonym listing (와/과·하고·(이)랑, 에게/한테/께) → only the single most common
- *    SPOKEN representative (하고, 한테). A from→to pair (부터/까지) → sound both.
- *  - short alternant particles (은/는, 이/가, 을/를) → the after-vowel citation form.
+ * `parts` entry is exactly one Hangul syllable. A grammar whose citation shows
+ * TRUE allomorphs of the SAME morpheme carries one `forms` entry per cleanly-
+ * soundable realization, so the learner hears each form; everything else stays a
+ * single representative form:
+ *  - particle pairs → both forms: 은/는 → 은 | 는; 이/가 → 이 | 가; 을/를 → 을 | 를.
+ *  - -아/어 · 았/었 vowel harmony → both forms: 아요 | 어요; 았어요 | 었어요; 아서 | 어서.
+ *  - epenthetic (으)/(이) before a FULL syllable → with-vowel and bare forms:
+ *    으면 | 면; 으세요 | 세요; 으로 | 로; 이나 | 나.
+ *  - a from→to pair (부터/까지) → sound both, one form.
+ *  STAY a single form:
+ *  - jamo-fusing alternations whose other realization is a bare jamo that fuses
+ *    onto the stem (can't be sounded alone) → the soundable form only: -ㄴ/는데 →
+ *    는데; -ㅂ/습니다 → 습니다; (으)ㄹ → 을 (을 거예요, 을래요); (으)ㄴ → 은 (은 적이).
+ *  - synonym listings (different lexemes, not allomorphs) → the single most common
+ *    SPOKEN representative: 와/과·하고·(이)랑 → 하고; 에게/한테/께 → 한테.
  *  - the comitative "together" → 함께 (clean per-syllable), not 같이 ([가치] liaison).
  *  - negation 안 + V / 못 + V → the standalone adverb headword (안, 못).
  *  - written/dictionary syllables (the TTS reads each block); no liaison respell.
  */
 export const TOPIK_1_PRONUNCIATION: PronunciationGuide[] = [
   // ── Particles ─────────────────────────────────────────────────────────────
-  { ko: '은/는', parts: ['는'] },
-  { ko: '이/가', parts: ['가'] },
-  { ko: '을/를', parts: ['를'] },
-  { ko: '에', parts: ['에'] },
-  { ko: '에서', parts: ['에', '서'] },
-  { ko: '와/과 · 하고 · (이)랑', parts: ['하', '고'] },
-  { ko: '도', parts: ['도'] },
-  { ko: '만', parts: ['만'] },
-  { ko: '의', parts: ['의'] },
-  { ko: '에게 / 한테 / 께', parts: ['한', '테'] },
-  { ko: '(으)로', parts: ['으', '로'] },
-  { ko: '부터 / 까지', parts: ['부', '터', '까', '지'] },
-  { ko: '마다', parts: ['마', '다'] },
-  { ko: '(이)나', parts: ['이', '나'] },
+  { ko: '은/는', forms: [{ parts: ['은'] }, { parts: ['는'] }] },
+  { ko: '이/가', forms: [{ parts: ['이'] }, { parts: ['가'] }] },
+  { ko: '을/를', forms: [{ parts: ['을'] }, { parts: ['를'] }] },
+  { ko: '에', forms: [{ parts: ['에'] }] },
+  { ko: '에서', forms: [{ parts: ['에', '서'] }] },
+  { ko: '와/과 · 하고 · (이)랑', forms: [{ parts: ['하', '고'] }] },
+  { ko: '도', forms: [{ parts: ['도'] }] },
+  { ko: '만', forms: [{ parts: ['만'] }] },
+  { ko: '의', forms: [{ parts: ['의'] }] },
+  { ko: '에게 / 한테 / 께', forms: [{ parts: ['한', '테'] }] },
+  { ko: '(으)로', forms: [{ parts: ['으', '로'] }, { parts: ['로'] }] },
+  { ko: '부터 / 까지', forms: [{ parts: ['부', '터', '까', '지'] }] },
+  { ko: '마다', forms: [{ parts: ['마', '다'] }] },
+  { ko: '(이)나', forms: [{ parts: ['이', '나'] }, { parts: ['나'] }] },
 
   // ── Copula / existence ────────────────────────────────────────────────────
-  { ko: '이다 / 아니다', parts: ['이', '다', '아', '니', '다'] },
-  { ko: '있다 / 없다', parts: ['있', '다', '없', '다'] },
-  { ko: '좋아하다 / 싫어하다', parts: ['좋', '아', '하', '다', '싫', '어', '하', '다'] },
+  { ko: '이다 / 아니다', forms: [{ parts: ['이', '다', '아', '니', '다'] }] },
+  { ko: '있다 / 없다', forms: [{ parts: ['있', '다', '없', '다'] }] },
+  { ko: '좋아하다 / 싫어하다', forms: [{ parts: ['좋', '아', '하', '다', '싫', '어', '하', '다'] }] },
 
   // ── Verb endings (polite present/past, future, honorific, formal) ─────────
-  { ko: '-아/어요', parts: ['어', '요'] },
-  { ko: '-았/었어요', parts: ['었', '어', '요'] },
-  { ko: '-(으)ㄹ 거예요', parts: ['을', '거', '예', '요'] },
-  { ko: '-(으)세요', parts: ['으', '세', '요'] },
-  { ko: '-ㅂ/습니다', parts: ['습', '니', '다'] },
+  { ko: '-아/어요', forms: [{ parts: ['아', '요'] }, { parts: ['어', '요'] }] },
+  { ko: '-았/었어요', forms: [{ parts: ['았', '어', '요'] }, { parts: ['었', '어', '요'] }] },
+  { ko: '-(으)ㄹ 거예요', forms: [{ parts: ['을', '거', '예', '요'] }] },
+  { ko: '-(으)세요', forms: [{ parts: ['으', '세', '요'] }, { parts: ['세', '요'] }] },
+  { ko: '-ㅂ/습니다', forms: [{ parts: ['습', '니', '다'] }] },
 
   // ── Negation ──────────────────────────────────────────────────────────────
-  { ko: '안 + V / -지 않다', parts: ['안'] },
-  { ko: '못 + V / -지 못하다', parts: ['못'] },
+  { ko: '안 + V / -지 않다', forms: [{ parts: ['안'] }] },
+  { ko: '못 + V / -지 못하다', forms: [{ parts: ['못'] }] },
 
   // ── Connective endings ────────────────────────────────────────────────────
-  { ko: '-고', parts: ['고'] },
-  { ko: '-아/어서', parts: ['어', '서'] },
-  { ko: '-지만', parts: ['지', '만'] },
-  { ko: '-(으)면', parts: ['으', '면'] },
-  { ko: '-ㄴ/는데', parts: ['는', '데'] },
+  { ko: '-고', forms: [{ parts: ['고'] }] },
+  { ko: '-아/어서', forms: [{ parts: ['아', '서'] }, { parts: ['어', '서'] }] },
+  { ko: '-지만', forms: [{ parts: ['지', '만'] }] },
+  { ko: '-(으)면', forms: [{ parts: ['으', '면'] }, { parts: ['면'] }] },
+  { ko: '-ㄴ/는데', forms: [{ parts: ['는', '데'] }] },
 
   // ── Auxiliary / expression endings ────────────────────────────────────────
-  { ko: '-고 싶다', parts: ['고', '싶', '다'] },
-  { ko: '-고 있다', parts: ['고', '있', '다'] },
-  { ko: '-(으)러 가다/오다', parts: ['으', '러', '가', '다'] },
-  { ko: '-(으)ㄴ 적이 있다/없다', parts: ['은', '적', '이', '있', '다'] },
-  { ko: '-겠어요', parts: ['겠', '어', '요'] },
-  { ko: '-(으)ㄹ래요?', parts: ['을', '래', '요'] },
-  { ko: '-네요', parts: ['네', '요'] },
-  { ko: '-지요? / -죠?', parts: ['지', '요'] },
-  { ko: '-아/어도 되다', parts: ['어', '도', '되', '다'] },
-  { ko: '-지 않아도 되다', parts: ['지', '않', '아', '도', '되', '다'] },
-  { ko: '-아/어 드리다', parts: ['어', '드', '리', '다'] },
+  { ko: '-고 싶다', forms: [{ parts: ['고', '싶', '다'] }] },
+  { ko: '-고 있다', forms: [{ parts: ['고', '있', '다'] }] },
+  { ko: '-(으)러 가다/오다', forms: [{ parts: ['으', '러', '가', '다'] }, { parts: ['러', '가', '다'] }] },
+  { ko: '-(으)ㄴ 적이 있다/없다', forms: [{ parts: ['은', '적', '이', '있', '다'] }] },
+  { ko: '-겠어요', forms: [{ parts: ['겠', '어', '요'] }] },
+  { ko: '-(으)ㄹ래요?', forms: [{ parts: ['을', '래', '요'] }] },
+  { ko: '-네요', forms: [{ parts: ['네', '요'] }] },
+  { ko: '-지요? / -죠?', forms: [{ parts: ['지', '요'] }] },
+  { ko: '-아/어도 되다', forms: [{ parts: ['아', '도', '되', '다'] }, { parts: ['어', '도', '되', '다'] }] },
+  { ko: '-지 않아도 되다', forms: [{ parts: ['지', '않', '아', '도', '되', '다'] }] },
+  { ko: '-아/어 드리다', forms: [{ parts: ['아', '드', '리', '다'] }, { parts: ['어', '드', '리', '다'] }] },
 
   // ── Demonstratives / comitative ───────────────────────────────────────────
-  { ko: '이 / 그 / 저', parts: ['이', '그', '저'] },
-  { ko: 'N(이)랑 / 하고 + 같이 / 함께', parts: ['하', '고', '함', '께'] },
+  { ko: '이 / 그 / 저', forms: [{ parts: ['이', '그', '저'] }] },
+  { ko: 'N(이)랑 / 하고 + 같이 / 함께', forms: [{ parts: ['하', '고', '함', '께'] }] },
 
   // ── Negative imperative / exception ───────────────────────────────────────
-  { ko: '-지 말다', parts: ['지', '말', '다'] },
-  { ko: 'N 말고', parts: ['말', '고'] },
+  { ko: '-지 말다', forms: [{ parts: ['지', '말', '다'] }] },
+  { ko: 'N 말고', forms: [{ parts: ['말', '고'] }] },
 ]
