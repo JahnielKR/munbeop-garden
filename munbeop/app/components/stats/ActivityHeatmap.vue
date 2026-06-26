@@ -94,7 +94,7 @@ const weekdayLabels = computed(() => {
                 background: cell.inYear && !cell.future ? `var(--heat-${intensityBucket(cell.count)})` : 'transparent',
                 visibility: cell.inYear ? 'visible' : 'hidden',
               }"
-              tabindex="0"
+              :tabindex="cell.inYear ? 0 : -1"
               @mouseenter="showTip($event, cell.dayKey, cell.count, cell.inYear, cell.future)"
               @focus="showTip($event, cell.dayKey, cell.count, cell.inYear, cell.future)"
               @mouseleave="hideTip"
@@ -139,5 +139,4 @@ const weekdayLabels = computed(() => {
 .heat-tip { position: absolute; background: var(--text); color: var(--surface); font-size: 11px; font-family: var(--font-mono, monospace); padding: 4px 7px; white-space: nowrap; pointer-events: none; z-index: 5; }
 .heat-foot { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--font-mono, monospace); font-size: 12px; color: var(--text-soft); }
 .heat-foot b { color: var(--heading-accent, var(--text)); }
-@media (prefers-reduced-motion: reduce) { .heat-cell { transition: none; } }
 </style>

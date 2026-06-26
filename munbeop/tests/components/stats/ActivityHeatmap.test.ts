@@ -29,4 +29,19 @@ describe('ActivityHeatmap', () => {
     await cell.trigger('mouseenter')
     expect(w.find('[data-test="heat-tip"]').text()).toContain('2026-06-26')
   })
+
+  it('hides the tooltip when the cell is left', async () => {
+    const w = mount(ActivityHeatmap, { props: { counts, now } })
+    const cell = w.findAll('[data-test="heat-cell"]').find((c) => c.attributes('data-day') === '2026-06-26')!
+    await cell.trigger('mouseenter')
+    expect(w.find('[data-test="heat-tip"]').exists()).toBe(true)
+    await cell.trigger('mouseleave')
+    expect(w.find('[data-test="heat-tip"]').exists()).toBe(false)
+  })
+
+  it('renders without crash when counts is empty', () => {
+    const w = mount(ActivityHeatmap, { props: { counts: {}, now } })
+    expect(w.find('[data-test="heat-streak-current"]').text()).toContain('0')
+    expect(w.find('[data-test="heat-streak-longest"]').text()).toContain('0')
+  })
 })
