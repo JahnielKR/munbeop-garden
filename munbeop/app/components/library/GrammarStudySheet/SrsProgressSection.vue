@@ -14,7 +14,7 @@ const { t } = useI18n()
 const srs = useSrsStore()
 const log = useLogStore()
 
-const state = computed(() => srs.ensure(props.grammar.ko))
+const state = computed(() => srs.peek(props.grammar.ko))
 const info = computed(() => getMasteryInfo(state.value.mastery))
 
 const lastSeenLabel = computed(() => {

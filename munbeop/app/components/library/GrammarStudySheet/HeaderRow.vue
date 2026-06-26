@@ -12,7 +12,7 @@ interface Props {
 const props = defineProps<Props>()
 const { t } = useI18n()
 const srs = useSrsStore()
-const level = computed(() => srs.ensure(props.grammar.ko).mastery)
+const level = computed(() => srs.peek(props.grammar.ko).mastery)
 const info = computed(() => getMasteryInfo(level.value))
 </script>
 

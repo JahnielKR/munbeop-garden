@@ -7,7 +7,7 @@ import type { Grammar } from '~/lib/domain'
 let srsState: any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let logEntries: any[]
-vi.mock('~/stores/srs', () => ({ useSrsStore: () => ({ ensure: () => srsState }) }))
+vi.mock('~/stores/srs', () => ({ useSrsStore: () => ({ ensure: () => srsState, peek: () => srsState }) }))
 vi.mock('~/stores/log', () => ({ useLogStore: () => ({ entries: logEntries }) }))
 
 function grammar(ko = '-지만'): Grammar {

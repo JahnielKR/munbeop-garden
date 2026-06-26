@@ -6,6 +6,7 @@ import GrammarStudySheet from '~/components/library/GrammarStudySheet.vue'
 vi.mock('~/stores/srs', () => ({
   useSrsStore: () => ({
     ensure: () => ({ mastery: 'seedling', lastSeen: null }),
+    peek: () => ({ mastery: 'seedling', lastSeen: null }),
   }),
 }))
 vi.mock('~/stores/log', () => ({

@@ -4,7 +4,10 @@ import type { Grammar } from '~/lib/domain'
 import GrammarCard from '~/components/library/GrammarCard.vue'
 
 vi.mock('~/stores/srs', () => ({
-  useSrsStore: () => ({ ensure: () => ({ mastery: 'seedling', lastSeen: null }) }),
+  useSrsStore: () => ({
+    ensure: () => ({ mastery: 'seedling', lastSeen: null }),
+    peek: () => ({ mastery: 'seedling', lastSeen: null }),
+  }),
 }))
 
 const full: Grammar = {

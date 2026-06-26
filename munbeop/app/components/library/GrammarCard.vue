@@ -20,7 +20,7 @@ const { tl } = useLocalized()
 const { t } = useI18n()
 const srsStore = useSrsStore()
 
-const level = computed(() => srsStore.ensure(props.grammar.ko).mastery)
+const level = computed(() => srsStore.peek(props.grammar.ko).mastery)
 const info = computed(() => getMasteryInfo(level.value))
 const accent = computed<'jade' | 'gold' | 'sky'>(() => {
   if (info.value.cls === 'mastery-tree') return 'jade'

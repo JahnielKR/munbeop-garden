@@ -20,6 +20,12 @@ export const useSrsStore = defineStore('srs', () => {
     return map.value[ko]!
   }
 
+  /** Read a ko's SRS state WITHOUT creating a row — for render/computed reads
+   * (creating a seedling on mere display polluted mastery stats). */
+  function peek(ko: string): SrsState {
+    return map.value[ko] ?? freshSrs()
+  }
+
   function weightFor(ko: string, now: number = Date.now()): number {
     return getWeight(ensure(ko), now)
   }
@@ -39,5 +45,5 @@ export const useSrsStore = defineStore('srs', () => {
     await storage.upsertOne(STORAGE_KEYS.srs, { id: ko, value: map.value[ko]! })
   }
 
-  return { map, hydrate, ensure, weightFor, markSeen, recalculate }
+  return { map, hydrate, ensure, peek, weightFor, markSeen, recalculate }
 })

@@ -33,7 +33,7 @@ const emit = defineEmits<{
 const srs = useSrsStore()
 const { t } = useI18n()
 const { tl } = useLocalized()
-const masteryLevel = computed(() => srs.ensure(props.grammar.ko).mastery)
+const masteryLevel = computed(() => srs.peek(props.grammar.ko).mastery)
 const masteryInfo = computed(() => getMasteryInfo(masteryLevel.value))
 
 const sentence = ref('')

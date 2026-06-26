@@ -24,7 +24,7 @@ const ICONS: Record<AchievementId, string> = {
 
 const badges = computed(() =>
   achievementsFor(
-    srs.ensure(props.grammar.ko),
+    srs.peek(props.grammar.ko),
     log.entries.filter((e) => e.ko === props.grammar.ko),
   ),
 )
