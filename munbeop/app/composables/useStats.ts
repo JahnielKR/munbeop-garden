@@ -4,6 +4,7 @@ import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useGrammarStore } from '~/stores/grammar'
 import { currentStreak, STREAK_GRACE_DAYS } from '~/lib/stats/streak'
+import { localDayKey } from '~/lib/stats/activity'
 import { weeklyCounts, easyHardSplit } from '~/lib/stats/rhythm'
 import { masteryByLevel, toughestGrammar } from '~/lib/stats/mastery'
 
@@ -22,7 +23,9 @@ export function useStats(now: number = Date.now()) {
   const dateMs = computed(() => log.entries.map((e) => new Date(e.date).getTime()))
 
   const sentences = computed(() => log.entries.length)
-  const streak = computed(() => currentStreak(dateMs.value, now, STREAK_GRACE_DAYS))
+  const todayKey = localDayKey(now)
+  const dayKeys = computed(() => new Set(dateMs.value.map(localDayKey)))
+  const streak = computed(() => currentStreak(dayKeys.value, todayKey, STREAK_GRACE_DAYS))
   const masteredCount = computed(
     () => Object.values(srs.map).filter((s) => s.mastery === 'tree').length,
   )
