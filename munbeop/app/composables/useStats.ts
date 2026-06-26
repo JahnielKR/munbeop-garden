@@ -3,15 +3,16 @@ import { isPendingReview } from '~/lib/domain'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useGrammarStore } from '~/stores/grammar'
-import { currentStreak, STREAK_GRACE_DAYS } from '~/lib/stats/streak'
-import { localDayKey } from '~/lib/stats/activity'
+import { useActivityStore } from '~/stores/activity'
+import { currentStreak, longestStreak as longestStreakOf, STREAK_GRACE_DAYS } from '~/lib/stats/streak'
+import { mergedDailyCounts, localDayKey } from '~/lib/stats/activity'
 import { weeklyCounts, easyHardSplit } from '~/lib/stats/rhythm'
 import { masteryByLevel, toughestGrammar } from '~/lib/stats/mastery'
 
 /**
  * useStats — the reactive source for the /stats page. Everything is derived
- * from the log / srs / grammar stores via the pure helpers in lib/stats; the
- * page itself only renders. `now` is injected (defaulting to Date.now()) so the
+ * from the log / srs / grammar / activity stores via the pure helpers in lib/stats;
+ * the page itself only renders. `now` is injected (defaulting to Date.now()) so the
  * streak/rhythm windows are deterministic in tests — same pattern as the srs
  * store's markSeen and the escape-room state machine.
  */
@@ -19,13 +20,22 @@ export function useStats(now: number = Date.now()) {
   const log = useLogStore()
   const srs = useSrsStore()
   const grammar = useGrammarStore()
+  const activity = useActivityStore()
 
   const dateMs = computed(() => log.entries.map((e) => new Date(e.date).getTime()))
 
   const sentences = computed(() => log.entries.length)
-  const todayKey = localDayKey(now)
-  const dayKeys = computed(() => new Set(dateMs.value.map(localDayKey)))
-  const streak = computed(() => currentStreak(dayKeys.value, todayKey, STREAK_GRACE_DAYS))
+
+  const dailyCounts = computed(() => mergedDailyCounts(dateMs.value, activity.map))
+  const activityCounts = computed(() =>
+    Object.fromEntries(dailyCounts.value.entries()),
+  )
+  const dayKeys = computed(() => new Set(dailyCounts.value.keys()))
+  const todayKey = computed(() => localDayKey(now))
+
+  const streak = computed(() => currentStreak(dayKeys.value, todayKey.value, STREAK_GRACE_DAYS))
+  const longestStreak = computed(() => longestStreakOf(dayKeys.value))
+
   const masteredCount = computed(
     () => Object.values(srs.map).filter((s) => s.mastery === 'tree').length,
   )
@@ -46,11 +56,14 @@ export function useStats(now: number = Date.now()) {
       .map(([name, count]) => ({ name, count }))
   })
 
-  const hasData = computed(() => sentences.value > 0 || Object.keys(srs.map).length > 0)
+  const hasData = computed(
+    () => sentences.value > 0 || Object.keys(srs.map).length > 0 || dayKeys.value.size > 0,
+  )
 
   return {
     sentences,
     streak,
+    longestStreak,
     masteredCount,
     catalogTotal,
     pendingReviews,
@@ -60,5 +73,7 @@ export function useStats(now: number = Date.now()) {
     toughest,
     topContexts,
     hasData,
+    activityCounts,
+    dailyCounts,
   }
 }
