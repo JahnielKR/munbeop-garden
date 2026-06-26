@@ -58,7 +58,7 @@ describe('GrammarStudySheet', () => {
     const html = wrapper.html()
     // The achievements ComingSoon placeholder is replaced by the real section.
     expect(wrapper.find('.ach-section').exists()).toBe(true)
-    expect(wrapper.findAll('.ach').length).toBe(6)
+    expect(wrapper.findAll('.ach').length).toBe(9)
     expect(html).not.toContain('library.modal.coming_soon.achievements')
     // ExamplesSection replaces the coming-soon placeholder. With an empty bank
     // it renders nothing — the canonical example lives ONLY in Meaning, shown

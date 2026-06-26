@@ -51,6 +51,19 @@ describe('stats page', () => {
     expect(w.findAll('[data-test="tough-row"]').length).toBeGreaterThan(0)
   })
 
+  it('renders the global trophy wall with earned + locked states', () => {
+    seedWithData()
+    const w = mount(StatsPage)
+    expect(w.find('[data-test="achievements"]').exists()).toBe(true)
+    expect(w.findAll('[data-test="trophy"]')).toHaveLength(17)
+    // koA is a tree and a review is logged → the early trophies light up; the
+    // catalog is nowhere near complete → the capstone stays locked.
+    const earned = w.findAll('.trophy--earned img').map((i) => i.attributes('src'))
+    expect(earned).toContain('/img/achievements/first_sprout.png')
+    expect(earned).toContain('/img/achievements/topik_1_mastered.png')
+    expect(earned).not.toContain('/img/achievements/garden_complete.png')
+  })
+
   it('deep-links the toughest grammar to a focused practice round', () => {
     seedWithData()
     const w = mount(StatsPage)

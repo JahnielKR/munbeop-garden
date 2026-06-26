@@ -155,6 +155,78 @@
       "title": "Konteks teratas",
       "sub": "Tempat kamu paling banyak menulis"
     },
+    "achievements": {
+      "title": "Pencapaian",
+      "sub": "Tonggak di seluruh kebunmu",
+      "first_sprout": {
+        "name": "Tunas Pertama",
+        "desc": "Catat ulasan pertamamu"
+      },
+      "first_bloom": {
+        "name": "Mekar Pertama",
+        "desc": "Tumbuhkan tata bahasa pertamamu jadi pohon"
+      },
+      "green_thumb": {
+        "name": "Tangan Hijau",
+        "desc": "Kuasai 10 poin tata bahasa"
+      },
+      "gardener": {
+        "name": "Tukang Kebun",
+        "desc": "Kuasai 50 poin tata bahasa"
+      },
+      "master_gardener": {
+        "name": "Tukang Kebun Ahli",
+        "desc": "Kuasai separuh dari seluruh katalog"
+      },
+      "garden_complete": {
+        "name": "Kebun Mekar Penuh",
+        "desc": "Kuasai semua tata bahasa di kebun"
+      },
+      "topik_1_mastered": {
+        "name": "TOPIK 1 Dikuasai",
+        "desc": "Semua tata bahasa TOPIK 1 jadi pohon"
+      },
+      "topik_2_mastered": {
+        "name": "TOPIK 2 Dikuasai",
+        "desc": "Semua tata bahasa TOPIK 2 jadi pohon"
+      },
+      "topik_3_mastered": {
+        "name": "TOPIK 3 Dikuasai",
+        "desc": "Semua tata bahasa TOPIK 3 jadi pohon"
+      },
+      "topik_4_mastered": {
+        "name": "TOPIK 4 Dikuasai",
+        "desc": "Semua tata bahasa TOPIK 4 jadi pohon"
+      },
+      "topik_5_mastered": {
+        "name": "TOPIK 5 Dikuasai",
+        "desc": "Semua tata bahasa TOPIK 5 jadi pohon"
+      },
+      "topik_6_mastered": {
+        "name": "TOPIK 6 Dikuasai",
+        "desc": "Semua tata bahasa TOPIK 6 jadi pohon"
+      },
+      "streak_7": {
+        "name": "Rentetan 7 Hari",
+        "desc": "Berlatih 7 hari berturut-turut"
+      },
+      "streak_30": {
+        "name": "Rentetan 30 Hari",
+        "desc": "Berlatih 30 hari berturut-turut"
+      },
+      "reviews_100": {
+        "name": "Seratus",
+        "desc": "Catat 100 ulasan"
+      },
+      "reviews_500": {
+        "name": "Tekun",
+        "desc": "Catat 500 ulasan"
+      },
+      "flourishing": {
+        "name": "Kebun Subur",
+        "desc": "10+ pohon dan tanpa tanaman bermasalah"
+      }
+    },
     "toughest": {
       "title": "Tata bahasa tersulit",
       "sub": "Yang paling “sulit” — latih sekarang.",
@@ -329,6 +401,10 @@
         "name": "Bertunas",
         "desc": "Latih poin ini sekali"
       },
+      "taking_root": {
+        "name": "Berakar",
+        "desc": "Tumbuhkan poin ini ke tahap tanaman"
+      },
       "practiced_10": {
         "name": "Dilatih 10×",
         "desc": "Latih 10 kali"
@@ -337,9 +413,17 @@
         "name": "Dilatih 25×",
         "desc": "Latih 25 kali"
       },
+      "practiced_50": {
+        "name": "Berlatih 50×",
+        "desc": "Latih 50 kali"
+      },
       "streak_5": {
         "name": "Lancar",
         "desc": "Lima ulasan mudah berturut-turut"
+      },
+      "flawless": {
+        "name": "Sempurna",
+        "desc": "8+ ulasan, tak satu pun sulit"
       },
       "comeback": {
         "name": "Bangkit",

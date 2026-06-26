@@ -27,24 +27,33 @@ describe('AchievementsSection', () => {
     logEntries = []
   })
 
-  it('always renders all six badges', () => {
+  it('always renders all nine badges', () => {
     const wrapper = mount(AchievementsSection, { props: { grammar: grammar() } })
-    expect(wrapper.findAll('.ach').length).toBe(6)
+    expect(wrapper.findAll('.ach').length).toBe(9)
+  })
+
+  it('renders each badge icon as a pixel-art image keyed by id', () => {
+    const wrapper = mount(AchievementsSection, { props: { grammar: grammar() } })
+    const imgs = wrapper.findAll('.ach__icon')
+    expect(imgs.length).toBe(9)
+    expect(imgs[0]!.attributes('src')).toBe('/img/achievements/sprouted.png')
+    expect(imgs.every((i) => i.element.tagName === 'IMG' && i.classes().includes('pixel'))).toBe(true)
   })
 
   it('shows everything locked for a fresh, never-practiced point', () => {
     const wrapper = mount(AchievementsSection, { props: { grammar: grammar() } })
     expect(wrapper.findAll('.ach--earned').length).toBe(0)
-    expect(wrapper.findAll('.ach--locked').length).toBe(6)
+    expect(wrapper.findAll('.ach--locked').length).toBe(9)
   })
 
   it('lights the earned badges from live SRS + log', () => {
     srsState = { mastery: 'tree', lastSeen: 1, easyCount: 10, hardCount: 0 }
     logEntries = easyEntries(10)
     const wrapper = mount(AchievementsSection, { props: { grammar: grammar() } })
-    // 10 easy reviews + tree mastery => sprouted, practiced_10, streak_5, mastered
-    expect(wrapper.findAll('.ach--earned').length).toBe(4)
-    expect(wrapper.findAll('.ach--locked').length).toBe(2) // practiced_25, comeback
+    // 10 easy reviews + tree mastery => sprouted, taking_root, practiced_10,
+    // streak_5, flawless, mastered
+    expect(wrapper.findAll('.ach--earned').length).toBe(6)
+    expect(wrapper.findAll('.ach--locked').length).toBe(3) // practiced_25, practiced_50, comeback
   })
 
   it('ignores log entries for other grammar points', () => {
