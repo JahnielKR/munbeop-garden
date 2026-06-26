@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import StrugglingPlants from '~/components/stats/StrugglingPlants.vue'
+import ActivityHeatmap from '~/components/stats/ActivityHeatmap.vue'
+import MasteryBar from '~/components/stats/MasteryBar.vue'
 import { NuxtLink } from '#components'
 import { useStats } from '~/composables/useStats'
 import { useLeeches } from '~/composables/useLeeches'
@@ -11,6 +13,7 @@ const { tl } = useLocalized()
 const {
   sentences,
   streak,
+  longestStreak,
   masteredCount,
   catalogTotal,
   pendingReviews,
@@ -20,11 +23,11 @@ const {
   topContexts,
   toughest,
   hasData,
+  activityCounts,
 } = useStats()
 const { leeches } = useLeeches()
 
 const focusLink = (ko: string) => `/practice/ruleta?focus=${encodeURIComponent(ko)}`
-const pct = (part: number, total: number) => (total ? Math.round((part / total) * 100) : 0)
 const weekHeight = (count: number) => {
   const max = Math.max(1, ...weekly.value)
   return Math.round((count / max) * 100)
@@ -39,6 +42,8 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
     <div v-if="!hasData" class="empty" data-test="stats-empty">{{ t('stats.empty') }}</div>
 
     <template v-else>
+      <ActivityHeatmap :counts="activityCounts" />
+
       <div class="hero">
         <div class="hero__card" data-test="hero-card">
           <div class="hero__label">{{ t('stats.hero.sentences') }}</div>
@@ -46,7 +51,7 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
         </div>
         <div class="hero__card" data-test="hero-card">
           <div class="hero__label">{{ t('stats.hero.streak') }}</div>
-          <div class="hero__value">{{ streak }}</div>
+          <div class="hero__value">{{ streak }} <span class="hero__total">/ {{ longestStreak }}</span></div>
         </div>
         <div class="hero__card" data-test="hero-card">
           <div class="hero__label">{{ t('stats.hero.mastered') }}</div>
@@ -62,15 +67,16 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
         <h2 class="block__title">{{ t('stats.mastery.title') }}</h2>
         <p class="block__sub">{{ t('stats.mastery.sub') }}</p>
         <div class="mastery">
-          <div v-for="lvl in masteryLevels" :key="lvl.level" class="mastery__row" data-test="mastery-row">
-            <span class="mastery__label">TOPIK {{ lvl.level }}</span>
-            <div class="bar">
-              <div class="bar__seg bar__seg--seedling" :style="{ width: pct(lvl.seedling, lvl.total) + '%' }"/>
-              <div class="bar__seg bar__seg--plant" :style="{ width: pct(lvl.plant, lvl.total) + '%' }"/>
-              <div class="bar__seg bar__seg--tree" :style="{ width: pct(lvl.tree, lvl.total) + '%' }"/>
-            </div>
-            <span class="mastery__pct">{{ lvl.pct }}%</span>
-          </div>
+          <MasteryBar
+            v-for="lvl in masteryLevels"
+            :key="lvl.level"
+            :label="`TOPIK ${lvl.level}`"
+            :seedling="lvl.seedling"
+            :plant="lvl.plant"
+            :tree="lvl.tree"
+            :total="lvl.total"
+            :pct="lvl.pct"
+          />
         </div>
         <div class="legend">
           <span class="legend__item"><i class="dot dot--seedling"/>{{ t('mastery.seedling') }}</span>
@@ -150,11 +156,11 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
   gap: 24px;
 }
 .empty {
-  background: var(--paper-warm);
+  background: var(--surface);
   border: 2px solid var(--border);
   padding: 32px;
-  font-family: 'Inter', sans-serif;
-  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  color: var(--text-soft);
 }
 .hero {
   display: grid;
@@ -162,27 +168,27 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
   gap: 12px;
 }
 .hero__card {
-  background: var(--paper-warm);
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-card);
   padding: 14px 16px;
 }
 .hero__label {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  color: var(--text-soft);
 }
 .hero__value {
-  font-family: 'Inter', sans-serif;
-  font-size: 26px;
+  font-family: var(--font-ui);
+  font-size: var(--text-xl);
   font-weight: 700;
-  color: var(--ink);
+  color: var(--text);
   margin-top: 4px;
 }
 .hero__total {
-  font-size: 14px;
+  font-size: var(--text-base);
   font-weight: 500;
-  color: var(--ink-soft);
+  color: var(--text-soft);
 }
 .block {
   display: flex;
@@ -190,16 +196,16 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
   gap: 4px;
 }
 .block__title {
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
   font-weight: 700;
-  color: var(--ink);
+  color: var(--text);
   margin: 0;
 }
 .block__sub {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-soft);
   margin: 0 0 8px;
 }
 .mastery {
@@ -207,48 +213,13 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
   flex-direction: column;
   gap: 9px;
 }
-.mastery__row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.mastery__label {
-  width: 62px;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: var(--ink-soft);
-}
-.bar {
-  flex: 1;
-  height: 14px;
-  border-radius: 4px;
-  overflow: hidden;
-  display: flex;
-  background: var(--paper-deep);
-}
-.bar__seg--seedling {
-  background: #c0dd97;
-}
-.bar__seg--plant {
-  background: #97c459;
-}
-.bar__seg--tree {
-  background: var(--jade, #3f9d6b);
-}
-.mastery__pct {
-  width: 40px;
-  text-align: right;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--ink-soft);
-}
 .legend {
   display: flex;
   gap: 16px;
   margin-top: 10px;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text-soft);
 }
 .legend__item {
   display: flex;
@@ -258,17 +229,17 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
 .dot {
   width: 10px;
   height: 10px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   display: inline-block;
 }
 .dot--seedling {
-  background: #c0dd97;
+  background: var(--heat-1);
 }
 .dot--plant {
-  background: #97c459;
+  background: var(--heat-2);
 }
 .dot--tree {
-  background: var(--jade, #3f9d6b);
+  background: var(--heat-4);
 }
 .split-grid {
   display: grid;
@@ -291,15 +262,14 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
   width: 100%;
   min-height: 3px;
   background: var(--sky);
-  border-radius: 3px 3px 0 0;
 }
 .rhythm__axis {
   display: flex;
   justify-content: space-between;
   margin-top: 6px;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text-soft);
 }
 .ratio {
   display: flex;
@@ -307,8 +277,8 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
   margin-top: 14px;
 }
 .ratio__num {
-  font-family: 'Inter', sans-serif;
-  font-size: 20px;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
   font-weight: 700;
 }
 .ratio__num--easy {
@@ -318,9 +288,9 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
   color: var(--gold, #b8860b);
 }
 .ratio__label {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-soft);
 }
 .contexts {
   display: flex;
@@ -330,13 +300,13 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
 .contexts__row {
   display: flex;
   justify-content: space-between;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 14px;
-  color: var(--ink);
+  font-family: var(--font-ko);
+  font-size: var(--text-base);
+  color: var(--text);
 }
 .contexts__count {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  color: var(--text-soft);
 }
 .tough {
   display: flex;
@@ -348,21 +318,21 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  background: var(--paper-warm);
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-card);
   padding: 9px 12px;
 }
 .tough__ko {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: var(--font-ko);
   font-weight: 700;
-  font-size: 14px;
-  color: var(--ink);
+  font-size: var(--text-base);
+  color: var(--text);
 }
 .tough__meaning {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-soft);
   margin-left: 4px;
 }
 .tough__right {
@@ -372,24 +342,24 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
   flex-shrink: 0;
 }
 .tough__count {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
   color: var(--gold, #b8860b);
 }
 .tough__cta {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
   font-weight: 600;
-  color: var(--ink);
+  color: var(--text);
   text-decoration: none;
   background: var(--paper);
-  border: 1.5px solid var(--jade, #3f9d6b);
-  border-radius: 999px;
+  border: 2px solid var(--jade, #3f9d6b);
+  border-radius: var(--radius-sm);
   padding: 4px 12px;
   transition: background var(--motion-quick, 120ms) ease;
 }
 .tough__cta:hover {
-  background: var(--paper-deep);
+  background: var(--surface-hover);
 }
 .tough__cta:focus-visible {
   outline: 2px solid var(--focus-ring, var(--sky));
