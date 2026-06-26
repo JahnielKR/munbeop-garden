@@ -9,11 +9,10 @@ import { TOPIK_6_GRAMMAR } from '~/seed/grammars-n6'
 const LOCALES = ['en', 'es', 'fr', 'pt-BR', 'th', 'id', 'vi', 'ja'] as const
 
 describe('usageNotes seed completeness', () => {
-  // SEEDING-PR-TODO: change `describe.skip` to `describe` when shipping the
-  // TOPIK 1+2 seeding PR. The block stays present (not deleted) so the
-  // canary contract is visible from day one — only its activation is
-  // deferred until the content writing is complete.
-  describe.skip('TOPIK 1 + 2 (v1 scope)', () => {
+  // ACTIVE since the TOPIK 1+2 usage-notes seeding shipped: every TOPIK 1+2
+  // grammar must carry detailed usageNotes in all 8 locales. As later levels
+  // are seeded they move from the "must stay empty" block below into this one.
+  describe('TOPIK 1 + 2 (v1 scope)', () => {
     const inScope = [...TOPIK_1_GRAMMAR, ...TOPIK_2_GRAMMAR]
     for (const g of inScope) {
       it(`${g.ko} has usageNotes in all 8 locales`, () => {
