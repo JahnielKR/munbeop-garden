@@ -6,6 +6,7 @@ import { useGrammarStore } from '~/stores/grammar'
 import { useContextsStore } from '~/stores/contexts'
 import { useSrsStore } from '~/stores/srs'
 import { useLogStore } from '~/stores/log'
+import { useActivityStore } from '~/stores/activity'
 import { useSettingsStore } from '~/stores/settings'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 import { useCustomDecksStore } from '~/stores/customDecks'
@@ -30,6 +31,7 @@ export function useAuth() {
       useContextsStore().hydrate(),
       useSrsStore().hydrate(),
       useLogStore().hydrate(),
+      useActivityStore().hydrate(),
       useEscapeRoomProgress().hydrate(),
       useCustomDecksStore().hydrate(),
     ])

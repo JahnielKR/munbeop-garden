@@ -6,6 +6,7 @@ import { useContextsStore } from '~/stores/contexts'
 import { useGrammarStore } from '~/stores/grammar'
 import { useLocaleStore } from '~/stores/locale'
 import { useLogStore } from '~/stores/log'
+import { useActivityStore } from '~/stores/activity'
 import { useSrsStore } from '~/stores/srs'
 import { useSettingsStore } from '~/stores/settings'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
@@ -40,6 +41,7 @@ onMounted(async () => {
       useContextsStore().hydrate(),
       useSrsStore().hydrate(),
       useLogStore().hydrate(),
+      useActivityStore().hydrate(),
       localeStore.hydrate(),
       useEscapeRoomProgress().hydrate(),
       useCustomDecksStore().hydrate(),
