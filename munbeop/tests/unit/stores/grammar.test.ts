@@ -40,6 +40,27 @@ describe('useGrammarStore.hydrate', () => {
     expect((stored[STORAGE_KEYS.grammar] as Grammar[]).length).toBeGreaterThan(0)
   })
 
+  it('de-duplicates stored items by ko so the library never shows a grammar twice', async () => {
+    // Reproduces the production bug: a Supabase user_custom_grammars copy of a
+    // catalog ko makes the union carry the same ko twice. Hydrate must collapse
+    // it to one (catalog-first wins) so the deck grids render it once.
+    const mk = (ko: string, deckId: string): Grammar => ({
+      ko,
+      meaning: { en: ko, es: '', fr: '', 'pt-BR': '', th: '', id: '', vi: '', ja: '' },
+      deckId,
+    })
+    const deck: Deck = { id: 'topik-1', name: 'T1', colorId: 'sky', order: 1, collapsed: false }
+    stored = {
+      [STORAGE_KEYS.grammar]: [mk('-아/어요', 'topik-1'), mk('-아/어요', 'topik-1'), mk('내것', 'custom')],
+      [STORAGE_KEYS.decks]: [deck],
+    }
+
+    const store = useGrammarStore()
+    await store.hydrate()
+    expect(store.items.filter((g) => g.ko === '-아/어요')).toHaveLength(1)
+    expect(store.items).toHaveLength(2)
+  })
+
   it('uses stored data as-is and does not overwrite it with the seed', async () => {
     const grammar: Grammar = {
       ko: 'test-ko',

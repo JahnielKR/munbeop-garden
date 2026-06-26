@@ -103,8 +103,14 @@ export class SupabaseAdapter implements StorageAdapter {
         ])
         assertOk('read', key, catalog.error)
         assertOk('read', key, custom.error)
+        // The catalog is canonical/read-only. Drop any user_custom_grammars row
+        // that copies a catalog ko (a past data-pollution bug duplicated the
+        // whole catalog into this table) so the union never carries a ko twice.
+        const catalogRows = catalog.data ?? []
+        const catalogKo = new Set(catalogRows.map((r) => r.ko))
+        const customRows = (custom.data ?? []).filter((r) => !catalogKo.has(r.ko))
         const all: Grammar[] = []
-        for (const row of [...(catalog.data ?? []), ...(custom.data ?? [])]) {
+        for (const row of [...catalogRows, ...customRows]) {
           all.push({
             ko: row.ko,
             meaning: row.meaning as Grammar['meaning'],

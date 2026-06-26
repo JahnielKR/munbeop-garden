@@ -93,6 +93,24 @@ describe('SupabaseAdapter', () => {
       expect(result.map((g) => g.ko).sort()).toEqual(['A', 'B'])
     })
 
+    it('grammar: drops a user_custom_grammars row whose ko already exists in the catalog', async () => {
+      // The catalog is canonical/read-only; a custom row that copies a catalog
+      // ko (the production data-pollution bug) must NOT double the entry.
+      client.data.grammars = [{ ko: 'A', meaning: {}, deck_id: 'topik-1' }]
+      client.data.user_custom_grammars = [
+        { ko: 'A', meaning: {}, deck_id: 'topik-1' }, // exact copy of the catalog ko
+        { ko: 'B', meaning: {}, deck_id: 'custom' }, // genuine user-authored grammar
+      ]
+      const result = (await adapter.read(STORAGE_KEYS.grammar, [])) as Array<{
+        ko: string
+        deckId: string
+      }>
+      expect(result.map((g) => g.ko).sort()).toEqual(['A', 'B'])
+      expect(result.filter((g) => g.ko === 'A')).toHaveLength(1)
+      // The catalog version is the one kept.
+      expect(result.find((g) => g.ko === 'A')?.deckId).toBe('topik-1')
+    })
+
     it('srs: maps user_progress rows into SrsMap', async () => {
       client.data.user_progress = [
         {
