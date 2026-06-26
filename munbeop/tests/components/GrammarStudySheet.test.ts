@@ -59,10 +59,11 @@ describe('GrammarStudySheet', () => {
     expect(wrapper.find('.ach-section').exists()).toBe(true)
     expect(wrapper.findAll('.ach').length).toBe(6)
     expect(html).not.toContain('library.modal.coming_soon.achievements')
-    // ExamplesSection replaces the coming-soon placeholder; it falls back to
-    // the canonical example when the bank is empty.
+    // ExamplesSection replaces the coming-soon placeholder. With an empty bank
+    // it renders nothing — the canonical example lives ONLY in Meaning, shown
+    // exactly once (no "above == below" duplicate).
     expect(html).not.toContain('library.modal.coming_soon.examples')
-    expect(html).toContain('비가 오니까 우산을 챙겨요.')
+    expect((html.match(/비가 오니까 우산을 챙겨요\./g) ?? []).length).toBe(1)
   })
 
   it('replaces the audio placeholder with the pronunciation section for a guided point', () => {

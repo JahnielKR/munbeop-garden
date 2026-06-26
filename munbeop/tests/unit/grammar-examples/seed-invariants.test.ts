@@ -48,4 +48,13 @@ describe('grammar-examples seed invariants', () => {
       expect(hit).toBe(true)
     })
   }
+
+  // "Above ≠ below": a bank example must never repeat its grammar's canonical
+  // `Grammar.example` (which renders in MeaningSection). MeaningSection shows the
+  // canonical; ExamplesSection shows the bank — they must differ.
+  it('no bank sentence duplicates its grammar canonical example', () => {
+    const canonical = new Map(DEFAULT_GRAMMAR.map((g) => [g.ko, g.example]))
+    const offenders = GRAMMAR_EXAMPLES.filter((e) => e.sentence === canonical.get(e.ko))
+    expect(offenders.map((e) => `${e.ko}: ${e.sentence}`)).toEqual([])
+  })
 })
