@@ -1,7 +1,9 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useCounterDrill } from '~/composables/useCounterDrill'
 import { COUNTER_SETS } from '~/lib/counters/sets'
+
+vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
 
 beforeEach(() => setActivePinia(createPinia()))
 

@@ -7,6 +7,7 @@ import { useContextsStore } from '~/stores/contexts'
 import { useGrammarStore } from '~/stores/grammar'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
+import { useActivityStore } from '~/stores/activity'
 
 const ONBOARDED_KEY = 'munbeop.onboarded'
 
@@ -19,6 +20,7 @@ export function useOnboarding() {
   const appStatus = useAppStatus()
   const logStore = useLogStore()
   const srsStore = useSrsStore()
+  const activity = useActivityStore()
   const grammarStore = useGrammarStore()
   const contextsStore = useContextsStore()
 
@@ -72,6 +74,7 @@ export function useOnboarding() {
       contextId: ctx.id,
       contextName: ctx.name,
     })
+    void activity.record()
     await srsStore.markSeen(grammar.ko)
     await srsStore.recalculate(grammar.ko)
     markOnboarded()

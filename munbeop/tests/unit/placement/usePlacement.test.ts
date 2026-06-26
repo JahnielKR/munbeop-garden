@@ -4,6 +4,7 @@ import { setActivePinia, createPinia } from 'pinia'
 
 const setStartingDeck = vi.fn()
 vi.mock('~/stores/settings', () => ({ useSettingsStore: () => ({ setStartingDeck }) }))
+vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
 
 vi.mock('~/seed/placement', () => {
   const mk = (ko: string, level: number, correct: string) => ({

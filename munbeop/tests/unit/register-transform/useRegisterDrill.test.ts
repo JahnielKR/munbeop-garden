@@ -5,6 +5,7 @@ import { useRegisterDrill } from '~/composables/useRegisterDrill'
 
 const add = vi.fn()
 vi.mock('~/stores/log', () => ({ useLogStore: () => ({ add }) }))
+vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (k: string) => k, locale: { value: 'en' } }) }))
 
 beforeEach(() => {

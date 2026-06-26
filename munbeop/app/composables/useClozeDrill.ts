@@ -5,6 +5,7 @@ import { buildRound, optionsFor, scoreOf, itemId, type DrillResult } from '~/lib
 import type { ClozeItem } from '~/lib/domain'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
+import { useActivityStore } from '~/stores/activity'
 
 export type ClozePhase = 'question' | 'right' | 'wrong' | 'done'
 export type ClozeRunMode = 'normal' | 'replay'
@@ -16,6 +17,7 @@ const CREDIT_THRESHOLD = 0.7
 export function useClozeDrill() {
   const logStore = useLogStore()
   const srsStore = useSrsStore()
+  const activity = useActivityStore()
   const { t } = useI18n()
 
   const sessionItems = ref<ClozeItem[]>([])
@@ -65,6 +67,7 @@ export function useClozeDrill() {
     const correct = choice === item.value.answer
     results.value.push({ itemId: itemId(item.value), ko: item.value.ko, correct })
     phase.value = correct ? 'right' : 'wrong'
+    void activity.record()
     if (!correct && runMode.value === 'normal') await logMistake(item.value, choice)
   }
 

@@ -9,6 +9,7 @@ const recalculate = vi.fn()
 const markSeen = vi.fn()
 vi.mock('~/stores/log', () => ({ useLogStore: () => ({ add }) }))
 vi.mock('~/stores/srs', () => ({ useSrsStore: () => ({ recalculate, markSeen }) }))
+vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (k: string) => k, locale: { value: 'en' } }) }))
 
 const items: ClozeItem[] = [

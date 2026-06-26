@@ -8,11 +8,13 @@ import {
 } from '~/lib/placement'
 import type { PlacementItem, TopikLevel } from '~/lib/domain'
 import { useSettingsStore } from '~/stores/settings'
+import { useActivityStore } from '~/stores/activity'
 
 export type PlacementPhase = 'question' | 'right' | 'wrong' | 'done'
 
 export function usePlacement() {
   const settings = useSettingsStore()
+  const activity = useActivityStore()
 
   const ladder = ref<LadderState>(createLadder())
   const levelItems = ref<PlacementItem[]>([])
@@ -49,6 +51,7 @@ export function usePlacement() {
     const correct = phase.value === 'right'
     const prevLevel = ladder.value.currentLevel
     ladder.value = recordAnswer(ladder.value, correct)
+    void activity.record()
 
     if (ladder.value.done) {
       outcome.value = ladderOutcome(ladder.value)

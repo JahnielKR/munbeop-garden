@@ -13,6 +13,7 @@ import { useGrammarStore } from '~/stores/grammar'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useLeeches } from '~/composables/useLeeches'
+import { useActivityStore } from '~/stores/activity'
 
 type PracticeSession = Session<number, Context>
 
@@ -21,6 +22,7 @@ export function usePractice() {
   const contextsStore = useContextsStore()
   const srsStore = useSrsStore()
   const logStore = useLogStore()
+  const activity = useActivityStore()
   const route = useRoute()
   const { t } = useI18n()
   const { leechKos } = useLeeches()
@@ -156,6 +158,7 @@ export function usePractice() {
       contextId: ctx.id,
       contextName: ctx.name,
     })
+    void activity.record()
     await srsStore.recalculate(grammar.ko)
     advanceProgress(s, p.pickIndex)
     return entry

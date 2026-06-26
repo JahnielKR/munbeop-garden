@@ -12,6 +12,7 @@ import { PARTICLE_DRILLS } from '~/seed/particle-drills'
 import { CLASH_SETS, clashSetById, DEFAULT_CLASH_SET_ID } from '~/seed/clash-sets'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
+import { useActivityStore } from '~/stores/activity'
 
 export type DrillPhase = 'question' | 'blocked' | 'right' | 'wrong' | 'done'
 export type DrillMode = 'normal' | 'replay'
@@ -26,6 +27,7 @@ const MIN_FAMILY_CORRECT = 3
 export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
   const logStore = useLogStore()
   const srsStore = useSrsStore()
+  const activity = useActivityStore()
   const { t, locale } = useI18n()
 
   const availableSets = CLASH_SETS
@@ -99,6 +101,7 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
         batchimSlips: slipsThisItem.value,
       })
       phase.value = 'right'
+      void activity.record()
       return
     }
     if (v.kind === 'blocked') {
@@ -123,6 +126,7 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
       batchimSlips: slipsThisItem.value,
     })
     phase.value = 'wrong'
+    void activity.record()
     if (mode.value === 'normal') await logMistake(item.value, choice)
   }
 

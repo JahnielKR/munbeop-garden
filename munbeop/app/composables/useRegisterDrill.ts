@@ -11,6 +11,7 @@ import {
 } from '~/lib/register-transform'
 import type { RegisterItem, RegisterMode } from '~/lib/domain'
 import { useLogStore } from '~/stores/log'
+import { useActivityStore } from '~/stores/activity'
 
 export type RegisterPhase = 'question' | 'right' | 'wrong' | 'done'
 export type RegisterRunMode = 'normal' | 'replay'
@@ -20,6 +21,7 @@ const ROUND_SIZE = 8
 
 export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet = 'mixed') {
   const logStore = useLogStore()
+  const activity = useActivityStore()
   const { t } = useI18n()
 
   const mode = ref<RegisterMode>(initialMode)
@@ -74,6 +76,7 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
     const correct = choice === item.value.answer
     results.value.push({ itemId: itemId(item.value), correct })
     phase.value = correct ? 'right' : 'wrong'
+    void activity.record()
     if (!correct && runMode.value === 'normal') await logMistake(item.value, choice)
   }
   async function next() {

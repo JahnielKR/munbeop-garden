@@ -10,6 +10,7 @@ import {
   type DrillResult,
 } from '~/lib/conjugation-drill'
 import { useLogStore } from '~/stores/log'
+import { useActivityStore } from '~/stores/activity'
 
 export type ConjPhase = 'question' | 'right' | 'wrong' | 'done'
 export type ConjMode = 'normal' | 'replay'
@@ -19,6 +20,7 @@ const ROUND_SIZE = 8
 
 export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
   const logStore = useLogStore()
+  const activity = useActivityStore()
   const { t } = useI18n()
 
   const selectedClassId = ref<DrillClassId>(classById(initialClassId) ? initialClassId : 'mixed')
@@ -73,6 +75,7 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
     const correct = choice === item.value.correct
     results.value.push({ itemId: item.value.id, correct })
     phase.value = correct ? 'right' : 'wrong'
+    void activity.record()
     if (!correct && mode.value === 'normal') await logMistake(item.value, choice)
   }
 

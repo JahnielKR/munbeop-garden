@@ -2,6 +2,7 @@ import { computed, ref } from 'vue'
 import type { LabSentence, ParticleId, SpeechLevel } from '~/lib/domain'
 import { indexOfParticle, particleIds, readingFor } from '~/lib/particle-lab'
 import { PARTICLE_SENTENCES } from '~/seed/particle-sentences'
+import { useActivityStore } from '~/stores/activity'
 
 /**
  * Explore-mode session: sentence navigation + per-sentence OFF set.
@@ -10,6 +11,9 @@ import { PARTICLE_SENTENCES } from '~/seed/particle-sentences'
 export function useParticleExplore() {
   const sentences = PARTICLE_SENTENCES
   const index = ref(0)
+
+  // Explore has no "answer"; one tick marks the day active.
+  void useActivityStore().record()
   const off = ref<Set<ParticleId>>(new Set())
   // Sticky global preference — unlike `off`, it is NOT reset on navigation.
   const level = ref<SpeechLevel>('polite')

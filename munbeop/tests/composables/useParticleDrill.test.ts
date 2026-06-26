@@ -24,6 +24,7 @@ const { FIX, addSpy, markSeenSpy, recalcSpy } = vi.hoisted(() => {
 vi.mock('~/seed/particle-drills', () => ({ PARTICLE_DRILLS: FIX }))
 vi.mock('~/stores/log', () => ({ useLogStore: () => ({ add: addSpy, entries: [] }) }))
 vi.mock('~/stores/srs', () => ({ useSrsStore: () => ({ markSeen: markSeenSpy, recalculate: recalcSpy }) }))
+vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
 
 describe('useParticleDrill — replay', () => {
   let scope: EffectScope

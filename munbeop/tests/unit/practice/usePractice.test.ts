@@ -62,6 +62,8 @@ vi.mock('~/composables/useLeeches', () => ({
   useLeeches: () => ({ leechKos: { value: new Set<string>() } }),
 }))
 
+vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
+
 // ---------------------------------------------------------------------------
 // Nuxt auto-import stubs — useRoute + useI18n.
 // useI18n is already globally stubbed by tests/setup.ts (key-echo), so we

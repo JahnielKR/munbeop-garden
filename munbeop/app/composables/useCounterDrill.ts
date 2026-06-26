@@ -5,6 +5,7 @@ import { COUNTER_SETS } from '~/lib/counters/sets'
 import { COUNTERS } from '~/seed/counters'
 import type { CountItem } from '~/lib/domain'
 import { useCounterMaster } from '~/composables/useCounterMaster'
+import { useActivityStore } from '~/stores/activity'
 
 export type CounterPhase = 'question' | 'right' | 'wrong' | 'done'
 export type CounterRunMode = 'normal' | 'replay'
@@ -12,6 +13,7 @@ const ROUND_SIZE = 8
 
 export function useCounterDrill() {
   const master = useCounterMaster()
+  const activity = useActivityStore()
 
   const selectedSetId = ref<string>(COUNTER_SETS[0]!.id)
   const sessionItems = ref<CountItem[]>([])
@@ -65,6 +67,7 @@ export function useCounterDrill() {
     const correct = choice === item.value.answer
     results.value.push({ itemId: itemId(item.value), correct })
     phase.value = correct ? 'right' : 'wrong'
+    void activity.record()
   }
 
   async function next() {
