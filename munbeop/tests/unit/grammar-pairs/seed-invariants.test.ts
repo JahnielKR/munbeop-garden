@@ -33,12 +33,14 @@ describe('grammar-pairs seed invariants', () => {
     })
   }
 
-  // Coverage: every authored pair (TOPIK 1 + the TOPIK 2 batch) must be present
-  // with ≥3 single-answer items.
+  // Coverage: every authored pair (TOPIK 1 + the TOPIK 2/3 batches) must be
+  // present with ≥3 single-answer items.
   const TARGET_IDS = [
     'an-mot', 'aseo-nikka', 'go-aseo', 'goitda-aitda',
     'lge-georeyo', 'eojuda-deurida', 'geotgatda-moyangida',
     'myeondoeda-aeoyahada', 'geona-ina', 'deorado-aeodo',
+    'gedoeda-eojida', 'myeonseo-dongan', 'giwihae-euro',
+    'boida-geotgatda', 'dabomyeon-daboni', 'dapda-seureopda',
   ]
   for (const id of TARGET_IDS) {
     it(`covers ${id} with ≥3 items`, () => {
