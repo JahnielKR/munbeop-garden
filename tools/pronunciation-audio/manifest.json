@@ -833,6 +833,13 @@
     "pitch": "+0Hz"
   },
   {
+    "id": "2f0e3b06",
+    "syllable": "았",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "-10%",
+    "pitch": "+0Hz"
+  },
+  {
     "id": "310e3e2c",
     "syllable": "앞",
     "voice": "ko-KR-SunHiNeural",
