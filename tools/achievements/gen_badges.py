@@ -13,6 +13,7 @@ Run from the repo root:
     python tools/achievements/gen_badges.py
 """
 from __future__ import annotations
+import math
 import sys
 from pathlib import Path
 from PIL import Image, ImageDraw
@@ -207,7 +208,145 @@ def i_tree(d):  # mastered — a blossoming cherry tree
         d.point((sx, sy), fill=PINK[3])  # blossom speckle
 
 
-ICONS = [
+# ── global garden-trophy icons (shown on /stats) ─────────────────────────────
+def species_tree(d, canopy, speckle, accent=None):
+    """A compact blossoming tree, recoloured per TOPIK species."""
+    d.rectangle([14, 18, 18, 29], fill=WOODD[1])
+    d.rectangle([14, 18, 15, 29], fill=WOODD[2])
+    d.line([16, 20, 11, 15], fill=WOODD[1], width=2)
+    d.line([16, 20, 21, 15], fill=WOODD[1], width=2)
+    for cx, cy, r in ((16, 11, 7), (9, 13, 4), (23, 13, 4), (16, 5, 4), (11, 8, 4), (21, 8, 4)):
+        disc(d, cx, cy, r, canopy[1])
+    disc(d, 13, 9, 4, canopy[0]); disc(d, 19, 10, 3, canopy[0])
+    for sx, sy in ((12, 7), (19, 6), (15, 10), (9, 13), (23, 12), (17, 13)):
+        d.point((sx, sy), fill=speckle)
+    if accent:
+        disc(d, 16, 11, 2, accent)
+
+
+def i_seed(d):  # first_sprout — a seed waking up in the soil
+    soil(d, 16, 21, 9)
+    d.ellipse([12, 12, 20, 22], fill=WOODL[1])
+    d.ellipse([12, 12, 16, 22], fill=WOODL[2])
+    d.line([16, 13, 16, 20], fill=WOODD[2])
+    stem(d, 16, 13, 8)
+    leaf(d, 19, 8, 3, 2, GREEN[0])
+
+
+def i_blossom(d):  # first_bloom — a single cherry blossom
+    for k in range(5):
+        a = math.radians(-90 + k * 72)
+        px = 16 + round(7 * math.cos(a)); py = 14 + round(7 * math.sin(a))
+        disc(d, px, py, 4, PINK[0])
+    disc(d, 16, 14, 3, GOLD[1])
+    for k in range(5):
+        a = math.radians(-90 + k * 72)
+        d.point((16 + round(3 * math.cos(a)), 14 + round(3 * math.sin(a))), fill=GOLD[2])
+    stem(d, 16, 28, 18)
+    leaf(d, 20, 23, 3, 2, GREEN[2])
+
+
+def i_sprout_bed(d):  # green_thumb — a planted row of three sprouts
+    d.rectangle([3, 22, 29, 28], fill=SOIL)
+    d.rectangle([3, 22, 29, 24], fill=WOODD[0])
+    for cx in (9, 16, 23):
+        stem(d, cx, 22, 14)
+        leaf(d, cx - 3, 15, 3, 2, GREEN[1])
+        leaf(d, cx + 3, 14, 3, 2, GREEN[1])
+        leaf(d, cx, 11, 2, 3, GREEN[0])
+
+
+def i_trowel(d):  # gardener — a garden trowel
+    d.line([23, 6, 16, 15], fill=WOODL[2], width=3)
+    disc(d, 23, 6, 2, WOODL[1])
+    d.polygon([(16, 13), (9, 20), (12, 27), (18, 24), (19, 16)], fill=METAL[1])
+    d.polygon([(15, 15), (11, 20), (13, 25), (16, 22)], fill=METAL[0])
+    for sx, sy in ((11, 26), (14, 28), (17, 27)):
+        d.point((sx, sy), fill=SOIL)
+
+
+def i_medal(d):  # master_gardener — a rosette medal with a leaf emblem
+    d.polygon([(12, 17), (12, 29), (16, 25), (20, 29), (20, 17)], fill=RED[1])
+    d.polygon([(13, 17), (13, 26), (16, 23)], fill=RED[0])
+    for k in range(8):
+        a = math.radians(k * 45)
+        disc(d, 16 + round(6 * math.cos(a)), 13 + round(6 * math.sin(a)), 3, GOLD[1])
+    disc(d, 16, 13, 6, GOLD[1]); disc(d, 16, 13, 5, GOLD[2])
+    leaf(d, 16, 13, 2, 3, GREEN[1])
+
+
+def i_wreath(d):  # garden_complete — a laurel-and-blossom wreath
+    for k in range(12):
+        a = math.radians(k * 30)
+        disc(d, 16 + round(10 * math.cos(a)), 16 + round(10 * math.sin(a)), 2, GREEN[2])
+    for k in range(6):
+        a = math.radians(k * 60 + 15)
+        disc(d, 16 + round(10 * math.cos(a)), 16 + round(10 * math.sin(a)), 2, PINK[1])
+    d.polygon([(16, 9), (17, 15), (16, 17), (15, 15)], fill=GOLD[1])
+    d.polygon([(16, 23), (17, 17), (16, 15), (15, 17)], fill=GOLD[1])
+    d.polygon([(9, 16), (15, 17), (17, 16), (15, 15)], fill=GOLD[1])
+    d.polygon([(23, 16), (17, 17), (15, 16), (17, 15)], fill=GOLD[1])
+    disc(d, 16, 16, 2, GOLD[2])
+
+
+def i_sun(d):  # streak_7 — a warm sun
+    for k in range(8):
+        a = math.radians(k * 45)
+        d.line([16 + round(8 * math.cos(a)), 16 + round(8 * math.sin(a)),
+                16 + round(12 * math.cos(a)), 16 + round(12 * math.sin(a))], fill=GOLD[1], width=2)
+    disc(d, 16, 16, 7, GOLD[1]); disc(d, 16, 16, 6, GOLD[0])
+    disc(d, 14, 14, 2, WHITE)
+
+
+def i_sun_stars(d):  # streak_30 — the sun, crowned with sparkles
+    i_sun(d)
+    for sx, sy in ((4, 6), (28, 6), (5, 27), (27, 27)):
+        d.line([sx - 2, sy, sx + 2, sy], fill=GOLD[0])
+        d.line([sx, sy - 2, sx, sy + 2], fill=GOLD[0])
+
+
+def i_scroll(d):  # reviews_100 — a hanji scroll
+    d.rectangle([9, 8, 23, 24], fill=HANJI[0])
+    d.rectangle([9, 8, 23, 10], fill=HANJI[1])
+    d.rounded_rectangle([7, 6, 25, 9], radius=1, fill=WOODL[2])
+    d.rounded_rectangle([7, 23, 25, 26], radius=1, fill=WOODL[2])
+    for y in (13, 16, 19):
+        d.line([12, y, 20, y], fill=WOODL[1])
+    d.point((16, 11), fill=RED[2])
+
+
+def i_tome(d):  # reviews_500 — a thick tome with a bookmark ribbon
+    d.rectangle([7, 7, 24, 26], fill=BRASS[2])
+    d.rectangle([7, 7, 24, 9], fill=BRASS[1])
+    d.rectangle([22, 9, 24, 26], fill=HANJI[0])
+    d.rectangle([7, 7, 9, 26], fill=BRASS[3])
+    d.rectangle([17, 7, 19, 30], fill=RED[1])
+    d.polygon([(17, 30), (18, 27), (19, 30)], fill=RED[0])
+    leaf(d, 15, 16, 2, 3, GREEN[1])
+
+
+def i_bouquet(d):  # flourishing — a thriving little bouquet
+    for cx in (11, 21):
+        d.line([16, 28, cx, 16], fill=GREEN[2], width=1)
+    stem(d, 16, 28, 14)
+    disc(d, 11, 14, 3, PINK[1]); disc(d, 11, 14, 1, GOLD[1])
+    disc(d, 21, 14, 3, PINK[0]); disc(d, 21, 14, 1, GOLD[1])
+    for k in range(8):
+        a = math.radians(k * 45)
+        disc(d, 16 + round(4 * math.cos(a)), 11 + round(4 * math.sin(a)), 2, GOLD[1])
+    disc(d, 16, 11, 3, WOODD[2])
+    d.polygon([(12, 22), (20, 22), (18, 29), (14, 29)], fill=HANJI[1])
+
+
+# Species canopy palettes, matching the garden's level trees.
+MAGNOLIA = [PAL["dawn"][0], PAL["dawn"][1], PAL["dawn"][2]]
+
+
+def tree_of(canopy, speckle, accent=None):
+    return lambda d: species_tree(d, canopy, speckle, accent)
+
+
+PER_GRAMMAR = [
     ("sprouted", i_sprouted),
     ("taking_root", i_taking_root),
     ("practiced_10", i_watering_can),
@@ -219,6 +358,26 @@ ICONS = [
     ("mastered", i_tree),
 ]
 
+GLOBAL = [
+    ("first_sprout", i_seed),
+    ("first_bloom", i_blossom),
+    ("green_thumb", i_sprout_bed),
+    ("gardener", i_trowel),
+    ("master_gardener", i_medal),
+    ("garden_complete", i_wreath),
+    ("topik_1_mastered", tree_of(PINK, WHITE)),
+    ("topik_2_mastered", tree_of(MAGNOLIA, PINK[3])),
+    ("topik_3_mastered", tree_of(GREEN, GOLD[1])),
+    ("topik_4_mastered", tree_of(PINK, PINK[3], accent=RED[2])),
+    ("topik_5_mastered", tree_of(RED, GOLD[1])),
+    ("topik_6_mastered", tree_of(GOLD, BRASS[2])),
+    ("streak_7", i_sun),
+    ("streak_30", i_sun_stars),
+    ("reviews_100", i_scroll),
+    ("reviews_500", i_tome),
+    ("flourishing", i_bouquet),
+]
+
 
 def render(fn) -> Image.Image:
     img, d = canvas()
@@ -227,30 +386,31 @@ def render(fn) -> Image.Image:
     return img
 
 
-def sheet(imgs: list[tuple[str, Image.Image]], cols=3, scale=8) -> Image.Image:
+def sheet(imgs: list[tuple[str, Image.Image]], cols=6, scale=7) -> Image.Image:
     bg = rgb("#cbb896")
     rows = (len(imgs) + cols - 1) // cols
     pad = 6
     cell = S + pad
     sh = Image.new("RGBA", (cols * cell + pad, rows * cell + pad), bg)
     for i, (_, im) in enumerate(imgs):
-        cx = pad + (i % cols) * cell
-        cy = pad + (i // cols) * cell
-        sh.alpha_composite(im, (cx, cy))
+        sh.alpha_composite(im, (pad + (i % cols) * cell, pad + (i // cols) * cell))
     return sh.resize((sh.width * scale, sh.height * scale), Image.NEAREST)
 
 
 def main() -> int:
     OUT_APP.mkdir(parents=True, exist_ok=True)
     OUT_REVIEW.mkdir(parents=True, exist_ok=True)
-    rendered = []
-    for name, fn in ICONS:
-        im = render(fn)
-        im.save(OUT_APP / f"{name}.png")
-        rendered.append((name, im))
-        print(f"badge  img/achievements/{name}.png")
-    sheet(rendered).save(OUT_REVIEW / "_sheet.png")
-    print(f"review {(OUT_REVIEW / '_sheet.png').relative_to(REPO)}  ({len(rendered)} icons)")
+    all_rendered = []
+    for group, items in (("per-grammar", PER_GRAMMAR), ("global", GLOBAL)):
+        rendered = []
+        for name, fn in items:
+            im = render(fn)
+            im.save(OUT_APP / f"{name}.png")
+            rendered.append((name, im))
+        sheet(rendered).save(OUT_REVIEW / f"_sheet_{group}.png")
+        all_rendered += rendered
+        print(f"{group:11s} {len(rendered):2d} icons -> _sheet_{group}.png")
+    print(f"total {len(all_rendered)} badges -> munbeop/public/img/achievements/")
     return 0
 
 

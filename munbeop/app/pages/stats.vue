@@ -4,6 +4,7 @@ import StrugglingPlants from '~/components/stats/StrugglingPlants.vue'
 import { NuxtLink } from '#components'
 import { useStats } from '~/composables/useStats'
 import { useLeeches } from '~/composables/useLeeches'
+import { useGlobalAchievements } from '~/composables/useGlobalAchievements'
 import { useLocalized } from '~/composables/useLocalized'
 
 const { t } = useI18n()
@@ -22,6 +23,7 @@ const {
   hasData,
 } = useStats()
 const { leeches } = useLeeches()
+const { achievements } = useGlobalAchievements()
 
 const focusLink = (ko: string) => `/practice/ruleta?focus=${encodeURIComponent(ko)}`
 const pct = (part: number, total: number) => (total ? Math.round((part / total) * 100) : 0)
@@ -136,6 +138,37 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
             </div>
           </div>
         </div>
+      </section>
+
+      <section class="block" data-test="achievements">
+        <h2 class="block__title">{{ t('stats.achievements.title') }}</h2>
+        <p class="block__sub">{{ t('stats.achievements.sub') }}</p>
+        <ul class="trophies">
+          <li
+            v-for="a in achievements"
+            :key="a.id"
+            class="trophy"
+            :class="{ 'trophy--earned': a.earned, 'trophy--locked': !a.earned }"
+            :aria-label="a.earned
+              ? t(`stats.achievements.${a.id}.name`)
+              : `${t(`stats.achievements.${a.id}.name`)} — ${t(`stats.achievements.${a.id}.desc`)}`"
+            :title="a.earned
+              ? t(`stats.achievements.${a.id}.name`)
+              : t(`stats.achievements.${a.id}.desc`)"
+            data-test="trophy"
+          >
+            <img
+              class="trophy__icon pixel"
+              :src="`/img/achievements/${a.id}.png`"
+              alt=""
+              aria-hidden="true"
+              width="48"
+              height="48"
+              draggable="false"
+            >
+            <span class="trophy__name">{{ t(`stats.achievements.${a.id}.name`) }}</span>
+          </li>
+        </ul>
       </section>
 
       <StrugglingPlants :leeches="leeches" />
@@ -394,6 +427,44 @@ const rhythmTotal = computed(() => weekly.value.reduce((a, b) => a + b, 0))
 .tough__cta:focus-visible {
   outline: 2px solid var(--focus-ring, var(--sky));
   outline-offset: 2px;
+}
+.trophies {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 10px;
+}
+.trophy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 6px;
+  background: var(--paper-warm);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+  transition: opacity var(--motion-quick, 120ms) ease;
+}
+.trophy__icon {
+  width: 48px;
+  height: 48px;
+}
+.trophy__name {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+/* Earned = full colour + gold frame; locked = greyed so the wall reads as a goal. */
+.trophy--locked {
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+.trophy--earned {
+  border-color: var(--gold, var(--ink));
 }
 @media (max-width: 640px) {
   .split-grid {

@@ -144,6 +144,78 @@
       "title": "Ngữ cảnh hàng đầu",
       "sub": "Nơi bạn viết nhiều nhất"
     },
+    "achievements": {
+      "title": "Thành tựu",
+      "sub": "Cột mốc trên toàn khu vườn của bạn",
+      "first_sprout": {
+        "name": "Mầm đầu tiên",
+        "desc": "Ghi lại lần ôn đầu tiên của bạn"
+      },
+      "first_bloom": {
+        "name": "Đóa hoa đầu",
+        "desc": "Nuôi điểm ngữ pháp đầu tiên thành cây"
+      },
+      "green_thumb": {
+        "name": "Bàn tay xanh",
+        "desc": "Thành thạo 10 điểm ngữ pháp"
+      },
+      "gardener": {
+        "name": "Người làm vườn",
+        "desc": "Thành thạo 50 điểm ngữ pháp"
+      },
+      "master_gardener": {
+        "name": "Bậc thầy làm vườn",
+        "desc": "Thành thạo nửa toàn bộ danh mục"
+      },
+      "garden_complete": {
+        "name": "Khu vườn nở rộ",
+        "desc": "Thành thạo mọi điểm ngữ pháp trong vườn"
+      },
+      "topik_1_mastered": {
+        "name": "TOPIK 1 Thành thạo",
+        "desc": "Mọi ngữ pháp TOPIK 1 đều thành cây"
+      },
+      "topik_2_mastered": {
+        "name": "TOPIK 2 Thành thạo",
+        "desc": "Mọi ngữ pháp TOPIK 2 đều thành cây"
+      },
+      "topik_3_mastered": {
+        "name": "TOPIK 3 Thành thạo",
+        "desc": "Mọi ngữ pháp TOPIK 3 đều thành cây"
+      },
+      "topik_4_mastered": {
+        "name": "TOPIK 4 Thành thạo",
+        "desc": "Mọi ngữ pháp TOPIK 4 đều thành cây"
+      },
+      "topik_5_mastered": {
+        "name": "TOPIK 5 Thành thạo",
+        "desc": "Mọi ngữ pháp TOPIK 5 đều thành cây"
+      },
+      "topik_6_mastered": {
+        "name": "TOPIK 6 Thành thạo",
+        "desc": "Mọi ngữ pháp TOPIK 6 đều thành cây"
+      },
+      "streak_7": {
+        "name": "Chuỗi 7 ngày",
+        "desc": "Luyện 7 ngày liên tiếp"
+      },
+      "streak_30": {
+        "name": "Chuỗi 30 ngày",
+        "desc": "Luyện 30 ngày liên tiếp"
+      },
+      "reviews_100": {
+        "name": "Trăm lượt",
+        "desc": "Ghi lại 100 lần ôn"
+      },
+      "reviews_500": {
+        "name": "Tận tâm",
+        "desc": "Ghi lại 500 lần ôn"
+      },
+      "flourishing": {
+        "name": "Khu vườn tươi tốt",
+        "desc": "10+ cây và không cây nào chật vật"
+      }
+    },
     "toughest": {
       "title": "Ngữ pháp khó nhất",
       "sub": "Khó nhất — luyện ngay.",

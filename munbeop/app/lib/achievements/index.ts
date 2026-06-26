@@ -3,9 +3,9 @@ import type { LogEntry, SrsState } from '~/lib/domain'
 /**
  * Per-grammar achievement badges — celebratory milestones derived on the fly
  * from a point's SRS state + its log entries. NO persistence: a badge is "earned"
- * iff the live data satisfies it. Distinct from the global trophy case (those are
- * escape-room cosmetics) and from the dry SRS stats rows (same data, but framed
- * as a glanceable case to fill).
+ * iff the live data satisfies it. Distinct from the global garden trophies in
+ * ./global.ts (account-wide milestones shown on /stats) and from the dry SRS
+ * stats rows (same data, but framed as a glanceable case to fill).
  */
 export type AchievementId =
   | 'sprouted'

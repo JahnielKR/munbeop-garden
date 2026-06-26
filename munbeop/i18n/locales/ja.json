@@ -144,6 +144,78 @@
       "title": "よく使う文脈",
       "sub": "最もよく書く場面"
     },
+    "achievements": {
+      "title": "実績",
+      "sub": "庭全体のマイルストーン",
+      "first_sprout": {
+        "name": "最初の芽",
+        "desc": "初めての復習を記録"
+      },
+      "first_bloom": {
+        "name": "初めての開花",
+        "desc": "最初の文法を木まで育てる"
+      },
+      "green_thumb": {
+        "name": "園芸の才",
+        "desc": "文法を10個マスター"
+      },
+      "gardener": {
+        "name": "庭師",
+        "desc": "文法を50個マスター"
+      },
+      "master_gardener": {
+        "name": "庭師の達人",
+        "desc": "全カタログの半分をマスター"
+      },
+      "garden_complete": {
+        "name": "満開の庭",
+        "desc": "庭のすべての文法をマスター"
+      },
+      "topik_1_mastered": {
+        "name": "TOPIK 1 制覇",
+        "desc": "TOPIK 1 の文法がすべて木に"
+      },
+      "topik_2_mastered": {
+        "name": "TOPIK 2 制覇",
+        "desc": "TOPIK 2 の文法がすべて木に"
+      },
+      "topik_3_mastered": {
+        "name": "TOPIK 3 制覇",
+        "desc": "TOPIK 3 の文法がすべて木に"
+      },
+      "topik_4_mastered": {
+        "name": "TOPIK 4 制覇",
+        "desc": "TOPIK 4 の文法がすべて木に"
+      },
+      "topik_5_mastered": {
+        "name": "TOPIK 5 制覇",
+        "desc": "TOPIK 5 の文法がすべて木に"
+      },
+      "topik_6_mastered": {
+        "name": "TOPIK 6 制覇",
+        "desc": "TOPIK 6 の文法がすべて木に"
+      },
+      "streak_7": {
+        "name": "7日連続",
+        "desc": "7日連続で練習"
+      },
+      "streak_30": {
+        "name": "30日連続",
+        "desc": "30日連続で練習"
+      },
+      "reviews_100": {
+        "name": "100レビュー",
+        "desc": "100回の復習を記録"
+      },
+      "reviews_500": {
+        "name": "熱心",
+        "desc": "500回の復習を記録"
+      },
+      "flourishing": {
+        "name": "繁る庭",
+        "desc": "10本以上の木、手こずる苗はゼロ"
+      }
+    },
     "toughest": {
       "title": "苦手な文法",
       "sub": "「難しかった」の上位 — 今すぐ練習。",

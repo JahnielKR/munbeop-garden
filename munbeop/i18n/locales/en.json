@@ -144,6 +144,78 @@
       "title": "Top contexts",
       "sub": "Where you write most"
     },
+    "achievements": {
+      "title": "Achievements",
+      "sub": "Milestones across your whole garden",
+      "first_sprout": {
+        "name": "First Sprout",
+        "desc": "Log your very first review"
+      },
+      "first_bloom": {
+        "name": "First Bloom",
+        "desc": "Grow your first grammar into a tree"
+      },
+      "green_thumb": {
+        "name": "Green Thumb",
+        "desc": "Master 10 grammar points"
+      },
+      "gardener": {
+        "name": "Gardener",
+        "desc": "Master 50 grammar points"
+      },
+      "master_gardener": {
+        "name": "Master Gardener",
+        "desc": "Master half of the whole catalog"
+      },
+      "garden_complete": {
+        "name": "Garden in Full Bloom",
+        "desc": "Master every grammar in the garden"
+      },
+      "topik_1_mastered": {
+        "name": "TOPIK 1 Mastered",
+        "desc": "Every TOPIK 1 grammar is a tree"
+      },
+      "topik_2_mastered": {
+        "name": "TOPIK 2 Mastered",
+        "desc": "Every TOPIK 2 grammar is a tree"
+      },
+      "topik_3_mastered": {
+        "name": "TOPIK 3 Mastered",
+        "desc": "Every TOPIK 3 grammar is a tree"
+      },
+      "topik_4_mastered": {
+        "name": "TOPIK 4 Mastered",
+        "desc": "Every TOPIK 4 grammar is a tree"
+      },
+      "topik_5_mastered": {
+        "name": "TOPIK 5 Mastered",
+        "desc": "Every TOPIK 5 grammar is a tree"
+      },
+      "topik_6_mastered": {
+        "name": "TOPIK 6 Mastered",
+        "desc": "Every TOPIK 6 grammar is a tree"
+      },
+      "streak_7": {
+        "name": "Seven-Day Streak",
+        "desc": "Practice 7 days in a row"
+      },
+      "streak_30": {
+        "name": "Thirty-Day Streak",
+        "desc": "Practice 30 days in a row"
+      },
+      "reviews_100": {
+        "name": "Centurion",
+        "desc": "Log 100 reviews"
+      },
+      "reviews_500": {
+        "name": "Devoted",
+        "desc": "Log 500 reviews"
+      },
+      "flourishing": {
+        "name": "Flourishing Garden",
+        "desc": "10+ trees and not a single struggling plant"
+      }
+    },
     "toughest": {
       "title": "Toughest grammar",
       "sub": "Most “felt hard” — drill these now.",

@@ -144,6 +144,78 @@
       "title": "Contextos top",
       "sub": "Donde más escribes"
     },
+    "achievements": {
+      "title": "Logros",
+      "sub": "Hitos de todo tu jardín",
+      "first_sprout": {
+        "name": "Primer brote",
+        "desc": "Registra tu primer repaso"
+      },
+      "first_bloom": {
+        "name": "Primera flor",
+        "desc": "Haz crecer tu primera gramática hasta árbol"
+      },
+      "green_thumb": {
+        "name": "Mano verde",
+        "desc": "Domina 10 puntos de gramática"
+      },
+      "gardener": {
+        "name": "Jardinero",
+        "desc": "Domina 50 puntos de gramática"
+      },
+      "master_gardener": {
+        "name": "Maestro jardinero",
+        "desc": "Domina la mitad del catálogo"
+      },
+      "garden_complete": {
+        "name": "Jardín en flor",
+        "desc": "Domina toda la gramática del jardín"
+      },
+      "topik_1_mastered": {
+        "name": "TOPIK 1 dominado",
+        "desc": "Toda la gramática de TOPIK 1 es un árbol"
+      },
+      "topik_2_mastered": {
+        "name": "TOPIK 2 dominado",
+        "desc": "Toda la gramática de TOPIK 2 es un árbol"
+      },
+      "topik_3_mastered": {
+        "name": "TOPIK 3 dominado",
+        "desc": "Toda la gramática de TOPIK 3 es un árbol"
+      },
+      "topik_4_mastered": {
+        "name": "TOPIK 4 dominado",
+        "desc": "Toda la gramática de TOPIK 4 es un árbol"
+      },
+      "topik_5_mastered": {
+        "name": "TOPIK 5 dominado",
+        "desc": "Toda la gramática de TOPIK 5 es un árbol"
+      },
+      "topik_6_mastered": {
+        "name": "TOPIK 6 dominado",
+        "desc": "Toda la gramática de TOPIK 6 es un árbol"
+      },
+      "streak_7": {
+        "name": "Racha de 7 días",
+        "desc": "Practica 7 días seguidos"
+      },
+      "streak_30": {
+        "name": "Racha de 30 días",
+        "desc": "Practica 30 días seguidos"
+      },
+      "reviews_100": {
+        "name": "Centurión",
+        "desc": "Registra 100 repasos"
+      },
+      "reviews_500": {
+        "name": "Devoto",
+        "desc": "Registra 500 repasos"
+      },
+      "flourishing": {
+        "name": "Jardín floreciente",
+        "desc": "10+ árboles y ni una planta en apuros"
+      }
+    },
     "toughest": {
       "title": "Gramática más difícil",
       "sub": "Lo más “difícil” — practícalo ahora.",

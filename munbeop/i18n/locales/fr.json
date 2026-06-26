@@ -144,6 +144,78 @@
       "title": "Contextes principaux",
       "sub": "Où tu écris le plus"
     },
+    "achievements": {
+      "title": "Succès",
+      "sub": "Jalons de tout ton jardin",
+      "first_sprout": {
+        "name": "Première pousse",
+        "desc": "Enregistre ta première révision"
+      },
+      "first_bloom": {
+        "name": "Première floraison",
+        "desc": "Fais pousser ta première grammaire en arbre"
+      },
+      "green_thumb": {
+        "name": "Main verte",
+        "desc": "Maîtrise 10 points de grammaire"
+      },
+      "gardener": {
+        "name": "Jardinier",
+        "desc": "Maîtrise 50 points de grammaire"
+      },
+      "master_gardener": {
+        "name": "Maître jardinier",
+        "desc": "Maîtrise la moitié du catalogue"
+      },
+      "garden_complete": {
+        "name": "Jardin en pleine floraison",
+        "desc": "Maîtrise toute la grammaire du jardin"
+      },
+      "topik_1_mastered": {
+        "name": "TOPIK 1 maîtrisé",
+        "desc": "Toute la grammaire de TOPIK 1 est un arbre"
+      },
+      "topik_2_mastered": {
+        "name": "TOPIK 2 maîtrisé",
+        "desc": "Toute la grammaire de TOPIK 2 est un arbre"
+      },
+      "topik_3_mastered": {
+        "name": "TOPIK 3 maîtrisé",
+        "desc": "Toute la grammaire de TOPIK 3 est un arbre"
+      },
+      "topik_4_mastered": {
+        "name": "TOPIK 4 maîtrisé",
+        "desc": "Toute la grammaire de TOPIK 4 est un arbre"
+      },
+      "topik_5_mastered": {
+        "name": "TOPIK 5 maîtrisé",
+        "desc": "Toute la grammaire de TOPIK 5 est un arbre"
+      },
+      "topik_6_mastered": {
+        "name": "TOPIK 6 maîtrisé",
+        "desc": "Toute la grammaire de TOPIK 6 est un arbre"
+      },
+      "streak_7": {
+        "name": "Série de 7 jours",
+        "desc": "Pratique 7 jours d’affilée"
+      },
+      "streak_30": {
+        "name": "Série de 30 jours",
+        "desc": "Pratique 30 jours d’affilée"
+      },
+      "reviews_100": {
+        "name": "Centurion",
+        "desc": "Enregistre 100 révisions"
+      },
+      "reviews_500": {
+        "name": "Assidu",
+        "desc": "Enregistre 500 révisions"
+      },
+      "flourishing": {
+        "name": "Jardin florissant",
+        "desc": "10+ arbres et aucune plante en difficulté"
+      }
+    },
     "toughest": {
       "title": "Grammaire la plus difficile",
       "sub": "Le plus “difficile” — entraîne-toi maintenant.",
