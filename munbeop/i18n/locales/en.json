@@ -127,9 +127,20 @@
       "mastered": "Grammars mastered",
       "pending": "Pending reviews"
     },
+    "activity": {
+      "title": "Your garden, day by day",
+      "sub": "Every day you cultivate, a cell turns green.",
+      "tooltip": "{count} answered",
+      "avg": "Daily average",
+      "days_active": "Days active",
+      "streak_current": "Current streak",
+      "streak_longest": "Longest streak",
+      "year_prev": "Previous year",
+      "year_next": "Next year"
+    },
     "mastery": {
       "title": "Mastery across TOPIK 1–6",
-      "sub": "Each level's grammar, seedling → plant → tree."
+      "sub": "How much of each TOPIK level you've actually learned."
     },
     "rhythm": {
       "title": "Practice rhythm",

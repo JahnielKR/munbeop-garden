@@ -127,9 +127,20 @@
       "mastered": "Ngữ pháp đã thành thạo",
       "pending": "Chờ ôn lại"
     },
+    "activity": {
+      "title": "Khu vườn của bạn, từng ngày",
+      "sub": "Mỗi ngày bạn luyện tập, một ô sẽ chuyển sang màu xanh.",
+      "tooltip": "{count} câu trả lời",
+      "avg": "Trung bình mỗi ngày",
+      "days_active": "Ngày hoạt động",
+      "streak_current": "Chuỗi hiện tại",
+      "streak_longest": "Chuỗi dài nhất",
+      "year_prev": "Năm trước",
+      "year_next": "Năm tiếp theo"
+    },
     "mastery": {
       "title": "Mức thành thạo TOPIK 1–6",
-      "sub": "Ngữ pháp mỗi cấp, từ mầm → cây non → cây."
+      "sub": "Mức độ bạn thực sự học được ở mỗi cấp TOPIK."
     },
     "rhythm": {
       "title": "Nhịp luyện tập",

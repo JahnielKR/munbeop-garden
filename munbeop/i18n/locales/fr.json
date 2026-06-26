@@ -127,9 +127,20 @@
       "mastered": "Grammaires maîtrisées",
       "pending": "Révisions en attente"
     },
+    "activity": {
+      "title": "Ton jardin, jour après jour",
+      "sub": "Chaque jour de pratique, une cellule vire au vert.",
+      "tooltip": "{count} réponses",
+      "avg": "Moyenne quotidienne",
+      "days_active": "Jours actifs",
+      "streak_current": "Série en cours",
+      "streak_longest": "Série la plus longue",
+      "year_prev": "Année précédente",
+      "year_next": "Année suivante"
+    },
     "mastery": {
       "title": "Maîtrise par TOPIK 1–6",
-      "sub": "La grammaire de chaque niveau, de pousse → plante → arbre."
+      "sub": "Ce que tu as vraiment appris à chaque niveau TOPIK."
     },
     "rhythm": {
       "title": "Rythme de pratique",

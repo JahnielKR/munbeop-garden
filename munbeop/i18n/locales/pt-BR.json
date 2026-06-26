@@ -127,9 +127,20 @@
       "mastered": "Gramáticas dominadas",
       "pending": "Revisões pendentes"
     },
+    "activity": {
+      "title": "Seu jardim, dia a dia",
+      "sub": "A cada dia que você cultiva, uma célula fica verde.",
+      "tooltip": "{count} respondidas",
+      "avg": "Média diária",
+      "days_active": "Dias ativos",
+      "streak_current": "Sequência atual",
+      "streak_longest": "Maior sequência",
+      "year_prev": "Ano anterior",
+      "year_next": "Próximo ano"
+    },
     "mastery": {
       "title": "Domínio por TOPIK 1–6",
-      "sub": "A gramática de cada nível, de broto → planta → árvore."
+      "sub": "O quanto você realmente aprendeu em cada nível TOPIK."
     },
     "rhythm": {
       "title": "Ritmo de prática",

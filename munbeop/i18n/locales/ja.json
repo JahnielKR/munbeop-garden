@@ -127,9 +127,20 @@
       "mastered": "習得した文法",
       "pending": "未復習"
     },
+    "activity": {
+      "title": "あなたの庭、日々の記録",
+      "sub": "練習した日はマスが緑に変わります。",
+      "tooltip": "{count} 回答",
+      "avg": "1日の平均",
+      "days_active": "アクティブ日数",
+      "streak_current": "現在の連続日数",
+      "streak_longest": "最長連続日数",
+      "year_prev": "前の年",
+      "year_next": "次の年"
+    },
     "mastery": {
       "title": "TOPIK 1〜6の習得度",
-      "sub": "各レベルの文法を 新芽 → 苗 → 木 で表示。"
+      "sub": "各TOPIKレベルで実際に習得した量を表示します。"
     },
     "rhythm": {
       "title": "練習のリズム",

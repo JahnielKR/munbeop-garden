@@ -127,9 +127,20 @@
       "mastered": "Tata bahasa dikuasai",
       "pending": "Tinjauan tertunda"
     },
+    "activity": {
+      "title": "Kebunmu, hari demi hari",
+      "sub": "Setiap hari kamu berlatih, satu sel berubah menjadi hijau.",
+      "tooltip": "{count} dijawab",
+      "avg": "Rata-rata harian",
+      "days_active": "Hari aktif",
+      "streak_current": "Rentetan saat ini",
+      "streak_longest": "Rentetan terpanjang",
+      "year_prev": "Tahun sebelumnya",
+      "year_next": "Tahun berikutnya"
+    },
     "mastery": {
       "title": "Penguasaan TOPIK 1–6",
-      "sub": "Tata bahasa tiap level, dari tunas → tanaman → pohon."
+      "sub": "Seberapa banyak yang benar-benar kamu kuasai di setiap level TOPIK."
     },
     "rhythm": {
       "title": "Ritme latihan",
