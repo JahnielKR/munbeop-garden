@@ -131,16 +131,25 @@ scalability — single-row upserts, tiny table.
 - Domain type `ActivityDay { count: number }` (object, so it can grow later).
 - Storage shape: `Record<string /*dayKey*/, ActivityDay>`.
 
-The **activity table stores only the non-logging modes' ticks.** The heatmap
-and streaks merge two sources (no double counting, each interaction lives in
-exactly one source):
+**Every study answer records one activity tick** (uniform rule across all
+modes). The per-day heatmap/streak count merges the new source with the
+existing log as a **max**, which backfills pre-feature history and never
+double-counts:
 
 ```
-perDay(day) = countOfLogEntriesOn(day)  +  activityMap[day]?.count ?? 0
+perDay(day) = max(activityCount[day], logCount[day])
 ```
 
-This means **logging modes need zero changes** — their existing `user_log`
-rows already represent one interaction each.
+Rationale (discovered during planning): the four drills (cloze, conjugation,
+register, particle) write `user_log` **only conditionally** (on a mistake or at
+round-end), so an all-correct session leaves no log row. Relying on the log
+union would make those sessions invisible. So instead **all** answer handlers
+call `activity.record()`, and `max` is used because:
+- Pre-feature days have only `user_log` rows (activityCount 0) → `max` = log,
+  so existing history still shows.
+- Post-feature days have an activity tick for every answer
+  (activityCount ≥ logCount) → `max` = activity, counting every mode once with
+  no double counting even on days that also wrote log rows.
 
 ### 5c. New store `munbeop/app/stores/activity.ts`
 ```ts
@@ -159,19 +168,26 @@ export const useActivityStore = defineStore('activity', () => {
 Hydrate in the same place other stores hydrate (the app bootstrap that calls
 `srs.hydrate()`/`log.hydrate()` — confirmed in the plan).
 
-### 5d. Recording sites (non-logging modes only)
-Add one `activity.record()` per answered question in:
-- `munbeop/app/composables/useCounterMaster.ts`
-- `munbeop/app/composables/useParticleExplore.ts`
-- conjugation-master composable
-- register-master composable
-- placement composable (`/practice/placement`)
-- rescue composable (`/practice/rescue`)
+### 5d. Recording sites (confirmed by per-file analysis)
+Add one `activity.record()` per answer in each study mode's answer handler:
+- `usePractice.ts` → `persistEntry` (per context answer, beside the existing log.add)
+- `useOnboarding.ts` → `complete()` (the single starter answer)
+- `useClozeDrill.ts` → `answer()` (after `phase` is set)
+- `useConjugationDrill.ts` → `answer()` (after `results.push`/`phase` set)
+- `useRegisterDrill.ts` → `answer()` (after `results.push`/`phase` set)
+- `useParticleDrill.ts` → both terminal branches of `answer()` (right + wrong),
+  not the intermediate `blocked`/`contraction` verdicts
+- `useCounterDrill.ts` → `answer()` (after `phase` set; guarded by the existing
+  `if (phase.value !== 'question') return`)
+- `usePlacement.ts` → `next()` (after `recordAnswer`, before the done branch)
+- `useParticleExplore.ts` → **once per session** in the composable setup body
+  (Explore has no per-answer concept; one tick marks the day active without
+  inflating intensity from sentence navigation)
 
-Exact composable filenames confirmed by grep during planning. Logging modes
-(`usePractice`, `useClozeDrill`, `useConjugationDrill`, `useRegisterDrill`,
-`useParticleDrill`, `useOnboarding`) are **not** touched — covered via the log
-union.
+**Excluded:** `useRescueDrill.ts` / `rescue.vue` — the rescue flow is a guided
+read-through whose "produce" stage routes to `/practice/ruleta` (which already
+records), so instrumenting the read-through would double a session that the
+ruleta already counts.
 
 ### 5e. Persistence wiring
 - `munbeop/app/lib/storage/keys.ts`: add `activity: 'munbeop.v1.activity'`.
@@ -214,7 +230,8 @@ via MCP during implementation, then types regenerated.
 ### 6a. Pure helpers `munbeop/app/lib/stats/activity.ts`
 - `localDayKey(ms: number): string` → `YYYY-MM-DD` in local time.
 - `mergedDailyCounts(logDateMs: number[], activity: Record<string, ActivityDay>): Map<string, number>`
-  → per-day totals (log days + activity days).
+  → per-day count = `max(activityCount[day], logCount[day])` (see §5b). Log
+  timestamps are bucketed via `localDayKey`.
 - `yearGrid(counts: Map<string,number>, year: number, now: number)` → the
   cells to render for one year: weeks (columns) × 7 weekdays, each cell
   `{ dayKey | null, count, future: boolean }`, week-aligned (Monday-first),
