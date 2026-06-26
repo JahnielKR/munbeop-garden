@@ -9,11 +9,11 @@ import { TOPIK_6_GRAMMAR } from '~/seed/grammars-n6'
 const LOCALES = ['en', 'es', 'fr', 'pt-BR', 'th', 'id', 'vi', 'ja'] as const
 
 describe('usageNotes seed completeness', () => {
-  // ACTIVE since the TOPIK 1+2 usage-notes seeding shipped: every TOPIK 1+2
-  // grammar must carry detailed usageNotes in all 8 locales. As later levels
-  // are seeded they move from the "must stay empty" block below into this one.
-  describe('TOPIK 1 + 2 (v1 scope)', () => {
-    const inScope = [...TOPIK_1_GRAMMAR, ...TOPIK_2_GRAMMAR]
+  // ACTIVE: every seeded level must carry detailed usageNotes in all 8 locales.
+  // As later levels are seeded they move from the "must stay empty" block below
+  // into this one.
+  describe('TOPIK 1–3 (seeded)', () => {
+    const inScope = [...TOPIK_1_GRAMMAR, ...TOPIK_2_GRAMMAR, ...TOPIK_3_GRAMMAR]
     for (const g of inScope) {
       it(`${g.ko} has usageNotes in all 8 locales`, () => {
         expect(g.usageNotes, `${g.ko} missing usageNotes`).toBeDefined()
@@ -29,9 +29,8 @@ describe('usageNotes seed completeness', () => {
     }
   })
 
-  describe('TOPIK 3-6 (out of v1 scope — must stay empty)', () => {
+  describe('TOPIK 4-6 (not yet seeded — must stay empty)', () => {
     const outOfScope = [
-      ...TOPIK_3_GRAMMAR,
       ...TOPIK_4_GRAMMAR,
       ...TOPIK_5_GRAMMAR,
       ...TOPIK_6_GRAMMAR,
