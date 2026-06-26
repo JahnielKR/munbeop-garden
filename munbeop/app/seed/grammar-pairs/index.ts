@@ -4,6 +4,7 @@ import { N2_PAIRS } from './n2'
 import { N3_PAIRS } from './n3'
 import { N4_PAIRS } from './n4'
 import { N5_PAIRS } from './n5'
+import { N6_PAIRS } from './n6'
 
 /** Aggregated confusable-pair catalog. Per-batch arrays are spread in here. */
 export const GRAMMAR_PAIRS: ConfusablePair[] = [
@@ -12,4 +13,5 @@ export const GRAMMAR_PAIRS: ConfusablePair[] = [
   ...N3_PAIRS,
   ...N4_PAIRS,
   ...N5_PAIRS,
+  ...N6_PAIRS,
 ]
