@@ -168,4 +168,20 @@ describe('grammar-examples seed invariants', () => {
       })
     }
   }
+
+  // Per-FORM coverage for the TOPIK-6 Tier-1 (literary) grammars (plan Part B,
+  // level 6) — completes the Tier-1 rollout across all six levels.
+  const TIER6_FORM_COVERAGE: Array<{ ko: string; forms: Array<{ label: string; re: RegExp }> }> = [
+    { ko: '-(으)련마는 / -(으)련만', forms: [{ label: '련마는', re: /련마는/ }, { label: '련만', re: /련만/ }] },
+    { ko: '-건대 / 생각건대 / 바라건대', forms: [{ label: '건대', re: /듣건대|보건대/ }, { label: '생각건대', re: /생각건대/ }, { label: '바라건대', re: /바라건대/ }] },
+    { ko: '-로다 / -(이)로다', forms: [{ label: '로다', re: /[^이]로다/ }, { label: '이로다', re: /이로다/ }] },
+  ]
+  for (const { ko, forms } of TIER6_FORM_COVERAGE) {
+    for (const { label, re } of forms) {
+      it(`${ko} demonstrates the ${label} form`, () => {
+        const exs = GRAMMAR_EXAMPLES.filter((e) => e.ko === ko)
+        expect(exs.some((e) => re.test(e.sentence))).toBe(true)
+      })
+    }
+  }
 })

@@ -131,5 +131,12 @@
   { "id": "ff308c11", "sentence": "다음 주 월요일에 본사로 회장님을 직접 찾아 뵙겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
   { "id": "6c6f1413", "sentence": "부장님, 그럼 회의 끝나고 로비에서 봬요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
   { "id": "5f1b4a92", "sentence": "할머니는 시골에서 작은 텃밭을 가꾸며 사세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "2ad79d05", "sentence": "요즘은 매일 운동하며 건강하게 지내고 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" }
+  { "id": "2ad79d05", "sentence": "요즘은 매일 운동하며 건강하게 지내고 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "4ab56fc5", "sentence": "비가 흠뻑 내리면 메마른 논밭에 더없이 좋으련마는 하늘은 야속하게도 구름 한 점 내주지 않는구나.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
+  { "id": "50c1baec", "sentence": "벗이 곁에 있다면 이 먼 길도 함께 가련만 홀로 떠나는 나그네의 발걸음이 한없이 무겁기만 하구나.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
+  { "id": "df60b0b2", "sentence": "듣건대, 그 고을의 백성들이 오랜 가뭄으로 큰 고초를 겪고 있다 하더이다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
+  { "id": "c39c27f6", "sentence": "생각건대, 나라의 흥망은 결국 백성의 마음을 얻느냐 잃느냐에 달려 있는 것이다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
+  { "id": "871d7608", "sentence": "바라건대, 이 땅에 다시는 그와 같은 비극이 되풀이되지 않기를.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
+  { "id": "1467f5a3", "sentence": "아, 이 강산이 천하의 절경이로구나… 참으로 빼어난 경치로다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
+  { "id": "5f7242bb", "sentence": "오랜 세월을 견뎌 온 이 한 그루 소나무야말로 이 산의 주인이로다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" }
 ]
