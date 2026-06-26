@@ -46,7 +46,7 @@ export function useLibrarySearch() {
 
   const results = computed<Grammar[]>(() =>
     searchLibrary(
-      grammarStore.items,
+      grammarStore.catalogItems,
       { query: query.value, level: level.value, category: category.value, themeKos: themeKos.value },
       { locale: locale.value as LocaleCode, levelOf, categoryOf },
     ),

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Grammar, Deck, LocalizedString } from '~/lib/domain'
-import { CUSTOM_DECK_ID, isHangulName } from '~/lib/domain'
+import { CUSTOM_DECK_ID, dedupeGrammarByKo, isHangulName } from '~/lib/domain'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
 import { useSettingsStore } from '~/stores/settings'
@@ -27,13 +27,23 @@ export const useGrammarStore = defineStore('grammar', () => {
     items.value.filter((g) => g.deckId === CUSTOM_DECK_ID),
   )
 
+  // The Library shows the official catalog only — user-authored custom grammars
+  // (the 'custom' deck) are managed in settings + practiced via the Ruleta, but
+  // must NOT surface in the grammar catalog browser.
+  const catalogItems = computed(() =>
+    items.value.filter((g) => g.deckId !== CUSTOM_DECK_ID),
+  )
+
   function grammarByKo(ko: string): Grammar | undefined {
     return items.value.find((g) => g.ko === ko)
   }
 
   async function hydrate() {
     const storage = useStorageAdapter()
-    items.value = await storage.read(STORAGE_KEYS.grammar, [] as Grammar[])
+    // Dedupe by ko so a polluted catalog ∪ custom union (the Supabase bug where
+    // catalog rows were copied into user_custom_grammars) never renders a
+    // grammar twice in the Library. Catalog-first ordering → the catalog wins.
+    items.value = dedupeGrammarByKo(await storage.read(STORAGE_KEYS.grammar, [] as Grammar[]))
     decks.value = await storage.read(STORAGE_KEYS.decks, [] as Deck[])
     // The ~893 KB TOPIK seed is only a first-run fallback — for mandatory-account
     // users the catalog comes from Supabase, so it's dead weight on the eager
@@ -116,6 +126,7 @@ export const useGrammarStore = defineStore('grammar', () => {
     excludedDeckIds,
     activeIndices,
     customGrammars,
+    catalogItems,
     grammarByKo,
     hydrate,
     toggleDeck,

@@ -67,5 +67,8 @@
   { "id": "fba261dc", "sentence": "그 영화 정말 재미있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
   { "id": "cd8866e3", "sentence": "저 산 이름이 뭐예요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
   { "id": "54d8f951", "sentence": "점심을 먹으러 식당에 갔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "2db31f65", "sentence": "친구가 우리 집에 놀러 왔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" }
+  { "id": "2db31f65", "sentence": "친구가 우리 집에 놀러 왔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "eb3e989c", "sentence": "주말마다 방을 청소해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "7a348cc6", "sentence": "저는 오늘 아침에 공원에서 운동했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "1fc8f5fd", "sentence": "이 식당은 음식이 좋은데 너무 비싸요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" }
 ]

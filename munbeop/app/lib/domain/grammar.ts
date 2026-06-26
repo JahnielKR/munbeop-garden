@@ -77,6 +77,24 @@ export interface Deck {
 export const CUSTOM_DECK_ID = 'custom'
 
 /**
+ * Collapse a grammar list so each {@link Grammar.ko} appears once, keeping the
+ * FIRST occurrence. Callers order the canonical catalog ahead of any
+ * user-authored copies, so the catalog entry wins over a stray duplicate — the
+ * library must never render the same grammar twice, regardless of how the
+ * stored data got polluted. Pure: does not mutate the input.
+ */
+export function dedupeGrammarByKo(items: Grammar[]): Grammar[] {
+  const seen = new Set<string>()
+  const out: Grammar[] = []
+  for (const g of items) {
+    if (seen.has(g.ko)) continue
+    seen.add(g.ko)
+    out.push(g)
+  }
+  return out
+}
+
+/**
  * A user-curated, named deck for the Ruleta game. References catalog grammar
  * by {@link Grammar.ko} (the stable v1 id), so it can mix grammar from any
  * level and shares the same per-ko SRS mastery. Distinct from
