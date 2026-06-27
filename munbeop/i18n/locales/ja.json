@@ -372,6 +372,14 @@
         "adv": "副詞的",
         "indirect": "間接話法",
         "meta": "メタ"
+      },
+      "filter_mastery": "習熟度で絞り込む",
+      "filter_all_mastery": "すべての習熟度",
+      "mastery": {
+        "seedling": "芽",
+        "plant": "若木",
+        "tree": "木",
+        "hard": "苦手"
       }
     },
     "confused": {
@@ -434,6 +442,12 @@
         "name": "マスター",
         "desc": "ツリーの習熟に到達"
       }
+    },
+    "weak": {
+      "label": "手入れが必要な文法",
+      "summary": "{n}個の文法に練習が必要",
+      "view": "表示",
+      "rescue": "一番苦手なものを復習"
     }
   },
   "mastery": {

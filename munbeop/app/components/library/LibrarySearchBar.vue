@@ -9,11 +9,13 @@
 import Input from '~/components/ui/Input.vue'
 import Button from '~/components/ui/Button.vue'
 import { TOPIK_LEVELS, presentCategories, type GrammarType, type TopikLevel } from '~/lib/domain'
+import { MASTERY_FILTER_VALUES, type MasteryFilterValue } from '~/lib/library/mastery-filter'
 
 const props = defineProps<{
   query: string
   level: TopikLevel | null
   category: GrammarType | null
+  mastery: MasteryFilterValue | null
   zoneLabel: string | null
   resultCount: number
 }>()
@@ -22,15 +24,17 @@ const emit = defineEmits<{
   'update:query': [string]
   'set-level': [TopikLevel | null]
   'set-category': [GrammarType | null]
+  'set-mastery': [MasteryFilterValue | null]
   clear: []
 }>()
 
 const { t } = useI18n()
 
 const categories = presentCategories()
+const masteryValues = MASTERY_FILTER_VALUES
 const hasFilter = computed(
   () => props.query.trim() !== '' || props.level !== null
-     || props.category !== null || props.zoneLabel !== null,
+     || props.category !== null || props.mastery !== null || props.zoneLabel !== null,
 )
 
 function onLevel(e: Event) {
@@ -40,6 +44,10 @@ function onLevel(e: Event) {
 function onCategory(e: Event) {
   const v = (e.target as HTMLSelectElement).value
   emit('set-category', v === '' ? null : (v as GrammarType))
+}
+function onMastery(e: Event) {
+  const v = (e.target as HTMLSelectElement).value
+  emit('set-mastery', v === '' ? null : (v as MasteryFilterValue))
 }
 </script>
 
@@ -79,6 +87,18 @@ function onCategory(e: Event) {
         </option>
       </select>
 
+      <select
+        class="library-search__mastery"
+        :value="mastery ?? ''"
+        :aria-label="t('library.search.filter_mastery')"
+        @change="onMastery"
+      >
+        <option value="">{{ t('library.search.filter_all_mastery') }}</option>
+        <option v-for="m in masteryValues" :key="m" :value="m">
+          {{ t(`library.search.mastery.${m}`) }}
+        </option>
+      </select>
+
       <Button
         v-if="hasFilter"
         variant="secondary"
@@ -115,7 +135,8 @@ function onCategory(e: Event) {
   flex: 1 1 220px;
 }
 .library-search__level,
-.library-search__category {
+.library-search__category,
+.library-search__mastery {
   background: var(--surface);
   color: var(--text);
   border: 2px solid var(--border);
@@ -126,7 +147,8 @@ function onCategory(e: Event) {
   cursor: pointer;
 }
 .library-search__level:focus-visible,
-.library-search__category:focus-visible {
+.library-search__category:focus-visible,
+.library-search__mastery:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-color: var(--border-strong);

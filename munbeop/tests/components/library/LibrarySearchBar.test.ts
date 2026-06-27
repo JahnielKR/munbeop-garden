@@ -4,7 +4,7 @@ import LibrarySearchBar from '~/components/library/LibrarySearchBar.vue'
 
 function mountBar(props: Partial<Record<string, unknown>> = {}) {
   return mount(LibrarySearchBar, {
-    props: { query: '', level: null, category: null, zoneLabel: null, resultCount: 0, ...props },
+    props: { query: '', level: null, category: null, mastery: null, zoneLabel: null, resultCount: 0, ...props },
   })
 }
 
@@ -34,6 +34,18 @@ describe('LibrarySearchBar', () => {
     const firstReal = opts.find((o) => o.element.value !== '')!
     await select.setValue(firstReal.element.value)
     expect(w.emitted('set-category')?.[0]).toEqual([firstReal.element.value])
+  })
+
+  it('emits set-mastery from the mastery select', async () => {
+    const w = mountBar()
+    await w.find('.library-search__mastery').setValue('hard')
+    expect(w.emitted('set-mastery')?.[0]).toEqual(['hard'])
+  })
+
+  it('emits set-mastery null when "all mastery" is chosen', async () => {
+    const w = mountBar({ mastery: 'tree' })
+    await w.find('.library-search__mastery').setValue('')
+    expect(w.emitted('set-mastery')?.[0]).toEqual([null])
   })
 
   it('emits clear when the clear button is pressed', async () => {

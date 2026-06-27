@@ -372,6 +372,14 @@
         "adv": "Adverbial",
         "indirect": "Discurso indireto",
         "meta": "Meta"
+      },
+      "filter_mastery": "Filtrar por domínio",
+      "filter_all_mastery": "Todo o domínio",
+      "mastery": {
+        "seedling": "Broto",
+        "plant": "Planta",
+        "tree": "Árvore",
+        "hard": "Difíceis"
       }
     },
     "confused": {
@@ -434,6 +442,12 @@
         "name": "Dominado",
         "desc": "Alcance a maestria árvore"
       }
+    },
+    "weak": {
+      "label": "Plantas que precisam de cuidado",
+      "summary": "{n} pontos de gramática precisam de prática",
+      "view": "Mostrar",
+      "rescue": "Resgatar a mais difícil"
     }
   },
   "mastery": {

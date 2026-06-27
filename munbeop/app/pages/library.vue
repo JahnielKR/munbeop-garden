@@ -4,17 +4,26 @@ import Modal from '~/components/ui/Modal.vue'
 import GrammarStudySheet from '~/components/library/GrammarStudySheet.vue'
 import GrammarCard from '~/components/library/GrammarCard.vue'
 import LibrarySearchBar from '~/components/library/LibrarySearchBar.vue'
+import WeakPointsBanner from '~/components/library/WeakPointsBanner.vue'
 import Icon from '~/components/ui/Icon.vue'
 import { useGrammarStore } from '~/stores/grammar'
 import { useGrammarModal } from '~/composables/useGrammarModal'
 import { useLibrarySearch } from '~/composables/useLibrarySearch'
+import { useLeeches } from '~/composables/useLeeches'
 import { NuxtLink } from '#components'
 
 const grammarStore = useGrammarStore()
 const { t } = useI18n()
 const { selected, isOpen, open, close } = useGrammarModal()
-const { query, level, category, zoneLabel, isFiltering, results, setLevel, setCategory, clear } =
+const { query, level, category, mastery, zoneLabel, isFiltering, results, setLevel, setCategory, setMastery, clear } =
   useLibrarySearch()
+const { leeches } = useLeeches()
+
+/** Jump straight into the guided rescue drill on the worst struggling grammar. */
+function rescueWorst() {
+  const ko = leeches.value[0]?.ko
+  if (ko) void navigateTo(`/practice/rescue?ko=${encodeURIComponent(ko)}`)
+}
 
 /** Grouped view (shown when not filtering): decks in order, empty decks dropped. */
 const sections = computed(() => {
@@ -56,14 +65,23 @@ async function onCardClick(ko: string) {
     <p class="lead">{{ t('library.lead') }}</p>
     <NuxtLink class="paths-link" to="/paths">{{ t('library.paths_link') }}</NuxtLink>
 
+    <WeakPointsBanner
+      v-if="leeches.length"
+      :count="leeches.length"
+      @view="setMastery('hard')"
+      @rescue="rescueWorst"
+    />
+
     <LibrarySearchBar
       v-model:query="query"
       :level="level"
       :category="category"
+      :mastery="mastery"
       :zone-label="zoneLabel"
       :result-count="results.length"
       @set-level="setLevel"
       @set-category="setCategory"
+      @set-mastery="setMastery"
       @clear="clear"
     />
 

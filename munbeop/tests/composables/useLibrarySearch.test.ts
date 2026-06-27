@@ -18,9 +18,22 @@ vi.mock('~/stores/grammar', () => ({
   }),
 }))
 
+// Mastery filtering reads the SRS store + leech signal; mock both (controllable
+// via the hoisted `mock` so tests can drive mastery levels and the leech set).
+const mock = vi.hoisted(() => ({ leechKos: new Set<string>(), masteryByKo: {} as Record<string, string> }))
+vi.mock('~/stores/srs', () => ({
+  useSrsStore: () => ({ peek: (ko: string) => ({ mastery: mock.masteryByKo[ko] ?? 'seedling' }) }),
+}))
+vi.mock('~/composables/useLeeches', () => ({
+  useLeeches: () => ({ leechKos: { value: mock.leechKos } }),
+}))
+
 describe('useLibrarySearch', () => {
   let scope: EffectScope
-  beforeEach(() => { routeQuery.value = {}; replaceSpy.mockClear(); scope = effectScope() })
+  beforeEach(() => {
+    routeQuery.value = {}; replaceSpy.mockClear(); scope = effectScope()
+    mock.leechKos = new Set(); mock.masteryByKo = {}
+  })
   afterEach(() => { scope.stop() })
   const use = () => scope.run(() => useRaw())!
 
@@ -63,6 +76,40 @@ describe('useLibrarySearch', () => {
     routeQuery.value = { q: '은', level: '1', cat: 'particle', theme: 'x', grammar: '은/는' }
     use().clear()
     expect(replaceSpy).toHaveBeenCalledWith({ query: { grammar: '은/는' } })
+  })
+
+  it('parses ?mastery= and reflects it in isFiltering', () => {
+    routeQuery.value = { mastery: 'tree' }
+    const { mastery, isFiltering } = use()
+    expect(mastery.value).toBe('tree')
+    expect(isFiltering.value).toBe(true)
+  })
+
+  it('ignores an invalid ?mastery=', () => {
+    routeQuery.value = { mastery: 'leaf' }
+    expect(use().mastery.value).toBe(null)
+  })
+
+  it('?mastery=hard keeps only the leech set', () => {
+    mock.leechKos = new Set(['은/는'])
+    routeQuery.value = { mastery: 'hard' }
+    expect(use().results.value.map((g) => g.ko)).toEqual(['은/는'])
+  })
+
+  it('?mastery=hard excludes a non-leech item', () => {
+    mock.leechKos = new Set(['something-else'])
+    routeQuery.value = { mastery: 'hard' }
+    expect(use().results.value).toEqual([])
+  })
+
+  it('?mastery=tree excludes a seedling-level item', () => {
+    routeQuery.value = { mastery: 'tree' } // 은/는 defaults to seedling
+    expect(use().results.value).toEqual([])
+  })
+
+  it('setMastery writes ?mastery= via replace', () => {
+    use().setMastery('hard')
+    expect(replaceSpy).toHaveBeenCalledWith({ query: { mastery: 'hard' } })
   })
 
   it('results returns the single item when unfiltered', () => {

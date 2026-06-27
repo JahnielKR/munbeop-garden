@@ -372,6 +372,14 @@
         "adv": "Adverbial",
         "indirect": "Discours indirect",
         "meta": "Méta"
+      },
+      "filter_mastery": "Filtrer par maîtrise",
+      "filter_all_mastery": "Toute maîtrise",
+      "mastery": {
+        "seedling": "Pousse",
+        "plant": "Plante",
+        "tree": "Arbre",
+        "hard": "Difficiles"
       }
     },
     "confused": {
@@ -434,6 +442,12 @@
         "name": "Maîtrisé",
         "desc": "Atteindre la maîtrise arbre"
       }
+    },
+    "weak": {
+      "label": "Plantes à soigner",
+      "summary": "{n} points de grammaire à réviser",
+      "view": "Les afficher",
+      "rescue": "Sauver la plus difficile"
     }
   },
   "mastery": {
