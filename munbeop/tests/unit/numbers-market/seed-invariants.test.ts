@@ -40,9 +40,9 @@ describe('number-market seed invariants', () => {
     }
   })
 
-  it('every domain has at least 3 items', () => {
+  it('every domain has a deep pool (≥10) so Dictation rounds vary', () => {
     for (const d of DOMAINS) {
-      expect(itemsForDomain(d).length, `${d} item count`).toBeGreaterThanOrEqual(3)
+      expect(itemsForDomain(d).length, `${d} item count`).toBeGreaterThanOrEqual(10)
     }
   })
 })

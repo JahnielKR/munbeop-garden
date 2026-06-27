@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 import { shuffle } from '~/lib/particle-lab/shuffle'
-import { buildRound, tilePool, scoreOf, itemId, type DrillResult } from '~/lib/numbers-market'
+import { generateItems, tilePool, scoreOf, itemId, type DrillResult } from '~/lib/numbers-market'
 import { NUMBER_DOMAINS } from '~/lib/numbers-market/sets'
 import type { MarketItem, NumberDomain } from '~/lib/domain'
 import { useNumberMarketMaster } from '~/composables/useNumberMarketMaster'
@@ -45,7 +45,8 @@ export function useNumberMarket() {
 
   function start() {
     runMode.value = 'normal'
-    sessionItems.value = buildRound(selectedDomain.value, ROUND_SIZE, shuffle)
+    // A freshly generated round each time → variety never feels predictable.
+    sessionItems.value = generateItems(selectedDomain.value, ROUND_SIZE)
     resetRound()
     if (sessionItems.value.length) loadTiles()
   }
