@@ -17,14 +17,17 @@ describe('choicesFor', () => {
   it('prefers same-domain distractors when available', () => {
     const timeItem = MARKET_ITEMS.find((i) => i.id === 'time-3-15')!
     const opts = choicesFor(timeItem, MARKET_ITEMS, identity)
-    // All same-domain siblings should appear (time has 3 items total → all 3 readings present)
-    const timeSiblingAnswers = MARKET_ITEMS.filter((i) => i.domain === 'time').map((i) => i.answer)
-    for (const sibling of timeSiblingAnswers) expect(opts, sibling).toContain(sibling)
+    // The time pool is large, so all 3 distractors are same-domain readings.
+    const timeAnswers = new Set(MARKET_ITEMS.filter((i) => i.domain === 'time').map((i) => i.answer))
+    expect(opts).toHaveLength(4)
+    for (const opt of opts) expect(timeAnswers.has(opt), opt).toBe(true)
   })
 
   it('fills from other domains when a domain is too small for 3 distractors', () => {
+    // Craft a source where the item's domain has only itself → must borrow.
     const sino = MARKET_ITEMS.find((i) => i.id === 'sino-100')!
-    const opts = choicesFor(sino, MARKET_ITEMS, identity)
+    const small = [sino, ...MARKET_ITEMS.filter((i) => i.domain !== 'sino-basics').slice(0, 5)]
+    const opts = choicesFor(sino, small, identity)
     expect(opts).toHaveLength(4)
     expect(new Set(opts).size).toBe(4)
   })

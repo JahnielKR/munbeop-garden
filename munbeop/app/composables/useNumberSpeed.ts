@@ -1,8 +1,7 @@
 import { computed, ref } from 'vue'
 import { shuffle } from '~/lib/particle-lab/shuffle'
-import { choicesFor } from '~/lib/numbers-market'
-import { MARKET_ITEMS } from '~/seed/numbers-market'
-import type { MarketItem } from '~/lib/domain'
+import { choicesFor, generateItems } from '~/lib/numbers-market'
+import type { MarketItem, NumberDomain } from '~/lib/domain'
 import { useActivityStore } from '~/stores/activity'
 
 export type SpeedPhase = 'playing' | 'done'
@@ -10,6 +9,8 @@ export type SpeedPhase = 'playing' | 'done'
 export type SpeedDeckId = string
 
 const DURATION = 60
+/** Items generated per refill — large enough that a 60s run rarely repeats. */
+const BATCH = 60
 const BEST_KEY = 'number-market.speed.best'
 
 function readBest(): Record<string, number> {
@@ -39,15 +40,16 @@ export function useNumberSpeed() {
   const item = computed<MarketItem>(() => queue.value[cursor.value]!)
   const bestScore = computed(() => best.value[deckId.value] ?? 0)
 
-  function poolFor(id: SpeedDeckId): MarketItem[] {
-    return id === 'mixed' ? MARKET_ITEMS : MARKET_ITEMS.filter((i) => i.domain === id)
-  }
   function refillQueue() {
-    queue.value = shuffle(poolFor(deckId.value))
+    // A fresh procedurally-generated batch every refill keeps the blitz
+    // genuinely random instead of cycling a tiny fixed deck.
+    const deck = deckId.value === 'mixed' ? 'mixed' : (deckId.value as NumberDomain)
+    queue.value = generateItems(deck, BATCH)
     cursor.value = 0
   }
   function loadChoices() {
-    choices.value = choicesFor(item.value, MARKET_ITEMS, shuffle)
+    // Distractors come from the current batch → same-domain siblings.
+    choices.value = choicesFor(item.value, queue.value, shuffle)
   }
 
   function start(id: SpeedDeckId) {

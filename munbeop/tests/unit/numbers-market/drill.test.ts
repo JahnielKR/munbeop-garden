@@ -18,7 +18,7 @@ describe('tilePool', () => {
 describe('buildRound', () => {
   it('draws up to n items from a single domain', () => {
     const round = buildRound('time', 8, identity)
-    expect(round.length).toBe(itemsForDomain('time').length) // fewer than 8 in the first batch
+    expect(round.length).toBe(Math.min(8, itemsForDomain('time').length)) // capped at the round size
     expect(round.every((i) => i.domain === 'time')).toBe(true)
   })
 })
