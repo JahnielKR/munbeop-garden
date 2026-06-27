@@ -10,9 +10,9 @@ export type DictationPhase = 'input' | 'right' | 'wrong' | 'done'
 export type DictationRunMode = 'normal' | 'replay'
 const ROUND_SIZE = 8
 
-/** Compare-normalize a typed value: strip all whitespace (valueKeys have none). */
+/** Compare-normalize a typed value: strip whitespace and hyphens (valueKeys have none). */
 export function normalizeValue(s: string): string {
-  return s.replace(/\s+/g, '')
+  return s.replace(/[\s-]+/g, '')
 }
 
 export function useNumberDictation() {

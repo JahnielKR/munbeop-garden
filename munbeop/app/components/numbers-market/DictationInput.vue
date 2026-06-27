@@ -13,6 +13,7 @@ const { t } = useI18n()
 const FMT: Partial<Record<NumberDomain, string>> = {
   time: 'numberMarket.dictation.fmt_time',
   dates: 'numberMarket.dictation.fmt_date',
+  phone: 'numberMarket.dictation.fmt_phone',
 }
 function fmtKey(domain: NumberDomain): string {
   return FMT[domain] ?? 'numberMarket.dictation.fmt_number'

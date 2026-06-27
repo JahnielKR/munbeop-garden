@@ -24,6 +24,7 @@ const KEYS = [
   'numberMarket.speed.start_hint',
   'numberMarket.mode.dictation', 'numberMarket.dictation.listen', 'numberMarket.dictation.replay',
   'numberMarket.dictation.fmt_number', 'numberMarket.dictation.fmt_time', 'numberMarket.dictation.fmt_date',
+  'numberMarket.dictation.fmt_phone',
 ]
 const get = (o: Record<string, unknown>, path: string) =>
   path.split('.').reduce<unknown>((acc, k) => (acc as Record<string, unknown>)?.[k], o)

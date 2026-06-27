@@ -15,6 +15,7 @@ describe('normalizeValue', () => {
   it('strips whitespace', () => {
     expect(normalizeValue('  12 000 ')).toBe('12000')
     expect(normalizeValue('3:15')).toBe('3:15')
+    expect(normalizeValue('010-1234')).toBe('0101234')
   })
 })
 

@@ -988,7 +988,8 @@
       "replay": "Phát lại",
       "fmt_number": "vd. 12000",
       "fmt_time": "vd. 3:15",
-      "fmt_date": "vd. 6/15"
+      "fmt_date": "vd. 6/15",
+      "fmt_phone": "vd. 01012345678"
     }
   }
 }
