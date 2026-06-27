@@ -144,7 +144,7 @@ export function usePremios() {
     const usingSettings = !!settingsAvatarUrl
     const escapeFrame = urlFor(eq.frame)
     const legendaryFrame =
-      usingSettings && chosen?.tier === 'legendary' ? LEGENDARY_FRAME_URL : undefined
+      usingSettings && chosen!.tier === 'legendary' ? LEGENDARY_FRAME_URL : undefined
     return {
       setUrl: undefined,
       avatarUrl: settingsAvatarUrl ?? escapeAvatar,
