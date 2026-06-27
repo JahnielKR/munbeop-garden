@@ -43,4 +43,14 @@ describe('AvatarPickerSetting', () => {
     expect(locked.attributes('disabled')).toBeDefined()
     expect(w.text()).toContain('settings.avatar.req.reviews')
   })
+
+  it('shows the owned/total count', () => {
+    const w = mount(AvatarPickerSetting)
+    expect(w.text()).toContain('settings.avatar.owned')
+  })
+
+  it('runs syncUnlocks on mount', () => {
+    mount(AvatarPickerSetting)
+    expect(syncUnlocks).toHaveBeenCalled()
+  })
 })

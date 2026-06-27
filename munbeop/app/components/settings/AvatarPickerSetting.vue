@@ -47,7 +47,13 @@ function pct(current: number, target: number): number {
       </button>
     </div>
 
-    <div v-for="tier in AVATAR_TIERS" :key="tier" class="ava__group">
+    <div
+      v-for="tier in AVATAR_TIERS"
+      :key="tier"
+      class="ava__group"
+      role="group"
+      :aria-label="t(`settings.avatar.tier.${tier}`)"
+    >
       <h3 class="ava__tier" :class="`ava__tier--${tier}`">{{ t(`settings.avatar.tier.${tier}`) }}</h3>
       <ul class="ava__grid">
         <li v-for="a in byTier[tier]" :key="a.id">
