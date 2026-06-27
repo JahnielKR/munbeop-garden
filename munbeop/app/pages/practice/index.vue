@@ -69,6 +69,12 @@ const { t } = useI18n()
         :description="t('games.placement.desc')"
         image="/games/placement-cover.png"
       />
+      <GameCard
+        to="/practice/number-market"
+        :name="t('games.numberMarket.name')"
+        :description="t('games.numberMarket.desc')"
+        image="/games/number-market-cover.svg"
+      />
     </div>
   </div>
 </template>

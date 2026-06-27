@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180">
+  <rect width="320" height="180" fill="#1f2a24"/>
+  <text x="160" y="78" text-anchor="middle" font-family="'Noto Sans KR', sans-serif" font-size="40" fill="#e8f5e9">숫자 시장</text>
+  <text x="160" y="120" text-anchor="middle" font-family="monospace" font-size="20" fill="#a5d6a7">3 · 세 · 시 · 만</text>
+</svg>

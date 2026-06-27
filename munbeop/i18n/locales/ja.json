@@ -727,6 +727,10 @@
     "placement": {
       "name": "レベルチェック",
       "desc": "いくつかの質問でTOPIKのレベルを確認しよう。"
+    },
+    "numberMarket": {
+      "name": "数の市場",
+      "desc": "韓国語式に数を読む：数える・時刻・お金・日付。"
     }
   },
   "escape": {
@@ -923,5 +927,32 @@
     "practice_cta": "練習する",
     "complete": "パス完了！🎉",
     "list_toggle": "パス全体を見る"
+  },
+  "numberMarket": {
+    "title": "数の市場",
+    "lead": "どんな数量も正しい体系で読む — 数える・時刻・お金・日付・電話。タイルで韓国語の読みを組み立てよう。",
+    "build_hint": "タイルをタップして読みを組み立てる",
+    "submit": "確認",
+    "clear": "クリア",
+    "undo": "戻す",
+    "correct": "正解！",
+    "wrong": "惜しい",
+    "next": "次へ",
+    "score": "スコア",
+    "progress": "ラウンドの進捗",
+    "restart": "別の分野を選ぶ",
+    "replay_failed": "間違いを再挑戦",
+    "master": {
+      "title": "수의 달인",
+      "progress": "{done}/{total} 分野"
+    },
+    "domain": {
+      "counting": "数える（固有語）",
+      "sino_basics": "漢字語の基礎",
+      "time": "時刻",
+      "money": "お金",
+      "dates": "日付",
+      "phone": "電話・番号"
+    }
   }
 }
