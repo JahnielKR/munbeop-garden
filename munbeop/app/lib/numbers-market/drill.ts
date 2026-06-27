@@ -1,4 +1,4 @@
-import type { MarketItem } from '~/lib/domain'
+import type { MarketItem, NumberDomain } from '~/lib/domain'
 import { MARKET_ITEMS } from '~/seed/numbers-market'
 
 /** Stable per-item id (MarketItem already carries one). */
@@ -7,13 +7,13 @@ export function itemId(i: MarketItem): string {
 }
 
 /** Items in a domain. */
-export function itemsForDomainList(domain: string, source: MarketItem[] = MARKET_ITEMS): MarketItem[] {
+export function itemsForDomainList(domain: NumberDomain, source: MarketItem[] = MARKET_ITEMS): MarketItem[] {
   return source.filter((i) => i.domain === domain)
 }
 
 /** A shuffled draw of up to `n` items from one domain. */
 export function buildRound(
-  domain: string,
+  domain: NumberDomain,
   n: number,
   shuffleFn: <T>(xs: T[]) => T[],
   source: MarketItem[] = MARKET_ITEMS,
