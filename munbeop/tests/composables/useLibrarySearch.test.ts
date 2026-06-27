@@ -112,6 +112,18 @@ describe('useLibrarySearch', () => {
     expect(replaceSpy).toHaveBeenCalledWith({ query: { mastery: 'hard' } })
   })
 
+  it('exposes global facet counts over the catalog', () => {
+    const c = use().counts.value
+    expect(c.byLevel[1]).toBe(1) // 은/는 is TOPIK 1
+    expect(c.byMastery.seedling).toBe(1) // default mastery, no leeches
+    expect(c.byMastery.hard).toBe(0)
+  })
+
+  it('counts a leech into byMastery.hard', () => {
+    mock.leechKos = new Set(['은/는'])
+    expect(use().counts.value.byMastery.hard).toBe(1)
+  })
+
   it('results returns the single item when unfiltered', () => {
     expect(use().results.value.map((g) => g.ko)).toEqual(['은/는'])
   })

@@ -7,6 +7,7 @@ import {
   isMasteryFilterValue,
   type MasteryFilterValue,
 } from '~/lib/library/mastery-filter'
+import { facetCounts, type FacetCounts } from '~/lib/library/facet-counts'
 import { useGrammarStore } from '~/stores/grammar'
 import { useSrsStore } from '~/stores/srs'
 import { useLeeches } from '~/composables/useLeeches'
@@ -72,6 +73,19 @@ export function useLibrarySearch() {
     )
   })
 
+  // Per-option item counts for the filter selects — global (over the whole
+  // catalog, independent of the active filters). Reactive: the mastery counts
+  // shift as the learner practices.
+  const counts = computed<FacetCounts>(() =>
+    facetCounts(
+      grammarStore.catalogItems,
+      levelOf,
+      categoryOf,
+      (ko) => srs.peek(ko).mastery,
+      (ko) => leechKos.value.has(ko),
+    ),
+  )
+
   // Merge a patch into the current query (preserve ?grammar= etc.), dropping
   // any key whose value is undefined. Uses replace to avoid history spam.
   function mergeQuery(patch: Record<string, string | number | undefined>) {
@@ -101,7 +115,7 @@ export function useLibrarySearch() {
   })
 
   return {
-    query, level, category, mastery, zoneLabel, isFiltering, results,
+    query, level, category, mastery, zoneLabel, isFiltering, results, counts,
     setLevel, setCategory, setMastery, clear,
   }
 }

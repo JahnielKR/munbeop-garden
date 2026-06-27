@@ -10,6 +10,7 @@ import Input from '~/components/ui/Input.vue'
 import Button from '~/components/ui/Button.vue'
 import { TOPIK_LEVELS, presentCategories, type GrammarType, type TopikLevel } from '~/lib/domain'
 import { MASTERY_FILTER_VALUES, type MasteryFilterValue } from '~/lib/library/mastery-filter'
+import type { FacetCounts } from '~/lib/library/facet-counts'
 
 const props = defineProps<{
   query: string
@@ -18,6 +19,8 @@ const props = defineProps<{
   mastery: MasteryFilterValue | null
   zoneLabel: string | null
   resultCount: number
+  /** Per-option item counts shown next to each filter option. */
+  counts: FacetCounts
 }>()
 
 const emit = defineEmits<{
@@ -71,7 +74,7 @@ function onMastery(e: Event) {
       >
         <option value="">{{ t('library.search.filter_all_levels') }}</option>
         <option v-for="n in TOPIK_LEVELS" :key="n" :value="n">
-          {{ t('garden.level', { n }) }}
+          {{ t('garden.level', { n }) }} ({{ props.counts.byLevel[n] ?? 0 }})
         </option>
       </select>
 
@@ -83,7 +86,7 @@ function onMastery(e: Event) {
       >
         <option value="">{{ t('library.search.filter_all_categories') }}</option>
         <option v-for="c in categories" :key="c" :value="c">
-          {{ t(`library.search.category.${c}`) }}
+          {{ t(`library.search.category.${c}`) }} ({{ props.counts.byCategory[c] ?? 0 }})
         </option>
       </select>
 
@@ -95,7 +98,7 @@ function onMastery(e: Event) {
       >
         <option value="">{{ t('library.search.filter_all_mastery') }}</option>
         <option v-for="m in masteryValues" :key="m" :value="m">
-          {{ t(`library.search.mastery.${m}`) }}
+          {{ t(`library.search.mastery.${m}`) }} ({{ props.counts.byMastery[m] ?? 0 }})
         </option>
       </select>
 
