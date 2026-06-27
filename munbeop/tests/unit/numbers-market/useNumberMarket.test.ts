@@ -1,6 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useNumberMarket } from '~/composables/useNumberMarket'
+
+vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
 
 beforeEach(() => {
   setActivePinia(createPinia())
