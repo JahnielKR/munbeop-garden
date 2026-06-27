@@ -15,6 +15,13 @@ vi.mock('~/stores/log', () => ({
 vi.mock('~/lib/grammar-examples', () => ({
   examplesFor: () => [],
 }))
+// Notes are looked up by ko from the static seed; mock so the test drives them.
+vi.mock('~/lib/usage-notes', () => ({
+  notesFor: (ko: string) =>
+    ko === '-(으)니까'
+      ? { en: 'Use this for subjective reasons. Often paired with imperatives.', es: '', fr: '', 'pt-BR': '', th: '', id: '', vi: '', ja: '' }
+      : undefined,
+}))
 
 const pushSpy = vi.fn()
 vi.stubGlobal('useRouter', () => ({ push: pushSpy }))
@@ -24,7 +31,6 @@ const seededGrammar: Grammar = {
   meaning: { en: 'because (subjective reason)', es: '', fr: '', 'pt-BR': '', th: '', id: '', vi: '', ja: '' },
   example: '비가 오니까 우산을 챙겨요.',
   trans: { en: 'It is raining, so I bring an umbrella.', es: '', fr: '', 'pt-BR': '', th: '', id: '', vi: '', ja: '' },
-  usageNotes: { en: 'Use this for subjective reasons. Often paired with imperatives.', es: '', fr: '', 'pt-BR': '', th: '', id: '', vi: '', ja: '' },
   deckId: 'topik-1',
 }
 const unseededGrammar: Grammar = {

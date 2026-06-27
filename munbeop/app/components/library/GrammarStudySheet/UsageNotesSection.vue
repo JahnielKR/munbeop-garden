@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Grammar } from '~/lib/domain'
+import { notesFor } from '~/lib/usage-notes'
 import ComingSoonSection from './ComingSoonSection.vue'
 
 interface Props {
@@ -10,12 +11,16 @@ const props = defineProps<Props>()
 const { t } = useI18n()
 const { tl } = useLocalized()
 
-const notes = computed(() => (props.grammar.usageNotes ? tl(props.grammar.usageNotes) : ''))
+// Notes are looked up by ko (like examples / pronunciation), NOT read off the
+// Grammar object — the Supabase catalog doesn't carry them, so reading the
+// object would always show "coming soon" for logged-in users.
+const localized = computed(() => notesFor(props.grammar.ko))
+const notes = computed(() => (localized.value ? tl(localized.value) : ''))
 </script>
 
 <template>
   <ComingSoonSection
-    v-if="!grammar.usageNotes"
+    v-if="!localized"
     :title="t('library.modal.section.usage_notes')"
     :body="t('library.modal.coming_soon.usage_notes')"
   />
