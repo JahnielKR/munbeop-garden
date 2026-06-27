@@ -1,12 +1,21 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import RescuePanel from '~/components/practice/RescuePanel.vue'
 import type { Grammar, LocalizedString } from '~/lib/domain'
 
+// Usage notes come from the static seed by ko; mock so the reread stage has one.
+vi.mock('~/lib/usage-notes', () => ({
+  notesFor: () => ({
+    en: 'use it for setup', es: 'use it for setup', fr: 'use it for setup',
+    'pt-BR': 'use it for setup', th: 'use it for setup', id: 'use it for setup',
+    vi: 'use it for setup', ja: 'use it for setup',
+  }),
+}))
+
 const L = (s: string): LocalizedString => ({
   en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s,
 })
-const grammar: Grammar = { ko: '-는데', meaning: L('contrast/background'), usageNotes: L('use it for setup'), deckId: 'topik-2' }
+const grammar: Grammar = { ko: '-는데', meaning: L('contrast/background'), deckId: 'topik-2' }
 
 const stubs = {
   ExamplesSection: { template: '<div data-testid="examples-stub" />' },

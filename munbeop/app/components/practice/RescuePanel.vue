@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ErrorDimension, Grammar } from '~/lib/domain'
+import { notesFor } from '~/lib/usage-notes'
 import ExamplesSection from '~/components/library/GrammarStudySheet/ExamplesSection.vue'
 import ConfusedWithSection from '~/components/library/GrammarStudySheet/ConfusedWithSection.vue'
 import type { RescueStage } from '~/composables/useRescueDrill'
@@ -22,6 +23,9 @@ const header = computed(() =>
     ? t('rescue.header', { dimension: t(`dimension.${props.dominantDimension}`) })
     : t('rescue.header_plain'),
 )
+
+// Usage notes by ko (same lookup the study sheet uses), not off the Grammar object.
+const usageNotes = computed(() => notesFor(props.grammar.ko))
 </script>
 
 <template>
@@ -35,7 +39,7 @@ const header = computed(() =>
     <div v-if="stage === 'reread'" class="rescue__reread">
       <p class="rescue__ko" lang="ko">{{ grammar.ko }}</p>
       <p class="rescue__meaning">{{ tl(grammar.meaning) }}</p>
-      <p v-if="grammar.usageNotes" class="rescue__notes">{{ tl(grammar.usageNotes) }}</p>
+      <p v-if="usageNotes" class="rescue__notes">{{ tl(usageNotes) }}</p>
     </div>
 
     <ExamplesSection v-else-if="stage === 'examples'" :grammar="grammar" />

@@ -12,13 +12,6 @@ export interface Grammar {
   trans?: LocalizedString
   /** Deck this grammar belongs to. */
   deckId: string
-  /**
-   * Usage notes per locale — when to use the pattern, common pitfalls,
-   * register (formal/informal), confusion with similar patterns.
-   * Multi-paragraph free text. Optional: entries without notes render
-   * the "Coming soon" placeholder in the study sheet.
-   */
-  usageNotes?: LocalizedString
 }
 
 /**
