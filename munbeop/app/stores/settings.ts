@@ -26,6 +26,10 @@ interface Settings {
   /** Deck ids the user has excluded from the practice draw ("focus mode").
    * Library still shows them; only the weighted draw skips them. */
   excludedDeckIds: string[]
+  /** Chosen profile avatar id (null = use the email initial). */
+  chosenAvatarId: string | null
+  /** Sticky set of unlocked (owned) non-common avatar ids. */
+  unlockedAvatarIds: string[]
 }
 
 function isTheme(v: unknown): v is Theme {
@@ -43,6 +47,8 @@ export const useSettingsStore = defineStore('settings', () => {
   const reviewReminders = ref(false)
   const startingDeckId = ref<string | null>(null)
   const excludedDeckIds = ref<string[]>([])
+  const chosenAvatarId = ref<string | null>(null)
+  const unlockedAvatarIds = ref<string[]>([])
 
   async function hydrate(): Promise<void> {
     if (!authStore.user) return
@@ -57,6 +63,9 @@ export const useSettingsStore = defineStore('settings', () => {
       if (typeof cloud.startingDeckId === 'string') startingDeckId.value = cloud.startingDeckId
       if (Array.isArray(cloud.excludedDeckIds))
         excludedDeckIds.value = cloud.excludedDeckIds.filter((x): x is string => typeof x === 'string')
+      if (typeof cloud.chosenAvatarId === 'string') chosenAvatarId.value = cloud.chosenAvatarId
+      if (Array.isArray(cloud.unlockedAvatarIds))
+        unlockedAvatarIds.value = cloud.unlockedAvatarIds.filter((x): x is string => typeof x === 'string')
     } catch {
       // Table may not exist yet (migration not deployed) or a network blip —
       // keep device values; the app must not break.
@@ -73,6 +82,8 @@ export const useSettingsStore = defineStore('settings', () => {
         reviewReminders: reviewReminders.value,
         startingDeckId: startingDeckId.value,
         excludedDeckIds: excludedDeckIds.value,
+        chosenAvatarId: chosenAvatarId.value,
+        unlockedAvatarIds: unlockedAvatarIds.value,
       } satisfies Settings)
     } catch {
       // A failed cloud write must not throw into the UI.
@@ -119,5 +130,25 @@ export const useSettingsStore = defineStore('settings', () => {
     await persistCloud()
   }
 
-  return { hydrate, setTheme, setLocale, dailyGoal, setDailyGoal, reviewReminders, setReviewReminders, startingDeckId, setStartingDeck, excludedDeckIds, toggleDeck }
+  async function setChosenAvatar(id: string | null): Promise<void> {
+    chosenAvatarId.value = id
+    await persistCloud()
+  }
+
+  /** Union new ids into the sticky owned set; only persists if it grew. */
+  async function unlockAvatars(ids: string[]): Promise<void> {
+    const next = new Set(unlockedAvatarIds.value)
+    let grew = false
+    for (const id of ids) {
+      if (!next.has(id)) {
+        next.add(id)
+        grew = true
+      }
+    }
+    if (!grew) return
+    unlockedAvatarIds.value = [...next]
+    await persistCloud()
+  }
+
+  return { hydrate, setTheme, setLocale, dailyGoal, setDailyGoal, reviewReminders, setReviewReminders, startingDeckId, setStartingDeck, excludedDeckIds, toggleDeck, chosenAvatarId, unlockedAvatarIds, setChosenAvatar, unlockAvatars }
 })
