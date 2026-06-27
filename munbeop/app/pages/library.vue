@@ -111,9 +111,8 @@ async function onCardClick(ko: string) {
           >
             <span class="deck-focus__icon" aria-hidden="true">
               <!-- On = the pixel-art sprout (shared with the mastery-seedling /
-                   achievement badge sprite); off = a resting moon. -->
-              <Icon v-if="!isExcluded(section.deck.id)" name="mastery-seedling" :size="24" />
-              <template v-else>🌙</template>
+                   achievement badge sprite); off = a resting pixel-art moon. -->
+              <Icon :name="isExcluded(section.deck.id) ? 'moon' : 'mastery-seedling'" :size="24" />
             </span>
           </button>
         </div>

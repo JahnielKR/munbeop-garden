@@ -35,6 +35,7 @@ export type IconName =
   | 'deck-book'
   | 'deck-bolt'
   | 'deck-edit'
+  | 'moon'
 
 interface Props {
   name: IconName
@@ -236,6 +237,14 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
     <!-- deck-edit: pencil -->
     <template v-if="name === 'deck-edit'">
       <path d="M10 2h2v2h-2z M8 4h2v2H8z M6 6h2v2H6z M4 8h2v2H4z M3 11h2v2H3z M2 13h2v1H2z" fill="currentColor" />
+    </template>
+
+    <!-- moon: a resting crescent (deck focus "off" state). Amber so it reads on
+         both the light and dark button surfaces; cream rim + gold-shadow inner. -->
+    <template v-if="name === 'moon'">
+      <path d="M8 2h1v1H8z M6 3h2v1H6z M5 4h2v1H5z M4 5h3v1H4z M4 6h3v1H4z M4 7h2v1H4z M4 8h2v1H4z M4 9h3v1H4z M4 10h3v1H4z M5 11h2v1H5z M6 12h2v1H6z M8 13h1v1H8z" fill="var(--gold)" />
+      <path d="M9 2h1v1H9z M8 3h1v1H8z M7 4h1v1H7z M7 5h1v1H7z M7 6h1v1H7z M6 7h1v1H6z M6 8h1v1H6z M7 9h1v1H7z M7 10h1v1H7z M7 11h1v1H7z M8 12h1v1H8z M9 13h1v1H9z" fill="var(--gold-shadow)" />
+      <path d="M7 2h1v1H7z M5 3h1v1H5z M4 4h1v1H4z M3 5h1v1H3z M3 6h1v1H3z M3 7h1v1H3z M3 8h1v1H3z M3 9h1v1H3z M3 10h1v1H3z M4 11h1v1H4z M5 12h1v1H5z M7 13h1v1H7z" fill="var(--always-cream)" />
     </template>
   </svg>
 </template>
