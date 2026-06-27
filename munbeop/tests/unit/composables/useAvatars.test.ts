@@ -83,4 +83,11 @@ describe('useAvatars', () => {
     await useAvatars().syncUnlocks()
     expect(unlockAvatars).toHaveBeenCalledWith(expect.arrayContaining(['butterfly']))
   })
+
+  it('syncUnlocks does nothing when newly-met ids are already owned', async () => {
+    stats.sentences.value = 100 // would meet butterfly (reviews >= 100)
+    settingsState.unlockedAvatarIds.value = ['butterfly'] // ...but it's already owned
+    await useAvatars().syncUnlocks()
+    expect(unlockAvatars).not.toHaveBeenCalled()
+  })
 })
