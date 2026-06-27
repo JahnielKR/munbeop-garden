@@ -86,4 +86,19 @@ describe('evaluateAvatars', () => {
     const done = find({ ...ZERO, reviews: 900 }, new Set(), 'koi').progress
     expect(done).toEqual({ current: 500, target: 500 })
   })
+
+  it('collectAll unlocks via live state when all 35 others are met (no stored set)', () => {
+    const maxed: AvatarState = {
+      trees: 999,
+      catalogTotal: 100,
+      reviews: 9999,
+      longestStreak: 999,
+      byLevel: Object.fromEntries([1, 2, 3, 4, 5, 6].map((l) => [l, { mastered: 5, total: 5 }])),
+      labsEarned: { conjugation: true, counter: true, number: true, particle: true, register: true },
+      escapeUnlocked: 99,
+      escapeTotal: 16,
+      leeches: 0,
+    }
+    expect(find(maxed, new Set(), 'mountain-spirit').unlocked).toBe(true)
+  })
 })

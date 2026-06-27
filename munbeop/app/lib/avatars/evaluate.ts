@@ -70,6 +70,10 @@ function ruleProgress(rule: NonCollect, s: AvatarState): AvatarProgress {
     }
     case 'flourish':
       return { current: Math.min(s.trees, rule.trees), target: rule.trees }
+    default: {
+      const _exhaustive: never = rule
+      return _exhaustive
+    }
   }
 }
 
