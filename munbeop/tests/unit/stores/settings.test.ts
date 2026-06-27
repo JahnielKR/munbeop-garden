@@ -125,6 +125,10 @@ describe('useSettingsStore', () => {
     await s.setChosenAvatar('fox')
     await s.setChosenAvatar(null)
     expect(s.chosenAvatarId).toBeNull()
+    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', {
+      theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false,
+      startingDeckId: null, excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [],
+    })
   })
 
   it('unlockAvatars unions new ids and persists once', async () => {
@@ -132,6 +136,9 @@ describe('useSettingsStore', () => {
     await s.unlockAvatars(['bee', 'fox'])
     expect(s.unlockedAvatarIds).toEqual(['bee', 'fox'])
     expect(mockWrite).toHaveBeenCalledTimes(1)
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', expect.objectContaining({
+      unlockedAvatarIds: ['bee', 'fox'],
+    }))
   })
 
   it('unlockAvatars is a no-op (no write) when nothing new is added', async () => {
