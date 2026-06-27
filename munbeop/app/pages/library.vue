@@ -15,7 +15,7 @@ import { NuxtLink } from '#components'
 const grammarStore = useGrammarStore()
 const { t } = useI18n()
 const { selected, isOpen, open, close } = useGrammarModal()
-const { query, level, category, mastery, zoneLabel, isFiltering, results, setLevel, setCategory, setMastery, clear } =
+const { query, level, category, mastery, zoneLabel, isFiltering, results, counts, setLevel, setCategory, setMastery, clear } =
   useLibrarySearch()
 const { leeches } = useLeeches()
 
@@ -77,6 +77,7 @@ async function onCardClick(ko: string) {
       :level="level"
       :category="category"
       :mastery="mastery"
+      :counts="counts"
       :zone-label="zoneLabel"
       :result-count="results.length"
       @set-level="setLevel"

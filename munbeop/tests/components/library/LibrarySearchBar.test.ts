@@ -2,9 +2,11 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import LibrarySearchBar from '~/components/library/LibrarySearchBar.vue'
 
+const EMPTY_COUNTS = { byLevel: {}, byCategory: {}, byMastery: { seedling: 0, plant: 0, tree: 0, hard: 0 } }
+
 function mountBar(props: Partial<Record<string, unknown>> = {}) {
   return mount(LibrarySearchBar, {
-    props: { query: '', level: null, category: null, mastery: null, zoneLabel: null, resultCount: 0, ...props },
+    props: { query: '', level: null, category: null, mastery: null, zoneLabel: null, resultCount: 0, counts: EMPTY_COUNTS, ...props },
   })
 }
 
@@ -46,6 +48,15 @@ describe('LibrarySearchBar', () => {
     const w = mountBar({ mastery: 'tree' })
     await w.find('.library-search__mastery').setValue('')
     expect(w.emitted('set-mastery')?.[0]).toEqual([null])
+  })
+
+  it('renders item counts in the filter options', () => {
+    const html = mountBar({
+      counts: { byLevel: { 1: 53 }, byCategory: { particle: 40 }, byMastery: { seedling: 5, plant: 0, tree: 0, hard: 7 } },
+    }).html()
+    expect(html).toContain('(53)')
+    expect(html).toContain('(40)')
+    expect(html).toContain('(7)')
   })
 
   it('emits clear when the clear button is pressed', async () => {
