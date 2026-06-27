@@ -13,6 +13,7 @@ import DailyGoalSetting from '~/components/settings/DailyGoalSetting.vue'
 import ReviewReminderSetting from '~/components/settings/ReviewReminderSetting.vue'
 import AboutSection from '~/components/settings/AboutSection.vue'
 import DataImport from '~/components/settings/DataImport.vue'
+import AvatarPickerSetting from '~/components/settings/AvatarPickerSetting.vue'
 import { useSettingsStore } from '~/stores/settings'
 import { useDataExport } from '~/composables/useDataExport'
 
@@ -47,6 +48,7 @@ const active = ref('account')
       aria-labelledby="tab-account"
       class="panel"
     >
+      <AvatarPickerSetting />
       <AccountWidget />
       <AccountCredentials />
       <DangerZone />
