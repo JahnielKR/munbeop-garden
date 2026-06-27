@@ -372,6 +372,14 @@
         "adv": "Adverbial",
         "indirect": "Estilo indirecto",
         "meta": "Meta"
+      },
+      "filter_mastery": "Filtrar por progreso",
+      "filter_all_mastery": "Todo el progreso",
+      "mastery": {
+        "seedling": "Brote",
+        "plant": "Planta",
+        "tree": "Árbol",
+        "hard": "Difíciles"
       }
     },
     "confused": {
@@ -434,6 +442,12 @@
         "name": "Dominado",
         "desc": "Alcanza la maestría árbol"
       }
+    },
+    "weak": {
+      "label": "Plantas que necesitan cuidado",
+      "summary": "{n} puntos de gramática necesitan práctica",
+      "view": "Verlas",
+      "rescue": "Rescatar la más difícil"
     }
   },
   "mastery": {

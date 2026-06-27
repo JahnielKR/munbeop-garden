@@ -372,6 +372,14 @@
         "adv": "Trạng từ",
         "indirect": "Lời nói gián tiếp",
         "meta": "Meta"
+      },
+      "filter_mastery": "Lọc theo mức thành thạo",
+      "filter_all_mastery": "Mọi mức độ",
+      "mastery": {
+        "seedling": "Mầm",
+        "plant": "Cây non",
+        "tree": "Cây",
+        "hard": "Khó"
       }
     },
     "confused": {
@@ -434,6 +442,12 @@
         "name": "Thành thạo",
         "desc": "Đạt cấp độ cây"
       }
+    },
+    "weak": {
+      "label": "Ngữ pháp cần chăm sóc",
+      "summary": "{n} điểm ngữ pháp cần luyện tập",
+      "view": "Hiển thị",
+      "rescue": "Cứu điểm khó nhất"
     }
   },
   "mastery": {

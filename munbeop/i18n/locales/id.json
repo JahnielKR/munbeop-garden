@@ -372,6 +372,14 @@
         "adv": "Keterangan",
         "indirect": "Kalimat tak langsung",
         "meta": "Meta"
+      },
+      "filter_mastery": "Saring berdasarkan penguasaan",
+      "filter_all_mastery": "Semua penguasaan",
+      "mastery": {
+        "seedling": "Tunas",
+        "plant": "Tanaman",
+        "tree": "Pohon",
+        "hard": "Sulit"
       }
     },
     "confused": {
@@ -434,6 +442,12 @@
         "name": "Dikuasai",
         "desc": "Capai tingkat pohon"
       }
+    },
+    "weak": {
+      "label": "Tata bahasa yang perlu perawatan",
+      "summary": "{n} poin tata bahasa perlu latihan",
+      "view": "Tampilkan",
+      "rescue": "Selamatkan yang tersulit"
     }
   },
   "mastery": {

@@ -372,6 +372,14 @@
         "adv": "Adverbial",
         "indirect": "Indirect speech",
         "meta": "Meta"
+      },
+      "filter_mastery": "Filter by mastery",
+      "filter_all_mastery": "All mastery",
+      "mastery": {
+        "seedling": "Sprout",
+        "plant": "Plant",
+        "tree": "Tree",
+        "hard": "Struggling"
       }
     },
     "confused": {
@@ -434,6 +442,12 @@
         "name": "Mastered",
         "desc": "Reach tree mastery"
       }
+    },
+    "weak": {
+      "label": "Plants that need care",
+      "summary": "{n} grammar points need practice",
+      "view": "Show them",
+      "rescue": "Rescue the hardest"
     }
   },
   "mastery": {
