@@ -967,6 +967,20 @@
       "money": "Uang",
       "dates": "Tanggal",
       "phone": "Telepon & angka"
+    },
+    "mode": {
+      "label": "Mode",
+      "learn": "Belajar",
+      "speed": "Lawan waktu"
+    },
+    "speed": {
+      "deck_mixed": "Campuran (semua)",
+      "best": "Terbaik",
+      "streak": "Rentet terbaik",
+      "time_up": "Waktu habis!",
+      "new_record": "Rekor baru!",
+      "again": "Main lagi",
+      "start_hint": "60 detik — baca sebanyak mungkin."
     }
   }
 }

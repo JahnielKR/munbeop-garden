@@ -967,6 +967,20 @@
       "money": "Argent",
       "dates": "Dates",
       "phone": "Téléphone et nombres"
+    },
+    "mode": {
+      "label": "Mode",
+      "learn": "Apprendre",
+      "speed": "Chrono"
+    },
+    "speed": {
+      "deck_mixed": "Mélangé (tout)",
+      "best": "Record",
+      "streak": "Meilleure série",
+      "time_up": "Temps écoulé !",
+      "new_record": "Nouveau record !",
+      "again": "Rejouer",
+      "start_hint": "60 secondes — lis-en le plus possible."
     }
   }
 }

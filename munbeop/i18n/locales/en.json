@@ -967,6 +967,20 @@
       "money": "Money",
       "dates": "Dates",
       "phone": "Phone & numbers"
+    },
+    "mode": {
+      "label": "Mode",
+      "learn": "Learn",
+      "speed": "Speed"
+    },
+    "speed": {
+      "deck_mixed": "Mixed (all)",
+      "best": "Best",
+      "streak": "Best streak",
+      "time_up": "Time's up!",
+      "new_record": "New record!",
+      "again": "Play again",
+      "start_hint": "60 seconds — read as many as you can."
     }
   }
 }

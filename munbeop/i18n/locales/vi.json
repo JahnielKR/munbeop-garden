@@ -967,6 +967,20 @@
       "money": "Tiền",
       "dates": "Ngày tháng",
       "phone": "Điện thoại & số"
+    },
+    "mode": {
+      "label": "Chế độ",
+      "learn": "Học",
+      "speed": "Tính giờ"
+    },
+    "speed": {
+      "deck_mixed": "Trộn (tất cả)",
+      "best": "Kỷ lục",
+      "streak": "Chuỗi tốt nhất",
+      "time_up": "Hết giờ!",
+      "new_record": "Kỷ lục mới!",
+      "again": "Chơi lại",
+      "start_hint": "60 giây — đọc càng nhiều càng tốt."
     }
   }
 }
