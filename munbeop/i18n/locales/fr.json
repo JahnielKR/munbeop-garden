@@ -617,6 +617,32 @@
       "title": "Rappels de révision",
       "label": "Me rappeler de réviser à mon retour",
       "hint": "Un petit rappel à ton retour après une pause, quand des plantes sont prêtes. Désactivé par défaut ; aucun suivi — tout reste dans ton navigateur."
+    },
+    "avatar": {
+      "title": "Avatar",
+      "hint": "Choisis un avatar de jardin pour ton profil. Débloque-en davantage à mesure que ton jardin grandit.",
+      "use_initial": "Utiliser l'initiale",
+      "owned": "{owned}/{total} collectés",
+      "locked": "Verrouillé",
+      "tier": { "common": "Commun", "rare": "Rare", "epic": "Épique", "legendary": "Légendaire" },
+      "req": {
+        "trees": "Maîtrise {n} points de grammaire",
+        "mastered_pct": "Maîtrise {pct}% du catalogue",
+        "garden_complete": "Maîtrise tout le catalogue",
+        "reviews": "Atteins {n} révisions",
+        "streak": "Atteins une série de {n} jours",
+        "topik": "Complète TOPIK {levels}",
+        "lab_conjugation": "Maîtrise le labo Conjugaison",
+        "lab_counter": "Maîtrise le labo Compteurs",
+        "lab_number": "Maîtrise le labo Marché des Nombres",
+        "lab_particle": "Maîtrise le labo Particules",
+        "lab_register": "Maîtrise le labo Registre",
+        "all_labs": "Maîtrise les cinq labos",
+        "escape": "Débloque {n} cosmétiques de l'escape-room",
+        "escape_all": "Débloque tous les cosmétiques de l'escape-room",
+        "flourish": "Maîtrise {n} grammaires sans plantes en difficulté",
+        "collect_all": "Collecte tous les autres avatars"
+      }
     }
   },
   "welcome": {

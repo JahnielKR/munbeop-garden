@@ -617,6 +617,32 @@
       "title": "Pengingat tinjauan",
       "label": "Ingatkan untuk meninjau saat aku kembali",
       "hint": "Dorongan lembut saat kamu kembali setelah jeda dan ada tanaman yang siap. Mati secara default; tanpa pelacakan — hanya berjalan di browsermu."
+    },
+    "avatar": {
+      "title": "Avatar",
+      "hint": "Pilih avatar taman untuk profilmu. Buka kunci lebih banyak seiring kebunmu berkembang.",
+      "use_initial": "Gunakan inisial",
+      "owned": "{owned}/{total} terkumpul",
+      "locked": "Terkunci",
+      "tier": { "common": "Biasa", "rare": "Langka", "epic": "Epik", "legendary": "Legendaris" },
+      "req": {
+        "trees": "Kuasai {n} poin tata bahasa",
+        "mastered_pct": "Kuasai {pct}% katalog",
+        "garden_complete": "Kuasai seluruh katalog",
+        "reviews": "Capai {n} ulasan",
+        "streak": "Capai streak {n} hari",
+        "topik": "Selesaikan TOPIK {levels}",
+        "lab_conjugation": "Kuasai lab Konjugasi",
+        "lab_counter": "Kuasai lab Pengelas",
+        "lab_number": "Kuasai lab Pasar Angka",
+        "lab_particle": "Kuasai lab Partikel",
+        "lab_register": "Kuasai lab Register",
+        "all_labs": "Kuasai semua lima lab",
+        "escape": "Buka kunci {n} kosmetik escape-room",
+        "escape_all": "Buka kunci semua kosmetik escape-room",
+        "flourish": "Kuasai {n} tata bahasa tanpa tanaman yang kesulitan",
+        "collect_all": "Kumpulkan semua avatar lainnya"
+      }
     }
   },
   "welcome": {
