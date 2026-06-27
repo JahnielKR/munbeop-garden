@@ -23,6 +23,9 @@ export function sameAll(s: string): LocalizedString {
   return { en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s }
 }
 
+/** Locales that inflect the noun for number (n === 1 needs a singular form). */
+export type CountableLocale = 'en' | 'es' | 'fr' | 'pt-BR'
+
 /** A noun that can be counted, with its Korean counter (all native-prenominal). */
 export interface NounDef {
   /** Korean noun shown in the prompt, e.g. "사과". Empty for the age pseudo-noun. */
@@ -31,35 +34,42 @@ export interface NounDef {
   counter: string
   /** When true the prompt omits the noun (e.g. age → "20살"). */
   bareDisplay?: boolean
-  /** Bare noun gloss; the count is prefixed by the generator ("3 apples"). */
+  /** Plural noun gloss; the count is prefixed by the generator ("3 apples"). */
   gloss: LocalizedString
+  /** Singular form for n === 1 in inflecting locales ("1 apple"). th/id/vi/ja don't inflect. */
+  one: Record<CountableLocale, string>
 }
+
+/** Singular forms for n === 1 (en, es, fr, pt-BR — the inflecting locales). */
+const one = (en: string, es: string, fr: string, ptBR: string): Record<CountableLocale, string> =>
+  ({ en, es, fr, 'pt-BR': ptBR })
 
 /** Counted nouns for the `counting` domain (native prenominal + counter). */
 export const COUNT_NOUNS: NounDef[] = [
-  { ko: '사과', counter: '개', gloss: loc('apples', 'manzanas', 'pommes', 'maçãs', 'แอปเปิล', 'apel', 'quả táo', 'りんご') },
-  { ko: '의자', counter: '개', gloss: loc('chairs', 'sillas', 'chaises', 'cadeiras', 'เก้าอี้', 'kursi', 'cái ghế', '椅子') },
-  { ko: '고양이', counter: '마리', gloss: loc('cats', 'gatos', 'chats', 'gatos', 'แมว', 'kucing', 'con mèo', '猫') },
-  { ko: '강아지', counter: '마리', gloss: loc('puppies', 'perritos', 'chiots', 'cachorros', 'ลูกหมา', 'anak anjing', 'con cún', '子犬') },
-  { ko: '학생', counter: '명', gloss: loc('students', 'estudiantes', 'élèves', 'estudantes', 'นักเรียน', 'siswa', 'học sinh', '学生') },
-  { ko: '사람', counter: '명', gloss: loc('people', 'personas', 'personnes', 'pessoas', 'คน', 'orang', 'người', '人') },
-  { ko: '친구', counter: '명', gloss: loc('friends', 'amigos', 'amis', 'amigos', 'เพื่อน', 'teman', 'người bạn', '友達') },
-  { ko: '책', counter: '권', gloss: loc('books', 'libros', 'livres', 'livros', 'หนังสือ', 'buku', 'quyển sách', '本') },
-  { ko: '공책', counter: '권', gloss: loc('notebooks', 'cuadernos', 'cahiers', 'cadernos', 'สมุด', 'buku tulis', 'quyển vở', 'ノート') },
-  { ko: '커피', counter: '잔', gloss: loc('coffees', 'cafés', 'cafés', 'cafés', 'กาแฟ', 'kopi', 'ly cà phê', 'コーヒー') },
-  { ko: '맥주', counter: '병', gloss: loc('beers', 'cervezas', 'bières', 'cervejas', 'เบียร์', 'bir', 'chai bia', 'ビール') },
-  { ko: '자동차', counter: '대', gloss: loc('cars', 'coches', 'voitures', 'carros', 'รถยนต์', 'mobil', 'ô tô', '車') },
-  { ko: '자전거', counter: '대', gloss: loc('bicycles', 'bicicletas', 'vélos', 'bicicletas', 'จักรยาน', 'sepeda', 'xe đạp', '自転車') },
-  { ko: '장미', counter: '송이', gloss: loc('roses', 'rosas', 'roses', 'rosas', 'กุหลาบ', 'mawar', 'bông hồng', 'バラ') },
-  { ko: '나무', counter: '그루', gloss: loc('trees', 'árboles', 'arbres', 'árvores', 'ต้นไม้', 'pohon', 'cây', '木') },
-  { ko: '표', counter: '장', gloss: loc('tickets', 'boletos', 'billets', 'ingressos', 'ตั๋ว', 'tiket', 'vé', 'チケット') },
-  { ko: '연필', counter: '자루', gloss: loc('pencils', 'lápices', 'crayons', 'lápis', 'ดินสอ', 'pensil', 'cây bút chì', '鉛筆') },
+  { ko: '사과', counter: '개', gloss: loc('apples', 'manzanas', 'pommes', 'maçãs', 'แอปเปิล', 'apel', 'quả táo', 'りんご'), one: one('apple', 'manzana', 'pomme', 'maçã') },
+  { ko: '의자', counter: '개', gloss: loc('chairs', 'sillas', 'chaises', 'cadeiras', 'เก้าอี้', 'kursi', 'cái ghế', '椅子'), one: one('chair', 'silla', 'chaise', 'cadeira') },
+  { ko: '고양이', counter: '마리', gloss: loc('cats', 'gatos', 'chats', 'gatos', 'แมว', 'kucing', 'con mèo', '猫'), one: one('cat', 'gato', 'chat', 'gato') },
+  { ko: '강아지', counter: '마리', gloss: loc('puppies', 'perritos', 'chiots', 'cachorros', 'ลูกหมา', 'anak anjing', 'con cún', '子犬'), one: one('puppy', 'perrito', 'chiot', 'cachorro') },
+  { ko: '학생', counter: '명', gloss: loc('students', 'estudiantes', 'élèves', 'estudantes', 'นักเรียน', 'siswa', 'học sinh', '学生'), one: one('student', 'estudiante', 'élève', 'estudante') },
+  { ko: '사람', counter: '명', gloss: loc('people', 'personas', 'personnes', 'pessoas', 'คน', 'orang', 'người', '人'), one: one('person', 'persona', 'personne', 'pessoa') },
+  { ko: '친구', counter: '명', gloss: loc('friends', 'amigos', 'amis', 'amigos', 'เพื่อน', 'teman', 'người bạn', '友達'), one: one('friend', 'amigo', 'ami', 'amigo') },
+  { ko: '책', counter: '권', gloss: loc('books', 'libros', 'livres', 'livros', 'หนังสือ', 'buku', 'quyển sách', '本'), one: one('book', 'libro', 'livre', 'livro') },
+  { ko: '공책', counter: '권', gloss: loc('notebooks', 'cuadernos', 'cahiers', 'cadernos', 'สมุด', 'buku tulis', 'quyển vở', 'ノート'), one: one('notebook', 'cuaderno', 'cahier', 'caderno') },
+  { ko: '커피', counter: '잔', gloss: loc('coffees', 'cafés', 'cafés', 'cafés', 'กาแฟ', 'kopi', 'ly cà phê', 'コーヒー'), one: one('coffee', 'café', 'café', 'café') },
+  { ko: '맥주', counter: '병', gloss: loc('beers', 'cervezas', 'bières', 'cervejas', 'เบียร์', 'bir', 'chai bia', 'ビール'), one: one('beer', 'cerveza', 'bière', 'cerveja') },
+  { ko: '자동차', counter: '대', gloss: loc('cars', 'coches', 'voitures', 'carros', 'รถยนต์', 'mobil', 'ô tô', '車'), one: one('car', 'coche', 'voiture', 'carro') },
+  { ko: '자전거', counter: '대', gloss: loc('bicycles', 'bicicletas', 'vélos', 'bicicletas', 'จักรยาน', 'sepeda', 'xe đạp', '自転車'), one: one('bicycle', 'bicicleta', 'vélo', 'bicicleta') },
+  { ko: '장미', counter: '송이', gloss: loc('roses', 'rosas', 'roses', 'rosas', 'กุหลาบ', 'mawar', 'bông hồng', 'バラ'), one: one('rose', 'rosa', 'rose', 'rosa') },
+  { ko: '나무', counter: '그루', gloss: loc('trees', 'árboles', 'arbres', 'árvores', 'ต้นไม้', 'pohon', 'cây', '木'), one: one('tree', 'árbol', 'arbre', 'árvore') },
+  { ko: '표', counter: '장', gloss: loc('tickets', 'boletos', 'billets', 'ingressos', 'ตั๋ว', 'tiket', 'vé', 'チケット'), one: one('ticket', 'boleto', 'billet', 'ingresso') },
+  { ko: '연필', counter: '자루', gloss: loc('pencils', 'lápices', 'crayons', 'lápis', 'ดินสอ', 'pensil', 'cây bút chì', '鉛筆'), one: one('pencil', 'lápiz', 'crayon', 'lápis') },
 ]
 
 /** Age pseudo-noun: native prenominal + 살, prompt shows "20살". */
 export const AGE_NOUN: NounDef = {
   ko: '', counter: '살', bareDisplay: true,
   gloss: loc('years old', 'años', 'ans', 'anos', 'ปี', 'tahun', 'tuổi', '歳'),
+  one: one('year old', 'año', 'an', 'ano'),
 }
 
 /** The currency word appended to money glosses. */

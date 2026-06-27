@@ -3,7 +3,7 @@ import { LOCALE_CODES } from '~/lib/domain'
 import {
   nativeNumber, nativePrenominal, sinoCardinal, sinoDigitString, sinoMonth, sinoNumber, timeReading,
 } from '~/lib/korean/numbers'
-import { AGE_NOUN, COUNT_NOUNS, MONTHS, WON, sameAll, type NounDef } from './glosses'
+import { AGE_NOUN, COUNT_NOUNS, MONTHS, WON, sameAll, type CountableLocale, type NounDef } from './glosses'
 
 /**
  * Procedural Number Market item generator.
@@ -84,7 +84,9 @@ function buildCounting(nounIdx: number, n: number, id: string): MarketItem {
   const near = n >= 99 ? n - 1 : n + 1
   const near2 = n >= 98 ? n - 2 : n + 2
   const lures = chooseLures([sinoNumber(n), nativeNumber(n), nativePrenominal(near), nativePrenominal(near2)], tiles)
-  const trans = buildGloss((code) => `${n} ${noun.gloss[code]}`)
+  // n === 1 takes the singular noun in inflecting locales ("1 apple", not "1 apples").
+  const trans = buildGloss((code) =>
+    `${n} ${n === 1 && code in noun.one ? noun.one[code as CountableLocale] : noun.gloss[code]}`)
   return { id, domain: 'counting', display, answer, tiles, lures, valueKey: String(n), trans }
 }
 
