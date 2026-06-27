@@ -617,6 +617,32 @@
       "title": "Nhắc ôn tập",
       "label": "Nhắc tôi ôn lại khi quay lại",
       "hint": "Một lời nhắc nhẹ nhàng khi bạn quay lại sau một khoảng nghỉ và có cây sẵn sàng. Mặc định tắt; không theo dõi — chỉ chạy trong trình duyệt của bạn."
+    },
+    "avatar": {
+      "title": "Hình đại diện",
+      "hint": "Chọn hình đại diện vườn cho hồ sơ của bạn. Mở khóa thêm khi khu vườn của bạn phát triển.",
+      "use_initial": "Dùng chữ cái đầu",
+      "owned": "Đã sưu tập {owned}/{total}",
+      "locked": "Đã khóa",
+      "tier": { "common": "Thường", "rare": "Hiếm", "epic": "Sử thi", "legendary": "Huyền thoại" },
+      "req": {
+        "trees": "Thành thạo {n} điểm ngữ pháp",
+        "mastered_pct": "Thành thạo {pct}% danh mục",
+        "garden_complete": "Thành thạo toàn bộ danh mục",
+        "reviews": "Đạt {n} lần ôn tập",
+        "streak": "Đạt chuỗi {n} ngày",
+        "topik": "Hoàn thành TOPIK {levels}",
+        "lab_conjugation": "Thành thạo lab Chia động từ",
+        "lab_counter": "Thành thạo lab Từ đếm",
+        "lab_number": "Thành thạo lab Chợ Số",
+        "lab_particle": "Thành thạo lab Trợ từ",
+        "lab_register": "Thành thạo lab Phong cách ngôn ngữ",
+        "all_labs": "Thành thạo cả năm lab",
+        "escape": "Mở khóa {n} vật phẩm trang trí escape-room",
+        "escape_all": "Mở khóa tất cả vật phẩm trang trí escape-room",
+        "flourish": "Thành thạo {n} ngữ pháp mà không có cây nào gặp khó",
+        "collect_all": "Sưu tập tất cả hình đại diện còn lại"
+      }
     }
   },
   "welcome": {

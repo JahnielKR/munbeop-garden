@@ -63,26 +63,26 @@ describe('useSettingsStore', () => {
   it('setTheme applies the theme and writes the full blob to the adapter', async () => {
     await useSettingsStore().setTheme('dark')
     expect(useTheme().theme.value).toBe('dark')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'dark', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [] })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'dark', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [] })
   })
 
   it('setTheme accepts the system preference and writes it to the adapter', async () => {
     await useSettingsStore().setTheme('system')
     expect(useTheme().theme.value).toBe('system')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'system', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [] })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'system', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [] })
   })
 
   it('setLocale applies the locale and writes the full blob to the adapter', async () => {
     await useSettingsStore().setLocale('ja')
     expect(useLocaleStore().current).toBe('ja')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'ja', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [] })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'ja', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [] })
   })
 
   it('setStartingDeck stores the deck and writes the full blob', async () => {
     const s = useSettingsStore()
     await s.setStartingDeck('topik-4')
     expect(s.startingDeckId).toBe('topik-4')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: 'topik-4', excludedDeckIds: [] })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: 'topik-4', excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [] })
   })
 
   it('hydrate applies a stored startingDeckId', async () => {
@@ -96,11 +96,11 @@ describe('useSettingsStore', () => {
     const s = useSettingsStore()
     await s.toggleDeck('topik-2')
     expect(s.excludedDeckIds).toEqual(['topik-2'])
-    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: ['topik-2'] })
+    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: ['topik-2'], chosenAvatarId: null, unlockedAvatarIds: [] })
 
     await s.toggleDeck('topik-2')
     expect(s.excludedDeckIds).toEqual([])
-    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [] })
+    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [] })
   })
 
   it('hydrate applies stored excludedDeckIds (filtering non-strings)', async () => {
@@ -108,5 +108,54 @@ describe('useSettingsStore', () => {
     mockRead.mockResolvedValue({ excludedDeckIds: ['topik-1', 5, 'topik-5'] })
     await useSettingsStore().hydrate()
     expect(useSettingsStore().excludedDeckIds).toEqual(['topik-1', 'topik-5'])
+  })
+
+  it('setChosenAvatar stores the id and writes the full blob', async () => {
+    const s = useSettingsStore()
+    await s.setChosenAvatar('fox')
+    expect(s.chosenAvatarId).toBe('fox')
+    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', {
+      theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false,
+      startingDeckId: null, excludedDeckIds: [], chosenAvatarId: 'fox', unlockedAvatarIds: [],
+    })
+  })
+
+  it('setChosenAvatar(null) resets to the initial', async () => {
+    const s = useSettingsStore()
+    await s.setChosenAvatar('fox')
+    await s.setChosenAvatar(null)
+    expect(s.chosenAvatarId).toBeNull()
+    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', {
+      theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false,
+      startingDeckId: null, excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [],
+    })
+  })
+
+  it('unlockAvatars unions new ids and persists once', async () => {
+    const s = useSettingsStore()
+    await s.unlockAvatars(['bee', 'fox'])
+    expect(s.unlockedAvatarIds).toEqual(['bee', 'fox'])
+    expect(mockWrite).toHaveBeenCalledTimes(1)
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', expect.objectContaining({
+      unlockedAvatarIds: ['bee', 'fox'],
+    }))
+  })
+
+  it('unlockAvatars is a no-op (no write) when nothing new is added', async () => {
+    const s = useSettingsStore()
+    await s.unlockAvatars(['bee'])
+    mockWrite.mockClear()
+    await s.unlockAvatars(['bee'])
+    expect(s.unlockedAvatarIds).toEqual(['bee'])
+    expect(mockWrite).not.toHaveBeenCalled()
+  })
+
+  it('hydrate applies stored chosenAvatarId and unlockedAvatarIds', async () => {
+    signIn()
+    mockRead.mockResolvedValue({ chosenAvatarId: 'koi', unlockedAvatarIds: ['bee', 5, 'koi'] })
+    await useSettingsStore().hydrate()
+    const s = useSettingsStore()
+    expect(s.chosenAvatarId).toBe('koi')
+    expect(s.unlockedAvatarIds).toEqual(['bee', 'koi'])
   })
 })

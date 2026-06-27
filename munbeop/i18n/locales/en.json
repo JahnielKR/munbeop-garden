@@ -617,6 +617,32 @@
       "title": "Review reminders",
       "label": "Remind me to revisit when I come back",
       "hint": "A gentle nudge when you return after a break and plants are ready. Off by default; no tracking — it only runs in your browser."
+    },
+    "avatar": {
+      "title": "Avatar",
+      "hint": "Pick a garden avatar for your profile. Unlock more as your garden grows.",
+      "use_initial": "Use initial",
+      "owned": "{owned}/{total} collected",
+      "locked": "Locked",
+      "tier": { "common": "Common", "rare": "Rare", "epic": "Epic", "legendary": "Legendary" },
+      "req": {
+        "trees": "Master {n} grammar points",
+        "mastered_pct": "Master {pct}% of the catalog",
+        "garden_complete": "Master the whole catalog",
+        "reviews": "Reach {n} reviews",
+        "streak": "Reach a {n}-day streak",
+        "topik": "Complete TOPIK {levels}",
+        "lab_conjugation": "Master the Conjugation lab",
+        "lab_counter": "Master the Counters lab",
+        "lab_number": "Master the Number Market lab",
+        "lab_particle": "Master the Particles lab",
+        "lab_register": "Master the Register lab",
+        "all_labs": "Master all five labs",
+        "escape": "Unlock {n} escape-room cosmetics",
+        "escape_all": "Unlock every escape-room cosmetic",
+        "flourish": "Master {n} grammars with no struggling plants",
+        "collect_all": "Collect every other avatar"
+      }
     }
   },
   "welcome": {

@@ -157,7 +157,12 @@ onUnmounted(() => {
       ref="avatarRef"
       type="button"
       class="acct__avatar"
-      :class="{ 'acct__avatar--framed': !!portrait.frameUrl, 'acct__avatar--set': !!portrait.setUrl }"
+      :class="{
+        'acct__avatar--framed': !!portrait.frameUrl,
+        'acct__avatar--set': !!portrait.setUrl,
+        'acct__avatar--epic': portrait.avatarTier === 'epic',
+        'acct__avatar--legendary': portrait.avatarTier === 'legendary',
+      }"
       aria-haspopup="true"
       :aria-expanded="open"
       :aria-label="email || t('settings.menu.account')"
@@ -336,6 +341,36 @@ onUnmounted(() => {
 .acct__avatar--set {
   border-color: transparent;
   background: transparent;
+}
+
+/* ---- RARITY EFFECTS for the chosen garden avatar ---- */
+.acct__avatar--epic {
+  --epic-glow: #8a5cd0;
+  box-shadow: var(--bevel), var(--shadow-pixel-md), 0 0 8px 1px var(--epic-glow);
+}
+[data-theme='dark'] .acct__avatar--epic {
+  --epic-glow: #a982f0;
+}
+.acct__avatar--legendary {
+  animation: acct-aura 2.4s ease-in-out infinite;
+}
+@keyframes acct-aura {
+  0%, 100% { box-shadow: var(--bevel), var(--shadow-pixel-md), 0 0 6px 1px var(--gold); }
+  50% { box-shadow: var(--bevel), var(--shadow-pixel-md), 0 0 13px 3px var(--gold); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .acct__avatar--legendary {
+    animation: none;
+    box-shadow: var(--bevel), var(--shadow-pixel-md), 0 0 10px 2px var(--gold);
+  }
+}
+/* collapsed 64px rail: keep the tile clean (cosmetics are already hidden) */
+.sidebar--collapsed .acct__avatar--legendary {
+  animation: none;
+}
+.sidebar--collapsed .acct__avatar--epic,
+.sidebar--collapsed .acct__avatar--legendary {
+  box-shadow: var(--bevel), var(--shadow-pixel-md);
 }
 
 /* ---- IDENTITY LINE (expanded only) ---- */

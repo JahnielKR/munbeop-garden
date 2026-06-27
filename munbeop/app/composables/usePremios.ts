@@ -3,6 +3,8 @@ import type { LocalizedString, RewardTier } from '~/lib/domain'
 import { REWARD_TIERS } from '~/lib/domain'
 import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
 import { useEscapeRoomStore } from '~/stores/escape-room'
+import { AVATARS, avatarUrl as gardenAvatarUrl, LEGENDARY_FRAME_URL } from '~/lib/avatars/catalog'
+import { useSettingsStore } from '~/stores/settings'
 
 /**
  * usePremios — the profile "trophy case" view-model.
@@ -110,24 +112,45 @@ export function usePremios() {
     })),
   )
 
+  const settings = useSettingsStore()
+
   /** What the portrait composites, driven by the player's EQUIPPED choices (set
    *  on the /trophies page; auto-equipped into empty slots on first unlock). An
    *  equipped 'set' overrides the individual layers. Each equip is re-checked
    *  against `unlockedCosmetics` so a stale id never renders. Nothing equipped →
-   *  framed initials. */
+   *  framed initials. The user's chosen garden avatar (settings.chosenAvatarId)
+   *  feeds the center slot with higher priority than the escape-room avatar; a
+   *  legendary garden avatar also brings the shared ornate frame unless an
+   *  escape-room frame is already equipped. */
   const portrait = computed(() => {
     const urlFor = (id?: string): string | undefined => {
       if (!id || !store.unlockedCosmetics.includes(id)) return undefined
       return all.value.find((p) => p.id === id)?.url
     }
+    const chosen = settings.chosenAvatarId
+      ? (AVATARS.find((a) => a.id === settings.chosenAvatarId) ?? null)
+      : null
+    const settingsAvatarUrl = chosen ? gardenAvatarUrl(chosen.id) : undefined
+
     const eq = store.equipped
     const setUrl = urlFor(eq.set)
-    if (setUrl) return { setUrl, avatarUrl: undefined, frameUrl: undefined, bgUrl: undefined }
+    if (setUrl)
+      return { setUrl, avatarUrl: undefined, frameUrl: undefined, bgUrl: undefined, avatarTier: null }
+
+    // The user's explicit Settings choice wins the center slot; escape-room
+    // frame/bg still compose over/under it. A legendary garden avatar brings its
+    // own ornate frame unless an escape-room frame is equipped.
+    const escapeAvatar = urlFor(eq.avatar)
+    const usingSettings = !!settingsAvatarUrl
+    const escapeFrame = urlFor(eq.frame)
+    const legendaryFrame =
+      usingSettings && chosen!.tier === 'legendary' ? LEGENDARY_FRAME_URL : undefined
     return {
       setUrl: undefined,
-      avatarUrl: urlFor(eq.avatar),
-      frameUrl: urlFor(eq.frame),
+      avatarUrl: settingsAvatarUrl ?? escapeAvatar,
+      frameUrl: escapeFrame ?? legendaryFrame,
       bgUrl: urlFor(eq.bg),
+      avatarTier: usingSettings ? chosen!.tier : null,
     }
   })
 

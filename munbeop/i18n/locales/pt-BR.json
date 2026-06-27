@@ -617,6 +617,32 @@
       "title": "Lembretes de revisão",
       "label": "Lembrar de revisar quando eu voltar",
       "hint": "Um aviso gentil quando você volta após uma pausa e há plantas prontas. Desligado por padrão; sem rastreamento — roda só no seu navegador."
+    },
+    "avatar": {
+      "title": "Avatar",
+      "hint": "Escolha um avatar de jardim para o seu perfil. Desbloqueie mais à medida que seu jardim cresce.",
+      "use_initial": "Usar inicial",
+      "owned": "{owned}/{total} coletados",
+      "locked": "Bloqueado",
+      "tier": { "common": "Comum", "rare": "Raro", "epic": "Épico", "legendary": "Lendário" },
+      "req": {
+        "trees": "Domine {n} pontos de gramática",
+        "mastered_pct": "Domine {pct}% do catálogo",
+        "garden_complete": "Domine todo o catálogo",
+        "reviews": "Chegue a {n} revisões",
+        "streak": "Alcance uma sequência de {n} dias",
+        "topik": "Conclua o TOPIK {levels}",
+        "lab_conjugation": "Domine o lab de Conjugação",
+        "lab_counter": "Domine o lab de Contadores",
+        "lab_number": "Domine o lab de Mercado de Números",
+        "lab_particle": "Domine o lab de Partículas",
+        "lab_register": "Domine o lab de Registro",
+        "all_labs": "Domine os cinco labs",
+        "escape": "Desbloqueie {n} cosméticos do escape-room",
+        "escape_all": "Desbloqueie todos os cosméticos do escape-room",
+        "flourish": "Domine {n} gramáticas sem plantas com dificuldade",
+        "collect_all": "Colecione todos os outros avatares"
+      }
     }
   },
   "welcome": {
