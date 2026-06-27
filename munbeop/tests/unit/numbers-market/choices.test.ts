@@ -17,7 +17,6 @@ describe('choicesFor', () => {
   it('prefers same-domain distractors when available', () => {
     const timeItem = MARKET_ITEMS.find((i) => i.id === 'time-3-15')!
     const opts = choicesFor(timeItem, MARKET_ITEMS, identity)
-    const timeAnswers = new Set(MARKET_ITEMS.filter((i) => i.domain === 'time').map((i) => i.answer))
     // All same-domain siblings should appear (time has 3 items total → all 3 readings present)
     const timeSiblingAnswers = MARKET_ITEMS.filter((i) => i.domain === 'time').map((i) => i.answer)
     for (const sibling of timeSiblingAnswers) expect(opts, sibling).toContain(sibling)
