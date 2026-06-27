@@ -448,6 +448,15 @@
       "summary": "{n} điểm ngữ pháp cần luyện tập",
       "view": "Hiển thị",
       "rescue": "Cứu điểm khó nhất"
+    },
+    "spine": {
+      "label": "Vị trí trong chương trình",
+      "section": {
+        "auxiliaries": "Động từ bổ trợ",
+        "indirectSpeech": "Lời nói gián tiếp",
+        "additional": "Ngữ pháp bổ sung",
+        "complementary": "Ngữ pháp bổ trợ"
+      }
     }
   },
   "mastery": {

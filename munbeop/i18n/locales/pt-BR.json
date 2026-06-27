@@ -448,6 +448,15 @@
       "summary": "{n} pontos de gramática precisam de prática",
       "view": "Mostrar",
       "rescue": "Resgatar a mais difícil"
+    },
+    "spine": {
+      "label": "Posição no currículo",
+      "section": {
+        "auxiliaries": "Verbos auxiliares",
+        "indirectSpeech": "Discurso indireto",
+        "additional": "Gramática adicional",
+        "complementary": "Gramática complementar"
+      }
     }
   },
   "mastery": {

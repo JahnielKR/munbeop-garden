@@ -448,6 +448,15 @@
       "summary": "{n} grammar points need practice",
       "view": "Show them",
       "rescue": "Rescue the hardest"
+    },
+    "spine": {
+      "label": "Curriculum location",
+      "section": {
+        "auxiliaries": "Auxiliary verbs",
+        "indirectSpeech": "Indirect speech",
+        "additional": "Additional grammar",
+        "complementary": "Complementary grammar"
+      }
     }
   },
   "mastery": {

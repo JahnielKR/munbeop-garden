@@ -448,6 +448,15 @@
       "summary": "{n} points de grammaire à réviser",
       "view": "Les afficher",
       "rescue": "Sauver la plus difficile"
+    },
+    "spine": {
+      "label": "Position dans le cursus",
+      "section": {
+        "auxiliaries": "Verbes auxiliaires",
+        "indirectSpeech": "Discours indirect",
+        "additional": "Grammaire supplémentaire",
+        "complementary": "Grammaire complémentaire"
+      }
     }
   },
   "mastery": {
