@@ -67,11 +67,12 @@ export function useNumberMarket() {
     pool.value = pool.value.filter((_, i) => i !== poolIndex)
   }
 
-  function undoTile() {
+  function undoTile(index?: number) {
     if (phase.value !== 'building' || built.value.length === 0) return
-    const next = [...built.value]
-    const tile = next.pop()!
-    built.value = next
+    const i = index === undefined ? built.value.length - 1 : index
+    if (i < 0 || i >= built.value.length) return
+    const tile = built.value[i]!
+    built.value = built.value.filter((_, j) => j !== i)
     pool.value = [...pool.value, tile]
   }
 

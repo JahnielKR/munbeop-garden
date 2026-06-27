@@ -7,7 +7,7 @@ interface Props {
 defineProps<Props>()
 const emit = defineEmits<{
   place: [index: number]
-  undo: []
+  undo: [index: number]
   clear: []
   submit: []
 }>()
@@ -28,7 +28,8 @@ const { t } = useI18n()
         class="tile tile--built"
         data-testid="built-tile"
         :disabled="phase !== 'building'"
-        @click="emit('undo')"
+        :aria-label="t('numberMarket.undo')"
+        @click="emit('undo', i)"
       >{{ tile }}</button>
       <span v-if="built.length === 0" class="tray__hint">{{ t('numberMarket.build_hint') }}</span>
     </div>

@@ -12,7 +12,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="summary">
+  <div class="summary" role="status">
     <p class="summary__score">{{ t('numberMarket.score') }}: {{ score.correct }} / {{ score.total }}</p>
     <ul v-if="failedItems.length" class="summary__failed" lang="ko">
       <li v-for="f in failedItems" :key="f.id">{{ f.display }} → {{ f.answer }}</li>

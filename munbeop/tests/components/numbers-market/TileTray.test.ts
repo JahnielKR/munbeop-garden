@@ -24,4 +24,14 @@ describe('TileTray', () => {
     await w.find('[data-testid="tile-submit"]').trigger('click')
     expect(w.emitted('submit')).toBeTruthy()
   })
+  it('emits undo with the built tile index when a built tile is clicked', async () => {
+    const w = mount(TileTray, { props: { ...base, built: ['세', '시'] } })
+    await w.findAll('[data-testid="built-tile"]')[0]!.trigger('click')
+    expect(w.emitted('undo')?.[0]).toEqual([0])
+  })
+  it('emits clear when the clear button is clicked', async () => {
+    const w = mount(TileTray, { props: { ...base, built: ['세'] } })
+    await w.find('.tray__btn').trigger('click') // first .tray__btn is the clear button
+    expect(w.emitted('clear')).toBeTruthy()
+  })
 })
