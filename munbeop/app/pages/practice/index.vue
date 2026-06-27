@@ -73,7 +73,7 @@ const { t } = useI18n()
         to="/practice/number-market"
         :name="t('games.numberMarket.name')"
         :description="t('games.numberMarket.desc')"
-        image="/games/number-market-cover.svg"
+        image="/games/number-market-cover.png"
       />
     </div>
   </div>
