@@ -7,6 +7,7 @@
  */
 import { computed } from 'vue'
 import { spineContextOf } from '~/lib/library/spine-context'
+import { themeTitleKey } from '~/lib/garden'
 import { NuxtLink } from '#components'
 
 const props = defineProps<{ ko: string }>()
@@ -34,7 +35,9 @@ const sectionLabel = computed(() => {
     <template v-if="ctx.kind === 'topik'">
       <NuxtLink class="crumb__level" to="/paths">{{ t('garden.level', { n: ctx.level }) }}</NuxtLink>
       <span class="crumb__sep" aria-hidden="true">›</span>
-      <span class="crumb__theme">{{ ctx.themeTitle }}</span>
+      <!-- Theme name follows the UI locale (i18n keyed by themeId); the spine's
+           themeTitle is fixed Spanish metadata, not a display string. -->
+      <span class="crumb__theme">{{ t(themeTitleKey(ctx.themeId)) }}</span>
     </template>
     <span v-else class="crumb__theme">{{ sectionLabel }}</span>
   </nav>

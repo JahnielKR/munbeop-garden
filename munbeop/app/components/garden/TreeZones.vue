@@ -17,6 +17,7 @@ import type { TopikLevel } from '~/lib/domain'
 import type { TreeSpecies } from '~/components/garden/PixelTree.vue'
 import type { GardenZone } from '~/composables/useGardenState'
 import { ZONE_ANCHORS } from '~/lib/garden/zone-anchors'
+import { themeTitleKey } from '~/lib/garden'
 
 interface Props {
   species: TreeSpecies
@@ -54,12 +55,13 @@ const nodes = computed<ZoneNode[]>(() => {
 
 function labelFor(n: ZoneNode): string {
   if (!n.zone.unlocked) {
-    return t('garden.zone_locked', { zone: props.zones[n.index - 1]?.title ?? '' })
+    const prev = props.zones[n.index - 1]
+    return t('garden.zone_locked', { zone: prev ? t(themeTitleKey(prev.id)) : '' })
   }
   if (n.overflow) {
     return `${t('garden.zone_overflow', { n: n.overflow })} — ${t('garden.level', { n: props.level })}`
   }
-  return `${n.zone.title} — ${n.zone.pct}%`
+  return `${t(themeTitleKey(n.zone.id))} — ${n.zone.pct}%`
 }
 
 function onClick(n: ZoneNode) {
