@@ -1,13 +1,14 @@
 <script setup lang="ts">
 interface Props {
-  modelValue: 'learn' | 'speed'
+  modelValue: 'learn' | 'speed' | 'dictation'
 }
 defineProps<Props>()
-defineEmits<{ 'update:modelValue': [mode: 'learn' | 'speed'] }>()
+defineEmits<{ 'update:modelValue': [mode: 'learn' | 'speed' | 'dictation'] }>()
 const { t } = useI18n()
 const MODES = [
   { id: 'learn' as const, key: 'numberMarket.mode.learn' },
   { id: 'speed' as const, key: 'numberMarket.mode.speed' },
+  { id: 'dictation' as const, key: 'numberMarket.mode.dictation' },
 ]
 </script>
 

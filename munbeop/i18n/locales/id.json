@@ -971,7 +971,8 @@
     "mode": {
       "label": "Mode",
       "learn": "Belajar",
-      "speed": "Lawan waktu"
+      "speed": "Lawan waktu",
+      "dictation": "Dikte"
     },
     "speed": {
       "deck_mixed": "Campuran (semua)",
@@ -981,6 +982,14 @@
       "new_record": "Rekor baru!",
       "again": "Main lagi",
       "start_hint": "60 detik — baca sebanyak mungkin."
+    },
+    "dictation": {
+      "listen": "Dengar dan ketik angkanya",
+      "replay": "Putar ulang audio",
+      "fmt_number": "mis. 12000",
+      "fmt_time": "mis. 3:15",
+      "fmt_date": "mis. 6/15",
+      "fmt_phone": "mis. 01012345678"
     }
   }
 }

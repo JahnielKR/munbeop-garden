@@ -971,7 +971,8 @@
     "mode": {
       "label": "モード",
       "learn": "学習",
-      "speed": "タイムアタック"
+      "speed": "タイムアタック",
+      "dictation": "聞き取り"
     },
     "speed": {
       "deck_mixed": "ミックス（全部）",
@@ -981,6 +982,14 @@
       "new_record": "新記録！",
       "again": "もう一度",
       "start_hint": "60秒 — できるだけ多く読もう。"
+    },
+    "dictation": {
+      "listen": "聞いて数字を入力",
+      "replay": "もう一度再生",
+      "fmt_number": "例: 12000",
+      "fmt_time": "例: 3:15",
+      "fmt_date": "例: 6/15",
+      "fmt_phone": "例: 01012345678"
     }
   }
 }

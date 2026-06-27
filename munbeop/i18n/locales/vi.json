@@ -971,7 +971,8 @@
     "mode": {
       "label": "Chế độ",
       "learn": "Học",
-      "speed": "Tính giờ"
+      "speed": "Tính giờ",
+      "dictation": "Chính tả"
     },
     "speed": {
       "deck_mixed": "Trộn (tất cả)",
@@ -981,6 +982,14 @@
       "new_record": "Kỷ lục mới!",
       "again": "Chơi lại",
       "start_hint": "60 giây — đọc càng nhiều càng tốt."
+    },
+    "dictation": {
+      "listen": "Nghe và gõ con số",
+      "replay": "Phát lại",
+      "fmt_number": "vd. 12000",
+      "fmt_time": "vd. 3:15",
+      "fmt_date": "vd. 6/15",
+      "fmt_phone": "vd. 01012345678"
     }
   }
 }

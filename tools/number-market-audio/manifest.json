@@ -1,0 +1,20 @@
+[
+  { "id": "600e4c29", "sentence": "세 개", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "e4992e5c", "sentence": "두 마리", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "00a9b366", "sentence": "스무 명", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "42b3764d", "sentence": "백", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "e6c8af12", "sentence": "십육", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "64004ed1", "sentence": "삼백오십", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "c9274e27", "sentence": "세 시 십오 분", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "cea67417", "sentence": "아홉 시 오 분", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "4cda8264", "sentence": "열두 시 삼십 분", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "831b08c0", "sentence": "천오백 원", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "04e34e11", "sentence": "만 이천 원", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "337ad34d", "sentence": "이만 오천 원", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "3f735803", "sentence": "유월 십오 일", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "f331b3d0", "sentence": "시월 삼 일", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "d357395b", "sentence": "십일월 이십 일", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "c76cc8a2", "sentence": "공일공 일이삼사", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "3a1433c2", "sentence": "일일구", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
+  { "id": "0bee4b0e", "sentence": "공일공 구팔칠육", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" }
+]
