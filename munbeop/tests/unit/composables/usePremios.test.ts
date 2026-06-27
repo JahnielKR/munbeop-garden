@@ -17,6 +17,7 @@ describe('usePremios — portrait reflects equipped choices', () => {
       avatarUrl: undefined,
       frameUrl: undefined,
       bgUrl: undefined,
+      avatarTier: null,
     })
   })
 
