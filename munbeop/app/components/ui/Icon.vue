@@ -163,52 +163,42 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
       <path d="M7 7h2v2H7z" fill="var(--surface)" />
     </template>
 
-    <!-- mastery-seedling: dirt mound + stem + 2 leaves -->
+    <!-- mastery-seedling: a sprout in a soil mound with two splayed leaves.
+         Pixel-art restyled to match the garden achievement badges
+         (tools/achievements/gen_badges.py i_sprouted). Theme-safe palette:
+         no inverting --ink/--paper-deep, so it reads on light & dark. -->
     <template v-if="name === 'mastery-seedling'">
-      <!-- dirt mound (ink-soft) -->
-      <path d="M5 13h6v1H5z M4 14h8v1H4z" fill="var(--ink-soft)" />
-      <!-- stem (jade-deep) -->
-      <path d="M8 8h1v5H8z" fill="var(--jade-deep)" />
-      <!-- left leaf (jade) -->
-      <path d="M6 9h2v1H6z M5 10h2v1H5z M6 11h1v1H6z" fill="var(--jade)" />
-      <!-- right leaf (jade) -->
-      <path d="M9 9h2v1H9z M10 10h2v1h-2z M10 11h1v1h-1z" fill="var(--jade)" />
-      <!-- stem tip highlight -->
-      <path d="M8 7h1v1H8z" fill="var(--jade)" />
+      <path d="M5 12h6v1H5z" fill="var(--ink-line)" />
+      <path d="M4 13h8v1H4z M5 14h6v1H5z" fill="var(--ink-soft)" />
+      <path d="M8 8h1v1H8z M8 9h1v1H8z M8 10h1v1H8z M8 11h1v1H8z" fill="var(--jade-deep)" />
+      <path d="M5 7h2v1H5z M4 8h3v1H4z M5 9h3v1H5z" fill="var(--jade)" />
+      <path d="M7 8h1v1H7z M4 9h1v1H4z" fill="var(--jade-deep)" />
+      <path d="M10 7h2v1H10z M10 8h3v1H10z M9 9h3v1H9z" fill="var(--jade)" />
+      <path d="M9 8h1v1H9z M12 9h1v1H12z" fill="var(--jade-deep)" />
+      <path d="M8 6h1v1H8z M8 7h1v1H8z" fill="var(--jade)" />
     </template>
 
-    <!-- mastery-plant: bushy plant with gold fruit -->
+    <!-- mastery-plant: a young plant in a terracotta pot (achievement
+         i_taking_root style). Pot tints to a glazed blue in dark mode. -->
     <template v-if="name === 'mastery-plant'">
-      <!-- dirt mound -->
-      <path d="M5 14h6v1H5z" fill="var(--ink-soft)" />
-      <!-- stem (jade-deep) -->
-      <path d="M8 10h1v4H8z" fill="var(--jade-deep)" />
-      <!-- bushy leaves (jade), wide cluster -->
-      <path
-        d="M6 5h5v1H6z M5 6h7v1H5z M4 7h9v1H4z M5 8h7v1H5z M6 9h5v1H6z M7 10h3v1H7z"
-        fill="var(--jade)"
-      />
-      <!-- jade-deep accents (depth) -->
-      <path d="M4 7h1v1H4z M12 7h1v1h-1z M7 9h1v1H7z" fill="var(--jade-deep)" />
-      <!-- gold fruit (2x2 + tiny outline so it reads at small render sizes) -->
-      <path d="M9 5h2v2H9z" fill="var(--gold)" />
-      <path d="M8 5h1v1H8z" fill="var(--jade-deep)" />
+      <path d="M5 11h7v1H5z M6 12h5v1H6z M6 13h5v1H6z M7 14h3v1H7z" fill="var(--sky)" />
+      <path d="M5 11h7v1H5z" fill="var(--ink-line)" />
+      <path d="M7 14h3v1H7z" fill="var(--ink-soft)" />
+      <path d="M8 7h1v1H8z M8 8h1v1H8z M8 9h1v1H8z M8 10h1v1H8z" fill="var(--jade-deep)" />
+      <path d="M6 5h5v1H6z M5 6h7v1H5z M6 7h2v1H6z M9 7h2v1H9z M7 8h1v1H7z M9 8h1v1H9z" fill="var(--jade)" />
+      <path d="M5 6h1v1H5z M11 6h1v1H11z M7 7h1v1H7z M9 7h1v1H9z" fill="var(--jade-deep)" />
+      <path d="M8 4h1v1H8z" fill="var(--jade)" />
     </template>
 
-    <!-- mastery-tree: trunk + round canopy + canopy shadow -->
+    <!-- mastery-tree: a blossoming cherry tree (achievement i_tree style).
+         Pink canopy with cream highlights + gold blossom hearts. Cream is
+         theme-invariant so the highlights stay light in dark mode. -->
     <template v-if="name === 'mastery-tree'">
-      <!-- trunk (ink-soft), centered, 2 wide x 4 tall -->
-      <path d="M7 11h2v4H7z" fill="var(--ink-soft)" />
-      <!-- canopy body (jade) - round, stepped -->
-      <path
-        d="M6 2h4v1H6z M4 3h8v1H4z M3 4h10v1H3z M3 5h10v1H3z M3 6h10v1H3z M3 7h10v1H3z M4 8h8v1H4z M5 9h6v1H5z M6 10h4v1H6z"
-        fill="var(--jade)"
-      />
-      <!-- canopy shadow (jade-deep) along right/bottom curve -->
-      <path
-        d="M11 4h1v1h-1z M12 5h1v3h-1z M11 8h1v1h-1z M10 9h1v1h-1z M9 10h1v1H9z"
-        fill="var(--jade-deep)"
-      />
+      <path d="M7 10h1v1H7z M7 11h1v1H7z M7 12h1v1H7z M7 13h1v1H7z" fill="var(--ink-line)" />
+      <path d="M8 10h1v1H8z M8 11h1v1H8z M8 12h1v1H8z M8 13h1v1H8z M6 14h4v1H6z" fill="var(--ink-soft)" />
+      <path d="M6 2h4v1H6z M4 3h8v1H4z M3 4h10v1H3z M3 5h10v1H3z M3 6h10v1H3z M4 7h8v1H4z M5 8h6v1H5z M6 9h4v1H6z" fill="var(--rose)" />
+      <path d="M5 4h2v1H5z M4 5h2v1H4z" fill="var(--always-cream)" />
+      <path d="M10 4h1v1H10z M8 5h1v1H8z M9 6h1v1H9z M6 7h1v1H6z" fill="var(--gold)" />
     </template>
 
     <!-- deck-star: 4-point sparkle -->
