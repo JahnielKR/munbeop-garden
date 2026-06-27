@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { nativeNumber, nativePrenominal, sinoNumber } from '~/lib/korean/numbers'
-import { sinoCardinal, sinoMonth, sinoDigitString, timeReading } from '~/lib/korean/numbers'
+import { nativeNumber, nativePrenominal, sinoNumber, sinoCardinal, sinoMonth, sinoDigitString, timeReading } from '~/lib/korean/numbers'
 
 // Korean-verified golden rows: [n, native cardinal, native prenominal, sino].
 const GOLDEN: [number, string, string, string][] = [
