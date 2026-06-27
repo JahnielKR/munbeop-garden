@@ -49,6 +49,7 @@ describe('avatar catalog', () => {
 
   it('avatarUrl maps id to the public png path', () => {
     expect(avatarUrl('seed')).toBe('/img/avatars/seed.png')
+    expect(avatarUrl('watering-can')).toBe('/img/avatars/watering-can.png')
     expect(LEGENDARY_FRAME_URL).toBe('/img/avatars/_frame-legendary.png')
   })
 
@@ -72,6 +73,41 @@ describe('avatar catalog', () => {
     })
     expect(requirementLabel({ kind: 'escapeCosmetics', n: 'all' })).toEqual({
       key: 'settings.avatar.req.escape_all',
+      params: {},
+    })
+  })
+
+  it('requirementLabel covers the remaining rule kinds', () => {
+    expect(requirementLabel({ kind: 'masteredPct', pct: 50 })).toEqual({
+      key: 'settings.avatar.req.mastered_pct',
+      params: { pct: 50 },
+    })
+    expect(requirementLabel({ kind: 'gardenComplete' })).toEqual({
+      key: 'settings.avatar.req.garden_complete',
+      params: {},
+    })
+    expect(requirementLabel({ kind: 'reviews', n: 100 })).toEqual({
+      key: 'settings.avatar.req.reviews',
+      params: { n: 100 },
+    })
+    expect(requirementLabel({ kind: 'longestStreak', n: 7 })).toEqual({
+      key: 'settings.avatar.req.streak',
+      params: { n: 7 },
+    })
+    expect(requirementLabel({ kind: 'allLabs' })).toEqual({
+      key: 'settings.avatar.req.all_labs',
+      params: {},
+    })
+    expect(requirementLabel({ kind: 'escapeCosmetics', n: 4 })).toEqual({
+      key: 'settings.avatar.req.escape',
+      params: { n: 4 },
+    })
+    expect(requirementLabel({ kind: 'flourish', trees: 100 })).toEqual({
+      key: 'settings.avatar.req.flourish',
+      params: { n: 100 },
+    })
+    expect(requirementLabel({ kind: 'collectAll' })).toEqual({
+      key: 'settings.avatar.req.collect_all',
       params: {},
     })
   })

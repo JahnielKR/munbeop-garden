@@ -124,6 +124,7 @@ export function requirementLabel(rule: UnlockRule): RequirementLabel | null {
       return { key: 'settings.avatar.req.streak', params: { n: rule.n } }
     case 'topikComplete':
       return { key: 'settings.avatar.req.topik', params: { levels: rule.levels.join(' & ') } }
+    // Emits lab_conjugation | lab_counter | lab_number | lab_particle | lab_register
     case 'labEarned':
       return { key: `settings.avatar.req.lab_${rule.lab}`, params: {} }
     case 'allLabs':
@@ -133,8 +134,13 @@ export function requirementLabel(rule: UnlockRule): RequirementLabel | null {
         ? { key: 'settings.avatar.req.escape_all', params: {} }
         : { key: 'settings.avatar.req.escape', params: { n: rule.n } }
     case 'flourish':
+      // Param is `n` (not `trees`) to match the shared numeric `{n}` i18n template.
       return { key: 'settings.avatar.req.flourish', params: { n: rule.trees } }
     case 'collectAll':
       return { key: 'settings.avatar.req.collect_all', params: {} }
+    default: {
+      const _exhaustive: never = rule
+      return _exhaustive
+    }
   }
 }
