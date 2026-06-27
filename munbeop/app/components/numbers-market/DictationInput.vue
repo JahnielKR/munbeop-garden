@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { NumberDomain } from '~/lib/domain/numbers-market'
+import type { NumberDomain } from '~/lib/domain'
 
 interface Props {
   domain: NumberDomain
