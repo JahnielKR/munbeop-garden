@@ -52,9 +52,10 @@ describe('choicesFor', () => {
   it('prefers same-domain distractors when available', () => {
     const timeItem = MARKET_ITEMS.find((i) => i.id === 'time-3-15')!
     const opts = choicesFor(timeItem, MARKET_ITEMS, identity)
-    const timeAnswers = new Set(MARKET_ITEMS.filter((i) => i.domain === 'time').map((i) => i.answer))
-    // the 3 time items all become options (the domain has exactly 3) → all options are time readings
-    for (const o of opts) expect(timeAnswers.has(o), o).toBe(true)
+    // the time domain has exactly 3 items → all 3 time readings must appear (correct +
+    // both siblings taken before any cross-domain fill); the 4th option is cross-domain.
+    const timeSiblingAnswers = MARKET_ITEMS.filter((i) => i.domain === 'time').map((i) => i.answer)
+    for (const sibling of timeSiblingAnswers) expect(opts, sibling).toContain(sibling)
   })
 
   it('fills from other domains when a domain is too small for 3 distractors', () => {
