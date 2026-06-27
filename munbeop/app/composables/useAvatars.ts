@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { AVATAR_TIERS, AVATARS, avatarUrl, type AvatarTier } from '~/lib/avatars/catalog'
+import { AVATAR_TIERS, avatarUrl, type AvatarTier } from '~/lib/avatars/catalog'
 import { evaluateAvatars, type AvatarState, type DecoratedAvatar } from '~/lib/avatars/evaluate'
 import { useStats } from '~/composables/useStats'
 import { useConjugationMaster } from '~/composables/useConjugationMaster'

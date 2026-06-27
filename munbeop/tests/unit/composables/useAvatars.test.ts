@@ -1,6 +1,9 @@
 // munbeop/tests/unit/composables/useAvatars.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
+// SUT import kept at the top (import/first); vitest hoists the vi.mock calls
+// below above all imports, so the mocked deps are registered first regardless.
+import { useAvatars } from '~/composables/useAvatars'
 
 const stats = {
   masteredCount: ref(0),
@@ -37,8 +40,6 @@ vi.mock('~/stores/settings', () => ({
     unlockAvatars,
   }),
 }))
-
-import { useAvatars } from '~/composables/useAvatars'
 
 describe('useAvatars', () => {
   beforeEach(() => {
