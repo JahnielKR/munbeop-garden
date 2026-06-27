@@ -971,7 +971,8 @@
     "mode": {
       "label": "Mode",
       "learn": "Learn",
-      "speed": "Speed"
+      "speed": "Speed",
+      "dictation": "Dictation"
     },
     "speed": {
       "deck_mixed": "Mixed (all)",
@@ -981,6 +982,13 @@
       "new_record": "New record!",
       "again": "Play again",
       "start_hint": "60 seconds — read as many as you can."
+    },
+    "dictation": {
+      "listen": "Listen and type the number",
+      "replay": "Replay audio",
+      "fmt_number": "e.g. 12000",
+      "fmt_time": "e.g. 3:15",
+      "fmt_date": "e.g. 6/15"
     }
   }
 }

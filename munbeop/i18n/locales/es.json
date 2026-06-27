@@ -971,7 +971,8 @@
     "mode": {
       "label": "Modo",
       "learn": "Aprender",
-      "speed": "Contrarreloj"
+      "speed": "Contrarreloj",
+      "dictation": "Dictado"
     },
     "speed": {
       "deck_mixed": "Mezclado (todo)",
@@ -981,6 +982,13 @@
       "new_record": "¡Nuevo récord!",
       "again": "Jugar de nuevo",
       "start_hint": "60 segundos — lee todos los que puedas."
+    },
+    "dictation": {
+      "listen": "Escucha y escribe el número",
+      "replay": "Repetir audio",
+      "fmt_number": "ej. 12000",
+      "fmt_time": "ej. 3:15",
+      "fmt_date": "ej. 6/15"
     }
   }
 }

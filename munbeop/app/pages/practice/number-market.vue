@@ -13,8 +13,10 @@ import MasterStrip from '~/components/numbers-market/MasterStrip.vue'
 import ChoiceRow from '~/components/numbers-market/ChoiceRow.vue'
 import SpeedHud from '~/components/numbers-market/SpeedHud.vue'
 import SpeedSummary from '~/components/numbers-market/SpeedSummary.vue'
+import DictationInput from '~/components/numbers-market/DictationInput.vue'
 import { useNumberMarket } from '~/composables/useNumberMarket'
 import { useNumberSpeed } from '~/composables/useNumberSpeed'
+import { useNumberDictation } from '~/composables/useNumberDictation'
 import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
 import type { NumberDomain } from '~/lib/domain'
 
@@ -23,7 +25,8 @@ definePageMeta({ surface: 'game' })
 const { t } = useI18n()
 const m = useNumberMarket()
 const s = useNumberSpeed()
-const mode = ref<'learn' | 'speed'>('learn')
+const d = useNumberDictation()
+const mode = ref<'learn' | 'speed' | 'dictation'>('learn')
 const phase = ref<'pick' | 'play'>('pick')
 const started = ref(false)
 
@@ -45,7 +48,12 @@ function startTimer() {
 onBeforeUnmount(stopTimer)
 
 const dirty = () =>
-  started.value && (mode.value === 'learn' ? m.phase.value !== 'done' : s.phase.value === 'playing')
+  started.value &&
+  (mode.value === 'learn'
+    ? m.phase.value !== 'done'
+    : mode.value === 'speed'
+      ? s.phase.value === 'playing'
+      : d.phase.value !== 'done')
 useGameLeaveGuard(dirty)
 
 function begin(deckId: string) {
@@ -54,9 +62,12 @@ function begin(deckId: string) {
   if (mode.value === 'learn') {
     m.selectDomain(deckId as NumberDomain)
     m.start()
-  } else {
+  } else if (mode.value === 'speed') {
     s.start(deckId)
     startTimer()
+  } else {
+    d.selectDomain(deckId as NumberDomain)
+    d.start()
   }
 }
 function restart() {
@@ -86,7 +97,9 @@ function playAgain() {
 
     <template v-if="phase === 'pick'">
       <ModeToggle v-model="mode" />
-      <p class="lab__hint">{{ mode === 'speed' ? t('numberMarket.speed.start_hint') : t('numberMarket.build_hint') }}</p>
+      <p class="lab__hint">
+        {{ mode === 'speed' ? t('numberMarket.speed.start_hint') : mode === 'dictation' ? t('numberMarket.dictation.listen') : t('numberMarket.build_hint') }}
+      </p>
       <button
         v-if="mode === 'speed'"
         type="button"
@@ -149,7 +162,7 @@ function playAgain() {
       />
     </template>
 
-    <template v-else>
+    <template v-else-if="mode === 'speed'">
       <SpeedHud
         :time-left="s.timeLeft.value"
         :score="s.score.value"
@@ -170,6 +183,60 @@ function playAgain() {
         @restart="restart"
       />
     </template>
+
+    <template v-else>
+      <p
+        v-if="d.runMode.value === 'replay' && d.phase.value !== 'done'"
+        class="lab__replay"
+        role="status"
+      >
+        🔁 {{ t('numberMarket.replay_failed') }}
+      </p>
+      <ProgressDots
+        v-if="d.phase.value !== 'done'"
+        :total="d.sessionItems.value.length"
+        :progress="d.index.value"
+        :label="t('numberMarket.progress')"
+      />
+      <template v-if="d.phase.value !== 'done'">
+        <p class="lab__listen">🎧 {{ t('numberMarket.dictation.listen') }}</p>
+        <DictationInput
+          :domain="d.item.value.domain"
+          :phase="d.phase.value"
+          :model-value="d.entry.value"
+          @update:model-value="(v) => (d.entry.value = v)"
+          @submit="d.submit"
+          @replay="d.play"
+        />
+        <p v-if="d.phase.value === 'right'" class="lab__verdict lab__verdict--ok" role="status">
+          ✓ {{ t('numberMarket.correct') }}
+        </p>
+        <p v-else-if="d.phase.value === 'wrong'" class="lab__verdict lab__verdict--no" role="status">
+          ✗ {{ t('numberMarket.wrong') }}
+        </p>
+        <p
+          v-if="d.phase.value === 'right' || d.phase.value === 'wrong'"
+          class="lab__reveal"
+          role="status"
+          lang="ko"
+        >{{ d.item.value.answer }} — {{ d.item.value.display }}</p>
+        <button
+          v-if="d.phase.value === 'right' || d.phase.value === 'wrong'"
+          type="button"
+          class="lab__next"
+          @click="d.next"
+        >
+          {{ t('numberMarket.next') }}
+        </button>
+      </template>
+      <MarketSummary
+        v-else
+        :score="d.score.value"
+        :failed-items="d.failedItems.value"
+        @restart="restart"
+        @replay-failed="d.replayFailed"
+      />
+    </template>
   </div>
 </template>
 
@@ -177,6 +244,8 @@ function playAgain() {
 .lab { display: flex; flex-direction: column; gap: 18px; }
 .lab__lead { margin: 0; font-family: 'Inter', sans-serif; color: var(--ink-soft, var(--text-soft)); line-height: 1.6; }
 .lab__hint { margin: 0; font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-soft); }
+.lab__listen { margin: 0; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--ink-soft); }
+.lab__reveal { margin: 0; font-family: 'Noto Sans KR', sans-serif; font-size: 20px; color: var(--accent-bright, #2e7d32); }
 .lab__mixed { align-self: flex-start; font-family: 'Noto Sans KR', sans-serif; font-size: 16px; padding: 12px 18px; background: var(--paper-deep, var(--surface)); border: 2px solid var(--ink-line); color: var(--ink); cursor: pointer; }
 .lab__mixed:hover { border-color: var(--ink); }
 .lab__mixed:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
