@@ -24,6 +24,7 @@ describe('number-market seed invariants', () => {
         expect(lure.length, `${it.id} empty lure`).toBeGreaterThan(0)
         expect(correct.has(lure), `${it.id} lure ${lure} collides with a correct tile`).toBe(false)
       }
+      expect(new Set(it.lures).size, `${it.id} duplicate lures`).toBe(it.lures.length)
     }
   })
 

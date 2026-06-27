@@ -1,4 +1,4 @@
-import type { MarketItem } from '~/lib/domain'
+import type { MarketItem, NumberDomain } from '~/lib/domain'
 import { L } from '~/seed/locale'
 
 export const MARKET_ITEMS: MarketItem[] = [
@@ -51,6 +51,6 @@ export const MARKET_ITEMS: MarketItem[] = [
     trans: L('010-9876', '010-9876', '010-9876', '010-9876', '010-9876', '010-9876', '010-9876', '010-9876') },
 ]
 
-export function itemsForDomain(domain: string): MarketItem[] {
+export function itemsForDomain(domain: NumberDomain): MarketItem[] {
   return MARKET_ITEMS.filter((i) => i.domain === domain)
 }
