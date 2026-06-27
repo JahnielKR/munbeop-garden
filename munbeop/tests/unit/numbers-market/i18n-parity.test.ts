@@ -18,6 +18,10 @@ const KEYS = [
   'numberMarket.domain.counting', 'numberMarket.domain.sino_basics', 'numberMarket.domain.time',
   'numberMarket.domain.money', 'numberMarket.domain.dates', 'numberMarket.domain.phone',
   'games.numberMarket.name', 'games.numberMarket.desc',
+  'numberMarket.mode.label', 'numberMarket.mode.learn', 'numberMarket.mode.speed',
+  'numberMarket.speed.deck_mixed', 'numberMarket.speed.best', 'numberMarket.speed.streak',
+  'numberMarket.speed.time_up', 'numberMarket.speed.new_record', 'numberMarket.speed.again',
+  'numberMarket.speed.start_hint',
 ]
 const get = (o: Record<string, unknown>, path: string) =>
   path.split('.').reduce<unknown>((acc, k) => (acc as Record<string, unknown>)?.[k], o)

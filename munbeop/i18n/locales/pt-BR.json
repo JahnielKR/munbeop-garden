@@ -967,6 +967,20 @@
       "money": "Dinheiro",
       "dates": "Datas",
       "phone": "Telefone e números"
+    },
+    "mode": {
+      "label": "Modo",
+      "learn": "Aprender",
+      "speed": "Contra o tempo"
+    },
+    "speed": {
+      "deck_mixed": "Misto (tudo)",
+      "best": "Recorde",
+      "streak": "Melhor sequência",
+      "time_up": "Tempo esgotado!",
+      "new_record": "Novo recorde!",
+      "again": "Jogar de novo",
+      "start_hint": "60 segundos — leia o máximo que puder."
     }
   }
 }

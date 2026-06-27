@@ -1,3 +1,4 @@
 export * from './tiles'
 export * from './drill'
 export * from './sets'
+export * from './choices'
