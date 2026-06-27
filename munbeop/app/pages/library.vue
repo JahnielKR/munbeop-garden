@@ -4,6 +4,7 @@ import Modal from '~/components/ui/Modal.vue'
 import GrammarStudySheet from '~/components/library/GrammarStudySheet.vue'
 import GrammarCard from '~/components/library/GrammarCard.vue'
 import LibrarySearchBar from '~/components/library/LibrarySearchBar.vue'
+import Icon from '~/components/ui/Icon.vue'
 import { useGrammarStore } from '~/stores/grammar'
 import { useGrammarModal } from '~/composables/useGrammarModal'
 import { useLibrarySearch } from '~/composables/useLibrarySearch'
@@ -108,7 +109,12 @@ async function onCardClick(ko: string) {
             :title="isExcluded(section.deck.id) ? t('library.focus.include') : t('library.focus.exclude')"
             @click="onToggleFocus(section.deck.id)"
           >
-            <span class="deck-focus__icon" aria-hidden="true">{{ isExcluded(section.deck.id) ? '🌙' : '🌱' }}</span>
+            <span class="deck-focus__icon" aria-hidden="true">
+              <!-- On = the pixel-art sprout (shared with the mastery-seedling /
+                   achievement badge sprite); off = a resting moon. -->
+              <Icon v-if="!isExcluded(section.deck.id)" name="mastery-seedling" :size="24" />
+              <template v-else>🌙</template>
+            </span>
           </button>
         </div>
 
