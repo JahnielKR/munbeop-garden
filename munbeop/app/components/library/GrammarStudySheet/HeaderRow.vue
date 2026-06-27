@@ -5,6 +5,7 @@ import { getMasteryInfo } from '~/lib/srs'
 import { useSrsStore } from '~/stores/srs'
 import Badge from '~/components/ui/Badge.vue'
 import MasteryIcon from '~/components/practice/MasteryIcon.vue'
+import SpineBreadcrumb from './SpineBreadcrumb.vue'
 
 interface Props {
   grammar: Grammar
@@ -18,11 +19,14 @@ const info = computed(() => getMasteryInfo(level.value))
 
 <template>
   <header class="header">
-    <h2 class="header__ko">{{ grammar.ko }}</h2>
-    <Badge>
-      <MasteryIcon :level="level" :size="10" />
-      <span>{{ t(info.labelKey) }}</span>
-    </Badge>
+    <SpineBreadcrumb :ko="grammar.ko" />
+    <div class="header__main">
+      <h2 class="header__ko">{{ grammar.ko }}</h2>
+      <Badge>
+        <MasteryIcon :level="level" :size="10" />
+        <span>{{ t(info.labelKey) }}</span>
+      </Badge>
+    </div>
   </header>
 </template>
 
@@ -31,14 +35,19 @@ const info = computed(() => getMasteryInfo(level.value))
   position: sticky;
   top: 0;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  gap: 6px;
   padding-bottom: 12px;
   margin-bottom: 12px;
   border-bottom: 3px solid var(--ink-line);
   background: var(--paper-deep, var(--paper));
   z-index: 1;
+}
+.header__main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 .header__ko {
   margin: 0;

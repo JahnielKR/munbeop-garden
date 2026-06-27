@@ -448,6 +448,15 @@
       "summary": "{n} poin tata bahasa perlu latihan",
       "view": "Tampilkan",
       "rescue": "Selamatkan yang tersulit"
+    },
+    "spine": {
+      "label": "Posisi dalam kurikulum",
+      "section": {
+        "auxiliaries": "Kata kerja bantu",
+        "indirectSpeech": "Kalimat tidak langsung",
+        "additional": "Tata bahasa tambahan",
+        "complementary": "Tata bahasa pelengkap"
+      }
     }
   },
   "mastery": {

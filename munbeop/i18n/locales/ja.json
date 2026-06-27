@@ -448,6 +448,15 @@
       "summary": "{n}個の文法に練習が必要",
       "view": "表示",
       "rescue": "一番苦手なものを復習"
+    },
+    "spine": {
+      "label": "カリキュラム内の位置",
+      "section": {
+        "auxiliaries": "補助動詞",
+        "indirectSpeech": "間接話法",
+        "additional": "追加文法",
+        "complementary": "補完文法"
+      }
     }
   },
   "mastery": {

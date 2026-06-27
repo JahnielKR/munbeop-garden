@@ -448,6 +448,15 @@
       "summary": "ไวยากรณ์ {n} ข้อต้องฝึกฝน",
       "view": "แสดง",
       "rescue": "กู้ข้อที่ยากที่สุด"
+    },
+    "spine": {
+      "label": "ตำแหน่งในหลักสูตร",
+      "section": {
+        "auxiliaries": "กริยาช่วย",
+        "indirectSpeech": "การพูดทางอ้อม",
+        "additional": "ไวยากรณ์เพิ่มเติม",
+        "complementary": "ไวยากรณ์เสริม"
+      }
     }
   },
   "mastery": {
