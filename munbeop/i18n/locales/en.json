@@ -741,6 +741,10 @@
     "placement": {
       "name": "Placement",
       "desc": "Find your TOPIK level in a few questions."
+    },
+    "numberMarket": {
+      "name": "Number Market",
+      "desc": "Read any number the Korean way: count, time, money, dates."
     }
   },
   "conjugation": {
@@ -937,5 +941,32 @@
     "practice_cta": "Practice it",
     "complete": "Path complete! 🎉",
     "list_toggle": "Show the full path"
+  },
+  "numberMarket": {
+    "title": "Number Market",
+    "lead": "Read any quantity in the right system — counting, time, money, dates, phone. Build the Korean reading from the tiles.",
+    "build_hint": "Tap the tiles to build the reading",
+    "submit": "Check",
+    "clear": "Clear",
+    "undo": "Undo",
+    "correct": "Correct!",
+    "wrong": "Not quite",
+    "next": "Next",
+    "score": "Score",
+    "progress": "Round progress",
+    "restart": "Pick another domain",
+    "replay_failed": "Replay the misses",
+    "master": {
+      "title": "수의 달인",
+      "progress": "{done}/{total} domains"
+    },
+    "domain": {
+      "counting": "Counting (native)",
+      "sino_basics": "Sino basics",
+      "time": "Telling time",
+      "money": "Money",
+      "dates": "Dates",
+      "phone": "Phone & numbers"
+    }
   }
 }

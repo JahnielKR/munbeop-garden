@@ -741,6 +741,10 @@
     "placement": {
       "name": "Teste de nível",
       "desc": "Descubra seu nível TOPIK em poucas perguntas."
+    },
+    "numberMarket": {
+      "name": "Mercado de Números",
+      "desc": "Leia qualquer número à coreana: contar, hora, dinheiro, datas."
     }
   },
   "escape": {
@@ -937,5 +941,32 @@
     "practice_cta": "Praticar",
     "complete": "Trilha concluída! 🎉",
     "list_toggle": "Ver a trilha completa"
+  },
+  "numberMarket": {
+    "title": "Mercado de Números",
+    "lead": "Leia qualquer quantidade no sistema certo — contar, hora, dinheiro, datas, telefone. Monte a leitura coreana com as peças.",
+    "build_hint": "Toque nas peças para montar a leitura",
+    "submit": "Verificar",
+    "clear": "Limpar",
+    "undo": "Desfazer",
+    "correct": "Correto!",
+    "wrong": "Quase",
+    "next": "Próximo",
+    "score": "Pontuação",
+    "progress": "Progresso da rodada",
+    "restart": "Escolher outro domínio",
+    "replay_failed": "Repetir os erros",
+    "master": {
+      "title": "수의 달인",
+      "progress": "{done}/{total} domínios"
+    },
+    "domain": {
+      "counting": "Contar (nativo)",
+      "sino_basics": "Sino básico",
+      "time": "As horas",
+      "money": "Dinheiro",
+      "dates": "Datas",
+      "phone": "Telefone e números"
+    }
   }
 }

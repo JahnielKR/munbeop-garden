@@ -741,6 +741,10 @@
     "placement": {
       "name": "Kiểm tra xếp lớp",
       "desc": "Tìm cấp độ TOPIK của bạn chỉ trong vài câu hỏi."
+    },
+    "numberMarket": {
+      "name": "Chợ Số",
+      "desc": "Đọc số kiểu Hàn: đếm, giờ, tiền, ngày tháng."
     }
   },
   "escape": {
@@ -937,5 +941,32 @@
     "practice_cta": "Luyện ngay",
     "complete": "Hoàn thành lộ trình! 🎉",
     "list_toggle": "Xem toàn bộ lộ trình"
+  },
+  "numberMarket": {
+    "title": "Chợ Số",
+    "lead": "Đọc bất kỳ số lượng nào theo đúng hệ — đếm, giờ, tiền, ngày tháng, điện thoại. Ghép cách đọc tiếng Hàn từ các ô.",
+    "build_hint": "Chạm vào các ô để ghép cách đọc",
+    "submit": "Kiểm tra",
+    "clear": "Xóa",
+    "undo": "Hoàn tác",
+    "correct": "Chính xác!",
+    "wrong": "Gần đúng",
+    "next": "Tiếp",
+    "score": "Điểm",
+    "progress": "Tiến độ vòng",
+    "restart": "Chọn lĩnh vực khác",
+    "replay_failed": "Chơi lại câu sai",
+    "master": {
+      "title": "수의 달인",
+      "progress": "{done}/{total} lĩnh vực"
+    },
+    "domain": {
+      "counting": "Đếm (thuần Hàn)",
+      "sino_basics": "Hán-Hàn cơ bản",
+      "time": "Xem giờ",
+      "money": "Tiền",
+      "dates": "Ngày tháng",
+      "phone": "Điện thoại & số"
+    }
   }
 }

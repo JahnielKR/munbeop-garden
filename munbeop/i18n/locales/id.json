@@ -741,6 +741,10 @@
     "placement": {
       "name": "Tes Penempatan",
       "desc": "Temukan level TOPIK-mu dalam beberapa pertanyaan."
+    },
+    "numberMarket": {
+      "name": "Pasar Angka",
+      "desc": "Baca angka ala Korea: berhitung, waktu, uang, tanggal."
     }
   },
   "escape": {
@@ -937,5 +941,32 @@
     "practice_cta": "Latih",
     "complete": "Jalur selesai! 🎉",
     "list_toggle": "Lihat seluruh jalur"
+  },
+  "numberMarket": {
+    "title": "Pasar Angka",
+    "lead": "Baca jumlah apa pun dengan sistem yang tepat — berhitung, waktu, uang, tanggal, telepon. Susun bacaan Korea dari ubin.",
+    "build_hint": "Ketuk ubin untuk menyusun bacaan",
+    "submit": "Periksa",
+    "clear": "Bersihkan",
+    "undo": "Batalkan",
+    "correct": "Benar!",
+    "wrong": "Hampir",
+    "next": "Berikutnya",
+    "score": "Skor",
+    "progress": "Kemajuan ronde",
+    "restart": "Pilih domain lain",
+    "replay_failed": "Ulangi yang salah",
+    "master": {
+      "title": "수의 달인",
+      "progress": "{done}/{total} domain"
+    },
+    "domain": {
+      "counting": "Berhitung (asli)",
+      "sino_basics": "Sino dasar",
+      "time": "Waktu",
+      "money": "Uang",
+      "dates": "Tanggal",
+      "phone": "Telepon & angka"
+    }
   }
 }
