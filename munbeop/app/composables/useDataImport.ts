@@ -13,14 +13,41 @@ export function useDataImport() {
   const toast = useToast()
 
   async function applyImport(payload: ExportPayload): Promise<boolean> {
+    const storage = useStorageAdapter()
+    const keys = EXPORT_KEYS.filter((key) => payload.data[key] !== undefined)
+    if (keys.length === 0) return true
+
+    // 1. Snapshot the current value of every key BEFORE writing anything. A read
+    //    failure here aborts with the account completely untouched — better than
+    //    starting a restore we can't finish.
+    const snapshot = new Map<string, unknown>()
     try {
-      const storage = useStorageAdapter()
-      for (const key of EXPORT_KEYS) {
-        const value = payload.data[key]
-        if (value !== undefined) await storage.write(key, value)
+      for (const key of keys) snapshot.set(key, await storage.read<unknown>(key, null))
+    } catch {
+      toast.error(t('settings.data.import_error'))
+      return false
+    }
+
+    // 2. Apply. On any failure, roll the keys we already wrote back to their
+    //    snapshot so a half-finished restore never leaves the account in a mixed
+    //    old/new state (the bug: a network drop mid-loop half-overwrote it).
+    const written: (typeof EXPORT_KEYS)[number][] = []
+    try {
+      for (const key of keys) {
+        await storage.write(key, payload.data[key])
+        written.push(key)
       }
       return true
     } catch {
+      for (const key of written) {
+        const prev = snapshot.get(key)
+        try {
+          if (prev === null || prev === undefined) await storage.remove(key)
+          else await storage.write(key, prev)
+        } catch {
+          // best-effort rollback — a failing restore can't make things worse
+        }
+      }
       toast.error(t('settings.data.import_error'))
       return false
     }

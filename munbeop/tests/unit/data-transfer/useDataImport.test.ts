@@ -5,8 +5,10 @@ import { STORAGE_KEYS } from '~/lib/storage'
 import { APP_ID } from '~/lib/data-transfer/keys'
 
 const write = vi.fn(async () => {})
+const read = vi.fn(async () => null as unknown)
+const remove = vi.fn(async () => {})
 vi.mock('~/composables/useStorageAdapter', () => ({
-  useStorageAdapter: () => ({ read: vi.fn(), write, remove: vi.fn(), clear: vi.fn() }),
+  useStorageAdapter: () => ({ read, write, remove, clear: vi.fn() }),
 }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (k: string) => k }) }))
 
@@ -16,6 +18,10 @@ beforeEach(() => {
   setActivePinia(createPinia())
   write.mockReset()
   write.mockResolvedValue(undefined)
+  read.mockReset()
+  read.mockResolvedValue(null)
+  remove.mockReset()
+  remove.mockResolvedValue(undefined)
 })
 
 describe('useDataImport.applyImport', () => {
@@ -32,5 +38,48 @@ describe('useDataImport.applyImport', () => {
     const { applyImport } = useDataImport()
     const ok = await applyImport(payload({ [STORAGE_KEYS.log]: [1] }))
     expect(ok).toBe(false)
+  })
+
+  it('rolls an already-written key back to its snapshot when a later write fails', async () => {
+    // srs is written before log (EXPORT_KEYS order). srs has a pre-import value;
+    // its write succeeds, then log's write fails → srs must be restored.
+    read.mockImplementation(async (key: string) =>
+      key === STORAGE_KEYS.srs ? { mastered: 1 } : null,
+    )
+    write
+      .mockResolvedValueOnce(undefined) // srs write succeeds
+      .mockRejectedValueOnce(new Error('net drop')) // log write fails
+
+    const { applyImport } = useDataImport()
+    const ok = await applyImport(
+      payload({ [STORAGE_KEYS.srs]: { mastered: 2 }, [STORAGE_KEYS.log]: ['x'] }),
+    )
+
+    expect(ok).toBe(false)
+    // srs rolled back to the pre-import snapshot — not left at the imported value.
+    expect(write).toHaveBeenCalledWith(STORAGE_KEYS.srs, { mastered: 1 })
+  })
+
+  it('removes a key on rollback when it had no pre-import value (snapshot null)', async () => {
+    read.mockResolvedValue(null) // nothing existed before
+    write
+      .mockResolvedValueOnce(undefined) // srs write succeeds
+      .mockRejectedValueOnce(new Error('net drop')) // log write fails
+
+    const { applyImport } = useDataImport()
+    const ok = await applyImport(
+      payload({ [STORAGE_KEYS.srs]: { mastered: 2 }, [STORAGE_KEYS.log]: ['x'] }),
+    )
+
+    expect(ok).toBe(false)
+    expect(remove).toHaveBeenCalledWith(STORAGE_KEYS.srs)
+  })
+
+  it('aborts untouched when a snapshot read fails (nothing written)', async () => {
+    read.mockRejectedValueOnce(new Error('net drop'))
+    const { applyImport } = useDataImport()
+    const ok = await applyImport(payload({ [STORAGE_KEYS.log]: ['x'] }))
+    expect(ok).toBe(false)
+    expect(write).not.toHaveBeenCalled()
   })
 })
