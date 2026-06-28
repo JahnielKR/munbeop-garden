@@ -3,8 +3,9 @@ import Input from '~/components/ui/Input.vue'
 
 interface Props {
   modelValue: string
+  error?: boolean
 }
-defineProps<Props>()
+withDefaults(defineProps<Props>(), { error: false })
 defineEmits<{ 'update:modelValue': [string] }>()
 const { t } = useI18n()
 </script>
@@ -15,6 +16,7 @@ const { t } = useI18n()
     :placeholder="t('practice.sentence_placeholder')"
     multiline
     :rows="3"
+    :error="error"
     @update:model-value="$emit('update:modelValue', $event)"
   />
 </template>

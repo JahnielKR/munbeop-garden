@@ -288,6 +288,7 @@
     "completion_restart": "🃏 NUEVA MANO",
     "context_label": "Contexto · 상황",
     "sentence_placeholder": "Escribe tu oración aquí…",
+    "sentence_korean_only": "Escribe la oración en coreano · 한국어로 써 주세요",
     "show_example": "💡 Ver ejemplo",
     "hide_example": "Ocultar ejemplo",
     "no_grammars": "No hay suficientes gramáticas en los decks activos.",
