@@ -26,6 +26,13 @@ export interface StorageAdapter {
    * keys; the Supabase adapter throws for keys it doesn't support.
    */
   upsertOne<V>(key: StorageKey, entry: { id: string; value: V }): Promise<void>
+  /**
+   * Delete a single row from a collection-valued key by its id (e.g. one journal
+   * entry), so a delete is one row instead of re-writing the whole collection.
+   * Only meaningful for keys with row ids; the Supabase adapter throws for keys
+   * it doesn't support.
+   */
+  deleteOne(key: StorageKey, id: string | number): Promise<void>
   remove(key: StorageKey): Promise<void>
   clear(): Promise<void>
 }

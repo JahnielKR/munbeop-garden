@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { isPendingReview, type LogEntry } from '~/lib/domain'
 
 const props = defineProps<{ entry: LogEntry }>()
-defineEmits<{ review: [number] }>()
+defineEmits<{ review: [number]; delete: [number] }>()
 const { t } = useI18n()
 const pending = computed(() => isPendingReview(props.entry))
 </script>
@@ -47,6 +47,16 @@ const pending = computed(() => isPendingReview(props.entry))
       >
         ✓ {{ t('journal.reviewed') }}
       </span>
+      <button
+        type="button"
+        class="delete-btn"
+        data-testid="delete-entry"
+        :aria-label="t('journal.delete')"
+        :title="t('journal.delete')"
+        @click="$emit('delete', entry.id)"
+      >
+        ✕
+      </button>
     </div>
   </li>
 </template>
@@ -68,4 +78,7 @@ const pending = computed(() => isPendingReview(props.entry))
 .review-btn:hover { background: var(--paper-deep, var(--paper-warm)); }
 .review-btn:focus-visible { outline: 2px solid var(--focus-ring, var(--sky)); outline-offset: 2px; }
 .reviewed-badge { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: var(--jade, #3f9d6b); }
+.delete-btn { margin-left: auto; background: none; border: none; cursor: pointer; color: var(--ink-soft); font-size: 14px; line-height: 1; padding: 4px; }
+.delete-btn:hover { color: var(--danger, var(--red)); }
+.delete-btn:focus-visible { outline: 2px solid var(--focus-ring, var(--sky)); outline-offset: 2px; }
 </style>

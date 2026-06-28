@@ -117,7 +117,15 @@
     "revisit_practice": "練習 화이팅",
     "mark_reviewed": "復習済みにする",
     "reviewed": "復習済み",
-    "note_label": "メモ"
+    "note_label": "メモ",
+    "search_placeholder": "日記を検索",
+    "load_more": "もっと見る",
+    "no_results": "一致する記録はありません。",
+    "delete": "削除",
+    "delete_confirm_title": "この記録を削除しますか？",
+    "delete_confirm_body": "この文は日記から完全に削除されます。",
+    "deleted": "記録を削除しました",
+    "cancel": "キャンセル"
   },
   "stats": {
     "empty": "まだ統計はありません — 練習で文をいくつか書くと、ここにあなたの庭の物語が始まります。",

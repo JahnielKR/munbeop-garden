@@ -117,7 +117,15 @@
     "revisit_practice": "Réviser 화이팅",
     "mark_reviewed": "Marquer révisé",
     "reviewed": "Révisé",
-    "note_label": "Note"
+    "note_label": "Note",
+    "search_placeholder": "Cherche dans ton journal",
+    "load_more": "Charger plus",
+    "no_results": "Aucune entrée ne correspond.",
+    "delete": "Supprimer",
+    "delete_confirm_title": "Supprimer cette entrée ?",
+    "delete_confirm_body": "La phrase sera retirée définitivement de ton journal.",
+    "deleted": "Entrée supprimée",
+    "cancel": "Annuler"
   },
   "stats": {
     "empty": "Pas encore de stats — écris quelques phrases dans Pratique et l'histoire de ton jardin commence ici.",

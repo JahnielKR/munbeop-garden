@@ -463,6 +463,25 @@ export class SupabaseAdapter implements StorageAdapter {
     }
   }
 
+  async deleteOne(key: StorageKey, id: string | number): Promise<void> {
+    switch (key) {
+      case STORAGE_KEYS.log: {
+        // One-row delete scoped to this user (RLS also enforces it). user_log.id
+        // is bigint; the in-memory LogEntry.id carries a fractional tiebreaker,
+        // so floor it to match the stored row (see logRow()).
+        const { error } = await this.client
+          .from('user_log')
+          .delete()
+          .eq('user_id', this.userId)
+          .eq('id', Math.floor(Number(id)))
+        assertOk('write', key, error)
+        return
+      }
+      default:
+        throw new Error(`SupabaseAdapter.deleteOne(${key}) is not supported`)
+    }
+  }
+
   async remove(key: StorageKey): Promise<void> {
     // settings/escapeRoom store a single jsonb blob (prefs/progress), not a
     // collection. Routing them through write(key, []) would upsert the blob as an

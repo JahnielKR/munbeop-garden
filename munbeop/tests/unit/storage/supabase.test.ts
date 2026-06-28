@@ -59,15 +59,30 @@ function makeMockClient() {
           writes.push({ table, op: 'insert', payload: rowOrRows })
           return Promise.resolve({ error: null })
         },
-        delete: () => ({
-          eq: (_col: string, _val: unknown) => {
-            if (errors[table]) return Promise.resolve({ error: errors[table] })
-            const before = (data[table] ?? []).length
-            data[table] = []
-            writes.push({ table, op: 'delete', payload: { rows: before } })
-            return Promise.resolve({ error: null })
-          },
-        }),
+        delete: () => {
+          // Chainable like select so `.delete().eq(...).eq(...)` (deleteOne's
+          // user_id + id scoping) works, not just a single eq.
+          const filters: Array<[string, unknown]> = []
+          const chain = {
+            eq: (col: string, val: unknown) => {
+              filters.push([col, val])
+              return chain
+            },
+            then: (cb: (v: { error: { message: string } | null }) => unknown) => {
+              if (errors[table]) return cb({ error: errors[table]! })
+              const before = (data[table] ?? []).length
+              const idFilter = filters.find(([c]) => c === 'id')
+              // An id-scoped delete (deleteOne) removes just that row; otherwise
+              // it's the delete-all half of a delete-then-upsert.
+              data[table] = idFilter
+                ? (data[table] ?? []).filter((r) => (r as { id?: unknown }).id !== idFilter[1])
+                : []
+              writes.push({ table, op: 'delete', payload: { rows: before, filters } })
+              return cb({ error: null })
+            },
+          }
+          return chain
+        },
       }
     },
   }
@@ -397,6 +412,32 @@ describe('SupabaseAdapter', () => {
           { id: 'd1', name: 'D', colorId: 'indigo', order: 0, collapsed: false },
         ]),
       ).rejects.toThrow()
+    })
+  })
+
+  describe('deleteOne', () => {
+    it('log: deletes the single user_log row by floored id, scoped to the user', async () => {
+      client.data.user_log = [
+        { id: 5, user_id: USER },
+        { id: 9, user_id: USER },
+      ]
+      // The in-memory LogEntry.id carries a fractional tiebreaker — floor it.
+      await adapter.deleteOne(STORAGE_KEYS.log, 9.0007)
+
+      const del = client.writes.find((w) => w.table === 'user_log' && w.op === 'delete')
+      expect(del).toBeTruthy()
+      const { filters } = del!.payload as { filters: Array<[string, unknown]> }
+      expect(filters).toEqual(expect.arrayContaining([['user_id', USER], ['id', 9]]))
+      expect(client.data.user_log).toEqual([{ id: 5, user_id: USER }])
+    })
+
+    it('throws for a key it does not support', async () => {
+      await expect(adapter.deleteOne(STORAGE_KEYS.srs, 1)).rejects.toThrow()
+    })
+
+    it('throws when the delete returns an error', async () => {
+      client.errors.user_log = { message: 'rls denied' }
+      await expect(adapter.deleteOne(STORAGE_KEYS.log, 1)).rejects.toThrow()
     })
   })
 

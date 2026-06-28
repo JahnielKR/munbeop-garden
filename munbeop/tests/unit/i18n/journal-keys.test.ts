@@ -16,7 +16,20 @@ function dig(obj: unknown, path: string): unknown {
 
 // The /log review control's copy must exist in every locale (the project keeps
 // all 8 locales at parity — a missing key would render the raw key string).
-const KEYS = ['journal.mark_reviewed', 'journal.reviewed', 'journal.note_label']
+const KEYS = [
+  'journal.mark_reviewed',
+  'journal.reviewed',
+  'journal.note_label',
+  // Navigable-journal pass (#7b): search, pagination, delete.
+  'journal.search_placeholder',
+  'journal.load_more',
+  'journal.no_results',
+  'journal.delete',
+  'journal.delete_confirm_title',
+  'journal.delete_confirm_body',
+  'journal.deleted',
+  'journal.cancel',
+]
 
 describe('journal.* i18n parity', () => {
   for (const [code, msgs] of Object.entries(locales)) {
