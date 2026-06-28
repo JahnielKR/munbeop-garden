@@ -9,7 +9,7 @@ import CustomGrammarAddForm from '~/components/settings/CustomGrammarAddForm.vue
 
 const { t } = useI18n()
 const { tl } = useLocalized()
-const { success } = useToast()
+const { success, error } = useToast()
 const store = useGrammarStore()
 
 const pendingDelete = ref<Grammar | null>(null)
@@ -22,7 +22,15 @@ function cancelDelete() {
 async function confirmDelete() {
   const g = pendingDelete.value
   if (!g) return
-  const ok = await store.removeCustomGrammar(g.ko)
+  let ok = false
+  try {
+    ok = await store.removeCustomGrammar(g.ko)
+  } catch {
+    // Store rolled back the removal on a failed cloud write — tell the user.
+    pendingDelete.value = null
+    error(t('errors.save_failed'))
+    return
+  }
   pendingDelete.value = null
   if (ok) success(t('settings.custom_grammar.deleted'))
 }

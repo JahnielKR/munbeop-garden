@@ -82,7 +82,10 @@ defineEmits<{ 'update:modelValue': [string] }>()
   border: 2px solid var(--border);
   padding: 10px 12px;
   font-family: 'Noto Sans KR', 'Inter', sans-serif;
-  font-size: var(--text-base);
+  /* 16px (not --text-base/14px): iOS Safari auto-zooms any input whose text is
+   * under 16px, yanking the viewport on focus. This is the most-used control in
+   * the app (the practice sentence) plus login + deck builder. */
+  font-size: var(--text-md);
   line-height: 1.5;
   outline: none;
   resize: vertical;

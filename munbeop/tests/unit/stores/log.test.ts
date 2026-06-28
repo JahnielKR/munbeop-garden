@@ -40,4 +40,15 @@ describe('useLogStore.add — delta append', () => {
     expect(store.entries).toHaveLength(1)
     expect(store.entries[0]).toStrictEqual(entry)
   })
+
+  it('rolls back the optimistic insert and rethrows when the cloud append fails', async () => {
+    const store = useLogStore()
+    append.mockRejectedValueOnce(new Error('network down'))
+
+    // The write rejection must propagate (so the caller can surface a retry)…
+    await expect(store.add(payload)).rejects.toThrow('network down')
+    // …and the phantom entry must not linger in memory — otherwise a retry would
+    // duplicate it and inflate the journal / stats.
+    expect(store.entries).toHaveLength(0)
+  })
 })

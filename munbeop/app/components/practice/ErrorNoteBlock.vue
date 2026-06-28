@@ -6,6 +6,8 @@ import { ERROR_DIMENSIONS, type ErrorDimension } from '~/lib/domain'
 interface Props {
   modelValue: string
   dimension: ErrorDimension | null
+  /** Disable the save/skip actions while a save is in flight (see GrammarCard). */
+  disabled?: boolean
 }
 defineProps<Props>()
 const emit = defineEmits<{
@@ -52,10 +54,10 @@ function toggle(current: ErrorDimension | null, d: ErrorDimension) {
         the `danger` variant which read as destructive — inverted the
         pedagogical intent. Restored per audit fix G8.
       -->
-      <Button variant="primary" @click="$emit('save')">
+      <Button variant="primary" :disabled="disabled" @click="$emit('save')">
         {{ t('practice.save_with_note') }}
       </Button>
-      <Button variant="secondary" @click="$emit('skip')">
+      <Button variant="secondary" :disabled="disabled" @click="$emit('skip')">
         {{ t('practice.skip_note') }}
       </Button>
     </div>

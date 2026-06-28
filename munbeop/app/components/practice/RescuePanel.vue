@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { ErrorDimension, Grammar } from '~/lib/domain'
+import { computed, ref, watch } from 'vue'
+import type { ErrorDimension, Grammar, LocalizedString } from '~/lib/domain'
 import { notesFor } from '~/lib/usage-notes'
 import ExamplesSection from '~/components/library/GrammarStudySheet/ExamplesSection.vue'
 import ConfusedWithSection from '~/components/library/GrammarStudySheet/ConfusedWithSection.vue'
@@ -24,8 +24,18 @@ const header = computed(() =>
     : t('rescue.header_plain'),
 )
 
-// Usage notes by ko (same lookup the study sheet uses), not off the Grammar object.
-const usageNotes = computed(() => notesFor(props.grammar.ko))
+// Usage notes by ko (same lookup the study sheet uses), not off the Grammar
+// object. Async: notesFor loads the grammar's TOPIK-level seed chunk on demand.
+const usageNotes = ref<LocalizedString | undefined>(undefined)
+watch(
+  () => [props.grammar.ko, props.grammar.deckId] as const,
+  async ([ko, deckId]) => {
+    const result = await notesFor(ko, deckId)
+    // Ignore a stale resolve if the grammar changed while the chunk loaded.
+    if (props.grammar.ko === ko) usageNotes.value = result
+  },
+  { immediate: true },
+)
 </script>
 
 <template>

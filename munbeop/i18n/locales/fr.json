@@ -242,6 +242,7 @@
   },
   "errors": {
     "data_failed": "Impossible de charger tes données. Vérifie ta connexion et réessaie.",
+    "save_failed": "Impossible d'enregistrer. Vérifie ta connexion et réessaie.",
     "retry": "Réessayer",
     "fatal_title": "Une erreur est survenue",
     "fatal_body": "Désolé — le jardin a rencontré un problème. Réessayez de recharger ou revenez à l'accueil.",
@@ -295,6 +296,7 @@
     "no_contexts": "Tu as besoin d'au moins 3 contextes actifs.",
     "toast_saved_easy": "✨ Sauvegardée",
     "toast_saved_hard": "😤 Sauvegardée",
+    "toast_save_error": "⚠️ Enregistrement impossible. Ta phrase est conservée, appuie pour réessayer.",
     "no_sentence": "Écris d'abord une phrase",
     "custom": {
       "section": "Decks personnalisés",

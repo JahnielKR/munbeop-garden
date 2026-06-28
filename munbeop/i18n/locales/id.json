@@ -242,6 +242,7 @@
   },
   "errors": {
     "data_failed": "Gagal memuat datamu. Periksa koneksimu dan coba lagi.",
+    "save_failed": "Gagal menyimpan. Periksa koneksimu dan coba lagi.",
     "retry": "Coba lagi",
     "fatal_title": "Terjadi kesalahan",
     "fatal_body": "Maaf — taman mengalami masalah. Coba muat ulang, atau kembali ke beranda.",
@@ -295,6 +296,7 @@
     "no_contexts": "Kamu butuh minimal 3 konteks aktif.",
     "toast_saved_easy": "✨ Tersimpan",
     "toast_saved_hard": "😤 Tersimpan",
+    "toast_save_error": "⚠️ Gagal menyimpan. Kalimatmu tetap ada, ketuk untuk coba lagi.",
     "no_sentence": "Tulis kalimat dulu",
     "custom": {
       "section": "Dek khusus",

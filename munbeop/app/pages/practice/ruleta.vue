@@ -234,6 +234,10 @@ function scrollNextCardIntoView() {
   }
 }
 
+// Which pick is mid-save — drives the card's :submitting so its actions disable
+// while the cloud write is in flight (no double-logging on a double-tap).
+const submittingPick = ref<number | null>(null)
+
 async function onSubmit(payload: {
   pickIndex: number
   sentence: string
@@ -241,16 +245,27 @@ async function onSubmit(payload: {
   errorNote: string | null
   errorDimension?: import('~/lib/domain').ErrorDimension | null
 }) {
-  const entry = await persistEntry(payload)
-  if (entry) {
-    bomi.react(payload.feedback === 'easy' ? 'happy' : 'sad')
-    if (payload.feedback === 'easy') {
-      toast.success(t('practice.toast_saved_easy'))
+  submittingPick.value = payload.pickIndex
+  try {
+    const entry = await persistEntry(payload)
+    if (entry) {
+      bomi.react(payload.feedback === 'easy' ? 'happy' : 'sad')
+      if (payload.feedback === 'easy') {
+        toast.success(t('practice.toast_saved_easy'))
+      } else {
+        toast.info(t('practice.toast_saved_hard'))
+      }
+      await nextTick()
+      scrollNextCardIntoView()
     } else {
-      toast.info(t('practice.toast_saved_hard'))
+      // Save failed (flaky network — the Supabase write threw). persistEntry kept
+      // progress where it was and the card preserved the sentence, so the learner
+      // can just tap again to retry. Surface the failure so it isn't silent.
+      bomi.react('sad')
+      toast.error(t('practice.toast_save_error'))
     }
-    await nextTick()
-    scrollNextCardIntoView()
+  } finally {
+    submittingPick.value = null
   }
 }
 
@@ -305,6 +320,7 @@ async function onRestart() {
           :context="currentContextOf(i)!"
           :progress="pick.progress"
           :pick-index="i"
+          :submitting="submittingPick === i"
           @submit="onSubmit"
         />
       </div>

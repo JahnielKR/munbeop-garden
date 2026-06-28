@@ -34,6 +34,11 @@ export const useCustomDecksStore = defineStore('customDecks', () => {
     await storage.write(STORAGE_KEYS.customDecks, decks.value)
   }
 
+  // The Supabase write is delete-then-upsert ('replace the user's set'): a
+  // network drop between the two halves leaves the cloud EMPTY while local state
+  // still looks fine — every deck silently gone on the next hydrate. Snapshot +
+  // rollback + rethrow (same discipline as the contexts store) keeps local in
+  // sync and lets the caller surface a retry instead of losing the decks.
   async function addDeck(input: NewCustomDeck): Promise<CustomDeck> {
     const deck: CustomDeck = {
       id: crypto.randomUUID(),
@@ -45,8 +50,14 @@ export const useCustomDecksStore = defineStore('customDecks', () => {
       createdAt: new Date().toISOString(),
       ...(input.imageUrl ? { imageUrl: input.imageUrl } : {}),
     }
+    const snapshot = decks.value
     decks.value = [...decks.value, deck]
-    await persist()
+    try {
+      await persist()
+    } catch (e) {
+      decks.value = snapshot
+      throw e
+    }
     return deck
   }
 
@@ -56,14 +67,26 @@ export const useCustomDecksStore = defineStore('customDecks', () => {
     const next: CustomDeck = { ...decks.value[idx]!, ...patch }
     if (patch.name !== undefined) next.name = patch.name.trim()
     if (patch.grammarKos !== undefined) next.grammarKos = [...patch.grammarKos]
+    const snapshot = decks.value
     decks.value = decks.value.map((d, i) => (i === idx ? next : d))
-    await persist()
+    try {
+      await persist()
+    } catch (e) {
+      decks.value = snapshot
+      throw e
+    }
   }
 
   async function removeDeck(id: string): Promise<void> {
     if (!decks.value.some((d) => d.id === id)) return
+    const snapshot = decks.value
     decks.value = decks.value.filter((d) => d.id !== id)
-    await persist()
+    try {
+      await persist()
+    } catch (e) {
+      decks.value = snapshot
+      throw e
+    }
   }
 
   return { decks, sorted, deckById, hydrate, addDeck, updateDeck, removeDeck }

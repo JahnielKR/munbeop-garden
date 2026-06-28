@@ -17,19 +17,20 @@ interface Props {
   context: Context
   progress: number
   pickIndex: number
+  /** True while the parent is awaiting this card's save (cloud write in flight).
+   * Disables the actions so a double-tap can't double-log the same answer. */
+  submitting?: boolean
 }
 const props = defineProps<Props>()
-const emit = defineEmits<{
-  submit: [
-    {
-      pickIndex: number
-      sentence: string
-      feedback: 'easy' | 'hard'
-      errorNote: string | null
-      errorDimension: ErrorDimension | null
-    },
-  ]
-}>()
+
+type SubmitPayload = {
+  pickIndex: number
+  sentence: string
+  feedback: 'easy' | 'hard'
+  errorNote: string | null
+  errorDimension: ErrorDimension | null
+}
+const emit = defineEmits<{ submit: [SubmitPayload] }>()
 
 const srs = useSrsStore()
 const { t } = useI18n()
@@ -68,6 +69,10 @@ function passesKoreanGate(text: string): boolean {
 // is a fresh instance and starts hidden again.
 const showExample = ref(false)
 
+// Local one-shot latch, closed synchronously on submit so a fast double-tap
+// can't fire twice before the parent's :submitting prop round-trips back down.
+const sent = ref(false)
+
 function reset() {
   sentence.value = ''
   showErrorBlock.value = false
@@ -76,18 +81,44 @@ function reset() {
   showKoreanError.value = false
 }
 
+// Clear the input ONLY when the context actually advances — i.e. a confirmed
+// save. On a failed save progress is unchanged, so the learner's sentence (and
+// any error note) is preserved for an immediate retry. This is the core of the
+// data-loss fix: the card no longer wipes its state the instant submit fires.
+watch(
+  () => props.progress,
+  () => {
+    reset()
+    sent.value = false
+  },
+)
+// Re-open the actions once an in-flight save resolves. Success advances progress
+// (handled above); this falling edge covers the failure path so the buttons
+// don't stay disabled after a retryable error.
+watch(
+  () => props.submitting,
+  (now, prev) => {
+    if (prev && !now) sent.value = false
+  },
+)
+
+function fire(payload: SubmitPayload) {
+  if (sent.value || props.submitting) return
+  sent.value = true
+  emit('submit', payload)
+}
+
 function onEasy() {
   const text = sentence.value.trim()
   if (!text) return
   if (!passesKoreanGate(text)) return
-  emit('submit', {
+  fire({
     pickIndex: props.pickIndex,
     sentence: text,
     feedback: 'easy',
     errorNote: null,
     errorDimension: null,
   })
-  reset()
 }
 function onHard() {
   const text = sentence.value.trim()
@@ -99,27 +130,25 @@ function onSaveWithNote() {
   const text = sentence.value.trim()
   if (!text) return
   if (!passesKoreanGate(text)) return
-  emit('submit', {
+  fire({
     pickIndex: props.pickIndex,
     sentence: text,
     feedback: 'hard',
     errorNote: errorNote.value.trim(),
     errorDimension: errorDimension.value,
   })
-  reset()
 }
 function onSkipNote() {
   const text = sentence.value.trim()
   if (!text) return
   if (!passesKoreanGate(text)) return
-  emit('submit', {
+  fire({
     pickIndex: props.pickIndex,
     sentence: text,
     feedback: 'hard',
     errorNote: null,
     errorDimension: errorDimension.value,
   })
-  reset()
 }
 </script>
 
@@ -155,11 +184,12 @@ function onSkipNote() {
     <p v-if="showKoreanError" class="sentence-error" role="alert">
       {{ t('practice.sentence_korean_only') }}
     </p>
-    <FeedbackRow :disabled="!sentence.trim()" @easy="onEasy" @hard="onHard" />
+    <FeedbackRow :disabled="!sentence.trim() || sent || submitting" @easy="onEasy" @hard="onHard" />
     <ErrorNoteBlock
       v-if="showErrorBlock"
       v-model="errorNote"
       v-model:dimension="errorDimension"
+      :disabled="sent || submitting"
       @save="onSaveWithNote"
       @skip="onSkipNote"
     />

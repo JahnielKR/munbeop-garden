@@ -32,11 +32,24 @@ export const useLogStore = defineStore('log', () => {
       date: new Date().toISOString(),
       ...p,
     }
-    entries.value.unshift(entry)
+    // Immutable prepend (newest first) + snapshot so a failed cloud write rolls
+    // back cleanly. A reference filter wouldn't work here: Vue re-proxies the
+    // pushed object, so the proxy read back !== the raw entry.
+    const snapshot = entries.value
+    entries.value = [entry, ...entries.value]
     // Append the one new row instead of re-writing the whole log — an add is
     // O(1), not O(history). (setReviewState still does a full write; it edits
     // an existing row and fires rarely.)
-    await storage.append(STORAGE_KEYS.log, entry)
+    try {
+      await storage.append(STORAGE_KEYS.log, entry)
+    } catch (e) {
+      // Roll back the optimistic insert so a failed cloud write doesn't leave a
+      // phantom entry in memory — that would duplicate on retry and inflate the
+      // journal/stats. Rethrow so the practice loop can preserve the sentence
+      // and surface a retry (see usePractice.persistEntry).
+      entries.value = snapshot
+      throw e
+    }
     return entry
   }
 

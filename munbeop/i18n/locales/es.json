@@ -242,6 +242,7 @@
   },
   "errors": {
     "data_failed": "No pudimos cargar tus datos. Revisa tu conexión e inténtalo de nuevo.",
+    "save_failed": "No se pudo guardar. Revisa tu conexión e inténtalo de nuevo.",
     "retry": "Reintentar",
     "fatal_title": "Algo salió mal",
     "fatal_body": "Lo sentimos — el jardín tuvo un problema. Prueba a recargar o vuelve al inicio.",
@@ -295,6 +296,7 @@
     "no_contexts": "Necesitas al menos 3 contextos activos.",
     "toast_saved_easy": "✨ Guardada",
     "toast_saved_hard": "😤 Guardada",
+    "toast_save_error": "⚠️ No se pudo guardar. Tu frase no se perdió, toca para reintentar.",
     "no_sentence": "Escribe una oración primero",
     "custom": {
       "section": "Mazos personalizados",

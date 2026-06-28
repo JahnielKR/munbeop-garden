@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { Grammar, SpeechLevel } from '~/lib/domain'
+import { ref, watch } from 'vue'
+import type { Grammar, GrammarExample, SpeechLevel } from '~/lib/domain'
 import { examplesFor } from '~/lib/grammar-examples'
 import ExampleAudioButton from './ExampleAudioButton.vue'
 
@@ -24,7 +24,18 @@ const REGISTER_ARIA: Record<SpeechLevel, string> = {
 
 // Only the authored bank renders here. The canonical `grammar.example` lives in
 // MeaningSection alone — echoing it here produced the "above == below" duplicate.
-const bank = computed(() => examplesFor(props.grammar.ko))
+// examplesFor is async (it loads the grammar's TOPIK-level seed chunk on demand),
+// so the bank fills in once the chunk resolves.
+const bank = ref<GrammarExample[]>([])
+watch(
+  () => [props.grammar.ko, props.grammar.deckId] as const,
+  async ([ko, deckId]) => {
+    const result = await examplesFor(ko, deckId)
+    // Ignore a stale resolve if the grammar changed while the chunk loaded.
+    if (props.grammar.ko === ko) bank.value = result
+  },
+  { immediate: true },
+)
 </script>
 
 <template>

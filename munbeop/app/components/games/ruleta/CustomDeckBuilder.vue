@@ -2,6 +2,7 @@
 import Icon, { type IconName } from '~/components/ui/Icon.vue'
 import { useGrammarStore } from '~/stores/grammar'
 import { useCustomDecksStore } from '~/stores/customDecks'
+import { useToast } from '~/composables/useToast'
 import {
   deckColorVar, DECK_COLOR_IDS, DECK_ICONS, MIN_CUSTOM_PLAYABLE,
 } from '~/components/games/ruleta/cards'
@@ -11,6 +12,7 @@ const props = defineProps<{ deckId: string | null }>()
 const emit = defineEmits<{ saved: [] }>()
 
 const { t, locale } = useI18n()
+const toast = useToast()
 const grammarStore = useGrammarStore()
 const customDecks = useCustomDecksStore()
 
@@ -64,13 +66,27 @@ async function save() {
   const trimmed = name.value.trim()
   if (!trimmed) return
   const payload = { name: trimmed, colorId: colorId.value, icon: icon.value, grammarKos: [...selected.value] }
-  if (props.deckId) await customDecks.updateDeck(props.deckId, payload)
-  else await customDecks.addDeck(payload)
+  // The store rolls back its in-memory state on a failed cloud write; surface a
+  // retry toast and keep the builder open instead of closing as if it saved.
+  try {
+    if (props.deckId) await customDecks.updateDeck(props.deckId, payload)
+    else await customDecks.addDeck(payload)
+  } catch {
+    toast.error(t('errors.save_failed'))
+    return
+  }
   emit('saved')
 }
 
 async function remove() {
-  if (props.deckId) await customDecks.removeDeck(props.deckId)
+  if (props.deckId) {
+    try {
+      await customDecks.removeDeck(props.deckId)
+    } catch {
+      toast.error(t('errors.save_failed'))
+      return
+    }
+  }
   emit('saved')
 }
 </script>

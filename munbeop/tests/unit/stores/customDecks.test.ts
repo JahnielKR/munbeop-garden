@@ -4,16 +4,24 @@ import { useCustomDecksStore } from '~/stores/customDecks'
 import { STORAGE_KEYS } from '~/lib/storage'
 
 let stored: Record<string, unknown> = {}
+let failNextWrite = false
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({
     read: async (key: string, fallback: unknown) => (key in stored ? stored[key] : fallback),
-    write: async (key: string, value: unknown) => { stored[key] = value },
+    write: async (key: string, value: unknown) => {
+      if (failNextWrite) {
+        failNextWrite = false
+        throw new Error('cloud write failed')
+      }
+      stored[key] = value
+    },
   }),
 }))
 
 beforeEach(() => {
   setActivePinia(createPinia())
   stored = {}
+  failNextWrite = false
 })
 
 describe('useCustomDecksStore', () => {
@@ -68,5 +76,32 @@ describe('useCustomDecksStore', () => {
     const s = useCustomDecksStore()
     await s.hydrate()
     expect(s.deckById('x')!.name).toBe('seed')
+  })
+
+  // The Supabase write is delete-then-upsert, so a mid-write failure could wipe
+  // every deck in the cloud. The store must roll back + rethrow so local state
+  // stays in sync and the caller can offer a retry.
+  it('addDeck rolls back and rethrows when the cloud write fails', async () => {
+    const s = useCustomDecksStore()
+    failNextWrite = true
+    await expect(s.addDeck({ name: 'x' })).rejects.toThrow()
+    expect(s.decks).toHaveLength(0)
+  })
+
+  it('updateDeck restores the previous deck when the cloud write fails', async () => {
+    const s = useCustomDecksStore()
+    const d = await s.addDeck({ name: 'a' })
+    failNextWrite = true
+    await expect(s.updateDeck(d.id, { name: 'renamed' })).rejects.toThrow()
+    expect(s.deckById(d.id)!.name).toBe('a')
+  })
+
+  it('removeDeck restores the deck when the cloud write fails', async () => {
+    const s = useCustomDecksStore()
+    const d = await s.addDeck({ name: 'a' })
+    failNextWrite = true
+    await expect(s.removeDeck(d.id)).rejects.toThrow()
+    expect(s.deckById(d.id)).toBeDefined()
+    expect(s.decks).toHaveLength(1)
   })
 })

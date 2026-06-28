@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import type { Grammar } from '~/lib/domain'
 import GrammarStudySheet from '~/components/library/GrammarStudySheet.vue'
 
@@ -12,12 +12,13 @@ vi.mock('~/stores/srs', () => ({
 vi.mock('~/stores/log', () => ({
   useLogStore: () => ({ entries: [] }),
 }))
+// examplesFor / notesFor are async (per-level dynamic import); mock as resolved.
 vi.mock('~/lib/grammar-examples', () => ({
-  examplesFor: () => [],
+  examplesFor: async () => [],
 }))
-// Notes are looked up by ko from the static seed; mock so the test drives them.
+// Notes are looked up by ko from the per-level seed; mock so the test drives them.
 vi.mock('~/lib/usage-notes', () => ({
-  notesFor: (ko: string) =>
+  notesFor: async (ko: string) =>
     ko === '-(으)니까'
       ? { en: 'Use this for subjective reasons. Often paired with imperatives.', es: '', fr: '', 'pt-BR': '', th: '', id: '', vi: '', ja: '' }
       : undefined,
@@ -49,18 +50,21 @@ describe('GrammarStudySheet', () => {
     expect(html).toContain('It is raining')
   })
 
-  it('renders usageNotes when present', () => {
+  it('renders usageNotes when present', async () => {
     const wrapper = mount(GrammarStudySheet, { props: { grammar: seededGrammar } })
+    await flushPromises() // async per-level notes load
     expect(wrapper.html()).toContain('Use this for subjective reasons.')
   })
 
-  it('renders ComingSoonSection for usageNotes when undefined', () => {
+  it('renders ComingSoonSection for usageNotes when undefined', async () => {
     const wrapper = mount(GrammarStudySheet, { props: { grammar: unseededGrammar } })
+    await flushPromises() // notes load resolves with none → ComingSoon
     expect(wrapper.html()).toContain('library.modal.coming_soon.usage_notes')
   })
 
-  it('renders the achievements section; shows ExamplesSection for examples', () => {
+  it('renders the achievements section; shows ExamplesSection for examples', async () => {
     const wrapper = mount(GrammarStudySheet, { props: { grammar: seededGrammar } })
+    await flushPromises() // async examples bank load
     const html = wrapper.html()
     // The achievements ComingSoon placeholder is replaced by the real section.
     expect(wrapper.find('.ach-section').exists()).toBe(true)
