@@ -6,6 +6,11 @@ import { useAuthStore } from '~/stores/auth'
 import { useLocaleStore } from '~/stores/locale'
 import { useTheme, type Theme } from '~/composables/useTheme'
 import { clampGoal, DEFAULT_DAILY_GOAL } from '~/lib/stats/goal'
+import {
+  clearPortraitCache,
+  readPortraitCache,
+  writePortraitCache,
+} from '~/lib/avatars/portrait-cache'
 
 /**
  * useSettings — account-synced UI preferences (theme, locale).
@@ -47,14 +52,29 @@ export const useSettingsStore = defineStore('settings', () => {
   const reviewReminders = ref(false)
   const startingDeckId = ref<string | null>(null)
   const excludedDeckIds = ref<string[]>([])
-  const chosenAvatarId = ref<string | null>(null)
-  const unlockedAvatarIds = ref<string[]>([])
+  // Seed the avatar from the device cache so the sidebar portrait paints the
+  // user's chosen icon on the FIRST frame of a cold load — before hydrate()'s
+  // async Supabase read resolves. Otherwise it blinks to the email initial for
+  // the whole round-trip. The cloud blob reconciles these in hydrate(); this is
+  // purely the FOUC head start (mirrors useTheme/useLocaleStore for theme/locale).
+  const cachedPortrait = readPortraitCache()
+  const chosenAvatarId = ref<string | null>(cachedPortrait?.chosenAvatarId ?? null)
+  const unlockedAvatarIds = ref<string[]>(cachedPortrait?.unlockedAvatarIds ?? [])
+
+  /** Mirror the live avatar selection into the device cache (FOUC head start). */
+  function cachePortrait(): void {
+    writePortraitCache({
+      chosenAvatarId: chosenAvatarId.value,
+      unlockedAvatarIds: unlockedAvatarIds.value,
+    })
+  }
 
   /**
-   * Reset the account-scoped prefs to their defaults. Called on sign-out and at
-   * the top of hydrate() so a second account on a shared device never inherits
-   * the previous user's deck-focus / avatar / goal when their cloud blob omits a
-   * field. Theme and locale are deliberately NOT reset here: those are
+   * Reset the account-scoped prefs to their defaults. Called on sign-out and by
+   * hydrate() (once the cloud blob is in hand) so a second account on a shared
+   * device never inherits the previous user's deck-focus / avatar / goal when
+   * their cloud blob omits a field. Theme and locale are deliberately NOT reset
+   * here: those are
    * device-level (persisted in localStorage for FOUC by useTheme/useLocaleStore),
    * so clearing them on sign-out would flip the visible theme/language.
    */
@@ -65,31 +85,44 @@ export const useSettingsStore = defineStore('settings', () => {
     excludedDeckIds.value = []
     chosenAvatarId.value = null
     unlockedAvatarIds.value = []
+    // Drop the device portrait cache too: on sign-out the next account on this
+    // device must not inherit (or briefly flash) the previous user's avatar.
+    // hydrate() re-writes it right after applying the cloud blob.
+    clearPortraitCache()
   }
 
   async function hydrate(): Promise<void> {
     if (!authStore.user) return
-    // Start from a clean slate: an account whose blob lacks a field must fall
-    // back to the default, not keep the previous account's in-memory value.
-    resetToDefaults()
+    let cloud: Partial<Settings> | null
     try {
       const storage = useStorageAdapter()
-      const cloud = await storage.read<Partial<Settings> | null>(STORAGE_KEYS.settings, null)
-      if (!cloud) return
-      if (isTheme(cloud.theme)) applyTheme(cloud.theme)
-      if (isLocale(cloud.locale)) await localeStore.set(cloud.locale)
-      if (typeof cloud.dailyGoal === 'number') dailyGoal.value = clampGoal(cloud.dailyGoal)
-      if (typeof cloud.reviewReminders === 'boolean') reviewReminders.value = cloud.reviewReminders
-      if (typeof cloud.startingDeckId === 'string') startingDeckId.value = cloud.startingDeckId
-      if (Array.isArray(cloud.excludedDeckIds))
-        excludedDeckIds.value = cloud.excludedDeckIds.filter((x): x is string => typeof x === 'string')
-      if (typeof cloud.chosenAvatarId === 'string') chosenAvatarId.value = cloud.chosenAvatarId
-      if (Array.isArray(cloud.unlockedAvatarIds))
-        unlockedAvatarIds.value = cloud.unlockedAvatarIds.filter((x): x is string => typeof x === 'string')
+      cloud = await storage.read<Partial<Settings> | null>(STORAGE_KEYS.settings, null)
     } catch {
       // Table may not exist yet (migration not deployed) or a network blip —
-      // keep device values; the app must not break.
+      // keep device values (incl. the optimistic portrait cache); the app must
+      // not break, and the portrait must not blink back to the email initial.
+      return
     }
+    // The cloud blob is the source of truth: reset account-scoped prefs to their
+    // defaults (so a field absent from THIS account's blob can't keep the
+    // previous account's value), THEN apply the blob. Resetting AFTER the read —
+    // not before the await — means the portrait never blinks to the initial
+    // during a slow cloud round-trip.
+    resetToDefaults()
+    if (!cloud) return
+    if (isTheme(cloud.theme)) applyTheme(cloud.theme)
+    if (isLocale(cloud.locale)) await localeStore.set(cloud.locale)
+    if (typeof cloud.dailyGoal === 'number') dailyGoal.value = clampGoal(cloud.dailyGoal)
+    if (typeof cloud.reviewReminders === 'boolean') reviewReminders.value = cloud.reviewReminders
+    if (typeof cloud.startingDeckId === 'string') startingDeckId.value = cloud.startingDeckId
+    if (Array.isArray(cloud.excludedDeckIds))
+      excludedDeckIds.value = cloud.excludedDeckIds.filter((x): x is string => typeof x === 'string')
+    if (typeof cloud.chosenAvatarId === 'string') chosenAvatarId.value = cloud.chosenAvatarId
+    if (Array.isArray(cloud.unlockedAvatarIds))
+      unlockedAvatarIds.value = cloud.unlockedAvatarIds.filter((x): x is string => typeof x === 'string')
+    // Persist the reconciled avatar into the device cache so the NEXT cold load
+    // paints it before this cloud read resolves — the core of the flash fix.
+    cachePortrait()
   }
 
   async function persistCloud(): Promise<void> {
@@ -152,6 +185,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
   async function setChosenAvatar(id: string | null): Promise<void> {
     chosenAvatarId.value = id
+    cachePortrait()
     await persistCloud()
   }
 
@@ -167,6 +201,7 @@ export const useSettingsStore = defineStore('settings', () => {
     }
     if (!grew) return
     unlockedAvatarIds.value = [...next]
+    cachePortrait()
     await persistCloud()
   }
 

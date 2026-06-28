@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Context, ErrorDimension, Grammar } from '~/lib/domain'
+import { isKoreanSentence } from '~/lib/korean/script'
 import { getMasteryInfo } from '~/lib/srs'
 import { useSrsStore } from '~/stores/srs'
 import Badge from '~/components/ui/Badge.vue'
@@ -41,6 +42,26 @@ const sentence = ref('')
 const showErrorBlock = ref(false)
 const errorNote = ref('')
 const errorDimension = ref<ErrorDimension | null>(null)
+// The produced sentence must be Korean (Hangul + numbers/punctuation are fine;
+// other alphabets are not). Validated only on save attempt — pressing a save
+// action with non-Korean text raises this flag and aborts the save. The note
+// field (ErrorNoteBlock) stays multilingual by design and is never checked.
+const showKoreanError = ref(false)
+// Clear the warning the moment the learner starts correcting the text.
+watch(sentence, () => {
+  showKoreanError.value = false
+})
+
+/**
+ * Gate every save path: returns true when the trimmed sentence is Korean.
+ * On failure it raises the red warning and the caller must abort (no emit,
+ * no advance) so a non-Korean sentence can never be saved.
+ */
+function passesKoreanGate(text: string): boolean {
+  if (isKoreanSentence(text)) return true
+  showKoreanError.value = true
+  return false
+}
 // The example is a crutch: hidden until the learner asks for it, so they try
 // producing the sentence from the grammar+meaning first. Lives outside reset()
 // on purpose — it's per-grammar (this card spans 3 contexts), so once revealed
@@ -57,6 +78,7 @@ function reset() {
   showErrorBlock.value = false
   errorNote.value = ''
   errorDimension.value = null
+  showKoreanError.value = false
 }
 
 // Clear the input ONLY when the context actually advances — i.e. a confirmed
@@ -89,6 +111,7 @@ function fire(payload: SubmitPayload) {
 function onEasy() {
   const text = sentence.value.trim()
   if (!text) return
+  if (!passesKoreanGate(text)) return
   fire({
     pickIndex: props.pickIndex,
     sentence: text,
@@ -98,12 +121,15 @@ function onEasy() {
   })
 }
 function onHard() {
-  if (!sentence.value.trim()) return
+  const text = sentence.value.trim()
+  if (!text) return
+  if (!passesKoreanGate(text)) return
   showErrorBlock.value = true
 }
 function onSaveWithNote() {
   const text = sentence.value.trim()
   if (!text) return
+  if (!passesKoreanGate(text)) return
   fire({
     pickIndex: props.pickIndex,
     sentence: text,
@@ -115,6 +141,7 @@ function onSaveWithNote() {
 function onSkipNote() {
   const text = sentence.value.trim()
   if (!text) return
+  if (!passesKoreanGate(text)) return
   fire({
     pickIndex: props.pickIndex,
     sentence: text,
@@ -153,7 +180,10 @@ function onSkipNote() {
 
     <ProgressDots :total="3" :progress="progress" />
     <ContextDisplay :context="context" />
-    <SentenceInput v-model="sentence" />
+    <SentenceInput v-model="sentence" :error="showKoreanError" />
+    <p v-if="showKoreanError" class="sentence-error" role="alert">
+      {{ t('practice.sentence_korean_only') }}
+    </p>
     <FeedbackRow :disabled="!sentence.trim() || sent || submitting" @easy="onEasy" @hard="onHard" />
     <ErrorNoteBlock
       v-if="showErrorBlock"
@@ -185,6 +215,16 @@ function onSkipNote() {
   color: var(--ink-soft);
   margin: 8px 0 12px;
   font-size: 15px;
+}
+/* Save-time warning when the sentence isn't Korean. Sits between the input
+ * and the feedback buttons; the Korean tail of the copy stays Korean in every
+ * locale (brand convention). */
+.sentence-error {
+  margin: 8px 0 0;
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--danger, var(--red));
 }
 .example-block {
   display: flex;
