@@ -17,7 +17,7 @@ import Button from '~/components/ui/Button.vue'
 const { t } = useI18n()
 const toast = useToast()
 const authStore = useAuthStore()
-const { reauthenticate, updatePassword, updateEmail } = useAuth()
+const { reauthenticate, updatePassword, updateEmail, resetPassword } = useAuth()
 
 const isEmailUser = computed(() => isEmailIdentity(authStore.user))
 
@@ -52,14 +52,40 @@ async function submitPassword() {
   toast.success(t('auth.password_updated'))
 }
 
+// Forgot the current password? Email a reset link (the reset flow sets a new
+// password without needing the old one). Only meaningful for email accounts.
+const resetBusy = ref(false)
+async function sendResetLink() {
+  const email = authStore.user?.email
+  if (!email || resetBusy.value) return
+  resetBusy.value = true
+  const { error } = await resetPassword(email)
+  resetBusy.value = false
+  toast[error ? 'error' : 'success'](t(error ? 'auth.reset_error' : 'auth.reset_email_sent'))
+}
+
 // ── Change email ─────────────────────────────────────────────────────────
 const newEmail = ref('')
+const emailCurrentPassword = ref('')
 const emailBusy = ref(false)
-const canEmail = computed(() => /.+@.+\..+/.test(newEmail.value.trim()) && !emailBusy.value)
+const canEmail = computed(
+  () =>
+    /.+@.+\..+/.test(newEmail.value.trim()) &&
+    emailCurrentPassword.value.length > 0 &&
+    !emailBusy.value,
+)
 
 async function submitEmail() {
   if (!canEmail.value) return
   emailBusy.value = true
+  // Changing the account email is an account-takeover primitive, so gate it on
+  // the current password the same way the password change is.
+  const reauth = await reauthenticate(emailCurrentPassword.value)
+  if (reauth.error) {
+    emailBusy.value = false
+    toast.error(t('settings.account.password.wrong_current'))
+    return
+  }
   const { error } = await updateEmail(newEmail.value.trim())
   emailBusy.value = false
   if (error) {
@@ -67,6 +93,7 @@ async function submitEmail() {
     return
   }
   newEmail.value = ''
+  emailCurrentPassword.value = ''
   toast.success(t('settings.account.email.sent'))
 }
 </script>
@@ -91,11 +118,22 @@ async function submitEmail() {
       <Button type="submit" size="sm" :disabled="!canPw" :loading="pwBusy">
         {{ t('settings.account.password.submit') }}
       </Button>
+      <button type="button" class="creds__link" :disabled="resetBusy" @click="sendResetLink">
+        {{ t('auth.forgot_password') }}
+      </button>
     </form>
 
     <form class="creds__form" @submit.prevent="submitEmail">
       <Field :label="t('settings.account.email.title')" html-for="set-email">
         <Input id="set-email" v-model="newEmail" type="email" autocomplete="email" />
+      </Field>
+      <Field :label="t('auth.current_password_label')" html-for="email-current-password">
+        <Input
+          id="email-current-password"
+          v-model="emailCurrentPassword"
+          type="password"
+          autocomplete="current-password"
+        />
       </Field>
       <p class="creds__hint">{{ t('settings.account.email.hint') }}</p>
       <Button type="submit" size="sm" :disabled="!canEmail" :loading="emailBusy">
@@ -125,5 +163,27 @@ async function submitEmail() {
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   color: var(--text-soft);
+}
+.creds__link {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 2px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--text-soft);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.creds__link:hover {
+  color: var(--text);
+}
+.creds__link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.creds__link:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 </style>
