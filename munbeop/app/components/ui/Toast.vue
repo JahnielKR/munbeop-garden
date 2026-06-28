@@ -30,7 +30,9 @@ function iconFor(variant: ToastEntry['variant']): string {
 </script>
 
 <template>
-  <div class="toast-stack" aria-live="polite">
+  <!-- No aria-live on this wrapper: each toast carries its own live region
+       (status/alert). A live region around live regions double-announces. -->
+  <div class="toast-stack">
     <TransitionGroup name="toast">
       <div
         v-for="t in toasts"

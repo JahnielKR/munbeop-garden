@@ -106,6 +106,14 @@ describe('drill engine (clash sets)', () => {
     expect(judge(naega, '나가', CONTRACTION)).toEqual({ kind: 'contraction', expected: '내가' })
   })
 
+  it('contraction: correctForm throws for a noun outside CONTRACTIONS (no silent wrong answer)', () => {
+    // A non-pronoun contraction item used to fall back to the trap form (the
+    // WRONG answer); it must now fail loudly. The seed invariant keeps real data
+    // safe (see clash-sets.test.ts), so this only fires on a bad/edited item.
+    const bogus = item('contraction', 0, '우리', ' 가요.')
+    expect(() => correctForm(bogus, CONTRACTION)).toThrow(/not a known contraction/)
+  })
+
   it('optionsFor returns set-wide options for particle sets', () => {
     expect(optionsFor(mulSubject, TOPIC_SUBJECT)).toEqual(['은', '는', '이', '가'])
   })
