@@ -8,6 +8,7 @@ import {
   type MasteryFilterValue,
 } from '~/lib/library/mastery-filter'
 import { facetCounts, type FacetCounts } from '~/lib/library/facet-counts'
+import { themeTitleKey } from '~/lib/garden'
 import { useGrammarStore } from '~/stores/grammar'
 import { useSrsStore } from '~/stores/srs'
 import { useLeeches } from '~/composables/useLeeches'
@@ -21,7 +22,7 @@ import { useLeeches } from '~/composables/useLeeches'
 export function useLibrarySearch() {
   const route = useRoute()
   const router = useRouter()
-  const { locale } = useI18n()
+  const { locale, t } = useI18n()
   const grammarStore = useGrammarStore()
   const srs = useSrsStore()
   const { leechKos } = useLeeches()
@@ -49,7 +50,10 @@ export function useLibrarySearch() {
     const theme = typeof route.query.theme === 'string' ? route.query.theme : null
     if (!theme) return null
     const src = itemsByTheme(theme)[0]?.source
-    return src && src.kind === 'topik' ? src.themeTitle : theme
+    // The spine's themeTitle is fixed Spanish metadata — resolve the display
+    // name through i18n (keyed by themeId) so the filter chip follows the UI
+    // locale. Falls back to the raw theme id when it isn't a TOPIK theme.
+    return src && src.kind === 'topik' ? t(themeTitleKey(src.themeId)) : theme
   })
 
   const isFiltering = computed(

@@ -8,9 +8,12 @@ describe('SpineBreadcrumb', () => {
     const link = w.find('a')
     expect(link.exists()).toBe(true)
     expect(link.attributes('href')).toBe('/paths')
-    // i18n stub echoes the key; the level uses garden.level.
+    // i18n stub echoes the key; the level uses garden.level and the theme
+    // name is now resolved through i18n (garden.theme.<themeId>) so it follows
+    // the UI locale instead of the spine's fixed Spanish title. 은/는 lives in
+    // the n1-particles theme.
     expect(w.text()).toContain('garden.level')
-    expect(w.find('.crumb__theme').text().length).toBeGreaterThan(0)
+    expect(w.find('.crumb__theme').text()).toBe('garden.theme.n1-particles')
   })
 
   it('renders nothing for a grammar that is not in the spine', () => {
