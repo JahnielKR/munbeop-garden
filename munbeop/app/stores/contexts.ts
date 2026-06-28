@@ -35,12 +35,18 @@ export const useContextsStore = defineStore('contexts', () => {
     if (!isInactive && active.value.length <= MIN_ACTIVE_CONTEXTS) {
       return false
     }
-    if (isInactive) {
-      inactiveIds.value = inactiveIds.value.filter((x) => x !== id)
-    } else {
-      inactiveIds.value = [...inactiveIds.value, id]
+    // Optimistic mutate, then persist. Snapshot first so a failed cloud write
+    // rolls back the in-memory state instead of leaving the UI out of sync.
+    const snapshot = inactiveIds.value
+    inactiveIds.value = isInactive
+      ? inactiveIds.value.filter((x) => x !== id)
+      : [...inactiveIds.value, id]
+    try {
+      await storage.write(STORAGE_KEYS.inactiveContextIds, inactiveIds.value)
+    } catch {
+      inactiveIds.value = snapshot
+      return false
     }
-    await storage.write(STORAGE_KEYS.inactiveContextIds, inactiveIds.value)
     return true
   }
 
@@ -55,8 +61,15 @@ export const useContextsStore = defineStore('contexts', () => {
       category: 'custom',
       builtin: false,
     }
-    custom.value.push(ctx)
-    await storage.write(STORAGE_KEYS.customContexts, custom.value)
+    // Immutable add so `snapshot` stays a valid pre-mutation array for rollback.
+    const snapshot = custom.value
+    custom.value = [...custom.value, ctx]
+    try {
+      await storage.write(STORAGE_KEYS.customContexts, custom.value)
+    } catch {
+      custom.value = snapshot
+      return null
+    }
     return ctx
   }
 
@@ -68,12 +81,19 @@ export const useContextsStore = defineStore('contexts', () => {
       return false // removing an active context can't drop us below the minimum
     }
     const storage = useStorageAdapter()
+    const customSnap = custom.value
+    const inactiveSnap = inactiveIds.value
+    const wasInactive = inactiveIds.value.includes(id)
     custom.value = custom.value.filter((c) => c.id !== id)
-    if (inactiveIds.value.includes(id)) {
-      inactiveIds.value = inactiveIds.value.filter((x) => x !== id)
-      await storage.write(STORAGE_KEYS.inactiveContextIds, inactiveIds.value)
+    if (wasInactive) inactiveIds.value = inactiveIds.value.filter((x) => x !== id)
+    try {
+      if (wasInactive) await storage.write(STORAGE_KEYS.inactiveContextIds, inactiveIds.value)
+      await storage.write(STORAGE_KEYS.customContexts, custom.value)
+    } catch {
+      custom.value = customSnap
+      inactiveIds.value = inactiveSnap
+      return false
     }
-    await storage.write(STORAGE_KEYS.customContexts, custom.value)
     return true
   }
 
