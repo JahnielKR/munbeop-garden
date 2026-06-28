@@ -16,7 +16,7 @@
  */
 
 import { defineStore } from 'pinia'
-import { ref, computed, onUnmounted } from 'vue'
+import { ref, computed, onScopeDispose } from 'vue'
 import { POSES, INACTIVITY_THRESHOLDS, type Pose } from '~/lib/bomi/poses'
 
 export const useBomiStore = defineStore('bomi', () => {
@@ -99,7 +99,14 @@ export const useBomiStore = defineStore('bomi', () => {
     }, 250)
   }
 
-  onUnmounted(() => {
+  // Clean up on the STORE's effect scope, not a component's. onUnmounted() here
+  // would bind to whichever component first called useBomiStore(); when that one
+  // unmounted (e.g. navigating away), it cleared the interval even though the
+  // singleton store — and other mounted Bomi instances — lived on, freezing the
+  // idle→play-hat→sleep timeline until reload. onScopeDispose ties cleanup to the
+  // store's own scope, which lives for the whole session (and is torn down with
+  // the Pinia instance).
+  onScopeDispose(() => {
     if (tickHandle) {
       clearInterval(tickHandle)
       tickHandle = null
