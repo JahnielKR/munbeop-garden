@@ -16,6 +16,7 @@ function dig(obj: unknown, path: string): unknown {
 
 const KEYS = [
   'errors.data_failed',
+  'errors.save_failed',
   'errors.retry',
   'errors.fatal_title',
   'errors.fatal_body',

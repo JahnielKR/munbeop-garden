@@ -242,6 +242,7 @@
   },
   "errors": {
     "data_failed": "Não foi possível carregar seus dados. Verifique sua conexão e tente de novo.",
+    "save_failed": "Não foi possível salvar. Verifique sua conexão e tente de novo.",
     "retry": "Tentar de novo",
     "fatal_title": "Algo deu errado",
     "fatal_body": "Desculpe — o jardim teve um problema. Tente recarregar ou volte ao início.",

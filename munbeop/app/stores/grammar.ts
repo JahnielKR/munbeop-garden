@@ -104,9 +104,19 @@ export const useGrammarStore = defineStore('grammar', () => {
       deckId: CUSTOM_DECK_ID,
       ...(example ? { example } : {}),
     }
+    // Snapshot + rollback + rethrow: the Supabase write is delete-then-upsert,
+    // so a mid-write network drop could wipe the user's custom grammars in the
+    // cloud while local state looked fine. Mirror the contexts/customDecks
+    // discipline so the caller can surface a retry instead of losing data.
+    const snapshot = items.value
     items.value = [...items.value, grammar]
     const storage = useStorageAdapter()
-    await storage.write(STORAGE_KEYS.grammar, items.value)
+    try {
+      await storage.write(STORAGE_KEYS.grammar, items.value)
+    } catch (e) {
+      items.value = snapshot
+      throw e
+    }
     return grammar
   }
 
@@ -114,9 +124,15 @@ export const useGrammarStore = defineStore('grammar', () => {
   async function removeCustomGrammar(ko: string): Promise<boolean> {
     const target = items.value.find((g) => g.ko === ko && g.deckId === CUSTOM_DECK_ID)
     if (!target) return false
+    const snapshot = items.value
     items.value = items.value.filter((g) => g !== target)
     const storage = useStorageAdapter()
-    await storage.write(STORAGE_KEYS.grammar, items.value)
+    try {
+      await storage.write(STORAGE_KEYS.grammar, items.value)
+    } catch (e) {
+      items.value = snapshot
+      throw e
+    }
     return true
   }
 

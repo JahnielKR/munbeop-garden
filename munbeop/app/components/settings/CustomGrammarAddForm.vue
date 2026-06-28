@@ -28,11 +28,19 @@ async function submit() {
     koError.value = t('settings.custom_grammar.error_korean')
     return
   }
-  const created = await store.addCustomGrammar({
-    ko: trimmedKo,
-    meaning: buildMeaning(meaning.value.trim()),
-    example: example.value.trim() || undefined,
-  })
+  let created
+  try {
+    created = await store.addCustomGrammar({
+      ko: trimmedKo,
+      meaning: buildMeaning(meaning.value.trim()),
+      example: example.value.trim() || undefined,
+    })
+  } catch {
+    // Cloud write failed — distinct from the duplicate case below (null), so the
+    // learner sees "check your connection" instead of a misleading "exists".
+    koError.value = t('errors.save_failed')
+    return
+  }
   if (!created) {
     koError.value = t('settings.custom_grammar.error_duplicate')
     return

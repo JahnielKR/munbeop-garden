@@ -242,6 +242,7 @@
   },
   "errors": {
     "data_failed": "Couldn't load your data. Check your connection and try again.",
+    "save_failed": "Couldn't save. Check your connection and try again.",
     "retry": "Retry",
     "fatal_title": "Something went wrong",
     "fatal_body": "Sorry — the garden hit a snag. Try reloading, or head back home.",
