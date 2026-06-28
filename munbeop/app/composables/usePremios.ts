@@ -121,15 +121,26 @@ export function usePremios() {
    *  framed initials. The user's chosen garden avatar (settings.chosenAvatarId)
    *  feeds the center slot with higher priority than the escape-room avatar; a
    *  legendary garden avatar also brings the shared ornate frame unless an
-   *  escape-room frame is already equipped. */
+   *  escape-room frame is already equipped. The garden avatar is likewise only
+   *  rendered when the user actually owns it. */
   const portrait = computed(() => {
     const urlFor = (id?: string): string | undefined => {
       if (!id || !store.unlockedCosmetics.includes(id)) return undefined
       return all.value.find((p) => p.id === id)?.url
     }
-    const chosen = settings.chosenAvatarId
+    // Resolve the chosen garden avatar, but only if it's owned — common avatars
+    // are always owned, any other must be in the persisted unlocked set. This
+    // mirrors the rule useAvatars.choose() enforces, so a re-locked id never
+    // renders. (We can't call useAvatars() here: it depends on usePremios(), so
+    // re-evaluating live unlocks would recurse.)
+    const chosenDef = settings.chosenAvatarId
       ? (AVATARS.find((a) => a.id === settings.chosenAvatarId) ?? null)
       : null
+    const chosen =
+      chosenDef &&
+      (chosenDef.rule.kind === 'always' || settings.unlockedAvatarIds.includes(chosenDef.id))
+        ? chosenDef
+        : null
     const settingsAvatarUrl = chosen ? gardenAvatarUrl(chosen.id) : undefined
 
     const eq = store.equipped

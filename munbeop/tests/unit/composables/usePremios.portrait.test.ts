@@ -16,14 +16,34 @@ describe('usePremios portrait — settings avatar', () => {
   })
 
   it('renders the chosen settings avatar and its tier', () => {
-    useSettingsStore().chosenAvatarId = 'fox'
+    const s = useSettingsStore()
+    s.chosenAvatarId = 'fox'
+    s.unlockedAvatarIds = ['fox'] // owned (the only way choose() would set it)
     const { portrait } = usePremios()
     expect(portrait.value.avatarUrl).toBe('/img/avatars/fox.png')
     expect(portrait.value.avatarTier).toBe('epic')
   })
 
+  it('renders a common avatar even when the unlocked set is empty (always owned)', () => {
+    useSettingsStore().chosenAvatarId = 'seed' // common, rule.kind === 'always'
+    const { portrait } = usePremios()
+    expect(portrait.value.avatarUrl).toBe('/img/avatars/seed.png')
+    expect(portrait.value.avatarTier).toBe('common')
+  })
+
+  it('does NOT render a chosen avatar the user does not own (stale-id guard)', () => {
+    const s = useSettingsStore()
+    s.chosenAvatarId = 'fox' // epic, but not in the unlocked set
+    s.unlockedAvatarIds = []
+    const { portrait } = usePremios()
+    expect(portrait.value.avatarUrl).toBeUndefined()
+    expect(portrait.value.avatarTier).toBeNull()
+  })
+
   it('adds the legendary frame for a legendary avatar (no escape frame equipped)', () => {
-    useSettingsStore().chosenAvatarId = 'tiger'
+    const s = useSettingsStore()
+    s.chosenAvatarId = 'tiger'
+    s.unlockedAvatarIds = ['tiger']
     const { portrait } = usePremios()
     expect(portrait.value.avatarTier).toBe('legendary')
     expect(portrait.value.frameUrl).toBe('/img/avatars/_frame-legendary.png')
@@ -35,7 +55,9 @@ describe('usePremios portrait — settings avatar', () => {
     const store = useEscapeRoomStore()
     store.unlockedCosmetics = ['cosmetic-frame-apron']
     store.equipped.frame = 'cosmetic-frame-apron'
-    useSettingsStore().chosenAvatarId = 'tiger' // legendary
+    const s = useSettingsStore()
+    s.chosenAvatarId = 'tiger' // legendary
+    s.unlockedAvatarIds = ['tiger']
     const { portrait } = usePremios()
     expect(portrait.value.avatarTier).toBe('legendary')
     expect(portrait.value.frameUrl).not.toBe(LEGENDARY_FRAME_URL)
