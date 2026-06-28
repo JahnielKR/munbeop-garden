@@ -74,6 +74,11 @@ export function useAuth() {
       // so token-expiry sign-outs flow through the same code.)
       if (event === 'SIGNED_OUT') {
         await hydrateDataStores()
+        // hydrateDataStores() clears the data stores against the noop adapter,
+        // but the settings store isn't in that set (it hydrates on SIGNED_IN /
+        // INITIAL_SESSION). Reset its account-scoped prefs here so the next user
+        // on a shared device doesn't inherit deck-focus / avatar / goal.
+        useSettingsStore().resetToDefaults()
         // A passive sign-out (expired/revoked token) leaves the user
         // parked on an app route with cleared stores — the middleware
         // only runs on navigation, so push the gate ourselves. After

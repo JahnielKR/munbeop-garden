@@ -50,8 +50,28 @@ export const useSettingsStore = defineStore('settings', () => {
   const chosenAvatarId = ref<string | null>(null)
   const unlockedAvatarIds = ref<string[]>([])
 
+  /**
+   * Reset the account-scoped prefs to their defaults. Called on sign-out and at
+   * the top of hydrate() so a second account on a shared device never inherits
+   * the previous user's deck-focus / avatar / goal when their cloud blob omits a
+   * field. Theme and locale are deliberately NOT reset here: those are
+   * device-level (persisted in localStorage for FOUC by useTheme/useLocaleStore),
+   * so clearing them on sign-out would flip the visible theme/language.
+   */
+  function resetToDefaults(): void {
+    dailyGoal.value = DEFAULT_DAILY_GOAL
+    reviewReminders.value = false
+    startingDeckId.value = null
+    excludedDeckIds.value = []
+    chosenAvatarId.value = null
+    unlockedAvatarIds.value = []
+  }
+
   async function hydrate(): Promise<void> {
     if (!authStore.user) return
+    // Start from a clean slate: an account whose blob lacks a field must fall
+    // back to the default, not keep the previous account's in-memory value.
+    resetToDefaults()
     try {
       const storage = useStorageAdapter()
       const cloud = await storage.read<Partial<Settings> | null>(STORAGE_KEYS.settings, null)
@@ -150,5 +170,5 @@ export const useSettingsStore = defineStore('settings', () => {
     await persistCloud()
   }
 
-  return { hydrate, setTheme, setLocale, dailyGoal, setDailyGoal, reviewReminders, setReviewReminders, startingDeckId, setStartingDeck, excludedDeckIds, toggleDeck, chosenAvatarId, unlockedAvatarIds, setChosenAvatar, unlockAvatars }
+  return { hydrate, resetToDefaults, setTheme, setLocale, dailyGoal, setDailyGoal, reviewReminders, setReviewReminders, startingDeckId, setStartingDeck, excludedDeckIds, toggleDeck, chosenAvatarId, unlockedAvatarIds, setChosenAvatar, unlockAvatars }
 })
