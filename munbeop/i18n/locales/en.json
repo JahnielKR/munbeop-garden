@@ -846,7 +846,7 @@
       },
       "contact": {
         "heading": "Contact",
-        "body": "Reach the gardener at hello@mungarden.app for any policy question. We aim to reply within two business days."
+        "body": "Reach the gardener at hello{'@'}mungarden.app for any policy question. We aim to reply within two business days."
       }
     }
   },

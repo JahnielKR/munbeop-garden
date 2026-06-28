@@ -846,7 +846,7 @@
       },
       "contact": {
         "heading": "Liên hệ",
-        "body": "Liên hệ người làm vườn tại hello@mungarden.app cho mọi câu hỏi về chính sách. Chúng tôi cố gắng trả lời trong hai ngày làm việc."
+        "body": "Liên hệ người làm vườn tại hello{'@'}mungarden.app cho mọi câu hỏi về chính sách. Chúng tôi cố gắng trả lời trong hai ngày làm việc."
       }
     }
   },

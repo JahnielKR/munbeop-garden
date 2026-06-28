@@ -846,7 +846,7 @@
       },
       "contact": {
         "heading": "Kontak",
-        "body": "Hubungi tukang kebun di hello@mungarden.app untuk pertanyaan kebijakan apa pun. Kami berupaya membalas dalam dua hari kerja."
+        "body": "Hubungi tukang kebun di hello{'@'}mungarden.app untuk pertanyaan kebijakan apa pun. Kami berupaya membalas dalam dua hari kerja."
       }
     }
   },

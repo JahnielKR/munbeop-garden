@@ -846,7 +846,7 @@
       },
       "contact": {
         "heading": "Contato",
-        "body": "Fale com o jardineiro em hello@mungarden.app para qualquer dúvida sobre as políticas. Procuramos responder em dois dias úteis."
+        "body": "Fale com o jardineiro em hello{'@'}mungarden.app para qualquer dúvida sobre as políticas. Procuramos responder em dois dias úteis."
       }
     }
   },

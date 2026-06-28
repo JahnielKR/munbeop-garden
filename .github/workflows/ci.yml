@@ -45,3 +45,9 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+      # Build too: lint/typecheck/test pass on things `nuxt build` rejects — e.g.
+      # the vue-i18n message compiler fails on an unescaped "@" in a locale
+      # string, which only surfaces at build. Catch it before the Vercel deploy.
+      - name: Build
+        run: pnpm build
