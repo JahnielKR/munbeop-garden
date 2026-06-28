@@ -4,7 +4,9 @@ import {
   AVATARS,
   AVATAR_TIERS,
   avatarUrl,
+  EPIC_FRAME_URL,
   LEGENDARY_FRAME_URL,
+  RARE_FRAME_URL,
   requirementLabel,
 } from '~/lib/avatars/catalog'
 
@@ -51,6 +53,8 @@ describe('avatar catalog', () => {
     expect(avatarUrl('seed')).toBe('/img/avatars/seed.png')
     expect(avatarUrl('watering-can')).toBe('/img/avatars/watering-can.png')
     expect(LEGENDARY_FRAME_URL).toBe('/img/avatars/_frame-legendary.png')
+    expect(EPIC_FRAME_URL).toBe('/img/avatars/_frame-epic.png')
+    expect(RARE_FRAME_URL).toBe('/img/avatars/_frame-rare.png')
   })
 
   it('AVATAR_TIERS is ordered common..legendary', () => {

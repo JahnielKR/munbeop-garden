@@ -5,9 +5,12 @@ import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import {
   AVATARS,
+  type AvatarTier,
   avatarBg as gardenAvatarBg,
   avatarUrl as gardenAvatarUrl,
+  EPIC_FRAME_URL,
   LEGENDARY_FRAME_URL,
+  RARE_FRAME_URL,
 } from '~/lib/avatars/catalog'
 import { useSettingsStore } from '~/stores/settings'
 
@@ -166,12 +169,19 @@ export function usePremios() {
     const escapeAvatar = urlFor(eq.avatar)
     const usingSettings = !!settingsAvatarUrl
     const escapeFrame = urlFor(eq.frame)
-    const legendaryFrame =
-      usingSettings && chosen!.tier === 'legendary' ? LEGENDARY_FRAME_URL : undefined
+    // A rare+ garden avatar brings its own tier frame (silver for rare, lavender
+    // for epic, ornate gold for legendary); commons get none. An equipped
+    // escape-room frame always takes precedence.
+    const TIER_FRAME: Partial<Record<AvatarTier, string>> = {
+      rare: RARE_FRAME_URL,
+      epic: EPIC_FRAME_URL,
+      legendary: LEGENDARY_FRAME_URL,
+    }
+    const tierFrame = usingSettings ? TIER_FRAME[chosen!.tier] : undefined
     return {
       setUrl: undefined,
       avatarUrl: settingsAvatarUrl ?? escapeAvatar,
-      frameUrl: escapeFrame ?? legendaryFrame,
+      frameUrl: escapeFrame ?? tierFrame,
       bgUrl: urlFor(eq.bg),
       avatarTier: usingSettings ? chosen!.tier : null,
       // The chosen garden avatar's harmonised chip colour — only when the

@@ -2,7 +2,7 @@
 import { describe, it, expect } from 'vitest'
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { AVATARS, LEGENDARY_FRAME_URL } from '~/lib/avatars/catalog'
+import { AVATARS, EPIC_FRAME_URL, LEGENDARY_FRAME_URL, RARE_FRAME_URL } from '~/lib/avatars/catalog'
 
 // vitest runs from munbeop/, so public/ is relative to cwd.
 const pub = (url: string) => resolve(process.cwd(), 'public', url.replace(/^\//, ''))
@@ -15,5 +15,13 @@ describe('avatar assets', () => {
 
   it('the shared legendary frame png exists', () => {
     expect(existsSync(pub(LEGENDARY_FRAME_URL))).toBe(true)
+  })
+
+  it('the epic frame png exists', () => {
+    expect(existsSync(pub(EPIC_FRAME_URL))).toBe(true)
+  })
+
+  it('the rare frame png exists', () => {
+    expect(existsSync(pub(RARE_FRAME_URL))).toBe(true)
   })
 })
