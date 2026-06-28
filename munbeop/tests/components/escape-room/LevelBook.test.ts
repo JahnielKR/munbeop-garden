@@ -49,10 +49,15 @@ describe('LevelBook', () => {
 
   it('flips forward and backward with the nav buttons', async () => {
     const w = mount(LevelBook, { props: { entries: LEVEL_REGISTRY }, global: { stubs } })
+    // Locale-agnostic: titles are now localized, so assert the page actually
+    // flips (title changes) and returns, rather than matching Spanish substrings.
+    const firstTitle = w.get('[data-testid="page-title"]').text()
+    expect(firstTitle).toContain('minbak')
     await w.get('[data-testid="book-next"]').trigger('click')
-    expect(w.get('[data-testid="page-title"]').text()).toContain('templo')
+    const secondTitle = w.get('[data-testid="page-title"]').text()
+    expect(secondTitle).not.toBe(firstTitle)
     await w.get('[data-testid="book-prev"]').trigger('click')
-    expect(w.get('[data-testid="page-title"]').text()).toContain('minbak')
+    expect(w.get('[data-testid="page-title"]').text()).toBe(firstTitle)
   })
 
   it('disables prev on first page and next on last page', async () => {
