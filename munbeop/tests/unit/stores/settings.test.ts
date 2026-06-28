@@ -5,6 +5,7 @@ import { useAuthStore } from '~/stores/auth'
 import { useLocaleStore } from '~/stores/locale'
 import { useTheme } from '~/composables/useTheme'
 import { DEFAULT_DAILY_GOAL } from '~/lib/stats/goal'
+import { readPortraitCache, writePortraitCache } from '~/lib/avatars/portrait-cache'
 
 const mockRead = vi.fn()
 const mockWrite = vi.fn()
@@ -27,6 +28,9 @@ describe('useSettingsStore', () => {
     setActivePinia(createPinia())
     mockRead.mockReset()
     mockWrite.mockReset()
+    // Clear the device portrait cache: the store seeds its avatar refs from it at
+    // creation, so a value left by a prior test would leak into the next one.
+    localStorage.clear()
     // Reset the module-singleton theme to the default between tests.
     useTheme().setTheme('light')
   })
@@ -201,5 +205,53 @@ describe('useSettingsStore', () => {
     expect(s.unlockedAvatarIds).toEqual([])
     // theme is device-level — not reset.
     expect(useTheme().theme.value).toBe('dark')
+  })
+
+  // ─── Device portrait cache (the cold-load flash fix) ──────────────────────
+
+  // The portrait blinked to the email initial on every reload because the chosen
+  // avatar lived only in the async cloud blob. Seeding the store from a synchronous
+  // device cache paints it on the first frame — mirroring theme/locale FOUC.
+  it('seeds the avatar refs from the device cache at store creation', () => {
+    writePortraitCache({ chosenAvatarId: 'fox', unlockedAvatarIds: ['fox', 'koi'] })
+    const s = useSettingsStore()
+    expect(s.chosenAvatarId).toBe('fox')
+    expect(s.unlockedAvatarIds).toEqual(['fox', 'koi'])
+  })
+
+  it('setChosenAvatar mirrors the choice into the device cache', async () => {
+    await useSettingsStore().setChosenAvatar('fox')
+    expect(readPortraitCache()).toEqual({ chosenAvatarId: 'fox', unlockedAvatarIds: [] })
+  })
+
+  it('unlockAvatars mirrors the owned set into the device cache', async () => {
+    await useSettingsStore().unlockAvatars(['bee', 'koi'])
+    expect(readPortraitCache()).toEqual({ chosenAvatarId: null, unlockedAvatarIds: ['bee', 'koi'] })
+  })
+
+  it('resetToDefaults clears the device cache (sign-out must not leak the avatar)', () => {
+    writePortraitCache({ chosenAvatarId: 'fox', unlockedAvatarIds: ['fox'] })
+    useSettingsStore().resetToDefaults()
+    expect(readPortraitCache()).toBeNull()
+  })
+
+  it('hydrate refreshes the device cache from the cloud blob', async () => {
+    signIn()
+    mockRead.mockResolvedValue({ chosenAvatarId: 'koi', unlockedAvatarIds: ['bee', 'koi'] })
+    await useSettingsStore().hydrate()
+    expect(readPortraitCache()).toEqual({ chosenAvatarId: 'koi', unlockedAvatarIds: ['bee', 'koi'] })
+  })
+
+  // Regression: a slow/failed cloud read must NOT reset the optimistic avatar to
+  // the initial — that is the very flash we are eliminating.
+  it('hydrate keeps the optimistic cached avatar when the cloud read errors', async () => {
+    writePortraitCache({ chosenAvatarId: 'fox', unlockedAvatarIds: ['fox'] })
+    const s = useSettingsStore()
+    expect(s.chosenAvatarId).toBe('fox')
+    signIn()
+    mockRead.mockRejectedValue(new Error('network blip'))
+    await s.hydrate()
+    expect(s.chosenAvatarId).toBe('fox')
+    expect(s.unlockedAvatarIds).toEqual(['fox'])
   })
 })
