@@ -5,25 +5,16 @@ import { INACTIVITY_THRESHOLDS } from '~/lib/bomi/poses'
 
 // The store registers a 250 ms setInterval at creation and arms setTimeout
 // auto-returns, so fake timers must be installed BEFORE the store is created.
+// Cleanup is bound to the store's effect scope via onScopeDispose (not a
+// component's onUnmounted), so creating the store here without a component emits
+// no warning.
 describe('useBomiStore', () => {
-  // The store calls onUnmounted() for interval cleanup. Created here without a
-  // component, Vue emits the expected "no active component instance" warning;
-  // swallow only that one line so real warnings still surface.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let realWarn: (...args: any[]) => void
   beforeEach(() => {
-    realWarn = console.warn
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    console.warn = (...args: any[]) => {
-      if (typeof args[0] === 'string' && args[0].includes('onUnmounted is called when there is no active component instance')) return
-      realWarn(...args)
-    }
     vi.useFakeTimers()
     setActivePinia(createPinia())
   })
   afterEach(() => {
     vi.useRealTimers()
-    console.warn = realWarn
   })
 
   it('starts in the idle pose with no recent activity', () => {
