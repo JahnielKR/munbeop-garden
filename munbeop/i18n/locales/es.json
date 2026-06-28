@@ -287,6 +287,8 @@
     "completion_restart": "🃏 NUEVA MANO",
     "context_label": "Contexto · 상황",
     "sentence_placeholder": "Escribe tu oración aquí…",
+    "show_example": "💡 Ver ejemplo",
+    "hide_example": "Ocultar ejemplo",
     "no_grammars": "No hay suficientes gramáticas en los decks activos.",
     "no_contexts": "Necesitas al menos 3 contextos activos.",
     "toast_saved_easy": "✨ Guardada",

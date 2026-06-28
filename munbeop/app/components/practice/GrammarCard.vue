@@ -40,6 +40,12 @@ const sentence = ref('')
 const showErrorBlock = ref(false)
 const errorNote = ref('')
 const errorDimension = ref<ErrorDimension | null>(null)
+// The example is a crutch: hidden until the learner asks for it, so they try
+// producing the sentence from the grammar+meaning first. Lives outside reset()
+// on purpose — it's per-grammar (this card spans 3 contexts), so once revealed
+// it stays revealed for the remaining contexts of the same card; the next card
+// is a fresh instance and starts hidden again.
+const showExample = ref(false)
 
 function reset() {
   sentence.value = ''
@@ -101,8 +107,20 @@ function onSkipNote() {
       </Badge>
     </div>
     <div class="meaning">{{ tl(grammar.meaning) }}</div>
-    <div v-if="grammar.example" class="example">{{ grammar.example }}</div>
-    <div v-if="grammar.trans" class="trans">{{ tl(grammar.trans) }}</div>
+    <div v-if="grammar.example" class="example-block">
+      <button
+        type="button"
+        class="example-toggle"
+        :aria-expanded="showExample"
+        @click="showExample = !showExample"
+      >
+        {{ showExample ? t('practice.hide_example') : t('practice.show_example') }}
+      </button>
+      <div v-if="showExample" class="example-reveal">
+        <div class="example">{{ grammar.example }}</div>
+        <div v-if="grammar.trans" class="trans">{{ tl(grammar.trans) }}</div>
+      </div>
+    </div>
 
     <ProgressDots :total="3" :progress="progress" />
     <ContextDisplay :context="context" />
@@ -137,6 +155,39 @@ function onSkipNote() {
   color: var(--ink-soft);
   margin: 8px 0 12px;
   font-size: 15px;
+}
+.example-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+/* Deliberately a quiet, secondary affordance (dashed, ink-soft, Inter) — it's
+ * an opt-in hint, not a primary action competing with the sentence input. */
+.example-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 2px dashed var(--border-strong);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-quick) var(--ease-out),
+    color var(--motion-quick) var(--ease-out);
+}
+.example-toggle:hover {
+  background: var(--surface);
+  color: var(--ink);
+}
+.example-toggle:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 .example {
   font-family: 'Noto Sans KR', sans-serif;

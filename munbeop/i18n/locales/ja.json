@@ -287,6 +287,8 @@
     "completion_restart": "🃏 新しい手札",
     "context_label": "文脈 · 상황",
     "sentence_placeholder": "ここに文を書いて…",
+    "show_example": "💡 例文を見る",
+    "hide_example": "例文を隠す",
     "no_grammars": "アクティブなデッキの文法が足りません。",
     "no_contexts": "アクティブな文脈が3つ以上必要です。",
     "toast_saved_easy": "✨ 保存しました",
