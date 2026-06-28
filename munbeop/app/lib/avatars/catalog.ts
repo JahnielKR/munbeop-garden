@@ -99,6 +99,67 @@ export function avatarUrl(id: string): string {
 
 export const LEGENDARY_FRAME_URL = '/img/avatars/_frame-legendary.png'
 
+/**
+ * Per-avatar background "chip" colour. The avatar sprites are transparent PNGs
+ * (motif + soft-black outline, no fill), so the portrait composites them over a
+ * solid square. Without this every avatar would share the same accent (orange)
+ * chip — these hues are hand-tuned to COMBINE with each icon and to read in both
+ * the light (parchment) and dark (abyssal) themes. Consumed by the portrait
+ * (usePremios) and the settings picker. A parity test enforces full coverage,
+ * so adding an avatar above forces adding its chip here.
+ */
+export const AVATAR_BG: Record<string, string> = {
+  // ── Common (12) — soft tans / sages / sky tints, alternated so no two
+  //    neighbours share a hue ──
+  seed: '#c8b487',
+  sprout: '#b7c79a',
+  leaf: '#d3dcb0',
+  pebble: '#a9bca0',
+  dewdrop: '#bcd0dd',
+  'watering-can': '#a8c0c4',
+  pot: '#e3c98e',
+  clover: '#cdb6a0',
+  dandelion: '#9bb1c4',
+  mushroom: '#8fae93',
+  earthworm: '#e0b9b0',
+  ant: '#d9bd84',
+  // ── Rare (8) — gentle complements so each motif pops ──
+  bee: '#9fb6cf',
+  'sprout-cluster': '#d2b07c',
+  ladybug: '#93b390',
+  butterfly: '#ecc9c8',
+  tulip: '#d6b393',
+  frog: '#c9a07f',
+  sunflower: '#93a9c4',
+  carrot: '#8aa9b0',
+  // ── Epic (8) — cooler slates / sages, a step richer than the commons ──
+  fox: '#6f7e93',
+  owl: '#a6b6a2',
+  hedgehog: '#cdb592',
+  koi: '#7d97ad',
+  magpie: '#b6a486',
+  crane: '#8ba2a0',
+  'raccoon-dog': '#94aab2',
+  persimmon: '#8d9ec0',
+  // ── Legendary (8) — deeper jewel tones for prestige, still light enough for
+  //    the dark outline to read ──
+  tiger: '#7e8fa3',
+  phoenix: '#9a7066',
+  dragon: '#b06a5a',
+  dokkaebi: '#9a6b54',
+  'golden-toad': '#7fa094',
+  'golden-crane': '#86708f',
+  'white-tiger': '#8f8a78',
+  'mountain-spirit': '#9387a3',
+}
+
+const FALLBACK_BG = '#d8c9a6'
+
+/** The chip colour for an avatar id, falling back to a neutral clay tone. */
+export function avatarBg(id: string): string {
+  return AVATAR_BG[id] ?? FALLBACK_BG
+}
+
 export interface RequirementLabel {
   key: string
   params: Record<string, string | number>

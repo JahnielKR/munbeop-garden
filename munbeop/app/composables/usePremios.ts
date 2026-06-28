@@ -3,7 +3,12 @@ import type { LocalizedString, RewardTier } from '~/lib/domain'
 import { REWARD_TIERS } from '~/lib/domain'
 import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
 import { useEscapeRoomStore } from '~/stores/escape-room'
-import { AVATARS, avatarUrl as gardenAvatarUrl, LEGENDARY_FRAME_URL } from '~/lib/avatars/catalog'
+import {
+  AVATARS,
+  avatarBg as gardenAvatarBg,
+  avatarUrl as gardenAvatarUrl,
+  LEGENDARY_FRAME_URL,
+} from '~/lib/avatars/catalog'
 import { useSettingsStore } from '~/stores/settings'
 
 /**
@@ -146,7 +151,14 @@ export function usePremios() {
     const eq = store.equipped
     const setUrl = urlFor(eq.set)
     if (setUrl)
-      return { setUrl, avatarUrl: undefined, frameUrl: undefined, bgUrl: undefined, avatarTier: null }
+      return {
+        setUrl,
+        avatarUrl: undefined,
+        frameUrl: undefined,
+        bgUrl: undefined,
+        avatarTier: null,
+        chipColor: undefined,
+      }
 
     // The user's explicit Settings choice wins the center slot; escape-room
     // frame/bg still compose over/under it. A legendary garden avatar brings its
@@ -162,6 +174,11 @@ export function usePremios() {
       frameUrl: escapeFrame ?? legendaryFrame,
       bgUrl: urlFor(eq.bg),
       avatarTier: usingSettings ? chosen!.tier : null,
+      // The chosen garden avatar's harmonised chip colour — only when the
+      // garden avatar fills the centre slot (escape-room avatars keep the
+      // default accent chip). The portrait paints this behind the sprite so
+      // each icon sits on its own colour instead of the shared orange.
+      chipColor: usingSettings ? gardenAvatarBg(chosen!.id) : undefined,
     }
   })
 
