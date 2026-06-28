@@ -21,11 +21,12 @@ import CottageButterflies from './CottageButterflies.vue'
 // opacity (not v-if) so the cottage stays mounted and reads as a piece
 // of background being uncovered/covered, not a UI element popping in.
 //
-// Two variants are rendered as separate <img> tags; CSS toggles which
-// one is visible based on [data-theme="dark"] on <html>. This mirrors
-// the swap pattern in tokens/colors-dark.css — no JS needed for the
-// theme flip, so the FOUC inline script in app.vue (which pre-sets
-// dataset.theme before Vue mounts) keeps both initial paint and toggle
+// A single element with a theme-aware CSS background-image: the light PNG by
+// default, the dark PNG under [data-theme='dark']. The browser only fetches the
+// image whose rule wins the cascade, so just ONE PNG downloads — the old
+// dual-<img> approach hid one with display:none but still downloaded both.
+// No JS needed for the theme flip, so app.vue's FOUC inline script (which
+// pre-sets dataset.theme before Vue mounts) keeps both paint and toggle
 // flicker-free.
 //
 // Ambient life rides the same theme flip (spec: docs/superpowers/specs/
@@ -36,11 +37,8 @@ import CottageButterflies from './CottageButterflies.vue'
 // % of this wrapper, so they scale with the art automatically and fade
 // together with it on welcome-surface routes.
 //
-// `src` is bound (not static) so Vite's asset-URL transform leaves it
-// alone and treats it as a runtime public path served from `public/img/`.
-const cottageLight = '/img/cottage-corner-light.png'
-const cottageDark = '/img/cottage-corner-dark.png'
-
+// The PNGs live in public/img/; the absolute url() paths in CSS below are left
+// untouched by Vite and served at runtime from there.
 const route = useRoute()
 const onAppSurface = computed(() => route.meta.surface !== 'welcome')
 </script>
@@ -51,16 +49,7 @@ const onAppSurface = computed(() => route.meta.surface !== 'welcome')
     :class="{ 'cottage-corner--hidden': !onAppSurface }"
     aria-hidden="true"
   >
-    <img
-      class="cottage-corner__img cottage-corner__img--light"
-      :src="cottageLight"
-      alt=""
-    />
-    <img
-      class="cottage-corner__img cottage-corner__img--dark"
-      :src="cottageDark"
-      alt=""
-    />
+    <div class="cottage-corner__art" />
     <CottageSmoke />
     <CottageButterflies />
   </div>
@@ -87,15 +76,17 @@ const onAppSurface = computed(() => route.meta.surface !== 'welcome')
   opacity: 0;
 }
 
-.cottage-corner__img {
+.cottage-corner__art {
   display: block;
   width: 100%;
-  height: auto;
+  /* Matches the source PNG (669x373) so the % positions of the smoke +
+   * butterflies resolve against the same box the <img> used to give. */
+  aspect-ratio: 669 / 373;
+  background-image: url('/img/cottage-corner-light.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   image-rendering: pixelated;
 }
-
-.cottage-corner__img--light { display: block; }
-.cottage-corner__img--dark  { display: none; }
 
 @media (max-width: 768px) {
   /* Mobile nav owns the bottom strip — hide the cottage to avoid
@@ -117,6 +108,7 @@ const onAppSurface = computed(() => route.meta.surface !== 'welcome')
   collision risk with other components.
 -->
 <style>
-[data-theme='dark'] .cottage-corner__img--light { display: none; }
-[data-theme='dark'] .cottage-corner__img--dark  { display: block; }
+[data-theme='dark'] .cottage-corner__art {
+  background-image: url('/img/cottage-corner-dark.png');
+}
 </style>
