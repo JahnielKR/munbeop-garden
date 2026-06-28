@@ -846,7 +846,7 @@
       },
       "contact": {
         "heading": "Contact",
-        "body": "Écris au jardinier à hello@mungarden.app pour toute question sur les politiques. Nous visons une réponse sous deux jours ouvrés."
+        "body": "Écris au jardinier à hello{'@'}mungarden.app pour toute question sur les politiques. Nous visons une réponse sous deux jours ouvrés."
       }
     }
   },
