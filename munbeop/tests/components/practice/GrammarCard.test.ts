@@ -31,6 +31,13 @@ function mountCard(g: Grammar = grammar) {
   return mount(GrammarCard, { props: { grammar: g, context, progress: 0, pickIndex: 0 } })
 }
 
+// FÁCIL / DIFÍCIL render their i18n key under the key-echo stub, so target by it.
+function clickFeedback(w: ReturnType<typeof mountCard>, key: string) {
+  const btn = w.findAll('button').find((b) => b.text().includes(key))
+  if (!btn) throw new Error(`button not found: ${key}`)
+  return btn.trigger('click')
+}
+
 describe('practice GrammarCard — example reveal', () => {
   it('hides the example until the toggle is clicked', async () => {
     const w = mountCard()
@@ -60,5 +67,67 @@ describe('practice GrammarCard — example reveal', () => {
     const w = mountCard({ ko: '-다', meaning: { ...empty, en: 'plain ending' }, deckId: 'topik-1' })
     expect(w.find('.example-block').exists()).toBe(false)
     expect(w.find('.example-toggle').exists()).toBe(false)
+  })
+})
+
+describe('practice GrammarCard — Korean-only sentence gate', () => {
+  it('blocks FÁCIL on a non-Korean sentence and shows the red message', async () => {
+    const w = mountCard()
+    await w.find('textarea').setValue('hello')
+    await clickFeedback(w, 'practice.fb_easy')
+
+    expect(w.emitted('submit')).toBeUndefined()
+    const err = w.find('.sentence-error')
+    expect(err.exists()).toBe(true)
+    expect(err.text()).toContain('practice.sentence_korean_only')
+    expect(err.attributes('role')).toBe('alert')
+  })
+
+  it('blocks DIFÍCIL on non-Korean input — the note block never opens', async () => {
+    const w = mountCard()
+    await w.find('textarea').setValue('hola amigo')
+    await clickFeedback(w, 'practice.fb_hard')
+
+    expect(w.find('.enote').exists()).toBe(false)
+    expect(w.find('.sentence-error').exists()).toBe(true)
+  })
+
+  it('blocks input that has no Hangul at all (digits only)', async () => {
+    const w = mountCard()
+    await w.find('textarea').setValue('1234')
+    await clickFeedback(w, 'practice.fb_easy')
+
+    expect(w.emitted('submit')).toBeUndefined()
+    expect(w.find('.sentence-error').exists()).toBe(true)
+  })
+
+  it('allows FÁCIL with a valid Korean sentence and emits submit', async () => {
+    const w = mountCard()
+    await w.find('textarea').setValue('저는 학생이에요')
+    await clickFeedback(w, 'practice.fb_easy')
+
+    const submit = w.emitted('submit')
+    expect(submit).toBeTruthy()
+    expect(submit![0]![0]).toMatchObject({ sentence: '저는 학생이에요', feedback: 'easy' })
+    expect(w.find('.sentence-error').exists()).toBe(false)
+  })
+
+  it('accepts Korean mixed with digits and punctuation', async () => {
+    const w = mountCard()
+    await w.find('textarea').setValue('3시에 만나요?')
+    await clickFeedback(w, 'practice.fb_easy')
+
+    expect(w.emitted('submit')).toBeTruthy()
+    expect(w.find('.sentence-error').exists()).toBe(false)
+  })
+
+  it('clears the red message as soon as the learner edits the sentence', async () => {
+    const w = mountCard()
+    await w.find('textarea').setValue('hello')
+    await clickFeedback(w, 'practice.fb_easy')
+    expect(w.find('.sentence-error').exists()).toBe(true)
+
+    await w.find('textarea').setValue('안녕하세요')
+    expect(w.find('.sentence-error').exists()).toBe(false)
   })
 })

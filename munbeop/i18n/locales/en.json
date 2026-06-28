@@ -288,6 +288,7 @@
     "completion_restart": "🃏 NEW HAND",
     "context_label": "Context · 상황",
     "sentence_placeholder": "Write your sentence here…",
+    "sentence_korean_only": "Write the sentence in Korean · 한국어로 써 주세요",
     "show_example": "💡 Show example",
     "hide_example": "Hide example",
     "no_grammars": "Not enough grammar items in the active decks.",

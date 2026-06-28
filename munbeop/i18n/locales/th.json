@@ -288,6 +288,7 @@
     "completion_restart": "🃏 จั่วไพ่ใหม่",
     "context_label": "บริบท · 상황",
     "sentence_placeholder": "เขียนประโยคของคุณที่นี่…",
+    "sentence_korean_only": "เขียนประโยคเป็นภาษาเกาหลี · 한국어로 써 주세요",
     "show_example": "💡 ดูตัวอย่าง",
     "hide_example": "ซ่อนตัวอย่าง",
     "no_grammars": "ไวยากรณ์ในเด็คที่เปิดใช้ไม่พอ",
