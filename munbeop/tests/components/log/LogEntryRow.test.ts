@@ -29,4 +29,9 @@ describe('LogEntryRow', () => {
     expect(w.find('[data-testid="mark-reviewed"]').exists()).toBe(false)
     expect(w.find('[data-testid="reviewed-badge"]').exists()).toBe(true)
   })
+  it('emits delete with the entry id when the delete control is clicked', async () => {
+    const w = mount(LogEntryRow, { props: { entry: entry() } })
+    await w.find('[data-testid="delete-entry"]').trigger('click')
+    expect(w.emitted('delete')?.[0]?.[0]).toBe(7)
+  })
 })

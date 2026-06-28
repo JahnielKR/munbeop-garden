@@ -117,7 +117,15 @@
     "revisit_practice": "Luyện tập 화이팅",
     "mark_reviewed": "Đánh dấu đã ôn",
     "reviewed": "Đã ôn",
-    "note_label": "Ghi chú"
+    "note_label": "Ghi chú",
+    "search_placeholder": "Tìm trong nhật ký",
+    "load_more": "Tải thêm",
+    "no_results": "Không có mục nào khớp.",
+    "delete": "Xóa",
+    "delete_confirm_title": "Xóa mục này?",
+    "delete_confirm_body": "Thao tác này xóa vĩnh viễn câu khỏi nhật ký.",
+    "deleted": "Đã xóa mục",
+    "cancel": "Hủy"
   },
   "stats": {
     "empty": "Chưa có thống kê — viết vài câu trong phần Luyện tập và câu chuyện khu vườn của bạn bắt đầu từ đây.",

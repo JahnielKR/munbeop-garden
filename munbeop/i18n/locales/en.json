@@ -117,7 +117,15 @@
     "revisit_practice": "Practice 화이팅",
     "mark_reviewed": "Mark reviewed",
     "reviewed": "Reviewed",
-    "note_label": "Note"
+    "note_label": "Note",
+    "search_placeholder": "Search your entries",
+    "load_more": "Load more",
+    "no_results": "No entries match your search.",
+    "delete": "Delete",
+    "delete_confirm_title": "Delete this entry?",
+    "delete_confirm_body": "This permanently removes the sentence from your journal.",
+    "deleted": "Entry deleted",
+    "cancel": "Cancel"
   },
   "stats": {
     "empty": "No stats yet — write a few sentences in Practice and your garden's story starts here.",

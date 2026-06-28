@@ -117,7 +117,15 @@
     "revisit_practice": "Latihan 화이팅",
     "mark_reviewed": "Tandai sudah ditinjau",
     "reviewed": "Sudah ditinjau",
-    "note_label": "Catatan"
+    "note_label": "Catatan",
+    "search_placeholder": "Cari di jurnalmu",
+    "load_more": "Muat lebih banyak",
+    "no_results": "Tidak ada entri yang cocok.",
+    "delete": "Hapus",
+    "delete_confirm_title": "Hapus entri ini?",
+    "delete_confirm_body": "Ini menghapus kalimat dari jurnalmu secara permanen.",
+    "deleted": "Entri dihapus",
+    "cancel": "Batal"
   },
   "stats": {
     "empty": "Belum ada statistik — tulis beberapa kalimat di Latihan dan kisah kebunmu dimulai di sini.",

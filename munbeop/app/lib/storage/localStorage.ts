@@ -31,6 +31,11 @@ export class LocalStorageAdapter implements StorageAdapter {
     await this.write(key, map)
   }
 
+  async deleteOne(key: StorageKey, id: string | number): Promise<void> {
+    const list = await this.read<Array<{ id: string | number }>>(key, [])
+    await this.write(key, list.filter((item) => item.id !== id))
+  }
+
   async remove(key: StorageKey): Promise<void> {
     localStorage.removeItem(key)
   }

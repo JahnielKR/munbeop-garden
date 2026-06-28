@@ -117,7 +117,15 @@
     "revisit_practice": "Praticar 화이팅",
     "mark_reviewed": "Marcar como revisado",
     "reviewed": "Revisado",
-    "note_label": "Nota"
+    "note_label": "Nota",
+    "search_placeholder": "Busque no seu diário",
+    "load_more": "Carregar mais",
+    "no_results": "Nenhuma entrada corresponde à busca.",
+    "delete": "Excluir",
+    "delete_confirm_title": "Excluir esta entrada?",
+    "delete_confirm_body": "Isso remove a frase do seu diário permanentemente.",
+    "deleted": "Entrada excluída",
+    "cancel": "Cancelar"
   },
   "stats": {
     "empty": "Ainda sem estatísticas — escreva algumas frases na Prática e a história do seu jardim começa aqui.",
