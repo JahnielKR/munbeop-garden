@@ -14,6 +14,7 @@ const { t } = useI18n()
   <Input
     :model-value="modelValue"
     :placeholder="t('practice.sentence_placeholder')"
+    :aria-label="t('practice.sentence_input_label')"
     multiline
     :rows="3"
     :error="error"

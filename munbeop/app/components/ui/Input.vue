@@ -23,6 +23,9 @@ interface Props {
   autocomplete?: string
   required?: boolean
   inputmode?: 'text' | 'numeric' | 'decimal' | 'email' | 'tel' | 'url' | 'search'
+  /** Accessible name when there's no visible <label> (a placeholder is not a
+   * reliable accessible name). Rendered as aria-label on the control. */
+  ariaLabel?: string
 }
 
 withDefaults(defineProps<Props>(), {
@@ -37,6 +40,7 @@ withDefaults(defineProps<Props>(), {
   autocomplete: undefined,
   required: false,
   inputmode: undefined,
+  ariaLabel: undefined,
 })
 defineEmits<{ 'update:modelValue': [string] }>()
 </script>
@@ -51,6 +55,7 @@ defineEmits<{ 'update:modelValue': [string] }>()
     :rows="rows"
     :disabled="disabled"
     :required="required"
+    :aria-label="ariaLabel"
     :aria-invalid="error || undefined"
     class="input"
     :class="{ 'input--error': error }"
@@ -67,6 +72,7 @@ defineEmits<{ 'update:modelValue': [string] }>()
     :required="required"
     :autocomplete="autocomplete"
     :inputmode="inputmode"
+    :aria-label="ariaLabel"
     :aria-invalid="error || undefined"
     class="input"
     :class="{ 'input--error': error }"

@@ -1,14 +1,30 @@
 <script setup lang="ts">
-import { computed, onMounted, provide, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, provide, ref, watch } from 'vue'
 import AppSidebar from './AppSidebar.vue'
 import MobileNavbar from './MobileNavbar.vue'
 import Toast from '~/components/ui/Toast.vue'
 
+const { t } = useI18n()
 const route = useRoute()
 const surface = computed<'study' | 'game'>(
   () => (route.meta.surface as 'study' | 'game' | undefined) ?? 'study',
 )
 provide('surface', surface)
+
+// Move the reading cursor into the new page on navigation. Without this a
+// keyboard/screen-reader user re-tabs the whole sidebar on every route change
+// and nothing signals the page changed. We skip it when the destination page
+// already claimed focus inside <main> (e.g. the ruleta phase wrappers) so we
+// never fight a page's own focus management.
+const mainEl = ref<HTMLElement | null>(null)
+watch(
+  () => route.fullPath,
+  async () => {
+    await nextTick()
+    const el = mainEl.value
+    if (el && !el.contains(document.activeElement)) el.focus()
+  },
+)
 
 /**
  * Collapsible sidebar (mini-rail spec 2026-06-13, supersedes garden spec
@@ -33,6 +49,7 @@ watch(collapsed, (v) => {
 
 <template>
   <div class="shell" :class="{ 'shell--collapsed': collapsed }">
+    <a class="skip-link" href="#main-content">{{ t('a11y.skip_to_content') }}</a>
     <div class="shell__rail">
       <AppSidebar
         class="shell__sidebar"
@@ -40,7 +57,7 @@ watch(collapsed, (v) => {
         @toggle="collapsed = !collapsed"
       />
     </div>
-    <main class="shell__main">
+    <main id="main-content" ref="mainEl" tabindex="-1" class="shell__main">
       <slot />
     </main>
 
@@ -58,6 +75,32 @@ watch(collapsed, (v) => {
 }
 .shell--collapsed {
   grid-template-columns: 64px 1fr;
+}
+
+/* Keyboard-only escape hatch past the 7-item sidebar — off-screen until the
+ * first Tab focuses it, then it slides in at the top-left. */
+.skip-link {
+  position: fixed;
+  top: -56px;
+  left: 8px;
+  z-index: 200;
+  padding: 8px 14px;
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--border-strong, var(--border));
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  transition: top 120ms ease;
+}
+.skip-link:focus {
+  top: 8px;
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+/* Programmatic focus target on route change — no visible ring (it moves the SR
+ * reading position, it's not a visual control). */
+.shell__main:focus {
+  outline: none;
 }
 
 /* The page scrolls inside .camera-stage__scroll; the rail pins itself to
