@@ -98,6 +98,10 @@ export function avatarUrl(id: string): string {
 }
 
 export const LEGENDARY_FRAME_URL = '/img/avatars/_frame-legendary.png'
+/** Simpler lavender frame brought by an equipped EPIC garden avatar. */
+export const EPIC_FRAME_URL = '/img/avatars/_frame-epic.png'
+/** Plain silver frame brought by an equipped RARE garden avatar. */
+export const RARE_FRAME_URL = '/img/avatars/_frame-rare.png'
 
 /**
  * Per-avatar background "chip" colour. The avatar sprites are transparent PNGs

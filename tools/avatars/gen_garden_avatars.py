@@ -838,6 +838,44 @@ def legendary_frame() -> Image.Image:
     return img
 
 
+# ── epic frame (96x96, transparent center) — simpler than the legendary one ──
+# A light-lavender double-line border with small corner studs: enough to mark an
+# epic avatar without competing with the ornate gold legendary frame.
+EPIC_LAV = rgb("#bda3e6")   # light lavender — main band
+EPIC_HI = rgb("#dccdf4")    # pale highlight
+EPIC_DEEP = rgb("#7a55b0")  # deeper purple — inset line
+
+
+def epic_frame() -> Image.Image:
+    img, d = canvas(FS)
+    d.rectangle([0, 0, FS - 1, FS - 1], outline=EPIC_LAV, width=3)
+    d.rectangle([2, 2, FS - 3, FS - 3], outline=EPIC_HI, width=1)
+    d.rectangle([5, 5, FS - 6, FS - 6], outline=EPIC_DEEP, width=2)
+    # four small corner studs — the only ornament, keeps it simple
+    for cx, cy in ((4, 4), (FS - 5, 4), (4, FS - 5), (FS - 5, FS - 5)):
+        disc(d, cx, cy, 2, EPIC_HI)
+        d.point((cx, cy), fill=EPIC_DEEP)
+    add_outline(img)
+    return img
+
+
+# ── rare frame (96x96, transparent center) — the plainest of the three ──
+# A clean silver double-line border: no studs, no glow, so the ornament ladder
+# reads rare (silver) < epic (lavender + studs) < legendary (ornate gold).
+RARE_SIL = rgb("#bcc6d0")   # steel silver — main band
+RARE_HI = rgb("#e6ecf2")    # pale highlight
+RARE_DEEP = rgb("#74828f")  # slate steel — inset line
+
+
+def rare_frame() -> Image.Image:
+    img, d = canvas(FS)
+    d.rectangle([0, 0, FS - 1, FS - 1], outline=RARE_SIL, width=3)
+    d.rectangle([2, 2, FS - 3, FS - 3], outline=RARE_HI, width=1)
+    d.rectangle([5, 5, FS - 6, FS - 6], outline=RARE_DEEP, width=2)
+    add_outline(img)
+    return img
+
+
 COMMON = [
     ("seed", a_seed),
     ("sprout", a_sprout),
@@ -917,7 +955,9 @@ def main() -> int:
         total += len(rendered)
         print(f"{tier:11s} {len(rendered):2d} avatars")
     legendary_frame().save(OUT_APP / "_frame-legendary.png")
-    print(f"total {total} avatars + 1 frame -> munbeop/public/img/avatars/")
+    epic_frame().save(OUT_APP / "_frame-epic.png")
+    rare_frame().save(OUT_APP / "_frame-rare.png")
+    print(f"total {total} avatars + 3 frames -> munbeop/public/img/avatars/")
     return 0
 
 
