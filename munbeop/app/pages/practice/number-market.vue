@@ -172,6 +172,19 @@ function playAgain() {
       <template v-if="s.phase.value === 'playing'">
         <PromptStage :item="s.item.value" />
         <ChoiceRow :choices="s.choices.value" @choose="s.answer" />
+        <!-- Speed has no verdict pause (it advances instantly), so the ✓/✗ never
+             shows visually. This hidden live region gives screen-reader users the
+             same correct/incorrect feedback as the Learn/Dictation modes. The
+             :key forces a re-announce when two answers in a row match. -->
+        <p
+          v-if="s.lastCorrect.value !== null"
+          :key="s.answered.value"
+          class="sr-only"
+          role="status"
+          aria-live="assertive"
+        >
+          {{ s.lastCorrect.value ? t('numberMarket.correct') : t('numberMarket.wrong') }}
+        </p>
       </template>
       <SpeedSummary
         v-else
@@ -252,6 +265,17 @@ function playAgain() {
 .lab__replay { margin: 0; font-family: 'Press Start 2P', monospace; font-size: 10px; color: var(--ink-soft); }
 .lab__verdict { margin: 0; font-family: 'Inter', sans-serif; font-size: 15px; }
 .lab__verdict--ok { color: var(--accent-bright, #2e7d32); }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 .lab__verdict--no { color: var(--danger, #c62828); }
 .lab__next { align-self: flex-start; font-family: 'Inter', sans-serif; font-size: 14px; padding: 10px 18px; background: var(--accent, #2e7d32); color: var(--paper, #fff); border: 2px solid var(--accent, #2e7d32); cursor: pointer; }
 .lab__next:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }

@@ -240,6 +240,9 @@
       "care": "Cuidar"
     }
   },
+  "a11y": {
+    "skip_to_content": "Pular para o conteúdo"
+  },
   "errors": {
     "data_failed": "Não foi possível carregar seus dados. Verifique sua conexão e tente de novo.",
     "save_failed": "Não foi possível salvar. Verifique sua conexão e tente de novo.",
@@ -289,6 +292,7 @@
     "completion_restart": "🃏 NOVA MÃO",
     "context_label": "Contexto · 상황",
     "sentence_placeholder": "Escreve tua frase aqui…",
+    "sentence_input_label": "Escreva sua frase em coreano",
     "sentence_korean_only": "Escreve a frase em coreano · 한국어로 써 주세요",
     "show_example": "💡 Ver exemplo",
     "hide_example": "Ocultar exemplo",

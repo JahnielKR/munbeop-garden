@@ -59,4 +59,15 @@ describe('useNumberSpeed', () => {
     expect(s.score.value).toBe(before)
     expect(s.timeLeft.value).toBe(60)
   })
+
+  it('answered increments per answer and resets on start (drives the SR announcer)', () => {
+    const s = useNumberSpeed()
+    s.start('mixed')
+    expect(s.answered.value).toBe(0)
+    s.answer(s.item.value.answer)
+    s.answer('definitely-wrong')
+    expect(s.answered.value).toBe(2)
+    s.start('mixed')
+    expect(s.answered.value).toBe(0)
+  })
 })

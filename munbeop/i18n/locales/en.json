@@ -240,6 +240,9 @@
       "care": "Care"
     }
   },
+  "a11y": {
+    "skip_to_content": "Skip to content"
+  },
   "errors": {
     "data_failed": "Couldn't load your data. Check your connection and try again.",
     "save_failed": "Couldn't save. Check your connection and try again.",
@@ -289,6 +292,7 @@
     "completion_restart": "🃏 NEW HAND",
     "context_label": "Context · 상황",
     "sentence_placeholder": "Write your sentence here…",
+    "sentence_input_label": "Write your Korean sentence",
     "sentence_korean_only": "Write the sentence in Korean · 한국어로 써 주세요",
     "show_example": "💡 Show example",
     "hide_example": "Hide example",

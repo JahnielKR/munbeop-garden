@@ -240,6 +240,9 @@
       "care": "手入れ"
     }
   },
+  "a11y": {
+    "skip_to_content": "本文へスキップ"
+  },
   "errors": {
     "data_failed": "データを読み込めませんでした。接続を確認して再試行してください。",
     "save_failed": "保存できませんでした。接続を確認して再試行してください。",
@@ -289,6 +292,7 @@
     "completion_restart": "🃏 新しい手札",
     "context_label": "文脈 · 상황",
     "sentence_placeholder": "ここに文を書いて…",
+    "sentence_input_label": "韓国語の文を書いてください",
     "sentence_korean_only": "韓国語で文を書いてください · 한국어로 써 주세요",
     "show_example": "💡 例文を見る",
     "hide_example": "例文を隠す",

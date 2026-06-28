@@ -35,6 +35,9 @@ export function useNumberSpeed() {
   const combo = ref(0)
   const bestStreak = ref(0)
   const lastCorrect = ref<boolean | null>(null)
+  // Monotonic answer counter — drives the screen-reader verdict announcer so two
+  // correct answers in a row still re-announce (the live-region text repeats).
+  const answered = ref(0)
   const best = ref<Record<string, number>>(readBest())
 
   const item = computed<MarketItem>(() => queue.value[cursor.value]!)
@@ -60,6 +63,7 @@ export function useNumberSpeed() {
     combo.value = 0
     bestStreak.value = 0
     lastCorrect.value = null
+    answered.value = 0
     refillQueue()
     loadChoices()
   }
@@ -74,6 +78,7 @@ export function useNumberSpeed() {
     if (phase.value !== 'playing') return
     const correct = choice === item.value.answer
     lastCorrect.value = correct
+    answered.value += 1
     if (correct) {
       score.value += 1
       combo.value += 1
@@ -114,6 +119,7 @@ export function useNumberSpeed() {
     combo,
     bestStreak,
     lastCorrect,
+    answered,
     item,
     bestScore,
     start,

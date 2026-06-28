@@ -240,6 +240,9 @@
       "care": "Chăm sóc"
     }
   },
+  "a11y": {
+    "skip_to_content": "Bỏ qua đến nội dung"
+  },
   "errors": {
     "data_failed": "Không tải được dữ liệu của bạn. Kiểm tra kết nối và thử lại.",
     "save_failed": "Không lưu được. Kiểm tra kết nối và thử lại.",
@@ -289,6 +292,7 @@
     "completion_restart": "🃏 TAY BÀI MỚI",
     "context_label": "Ngữ cảnh · 상황",
     "sentence_placeholder": "Viết câu của bạn ở đây…",
+    "sentence_input_label": "Viết câu tiếng Hàn của bạn",
     "sentence_korean_only": "Hãy viết câu bằng tiếng Hàn · 한국어로 써 주세요",
     "show_example": "💡 Xem ví dụ",
     "hide_example": "Ẩn ví dụ",

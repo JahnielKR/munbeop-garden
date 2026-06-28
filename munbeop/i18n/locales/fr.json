@@ -240,6 +240,9 @@
       "care": "Soigner"
     }
   },
+  "a11y": {
+    "skip_to_content": "Aller au contenu"
+  },
   "errors": {
     "data_failed": "Impossible de charger tes données. Vérifie ta connexion et réessaie.",
     "save_failed": "Impossible d'enregistrer. Vérifie ta connexion et réessaie.",
@@ -289,6 +292,7 @@
     "completion_restart": "🃏 NOUVELLE MAIN",
     "context_label": "Contexte · 상황",
     "sentence_placeholder": "Écris ta phrase ici…",
+    "sentence_input_label": "Écris ta phrase en coréen",
     "sentence_korean_only": "Écris la phrase en coréen · 한국어로 써 주세요",
     "show_example": "💡 Voir l'exemple",
     "hide_example": "Masquer l'exemple",
