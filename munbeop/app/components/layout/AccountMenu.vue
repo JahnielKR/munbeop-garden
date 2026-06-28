@@ -171,7 +171,10 @@ onUnmounted(() => {
       <span v-if="portrait.bgUrl" class="acct__avatar-bgclip" aria-hidden="true">
         <span class="acct__avatar-bg" :style="{ backgroundImage: `url(${portrait.bgUrl})` }" />
       </span>
-      <span class="acct__inner">
+      <span
+        class="acct__inner"
+        :style="portrait.chipColor ? { background: portrait.chipColor } : undefined"
+      >
         <img v-if="portrait.avatarUrl" class="acct__inner-img" :src="portrait.avatarUrl" alt="" >
         <template v-else>{{ initial }}</template>
       </span>

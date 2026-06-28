@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useAvatars } from '~/composables/useAvatars'
-import { AVATAR_TIERS, requirementLabel } from '~/lib/avatars/catalog'
+import { avatarBg, AVATAR_TIERS, requirementLabel } from '~/lib/avatars/catalog'
 import { useAuthStore } from '~/stores/auth'
 
 const { t } = useI18n()
@@ -69,7 +69,12 @@ function pct(current: number, target: number): number {
             :aria-pressed="chosenId === a.id"
             @click="choose(a.id)"
           >
-            <img class="ava__img" :src="avatarUrl(a.id)" :alt="a.name.en" >
+            <img
+              class="ava__img"
+              :src="avatarUrl(a.id)"
+              :alt="a.name.en"
+              :style="{ background: avatarBg(a.id) }"
+            >
             <span class="ava__name">{{ a.name.ko }} · {{ a.name.en }}</span>
             <template v-if="!a.unlocked">
               <span class="ava__req">{{ reqText(a.rule) }}</span>
@@ -127,7 +132,12 @@ function pct(current: number, target: number): number {
 .ava__tile--locked .ava__img { filter: grayscale(1) brightness(0.55); }
 .ava__tile--preview { flex-direction: row; gap: 8px; justify-content: center; }
 
-.ava__img { width: 64px; height: 64px; image-rendering: pixelated; }
+.ava__img {
+  width: 64px; height: 64px; image-rendering: pixelated;
+  /* the per-avatar chip colour is set inline; frame it like the portrait so the
+   * picker previews exactly what the profile portrait will show. */
+  box-shadow: inset 0 0 0 1px var(--ink-line);
+}
 .ava__initial {
   width: 48px; height: 48px; display: grid; place-items: center;
   background: var(--accent); color: var(--text-on-accent);
