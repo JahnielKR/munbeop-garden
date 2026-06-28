@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, type ComputedRef } from 'vue'
 import { motion } from 'motion-v'
-import type { PoseGroupAnimation } from './poses'
+import type { PoseGroupAnimation } from '~/lib/bomi/poses'
 
 const hatAnim = inject<ComputedRef<PoseGroupAnimation | undefined>>('bomi:hatAnim')
 </script>

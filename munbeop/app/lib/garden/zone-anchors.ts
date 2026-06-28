@@ -1,4 +1,4 @@
-import type { TreeSpecies } from '~/components/garden/PixelTree.vue'
+import type { TreeSpecies } from './tree'
 
 /**
  * Zone-node anchors per species — % positions over the 128×160 tree canvas,

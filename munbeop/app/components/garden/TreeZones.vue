@@ -14,7 +14,7 @@
  */
 import { computed } from 'vue'
 import type { TopikLevel } from '~/lib/domain'
-import type { TreeSpecies } from '~/components/garden/PixelTree.vue'
+import type { TreeSpecies } from '~/lib/garden'
 import type { GardenZone } from '~/composables/useGardenState'
 import { ZONE_ANCHORS } from '~/lib/garden/zone-anchors'
 import { themeTitleKey } from '~/lib/garden'

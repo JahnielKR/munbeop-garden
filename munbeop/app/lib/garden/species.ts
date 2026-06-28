@@ -1,4 +1,4 @@
-import type { TreeSpecies } from '~/components/garden/PixelTree.vue'
+import type { TreeSpecies } from './tree'
 import type { TopikLevel } from '~/lib/domain'
 
 /**
