@@ -58,6 +58,32 @@ const weekdayLabels = computed(() => {
     new Date(Date.UTC(2026, 5, 1 + offset)).toLocaleDateString(locale.value, { weekday: 'short', timeZone: 'UTC' })
   return [lab(0), '', lab(2), '', lab(4), '', '']
 })
+
+// --- Accessibility ---------------------------------------------------------
+// The grid is a wall of unlabeled <div>s; a screen reader hears nothing. Give
+// the grid a role=group summary, and each inspectable cell a date+count name.
+const yearCells = computed(() => grid.value.weeks.flat().filter((c) => c.inYear && !c.future))
+const yearActiveDays = computed(() => yearCells.value.filter((c) => c.count > 0).length)
+const yearTotal = computed(() => yearCells.value.reduce((s, c) => s + c.count, 0))
+const gridSummary = computed(() =>
+  t('stats.activity.grid_summary', { year: year.value, days: yearActiveDays.value, total: yearTotal.value }),
+)
+
+function fmtDate(dayKey: string): string {
+  const [y, m, d] = dayKey.split('-').map(Number) as [number, number, number]
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString(locale.value, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  })
+}
+function cellLabel(cell: { dayKey: string; count: number }): string {
+  return `${fmtDate(cell.dayKey)} · ${t('stats.activity.tooltip', { count: cell.count })}`
+}
+function inspectable(cell: { inYear: boolean; future: boolean }): boolean {
+  return cell.inYear && !cell.future
+}
 </script>
 
 <template>
@@ -82,7 +108,7 @@ const weekdayLabels = computed(() => {
         <div class="heat-weekdays">
           <span v-for="(wd, r) in weekdayLabels" :key="'wd' + r">{{ wd }}</span>
         </div>
-        <div class="heat-grid">
+        <div class="heat-grid" role="group" :aria-label="gridSummary">
           <div v-for="(w, col) in grid.weeks" :key="col" class="heat-col">
             <div
               v-for="cell in w"
@@ -91,10 +117,13 @@ const weekdayLabels = computed(() => {
               data-test="heat-cell"
               :data-day="cell.dayKey"
               :style="{
-                background: cell.inYear && !cell.future ? `var(--heat-${intensityBucket(cell.count)})` : 'transparent',
+                background: inspectable(cell) ? `var(--heat-${intensityBucket(cell.count)})` : 'transparent',
                 visibility: cell.inYear ? 'visible' : 'hidden',
               }"
-              :tabindex="cell.inYear ? 0 : -1"
+              :role="inspectable(cell) ? 'img' : undefined"
+              :aria-label="inspectable(cell) ? cellLabel(cell) : undefined"
+              :aria-hidden="inspectable(cell) ? undefined : 'true'"
+              :tabindex="inspectable(cell) ? 0 : -1"
               @mouseenter="showTip($event, cell.dayKey, cell.count, cell.inYear, cell.future)"
               @focus="showTip($event, cell.dayKey, cell.count, cell.inYear, cell.future)"
               @mouseleave="hideTip"
