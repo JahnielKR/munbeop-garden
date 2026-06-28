@@ -1,11 +1,12 @@
 import { describe, it, expect, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import RescuePanel from '~/components/practice/RescuePanel.vue'
 import type { Grammar, LocalizedString } from '~/lib/domain'
 
-// Usage notes come from the static seed by ko; mock so the reread stage has one.
+// Usage notes come from the per-level seed by ko (loaded async); mock so the
+// reread stage has one.
 vi.mock('~/lib/usage-notes', () => ({
-  notesFor: () => ({
+  notesFor: async () => ({
     en: 'use it for setup', es: 'use it for setup', fr: 'use it for setup',
     'pt-BR': 'use it for setup', th: 'use it for setup', id: 'use it for setup',
     vi: 'use it for setup', ja: 'use it for setup',
@@ -28,8 +29,9 @@ const mountStage = (stage: string, extra: Record<string, unknown> = {}) =>
   })
 
 describe('RescuePanel', () => {
-  it('reread stage shows the meaning and usage notes, not the sub-sections', () => {
+  it('reread stage shows the meaning and usage notes, not the sub-sections', async () => {
     const w = mountStage('reread')
+    await flushPromises() // let the async usage-notes load resolve
     expect(w.text()).toContain('contrast/background')
     expect(w.text()).toContain('use it for setup')
     expect(w.find('[data-testid="examples-stub"]').exists()).toBe(false)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { Grammar } from '~/lib/domain'
+import { computed, ref, watch } from 'vue'
+import type { Grammar, LocalizedString } from '~/lib/domain'
 import { notesFor } from '~/lib/usage-notes'
 import ComingSoonSection from './ComingSoonSection.vue'
 
@@ -13,18 +13,34 @@ const { tl } = useLocalized()
 
 // Notes are looked up by ko (like examples / pronunciation), NOT read off the
 // Grammar object — the Supabase catalog doesn't carry them, so reading the
-// object would always show "coming soon" for logged-in users.
-const localized = computed(() => notesFor(props.grammar.ko))
+// object would always show "coming soon" for logged-in users. The lookup is
+// async: notesFor loads the grammar's TOPIK-level seed chunk on demand, so the
+// ~5 MB catalog never ships in the route chunk. `loaded` gates the ComingSoon
+// fallback so it doesn't flash while the chunk is in flight.
+const localized = ref<LocalizedString | undefined>(undefined)
+const loaded = ref(false)
+watch(
+  () => [props.grammar.ko, props.grammar.deckId] as const,
+  async ([ko, deckId]) => {
+    loaded.value = false
+    const result = await notesFor(ko, deckId)
+    // Ignore a stale resolve if the grammar changed while the chunk loaded.
+    if (props.grammar.ko !== ko) return
+    localized.value = result
+    loaded.value = true
+  },
+  { immediate: true },
+)
 const notes = computed(() => (localized.value ? tl(localized.value) : ''))
 </script>
 
 <template>
   <ComingSoonSection
-    v-if="!localized"
+    v-if="loaded && !localized"
     :title="t('library.modal.section.usage_notes')"
     :body="t('library.modal.coming_soon.usage_notes')"
   />
-  <section v-else class="usage-notes-section">
+  <section v-else-if="localized" class="usage-notes-section">
     <h3 class="section-title">{{ t('library.modal.section.usage_notes') }}</h3>
     <p class="notes">{{ notes }}</p>
   </section>

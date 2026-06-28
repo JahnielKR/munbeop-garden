@@ -23,8 +23,8 @@ describe('usageNotes seed completeness', () => {
     ...TOPIK_6_GRAMMAR,
   ]
   for (const g of all) {
-    it(`${g.ko} has usage notes in all 8 locales`, () => {
-      const notes = notesFor(g.ko)
+    it(`${g.ko} has usage notes in all 8 locales`, async () => {
+      const notes = await notesFor(g.ko, g.deckId)
       expect(notes, `${g.ko} missing usage notes`).toBeDefined()
       for (const locale of LOCALES) {
         const v = notes![locale]

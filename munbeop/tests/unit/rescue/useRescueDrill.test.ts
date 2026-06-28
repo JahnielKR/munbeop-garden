@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
-import type { ConfusablePair, Grammar, GrammarExample, LocalizedString } from '~/lib/domain'
+import type { ConfusablePair, Grammar, LocalizedString } from '~/lib/domain'
 import type { Leech } from '~/lib/srs'
 import { useRescueDrill } from '~/composables/useRescueDrill'
 
@@ -10,12 +10,10 @@ const L = (s: string): LocalizedString => ({
 
 // Mockable seams.
 const pairsFor = vi.fn<(ko: string) => unknown[]>(() => [])
-const examplesFor = vi.fn<(ko: string) => GrammarExample[]>(() => [])
 const grammarByKo = vi.fn<(ko: string) => Grammar | undefined>(() => undefined)
 const leeches = ref<Leech[]>([])
 
 vi.mock('~/lib/grammar-pairs', () => ({ pairsFor: (ko: string) => pairsFor(ko) }))
-vi.mock('~/lib/grammar-examples', () => ({ examplesFor: (ko: string) => examplesFor(ko) }))
 vi.mock('~/stores/grammar', () => ({ useGrammarStore: () => ({ grammarByKo }) }))
 vi.mock('~/composables/useLeeches', () => ({ useLeeches: () => ({ leeches }) }))
 
@@ -24,7 +22,6 @@ const pair = { id: 'p', a: '-는데', b: '-지만', note: L('n'), items: [] } as
 
 beforeEach(() => {
   pairsFor.mockReturnValue([])
-  examplesFor.mockReturnValue([])
   grammarByKo.mockReturnValue(grammar)
   leeches.value = []
 })

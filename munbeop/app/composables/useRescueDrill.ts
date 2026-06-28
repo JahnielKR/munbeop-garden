@@ -1,6 +1,5 @@
 import { computed, ref } from 'vue'
 import type { ErrorDimension, Grammar } from '~/lib/domain'
-import { examplesFor } from '~/lib/grammar-examples'
 import { pairsFor } from '~/lib/grammar-pairs'
 import { useGrammarStore } from '~/stores/grammar'
 import { useLeeches } from '~/composables/useLeeches'
@@ -20,7 +19,6 @@ export function useRescueDrill(ko: string) {
   const { leeches } = useLeeches()
 
   const grammar = computed<Grammar | null>(() => grammarStore.grammarByKo(ko) ?? null)
-  const examples = computed(() => examplesFor(ko))
   const pairs = computed(() => pairsFor(ko))
 
   const dominantDimension = computed<ErrorDimension | null>(
@@ -46,5 +44,5 @@ export function useRescueDrill(ko: string) {
     if (stepIndex.value > 0) stepIndex.value--
   }
 
-  return { grammar, examples, pairs, dominantDimension, stages, stage, stepIndex, isLast, canBack, next, back }
+  return { grammar, pairs, dominantDimension, stages, stage, stepIndex, isLast, canBack, next, back }
 }
