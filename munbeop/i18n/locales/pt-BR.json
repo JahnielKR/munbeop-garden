@@ -294,6 +294,7 @@
     "no_contexts": "Você precisa de pelo menos 3 contextos ativos.",
     "toast_saved_easy": "✨ Salva",
     "toast_saved_hard": "😤 Salva",
+    "toast_save_error": "⚠️ Não foi possível salvar. Sua frase foi mantida, toque para tentar de novo.",
     "no_sentence": "Escreve uma frase primeiro",
     "custom": {
       "section": "Decks personalizados",

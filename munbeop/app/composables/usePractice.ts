@@ -148,21 +148,38 @@ export function usePractice() {
     if (!grammar || !ctx) return null
     const hasNote = p.errorNote !== null && p.errorNote.trim().length > 0
     const reviewState: ReviewState = p.feedback === 'hard' && hasNote ? 'incorrect' : 'unreviewed'
-    const entry = await logStore.add({
-      ko: grammar.ko,
-      sentence: p.sentence,
-      feedback: p.feedback,
-      errorNote: hasNote ? p.errorNote : null,
-      errorDimension: p.errorDimension ?? null,
-      reviewState,
-      contextId: ctx.id,
-      contextName: ctx.name,
-    })
+    // The log write persists the learner's sentence — the thing we must never
+    // lose. On a flaky mobile network (routine in Korea) the Supabase adapter
+    // throws; bail WITHOUT advancing so the card keeps the sentence and the
+    // caller can offer a retry, instead of silently dropping the answer.
+    let entry: LogEntry
+    try {
+      entry = await logStore.add({
+        ko: grammar.ko,
+        sentence: p.sentence,
+        feedback: p.feedback,
+        errorNote: hasNote ? p.errorNote : null,
+        errorDimension: p.errorDimension ?? null,
+        reviewState,
+        contextId: ctx.id,
+        contextName: ctx.name,
+      })
+    } catch (e) {
+      console.error('persistEntry: log write failed', e)
+      return null
+    }
     // Fire-and-forget: the heatmap tick is intentionally decoupled so it never
     // blocks the answer. Swallow a transient cloud error so it doesn't surface
-    // as an unhandled rejection (the log + SRS writes above are the real path).
+    // as an unhandled rejection.
     void activity.record().catch(() => {})
-    await srsStore.recalculate(grammar.ko)
+    // SRS recalc is secondary — the sentence is already saved. A failure here
+    // must not lose that or block the card; SRS self-heals on the next answer
+    // (recalculateMastery re-derives mastery from the full log each time).
+    try {
+      await srsStore.recalculate(grammar.ko)
+    } catch (e) {
+      console.error('persistEntry: SRS recalc failed', e)
+    }
     advanceProgress(s, p.pickIndex)
     return entry
   }

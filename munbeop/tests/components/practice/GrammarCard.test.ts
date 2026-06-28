@@ -62,3 +62,46 @@ describe('practice GrammarCard — example reveal', () => {
     expect(w.find('.example-toggle').exists()).toBe(false)
   })
 })
+
+describe('practice GrammarCard — answer is not lost on a failed save', () => {
+  function typedCard() {
+    const w = mountCard()
+    return w
+  }
+
+  it('keeps the sentence after submit until progress advances (a confirmed save)', async () => {
+    const w = typedCard()
+    await w.find('textarea.input').setValue('나는 학생이에요.')
+
+    // Submit (Easy) emits, but the input must NOT clear — the parent has not yet
+    // confirmed the cloud write, so a failure would otherwise lose the sentence.
+    await w.find('.fb').findAll('button')[0]!.trigger('click')
+    expect(w.emitted('submit')).toHaveLength(1)
+    expect((w.find('textarea.input').element as HTMLTextAreaElement).value).toBe('나는 학생이에요.')
+
+    // A second tap before confirmation must not double-log the same answer.
+    await w.find('.fb').findAll('button')[0]!.trigger('click')
+    expect(w.emitted('submit')).toHaveLength(1)
+
+    // The parent confirms by advancing the context → the input clears for the
+    // next context.
+    await w.setProps({ progress: 1 })
+    expect((w.find('textarea.input').element as HTMLTextAreaElement).value).toBe('')
+  })
+
+  it('re-enables the actions when an in-flight save resolves without advancing (a failed save)', async () => {
+    const w = typedCard()
+    await w.find('textarea.input').setValue('나는 학생이에요.')
+    await w.find('.fb').findAll('button')[0]!.trigger('click')
+    expect(w.emitted('submit')).toHaveLength(1)
+
+    // Parent toggles :submitting true→false on a failure (progress unchanged).
+    await w.setProps({ submitting: true })
+    await w.setProps({ submitting: false })
+
+    // The sentence is still there and a retry tap submits again.
+    expect((w.find('textarea.input').element as HTMLTextAreaElement).value).toBe('나는 학생이에요.')
+    await w.find('.fb').findAll('button')[0]!.trigger('click')
+    expect(w.emitted('submit')).toHaveLength(2)
+  })
+})

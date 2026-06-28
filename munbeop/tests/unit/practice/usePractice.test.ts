@@ -267,6 +267,55 @@ describe('usePractice', () => {
   })
 
   // -------------------------------------------------------------------------
+  // 6e. persistEntry: a failed log write must not lose the answer or advance.
+  // The cloud write (Supabase) throws on a flaky network; persistEntry has to
+  // swallow it, return null (so the card keeps the sentence + the caller can
+  // offer a retry), and NOT advance the card or recalc SRS.
+  // -------------------------------------------------------------------------
+  it('persistEntry returns null and does not advance when the log write fails', async () => {
+    const p = usePractice()
+    await p.start()
+    const before = p.session.value!.picks[0]!.progress
+    add.mockRejectedValueOnce(new Error('network down'))
+
+    const result = await p.persistEntry({
+      pickIndex: 0,
+      sentence: '저는 학생이에요.',
+      feedback: 'easy',
+      errorNote: null,
+    })
+
+    expect(result).toBeNull()
+    // Progress is untouched → the card stays on the same context, sentence kept.
+    expect(p.session.value!.picks[0]!.progress).toBe(before)
+    // SRS recalc never runs when the write itself failed.
+    expect(recalculate).not.toHaveBeenCalled()
+  })
+
+  // -------------------------------------------------------------------------
+  // 6f. persistEntry: the SRS recalc is secondary. If the log entry saved but
+  // the recalc throws, we must NOT lose the saved entry or block the card —
+  // it returns the entry and advances; SRS self-heals next answer.
+  // -------------------------------------------------------------------------
+  it('persistEntry keeps the saved entry and advances even if the SRS recalc fails', async () => {
+    const p = usePractice()
+    await p.start()
+    const before = p.session.value!.picks[0]!.progress
+    recalculate.mockRejectedValueOnce(new Error('srs unavailable'))
+
+    const result = await p.persistEntry({
+      pickIndex: 0,
+      sentence: '저는 학생이에요.',
+      feedback: 'easy',
+      errorNote: null,
+    })
+
+    expect(result).not.toBeNull()
+    expect(add).toHaveBeenCalledTimes(1)
+    expect(p.session.value!.picks[0]!.progress).toBe(before + 1)
+  })
+
+  // -------------------------------------------------------------------------
   // 7a. reset() clears session and error
   // -------------------------------------------------------------------------
   it('reset clears session and error', async () => {

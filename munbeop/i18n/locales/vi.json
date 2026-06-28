@@ -294,6 +294,7 @@
     "no_contexts": "Bạn cần ít nhất 3 ngữ cảnh đang hoạt động.",
     "toast_saved_easy": "✨ Đã lưu",
     "toast_saved_hard": "😤 Đã lưu",
+    "toast_save_error": "⚠️ Không lưu được. Câu của bạn vẫn còn, chạm để thử lại.",
     "no_sentence": "Viết câu trước đã",
     "custom": {
       "section": "Bộ thẻ tùy chỉnh",

@@ -294,6 +294,7 @@
     "no_contexts": "Necesitas al menos 3 contextos activos.",
     "toast_saved_easy": "✨ Guardada",
     "toast_saved_hard": "😤 Guardada",
+    "toast_save_error": "⚠️ No se pudo guardar. Tu frase no se perdió, toca para reintentar.",
     "no_sentence": "Escribe una oración primero",
     "custom": {
       "section": "Mazos personalizados",

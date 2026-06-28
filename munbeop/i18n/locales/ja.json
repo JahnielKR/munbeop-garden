@@ -294,6 +294,7 @@
     "no_contexts": "アクティブな文脈が3つ以上必要です。",
     "toast_saved_easy": "✨ 保存しました",
     "toast_saved_hard": "😤 保存しました",
+    "toast_save_error": "⚠️ 保存できませんでした。文は残っています。もう一度タップしてください。",
     "no_sentence": "先に文を書いてください",
     "custom": {
       "section": "カスタムデッキ",
