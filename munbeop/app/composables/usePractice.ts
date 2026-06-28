@@ -158,7 +158,10 @@ export function usePractice() {
       contextId: ctx.id,
       contextName: ctx.name,
     })
-    void activity.record()
+    // Fire-and-forget: the heatmap tick is intentionally decoupled so it never
+    // blocks the answer. Swallow a transient cloud error so it doesn't surface
+    // as an unhandled rejection (the log + SRS writes above are the real path).
+    void activity.record().catch(() => {})
     await srsStore.recalculate(grammar.ko)
     advanceProgress(s, p.pickIndex)
     return entry

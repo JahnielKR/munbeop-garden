@@ -464,6 +464,17 @@ export class SupabaseAdapter implements StorageAdapter {
   }
 
   async remove(key: StorageKey): Promise<void> {
+    // settings/escapeRoom store a single jsonb blob (prefs/progress), not a
+    // collection. Routing them through write(key, []) would upsert the blob as an
+    // empty ARRAY and silently corrupt it (the next read returns [], which passes
+    // the `!= null` guard, instead of the fallback). Delete the row instead,
+    // mirroring the activity delete-all arm.
+    if (key === STORAGE_KEYS.settings || key === STORAGE_KEYS.escapeRoom) {
+      const table = key === STORAGE_KEYS.settings ? 'user_settings' : 'user_escape_room'
+      const { error } = await this.client.from(table).delete().eq('user_id', this.userId)
+      assertOk('write', key, error)
+      return
+    }
     await this.write(key, [] as never)
   }
 

@@ -44,4 +44,28 @@ describe('ActivityHeatmap', () => {
     expect(w.find('[data-test="heat-streak-current"]').text()).toContain('0')
     expect(w.find('[data-test="heat-streak-longest"]').text()).toContain('0')
   })
+
+  it('exposes an accessible group summary on the grid', () => {
+    const w = mount(ActivityHeatmap, { props: { counts, now } })
+    const gridEl = w.find('.heat-grid')
+    expect(gridEl.attributes('role')).toBe('group')
+    expect(gridEl.attributes('aria-label')).toContain('stats.activity.grid_summary')
+  })
+
+  it('gives each inspectable cell an accessible name (date + count)', () => {
+    const w = mount(ActivityHeatmap, { props: { counts, now } })
+    const cell = w.findAll('[data-test="heat-cell"]').find((c) => c.attributes('data-day') === '2026-06-26')!
+    expect(cell.attributes('role')).toBe('img')
+    expect(cell.attributes('aria-label')).toContain('2026')
+    expect(cell.attributes('tabindex')).toBe('0')
+  })
+
+  it('hides padding / future cells from assistive tech', () => {
+    const w = mount(ActivityHeatmap, { props: { counts, now } })
+    // A day after "today" (2026-06-26) is a future cell: masked, not focusable.
+    const future = w.findAll('[data-test="heat-cell"]').find((c) => c.attributes('data-day') === '2026-06-30')!
+    expect(future.attributes('aria-hidden')).toBe('true')
+    expect(future.attributes('tabindex')).toBe('-1')
+    expect(future.attributes('role')).toBeUndefined()
+  })
 })

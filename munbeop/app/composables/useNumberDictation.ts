@@ -10,9 +10,18 @@ export type DictationPhase = 'input' | 'right' | 'wrong' | 'done'
 export type DictationRunMode = 'normal' | 'replay'
 const ROUND_SIZE = 8
 
-/** Compare-normalize a typed value: strip whitespace and hyphens (valueKeys have none). */
+/**
+ * Compare-normalize a typed value: strip whitespace and hyphens (valueKeys have
+ * none). Time answers are "h:mm" — the minute is zero-padded, the hour is not
+ * (e.g. "3:05") — so accept "3:5" / "03:05" by padding the minute and dropping a
+ * leading-zero hour. Only the time domain uses a colon, so non-time inputs are
+ * untouched.
+ */
 export function normalizeValue(s: string): string {
-  return s.replace(/[\s-]+/g, '')
+  const t = s.replace(/[\s-]+/g, '')
+  const time = /^(\d{1,2}):(\d{1,2})$/.exec(t)
+  if (time) return `${Number(time[1])}:${time[2]!.padStart(2, '0')}`
+  return t
 }
 
 export function useNumberDictation() {
@@ -68,7 +77,9 @@ export function useNumberDictation() {
     const correct = normalizeValue(entry.value) === item.value.valueKey
     results.value.push({ itemId: itemId(item.value), correct })
     phase.value = correct ? 'right' : 'wrong'
-    void activity.record()
+    // Fire-and-forget heatmap tick; swallow a transient cloud error so it never
+    // surfaces as an unhandled rejection.
+    void activity.record().catch(() => {})
   }
 
   function next() {

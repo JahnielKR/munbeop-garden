@@ -136,7 +136,8 @@
       "streak_current": "Rentetan saat ini",
       "streak_longest": "Rentetan terpanjang",
       "year_prev": "Tahun sebelumnya",
-      "year_next": "Tahun berikutnya"
+      "year_next": "Tahun berikutnya",
+      "grid_summary": "Aktivitas pada {year}: {days} hari aktif, {total} dijawab."
     },
     "mastery": {
       "title": "Penguasaan TOPIK 1–6",
@@ -338,7 +339,6 @@
         "times_practiced": "Berapa kali dilatih"
       },
       "coming_soon": {
-        "examples": "Lebih banyak kalimat contoh segera hadir.",
         "usage_notes": "Catatan penggunaan rinci segera hadir."
       }
     },
@@ -772,13 +772,83 @@
     }
   },
   "pricing": {
-    "title": "Paket & Harga"
+    "title": "Paket & Harga",
+    "lead": "Pilih paket yang sesuai dengan perjalanan tata bahasamu. Batalkan kapan saja.",
+    "free": "Gratis",
+    "beta_note": "Harga masih difinalisasi — semuanya gratis selama Munbeop Garden masih dalam beta.",
+    "tiers": {
+      "sprout": {
+        "cadence": "selamanya",
+        "b1": "Pelacakan penguasaan tata bahasa",
+        "b2": "Set kartu tata bahasa lengkap",
+        "b3": "8 bahasa antarmuka"
+      },
+      "grove": {
+        "cadence": "/ bulan",
+        "b1": "Sinkronisasi lintas perangkat",
+        "b2": "Statistik lebih mendalam",
+        "b3": "Ekspor data (.json)"
+      },
+      "forest": {
+        "cadence": "sekali bayar",
+        "b1": "Semua fitur Grove",
+        "b2": "Akses seumur hidup",
+        "b3": "Pengembangan mendatang"
+      }
+    }
   },
   "features": {
-    "title": "Fitur"
+    "title": "Fitur",
+    "lead": "Setiap alat yang dibawa taman ini — bagian-bagian kecil yang fokus, semuanya menuju satu tujuan: membuat tata bahasa Korea melekat.",
+    "items": {
+      "deck": {
+        "name": "Set kartu tata bahasa",
+        "desc": "Pilih set TOPIK, kocok, lalu tarik tiga kartu tata bahasa dalam tiga konteks — sembilan kalimat per sesi, tidak pernah sama."
+      },
+      "mastery": {
+        "name": "Pertumbuhan penguasaan",
+        "desc": "Setiap kali menyimpan, satu poin tata bahasa bergerak dari tunas ke tanaman ke pohon. Saksikan taman tumbuh seiring kamu berlatih."
+      },
+      "bomi": {
+        "name": "Bomi sang maskot",
+        "desc": "Teman piksel yang melayang, berpikir, bermain, dan tidur sesuai caramu memakai aplikasi."
+      },
+      "languages": {
+        "name": "Delapan bahasa",
+        "desc": "Antarmuka dalam bahasa Inggris, Spanyol, Prancis, Portugis, Thai, Indonesia, Vietnam, dan Jepang."
+      },
+      "sync": {
+        "name": "Sinkronisasi lintas perangkat",
+        "desc": "Masuk sekali dan kalimat, penguasaan, serta konteksmu mengikutimu di ponsel dan desktop."
+      },
+      "themes": {
+        "name": "Tema siang & malam",
+        "desc": "Skema perkamen hangat untuk siang, hutan biru abisal untuk malam. Ganti kapan saja."
+      }
+    }
   },
   "policies": {
-    "title": "Kebijakan"
+    "title": "Kebijakan",
+    "lead": "Versi singkatnya: datamu milikmu, taman ini tidak menjualnya, dan tukang kebun membalas email.",
+    "draft_note": "Catatan ini adalah draf berbahasa sederhana untuk beta, bukan ketentuan hukum final — bisa berubah sebelum peluncuran.",
+    "items": {
+      "privacy": {
+        "heading": "Privasi",
+        "body": "Kami menyimpan emailmu, kalimatmu, dan kemajuan penguasaanmu, lalu menyinkronkannya ke akunmu agar mengikutimu di seluruh perangkat. Kami tidak menjual datamu."
+      },
+      "terms": {
+        "heading": "Ketentuan",
+        "body": "Bersikaplah baik kepada taman dan sesama pembelajar. Jangan merekayasa balik aplikasi atau memakainya untuk menumbuhkan tata bahasa yang bukan milikmu. Batalkan kapan saja; datamu milikmu dan bisa kamu bawa."
+      },
+      "cookies": {
+        "heading": "Cookie",
+        "body": "Kami memakai sedikit penyimpanan lokal untuk mengingat tema, bahasa, dan penanda sambutanmu — tanpa pelacak pihak ketiga, tanpa cookie iklan."
+      },
+      "contact": {
+        "heading": "Kontak",
+        "body": "Hubungi tukang kebun di hello@mungarden.app untuk pertanyaan kebijakan apa pun. Kami berupaya membalas dalam dua hari kerja."
+      }
+    }
   },
   "games": {
     "particles": {

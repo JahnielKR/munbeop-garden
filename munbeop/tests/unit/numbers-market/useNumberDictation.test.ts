@@ -17,6 +17,12 @@ describe('normalizeValue', () => {
     expect(normalizeValue('3:15')).toBe('3:15')
     expect(normalizeValue('010-1234')).toBe('0101234')
   })
+  it('zero-pads the minute and drops a leading-zero hour for time answers', () => {
+    // valueKey for time is "h:mm" (e.g. "3:05"); accept the natural "3:5".
+    expect(normalizeValue('3:5')).toBe('3:05')
+    expect(normalizeValue('03:05')).toBe('3:05')
+    expect(normalizeValue('12:00')).toBe('12:00')
+  })
 })
 
 describe('useNumberDictation', () => {

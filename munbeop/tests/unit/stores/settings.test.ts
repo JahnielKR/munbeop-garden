@@ -4,6 +4,7 @@ import { useSettingsStore } from '~/stores/settings'
 import { useAuthStore } from '~/stores/auth'
 import { useLocaleStore } from '~/stores/locale'
 import { useTheme } from '~/composables/useTheme'
+import { DEFAULT_DAILY_GOAL } from '~/lib/stats/goal'
 
 const mockRead = vi.fn()
 const mockWrite = vi.fn()
@@ -157,5 +158,48 @@ describe('useSettingsStore', () => {
     const s = useSettingsStore()
     expect(s.chosenAvatarId).toBe('koi')
     expect(s.unlockedAvatarIds).toEqual(['bee', 'koi'])
+  })
+
+  // Regression: on a shared device, signing in as a second user whose cloud
+  // blob lacks a field must NOT inherit the previous user's value. hydrate()
+  // resets account-scoped prefs to defaults before applying the cloud blob.
+  it('hydrate resets account-scoped prefs so an absent cloud field cannot leak the previous user', async () => {
+    const s = useSettingsStore()
+    signIn()
+    // User A populates every account-scoped pref.
+    await s.toggleDeck('topik-2')
+    await s.setChosenAvatar('fox')
+    await s.setDailyGoal(20)
+    await s.setReviewReminders(true)
+    await s.setStartingDeck('topik-4')
+    await s.unlockAvatars(['fox', 'koi'])
+    // User B signs in; their blob carries only a theme — no account prefs.
+    mockRead.mockResolvedValue({ theme: 'dark' })
+    await s.hydrate()
+    expect(s.excludedDeckIds).toEqual([])
+    expect(s.chosenAvatarId).toBeNull()
+    expect(s.dailyGoal).toBe(DEFAULT_DAILY_GOAL)
+    expect(s.reviewReminders).toBe(false)
+    expect(s.startingDeckId).toBeNull()
+    expect(s.unlockedAvatarIds).toEqual([])
+  })
+
+  // resetToDefaults() is the sign-out clear path (mirrors useEscapeRoomProgress
+  // resetting on the noop read). It clears account-scoped prefs but leaves the
+  // device-level theme/locale (those persist via localStorage for FOUC).
+  it('resetToDefaults clears account-scoped prefs but keeps the device theme', async () => {
+    const s = useSettingsStore()
+    signIn()
+    await s.toggleDeck('topik-2')
+    await s.setChosenAvatar('fox')
+    await s.setDailyGoal(20)
+    useTheme().setTheme('dark')
+    s.resetToDefaults()
+    expect(s.excludedDeckIds).toEqual([])
+    expect(s.chosenAvatarId).toBeNull()
+    expect(s.dailyGoal).toBe(DEFAULT_DAILY_GOAL)
+    expect(s.unlockedAvatarIds).toEqual([])
+    // theme is device-level — not reset.
+    expect(useTheme().theme.value).toBe('dark')
   })
 })

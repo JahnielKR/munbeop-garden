@@ -1,65 +1,32 @@
 <script setup lang="ts">
 // Features — public info page reached from the welcome sidebar.
-// Placeholder feature blocks for now.
-//
-// TODO(v8.1): swap copy + iconography for the real feature list.
+// Copy is localized via the `features.*` i18n keys (8 locales).
 import WelcomeSectionShell from '~/components/welcome/WelcomeSectionShell.vue'
 
 definePageMeta({ layout: false, surface: 'welcome' })
 
 const { t } = useI18n()
 
-interface Feature {
-  glyph: string
-  name: string
-  description: string
-}
-
-const features: Feature[] = [
-  {
-    glyph: '🃏',
-    name: 'Grammar card decks',
-    description: 'Pick a TOPIK deck, shuffle, and draw three grammar cards across three contexts — nine sentences per session, never the same twice.',
-  },
-  {
-    glyph: '🌱',
-    name: 'Mastery growth',
-    description: 'Every save nudges a grammar point from sprout to plant to tree. Watch the garden grow as you practice.',
-  },
-  {
-    glyph: '🦋',
-    name: 'Bomi the mascot',
-    description: 'A pixel companion that bobs, thinks, plays, and sleeps based on how you use the app.',
-  },
-  {
-    glyph: '🌍',
-    name: 'Eight languages',
-    description: 'UI in English, Spanish, French, Portuguese, Thai, Indonesian, Vietnamese, and Japanese.',
-  },
-  {
-    glyph: '☁️',
-    name: 'Cross-device sync',
-    description: 'Sign in once and your sentences, mastery, and contexts follow you across phone and desktop.',
-  },
-  {
-    glyph: '🌙',
-    name: 'Day & night themes',
-    description: 'A warm parchment scheme for the day, an abyssal-blue forest for the night. Switch any time.',
-  },
-]
+// Structure only — the glyph plus the i18n key suffix. The name/description
+// text lives in i18n so all 8 UI locales render in the user's language.
+const features = [
+  { glyph: '🃏', key: 'deck' },
+  { glyph: '🌱', key: 'mastery' },
+  { glyph: '🦋', key: 'bomi' },
+  { glyph: '🌍', key: 'languages' },
+  { glyph: '☁️', key: 'sync' },
+  { glyph: '🌙', key: 'themes' },
+] as const
 </script>
 
 <template>
   <WelcomeSectionShell :title="t('features.title')">
-    <p class="lead">
-      Every tool the garden ships with — small focused pieces, all
-      pointed at one goal: making Korean grammar stick.
-    </p>
+    <p class="lead">{{ t('features.lead') }}</p>
     <div class="grid">
-      <article v-for="f in features" :key="f.name" class="card">
+      <article v-for="f in features" :key="f.key" class="card">
         <span class="card__glyph" aria-hidden="true">{{ f.glyph }}</span>
-        <h2 class="card__name">{{ f.name }}</h2>
-        <p class="card__desc">{{ f.description }}</p>
+        <h2 class="card__name">{{ t(`features.items.${f.key}.name`) }}</h2>
+        <p class="card__desc">{{ t(`features.items.${f.key}.desc`) }}</p>
       </article>
     </div>
   </WelcomeSectionShell>

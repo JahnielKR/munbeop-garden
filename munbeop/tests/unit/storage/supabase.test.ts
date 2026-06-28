@@ -479,6 +479,33 @@ describe('SupabaseAdapter', () => {
     })
   })
 
+  describe('remove', () => {
+    // The jsonb-blob keys must DELETE their row, not route through write([])
+    // (which would upsert prefs/progress = [] and silently corrupt the blob).
+    it('settings: deletes the user_settings row, never upserts prefs = []', async () => {
+      await adapter.remove(STORAGE_KEYS.settings)
+      const ops = client.writes.filter((w) => w.table === 'user_settings')
+      expect(ops).toHaveLength(1)
+      expect(ops[0]?.op).toBe('delete')
+      expect(ops.some((w) => w.op === 'upsert')).toBe(false)
+    })
+
+    it('escapeRoom: deletes the user_escape_room row, never upserts progress = []', async () => {
+      await adapter.remove(STORAGE_KEYS.escapeRoom)
+      const ops = client.writes.filter((w) => w.table === 'user_escape_room')
+      expect(ops).toHaveLength(1)
+      expect(ops[0]?.op).toBe('delete')
+      expect(ops.some((w) => w.op === 'upsert')).toBe(false)
+    })
+
+    it('collection keys still clear via write([]) — one delete, no upsert', async () => {
+      await adapter.remove(STORAGE_KEYS.decks)
+      const ops = client.writes.filter((w) => w.table === 'user_decks')
+      expect(ops).toHaveLength(1)
+      expect(ops[0]?.op).toBe('delete')
+    })
+  })
+
   describe('exhaustiveness', () => {
     // read/write handle every StorageKey; the default arm is an assertNever
     // rail, so an unmapped key fails loudly (and adding one fails typecheck)
