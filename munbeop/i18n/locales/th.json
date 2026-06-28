@@ -287,6 +287,8 @@
     "completion_restart": "🃏 จั่วไพ่ใหม่",
     "context_label": "บริบท · 상황",
     "sentence_placeholder": "เขียนประโยคของคุณที่นี่…",
+    "show_example": "💡 ดูตัวอย่าง",
+    "hide_example": "ซ่อนตัวอย่าง",
     "no_grammars": "ไวยากรณ์ในเด็คที่เปิดใช้ไม่พอ",
     "no_contexts": "ต้องมีบริบทที่เปิดใช้อย่างน้อย 3 อัน",
     "toast_saved_easy": "✨ บันทึกแล้ว",

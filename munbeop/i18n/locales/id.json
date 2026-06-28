@@ -287,6 +287,8 @@
     "completion_restart": "🃏 KARTU BARU",
     "context_label": "Konteks · 상황",
     "sentence_placeholder": "Tulis kalimatmu di sini…",
+    "show_example": "💡 Lihat contoh",
+    "hide_example": "Sembunyikan contoh",
     "no_grammars": "Tata bahasa di deck aktif tidak cukup.",
     "no_contexts": "Kamu butuh minimal 3 konteks aktif.",
     "toast_saved_easy": "✨ Tersimpan",
