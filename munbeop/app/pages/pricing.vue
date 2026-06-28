@@ -1,68 +1,45 @@
 <script setup lang="ts">
-// Plans & Pricing — public info page reached from the welcome
-// sidebar. Placeholder tier cards for now; copy lands in a later
-// pass.
-//
-// TODO(v8.1): replace tier copy + numbers with the real offer.
+// Plans & Pricing — public info page reached from the welcome sidebar.
+// Tier copy is localized via the `pricing.*` i18n keys (8 locales). The tiers
+// are still a placeholder offer (nothing is charged yet — see pricing.beta_note);
+// real billing/entitlement lands with the free/premium split.
 import WelcomeSectionShell from '~/components/welcome/WelcomeSectionShell.vue'
 
 definePageMeta({ layout: false, surface: 'welcome' })
 
 const { t } = useI18n()
 
-interface Tier {
-  name: string
-  price: string
-  cadence: string
-  bullets: string[]
-  featured?: boolean
-}
-
-const tiers: Tier[] = [
-  {
-    name: 'Sprout',
-    price: 'Free',
-    cadence: 'forever',
-    bullets: ['Grammar mastery tracking', 'Full grammar card decks', '8 UI languages'],
-  },
-  {
-    name: 'Grove',
-    price: '$4',
-    cadence: '/ month',
-    bullets: ['Cross-device sync', 'Deeper stats', 'Data export (.json)'],
-    featured: true,
-  },
-  {
-    name: 'Forest',
-    price: '$49',
-    cadence: 'one time',
-    bullets: ['All Grove features', 'Lifetime access', 'Future expansions'],
-  },
-]
+// Structure only (key, brand name, price numeral, emphasis). Cadence + bullets
+// resolve from i18n in the template so all 8 locales render in-language. A null
+// price renders the localized "Free" label.
+const tiers = [
+  { key: 'sprout', name: 'Sprout', price: null, featured: false },
+  { key: 'grove', name: 'Grove', price: '$4', featured: true },
+  { key: 'forest', name: 'Forest', price: '$49', featured: false },
+] as const
 </script>
 
 <template>
   <WelcomeSectionShell :title="t('pricing.title')">
-    <p class="lead">
-      Pick the plan that matches your grammar journey. Cancel any time.
-    </p>
+    <p class="lead">{{ t('pricing.lead') }}</p>
     <div class="tiers">
       <article
         v-for="tier in tiers"
-        :key="tier.name"
+        :key="tier.key"
         class="tier"
         :class="{ 'tier--featured': tier.featured }"
       >
         <h2 class="tier__name">{{ tier.name }}</h2>
         <p class="tier__price">
-          <span class="tier__price-amount">{{ tier.price }}</span>
-          <span class="tier__price-cadence">{{ tier.cadence }}</span>
+          <span class="tier__price-amount">{{ tier.price ?? t('pricing.free') }}</span>
+          <span class="tier__price-cadence">{{ t(`pricing.tiers.${tier.key}.cadence`) }}</span>
         </p>
         <ul class="tier__bullets">
-          <li v-for="b in tier.bullets" :key="b">{{ b }}</li>
+          <li v-for="n in 3" :key="n">{{ t(`pricing.tiers.${tier.key}.b${n}`) }}</li>
         </ul>
       </article>
     </div>
+    <p class="beta-note" role="note">{{ t('pricing.beta_note') }}</p>
   </WelcomeSectionShell>
 </template>
 
@@ -73,6 +50,15 @@ const tiers: Tier[] = [
   margin: 0;
   max-width: 60ch;
   line-height: 1.5;
+}
+.beta-note {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin: 0;
+  max-width: 60ch;
+  line-height: 1.5;
+  font-style: italic;
+  opacity: 0.85;
 }
 .tiers {
   display: grid;

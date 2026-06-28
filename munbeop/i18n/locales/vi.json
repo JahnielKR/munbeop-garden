@@ -136,7 +136,8 @@
       "streak_current": "Chuỗi hiện tại",
       "streak_longest": "Chuỗi dài nhất",
       "year_prev": "Năm trước",
-      "year_next": "Năm tiếp theo"
+      "year_next": "Năm tiếp theo",
+      "grid_summary": "Hoạt động trong năm {year}: {days} ngày hoạt động, {total} câu đã trả lời."
     },
     "mastery": {
       "title": "Mức thành thạo TOPIK 1–6",
@@ -338,7 +339,6 @@
         "times_practiced": "Số lần đã luyện"
       },
       "coming_soon": {
-        "examples": "Thêm câu ví dụ sắp ra mắt.",
         "usage_notes": "Ghi chú cách dùng chi tiết sắp ra mắt."
       }
     },
@@ -772,13 +772,83 @@
     }
   },
   "pricing": {
-    "title": "Gói & Giá"
+    "title": "Gói & Giá",
+    "lead": "Chọn gói phù hợp với hành trình ngữ pháp của bạn. Hủy bất cứ lúc nào.",
+    "free": "Miễn phí",
+    "beta_note": "Giá vẫn đang được hoàn thiện — mọi thứ đều miễn phí trong khi Munbeop Garden còn ở giai đoạn beta.",
+    "tiers": {
+      "sprout": {
+        "cadence": "mãi mãi",
+        "b1": "Theo dõi mức thành thạo ngữ pháp",
+        "b2": "Trọn bộ thẻ ngữ pháp",
+        "b3": "8 ngôn ngữ giao diện"
+      },
+      "grove": {
+        "cadence": "/ tháng",
+        "b1": "Đồng bộ trên nhiều thiết bị",
+        "b2": "Thống kê chi tiết hơn",
+        "b3": "Xuất dữ liệu (.json)"
+      },
+      "forest": {
+        "cadence": "trả một lần",
+        "b1": "Tất cả tính năng của Grove",
+        "b2": "Truy cập trọn đời",
+        "b3": "Mở rộng trong tương lai"
+      }
+    }
   },
   "features": {
-    "title": "Tính năng"
+    "title": "Tính năng",
+    "lead": "Mọi công cụ khu vườn mang lại — những mảnh nhỏ và tập trung, tất cả hướng đến một mục tiêu: giúp ngữ pháp tiếng Hàn ghi nhớ lâu.",
+    "items": {
+      "deck": {
+        "name": "Bộ thẻ ngữ pháp",
+        "desc": "Chọn một bộ TOPIK, xáo bài và rút ba thẻ ngữ pháp trong ba ngữ cảnh — chín câu mỗi phiên, không bao giờ lặp lại."
+      },
+      "mastery": {
+        "name": "Sự trưởng thành của mức thành thạo",
+        "desc": "Mỗi lần lưu sẽ đưa một điểm ngữ pháp từ mầm sang cây non rồi thành cây lớn. Ngắm khu vườn lớn lên theo quá trình luyện tập của bạn."
+      },
+      "bomi": {
+        "name": "Bomi - linh vật",
+        "desc": "Người bạn pixel biết lơ lửng, suy nghĩ, chơi đùa và ngủ tùy theo cách bạn dùng ứng dụng."
+      },
+      "languages": {
+        "name": "Tám ngôn ngữ",
+        "desc": "Giao diện bằng tiếng Anh, Tây Ban Nha, Pháp, Bồ Đào Nha, Thái, Indonesia, Việt và Nhật."
+      },
+      "sync": {
+        "name": "Đồng bộ trên nhiều thiết bị",
+        "desc": "Đăng nhập một lần và các câu, mức thành thạo và ngữ cảnh của bạn sẽ theo bạn trên điện thoại lẫn máy tính."
+      },
+      "themes": {
+        "name": "Giao diện ngày & đêm",
+        "desc": "Tông giấy da ấm áp cho ban ngày, khu rừng xanh thẳm cho ban đêm. Đổi bất cứ lúc nào."
+      }
+    }
   },
   "policies": {
-    "title": "Chính sách"
+    "title": "Chính sách",
+    "lead": "Nói ngắn gọn: dữ liệu của bạn là của bạn, khu vườn không bán nó, và người làm vườn trả lời email.",
+    "draft_note": "Những ghi chú này là bản nháp bằng ngôn ngữ dễ hiểu cho giai đoạn beta, không phải điều khoản pháp lý cuối cùng — có thể thay đổi trước khi ra mắt.",
+    "items": {
+      "privacy": {
+        "heading": "Quyền riêng tư",
+        "body": "Chúng tôi lưu email, các câu của bạn và tiến trình thành thạo của bạn, rồi đồng bộ chúng vào tài khoản để theo bạn trên mọi thiết bị. Chúng tôi không bán dữ liệu của bạn."
+      },
+      "terms": {
+        "heading": "Điều khoản",
+        "body": "Hãy tử tế với khu vườn và những người học khác. Đừng dịch ngược ứng dụng hay dùng nó để gieo trồng ngữ pháp không thuộc về bạn. Hủy bất cứ lúc nào; dữ liệu là của bạn và bạn có thể mang theo."
+      },
+      "cookies": {
+        "heading": "Cookie",
+        "body": "Chúng tôi dùng một lượng nhỏ bộ nhớ cục bộ để ghi nhớ giao diện, ngôn ngữ và cờ chào mừng của bạn — không có trình theo dõi bên thứ ba, không có cookie quảng cáo."
+      },
+      "contact": {
+        "heading": "Liên hệ",
+        "body": "Liên hệ người làm vườn tại hello@mungarden.app cho mọi câu hỏi về chính sách. Chúng tôi cố gắng trả lời trong hai ngày làm việc."
+      }
+    }
   },
   "games": {
     "particles": {

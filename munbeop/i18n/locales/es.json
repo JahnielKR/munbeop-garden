@@ -136,7 +136,8 @@
       "streak_current": "Racha actual",
       "streak_longest": "Racha más larga",
       "year_prev": "Año anterior",
-      "year_next": "Año siguiente"
+      "year_next": "Año siguiente",
+      "grid_summary": "Actividad en {year}: {days} días activos, {total} respondidas."
     },
     "mastery": {
       "title": "Dominio por TOPIK 1–6",
@@ -338,7 +339,6 @@
         "times_practiced": "Veces practicada"
       },
       "coming_soon": {
-        "examples": "Más oraciones de ejemplo llegarán pronto.",
         "usage_notes": "Las notas de uso detalladas llegarán pronto."
       }
     },
@@ -772,13 +772,83 @@
     }
   },
   "pricing": {
-    "title": "Planes y Precios"
+    "title": "Planes y Precios",
+    "lead": "Elige el plan que acompañe tu camino con la gramática. Cancela cuando quieras.",
+    "free": "Gratis",
+    "beta_note": "Los precios aún se están definiendo — todo es gratis mientras Munbeop Garden está en beta.",
+    "tiers": {
+      "sprout": {
+        "cadence": "para siempre",
+        "b1": "Seguimiento de maestría gramatical",
+        "b2": "Mazos de cartas de gramática completos",
+        "b3": "8 idiomas de interfaz"
+      },
+      "grove": {
+        "cadence": "/ mes",
+        "b1": "Sincronización entre dispositivos",
+        "b2": "Estadísticas más detalladas",
+        "b3": "Exportar datos (.json)"
+      },
+      "forest": {
+        "cadence": "pago único",
+        "b1": "Todo lo de Grove",
+        "b2": "Acceso de por vida",
+        "b3": "Futuras expansiones"
+      }
+    }
   },
   "features": {
-    "title": "Características"
+    "title": "Características",
+    "lead": "Todas las herramientas del jardín — piezas pequeñas y enfocadas, todas hacia una sola meta: que la gramática coreana se te quede.",
+    "items": {
+      "deck": {
+        "name": "Mazos de cartas de gramática",
+        "desc": "Elige un mazo TOPIK, baraja y saca tres cartas de gramática en tres contextos — nueve frases por sesión, nunca las mismas."
+      },
+      "mastery": {
+        "name": "Crecimiento de maestría",
+        "desc": "Cada frase guardada lleva un punto de gramática de brote a planta a árbol. Mira crecer el jardín a medida que practicas."
+      },
+      "bomi": {
+        "name": "Bomi, la mascota",
+        "desc": "Una compañera pixel que flota, piensa, juega y duerme según cómo usas la app."
+      },
+      "languages": {
+        "name": "Ocho idiomas",
+        "desc": "Interfaz en inglés, español, francés, portugués, tailandés, indonesio, vietnamita y japonés."
+      },
+      "sync": {
+        "name": "Sincronización entre dispositivos",
+        "desc": "Inicia sesión una vez y tus frases, tu maestría y tus contextos te siguen entre el móvil y el escritorio."
+      },
+      "themes": {
+        "name": "Temas de día y de noche",
+        "desc": "Un esquema de pergamino cálido para el día y un bosque azul abisal para la noche. Cambia cuando quieras."
+      }
+    }
   },
   "policies": {
-    "title": "Políticas"
+    "title": "Políticas",
+    "lead": "La versión corta: tus datos son tuyos, el jardín no los vende, y el jardinero responde el correo.",
+    "draft_note": "Estas notas son un borrador en lenguaje sencillo para la beta, no los términos legales finales — pueden cambiar antes del lanzamiento.",
+    "items": {
+      "privacy": {
+        "heading": "Privacidad",
+        "body": "Guardamos tu correo, tus frases y tu progreso de maestría, y los sincronizamos con tu cuenta para que te acompañen entre dispositivos. No vendemos tus datos."
+      },
+      "terms": {
+        "heading": "Términos",
+        "body": "Sé amable con el jardín y con los demás estudiantes. No hagas ingeniería inversa de la app ni la uses para cultivar gramática que no es tuya. Cancela cuando quieras; tus datos son tuyos y puedes llevártelos."
+      },
+      "cookies": {
+        "heading": "Cookies",
+        "body": "Usamos una pequeña cantidad de almacenamiento local para recordar tu tema, tu idioma y tu indicador de bienvenida — sin rastreadores de terceros, sin cookies de publicidad."
+      },
+      "contact": {
+        "heading": "Contacto",
+        "body": "Escribe al jardinero a hello@mungarden.app para cualquier duda sobre las políticas. Intentamos responder en dos días hábiles."
+      }
+    }
   },
   "games": {
     "particles": {

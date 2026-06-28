@@ -136,7 +136,8 @@
       "streak_current": "Current streak",
       "streak_longest": "Longest streak",
       "year_prev": "Previous year",
-      "year_next": "Next year"
+      "year_next": "Next year",
+      "grid_summary": "Activity in {year}: {days} active days, {total} answered."
     },
     "mastery": {
       "title": "Mastery across TOPIK 1–6",
@@ -338,7 +339,6 @@
         "times_practiced": "Times practiced"
       },
       "coming_soon": {
-        "examples": "More example sentences are coming soon.",
         "usage_notes": "Detailed usage notes for this grammar are coming soon."
       }
     },
@@ -772,13 +772,83 @@
     }
   },
   "pricing": {
-    "title": "Plans & Pricing"
+    "title": "Plans & Pricing",
+    "lead": "Pick the plan that matches your grammar journey. Cancel any time.",
+    "free": "Free",
+    "beta_note": "Pricing is still being finalized — everything is free while Munbeop Garden is in beta.",
+    "tiers": {
+      "sprout": {
+        "cadence": "forever",
+        "b1": "Grammar mastery tracking",
+        "b2": "Full grammar card decks",
+        "b3": "8 UI languages"
+      },
+      "grove": {
+        "cadence": "/ month",
+        "b1": "Cross-device sync",
+        "b2": "Deeper stats",
+        "b3": "Data export (.json)"
+      },
+      "forest": {
+        "cadence": "one time",
+        "b1": "All Grove features",
+        "b2": "Lifetime access",
+        "b3": "Future expansions"
+      }
+    }
   },
   "features": {
-    "title": "Features"
+    "title": "Features",
+    "lead": "Every tool the garden ships with — small focused pieces, all pointed at one goal: making Korean grammar stick.",
+    "items": {
+      "deck": {
+        "name": "Grammar card decks",
+        "desc": "Pick a TOPIK deck, shuffle, and draw three grammar cards across three contexts — nine sentences per session, never the same twice."
+      },
+      "mastery": {
+        "name": "Mastery growth",
+        "desc": "Every save nudges a grammar point from sprout to plant to tree. Watch the garden grow as you practice."
+      },
+      "bomi": {
+        "name": "Bomi the mascot",
+        "desc": "A pixel companion that bobs, thinks, plays, and sleeps based on how you use the app."
+      },
+      "languages": {
+        "name": "Eight languages",
+        "desc": "UI in English, Spanish, French, Portuguese, Thai, Indonesian, Vietnamese, and Japanese."
+      },
+      "sync": {
+        "name": "Cross-device sync",
+        "desc": "Sign in once and your sentences, mastery, and contexts follow you across phone and desktop."
+      },
+      "themes": {
+        "name": "Day & night themes",
+        "desc": "A warm parchment scheme for the day, an abyssal-blue forest for the night. Switch any time."
+      }
+    }
   },
   "policies": {
-    "title": "Policies"
+    "title": "Policies",
+    "lead": "The short version: your data is yours, the garden does not sell it, and the gardener answers email.",
+    "draft_note": "These notes are a plain-language draft for the beta, not final legal terms — they may change before launch.",
+    "items": {
+      "privacy": {
+        "heading": "Privacy",
+        "body": "We store your email, your sentences, and your mastery progress, and sync them to your account so they follow you across devices. We do not sell your data."
+      },
+      "terms": {
+        "heading": "Terms",
+        "body": "Be kind to the garden and to other learners. Don't reverse-engineer the app or use it to grow grammar you do not own. Cancel any time; your data is yours to take with you."
+      },
+      "cookies": {
+        "heading": "Cookies",
+        "body": "We use a tiny amount of local storage to remember your theme, your locale, and your welcome flag — no third-party trackers, no advertising cookies."
+      },
+      "contact": {
+        "heading": "Contact",
+        "body": "Reach the gardener at hello@mungarden.app for any policy question. We aim to reply within two business days."
+      }
+    }
   },
   "games": {
     "particles": {

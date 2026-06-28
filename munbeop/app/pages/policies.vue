@@ -1,50 +1,25 @@
 <script setup lang="ts">
 // Policies — public info page reached from the welcome sidebar.
-// Placeholder policy sections for now.
-//
-// TODO(v8.1): replace each section body with the real legal text
-// (privacy, terms, cookies, contact).
+// Copy is localized via the `policies.*` i18n keys (8 locales). The bodies are
+// a plain-language draft (see policies.draft_note), not final legal text.
 import WelcomeSectionShell from '~/components/welcome/WelcomeSectionShell.vue'
 
 definePageMeta({ layout: false, surface: 'welcome' })
 
 const { t } = useI18n()
 
-interface Policy {
-  heading: string
-  body: string
-}
-
-const policies: Policy[] = [
-  {
-    heading: 'Privacy',
-    body: 'We store your email, your sentences, and your mastery progress, and sync them to your account so they follow you across devices. We do not sell your data.',
-  },
-  {
-    heading: 'Terms',
-    body: 'Be kind to the garden and to other learners. Don\'t reverse-engineer the app or use it to grow grammar you do not own. Cancel any time; your data is yours to take with you.',
-  },
-  {
-    heading: 'Cookies',
-    body: 'We use a tiny amount of local storage to remember your theme, your locale, and your welcome flag — no third-party trackers, no advertising cookies.',
-  },
-  {
-    heading: 'Contact',
-    body: 'Reach the gardener at hello@mungarden.app for any policy question. We aim to reply within two business days.',
-  },
-]
+// i18n key suffixes only — heading/body text lives in i18n per locale.
+const policies = ['privacy', 'terms', 'cookies', 'contact'] as const
 </script>
 
 <template>
   <WelcomeSectionShell :title="t('policies.title')">
-    <p class="lead">
-      The short version: your data is yours, the garden does not sell
-      it, and the gardener answers email.
-    </p>
+    <p class="lead">{{ t('policies.lead') }}</p>
+    <p class="draft" role="note">{{ t('policies.draft_note') }}</p>
     <div class="stack">
-      <section v-for="p in policies" :key="p.heading" class="block">
-        <h2 class="block__heading">{{ p.heading }}</h2>
-        <p class="block__body">{{ p.body }}</p>
+      <section v-for="key in policies" :key="key" class="block">
+        <h2 class="block__heading">{{ t(`policies.items.${key}.heading`) }}</h2>
+        <p class="block__body">{{ t(`policies.items.${key}.body`) }}</p>
       </section>
     </div>
   </WelcomeSectionShell>
@@ -57,6 +32,15 @@ const policies: Policy[] = [
   margin: 0;
   max-width: 60ch;
   line-height: 1.5;
+}
+.draft {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin: 0;
+  max-width: 60ch;
+  line-height: 1.5;
+  font-style: italic;
+  opacity: 0.85;
 }
 .stack {
   display: flex;
