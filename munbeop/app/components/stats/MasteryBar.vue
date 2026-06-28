@@ -3,8 +3,19 @@ import { computed } from 'vue'
 const props = defineProps<{
   label: string; seedling: number; plant: number; tree: number; total: number; pct: number
 }>()
-const w = (part: number) => (props.total ? Math.round((part / props.total) * 100) : 0)
-const seg = computed(() => ({ s: w(props.seedling), p: w(props.plant), t: w(props.tree) }))
+// Cumulative rounding: three independent Math.round()s can sum to 101 and clip
+// the tree tail under `overflow: hidden`. Rounding the running totals instead
+// keeps the segments summing to the covered percentage (never > 100), while any
+// unseen remainder (covered < total) stays as empty bar.
+const seg = computed(() => {
+  const total = props.total
+  if (!total) return { s: 0, p: 0, t: 0 }
+  const cum = (n: number) => Math.round((n / total) * 100)
+  const s = cum(props.seedling)
+  const sp = cum(props.seedling + props.plant)
+  const spt = cum(props.seedling + props.plant + props.tree)
+  return { s, p: sp - s, t: spt - sp }
+})
 </script>
 
 <template>
