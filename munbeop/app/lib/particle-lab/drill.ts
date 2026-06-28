@@ -26,7 +26,18 @@ export function familyFormFor(f: ClashFamily, noun: string): string {
 }
 
 export function correctForm(item: DrillItem, set: ClashSet): string {
-  if (set.kind === 'contraction') return CONTRACTIONS[item.noun] ?? contractionTrap(item.noun)
+  if (set.kind === 'contraction') {
+    const fused = CONTRACTIONS[item.noun]
+    // No silent fallback: contractionTrap(noun) is the WRONG form, so defaulting
+    // to it would ship a grammatically incorrect "correct" answer (and make the
+    // two options identical). A contraction item must carry a known pronoun.
+    if (!fused) {
+      throw new Error(
+        `correctForm: "${item.noun}" is not a known contraction (expected one of ${Object.keys(CONTRACTIONS).join('/')})`,
+      )
+    }
+    return fused
+  }
   return familyFormFor(set.families[item.familyIndex], item.noun)
 }
 
