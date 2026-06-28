@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useBomiStore } from '~/stores/bomi'
-import { INACTIVITY_THRESHOLDS } from '~/components/bomi/poses'
+import { INACTIVITY_THRESHOLDS } from '~/lib/bomi/poses'
 
 // The store registers a 250 ms setInterval at creation and arms setTimeout
 // auto-returns, so fake timers must be installed BEFORE the store is created.

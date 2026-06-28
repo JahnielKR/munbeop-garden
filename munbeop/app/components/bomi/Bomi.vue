@@ -18,7 +18,7 @@ import BomiWings from './BomiWings.vue'
 import BomiHat from './BomiHat.vue'
 import BomiAntennae from './BomiAntennae.vue'
 import BomiEyes from './BomiEyes.vue'
-import { POSES, type Pose, type PoseGroupAnimation } from './poses'
+import { POSES, type Pose, type PoseGroupAnimation } from '~/lib/bomi/poses'
 
 interface Props {
   pose?: Pose

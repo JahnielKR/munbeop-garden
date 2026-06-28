@@ -11,7 +11,7 @@ import type { SrsState, LogEntry } from '~/lib/domain'
  * spine composable and the two stores are mocked with deterministic data.
  *
  * Observed constants at the time these were written:
- *   TREE_THRESHOLDS = { sprout: 10, leafy: 40, bloom: 80 }   (PixelTree.vue)
+ *   TREE_THRESHOLDS = { sprout: 10, leafy: 40, bloom: 80 }   (lib/garden/tree.ts)
  *   TREE_GATE_PCT   = 60   → level N unlocks when progress(N-1) >= 60
  */
 

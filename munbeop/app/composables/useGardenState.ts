@@ -1,7 +1,6 @@
 import { computed, onMounted } from 'vue'
 import { TOPIK_LEVELS, isPendingReview, type TopikLevel } from '~/lib/domain'
-import { SPECIES_BY_LEVEL, isTreeUnlocked, progressPct, unlockedZoneCount } from '~/lib/garden'
-import { TREE_THRESHOLDS, type TreeSpecies } from '~/components/garden/PixelTree.vue'
+import { SPECIES_BY_LEVEL, isTreeUnlocked, progressPct, unlockedZoneCount, TREE_THRESHOLDS, type TreeSpecies } from '~/lib/garden'
 import { useSrsStore } from '~/stores/srs'
 import { useLogStore } from '~/stores/log'
 import { useTopikSpine } from '~/composables/useTopikSpine'

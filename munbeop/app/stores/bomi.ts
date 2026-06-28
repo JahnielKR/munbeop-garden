@@ -17,7 +17,7 @@
 
 import { defineStore } from 'pinia'
 import { ref, computed, onUnmounted } from 'vue'
-import { POSES, INACTIVITY_THRESHOLDS, type Pose } from '~/components/bomi/poses'
+import { POSES, INACTIVITY_THRESHOLDS, type Pose } from '~/lib/bomi/poses'
 
 export const useBomiStore = defineStore('bomi', () => {
   const explicitPose = ref<Pose | null>(null)

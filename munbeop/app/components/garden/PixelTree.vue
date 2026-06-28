@@ -17,32 +17,15 @@ import { computed, ref, watch } from 'vue'
  * Asset pipeline: tools/pixel-trees/README.md
  */
 
-export const TREE_SPECIES = ['cherry', 'magnolia', 'zelkova', 'mugunghwa', 'maple', 'ginkgo'] as const
-export type TreeSpecies = (typeof TREE_SPECIES)[number]
-
-/** Progress thresholds (in %) at which each visual layer appears. */
-export const TREE_THRESHOLDS = { sprout: 10, leafy: 40, bloom: 80 } as const
-
-/** Generator canvas geometry — single source for stage/zone positioning. */
-export const TREE_CANVAS = { width: 128, height: 160, anchorX: 64, anchorY: 148 } as const
-
-const LAYER_ORDER = [
-  'tree_skeleton',
-  'trunk_alive',
-  'leaves_layer_1',
-  'leaves_layer_2',
-  'bloom_full',
-] as const
-export type TreeLayer = (typeof LAYER_ORDER)[number]
-
-/** Cumulative layer stack for a 0–100 progress value. */
-export function layersForProgress(progress: number): TreeLayer[] {
-  const layers: TreeLayer[] = ['tree_skeleton']
-  if (progress >= TREE_THRESHOLDS.sprout) layers.push('trunk_alive', 'leaves_layer_1')
-  if (progress >= TREE_THRESHOLDS.leafy) layers.push('leaves_layer_2')
-  if (progress >= TREE_THRESHOLDS.bloom) layers.push('bloom_full')
-  return layers
-}
+// Tree domain constants live in lib so non-component code (stores, composables,
+// other lib modules) can read them without importing upward from this component.
+import {
+  TREE_CANVAS,
+  LAYER_ORDER,
+  layersForProgress,
+  type TreeSpecies,
+  type TreeLayer,
+} from '~/lib/garden/tree'
 </script>
 
 <script setup lang="ts">
