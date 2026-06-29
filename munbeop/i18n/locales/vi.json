@@ -1158,5 +1158,10 @@
       "fmt_date": "vd. 6/15",
       "fmt_phone": "vd. 01012345678"
     }
+  },
+  "practiceHelp": {
+    "button": "Giải thích",
+    "close": "Đóng",
+    "section": { "concept": "Là gì?", "types": "Các loại", "howToPlay": "Cách chơi", "tip": "Mẹo" }
   }
 }

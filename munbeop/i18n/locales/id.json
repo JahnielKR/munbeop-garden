@@ -1158,5 +1158,10 @@
       "fmt_date": "mis. 6/15",
       "fmt_phone": "mis. 01012345678"
     }
+  },
+  "practiceHelp": {
+    "button": "Penjelasan",
+    "close": "Tutup",
+    "section": { "concept": "Apa itu?", "types": "Jenis-jenisnya", "howToPlay": "Cara bermain", "tip": "Tips" }
   }
 }

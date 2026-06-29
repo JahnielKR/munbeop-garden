@@ -1158,5 +1158,10 @@
       "fmt_date": "ex. 6/15",
       "fmt_phone": "ex. 01012345678"
     }
+  },
+  "practiceHelp": {
+    "button": "Explicação",
+    "close": "Fechar",
+    "section": { "concept": "O que é?", "types": "Seus tipos", "howToPlay": "Como jogar", "tip": "Dica" }
   }
 }
