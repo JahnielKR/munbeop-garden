@@ -75,6 +75,12 @@ const { t } = useI18n()
         :description="t('games.numberMarket.desc')"
         image="/games/number-market-cover.png"
       />
+      <GameCard
+        to="/practice/sentence-garden"
+        :name="t('games.sentenceGarden.name')"
+        :description="t('games.sentenceGarden.desc')"
+        emoji="🌱"
+      />
     </div>
   </div>
 </template>

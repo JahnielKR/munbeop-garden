@@ -912,6 +912,10 @@
     "numberMarket": {
       "name": "Mercado de Números",
       "desc": "Lee cualquier número a la coreana: contar, hora, dinero, fechas."
+    },
+    "sentenceGarden": {
+      "name": "Jardín de frases",
+      "desc": "Ordena las cartas-palabra para reconstruir una frase coreana real."
     }
   },
   "escape": {
@@ -1158,6 +1162,22 @@
       "fmt_date": "ej. 6/15",
       "fmt_phone": "ej. 01012345678"
     }
+  },
+  "sentenceGarden": {
+    "title": "Jardín de frases",
+    "lead": "Reconstruye la frase ordenando sus cartas-palabra. Una carta es trampa.",
+    "pick_deck": "Elige un mazo",
+    "deck_empty": "Este mazo aún no tiene frases cortas.",
+    "progress_label": "Frase",
+    "check": "Comprobar",
+    "hear": "Oír",
+    "tray_label": "Cartas-palabra",
+    "bed_label": "Tu frase",
+    "reveal_correct": "Orden correcto: {correct}",
+    "replay_mode_label": "Repasando las que fallaste",
+    "summary_again": "Jugar otra vez",
+    "summary_replay": "Repasar fallos",
+    "next": "Siguiente"
   },
   "practiceHelp": {
     "button": "Explicación",

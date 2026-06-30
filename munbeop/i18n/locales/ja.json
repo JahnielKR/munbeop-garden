@@ -912,6 +912,10 @@
     "numberMarket": {
       "name": "数の市場",
       "desc": "韓国語式に数を読む：数える・時刻・お金・日付。"
+    },
+    "sentenceGarden": {
+      "name": "文の庭",
+      "desc": "語カードを並べて本物の韓国語の文を組み立てよう。"
     }
   },
   "escape": {
@@ -1158,6 +1162,22 @@
       "fmt_date": "例: 6/15",
       "fmt_phone": "例: 01012345678"
     }
+  },
+  "sentenceGarden": {
+    "title": "文の庭",
+    "lead": "語カードを並べて文を組み立てよう。1枚はダミー。",
+    "pick_deck": "デッキを選ぶ",
+    "deck_empty": "このデッキにはまだ短い文がありません。",
+    "progress_label": "文",
+    "check": "チェック",
+    "hear": "聞く",
+    "tray_label": "語カード",
+    "bed_label": "あなたの文",
+    "reveal_correct": "正しい順番：{correct}",
+    "replay_mode_label": "間違えた文をもう一度",
+    "summary_again": "もう一度",
+    "summary_replay": "間違いを再挑戦",
+    "next": "次へ"
   },
   "practiceHelp": {
     "button": "説明",

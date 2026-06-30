@@ -912,6 +912,10 @@
     "numberMarket": {
       "name": "Marché des nombres",
       "desc": "Lis les nombres à la coréenne : compter, heure, argent, dates."
+    },
+    "sentenceGarden": {
+      "name": "Jardin de phrases",
+      "desc": "Ordonne les cartes-mots pour reconstruire une vraie phrase coréenne."
     }
   },
   "escape": {
@@ -1158,6 +1162,22 @@
       "fmt_date": "ex. 6/15",
       "fmt_phone": "ex. 01012345678"
     }
+  },
+  "sentenceGarden": {
+    "title": "Jardin de phrases",
+    "lead": "Reconstruis la phrase en ordonnant ses cartes-mots. Une carte est un piège.",
+    "pick_deck": "Choisis un deck",
+    "deck_empty": "Ce deck n'a pas encore de phrases courtes.",
+    "progress_label": "Phrase",
+    "check": "Vérifier",
+    "hear": "Écouter",
+    "tray_label": "Cartes-mots",
+    "bed_label": "Ta phrase",
+    "reveal_correct": "Ordre correct : {correct}",
+    "replay_mode_label": "On rejoue tes erreurs",
+    "summary_again": "Rejouer",
+    "summary_replay": "Rejouer les erreurs",
+    "next": "Suivant"
   },
   "practiceHelp": {
     "button": "Explication",

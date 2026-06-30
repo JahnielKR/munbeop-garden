@@ -912,6 +912,10 @@
     "numberMarket": {
       "name": "Pasar Angka",
       "desc": "Baca angka ala Korea: berhitung, waktu, uang, tanggal."
+    },
+    "sentenceGarden": {
+      "name": "Taman kalimat",
+      "desc": "Urutkan kartu-kata untuk menyusun kalimat Korea asli."
     }
   },
   "escape": {
@@ -1158,6 +1162,22 @@
       "fmt_date": "mis. 6/15",
       "fmt_phone": "mis. 01012345678"
     }
+  },
+  "sentenceGarden": {
+    "title": "Taman kalimat",
+    "lead": "Susun ulang kalimat dengan mengurutkan kartu-katanya. Satu kartu adalah jebakan.",
+    "pick_deck": "Pilih dek",
+    "deck_empty": "Dek ini belum punya kalimat pendek.",
+    "progress_label": "Kalimat",
+    "check": "Periksa",
+    "hear": "Dengar",
+    "tray_label": "Kartu kata",
+    "bed_label": "Kalimatmu",
+    "reveal_correct": "Urutan yang benar: {correct}",
+    "replay_mode_label": "Mengulang yang meleset",
+    "summary_again": "Main lagi",
+    "summary_replay": "Ulang yang meleset",
+    "next": "Berikutnya"
   },
   "practiceHelp": {
     "button": "Penjelasan",
