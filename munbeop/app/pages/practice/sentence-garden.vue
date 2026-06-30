@@ -136,7 +136,7 @@ onMounted(async () => {
         <span aria-hidden="true">🔁</span> {{ t('sentenceGarden.replay_mode_label') }}
       </p>
 
-      <template v-if="sg.phase.value !== 'done'">
+      <template v-if="sg.phase.value !== 'done' && sg.item.value">
         <ProgressDots
           :total="sg.sessionItems.value.length"
           :progress="sg.index.value"
