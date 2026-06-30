@@ -44,3 +44,4 @@ export type PracticeHelpMode =
   | 'number-market'
   | 'rescue'
   | 'escape-room'
+  | 'sentence-garden'

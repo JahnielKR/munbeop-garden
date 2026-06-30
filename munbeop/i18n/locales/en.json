@@ -912,6 +912,10 @@
     "numberMarket": {
       "name": "Number Market",
       "desc": "Read any number the Korean way: count, time, money, dates."
+    },
+    "sentenceGarden": {
+      "name": "Sentence Garden",
+      "desc": "Order the word-cards to rebuild a real Korean sentence."
     }
   },
   "conjugation": {
@@ -1158,6 +1162,20 @@
       "fmt_date": "e.g. 6/15",
       "fmt_phone": "e.g. 01012345678"
     }
+  },
+  "sentenceGarden": {
+    "title": "Sentence Garden",
+    "lead": "Rebuild the sentence by ordering its word-cards. One card is a trap.",
+    "pick_deck": "Pick a deck",
+    "deck_empty": "This deck has no short sentences yet.",
+    "progress_label": "Sentence",
+    "check": "Check",
+    "hear": "Hear it",
+    "tray_label": "Word cards",
+    "bed_label": "Your sentence",
+    "replay_mode_label": "Replaying the ones you missed",
+    "summary_again": "Play again",
+    "summary_replay": "Replay misses"
   },
   "practiceHelp": {
     "button": "Explanation",
