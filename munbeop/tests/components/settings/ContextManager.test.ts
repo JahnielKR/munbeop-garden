@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import ContextManager from '~/components/settings/ContextManager.vue'
-import { useContextsStore } from '~/stores/contexts'
+import { useContextsStore, MIN_ACTIVE_CONTEXTS } from '~/stores/contexts'
 
 vi.stubGlobal('useNuxtApp', () => ({ $supabase: null }))
 
@@ -28,13 +28,13 @@ describe('ContextManager', () => {
     const wrapper = mountManager()
     const store = useContextsStore()
     const ids = store.all.map((c) => c.id)
-    for (const id of ids.slice(0, 5)) await store.toggleActive(id) // 8 → 3 active
+    for (const id of ids.slice(0, store.all.length - MIN_ACTIVE_CONTEXTS)) await store.toggleActive(id)
     await nextTick()
     const switches = wrapper.findAll('[role="switch"]')
     const checkedDisabled = switches.filter(
       (s) => s.attributes('aria-checked') === 'true' && s.attributes('disabled') !== undefined,
     )
-    expect(checkedDisabled.length).toBe(3)
+    expect(checkedDisabled.length).toBe(MIN_ACTIVE_CONTEXTS)
     expect(wrapper.text()).toContain('settings.contexts.min_active_hint')
   })
 

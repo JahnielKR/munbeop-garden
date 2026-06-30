@@ -28,23 +28,25 @@ describe('useContextsStore — toggleActive guard', () => {
 
   it('refuses to drop below the minimum and returns false', async () => {
     const store = useContextsStore()
-    // 8 built-ins → deactivate 5 to reach exactly 3 active.
+    // Deactivate down to exactly the minimum, then try to go one below.
     const ids = store.all.map((c) => c.id)
-    for (const id of ids.slice(0, 5)) await store.toggleActive(id)
-    expect(store.active.length).toBe(3)
-    const refused = await store.toggleActive(ids[5]!) // would make it 2
+    const offCount = store.active.length - MIN_ACTIVE_CONTEXTS
+    for (const id of ids.slice(0, offCount)) await store.toggleActive(id)
+    expect(store.active.length).toBe(MIN_ACTIVE_CONTEXTS)
+    const refused = await store.toggleActive(ids[offCount]!) // still active → would drop below min
     expect(refused).toBe(false)
-    expect(store.active.length).toBe(3)
+    expect(store.active.length).toBe(MIN_ACTIVE_CONTEXTS)
   })
 
   it('always allows re-activating an inactive context', async () => {
     const store = useContextsStore()
     const ids = store.all.map((c) => c.id)
-    for (const id of ids.slice(0, 5)) await store.toggleActive(id)
-    expect(store.active.length).toBe(3)
+    const offCount = store.active.length - MIN_ACTIVE_CONTEXTS
+    for (const id of ids.slice(0, offCount)) await store.toggleActive(id)
+    expect(store.active.length).toBe(MIN_ACTIVE_CONTEXTS)
     const reactivated = await store.toggleActive(ids[0]!) // turn one back on
     expect(reactivated).toBe(true)
-    expect(store.active.length).toBe(4)
+    expect(store.active.length).toBe(MIN_ACTIVE_CONTEXTS + 1)
   })
 })
 
@@ -91,11 +93,13 @@ describe('useContextsStore — addCustom + removeCustom', () => {
 
   it('removeCustom refuses when it would drop active below the minimum', async () => {
     const store = useContextsStore()
-    const created = await store.addCustom('우리집', scene('at home')) // active now 9
+    const created = await store.addCustom('우리집', scene('at home')) // custom is active
+    // Deactivate built-ins down to exactly the minimum (the custom stays active).
     const ids = store.all.map((c) => c.id).filter((id) => id !== created!.id)
-    for (const id of ids.slice(0, 6)) await store.toggleActive(id) // 9 - 6 = 3 active (incl. custom)
-    expect(store.active.length).toBe(3)
-    const refused = await store.removeCustom(created!.id) // custom is active → would make 2
+    const offCount = store.active.length - MIN_ACTIVE_CONTEXTS
+    for (const id of ids.slice(0, offCount)) await store.toggleActive(id)
+    expect(store.active.length).toBe(MIN_ACTIVE_CONTEXTS)
+    const refused = await store.removeCustom(created!.id) // custom is active → would drop below min
     expect(refused).toBe(false)
     expect(store.all.some((c) => c.id === created!.id)).toBe(true)
   })
