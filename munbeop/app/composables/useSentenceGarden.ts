@@ -20,7 +20,7 @@ const ROUND_SIZE = 8
 const CREDIT_THRESHOLD = 0.7
 const POOL = [...TOPIK_1_EXAMPLES, ...TOPIK_2_EXAMPLES]
 
-interface SGResult { sentence: string; ko: string; correct: boolean }
+interface SGResult { index: number; sentence: string; ko: string; correct: boolean }
 
 export function useSentenceGarden() {
   const logStore = useLogStore()
@@ -41,11 +41,10 @@ export function useSentenceGarden() {
     correct: results.value.filter((r) => r.correct).length,
     total: results.value.length,
   }))
-  const failedItems = computed(() =>
-    sessionItems.value.filter((it) =>
-      results.value.some((r) => r.sentence === it.sentence && !r.correct),
-    ),
-  )
+  const failedItems = computed(() => {
+    const failed = new Set(results.value.filter((r) => !r.correct).map((r) => r.index))
+    return sessionItems.value.filter((_round, i) => failed.has(i))
+  })
   const canCheck = computed(
     () => !!item.value && placed.value.length === item.value.answer.length,
   )
@@ -91,13 +90,13 @@ export function useSentenceGarden() {
       placed.value.map((c) => c.text),
       item.value.answer,
     )
-    results.value.push({ sentence: item.value.sentence, ko: item.value.ko, correct })
+    results.value.push({ index: index.value, sentence: item.value.sentence, ko: item.value.ko, correct })
     phase.value = correct ? 'right' : 'wrong'
     void activity.record()
     if (correct) {
       playExample(item.value.sentence)
     } else if (runMode.value === 'normal') {
-      void logMistake(item.value)
+      void logMistake(item.value).catch((err) => console.error('sentence-garden: failed to log miss', err))
     }
   }
 
@@ -126,8 +125,9 @@ export function useSentenceGarden() {
       string,
       { correct: number; total: number; first: SentenceGardenRound | null }
     >()
-    for (const it of sessionItems.value) {
-      const r = results.value.find((x) => x.sentence === it.sentence)
+    for (let i = 0; i < sessionItems.value.length; i++) {
+      const it = sessionItems.value[i]!
+      const r = results.value.find((x) => x.index === i)
       if (!r) continue
       const g = byKo.get(it.ko) ?? { correct: 0, total: 0, first: null }
       g.total += 1
