@@ -1175,7 +1175,8 @@
     "bed_label": "Câu của bạn",
     "replay_mode_label": "Đang chơi lại những câu sai",
     "summary_again": "Chơi lại",
-    "summary_replay": "Chơi lại câu sai"
+    "summary_replay": "Chơi lại câu sai",
+    "next": "Tiếp"
   },
   "practiceHelp": {
     "button": "Giải thích",

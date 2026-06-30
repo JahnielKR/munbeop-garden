@@ -1175,7 +1175,8 @@
     "bed_label": "ประโยคของคุณ",
     "replay_mode_label": "กำลังเล่นซ้ำข้อที่พลาด",
     "summary_again": "เล่นอีกครั้ง",
-    "summary_replay": "เล่นซ้ำที่พลาด"
+    "summary_replay": "เล่นซ้ำที่พลาด",
+    "next": "ถัดไป"
   },
   "practiceHelp": {
     "button": "คำอธิบาย",

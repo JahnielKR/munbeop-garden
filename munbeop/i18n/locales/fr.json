@@ -1175,7 +1175,8 @@
     "bed_label": "Ta phrase",
     "replay_mode_label": "On rejoue tes erreurs",
     "summary_again": "Rejouer",
-    "summary_replay": "Rejouer les erreurs"
+    "summary_replay": "Rejouer les erreurs",
+    "next": "Suivant"
   },
   "practiceHelp": {
     "button": "Explication",

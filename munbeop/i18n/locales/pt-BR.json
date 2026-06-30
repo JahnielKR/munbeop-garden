@@ -1175,7 +1175,8 @@
     "bed_label": "Sua frase",
     "replay_mode_label": "Repassando as que você errou",
     "summary_again": "Jogar de novo",
-    "summary_replay": "Repassar erros"
+    "summary_replay": "Repassar erros",
+    "next": "Próxima"
   },
   "practiceHelp": {
     "button": "Explicação",

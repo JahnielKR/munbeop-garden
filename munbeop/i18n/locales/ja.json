@@ -1175,7 +1175,8 @@
     "bed_label": "あなたの文",
     "replay_mode_label": "間違えた文をもう一度",
     "summary_again": "もう一度",
-    "summary_replay": "間違いを再挑戦"
+    "summary_replay": "間違いを再挑戦",
+    "next": "次へ"
   },
   "practiceHelp": {
     "button": "説明",

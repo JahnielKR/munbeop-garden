@@ -1175,7 +1175,8 @@
     "bed_label": "Your sentence",
     "replay_mode_label": "Replaying the ones you missed",
     "summary_again": "Play again",
-    "summary_replay": "Replay misses"
+    "summary_replay": "Replay misses",
+    "next": "Next"
   },
   "practiceHelp": {
     "button": "Explanation",
