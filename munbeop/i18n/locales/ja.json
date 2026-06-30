@@ -1158,5 +1158,10 @@
       "fmt_date": "例: 6/15",
       "fmt_phone": "例: 01012345678"
     }
+  },
+  "practiceHelp": {
+    "button": "説明",
+    "close": "閉じる",
+    "section": { "concept": "これは何？", "types": "種類", "howToPlay": "遊び方", "tip": "コツ" }
   }
 }

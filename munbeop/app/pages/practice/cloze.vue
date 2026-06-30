@@ -4,6 +4,7 @@ import { computed, onMounted, ref } from 'vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
 import DeckPicker from '~/components/games/ruleta/DeckPicker.vue'
 import CustomDeckShelf from '~/components/games/ruleta/CustomDeckShelf.vue'
@@ -110,6 +111,7 @@ onMounted(async () => {
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="빈칸 연습" :latin="t('cloze.title')" />
+    <PracticeHelp mode="cloze" />
     <p class="lab__lead">{{ t('cloze.lead') }}</p>
 
     <div v-if="phase === 'pick'">

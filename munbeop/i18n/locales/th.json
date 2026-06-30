@@ -1158,5 +1158,10 @@
       "fmt_date": "เช่น 6/15",
       "fmt_phone": "เช่น 01012345678"
     }
+  },
+  "practiceHelp": {
+    "button": "คำอธิบาย",
+    "close": "ปิด",
+    "section": { "concept": "คืออะไร?", "types": "ประเภทต่าง ๆ", "howToPlay": "วิธีเล่น", "tip": "เคล็ดลับ" }
   }
 }

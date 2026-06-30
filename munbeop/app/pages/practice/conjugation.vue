@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
 import DrillClassPicker from '~/components/conjugation-drill/DrillClassPicker.vue'
 import ConjugationCard from '~/components/conjugation-drill/ConjugationCard.vue'
@@ -56,6 +57,7 @@ if (initial !== 'mixed') begin(initial)
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="활용 연습" :latin="t('conjugation.title')" />
+    <PracticeHelp mode="conjugation" />
     <p class="lab__lead">{{ t('conjugation.lead') }}</p>
 
     <ConjugationMasterStrip

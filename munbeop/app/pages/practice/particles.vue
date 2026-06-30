@@ -13,6 +13,7 @@ import ParticleMasterCelebration from '~/components/particle-lab/ParticleMasterC
 import ProgressDots from '~/components/practice/ProgressDots.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import { useParticleDrill } from '~/composables/useParticleDrill'
 import { useParticleSpacing } from '~/composables/useParticleSpacing'
 import { useParticleMaster } from '~/composables/useParticleMaster'
@@ -90,6 +91,7 @@ function onSelectLevel(l: 1 | 2) {
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="조사 연구소" :latin="t('particles.title')" />
+    <PracticeHelp mode="particles" />
     <p class="lab__lead">{{ t('particles.lead') }}</p>
 
     <ParticleMasterStrip

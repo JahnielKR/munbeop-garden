@@ -4,6 +4,7 @@ import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import DomainPicker from '~/components/numbers-market/DomainPicker.vue'
 import ModeToggle from '~/components/numbers-market/ModeToggle.vue'
 import PromptStage from '~/components/numbers-market/PromptStage.vue'
@@ -86,6 +87,7 @@ function playAgain() {
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="숫자 시장" :latin="t('numberMarket.title')" />
+    <PracticeHelp mode="number-market" />
     <p class="lab__lead">{{ t('numberMarket.lead') }}</p>
 
     <MasterStrip
