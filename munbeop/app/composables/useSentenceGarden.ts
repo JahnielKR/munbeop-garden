@@ -4,8 +4,7 @@ import { shuffle } from '~/lib/particle-lab/shuffle'
 import { selectRounds } from '~/lib/sentence-garden/select'
 import { checkOrder } from '~/lib/sentence-garden/check'
 import type { SentenceGardenRound } from '~/lib/sentence-garden/build'
-import { TOPIK_1_EXAMPLES } from '~/seed/grammar-examples/n1'
-import { TOPIK_2_EXAMPLES } from '~/seed/grammar-examples/n2'
+import { SENTENCE_GARDEN_POOL } from '~/lib/sentence-garden/pool'
 import { useExampleAudio } from '~/composables/useExampleAudio'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
@@ -18,7 +17,7 @@ export interface SGCard { id: number; text: string }
 const LAB_CONTEXT = { id: 'sentence-garden-lab', name: '문장 정원 LAB' }
 const ROUND_SIZE = 8
 const CREDIT_THRESHOLD = 0.7
-const POOL = [...TOPIK_1_EXAMPLES, ...TOPIK_2_EXAMPLES]
+const POOL = SENTENCE_GARDEN_POOL
 
 interface SGResult { index: number; sentence: string; ko: string; correct: boolean }
 
