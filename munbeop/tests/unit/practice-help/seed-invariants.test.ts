@@ -4,7 +4,7 @@ import { LOCALE_CODES } from '~/lib/domain'
 
 const MODES = [
   'ruleta', 'particles', 'conjugation', 'register', 'cloze',
-  'counters', 'placement', 'number-market', 'rescue',
+  'counters', 'placement', 'number-market', 'rescue', 'escape-room',
 ]
 
 describe('practice-help seed invariants', () => {

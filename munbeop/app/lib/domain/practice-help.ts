@@ -32,7 +32,7 @@ export interface PracticeHelpContent {
   tip?: LocalizedString
 }
 
-/** Practice modes that can carry an explanation modal (escape room excluded). */
+/** Practice modes that can carry an explanation modal. */
 export type PracticeHelpMode =
   | 'ruleta'
   | 'particles'
@@ -43,3 +43,4 @@ export type PracticeHelpMode =
   | 'placement'
   | 'number-market'
   | 'rescue'
+  | 'escape-room'

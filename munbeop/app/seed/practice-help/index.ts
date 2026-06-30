@@ -8,6 +8,7 @@ import { RULETA_HELP } from './ruleta'
 import { RESCUE_HELP } from './rescue'
 import { CLOZE_HELP } from './cloze'
 import { PLACEMENT_HELP } from './placement'
+import { ESCAPE_ROOM_HELP } from './escape-room'
 
 /** Mode id → explanation content. Modes without an entry simply show no button. */
 export const PRACTICE_HELP: Partial<Record<PracticeHelpMode, PracticeHelpContent>> = {
@@ -20,6 +21,7 @@ export const PRACTICE_HELP: Partial<Record<PracticeHelpMode, PracticeHelpContent
   rescue: RESCUE_HELP,
   cloze: CLOZE_HELP,
   placement: PLACEMENT_HELP,
+  'escape-room': ESCAPE_ROOM_HELP,
 }
 
 /** Lookup by raw string so callers (and the v-if) need no cast. */
