@@ -28,6 +28,10 @@ describe('selectRounds', () => {
       expect(r.answer.length).toBeLessThanOrEqual(MAX_EOJEOL)
     }
   })
+  it('drops a too-long sentence even when its ko is in the deck', () => {
+    const rounds = selectRounds(POOL, ['-지 않다'], 8, () => 0)
+    expect(rounds.map((r) => r.sentence)).not.toContain('오늘은 학교에 가지 않아요 정말로 아니요.')
+  })
   it('caps the session size', () => {
     const many = Array.from({ length: 20 }, (_, i) => mk('-아/어요', `저는 물건 ${i}을 봐요.`))
     expect(selectRounds(many, ['-아/어요'], 8, () => 0)).toHaveLength(8)
