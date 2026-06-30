@@ -40,4 +40,24 @@ describe('PracticeHelp', () => {
     expect(dialog!.textContent).toContain('How Korean encodes respect')
     expect(dialog!.querySelectorAll('.practice-help__type').length).toBe(3)
   })
+
+  it('keeps the tip hidden behind a toggle until it is clicked', async () => {
+    const w = mount(PracticeHelp, {
+      props: { mode: 'register' },
+      attachTo: document.body,
+      global: { stubs: { Teleport: false } },
+    })
+    await w.find('.practice-help__trigger').trigger('click')
+    await flushTransitions()
+    const toggle = document.body.querySelector('.practice-help__tip-toggle') as HTMLElement | null
+    expect(toggle).not.toBeNull()
+    // The tip body is collapsed on open.
+    expect(document.body.querySelector('.practice-help__tip-body')).toBeNull()
+    // Clicking the 💡 toggle reveals it.
+    toggle!.click()
+    await flushTransitions()
+    const body = document.body.querySelector('.practice-help__tip-body')
+    expect(body).not.toBeNull()
+    expect(body!.textContent).toContain('Classic trap')
+  })
 })

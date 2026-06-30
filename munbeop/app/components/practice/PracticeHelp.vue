@@ -11,6 +11,12 @@ const { tl } = useLocalized()
 
 const content = computed(() => helpFor(props.mode))
 const open = ref(false)
+const showTip = ref(false)
+
+function close() {
+  open.value = false
+  showTip.value = false
+}
 </script>
 
 <template>
@@ -23,7 +29,7 @@ const open = ref(false)
       :open="open"
       :title="content.ko"
       :close-label="t('practiceHelp.close')"
-      @close="open = false"
+      @close="close"
     >
       <div class="practice-help__head">
         <h2 class="practice-help__title">
@@ -59,9 +65,16 @@ const open = ref(false)
         </ol>
       </section>
 
-      <section v-if="content.tip" class="practice-help__section practice-help__section--tip">
-        <h3 class="practice-help__h">{{ t('practiceHelp.section.tip') }}</h3>
-        <p class="practice-help__p">{{ tl(content.tip) }}</p>
+      <section v-if="content.tip" class="practice-help__section">
+        <button
+          type="button"
+          class="practice-help__tip-toggle"
+          :aria-expanded="showTip"
+          @click="showTip = !showTip"
+        >
+          <span aria-hidden="true">💡</span> {{ t('practiceHelp.section.tip') }}
+        </button>
+        <p v-if="showTip" class="practice-help__p practice-help__tip-body">{{ tl(content.tip) }}</p>
       </section>
     </Modal>
   </div>
@@ -100,4 +113,16 @@ const open = ref(false)
 .practice-help__gloss { font-family: var(--font-ui); font-size: var(--text-sm); color: var(--text-soft); }
 
 .practice-help__steps { margin: 0; padding-left: 20px; font-family: var(--font-ui); line-height: 1.7; color: var(--ink); }
+
+.practice-help__tip-toggle {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  font-family: var(--font-pixel-small); font-size: var(--text-xs); letter-spacing: 0.04em;
+  color: var(--ink); background: var(--surface); border: 2px dashed var(--border);
+  box-shadow: 2px 2px 0 var(--shadow-cream); padding: 6px 12px;
+}
+.practice-help__tip-toggle:hover { background: var(--paper-deep, var(--paper)); }
+.practice-help__tip-toggle:focus-visible { outline: 2px solid var(--focus-ring, var(--gold)); outline-offset: 2px; }
+.practice-help__tip-body {
+  margin-top: 8px; background: var(--surface); border: 2px dashed var(--border); padding: 10px 14px;
+}
 </style>
