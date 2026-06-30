@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
 import CounterCard from '~/components/counter-drill/CounterCard.vue'
 import CounterSummary from '~/components/counter-drill/CounterSummary.vue'
@@ -39,6 +40,7 @@ function restart() {
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="수 분류사 연구소" :latin="t('counters.title')" />
+    <PracticeHelp mode="counters" />
     <p class="lab__lead">{{ t('counters.lead') }}</p>
 
     <div v-if="phase === 'pick'" class="lab__sets">

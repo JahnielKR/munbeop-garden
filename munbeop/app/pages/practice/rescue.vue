@@ -3,6 +3,7 @@ import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import RescuePanel from '~/components/practice/RescuePanel.vue'
 import { useRescueDrill } from '~/composables/useRescueDrill'
 import { useGrammarStore } from '~/stores/grammar'
@@ -40,6 +41,7 @@ onMounted(async () => {
   <div class="page">
     <GameExitButton />
     <BilingualTitle ko="다시 돌보기" :latin="t('rescue.title')" />
+    <PracticeHelp mode="rescue" />
 
     <RescuePanel
       v-if="drill.grammar.value"

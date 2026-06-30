@@ -11,6 +11,7 @@ import RegisterCard from '~/components/register-drill/RegisterCard.vue'
 import RegisterSummary from '~/components/register-drill/RegisterSummary.vue'
 import RegisterMasterStrip from '~/components/register-drill/RegisterMasterStrip.vue'
 import RegisterMasterCelebration from '~/components/register-drill/RegisterMasterCelebration.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import { useRegisterDrill } from '~/composables/useRegisterDrill'
 import { useRegisterMaster } from '~/composables/useRegisterMaster'
 import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
@@ -70,6 +71,7 @@ if (initialSet !== 'mixed' && isValidSet(initialMode, initialSet)) begin(initial
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="높임법 연구소" :latin="t('register.title')" />
+    <PracticeHelp mode="register" />
     <p class="lab__lead">{{ t('register.lead') }}</p>
 
     <RegisterMasterStrip

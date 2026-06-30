@@ -5,6 +5,7 @@ import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Button from '~/components/ui/Button.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
 import PlacementCard from '~/components/placement/PlacementCard.vue'
 import PlacementResult from '~/components/placement/PlacementResult.vue'
@@ -34,6 +35,7 @@ function onRetake() {
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="배치 테스트" :latin="t('placement.title')" />
+    <PracticeHelp mode="placement" />
     <p class="lab__lead">{{ t('placement.lead') }}</p>
 
     <div v-if="!started" class="lab__intro">

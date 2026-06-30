@@ -12,6 +12,7 @@ import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
 import CustomDeckShelf from '~/components/games/ruleta/CustomDeckShelf.vue'
 import CustomDeckBuilder from '~/components/games/ruleta/CustomDeckBuilder.vue'
 import Modal from '~/components/ui/Modal.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import {
   buildDeckOptions, buildCustomDeckOptions, deckColorVar, type DrawCard,
 } from '~/components/games/ruleta/cards'
@@ -287,6 +288,7 @@ async function onRestart() {
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="연습" :latin="t('title.practice')" />
+    <PracticeHelp mode="ruleta" />
 
     <div class="bomi-row">
       <Bomi :pose="bomi.activePose" :scale="3" />

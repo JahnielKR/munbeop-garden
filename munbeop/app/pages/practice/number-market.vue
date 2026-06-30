@@ -17,6 +17,7 @@ import DictationInput from '~/components/numbers-market/DictationInput.vue'
 import { useNumberMarket } from '~/composables/useNumberMarket'
 import { useNumberSpeed } from '~/composables/useNumberSpeed'
 import { useNumberDictation } from '~/composables/useNumberDictation'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
 import type { NumberDomain } from '~/lib/domain'
 
@@ -86,6 +87,7 @@ function playAgain() {
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="숫자 시장" :latin="t('numberMarket.title')" />
+    <PracticeHelp mode="number-market" />
     <p class="lab__lead">{{ t('numberMarket.lead') }}</p>
 
     <MasterStrip
