@@ -10,4 +10,14 @@ describe('Bed', () => {
     await w.find('.sg-bed__slot--filled').trigger('click')
     expect(w.emitted('remove')![0]).toEqual([0])
   })
+
+  it('applies the verdict class for right and wrong', () => {
+    const right = mount(Bed, { props: { placed: [], total: 2, verdict: true, label: 'x' } })
+    expect(right.find('.sg-bed').classes()).toContain('sg-bed--right')
+    const wrong = mount(Bed, { props: { placed: [], total: 2, verdict: false, label: 'x' } })
+    expect(wrong.find('.sg-bed').classes()).toContain('sg-bed--wrong')
+    const none = mount(Bed, { props: { placed: [], total: 2, verdict: null, label: 'x' } })
+    expect(none.find('.sg-bed').classes()).not.toContain('sg-bed--right')
+    expect(none.find('.sg-bed').classes()).not.toContain('sg-bed--wrong')
+  })
 })
