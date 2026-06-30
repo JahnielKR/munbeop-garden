@@ -79,7 +79,7 @@ const { t } = useI18n()
         to="/practice/sentence-garden"
         :name="t('games.sentenceGarden.name')"
         :description="t('games.sentenceGarden.desc')"
-        emoji="🌱"
+        image="/games/sentence-garden-cover.png"
       />
     </div>
   </div>
