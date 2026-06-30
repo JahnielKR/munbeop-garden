@@ -25,13 +25,13 @@ const open = ref(false)
       :close-label="t('practiceHelp.close')"
       @close="open = false"
     >
-      <header class="practice-help__head">
+      <div class="practice-help__head">
         <h2 class="practice-help__title">
           {{ content.ko }}
           <span v-if="content.romanization" class="practice-help__rom">{{ content.romanization }}</span>
         </h2>
         <p class="practice-help__subtitle">{{ tl(content.subtitle) }}</p>
-      </header>
+      </div>
 
       <section class="practice-help__section">
         <h3 class="practice-help__h">{{ t('practiceHelp.section.concept') }}</h3>
