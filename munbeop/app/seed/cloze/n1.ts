@@ -401,7 +401,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고',
-    sentence: '저는 키가 크{} 머리가 길어요.',
+    sentence: '저는 키가 {} 머리가 길어요.',
     answer: '크고',
     distractors: ['커서', '크지만', '크면'],
     trans: L(
@@ -427,7 +427,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고',
-    sentence: '이 방은 넓{} 깨끗해요.',
+    sentence: '이 방은 {} 깨끗해요.',
     answer: '넓고',
     distractors: ['넓어서', '넓지만', '넓으면'],
     trans: L(
@@ -453,7 +453,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고',
-    sentence: '동생은 빵을 먹{} 저는 밥을 먹어요.',
+    sentence: '동생은 빵을 {} 저는 밥을 먹어요.',
     answer: '먹고',
     distractors: ['먹어서', '먹으면', '먹은'],
     trans: L(
@@ -479,7 +479,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-아/어서',
-    sentence: '비가 많이 와{} 우리는 집에 있었어요.',
+    sentence: '비가 많이 {} 우리는 집에 있었어요.',
     answer: '와서',
     distractors: ['오면', '오지만', '오는'],
     trans: L(
@@ -505,7 +505,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-아/어서',
-    sentence: '어제 너무 피곤해{} 일찍 잤어요.',
+    sentence: '어제 너무 {} 일찍 잤어요.',
     answer: '피곤해서',
     distractors: ['피곤하면', '피곤하지만', '피곤한'],
     trans: L(
@@ -531,7 +531,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-아/어서',
-    sentence: '늦{} 정말 죄송합니다.',
+    sentence: '{} 정말 죄송합니다.',
     answer: '늦어서',
     distractors: ['늦고', '늦지만', '늦으면'],
     trans: L(
@@ -557,7 +557,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-지만',
-    sentence: '이 옷이 비싸{} 안 예뻐요.',
+    sentence: '이 옷이 {} 안 예뻐요.',
     answer: '비싸지만',
     distractors: ['비싸고', '비싸서', '비싸면'],
     trans: L(
@@ -583,7 +583,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-지만',
-    sentence: '한국어는 어렵{} 정말 재미있어요.',
+    sentence: '한국어는 {} 정말 재미있어요.',
     answer: '어렵지만',
     distractors: ['어렵고', '어려워서', '어려우면'],
     trans: L(
@@ -609,7 +609,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-지만',
-    sentence: '동생은 키가 크{} 저는 작아요.',
+    sentence: '동생은 키가 {} 저는 작아요.',
     answer: '크지만',
     distractors: ['크고', '커서', '크면'],
     trans: L(
@@ -635,7 +635,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-(으)면',
-    sentence: '내일 비가 오{} 우리는 안 갈 거예요.',
+    sentence: '내일 비가 {} 우리는 안 갈 거예요.',
     answer: '오면',
     distractors: ['오고', '와서', '오지만'],
     trans: L(
@@ -661,7 +661,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-(으)면',
-    sentence: '시간이 있{} 저한테 전화하세요.',
+    sentence: '시간이 {} 저한테 전화하세요.',
     answer: '있으면',
     distractors: ['있고', '있어서', '있지만'],
     trans: L(
@@ -687,7 +687,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-(으)면',
-    sentence: '이 약을 먹{} 금방 나을 거예요.',
+    sentence: '이 약을 {} 금방 나을 거예요.',
     answer: '먹으면',
     distractors: ['먹고', '먹어서', '먹지만'],
     trans: L(
@@ -713,7 +713,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-ㄴ/는데',
-    sentence: '시간이 좀 있{}, 같이 커피 마실까요?',
+    sentence: '시간이 좀 {}, 같이 커피 마실까요?',
     answer: '있는데',
     distractors: ['있어서', '있지만', '있고'],
     trans: L(
@@ -739,7 +739,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-ㄴ/는데',
-    sentence: '이 식당 음식이 맛있{}, 한번 가 보세요.',
+    sentence: '이 식당 음식이 {}, 한번 가 보세요.',
     answer: '맛있는데',
     distractors: ['맛있어서', '맛있으면', '맛있지만'],
     trans: L(
@@ -765,7 +765,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-ㄴ/는데',
-    sentence: '어제 백화점에 갔{}, 사람이 정말 많았어요.',
+    sentence: '어제 백화점에 {}, 사람이 정말 많았어요.',
     answer: '갔는데',
     distractors: ['가지만', '가면', '가고'],
     trans: L(
@@ -791,7 +791,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 싶다',
-    sentence: '주말에 바다를 보러 부산에 가{} 싶어요.',
+    sentence: '주말에 바다를 보러 부산에 {} 싶어요.',
     answer: '가고',
     distractors: ['가서', '가지만', '가면'],
     trans: L(
@@ -817,7 +817,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 싶다',
-    sentence: '오늘은 집에서 푹 쉬{} 싶어요.',
+    sentence: '오늘은 집에서 푹 {} 싶어요.',
     answer: '쉬고',
     distractors: ['쉬어서', '쉬면', '쉬지만'],
     trans: L(
@@ -843,7 +843,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 싶다',
-    sentence: '배가 너무 고파서 빨리 뭐 좀 먹{} 싶어요.',
+    sentence: '배가 너무 고파서 빨리 뭐 좀 {} 싶어요.',
     answer: '먹고',
     distractors: ['먹어서', '먹지만', '먹으면'],
     trans: L(
@@ -869,7 +869,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 있다',
-    sentence: '동생은 지금 방에서 게임을 하{} 있어요.',
+    sentence: '동생은 지금 방에서 게임을 {} 있어요.',
     answer: '하고',
     distractors: ['했고', '할', '하면'],
     trans: L(
@@ -895,7 +895,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 있다',
-    sentence: '여보세요? 저는 지금 버스를 기다리{} 있어요.',
+    sentence: '여보세요? 저는 지금 버스를 {} 있어요.',
     answer: '기다리고',
     distractors: ['기다렸고', '기다릴', '기다려서'],
     trans: L(
@@ -921,7 +921,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 있다',
-    sentence: '엄마가 지금 부엌에서 저녁을 만들{} 있어요.',
+    sentence: '엄마가 지금 부엌에서 저녁을 {} 있어요.',
     answer: '만들고',
     distractors: ['만들었고', '만들', '만들면'],
     trans: L(

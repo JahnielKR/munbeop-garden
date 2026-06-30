@@ -121,7 +121,7 @@ export const N1_PLACEMENT: PlacementItem[] = [
   {
     ko: '-아/어서',
     level: 1,
-    sentence: '비가 많이 와{} 우리는 집에 있었어요.',
+    sentence: '비가 많이 {} 우리는 집에 있었어요.',
     answer: '와서',
     distractors: ['오면', '오지만', '오거나'],
     trans: L(

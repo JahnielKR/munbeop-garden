@@ -217,7 +217,7 @@ export const N3_PAIRS: ConfusablePair[] = [
     ),
     items: [
       {
-        sentence: '동생은 책을 빌리{} 도서관에 갔어요.',
+        sentence: '동생은 책을 {} 도서관에 갔어요.',
         optionA: '빌리기에',
         optionB: '빌리러',
         answer: 'b',
@@ -243,7 +243,7 @@ export const N3_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '시험에 합격하{} 매일 밤늦게까지 공부해요.',
+        sentence: '시험에 {} 매일 밤늦게까지 공부해요.',
         optionA: '합격하기 위해',
         optionB: '합격하러',
         answer: 'a',
@@ -269,7 +269,7 @@ export const N3_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '건강을 지키{} 운동을 시작했어요.',
+        sentence: '건강을 {} 운동을 시작했어요.',
         optionA: '지키기 위해',
         optionB: '지키러',
         answer: 'a',
@@ -407,7 +407,7 @@ export const N3_PAIRS: ConfusablePair[] = [
     ),
     items: [
       {
-        sentence: '한국어를 매일 공부하{} 자연스럽게 실력이 늘 거예요.',
+        sentence: '한국어를 매일 {} 자연스럽게 실력이 늘 거예요.',
         optionA: '공부하다 보면',
         optionB: '공부하다 보니',
         answer: 'a',
@@ -433,7 +433,7 @@ export const N3_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '이 동네에서 오래 살{} 어느새 정이 들었어요.',
+        sentence: '이 동네에서 오래 {} 어느새 정이 들었어요.',
         optionA: '살다 보면',
         optionB: '살다 보니',
         answer: 'b',
@@ -459,7 +459,7 @@ export const N3_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '처음엔 어려워도 계속 연습하{} 누구나 잘하게 돼요.',
+        sentence: '처음엔 어려워도 계속 {} 누구나 잘하게 돼요.',
         optionA: '연습하다 보면',
         optionB: '연습하다 보니',
         answer: 'a',
@@ -502,7 +502,7 @@ export const N3_PAIRS: ConfusablePair[] = [
     ),
     items: [
       {
-        sentence: '그는 약속을 꼭 지키니까 정말 남자{}.',
+        sentence: '그는 약속을 꼭 지키니까 정말 {}.',
         optionA: '남자답다',
         optionB: '남자스럽다',
         answer: 'a',
@@ -528,7 +528,7 @@ export const N3_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '아기가 방긋 웃는 모습이 너무 사랑{}.',
+        sentence: '아기가 방긋 웃는 모습이 너무 {}.',
         optionA: '사랑답다',
         optionB: '사랑스럽다',
         answer: 'b',

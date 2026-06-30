@@ -502,7 +502,7 @@ export const N4_PAIRS: ConfusablePair[] = [
     ),
     items: [
       {
-        sentence: '숙제를 하{} 너무 졸려서 그냥 잤어요.',
+        sentence: '숙제를 {} 너무 졸려서 그냥 잤어요.',
         optionA: '하다가',
         optionB: '하고',
         answer: 'a',
@@ -528,7 +528,7 @@ export const N4_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '매일 아침에 일어나{} 물을 한 잔 마셔요.',
+        sentence: '매일 아침에 {} 물을 한 잔 마셔요.',
         optionA: '일어나다가',
         optionB: '일어나고',
         answer: 'b',
@@ -554,7 +554,7 @@ export const N4_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '학교에 가{} 친구를 만나서 같이 카페에 갔어요.',
+        sentence: '학교에 {} 친구를 만나서 같이 카페에 갔어요.',
         optionA: '가다가',
         optionB: '가고',
         answer: 'a',
