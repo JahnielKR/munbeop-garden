@@ -28,4 +28,13 @@ describe('buildRound', () => {
     const decoys = r.cards.filter((c) => !r.answer.includes(c))
     expect(decoys).toEqual(['빵을'])
   })
+  it('cards equal answer when no usable decoy exists', () => {
+    const r = buildRound(ex, [], () => 0)
+    expect(r.cards).toHaveLength(r.answer.length)
+    expect(r.cards).not.toContain(undefined)
+  })
+  it('cards equal answer when every decoy collides with the sentence', () => {
+    const r = buildRound(ex, ['저는', '물을', '마셔요.'], () => 0)
+    expect(r.cards).toHaveLength(r.answer.length)
+  })
 })

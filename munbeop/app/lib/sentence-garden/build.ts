@@ -9,9 +9,9 @@ export interface SentenceGardenRound {
   /** Shown as the target meaning. */
   trans: LocalizedString
   /** Model eojeol order (the win condition). */
-  answer: string[]
+  answer: readonly string[]
   /** answer + 1 decoy, shuffled. */
-  cards: string[]
+  cards: readonly string[]
 }
 
 /** Split a sentence into eojeol (whitespace tokens). */
