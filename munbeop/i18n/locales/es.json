@@ -1173,6 +1173,7 @@
     "hear": "Oír",
     "tray_label": "Cartas-palabra",
     "bed_label": "Tu frase",
+    "reveal_correct": "Orden correcto: {correct}",
     "replay_mode_label": "Repasando las que fallaste",
     "summary_again": "Jugar otra vez",
     "summary_replay": "Repasar fallos",

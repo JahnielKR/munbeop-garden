@@ -1173,6 +1173,7 @@
     "hear": "Nghe",
     "tray_label": "Thẻ từ",
     "bed_label": "Câu của bạn",
+    "reveal_correct": "Thứ tự đúng: {correct}",
     "replay_mode_label": "Đang chơi lại những câu sai",
     "summary_again": "Chơi lại",
     "summary_replay": "Chơi lại câu sai",

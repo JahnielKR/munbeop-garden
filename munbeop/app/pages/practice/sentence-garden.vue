@@ -146,6 +146,7 @@ onMounted(async () => {
         <div class="sg-prompt">
           <p class="sg-prompt__meaning">{{ tl(sg.item.value.trans) }}</p>
           <button
+            v-if="sg.phase.value !== 'placing'"
             type="button"
             class="sg-prompt__hear"
             @click="playExample(sg.item.value.sentence)"
@@ -161,6 +162,14 @@ onMounted(async () => {
           :label="t('sentenceGarden.bed_label')"
           @remove="sg.removeAt"
         />
+        <p
+          v-if="sg.phase.value === 'wrong'"
+          class="sg-reveal"
+          role="status"
+          lang="ko"
+        >
+          {{ t('sentenceGarden.reveal_correct', { correct: sg.item.value.answer.join(' ') }) }}
+        </p>
         <Tray
           :cards="sg.tray.value"
           :label="t('sentenceGarden.tray_label')"
@@ -221,6 +230,15 @@ onMounted(async () => {
   font-family: var(--font-pixel-small); font-size: var(--text-xs);
   color: var(--ink); background: var(--surface); border: 2px solid var(--border);
   box-shadow: 2px 2px 0 var(--shadow-cream); padding: 6px 12px;
+}
+.sg-reveal {
+  margin: 0;
+  font-family: var(--font-ko);
+  font-size: var(--text-md, var(--text-lg));
+  color: var(--ink);
+  background: var(--surface);
+  border-left: 4px solid var(--mastery-tree, #5a8f3c);
+  padding: 8px 12px;
 }
 .sg-actions { display: flex; gap: 12px; }
 .sg-actions__check {

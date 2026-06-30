@@ -1173,6 +1173,7 @@
     "hear": "Écouter",
     "tray_label": "Cartes-mots",
     "bed_label": "Ta phrase",
+    "reveal_correct": "Ordre correct : {correct}",
     "replay_mode_label": "On rejoue tes erreurs",
     "summary_again": "Rejouer",
     "summary_replay": "Rejouer les erreurs",

@@ -1173,6 +1173,7 @@
     "hear": "ฟัง",
     "tray_label": "การ์ดคำ",
     "bed_label": "ประโยคของคุณ",
+    "reveal_correct": "ลำดับที่ถูก: {correct}",
     "replay_mode_label": "กำลังเล่นซ้ำข้อที่พลาด",
     "summary_again": "เล่นอีกครั้ง",
     "summary_replay": "เล่นซ้ำที่พลาด",

@@ -1173,6 +1173,7 @@
     "hear": "Dengar",
     "tray_label": "Kartu kata",
     "bed_label": "Kalimatmu",
+    "reveal_correct": "Urutan yang benar: {correct}",
     "replay_mode_label": "Mengulang yang meleset",
     "summary_again": "Main lagi",
     "summary_replay": "Ulang yang meleset",

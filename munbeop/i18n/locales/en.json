@@ -1173,6 +1173,7 @@
     "hear": "Hear it",
     "tray_label": "Word cards",
     "bed_label": "Your sentence",
+    "reveal_correct": "Correct order: {correct}",
     "replay_mode_label": "Replaying the ones you missed",
     "summary_again": "Play again",
     "summary_replay": "Replay misses",

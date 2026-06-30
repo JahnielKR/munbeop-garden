@@ -1173,6 +1173,7 @@
     "hear": "聞く",
     "tray_label": "語カード",
     "bed_label": "あなたの文",
+    "reveal_correct": "正しい順番：{correct}",
     "replay_mode_label": "間違えた文をもう一度",
     "summary_again": "もう一度",
     "summary_replay": "間違いを再挑戦",
