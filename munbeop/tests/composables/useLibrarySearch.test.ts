@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { effectScope, ref, type EffectScope } from 'vue'
 import { useLibrarySearch as useRaw } from '~/composables/useLibrarySearch'
+import { presentCategories } from '~/lib/domain'
 
 const routeQuery = ref<Record<string, string | undefined>>({})
 const replaceSpy = vi.fn(async () => {})
@@ -64,6 +65,28 @@ describe('useLibrarySearch', () => {
     routeQuery.value = { grammar: '은/는' }
     use().setLevel(3)
     expect(replaceSpy).toHaveBeenCalledWith({ query: { grammar: '은/는', level: 3 } })
+  })
+
+  it('parses a valid ?cat= and reflects it in isFiltering', () => {
+    const validCat = presentCategories()[0]!
+    routeQuery.value = { cat: validCat }
+    const { category, isFiltering } = use()
+    expect(category.value).toBe(validCat)
+    expect(isFiltering.value).toBe(true)
+  })
+
+  it('ignores an unknown ?cat= (typo/stale/renamed) — not filtering', () => {
+    routeQuery.value = { cat: 'definitely-not-a-category' }
+    const { category, isFiltering } = use()
+    expect(category.value).toBe(null)
+    expect(isFiltering.value).toBe(false)
+  })
+
+  it('ignores an unknown ?theme= — no zoneLabel chip and not filtering', () => {
+    routeQuery.value = { theme: 'definitely-not-a-theme' }
+    const { zoneLabel, isFiltering } = use()
+    expect(zoneLabel.value).toBe(null)
+    expect(isFiltering.value).toBe(false)
   })
 
   it('setCategory(null) removes ?cat=', () => {
