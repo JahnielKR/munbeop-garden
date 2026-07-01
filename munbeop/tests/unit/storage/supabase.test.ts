@@ -334,7 +334,7 @@ describe('SupabaseAdapter', () => {
       expect(rows[0]?.context_id).toBe('banmal')
     })
 
-    it('srs: upserts each (ko, srs) pair as a user_progress row', async () => {
+    it('srs: deletes the user_progress set then upserts each (ko, srs) pair', async () => {
       await adapter.write(STORAGE_KEYS.srs, {
         '-(으)니까': {
           lastSeen: 1717200000000,
@@ -343,8 +343,41 @@ describe('SupabaseAdapter', () => {
           mastery: 'seedling',
         },
       })
-      const upsert = client.writes.find((w) => w.table === 'user_progress')
-      expect(upsert?.op).toBe('upsert')
+      const ops = client.writes.filter((w) => w.table === 'user_progress')
+      expect(ops[0]?.op).toBe('delete')
+      expect(ops.find((w) => w.op === 'upsert')).toBeDefined()
+    })
+
+    it('srs: a restore REPLACES the set — stale rows absent from the payload are dropped', async () => {
+      client.data.user_progress = [{ ko: 'A' }, { ko: 'B' }, { ko: 'C' }]
+      await adapter.write(STORAGE_KEYS.srs, {
+        A: { lastSeen: 1, easyCount: 0, hardCount: 0, mastery: 'seedling' },
+        B: { lastSeen: 1, easyCount: 0, hardCount: 0, mastery: 'seedling' },
+      })
+      const kos = (client.data.user_progress as Array<{ ko: string }>).map((r) => r.ko).sort()
+      expect(kos).toEqual(['A', 'B']) // C's stale progress is gone, not merged
+    })
+
+    it('srs: an empty restore clears the set (delete, no upsert)', async () => {
+      client.data.user_progress = [{ ko: 'A' }]
+      await adapter.write(STORAGE_KEYS.srs, {})
+      const ops = client.writes.filter((w) => w.table === 'user_progress')
+      expect(ops[0]?.op).toBe('delete')
+      expect(ops.some((w) => w.op === 'upsert')).toBe(false)
+      expect(client.data.user_progress).toHaveLength(0)
+    })
+
+    it('log: a restore REPLACES the set — stale entries absent from the payload are dropped', async () => {
+      client.data.user_log = [{ id: 1 }, { id: 2 }, { id: 3 }]
+      await adapter.write(STORAGE_KEYS.log, [
+        {
+          id: 1, ko: 'A', sentence: 'x', feedback: 'easy', errorNote: null,
+          reviewState: 'unreviewed', contextId: 'banmal', contextName: '반말',
+          date: '2026-06-03T00:00:00Z',
+        },
+      ])
+      const ids = (client.data.user_log as Array<{ id: number }>).map((r) => r.id).sort()
+      expect(ids).toEqual([1]) // entries 2 and 3 are gone, not left behind
     })
 
     it('inactiveContextIds: deletes all rows then upserts the new list', async () => {
