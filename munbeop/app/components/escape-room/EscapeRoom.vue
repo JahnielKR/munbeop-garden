@@ -213,7 +213,12 @@ function candidateSoftRejectVoiceAudio(slotId: string): string | null {
  *                      would instantly cancel the first.
  */
 function handleResult(slotId: string, result: AnswerOutcome) {
-  if (result === 'wrong') {
+  // 'game-over' is the run-ending mistake: it must play the WRONG feedback and
+  // return, exactly like a non-fatal 'wrong'. Falling through to the correct/
+  // level-complete branch would play the success chime + reaction voice and fire
+  // the next scripted narrative beat on top of the game-over screen. The store's
+  // 'gameover' status watcher clears activeSlotId; nothing else is needed here.
+  if (result === 'wrong' || result === 'game-over') {
     audio.playSfx(url(UI_SFX.wrong))
     return
   }
