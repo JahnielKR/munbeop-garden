@@ -497,6 +497,7 @@
     "submit_sign_up": "S'inscrire",
     "submit_magic_link": "Envoyer le lien magique",
     "magic_link_sent": "Consulte ton e-mail pour le lien de connexion.",
+    "signup_confirm_sent": "Consulte ton e-mail pour confirmer ton compte.",
     "checking": "Vérification du lien…",
     "callback_success": "Connecté ! Redirection…",
     "callback_error": "Le lien est invalide ou expiré.",

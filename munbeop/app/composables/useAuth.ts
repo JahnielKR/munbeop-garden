@@ -102,9 +102,13 @@ export function useAuth() {
   }
 
   async function signUp(email: string, password: string) {
-    const { error } = await $supabase.auth.signUp({ email, password })
+    const { data, error } = await $supabase.auth.signUp({ email, password })
     if (!error) await hydrateUserStores()
-    return { error }
+    // With the Supabase project's "Confirm email" ON, signUp resolves error:null
+    // but WITHOUT a session — the user must click the emailed link first. Signal
+    // that so the UI shows a "check your email" message and stays on /welcome,
+    // instead of navigating into a gated route that bounces straight back.
+    return { error, needsConfirmation: !error && !data.session }
   }
 
   async function signIn(email: string, password: string) {
@@ -132,9 +136,27 @@ export function useAuth() {
    * fires the pan-left camera move automatically.
    */
   async function signOutAndExit() {
-    const { error } = await $supabase.auth.signOut()
     const router = useRouter()
-    if (!error) await router.push('/welcome')
+    // The default 'global' sign-out is a network op that can REJECT (offline /
+    // DNS / reset) or return an error. Either way the user asked to leave, so we
+    // must never stay in a signed-in state. On failure, fall back to a
+    // local-scope sign-out (clears the local session + fires SIGNED_OUT, which
+    // clears the data stores) and navigate to /welcome regardless — otherwise
+    // the previous user's in-memory data would linger on a shared device.
+    let error: { message?: string } | null = null
+    try {
+      error = (await $supabase.auth.signOut()).error
+    } catch (e) {
+      error = { message: e instanceof Error ? e.message : 'sign-out failed' }
+    }
+    if (error) {
+      try {
+        await $supabase.auth.signOut({ scope: 'local' })
+      } catch {
+        /* best-effort local teardown; navigate anyway below */
+      }
+    }
+    await router.push('/welcome')
     return { error }
   }
 

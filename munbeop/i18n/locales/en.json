@@ -497,6 +497,7 @@
     "submit_sign_up": "Sign up",
     "submit_magic_link": "Send magic link",
     "magic_link_sent": "Check your email for the sign-in link.",
+    "signup_confirm_sent": "Check your email to confirm your account.",
     "checking": "Checking link…",
     "callback_success": "Signed in! Redirecting…",
     "callback_error": "Sign-in link is invalid or expired.",

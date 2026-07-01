@@ -49,21 +49,31 @@ async function submit() {
   if (loading.value) return
   loading.value = true
   try {
-    let result: { error: { message: string } | null }
-    if (props.mode === 'signin') {
-      result = await signIn(email.value.trim(), password.value)
-    } else if (props.mode === 'signup') {
-      result = await signUp(email.value.trim(), password.value)
+    if (props.mode === 'signup') {
+      const { error, needsConfirmation } = await signUp(email.value.trim(), password.value)
+      if (error) {
+        emit('error', error.message)
+        return
+      }
+      // "Confirm email" is ON: there is no session yet, so don't navigate into
+      // the app (it would bounce back to /welcome). Tell the user to check mail.
+      if (needsConfirmation) {
+        emit('info', t('auth.signup_confirm_sent'))
+        return
+      }
     } else {
-      result = await signInMagicLink(email.value.trim())
-    }
-    if (result.error) {
-      emit('error', result.error.message)
-      return
-    }
-    if (props.mode === 'magic') {
-      emit('info', t('auth.magic_link_sent'))
-      return
+      const result =
+        props.mode === 'signin'
+          ? await signIn(email.value.trim(), password.value)
+          : await signInMagicLink(email.value.trim())
+      if (result.error) {
+        emit('error', result.error.message)
+        return
+      }
+      if (props.mode === 'magic') {
+        emit('info', t('auth.magic_link_sent'))
+        return
+      }
     }
     emit('success')
     const { fadeOut } = useWelcomeMusic()

@@ -497,6 +497,7 @@
     "submit_sign_up": "Cadastrar",
     "submit_magic_link": "Enviar link mágico",
     "magic_link_sent": "Confere teu e-mail para o link de acesso.",
+    "signup_confirm_sent": "Confere teu e-mail para confirmar tua conta.",
     "checking": "Verificando link…",
     "callback_success": "Pronto! Redirecionando…",
     "callback_error": "O link é inválido ou expirou.",
