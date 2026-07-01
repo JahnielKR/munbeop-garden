@@ -274,7 +274,7 @@ export const LEVEL_ITEMS: RegisterItem[] = [
     distractors: [
       '나 지금 밥 먹어.',
       '저 지금 밥 먹습니다.',
-      '나 지금 밥 먹어요.',
+      '저 지금 밥 먹어.',
     ],
     trans: L(
       "I'm eating now.",
@@ -338,7 +338,7 @@ export const LEVEL_ITEMS: RegisterItem[] = [
     distractors: [
       '나는 커피를 안 마셔.',
       '저는 커피를 안 마십니다.',
-      '나는 커피를 안 마셔요.',
+      '저는 커피를 안 마셔.',
     ],
     trans: L(
       "I don't drink coffee.",
@@ -402,7 +402,7 @@ export const LEVEL_ITEMS: RegisterItem[] = [
     distractors: [
       '나 내일 학교에 가.',
       '저 내일 학교에 갑니다.',
-      '나 내일 학교에 가요.',
+      '저 내일 학교에 가.',
     ],
     trans: L(
       "I'm going to school tomorrow.",
