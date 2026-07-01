@@ -21,4 +21,13 @@ describe('useSrsStore.peek', () => {
     srs.ensure('있는거').mastery = 'tree'
     expect(srs.peek('있는거').mastery).toBe('tree')
   })
+
+  it('weightFor reads WITHOUT creating a row — weighting the pool must not fabricate seedlings', () => {
+    const srs = useSrsStore()
+    const w = srs.weightFor('안본문법')
+    expect(typeof w).toBe('number')
+    // The whole-catalog draw calls weightFor on every ko; a mutating read here
+    // would balloon the map with phantom seedlings and skew mastery/due stats.
+    expect(srs.map['안본문법']).toBeUndefined()
+  })
 })

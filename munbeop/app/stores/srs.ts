@@ -27,7 +27,11 @@ export const useSrsStore = defineStore('srs', () => {
   }
 
   function weightFor(ko: string, now: number = Date.now()): number {
-    return getWeight(ensure(ko), now)
+    // peek(), NOT ensure(): weighting the draw pool touches every catalog ko,
+    // so ensure() would fabricate a seedling row for each untouched grammar and
+    // pollute mastery/garden/due stats for the rest of the session. getWeight
+    // only reads, so a by-value freshSrs() gives the identical weight.
+    return getWeight(peek(ko), now)
   }
 
   async function markSeen(ko: string, now: number = Date.now()) {
