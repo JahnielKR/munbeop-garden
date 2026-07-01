@@ -497,6 +497,7 @@
     "submit_sign_up": "Daftar",
     "submit_magic_link": "Kirim link ajaib",
     "magic_link_sent": "Cek emailmu untuk link masuk.",
+    "signup_confirm_sent": "Cek emailmu untuk mengonfirmasi akunmu.",
     "checking": "Memeriksa link…",
     "callback_success": "Berhasil masuk! Mengalihkan…",
     "callback_error": "Link tidak valid atau kedaluwarsa.",

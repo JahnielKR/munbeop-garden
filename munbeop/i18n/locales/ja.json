@@ -497,6 +497,7 @@
     "submit_sign_up": "登録",
     "submit_magic_link": "マジックリンクを送る",
     "magic_link_sent": "メールでサインインリンクを確認してください。",
+    "signup_confirm_sent": "アカウントを確認するにはメールをご確認ください。",
     "checking": "リンクを確認中…",
     "callback_success": "サインインしました!リダイレクト中…",
     "callback_error": "リンクが無効または期限切れです。",

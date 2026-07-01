@@ -497,6 +497,7 @@
     "submit_sign_up": "Đăng ký",
     "submit_magic_link": "Gửi liên kết kỳ diệu",
     "magic_link_sent": "Kiểm tra email để nhận liên kết đăng nhập.",
+    "signup_confirm_sent": "Kiểm tra email để xác nhận tài khoản của bạn.",
     "checking": "Đang kiểm tra liên kết…",
     "callback_success": "Đăng nhập thành công! Đang chuyển…",
     "callback_error": "Liên kết không hợp lệ hoặc đã hết hạn.",
