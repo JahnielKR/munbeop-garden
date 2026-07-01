@@ -287,8 +287,14 @@ export class SupabaseAdapter implements StorageAdapter {
       }
 
       case STORAGE_KEYS.srs: {
+        // Replace-the-set semantics (like decks/contexts): a restore must DROP
+        // rows absent from the payload, not merge onto stale progress. Normal
+        // per-answer saves go through upsertOne, so write() only runs on
+        // import/remove where full-replace is exactly what's wanted.
         const map = value as Record<string, SrsState>
         const rows = Object.entries(map).map(([ko, s]) => this.srsRow(ko, s))
+        const del = await this.client.from('user_progress').delete().eq('user_id', this.userId)
+        assertOk('write', key, del.error)
         if (rows.length) {
           const { error } = await this.client.from('user_progress').upsert(rows)
           assertOk('write', key, error)
@@ -297,10 +303,16 @@ export class SupabaseAdapter implements StorageAdapter {
       }
 
       case STORAGE_KEYS.log: {
+        // Replace-the-set semantics: a restore must drop journal rows absent
+        // from the payload, not leave stale entries behind. Normal appends go
+        // through append(); write() carries the full array (setReviewState/import).
         const entries = value as LogEntry[]
-        if (!entries.length) return
-        const { error } = await this.client.from('user_log').upsert(entries.map((e) => this.logRow(e)))
-        assertOk('write', key, error)
+        const del = await this.client.from('user_log').delete().eq('user_id', this.userId)
+        assertOk('write', key, del.error)
+        if (entries.length) {
+          const { error } = await this.client.from('user_log').upsert(entries.map((e) => this.logRow(e)))
+          assertOk('write', key, error)
+        }
         return
       }
 

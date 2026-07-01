@@ -28,4 +28,20 @@ describe('parseImportPayload', () => {
     const r = parseImportPayload(JSON.stringify({ app: APP_ID, data: { [STORAGE_KEYS.settings]: {} } }))
     expect(r.ok).toBe(true)
   })
+  it('rejects a key whose value has the wrong shape (srs as a string) with reason shape', () => {
+    const r = parseImportPayload(JSON.stringify({ app: APP_ID, data: { [STORAGE_KEYS.srs]: 'hello' } }))
+    expect(r).toEqual({ ok: false, reason: 'shape' })
+  })
+  it('rejects an array where an object is expected (srs as an array)', () => {
+    const r = parseImportPayload(JSON.stringify({ app: APP_ID, data: { [STORAGE_KEYS.srs]: [] } }))
+    expect(r).toEqual({ ok: false, reason: 'shape' })
+  })
+  it('rejects an object where an array is expected (log as an object)', () => {
+    const r = parseImportPayload(JSON.stringify({ app: APP_ID, data: { [STORAGE_KEYS.log]: {} } }))
+    expect(r).toEqual({ ok: false, reason: 'shape' })
+  })
+  it('tolerates a null value for an object-shaped key (treated as absent)', () => {
+    const r = parseImportPayload(JSON.stringify({ app: APP_ID, data: { [STORAGE_KEYS.settings]: null } }))
+    expect(r.ok).toBe(true)
+  })
 })
