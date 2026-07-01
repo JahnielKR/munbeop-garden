@@ -161,6 +161,26 @@ describe('EscapeRoom audio wiring', () => {
     expect(audioMock.playSfx).not.toHaveBeenCalledWith('/escape-room/test-level/audio/sfx-correct.ogg')
   })
 
+  it('plays the wrong sfx (never the success chime / reaction voice) on the game-over mistake', async () => {
+    const w = await mountPlaying()
+    const store = useEscapeRoomStore()
+    await openSlot1(w)
+    // Deplete hearts to the brink (fixture maxErrors = 2) without ending the run.
+    store.answerSelection('slot-1', 1)
+    store.answerSelection('slot-1', 1)
+    expect(store.status).toBe('playing')
+    await flushPromises()
+    audioMock.playSfx.mockClear()
+    audioMock.playVoice.mockClear()
+    // The next wrong answer — via the UI — is the fatal one → 'game-over'.
+    await w.findAll('[data-testid="slot-option"]')[1]!.trigger('click')
+    await flushPromises()
+    expect(store.status).toBe('gameover')
+    expect(audioMock.playSfx).toHaveBeenCalledWith('/escape-room/test-level/audio/sfx-wrong.ogg')
+    expect(audioMock.playSfx).not.toHaveBeenCalledWith('/escape-room/test-level/audio/sfx-correct.ogg')
+    expect(audioMock.playVoice).not.toHaveBeenCalled()
+  })
+
   it('passes the resolved intro voice URL to the intro cinematic', async () => {
     const w = mount(EscapeRoom, { props: { level: makeAudioLevel(), seed: 's' } })
     await flushPromises()
