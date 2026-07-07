@@ -14,7 +14,12 @@ export function useDataImport() {
 
   async function applyImport(payload: ExportPayload): Promise<boolean> {
     const storage = useStorageAdapter()
-    const keys = EXPORT_KEYS.filter((key) => payload.data[key] !== undefined)
+    // `!= null` skips BOTH absent keys and exported nulls: an account with an
+    // empty collection exports that key as null (read falls back to null), and
+    // writing null through the adapter would delete the target's rows and then
+    // throw before the key ever reached `written` — destroying data outside
+    // the rollback. Null means "nothing to restore", same as validate.ts.
+    const keys = EXPORT_KEYS.filter((key) => payload.data[key] != null)
     if (keys.length === 0) return true
 
     // 1. Snapshot the current value of every key BEFORE writing anything. A read

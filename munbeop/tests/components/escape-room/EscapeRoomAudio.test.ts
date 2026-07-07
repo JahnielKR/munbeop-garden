@@ -209,6 +209,16 @@ describe('EscapeRoom audio wiring', () => {
     expect(audioMock.stopAll).toHaveBeenCalled()
   })
 
+  it('stops all audio when the component unmounts (route navigation away)', async () => {
+    // Regression: the looping ambient is a module singleton, so leaving the
+    // level via the app nav / browser back (exitToBook never runs) kept it
+    // playing app-wide until a full reload.
+    const w = await mountPlaying()
+    expect(audioMock.stopAll).not.toHaveBeenCalled()
+    w.unmount()
+    expect(audioMock.stopAll).toHaveBeenCalled()
+  })
+
   it('toggles audio from the HUD mute button', async () => {
     const w = await mountPlaying()
     await w.get('[data-testid="er-mute"]').trigger('click')

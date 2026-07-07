@@ -53,34 +53,60 @@ export const useLogStore = defineStore('log', () => {
     return entry
   }
 
-  /** Delete one journal entry by id. Optimistic with snapshot + rollback (one
+  /** Delete one journal entry by id. Optimistic with row-scoped rollback (one
    *  row deleted in the cloud, not a whole-log rewrite). Returns false if the id
    *  isn't present or the cloud delete fails. */
   async function deleteEntry(id: number): Promise<boolean> {
-    if (!entries.value.some((e) => e.id === id)) return false
-    const snapshot = entries.value
+    const idx = entries.value.findIndex((e) => e.id === id)
+    if (idx === -1) return false
+    const removed = entries.value[idx]!
     entries.value = entries.value.filter((e) => e.id !== id)
     const storage = useStorageAdapter()
     try {
       await storage.deleteOne(STORAGE_KEYS.log, id)
     } catch {
-      entries.value = snapshot
+      // Re-insert ONLY the removed row into the CURRENT array. A whole-array
+      // snapshot restore would also revert a concurrent setReviewState flip
+      // that already saved — both actions live on the journal page, and since
+      // setReviewState replaces rows immutably the old in-place aliasing no
+      // longer protects a stale snapshot.
+      const next = [...entries.value]
+      next.splice(Math.min(idx, next.length), 0, removed)
+      entries.value = next
       return false
     }
     return true
   }
 
+  /** Flip one entry's review state. Optimistic with snapshot + rollback, same
+   *  discipline as add()/deleteEntry(): a failed cloud write must not leave the
+   *  UI claiming "reviewed" (the garden rain clears off isPendingReview) while
+   *  the cloud still says pending. Returns false when the id is unknown or the
+   *  write fails, so the caller can surface a retry. */
   async function setReviewState(
     id: number,
     reviewState: ReviewState,
     errorNote: string | null = null,
-  ) {
+  ): Promise<boolean> {
+    const prev = entries.value.find((e) => e.id === id)
+    if (!prev) return false
     const storage = useStorageAdapter()
-    const entry = entries.value.find((e) => e.id === id)
-    if (!entry) return
-    entry.reviewState = reviewState
-    entry.errorNote = errorNote
-    await storage.write(STORAGE_KEYS.log, entries.value)
+    // Immutable row replace — mutating the row in place would poison `prev`
+    // (same object reference) and make the rollback a no-op.
+    entries.value = entries.value.map((e) =>
+      e.id === id ? { ...e, reviewState, errorNote } : e,
+    )
+    try {
+      await storage.write(STORAGE_KEYS.log, entries.value)
+    } catch {
+      // Roll back ONLY this row, not a whole-array snapshot: the mistake feed
+      // lets the user fire several flips in quick succession, and a full
+      // snapshot restore would also revert a sibling flip that already saved.
+      // (If the row was deleted concurrently, there is nothing to restore.)
+      entries.value = entries.value.map((e) => (e.id === id ? prev : e))
+      return false
+    }
+    return true
   }
 
   return { entries, hydrate, add, deleteEntry, setReviewState }

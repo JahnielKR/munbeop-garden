@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { Level, RewardTier, ScriptedBeat, SelectionCandidate, CompletionCandidate, CreationCandidate } from '~/lib/domain'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
@@ -117,6 +117,13 @@ onMounted(() => {
   store.startRun(props.level, baseSeed.value)
   phase.value = 'intro'
 })
+
+// The ambient bed is a looping module-singleton <audio> that outlives this
+// component. retry()/exitToBook() stop it, but navigating away via the app nav
+// or browser back — including from the victory/game-over screens, where the
+// leave guard is disarmed — used to leave it looping app-wide until a full
+// reload. stopAll() is idempotent, so double-stopping via exitToBook is fine.
+onBeforeUnmount(() => audio.stopAll())
 
 watch(
   () => store.status,

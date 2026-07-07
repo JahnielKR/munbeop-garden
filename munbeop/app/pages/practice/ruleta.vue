@@ -235,9 +235,13 @@ function scrollNextCardIntoView() {
   }
 }
 
-// Which pick is mid-save — drives the card's :submitting so its actions disable
-// while the cloud write is in flight (no double-logging on a double-tap).
-const submittingPick = ref<number | null>(null)
+// Which picks are mid-save — drives each card's :submitting so its actions
+// disable while the cloud write is in flight (no double-logging on a
+// double-tap). A Set, not a single value: with three cards visible, submitting
+// card B while card A's write is still in flight must not drop A's latch —
+// GrammarCard re-arms on the falling edge of :submitting, so a shared value
+// let a re-tap double-log A and skip its next context.
+const submittingPicks = ref<Set<number>>(new Set())
 
 async function onSubmit(payload: {
   pickIndex: number
@@ -246,7 +250,7 @@ async function onSubmit(payload: {
   errorNote: string | null
   errorDimension?: import('~/lib/domain').ErrorDimension | null
 }) {
-  submittingPick.value = payload.pickIndex
+  submittingPicks.value.add(payload.pickIndex)
   try {
     const entry = await persistEntry(payload)
     if (entry) {
@@ -266,7 +270,7 @@ async function onSubmit(payload: {
       toast.error(t('practice.toast_save_error'))
     }
   } finally {
-    submittingPick.value = null
+    submittingPicks.value.delete(payload.pickIndex)
   }
 }
 
@@ -322,7 +326,7 @@ async function onRestart() {
           :context="currentContextOf(i)!"
           :progress="pick.progress"
           :pick-index="i"
-          :submitting="submittingPick === i"
+          :submitting="submittingPicks.has(i)"
           @submit="onSubmit"
         />
       </div>

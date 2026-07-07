@@ -14,6 +14,9 @@ export const EXPORT_KEYS = [
   STORAGE_KEYS.settings,
   STORAGE_KEYS.escapeRoom,
   STORAGE_KEYS.customDecks,
+  // Heatmap/streak source: lab answers are recorded ONLY here (not in the log),
+  // so a backup without it silently loses every lab-practice day on restore.
+  STORAGE_KEYS.activity,
 ] as const
 
 /**
@@ -32,6 +35,7 @@ export const EXPORT_KEY_SHAPES: Record<string, 'array' | 'object'> = {
   [STORAGE_KEYS.settings]: 'object',
   [STORAGE_KEYS.escapeRoom]: 'object',
   [STORAGE_KEYS.customDecks]: 'array',
+  [STORAGE_KEYS.activity]: 'object',
 }
 
 export interface ExportPayload {

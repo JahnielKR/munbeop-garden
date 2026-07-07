@@ -77,9 +77,8 @@ export function useNumberDictation() {
     const correct = normalizeValue(entry.value) === item.value.valueKey
     results.value.push({ itemId: itemId(item.value), correct })
     phase.value = correct ? 'right' : 'wrong'
-    // Fire-and-forget heatmap tick; swallow a transient cloud error so it never
-    // surfaces as an unhandled rejection.
-    void activity.record().catch(() => {})
+    // Fire-and-forget heatmap tick; record() swallows transient cloud errors.
+    void activity.record()
   }
 
   function next() {
