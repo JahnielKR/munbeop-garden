@@ -169,9 +169,8 @@ export function usePractice() {
       return null
     }
     // Fire-and-forget: the heatmap tick is intentionally decoupled so it never
-    // blocks the answer. Swallow a transient cloud error so it doesn't surface
-    // as an unhandled rejection.
-    void activity.record().catch(() => {})
+    // blocks the answer. record() swallows transient cloud errors itself.
+    void activity.record()
     // SRS recalc is secondary — the sentence is already saved. A failure here
     // must not lose that or block the card; SRS self-heals on the next answer
     // (recalculateMastery re-derives mastery from the full log each time).

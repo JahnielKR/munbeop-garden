@@ -27,6 +27,16 @@ describe('useActivityStore', () => {
     })
   })
 
+  it('record() swallows a failed cloud write and still ticks the in-memory day', async () => {
+    // Every drill answer fires record() fire-and-forget; a flaky-network reject
+    // must never escape as an unhandled rejection (it would flood /api/errors).
+    upsertOne.mockRejectedValueOnce(new Error('network down'))
+    const store = useActivityStore()
+    const now = new Date(2026, 6, 6, 10).getTime()
+    await expect(store.record(now)).resolves.toBeUndefined()
+    expect(store.map['2026-07-06']).toEqual({ count: 1 })
+  })
+
   it('hydrate() loads the map from storage', async () => {
     read.mockResolvedValueOnce({ '2026-06-20': { count: 5 } })
     const store = useActivityStore()
