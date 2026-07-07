@@ -116,7 +116,10 @@ async function onDeckSelect(deckId: string | null) {
   try {
     await start({ deckId })
     if (error.value) {
-      toast.error(error.value)
+      // error.value is a raw exception message (English) — localize the toast,
+      // keep the technical string in console for debugging.
+      console.error('ruleta: session start failed:', error.value)
+      toast.error(t('practice.start_failed'))
       return
     }
     phase.value = 'draw'
@@ -134,7 +137,10 @@ async function onCustomDeckSelect(deckId: string) {
   try {
     await start({ customDeckGrammarKos: deck.grammarKos })
     if (error.value) {
-      toast.error(error.value)
+      // error.value is a raw exception message (English) — localize the toast,
+      // keep the technical string in console for debugging.
+      console.error('ruleta: session start failed:', error.value)
+      toast.error(t('practice.start_failed'))
       return
     }
     phase.value = 'draw'
@@ -183,7 +189,10 @@ onMounted(async () => {
     }
     await start()
     if (error.value) {
-      toast.error(error.value)
+      // error.value is a raw exception message (English) — localize the toast,
+      // keep the technical string in console for debugging.
+      console.error('ruleta: session start failed:', error.value)
+      toast.error(t('practice.start_failed'))
       return
     }
     phase.value = 'play'
@@ -208,7 +217,10 @@ onMounted(async () => {
     if (pool.length < 3) return // nothing to revisit yet — fall back to the picker
     await start({ customDeckGrammarKos: pool })
     if (error.value) {
-      toast.error(error.value)
+      // error.value is a raw exception message (English) — localize the toast,
+      // keep the technical string in console for debugging.
+      console.error('ruleta: session start failed:', error.value)
+      toast.error(t('practice.start_failed'))
       return
     }
     phase.value = 'play'
