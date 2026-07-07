@@ -33,6 +33,14 @@ describe('useDataImport.applyImport', () => {
     expect(write).not.toHaveBeenCalledWith('totally.unknown', 9)
     expect(write).not.toHaveBeenCalledWith(STORAGE_KEYS.grammar, expect.anything())
   })
+  it('restores the activity map (heatmap/streak source) — regression: the key was missing from backups', async () => {
+    const days = { '2026-07-06': { count: 3 } }
+    const { applyImport } = useDataImport()
+    const ok = await applyImport(payload({ [STORAGE_KEYS.activity]: days }))
+    expect(ok).toBe(true)
+    expect(write).toHaveBeenCalledWith(STORAGE_KEYS.activity, days)
+  })
+
   it('returns false when a write throws', async () => {
     write.mockRejectedValueOnce(new Error('boom'))
     const { applyImport } = useDataImport()
