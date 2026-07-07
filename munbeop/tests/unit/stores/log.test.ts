@@ -56,6 +56,44 @@ describe('useLogStore.add — delta append', () => {
   })
 })
 
+describe('useLogStore.setReviewState', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    append.mockClear()
+    append.mockResolvedValue(undefined)
+    write.mockClear()
+    write.mockResolvedValue(undefined)
+  })
+
+  it('flips the state, persists the full log, and reports success', async () => {
+    const store = useLogStore()
+    const e = await store.add(payload)
+
+    const ok = await store.setReviewState(e.id, 'correct', 'note')
+    expect(ok).toBe(true)
+    expect(store.entries[0]).toMatchObject({ reviewState: 'correct', errorNote: 'note' })
+    expect(write).toHaveBeenCalledWith(STORAGE_KEYS.log, store.entries)
+  })
+
+  it('returns false for an unknown id and never touches the adapter', async () => {
+    const store = useLogStore()
+    const ok = await store.setReviewState(999, 'correct')
+    expect(ok).toBe(false)
+    expect(write).not.toHaveBeenCalled()
+  })
+
+  it('rolls the flip back when the cloud write fails — the UI must not claim reviewed', async () => {
+    const store = useLogStore()
+    const e = await store.add(payload)
+    write.mockRejectedValueOnce(new Error('net drop'))
+
+    const ok = await store.setReviewState(e.id, 'correct')
+    expect(ok).toBe(false)
+    // restored: still pending, so the garden's pendingReviews count stays honest
+    expect(store.entries[0]).toMatchObject({ reviewState: 'unreviewed', errorNote: null })
+  })
+})
+
 describe('useLogStore.deleteEntry', () => {
   beforeEach(() => {
     setActivePinia(createPinia())

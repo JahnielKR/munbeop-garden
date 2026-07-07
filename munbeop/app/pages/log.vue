@@ -47,8 +47,9 @@ function loadMore() {
 // reviewed. That flips reviewState out of 'unreviewed', which drops it from the
 // garden's pendingReviews count (shared predicate: isPendingReview).
 async function markReviewed(id: number) {
-  await logStore.setReviewState(id, 'correct')
-  toast.success(t('journal.reviewed'))
+  const ok = await logStore.setReviewState(id, 'correct')
+  if (ok) toast.success(t('journal.reviewed'))
+  else toast.error(t('errors.save_failed'))
 }
 
 const pendingDelete = ref<number | null>(null)

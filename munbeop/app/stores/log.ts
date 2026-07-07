@@ -70,17 +70,31 @@ export const useLogStore = defineStore('log', () => {
     return true
   }
 
+  /** Flip one entry's review state. Optimistic with snapshot + rollback, same
+   *  discipline as add()/deleteEntry(): a failed cloud write must not leave the
+   *  UI claiming "reviewed" (the garden rain clears off isPendingReview) while
+   *  the cloud still says pending. Returns false when the id is unknown or the
+   *  write fails, so the caller can surface a retry. */
   async function setReviewState(
     id: number,
     reviewState: ReviewState,
     errorNote: string | null = null,
-  ) {
+  ): Promise<boolean> {
+    if (!entries.value.some((e) => e.id === id)) return false
     const storage = useStorageAdapter()
-    const entry = entries.value.find((e) => e.id === id)
-    if (!entry) return
-    entry.reviewState = reviewState
-    entry.errorNote = errorNote
-    await storage.write(STORAGE_KEYS.log, entries.value)
+    const snapshot = entries.value
+    // Immutable row replace — mutating the row in place would poison the
+    // snapshot (same object reference) and make the rollback a no-op.
+    entries.value = entries.value.map((e) =>
+      e.id === id ? { ...e, reviewState, errorNote } : e,
+    )
+    try {
+      await storage.write(STORAGE_KEYS.log, entries.value)
+    } catch {
+      entries.value = snapshot
+      return false
+    }
+    return true
   }
 
   return { entries, hydrate, add, deleteEntry, setReviewState }
