@@ -68,7 +68,10 @@ export function useSentenceGarden() {
     // start on these cloud writes made a deck tap a silent no-op on a flaky
     // network (the rejection was swallowed by the caller's `void`). The other
     // labs start their UI synchronously too; a missed mark-seen self-heals on
-    // the next successful SRS write for that grammar.
+    // the next successful SRS write for that grammar. Known benign overlap: a
+    // very fast first answer can recalculate(ko) while its mark-seen upsert is
+    // still in flight; whichever write lands last wins, and the row is
+    // re-derived from the full log on the next answer either way.
     void Promise.all(
       [...new Set(sessionItems.value.map((i) => i.ko))].map((ko) => srsStore.markSeen(ko)),
     ).catch((err) => console.error('sentence-garden: mark-seen failed', err))

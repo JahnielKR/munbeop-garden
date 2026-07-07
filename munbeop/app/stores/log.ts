@@ -80,18 +80,22 @@ export const useLogStore = defineStore('log', () => {
     reviewState: ReviewState,
     errorNote: string | null = null,
   ): Promise<boolean> {
-    if (!entries.value.some((e) => e.id === id)) return false
+    const prev = entries.value.find((e) => e.id === id)
+    if (!prev) return false
     const storage = useStorageAdapter()
-    const snapshot = entries.value
-    // Immutable row replace — mutating the row in place would poison the
-    // snapshot (same object reference) and make the rollback a no-op.
+    // Immutable row replace — mutating the row in place would poison `prev`
+    // (same object reference) and make the rollback a no-op.
     entries.value = entries.value.map((e) =>
       e.id === id ? { ...e, reviewState, errorNote } : e,
     )
     try {
       await storage.write(STORAGE_KEYS.log, entries.value)
     } catch {
-      entries.value = snapshot
+      // Roll back ONLY this row, not a whole-array snapshot: the mistake feed
+      // lets the user fire several flips in quick succession, and a full
+      // snapshot restore would also revert a sibling flip that already saved.
+      // (If the row was deleted concurrently, there is nothing to restore.)
+      entries.value = entries.value.map((e) => (e.id === id ? prev : e))
       return false
     }
     return true

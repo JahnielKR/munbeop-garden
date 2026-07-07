@@ -92,6 +92,31 @@ describe('useLogStore.setReviewState', () => {
     // restored: still pending, so the garden's pendingReviews count stays honest
     expect(store.entries[0]).toMatchObject({ reviewState: 'unreviewed', errorNote: null })
   })
+
+  it('a failed flip rolls back only its own row — a concurrent flip that saved survives', async () => {
+    // The mistake feed lets the user fire two flips back to back. A's write is
+    // held in flight; B's write lands; then A's write fails. Rolling back a
+    // whole-array snapshot would also revert B — only A may be restored.
+    const store = useLogStore()
+    const a = await store.add(payload)
+    const b = await store.add({ ...payload, ko: 'B' })
+
+    let rejectA!: (e: Error) => void
+    write.mockImplementationOnce(
+      () => new Promise((_resolve, reject) => { rejectA = reject }),
+    )
+    const flipA = store.setReviewState(a.id, 'correct')
+    const okB = await store.setReviewState(b.id, 'correct')
+    expect(okB).toBe(true)
+
+    rejectA(new Error('net drop'))
+    await expect(flipA).resolves.toBe(false)
+
+    const rowA = store.entries.find((e) => e.id === a.id)!
+    const rowB = store.entries.find((e) => e.id === b.id)!
+    expect(rowA.reviewState).toBe('unreviewed') // rolled back
+    expect(rowB.reviewState).toBe('correct') // untouched by A's rollback
+  })
 })
 
 describe('useLogStore.deleteEntry', () => {
