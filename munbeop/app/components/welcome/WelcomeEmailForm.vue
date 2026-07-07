@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import { isPasswordLongEnough } from '~/lib/auth/password'
+import { authErrorKey } from '~/lib/auth/error-message'
 
 const props = defineProps<{ mode: 'signin' | 'signup' | 'magic' }>()
 const emit = defineEmits<{
@@ -39,7 +40,9 @@ async function onForgotPassword() {
   }
   const { error } = await resetPassword(addr)
   if (error) {
-    emit('error', error.message)
+    // Localize: GoTrue messages are English-only (raw message → console).
+    console.error('auth: reset-password failed', error)
+    emit('error', t(authErrorKey(error)))
     return
   }
   emit('info', t('auth.reset_email_sent'))
@@ -52,7 +55,8 @@ async function submit() {
     if (props.mode === 'signup') {
       const { error, needsConfirmation } = await signUp(email.value.trim(), password.value)
       if (error) {
-        emit('error', error.message)
+        console.error('auth: sign-up failed', error)
+        emit('error', t(authErrorKey(error)))
         return
       }
       // "Confirm email" is ON: there is no session yet, so don't navigate into
@@ -67,7 +71,8 @@ async function submit() {
           ? await signIn(email.value.trim(), password.value)
           : await signInMagicLink(email.value.trim())
       if (result.error) {
-        emit('error', result.error.message)
+        console.error('auth: sign-in failed', result.error)
+        emit('error', t(authErrorKey(result.error)))
         return
       }
       if (props.mode === 'magic') {
