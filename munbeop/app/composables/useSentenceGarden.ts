@@ -60,13 +60,18 @@ export function useSentenceGarden() {
     loadRound()
   }
 
-  async function start(kos: string[]) {
+  function start(kos: string[]) {
     runMode.value = 'normal'
     sessionItems.value = selectRounds(POOL, kos, ROUND_SIZE)
     if (sessionItems.value.length) resetRound()
-    for (const ko of new Set(sessionItems.value.map((i) => i.ko))) {
-      await srsStore.markSeen(ko)
-    }
+    // Best-effort SRS bookkeeping, deliberately NOT awaited: gating the game
+    // start on these cloud writes made a deck tap a silent no-op on a flaky
+    // network (the rejection was swallowed by the caller's `void`). The other
+    // labs start their UI synchronously too; a missed mark-seen self-heals on
+    // the next successful SRS write for that grammar.
+    void Promise.all(
+      [...new Set(sessionItems.value.map((i) => i.ko))].map((ko) => srsStore.markSeen(ko)),
+    ).catch((err) => console.error('sentence-garden: mark-seen failed', err))
   }
 
   function place(card: SGCard) {
@@ -117,9 +122,13 @@ export function useSentenceGarden() {
     resetRound()
   }
 
-  /** Credit easy/correct per ko cleared at round end (normal mode only), then recalculate. */
-  async function finish() {
-    if (runMode.value !== 'normal') return
+  /** Credit easy/correct per ko cleared at round end (normal mode only), then
+   *  recalculate. Best-effort per ko: one failed cloud write must not abort the
+   *  remaining grammars' credits. Returns false when anything failed to save so
+   *  the page can surface it — the summary renders either way (phase is already
+   *  'done'), which is exactly why a silent rejection here loses SRS credit. */
+  async function finish(): Promise<boolean> {
+    if (runMode.value !== 'normal') return true
     const byKo = new Map<
       string,
       { correct: number; total: number; first: SentenceGardenRound | null }
@@ -136,20 +145,27 @@ export function useSentenceGarden() {
       }
       byKo.set(it.ko, g)
     }
+    let allSaved = true
     for (const [ko, g] of byKo) {
-      if (g.first && g.total > 0 && g.correct / g.total >= CREDIT_THRESHOLD) {
-        await logStore.add({
-          ko,
-          sentence: g.first.sentence,
-          feedback: 'easy',
-          errorNote: null,
-          reviewState: 'correct',
-          contextId: LAB_CONTEXT.id,
-          contextName: LAB_CONTEXT.name,
-        })
+      try {
+        if (g.first && g.total > 0 && g.correct / g.total >= CREDIT_THRESHOLD) {
+          await logStore.add({
+            ko,
+            sentence: g.first.sentence,
+            feedback: 'easy',
+            errorNote: null,
+            reviewState: 'correct',
+            contextId: LAB_CONTEXT.id,
+            contextName: LAB_CONTEXT.name,
+          })
+        }
+        await srsStore.recalculate(ko)
+      } catch (err) {
+        allSaved = false
+        console.error('sentence-garden: round credit failed to save', err)
       }
-      await srsStore.recalculate(ko)
     }
+    return allSaved
   }
 
   async function logMistake(round: SentenceGardenRound) {

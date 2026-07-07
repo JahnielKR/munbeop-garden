@@ -52,8 +52,11 @@ const verdict = computed(() =>
   sg.phase.value === 'right' ? true : sg.phase.value === 'wrong' ? false : null,
 )
 
-async function beginDeck(kos: string[]) {
-  await sg.start(kos)
+// Round building is synchronous; sg.start fires its SRS mark-seen writes in
+// the background. Flipping the UI must never wait on the cloud (a failed write
+// used to make the deck tap a silent no-op) — same shape as cloze.vue.
+function beginDeck(kos: string[]) {
+  sg.start(kos)
   if (sg.sessionItems.value.length === 0) {
     toast.info(t('sentenceGarden.deck_empty'))
     return
@@ -62,11 +65,11 @@ async function beginDeck(kos: string[]) {
   phaseUi.value = 'play'
 }
 function onDeckSelect(deckId: string | null) {
-  void beginDeck(kosForDeck(grammarStore.items, grammarStore.excludedDeckIds, deckId))
+  beginDeck(kosForDeck(grammarStore.items, grammarStore.excludedDeckIds, deckId))
 }
 function onCustomDeckSelect(deckId: string) {
   const deck = customDecks.deckById(deckId)
-  if (deck) void beginDeck(deck.grammarKos)
+  if (deck) beginDeck(deck.grammarKos)
 }
 function onCustomCreate() {
   editingDeckId.value = null
@@ -83,7 +86,13 @@ function onBuilderClose() {
 
 async function onNext() {
   await sg.next()
-  if (sg.phase.value === 'done') await sg.finish()
+  if (sg.phase.value === 'done') {
+    // finish() is best-effort per grammar and reports failure instead of
+    // throwing — surface it so a dropped connection doesn't silently eat the
+    // round's SRS credit behind a normal-looking summary.
+    const ok = await sg.finish()
+    if (!ok) toast.error(t('errors.save_failed'))
+  }
 }
 function restart() {
   phaseUi.value = 'pick'
