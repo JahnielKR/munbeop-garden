@@ -16,8 +16,8 @@ export const useActivityStore = defineStore('activity', () => {
 
   /** Count one study answer in today's local-day bucket; upsert that one row.
    *  The cloud write is best-effort bookkeeping fired after every answer, so a
-   *  transient network failure is swallowed HERE (single point of truth) — the
-   *  13 fire-and-forget call sites must never surface it as an unhandled
+   *  transient network failure is swallowed HERE (single point of truth) —
+   *  every fire-and-forget call site must never surface it as an unhandled
    *  rejection that floods the first-party error sink. The in-memory tick
    *  already happened; the next successful upsert carries the full count. */
   async function record(now: number = Date.now()) {

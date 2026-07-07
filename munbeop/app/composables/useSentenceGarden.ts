@@ -60,19 +60,22 @@ export function useSentenceGarden() {
     loadRound()
   }
 
+  /** Settled promise of the current session's background mark-seen writes.
+   *  finish()/logMistake await it before recalculating so a stalled mark-seen
+   *  upsert (serialized with pre-session state) can never land AFTER a
+   *  recalculate and clobber the credited cloud row. */
+  let markSeenBatch: Promise<unknown> = Promise.resolve()
+
   function start(kos: string[]) {
     runMode.value = 'normal'
     sessionItems.value = selectRounds(POOL, kos, ROUND_SIZE)
     if (sessionItems.value.length) resetRound()
-    // Best-effort SRS bookkeeping, deliberately NOT awaited: gating the game
-    // start on these cloud writes made a deck tap a silent no-op on a flaky
-    // network (the rejection was swallowed by the caller's `void`). The other
-    // labs start their UI synchronously too; a missed mark-seen self-heals on
-    // the next successful SRS write for that grammar. Known benign overlap: a
-    // very fast first answer can recalculate(ko) while its mark-seen upsert is
-    // still in flight; whichever write lands last wins, and the row is
-    // re-derived from the full log on the next answer either way.
-    void Promise.all(
+    // Best-effort SRS bookkeeping, deliberately NOT awaited here: gating the
+    // game start on these cloud writes made a deck tap a silent no-op on a
+    // flaky network (the rejection was swallowed by the caller's `void`). The
+    // other labs start their UI synchronously too; a missed mark-seen
+    // self-heals on the next successful SRS write for that grammar.
+    markSeenBatch = Promise.all(
       [...new Set(sessionItems.value.map((i) => i.ko))].map((ko) => srsStore.markSeen(ko)),
     ).catch((err) => console.error('sentence-garden: mark-seen failed', err))
   }
@@ -132,6 +135,10 @@ export function useSentenceGarden() {
    *  'done'), which is exactly why a silent rejection here loses SRS credit. */
   async function finish(): Promise<boolean> {
     if (runMode.value !== 'normal') return true
+    // Order the cloud writes: recalculate must land after the session's
+    // mark-seen upserts (already settled or failed — the catch above means
+    // this never rejects).
+    await markSeenBatch
     const byKo = new Map<
       string,
       { correct: number; total: number; first: SentenceGardenRound | null }
@@ -172,6 +179,7 @@ export function useSentenceGarden() {
   }
 
   async function logMistake(round: SentenceGardenRound) {
+    await markSeenBatch // same write-ordering guarantee as finish()
     await logStore.add({
       ko: round.ko,
       sentence: round.sentence,

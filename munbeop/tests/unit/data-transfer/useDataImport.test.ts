@@ -33,6 +33,21 @@ describe('useDataImport.applyImport', () => {
     expect(write).not.toHaveBeenCalledWith('totally.unknown', 9)
     expect(write).not.toHaveBeenCalledWith(STORAGE_KEYS.grammar, expect.anything())
   })
+  it('skips exported nulls (empty collections) instead of writing them', async () => {
+    // An account with an empty collection exports that key as null (export
+    // reads with a null fallback). Writing null through the adapter deletes
+    // the target's rows and then throws BEFORE the key reaches the rollback
+    // list — restoring such a backup used to wipe the importing account's
+    // heatmap/streak history permanently.
+    const { applyImport } = useDataImport()
+    const ok = await applyImport(
+      payload({ [STORAGE_KEYS.activity]: null, [STORAGE_KEYS.log]: [1] }),
+    )
+    expect(ok).toBe(true)
+    expect(write).toHaveBeenCalledWith(STORAGE_KEYS.log, [1])
+    expect(write).not.toHaveBeenCalledWith(STORAGE_KEYS.activity, expect.anything())
+  })
+
   it('restores the activity map (heatmap/streak source) — regression: the key was missing from backups', async () => {
     const days = { '2026-07-06': { count: 3 } }
     const { applyImport } = useDataImport()

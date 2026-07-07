@@ -154,4 +154,30 @@ describe('useLogStore.deleteEntry', () => {
     expect(ok).toBe(false)
     expect(store.entries).toHaveLength(1) // restored
   })
+
+  it('a failed delete re-inserts only its own row — a concurrent flip that saved survives', async () => {
+    // Delete on A stalls; meanwhile the user marks B reviewed from the mistake
+    // feed and that write succeeds. A whole-array snapshot restore would
+    // revert B's confirmed flip (the immutable row replace broke the in-place
+    // aliasing that used to mask this) — only A may be re-inserted.
+    const store = useLogStore()
+    write.mockClear()
+    write.mockResolvedValue(undefined)
+    const a = await store.add(payload)
+    const b = await store.add({ ...payload, ko: 'B' })
+
+    let rejectDelete!: (e: Error) => void
+    deleteOne.mockImplementationOnce(
+      () => new Promise((_resolve, reject) => { rejectDelete = reject }),
+    )
+    const del = store.deleteEntry(a.id)
+    const okFlip = await store.setReviewState(b.id, 'correct')
+    expect(okFlip).toBe(true)
+
+    rejectDelete(new Error('net drop'))
+    await expect(del).resolves.toBe(false)
+
+    expect(store.entries.find((e) => e.id === a.id)).toBeTruthy() // restored
+    expect(store.entries.find((e) => e.id === b.id)!.reviewState).toBe('correct') // survives
+  })
 })

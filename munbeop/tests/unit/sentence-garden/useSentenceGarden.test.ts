@@ -98,6 +98,7 @@ describe('useSentenceGarden', () => {
     sg.check()
     expect(sg.phase.value).toBe('wrong')
     expect(played).toHaveLength(0)
+    await new Promise((r) => setTimeout(r, 0)) // logMistake queues behind the mark-seen batch
     expect(added.some((e) => (e as { feedback: string }).feedback === 'hard')).toBe(true)
   })
 
@@ -121,6 +122,35 @@ describe('useSentenceGarden', () => {
     addFn.mockRejectedValue(new Error('net drop'))
     await expect(sg.finish()).resolves.toBe(false)
     errSpy.mockRestore()
+  })
+
+  it('finish waits for the session\'s mark-seen writes before crediting (write ordering)', async () => {
+    // A mark-seen upsert carries pre-session SRS state; if it landed AFTER
+    // finish()'s recalculate on a stalled connection it would clobber the
+    // credited cloud row, with no self-heal until that grammar's next answer.
+    let releaseMarkSeen!: () => void
+    markSeen.mockImplementation((ko: string) => {
+      seen.push(ko)
+      return new Promise<void>((resolve) => { releaseMarkSeen = resolve })
+    })
+    const sg = useSentenceGarden()
+    sg.start(['-아/어요'])
+    while (sg.phase.value !== 'done') {
+      if (sg.phase.value === 'placing') {
+        for (const word of sg.item.value.answer) {
+          const card = sg.tray.value.find((c) => c.text === word)!
+          sg.place(card)
+        }
+        sg.check()
+      }
+      await sg.next()
+    }
+    const done = sg.finish()
+    await new Promise((r) => setTimeout(r, 0))
+    expect(added).toHaveLength(0) // credits still queued behind mark-seen
+    releaseMarkSeen()
+    await expect(done).resolves.toBe(true)
+    expect(added.some((e) => (e as { feedback: string }).feedback === 'easy')).toBe(true)
   })
 
   it('a replay run credits nothing to SRS', async () => {

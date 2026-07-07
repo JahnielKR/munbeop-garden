@@ -53,18 +53,26 @@ export const useLogStore = defineStore('log', () => {
     return entry
   }
 
-  /** Delete one journal entry by id. Optimistic with snapshot + rollback (one
+  /** Delete one journal entry by id. Optimistic with row-scoped rollback (one
    *  row deleted in the cloud, not a whole-log rewrite). Returns false if the id
    *  isn't present or the cloud delete fails. */
   async function deleteEntry(id: number): Promise<boolean> {
-    if (!entries.value.some((e) => e.id === id)) return false
-    const snapshot = entries.value
+    const idx = entries.value.findIndex((e) => e.id === id)
+    if (idx === -1) return false
+    const removed = entries.value[idx]!
     entries.value = entries.value.filter((e) => e.id !== id)
     const storage = useStorageAdapter()
     try {
       await storage.deleteOne(STORAGE_KEYS.log, id)
     } catch {
-      entries.value = snapshot
+      // Re-insert ONLY the removed row into the CURRENT array. A whole-array
+      // snapshot restore would also revert a concurrent setReviewState flip
+      // that already saved — both actions live on the journal page, and since
+      // setReviewState replaces rows immutably the old in-place aliasing no
+      // longer protects a stale snapshot.
+      const next = [...entries.value]
+      next.splice(Math.min(idx, next.length), 0, removed)
+      entries.value = next
       return false
     }
     return true
