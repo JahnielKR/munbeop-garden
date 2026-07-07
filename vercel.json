@@ -1,5 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd munbeop && corepack enable && corepack prepare pnpm@9.15.9 --activate && pnpm install --frozen-lockfile && pnpm build && cd .. && rm -rf .vercel/output && cp -r munbeop/.vercel/output .vercel/output",
+  "buildCommand": "cd munbeop && npx --yes pnpm@9.15.9 install --frozen-lockfile --no-prod && npx --yes pnpm@9.15.9 run build && cd .. && rm -rf .vercel/output && cp -r munbeop/.vercel/output .vercel/output",
   "installCommand": "echo 'install handled by buildCommand'"
 }
