@@ -14,6 +14,7 @@ import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useLeeches } from '~/composables/useLeeches'
 import { useActivityStore } from '~/stores/activity'
+import { useAppStatus } from '~/stores/appStatus'
 
 type PracticeSession = Session<number, Context>
 
@@ -32,6 +33,15 @@ export function usePractice() {
 
   async function start(opts?: { deckId?: string | null; customDeckGrammarKos?: readonly string[] }) {
     error.value = null
+    // Data never loaded (a hydration failure left the DataErrorBanner up). The
+    // stores are empty and the SRS store refuses its writes in this state (see
+    // its `hydrated` guard), so a session would run without saving and could
+    // read as broken. Surface the data error instead; the banner's retry
+    // re-pulls the data, after which start works.
+    if (useAppStatus().status === 'error') {
+      error.value = t('errors.data_failed')
+      return
+    }
     try {
       const activeContexts = contextsStore.active
       if (activeContexts.length < MIN_ACTIVE_CONTEXTS) {

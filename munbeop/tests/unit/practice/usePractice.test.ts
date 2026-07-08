@@ -4,6 +4,7 @@
 import { usePractice } from '~/composables/usePractice'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
+import { useAppStatus } from '~/stores/appStatus'
 
 // ---------------------------------------------------------------------------
 // Store mocks — hoisted by vitest before the SUT import executes.
@@ -103,6 +104,19 @@ describe('usePractice', () => {
     await p.start()
     expect(p.error.value).toBe('practice.no_contexts')
     expect(p.session.value).toBeNull()
+  })
+
+  // -------------------------------------------------------------------------
+  // 1b. Failed hydration (appStatus 'error') → data error, no session, no write
+  // -------------------------------------------------------------------------
+  it('refuses to start with a data error when hydration failed, marking nothing seen', async () => {
+    useAppStatus().status = 'error'
+    const p = usePractice()
+    await p.start()
+    expect(p.error.value).toBe('errors.data_failed')
+    expect(p.session.value).toBeNull()
+    // Critical: no SRS write — that is what would clobber the real cloud row.
+    expect(markSeen).not.toHaveBeenCalled()
   })
 
   // -------------------------------------------------------------------------
