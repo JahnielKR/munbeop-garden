@@ -23,6 +23,25 @@ function signIn() {
   useAuthStore().user = { id: 'u-1' } as never
 }
 
+// The full default persisted blob. Lab-mastery fields (added when lab progress
+// moved off global localStorage into the synced blob) default to empty here.
+function blob(overrides: Record<string, unknown> = {}) {
+  return {
+    theme: 'light',
+    locale: 'en',
+    dailyGoal: 3,
+    reviewReminders: false,
+    startingDeckId: null,
+    excludedDeckIds: [],
+    chosenAvatarId: null,
+    unlockedAvatarIds: [],
+    labCleared: { conjugation: [], counter: [], register: [], numberMarket: [] },
+    labEarned: { conjugation: false, counter: false, register: false, numberMarket: false, particle: false },
+    numberSpeedBest: {},
+    ...overrides,
+  }
+}
+
 describe('useSettingsStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -68,26 +87,26 @@ describe('useSettingsStore', () => {
   it('setTheme applies the theme and writes the full blob to the adapter', async () => {
     await useSettingsStore().setTheme('dark')
     expect(useTheme().theme.value).toBe('dark')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'dark', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [] })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', blob({ theme: 'dark' }))
   })
 
   it('setTheme accepts the system preference and writes it to the adapter', async () => {
     await useSettingsStore().setTheme('system')
     expect(useTheme().theme.value).toBe('system')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'system', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [] })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', blob({ theme: 'system' }))
   })
 
   it('setLocale applies the locale and writes the full blob to the adapter', async () => {
     await useSettingsStore().setLocale('ja')
     expect(useLocaleStore().current).toBe('ja')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'ja', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [] })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', blob({ locale: 'ja' }))
   })
 
   it('setStartingDeck stores the deck and writes the full blob', async () => {
     const s = useSettingsStore()
     await s.setStartingDeck('topik-4')
     expect(s.startingDeckId).toBe('topik-4')
-    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: 'topik-4', excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [] })
+    expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', blob({ startingDeckId: 'topik-4' }))
   })
 
   it('hydrate applies a stored startingDeckId', async () => {
@@ -101,11 +120,11 @@ describe('useSettingsStore', () => {
     const s = useSettingsStore()
     await s.toggleDeck('topik-2')
     expect(s.excludedDeckIds).toEqual(['topik-2'])
-    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: ['topik-2'], chosenAvatarId: null, unlockedAvatarIds: [] })
+    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', blob({ excludedDeckIds: ['topik-2'] }))
 
     await s.toggleDeck('topik-2')
     expect(s.excludedDeckIds).toEqual([])
-    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', { theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false, startingDeckId: null, excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [] })
+    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', blob())
   })
 
   it('hydrate applies stored excludedDeckIds (filtering non-strings)', async () => {
@@ -119,10 +138,7 @@ describe('useSettingsStore', () => {
     const s = useSettingsStore()
     await s.setChosenAvatar('fox')
     expect(s.chosenAvatarId).toBe('fox')
-    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', {
-      theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false,
-      startingDeckId: null, excludedDeckIds: [], chosenAvatarId: 'fox', unlockedAvatarIds: [],
-    })
+    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', blob({ chosenAvatarId: 'fox' }))
   })
 
   it('setChosenAvatar(null) resets to the initial', async () => {
@@ -130,10 +146,7 @@ describe('useSettingsStore', () => {
     await s.setChosenAvatar('fox')
     await s.setChosenAvatar(null)
     expect(s.chosenAvatarId).toBeNull()
-    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', {
-      theme: 'light', locale: 'en', dailyGoal: 3, reviewReminders: false,
-      startingDeckId: null, excludedDeckIds: [], chosenAvatarId: null, unlockedAvatarIds: [],
-    })
+    expect(mockWrite).toHaveBeenLastCalledWith('munbeop.v1.settings', blob())
   })
 
   it('unlockAvatars unions new ids and persists once', async () => {
@@ -205,6 +218,146 @@ describe('useSettingsStore', () => {
     expect(s.unlockedAvatarIds).toEqual([])
     // theme is device-level — not reset.
     expect(useTheme().theme.value).toBe('dark')
+  })
+
+  // ─── Lab mastery (moved off global localStorage into the synced blob) ─────
+
+  it('recordLabClear unions into the synced set and persists', async () => {
+    const s = useSettingsStore()
+    await s.recordLabClear('conjugation', 'hada')
+    await s.recordLabClear('conjugation', 'hada') // idempotent
+    await s.recordLabClear('conjugation', 'batchim')
+    expect(s.labCleared.conjugation).toEqual(['hada', 'batchim'])
+    expect(mockWrite).toHaveBeenLastCalledWith(
+      'munbeop.v1.settings',
+      blob({ labCleared: { conjugation: ['hada', 'batchim'], counter: [], register: [], numberMarket: [] } }),
+    )
+    // the duplicate did not trigger a third write
+    expect(mockWrite).toHaveBeenCalledTimes(2)
+  })
+
+  it('recordLabClear with alsoEarn flips cleared + earned in a SINGLE write (no race)', async () => {
+    // Regression: earning used to fire two separate blob upserts (recordLabClear
+    // then markLabEarned); a reorder could commit {labEarned:false} last and
+    // clobber the sticky flag in the cloud. One write must carry both.
+    const s = useSettingsStore()
+    await s.recordLabClear('counter', 'money', true)
+    expect(s.labCleared.counter).toEqual(['money'])
+    expect(s.labEarned.counter).toBe(true)
+    expect(mockWrite).toHaveBeenCalledTimes(1)
+    expect(mockWrite).toHaveBeenCalledWith(
+      'munbeop.v1.settings',
+      blob({
+        labCleared: { conjugation: [], counter: ['money'], register: [], numberMarket: [] },
+        labEarned: { conjugation: false, counter: true, register: false, numberMarket: false, particle: false },
+      }),
+    )
+  })
+
+  it('markLabEarned sets the sticky flag once (no second write)', async () => {
+    const s = useSettingsStore()
+    await s.markLabEarned('particle')
+    expect(s.labEarned.particle).toBe(true)
+    mockWrite.mockClear()
+    await s.markLabEarned('particle')
+    expect(mockWrite).not.toHaveBeenCalled()
+  })
+
+  it('recordSpeedBest only persists a strictly higher score', async () => {
+    const s = useSettingsStore()
+    await s.recordSpeedBest('mixed', 5)
+    expect(s.numberSpeedBest).toEqual({ mixed: 5 })
+    mockWrite.mockClear()
+    await s.recordSpeedBest('mixed', 4) // lower — no-op
+    await s.recordSpeedBest('mixed', 5) // equal — no-op
+    expect(mockWrite).not.toHaveBeenCalled()
+    await s.recordSpeedBest('mixed', 8) // higher — persists
+    expect(s.numberSpeedBest).toEqual({ mixed: 8 })
+    expect(mockWrite).toHaveBeenCalledTimes(1)
+  })
+
+  it('hydrate applies stored lab mastery, filtering junk', async () => {
+    signIn()
+    mockRead.mockResolvedValue({
+      labCleared: { conjugation: ['hada', 7], counter: ['won'], bogus: ['x'] },
+      labEarned: { conjugation: true, particle: 'yes', register: false },
+      numberSpeedBest: { mixed: 12, time: -3, bad: 'x' },
+    })
+    const s = useSettingsStore()
+    await s.hydrate()
+    expect(s.labCleared.conjugation).toEqual(['hada']) // non-string dropped
+    expect(s.labCleared.counter).toEqual(['won'])
+    expect(s.labEarned.conjugation).toBe(true)
+    expect(s.labEarned.particle).toBe(false) // only `true` counts
+    expect(s.numberSpeedBest).toEqual({ mixed: 12 }) // negative + non-number dropped
+  })
+
+  it('hydrate resets lab mastery so a second account cannot inherit the first', async () => {
+    const s = useSettingsStore()
+    signIn()
+    await s.recordLabClear('conjugation', 'hada')
+    await s.markLabEarned('particle')
+    await s.recordSpeedBest('mixed', 9)
+    // Second account's blob has no lab data.
+    mockRead.mockResolvedValue({ theme: 'dark' })
+    await s.hydrate()
+    expect(s.labCleared.conjugation).toEqual([])
+    expect(s.labEarned.particle).toBe(false)
+    expect(s.numberSpeedBest).toEqual({})
+  })
+
+  it('migrates legacy global lab keys into the account blob once, then removes them', async () => {
+    // Simulate the pre-sync device state.
+    localStorage.setItem('conjugation-lab.cleared', JSON.stringify(['hada', 'batchim']))
+    localStorage.setItem('conjugation-lab.masterEarned', '1')
+    localStorage.setItem('number-market.speed.best', JSON.stringify({ mixed: 7 }))
+    signIn()
+    mockRead.mockResolvedValue({ theme: 'dark' }) // blob has no lab data yet
+    const s = useSettingsStore()
+    await s.hydrate()
+    // Adopted into the synced state…
+    expect(s.labCleared.conjugation).toEqual(['hada', 'batchim'])
+    expect(s.labEarned.conjugation).toBe(true)
+    expect(s.numberSpeedBest).toEqual({ mixed: 7 })
+    // …persisted…
+    expect(mockWrite).toHaveBeenCalled()
+    // …and the leaky global keys are gone so another account can't adopt them.
+    expect(localStorage.getItem('conjugation-lab.cleared')).toBeNull()
+    expect(localStorage.getItem('conjugation-lab.masterEarned')).toBeNull()
+    expect(localStorage.getItem('number-market.speed.best')).toBeNull()
+  })
+
+  it('keeps the legacy keys when the migration persist fails (retryable, no data loss)', async () => {
+    localStorage.setItem('conjugation-lab.cleared', JSON.stringify(['hada']))
+    signIn()
+    mockRead.mockResolvedValue({ theme: 'dark' }) // no lab data → migration runs
+    mockWrite.mockRejectedValue(new Error('network down')) // persist fails (swallowed)
+    const s = useSettingsStore()
+    await expect(s.hydrate()).resolves.toBeUndefined()
+    // Adopted in memory this session…
+    expect(s.labCleared.conjugation).toEqual(['hada'])
+    // …but the source key is NOT deleted, so the next load can retry.
+    expect(localStorage.getItem('conjugation-lab.cleared')).toBe(JSON.stringify(['hada']))
+  })
+
+  it('does not run the migration when the account blob already has lab data', async () => {
+    localStorage.setItem('conjugation-lab.cleared', JSON.stringify(['hada']))
+    signIn()
+    mockRead.mockResolvedValue({ labCleared: { conjugation: ['batchim'] } })
+    const s = useSettingsStore()
+    await s.hydrate()
+    // The cloud value wins; the legacy key is NOT adopted (and left untouched).
+    expect(s.labCleared.conjugation).toEqual(['batchim'])
+    expect(localStorage.getItem('conjugation-lab.cleared')).toBe(JSON.stringify(['hada']))
+  })
+
+  it('resetToDefaults clears lab mastery (sign-out must not leak it)', () => {
+    const s = useSettingsStore()
+    signIn()
+    s.resetToDefaults()
+    expect(s.labCleared.conjugation).toEqual([])
+    expect(s.labEarned.particle).toBe(false)
+    expect(s.numberSpeedBest).toEqual({})
   })
 
   // ─── Device portrait cache (the cold-load flash fix) ──────────────────────

@@ -1,8 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useNumberSpeed } from '~/composables/useNumberSpeed'
+import { useSettingsStore } from '~/stores/settings'
 
 vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
+// Best score now persists through the account-synced settings blob; mock the
+// adapter so the persist is a no-op.
+vi.mock('~/composables/useStorageAdapter', () => ({
+  useStorageAdapter: () => ({ read: vi.fn(async () => null), write: vi.fn(async () => {}), remove: vi.fn(), clear: vi.fn() }),
+}))
 
 beforeEach(() => {
   setActivePinia(createPinia())
@@ -40,7 +46,7 @@ describe('useNumberSpeed', () => {
     for (let i = 0; i < 60; i++) s.tick()
     expect(s.phase.value).toBe('done')
     expect(s.timeLeft.value).toBe(0)
-    expect(JSON.parse(localStorage.getItem('number-market.speed.best')!)).toEqual({ mixed: 1 })
+    expect(useSettingsStore().numberSpeedBest).toEqual({ mixed: 1 })
   })
 
   it('keeps the higher best score across runs', () => {

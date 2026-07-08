@@ -3,6 +3,7 @@ import { shuffle } from '~/lib/particle-lab/shuffle'
 import { choicesFor, generateItems } from '~/lib/numbers-market'
 import type { MarketItem, NumberDomain } from '~/lib/domain'
 import { useActivityStore } from '~/stores/activity'
+import { useSettingsStore } from '~/stores/settings'
 
 export type SpeedPhase = 'playing' | 'done'
 /** A deck id: a NumberDomain, or 'mixed' for the all-domains blitz. */
@@ -11,19 +12,12 @@ export type SpeedDeckId = string
 const DURATION = 60
 /** Items generated per refill — large enough that a 60s run rarely repeats. */
 const BATCH = 60
-const BEST_KEY = 'number-market.speed.best'
-
-function readBest(): Record<string, number> {
-  if (typeof localStorage === 'undefined') return {}
-  try {
-    return JSON.parse(localStorage.getItem(BEST_KEY) ?? '{}') as Record<string, number>
-  } catch {
-    return {}
-  }
-}
 
 export function useNumberSpeed() {
   const activity = useActivityStore()
+  // Best score is account-synced (was a global localStorage key that leaked
+  // across accounts on a shared device).
+  const settings = useSettingsStore()
 
   const deckId = ref<SpeedDeckId>('mixed')
   const queue = ref<MarketItem[]>([])
@@ -38,10 +32,9 @@ export function useNumberSpeed() {
   // Monotonic answer counter — drives the screen-reader verdict announcer so two
   // correct answers in a row still re-announce (the live-region text repeats).
   const answered = ref(0)
-  const best = ref<Record<string, number>>(readBest())
 
   const item = computed<MarketItem>(() => queue.value[cursor.value]!)
-  const bestScore = computed(() => best.value[deckId.value] ?? 0)
+  const bestScore = computed(() => settings.numberSpeedBest[deckId.value] ?? 0)
 
   function refillQueue() {
     // A fresh procedurally-generated batch every refill keeps the blitz
@@ -93,10 +86,9 @@ export function useNumberSpeed() {
   function finish() {
     if (phase.value === 'done') return
     phase.value = 'done'
-    if (score.value > (best.value[deckId.value] ?? 0)) {
-      best.value = { ...best.value, [deckId.value]: score.value }
-      if (typeof localStorage !== 'undefined') localStorage.setItem(BEST_KEY, JSON.stringify(best.value))
-    }
+    // recordSpeedBest only persists when the score beats the prior best; the
+    // in-memory blob updates synchronously so bestScore reflects it at once.
+    void settings.recordSpeedBest(deckId.value, score.value)
   }
 
   function tick() {
