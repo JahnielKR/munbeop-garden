@@ -310,6 +310,10 @@ export class SupabaseAdapter implements StorageAdapter {
         // the catalog is read-only from the client (enforced by RLS).
         const customs = (value as Grammar[]).filter((g) => g.deckId === CUSTOM_DECK_ID)
         if (customs.length) {
+          // onConflict must be the (user_id, ko) UNIQUE, NOT the surrogate
+          // bigserial PK: the payload omits `id`, so the default PK conflict
+          // target would always INSERT and then violate UNIQUE(user_id, ko) on
+          // a re-write (upsert-first now hits existing rows; delete-first didn't).
           const { error } = await this.client.from('user_custom_grammars').upsert(
             customs.map((g) => ({
               user_id: this.userId,
@@ -319,6 +323,7 @@ export class SupabaseAdapter implements StorageAdapter {
               trans: (g.trans ?? null) as Json | null,
               deck_id: g.deckId,
             })),
+            { onConflict: 'user_id,ko' },
           )
           assertOk('write', key, error)
         }
