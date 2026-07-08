@@ -33,9 +33,6 @@ describe('useOnboarding', () => {
 
   it('complete writes exactly one log entry, marks the grammar seen, sets the flag, closes', async () => {
     seedStarterGrammar()
-    // Onboarding only shows in a hydrated ('ready') app, so the SRS store's
-    // clobber guard is satisfied; simulate that so markSeen persists.
-    useSrsStore().hydrated = true
     const ob = useOnboarding()
     const entry = await ob.complete('주말에 친구를 만나서 기분이 좋았어')
 
