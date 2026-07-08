@@ -28,6 +28,10 @@ function assertNever(key: never): never {
   throw new Error(`SupabaseAdapter: unmapped storage key ${String(key)}`)
 }
 
+/** Cap on ids per orphan-delete request so a large collection can't blow the
+ *  PostgREST URL-length limit (the delete filter rides the query string). */
+const ORPHAN_DELETE_CHUNK = 200
+
 /**
  * SupabaseAdapter — implements StorageAdapter against Supabase Postgres.
  *
@@ -76,6 +80,43 @@ export class SupabaseAdapter implements StorageAdapter {
       context_id: e.contextId,
       context_name: e.contextName,
       created_at: e.date,
+    }
+  }
+
+  /**
+   * The delete half of an upsert-FIRST replace: remove the user's rows in
+   * `table` whose `idCol` is NOT in `keepIds`. Run AFTER the upsert so a
+   * mid-write failure leaves the table as (new ∪ orphans) — never empty. The
+   * old delete-THEN-upsert ordering emptied the table if the connection dropped
+   * between the two requests and the upsert never landed. Reads only the id
+   * column (a body payload, no URL limit) and chunks the delete so a large
+   * collection never blows the URL length. Uses the untyped client so one helper
+   * serves every collection table; the typed upsert in each arm still checks
+   * columns.
+   */
+  private async pruneOrphans(
+    key: StorageKey,
+    table: string,
+    idCol: string,
+    keepIds: ReadonlySet<string | number>,
+  ): Promise<void> {
+    const client = this.client as unknown as SupabaseClient
+    if (keepIds.size === 0) {
+      // Nothing to keep → drop the whole set. A failed delete-all leaves the old
+      // rows in place, which is safe: the intent was "empty", so nothing is lost.
+      const del = await client.from(table).delete().eq('user_id', this.userId)
+      assertOk('write', key, del.error)
+      return
+    }
+    const sel = await client.from(table).select(idCol).eq('user_id', this.userId)
+    assertOk('write', key, sel.error)
+    const orphans = ((sel.data ?? []) as unknown as Array<Record<string, unknown>>)
+      .map((r) => r[idCol] as string | number)
+      .filter((id) => !keepIds.has(id))
+    for (let i = 0; i < orphans.length; i += ORPHAN_DELETE_CHUNK) {
+      const chunk = orphans.slice(i, i + ORPHAN_DELETE_CHUNK)
+      const del = await client.from(table).delete().eq('user_id', this.userId).in(idCol, chunk)
+      assertOk('write', key, del.error)
     }
   }
 
@@ -268,8 +309,6 @@ export class SupabaseAdapter implements StorageAdapter {
         // Only user-authored grammars (the reserved custom deck) persist here;
         // the catalog is read-only from the client (enforced by RLS).
         const customs = (value as Grammar[]).filter((g) => g.deckId === CUSTOM_DECK_ID)
-        const del = await this.client.from('user_custom_grammars').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         if (customs.length) {
           const { error } = await this.client.from('user_custom_grammars').upsert(
             customs.map((g) => ({
@@ -283,6 +322,7 @@ export class SupabaseAdapter implements StorageAdapter {
           )
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_custom_grammars', 'ko', new Set(customs.map((g) => g.ko)))
         return
       }
 
@@ -290,15 +330,15 @@ export class SupabaseAdapter implements StorageAdapter {
         // Replace-the-set semantics (like decks/contexts): a restore must DROP
         // rows absent from the payload, not merge onto stale progress. Normal
         // per-answer saves go through upsertOne, so write() only runs on
-        // import/remove where full-replace is exactly what's wanted.
+        // import/remove where full-replace is exactly what's wanted. Upsert
+        // first, then prune, so a mid-write failure never empties the table.
         const map = value as Record<string, SrsState>
         const rows = Object.entries(map).map(([ko, s]) => this.srsRow(ko, s))
-        const del = await this.client.from('user_progress').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         if (rows.length) {
           const { error } = await this.client.from('user_progress').upsert(rows)
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_progress', 'ko', new Set(rows.map((r) => r.ko)))
         return
       }
 
@@ -307,19 +347,17 @@ export class SupabaseAdapter implements StorageAdapter {
         // from the payload, not leave stale entries behind. Normal appends go
         // through append(); write() carries the full array (setReviewState/import).
         const entries = value as LogEntry[]
-        const del = await this.client.from('user_log').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
-        if (entries.length) {
-          const { error } = await this.client.from('user_log').upsert(entries.map((e) => this.logRow(e)))
+        const rows = entries.map((e) => this.logRow(e))
+        if (rows.length) {
+          const { error } = await this.client.from('user_log').upsert(rows)
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_log', 'id', new Set(rows.map((r) => r.id)))
         return
       }
 
       case STORAGE_KEYS.decks: {
         const decks = value as Deck[]
-        const del = await this.client.from('user_decks').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         if (decks.length) {
           const { error } = await this.client.from('user_decks').upsert(
             decks.map((d) => ({
@@ -333,13 +371,12 @@ export class SupabaseAdapter implements StorageAdapter {
           )
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_decks', 'id', new Set(decks.map((d) => d.id)))
         return
       }
 
       case STORAGE_KEYS.customDecks: {
         const decks = value as CustomDeck[]
-        const del = await this.client.from('user_custom_decks').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         if (decks.length) {
           const { error } = await this.client.from('user_custom_decks').upsert(
             decks.map((d) => ({
@@ -356,13 +393,12 @@ export class SupabaseAdapter implements StorageAdapter {
           )
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_custom_decks', 'id', new Set(decks.map((d) => d.id)))
         return
       }
 
       case STORAGE_KEYS.customContexts: {
         const contexts = value as Context[]
-        const del = await this.client.from('user_custom_contexts').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         if (contexts.length) {
           const { error } = await this.client.from('user_custom_contexts').upsert(
             contexts.map((c) => ({
@@ -374,19 +410,19 @@ export class SupabaseAdapter implements StorageAdapter {
           )
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_custom_contexts', 'id', new Set(contexts.map((c) => c.id)))
         return
       }
 
       case STORAGE_KEYS.inactiveContextIds: {
         const ids = value as string[]
-        const del = await this.client.from('user_inactive_contexts').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         if (ids.length) {
           const { error } = await this.client
             .from('user_inactive_contexts')
             .upsert(ids.map((context_id) => ({ user_id: this.userId, context_id })))
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_inactive_contexts', 'context_id', new Set(ids))
         return
       }
 
@@ -412,8 +448,6 @@ export class SupabaseAdapter implements StorageAdapter {
 
       case STORAGE_KEYS.activity: {
         const map = value as Record<string, ActivityDay>
-        const del = await this.client.from('user_activity').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         const rows = Object.entries(map).map(([day, v]) => ({
           user_id: this.userId,
           day,
@@ -424,6 +458,7 @@ export class SupabaseAdapter implements StorageAdapter {
           const { error } = await this.client.from('user_activity').upsert(rows)
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_activity', 'day', new Set(rows.map((r) => r.day)))
         return
       }
 

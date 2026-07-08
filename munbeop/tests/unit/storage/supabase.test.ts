@@ -24,6 +24,19 @@ function makeMockClient() {
   // with { error } the way @supabase/supabase-js does on an RLS denial or a
   // network/PostgREST failure (it does NOT throw — it returns the error).
   const errors: Record<string, { message: string } | undefined> = {}
+  // Per-table row key, so upsert models real PK dedupe (insert-or-replace by key)
+  // instead of blindly appending — needed now that write() upserts BEFORE pruning
+  // orphans (the row may already exist in the table).
+  const keyCol: Record<string, string> = {
+    user_progress: 'ko',
+    user_log: 'id',
+    user_decks: 'id',
+    user_custom_decks: 'id',
+    user_custom_contexts: 'id',
+    user_custom_grammars: 'ko',
+    user_inactive_contexts: 'context_id',
+    user_activity: 'day',
+  }
   return {
     data,
     writes,
@@ -47,8 +60,19 @@ function makeMockClient() {
         },
         upsert: (rowOrRows: unknown) => {
           if (errors[table]) return Promise.resolve({ error: errors[table] })
-          const arr = Array.isArray(rowOrRows) ? rowOrRows : [rowOrRows]
-          data[table] = [...(data[table] ?? []), ...arr]
+          const arr = (Array.isArray(rowOrRows) ? rowOrRows : [rowOrRows]) as Array<Record<string, unknown>>
+          const kc = keyCol[table]
+          if (kc) {
+            // Insert-or-replace by key (real upsert): drop existing rows whose
+            // key matches an incoming row, then append the incoming set.
+            const incoming = new Set(arr.map((r) => r[kc]))
+            data[table] = [
+              ...(data[table] ?? []).filter((r) => !incoming.has((r as Record<string, unknown>)[kc])),
+              ...arr,
+            ]
+          } else {
+            data[table] = [...(data[table] ?? []), ...arr]
+          }
           writes.push({ table, op: 'upsert', payload: rowOrRows })
           return Promise.resolve({ error: null })
         },
@@ -61,23 +85,36 @@ function makeMockClient() {
         },
         delete: () => {
           // Chainable like select so `.delete().eq(...).eq(...)` (deleteOne's
-          // user_id + id scoping) works, not just a single eq.
+          // user_id + id scoping) and `.delete().eq(...).in(...)` (the orphan
+          // prune) both work.
           const filters: Array<[string, unknown]> = []
+          let inFilter: [string, unknown[]] | null = null
           const chain = {
             eq: (col: string, val: unknown) => {
               filters.push([col, val])
+              return chain
+            },
+            in: (col: string, vals: unknown[]) => {
+              inFilter = [col, vals]
               return chain
             },
             then: (cb: (v: { error: { message: string } | null }) => unknown) => {
               if (errors[table]) return cb({ error: errors[table]! })
               const before = (data[table] ?? []).length
               const idFilter = filters.find(([c]) => c === 'id')
-              // An id-scoped delete (deleteOne) removes just that row; otherwise
-              // it's the delete-all half of a delete-then-upsert.
-              data[table] = idFilter
-                ? (data[table] ?? []).filter((r) => (r as { id?: unknown }).id !== idFilter[1])
-                : []
-              writes.push({ table, op: 'delete', payload: { rows: before, filters } })
+              const rows = data[table] ?? []
+              if (inFilter) {
+                // Orphan prune: drop rows whose <col> is in the id list.
+                const [col, vals] = inFilter
+                data[table] = rows.filter((r) => !vals.includes((r as Record<string, unknown>)[col]))
+              } else if (idFilter) {
+                // deleteOne: drop just the id-scoped row.
+                data[table] = rows.filter((r) => (r as { id?: unknown }).id !== idFilter[1])
+              } else {
+                // delete-all (clear, or the empty-set replace).
+                data[table] = []
+              }
+              writes.push({ table, op: 'delete', payload: { rows: before, filters, in: inFilter } })
               return cb({ error: null })
             },
           }
@@ -214,7 +251,7 @@ describe('SupabaseAdapter', () => {
   })
 
   describe('customDecks round-trip', () => {
-    it('write: deletes then upserts snake_case rows into user_custom_decks', async () => {
+    it('write: upserts snake_case rows into user_custom_decks and prunes the stale one', async () => {
       client.data.user_custom_decks = [{ id: 'old', user_id: USER }]
       await adapter.write(STORAGE_KEYS.customDecks, [
         {
@@ -228,7 +265,11 @@ describe('SupabaseAdapter', () => {
         },
       ])
       const ops = client.writes.filter((w) => w.table === 'user_custom_decks')
-      expect(ops[0]?.op).toBe('delete')
+      // Upsert-first, then prune: the upsert precedes the orphan delete.
+      expect(ops[0]?.op).toBe('upsert')
+      expect(ops.some((w) => w.op === 'delete')).toBe(true)
+      // The stale 'old' deck is pruned; only cd1 remains.
+      expect((client.data.user_custom_decks as Array<{ id: string }>).map((r) => r.id)).toEqual(['cd1'])
       const upsert = ops.find((w) => w.op === 'upsert')
       expect(upsert).toBeDefined()
       const rows = upsert!.payload as Array<{
@@ -334,7 +375,7 @@ describe('SupabaseAdapter', () => {
       expect(rows[0]?.context_id).toBe('banmal')
     })
 
-    it('srs: deletes the user_progress set then upserts each (ko, srs) pair', async () => {
+    it('srs: upserts each (ko, srs) pair into user_progress (upsert-first)', async () => {
       await adapter.write(STORAGE_KEYS.srs, {
         '-(으)니까': {
           lastSeen: 1717200000000,
@@ -344,8 +385,9 @@ describe('SupabaseAdapter', () => {
         },
       })
       const ops = client.writes.filter((w) => w.table === 'user_progress')
-      expect(ops[0]?.op).toBe('delete')
+      // Nothing pre-existed, so there are no orphans to delete — just the upsert.
       expect(ops.find((w) => w.op === 'upsert')).toBeDefined()
+      expect(ops.every((w) => w.op !== 'delete')).toBe(true)
     })
 
     it('srs: a restore REPLACES the set — stale rows absent from the payload are dropped', async () => {
@@ -380,12 +422,14 @@ describe('SupabaseAdapter', () => {
       expect(ids).toEqual([1]) // entries 2 and 3 are gone, not left behind
     })
 
-    it('inactiveContextIds: deletes all rows then upserts the new list', async () => {
-      client.data.user_inactive_contexts = [{ context_id: 'old' }]
+    it('inactiveContextIds: upserts the new list then prunes stale rows', async () => {
+      client.data.user_inactive_contexts = [{ context_id: 'old', user_id: USER }]
       await adapter.write(STORAGE_KEYS.inactiveContextIds, ['sns'])
       const ops = client.writes.filter((w) => w.table === 'user_inactive_contexts')
-      expect(ops[0]?.op).toBe('delete')
-      expect(ops[1]?.op).toBe('upsert')
+      expect(ops[0]?.op).toBe('upsert')
+      expect(ops.some((w) => w.op === 'delete')).toBe(true)
+      // 'old' pruned, 'sns' kept.
+      expect((client.data.user_inactive_contexts as Array<{ context_id: string }>).map((r) => r.context_id)).toEqual(['sns'])
     })
 
     it('locale: no-op (write skipped entirely)', async () => {
@@ -410,7 +454,6 @@ describe('SupabaseAdapter', () => {
         { ko: 'MINE', meaning: L('y'), deckId: 'custom' },
       ] as never)
       const ops = client.writes.filter((w) => w.table === 'user_custom_grammars')
-      expect(ops[0]?.op).toBe('delete')
       const upsert = ops.find((w) => w.op === 'upsert')
       const rows = upsert!.payload as Array<{ ko: string }>
       expect(rows).toHaveLength(1)
@@ -438,13 +481,30 @@ describe('SupabaseAdapter', () => {
       await expect(adapter.write(STORAGE_KEYS.settings, { theme: 'dark' })).rejects.toThrow()
     })
 
-    it('write throws when the delete half of a delete-then-upsert fails', async () => {
+    it('write throws when the upsert fails', async () => {
       client.errors.user_decks = { message: 'timeout' }
       await expect(
         adapter.write(STORAGE_KEYS.decks, [
           { id: 'd1', name: 'D', colorId: 'indigo', order: 0, collapsed: false },
         ]),
       ).rejects.toThrow()
+    })
+
+    // The whole point of upsert-FIRST: a mid-write failure must never leave the
+    // table empty (the old delete-then-upsert emptied it if the upsert dropped).
+    it('a failed upsert leaves the existing rows intact — never an empty table', async () => {
+      client.data.user_decks = [
+        { id: 'd1', user_id: USER, name: 'Keep', color_id: 'indigo', position: 0, collapsed: false },
+      ]
+      client.errors.user_decks = { message: 'network drop' }
+      await expect(
+        adapter.write(STORAGE_KEYS.decks, [
+          { id: 'd2', name: 'New', colorId: 'jade', order: 1, collapsed: false },
+        ]),
+      ).rejects.toThrow()
+      // The old set survives — no delete ran before the failed upsert.
+      expect((client.data.user_decks as Array<{ id: string }>).map((r) => r.id)).toEqual(['d1'])
+      expect(client.writes.some((w) => w.table === 'user_decks' && w.op === 'delete')).toBe(false)
     })
   })
 
