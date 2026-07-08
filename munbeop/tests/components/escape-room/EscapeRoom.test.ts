@@ -90,6 +90,46 @@ describe('EscapeRoom (integration with store)', () => {
     expect(w.find('[data-testid="slot-selection"]').exists()).toBe(false)
   })
 
+  it('the puzzle overlay has modal semantics + a labelled close (was aria-label="✕")', async () => {
+    const w = await mountPlaying()
+    await openSlot1(w)
+    const overlay = w.get('[data-testid="puzzle-overlay"]')
+    expect(overlay.attributes('role')).toBe('dialog')
+    expect(overlay.attributes('aria-modal')).toBe('true')
+    expect(overlay.attributes('tabindex')).toBe('-1')
+    const close = w.get('[data-testid="puzzle-close"]')
+    expect(close.attributes('aria-label')).toBe('escape.close') // localized, not "✕"
+  })
+
+  it('restores focus to the triggering hotspot when the overlay closes', async () => {
+    const w = mount(EscapeRoom, { props: { level: makeLevel(), seed: 's' }, attachTo: document.body })
+    await flushPromises()
+    await w.get('[data-testid="cinematic-skip"]').trigger('click')
+    const spot = w
+      .findAll('[data-testid="hotspot"]')
+      .find((h) => h.attributes('aria-label') === 'h-a-1')!
+    ;(spot.element as HTMLElement).focus()
+    await spot.trigger('click') // opens the overlay; focus moves into it
+    await flushPromises()
+    expect(document.activeElement).not.toBe(spot.element) // focus moved into the modal
+    await w.get('[data-testid="puzzle-close"]').trigger('click')
+    await flushPromises()
+    expect(document.activeElement).toBe(spot.element) // restored, not dropped to <body>
+    w.unmount()
+  })
+
+  it('a wrong answer shows a visible, announced nudge (feedback was audio-only)', async () => {
+    const w = await mountPlaying()
+    await openSlot1(w)
+    // wrong option (idx 1) — overlay stays open, so the nudge must be visible.
+    await w.findAll('[data-testid="slot-option"]')[1]!.trigger('click')
+    const nudge = w.get('[data-testid="puzzle-wrong"]')
+    expect(nudge.attributes('role')).toBe('status')
+    expect(nudge.text()).toContain('escape.wrong_nudge')
+    // hearts are exposed to AT (was aria-hidden with no label)
+    expect(w.get('[data-testid="er-hearts"]').attributes('aria-label')).toContain('escape.hearts_status')
+  })
+
   it('answering correctly resolves the slot and closes the panel', async () => {
     const w = await mountPlaying()
     await openSlot1(w)

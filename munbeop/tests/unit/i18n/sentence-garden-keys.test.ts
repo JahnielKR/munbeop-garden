@@ -31,6 +31,25 @@ describe('sentenceGarden i18n parity', () => {
       }
     }
   })
+  it('the a11y keys live under sentenceGarden (not another namespace) in every locale', () => {
+    // Regression: these were once pasted into `conjugation` because the
+    // insertion anchor collided, so t('sentenceGarden.correct') rendered the raw
+    // key path. Pin them to their real home so a future misplacement fails here.
+    for (const [name, loc] of Object.entries(LOCALES)) {
+      const sg = block(loc)
+      for (const k of ['correct', 'sr_placed', 'sr_removed']) {
+        expect({ name, k, ok: typeof sg[k] === 'string' && (sg[k] as string).trim().length > 0 }).toEqual({
+          name,
+          k,
+          ok: true,
+        })
+      }
+      // the interpolation params must survive translation
+      expect((sg.sr_placed as string).includes('{word}')).toBe(true)
+      expect((sg.sr_removed as string).includes('{word}')).toBe(true)
+    }
+  })
+
   it('every locale has the games.sentenceGarden card', () => {
     for (const [name, loc] of Object.entries(LOCALES)) {
       const card = (loc.games as Record<string, Record<string, string>>)?.sentenceGarden

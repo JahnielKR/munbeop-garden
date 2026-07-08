@@ -18,7 +18,8 @@ import BomiWings from './BomiWings.vue'
 import BomiHat from './BomiHat.vue'
 import BomiAntennae from './BomiAntennae.vue'
 import BomiEyes from './BomiEyes.vue'
-import { POSES, type Pose, type PoseGroupAnimation } from '~/lib/bomi/poses'
+import { POSES, staticPoseGroup, type Pose, type PoseGroupAnimation } from '~/lib/bomi/poses'
+import { useReducedMotion } from '~/composables/useReducedMotion'
 
 interface Props {
   pose?: Pose
@@ -44,10 +45,20 @@ function resolveGroup(group: 'bee' | 'wings' | 'eyes' | 'hat'): PoseGroupAnimati
   return currentPose.value[group] ?? idlePose[group]
 }
 
-const beeAnim = computed(() => resolveGroup('bee'))
-const wingsAnim = computed(() => resolveGroup('wings'))
-const eyesAnim = computed(() => resolveGroup('eyes'))
-const hatAnim = computed(() => resolveGroup('hat'))
+// motion-v drives WAAPI/JS animations that the app's CSS reduced-motion rules
+// can't touch, so honor the preference here: collapse each animated property's
+// keyframes to its resting value (last frame) and drop the looping transition,
+// leaving Bomi as a static pose for users who asked for reduced motion.
+const reduced = useReducedMotion()
+function anim(group: 'bee' | 'wings' | 'eyes' | 'hat'): PoseGroupAnimation | undefined {
+  const g = resolveGroup(group)
+  return reduced.value ? staticPoseGroup(g) : g
+}
+
+const beeAnim = computed(() => anim('bee'))
+const wingsAnim = computed(() => anim('wings'))
+const eyesAnim = computed(() => anim('eyes'))
+const hatAnim = computed(() => anim('hat'))
 
 // Children inject these refs so they can self-wire their motion.g.
 provide('bomi:wingsAnim', wingsAnim)
@@ -107,8 +118,8 @@ provide('bomi:hatAnim', hatAnim)
         font-weight="bold"
         fill="#1a1f1a"
         shape-rendering="auto"
-        :animate="{ y: [14, 4], opacity: [0, 1, 0] }"
-        :transition="{ duration: 2, repeat: Infinity, ease: 'easeOut' }"
+        :animate="reduced ? { y: 4, opacity: 0 } : { y: [14, 4], opacity: [0, 1, 0] }"
+        :transition="reduced ? { duration: 0 } : { duration: 2, repeat: Infinity, ease: 'easeOut' }"
         aria-hidden="true"
       >Z</motion.text>
     </motion.g>

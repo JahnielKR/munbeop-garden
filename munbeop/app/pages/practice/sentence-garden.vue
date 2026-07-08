@@ -1,6 +1,6 @@
 <!-- app/pages/practice/sentence-garden.vue -->
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
@@ -36,6 +36,39 @@ const phaseUi = ref<'pick' | 'play'>('pick')
 const started = ref(false)
 const builderOpen = ref(false)
 const editingDeckId = ref<string | null>(null)
+// A tap-order game placed/removed cards without moving focus (it dropped to
+// <body> on every tap) and never announced the bed to a screen reader. The
+// lab root anchors the post-tap focus move; srAnnounce feeds an sr-only live
+// region so each placement/removal is spoken.
+const labRoot = ref<HTMLElement | null>(null)
+const srAnnounce = ref('')
+
+function focusInLab(selector: string) {
+  void nextTick(() => {
+    const el = labRoot.value?.querySelector<HTMLElement>(selector)
+    el?.focus()
+  })
+}
+function onPlace(card: { id: number; text: string }) {
+  sg.place(card)
+  srAnnounce.value = t('sentenceGarden.sr_placed', { word: card.text })
+  // Keep keyboard focus in the play area (the placed card's button left the DOM):
+  // the next tray card, else the Check button IF it's enabled, else a filled bed
+  // slot. Guarding on canCheck matters for a decoy overfill — the tray can empty
+  // while Check is still disabled, and focusing a disabled button drops to <body>.
+  const target = sg.tray.value.length > 0
+    ? '.sg-tray__card'
+    : sg.canCheck.value
+      ? '.sg-actions__check'
+      : '.sg-bed__slot--filled'
+  focusInLab(target)
+}
+function onRemove(i: number) {
+  const card = sg.placed.value[i]
+  sg.removeAt(i)
+  if (card) srAnnounce.value = t('sentenceGarden.sr_removed', { word: card.text })
+  focusInLab('.sg-tray__card')
+}
 
 useGameLeaveGuard(() => started.value && sg.phase.value !== 'done')
 
@@ -118,12 +151,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="lab">
+  <div ref="labRoot" class="lab">
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="문장 정원" :latin="t('sentenceGarden.title')" />
     <PracticeHelp mode="sentence-garden" />
     <p class="lab__lead">{{ t('sentenceGarden.lead') }}</p>
+    <!-- Screen-reader running commentary for the tap-order interactions. -->
+    <p class="sr-only" role="status" aria-live="polite">{{ srAnnounce }}</p>
 
     <div v-if="phaseUi === 'pick'">
       <p class="lab__pick-title">{{ t('sentenceGarden.pick_deck') }}</p>
@@ -169,10 +204,15 @@ onMounted(async () => {
           :total="sg.item.value.answer.length"
           :verdict="verdict"
           :label="t('sentenceGarden.bed_label')"
-          @remove="sg.removeAt"
+          @remove="onRemove"
         />
+        <!-- Correct verdict was color-only (green bed border) — announce it in
+             text too, like every sibling lab; the wrong case keeps its reveal. -->
+        <p v-if="sg.phase.value === 'right'" class="sg-verdict" role="status">
+          <span aria-hidden="true">✓</span> {{ t('sentenceGarden.correct') }}
+        </p>
         <p
-          v-if="sg.phase.value === 'wrong'"
+          v-else-if="sg.phase.value === 'wrong'"
           class="sg-reveal"
           role="status"
           lang="ko"
@@ -182,7 +222,7 @@ onMounted(async () => {
         <Tray
           :cards="sg.tray.value"
           :label="t('sentenceGarden.tray_label')"
-          @place="sg.place"
+          @place="onPlace"
         />
 
         <div class="sg-actions">
@@ -239,6 +279,18 @@ onMounted(async () => {
   font-family: var(--font-pixel-small); font-size: var(--text-xs);
   color: var(--ink); background: var(--surface); border: 2px solid var(--border);
   box-shadow: 2px 2px 0 var(--shadow-cream); padding: 6px 12px;
+}
+.sg-verdict {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-pixel-small);
+  font-size: var(--text-sm);
+  color: var(--mastery-tree, #5a8f3c);
+  background: var(--surface);
+  border-left: 4px solid var(--mastery-tree, #5a8f3c);
+  padding: 8px 12px;
 }
 .sg-reveal {
   margin: 0;

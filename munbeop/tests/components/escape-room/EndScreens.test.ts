@@ -20,6 +20,15 @@ describe('VictoryScreen', () => {
     expect(w.emitted('exit')).toBeTruthy()
   })
 
+  it('moves focus to the outro on mount and announces the title (role=status)', () => {
+    const w = mount(VictoryScreen, { props: { level: makeLevel(), tier: 'common' }, attachTo: document.body })
+    const root = w.get('[data-testid="victory-root"]')
+    expect(root.attributes('tabindex')).toBe('-1')
+    expect(root.element).toBe(document.activeElement)
+    expect(w.get('.victory__title').attributes('role')).toBe('status')
+    w.unmount()
+  })
+
   it('substitutes the {farewell} token in the outro with the player’s sentence', () => {
     const level = makeLevel({
       outro: {
@@ -54,5 +63,14 @@ describe('GameOverScreen', () => {
     await w.get('[data-testid="gameover-exit"]').trigger('click')
     expect(w.emitted('retry')).toBeTruthy()
     expect(w.emitted('exit')).toBeTruthy()
+  })
+
+  it('moves focus to itself on mount and announces the title (role=status)', () => {
+    const w = mount(GameOverScreen, { attachTo: document.body })
+    const root = w.get('[data-testid="gameover-root"]')
+    expect(root.attributes('tabindex')).toBe('-1')
+    expect(root.element).toBe(document.activeElement)
+    expect(w.get('[data-testid="gameover-title"]').attributes('role')).toBe('status')
+    w.unmount()
   })
 })
