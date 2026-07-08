@@ -69,6 +69,9 @@ const wrongNudge = ref<string | null>(null)
 /** The puzzle overlay element — focused on open and used to trap Tab (it is a
  *  modal but had no dialog semantics). */
 const overlayEl = ref<HTMLElement | null>(null)
+/** The element (a hotspot button) that opened the overlay, so focus can be
+ *  restored to it on close instead of dropping to <body>. */
+const overlayTrigger = ref<HTMLElement | null>(null)
 
 const baseSeed = computed(() => props.seed ?? `run-${Date.now()}`)
 const imageBase = computed(() => `/escape-room/${props.level.id}/`)
@@ -325,11 +328,21 @@ function closeOverlay() {
 
 // The puzzle overlay is a modal: focus it on open so keyboard/SR users land
 // inside (not on <body>), and trap Tab so focus can't walk into the occluded
-// scene/HUD behind it. Esc closes it (wired in the template).
+// scene/HUD behind it. Esc closes it (wired in the template). On close, restore
+// focus to the hotspot that opened it (any close path — Esc, ✕, correct answer)
+// so focus never drops to <body>. When a new screen takes over (victory /
+// game-over / scripted beat), that screen's own onMounted focus wins the race.
 watch(
   () => !!activeSlot.value && !!activeCandidate.value,
-  (open) => {
-    if (open) void nextTick(() => overlayEl.value?.focus())
+  (open, wasOpen) => {
+    if (open) {
+      overlayTrigger.value = (document.activeElement as HTMLElement | null) ?? null
+      void nextTick(() => overlayEl.value?.focus())
+    } else if (wasOpen) {
+      const trigger = overlayTrigger.value
+      overlayTrigger.value = null
+      void nextTick(() => trigger?.focus())
+    }
   },
 )
 function trapTab(e: KeyboardEvent) {

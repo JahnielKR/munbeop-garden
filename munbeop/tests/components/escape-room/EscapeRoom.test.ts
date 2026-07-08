@@ -101,6 +101,23 @@ describe('EscapeRoom (integration with store)', () => {
     expect(close.attributes('aria-label')).toBe('escape.close') // localized, not "✕"
   })
 
+  it('restores focus to the triggering hotspot when the overlay closes', async () => {
+    const w = mount(EscapeRoom, { props: { level: makeLevel(), seed: 's' }, attachTo: document.body })
+    await flushPromises()
+    await w.get('[data-testid="cinematic-skip"]').trigger('click')
+    const spot = w
+      .findAll('[data-testid="hotspot"]')
+      .find((h) => h.attributes('aria-label') === 'h-a-1')!
+    ;(spot.element as HTMLElement).focus()
+    await spot.trigger('click') // opens the overlay; focus moves into it
+    await flushPromises()
+    expect(document.activeElement).not.toBe(spot.element) // focus moved into the modal
+    await w.get('[data-testid="puzzle-close"]').trigger('click')
+    await flushPromises()
+    expect(document.activeElement).toBe(spot.element) // restored, not dropped to <body>
+    w.unmount()
+  })
+
   it('a wrong answer shows a visible, announced nudge (feedback was audio-only)', async () => {
     const w = await mountPlaying()
     await openSlot1(w)

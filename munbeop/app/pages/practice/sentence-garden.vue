@@ -50,12 +50,18 @@ function focusInLab(selector: string) {
   })
 }
 function onPlace(card: { id: number; text: string }) {
-  const trayLeftAfter = sg.tray.value.length - 1
   sg.place(card)
   srAnnounce.value = t('sentenceGarden.sr_placed', { word: card.text })
-  // Keep keyboard focus in the play area: the next tray card, or the Check
-  // button once the tray empties (the card just placed was removed from the DOM).
-  focusInLab(trayLeftAfter > 0 ? '.sg-tray__card' : '.sg-actions__check')
+  // Keep keyboard focus in the play area (the placed card's button left the DOM):
+  // the next tray card, else the Check button IF it's enabled, else a filled bed
+  // slot. Guarding on canCheck matters for a decoy overfill — the tray can empty
+  // while Check is still disabled, and focusing a disabled button drops to <body>.
+  const target = sg.tray.value.length > 0
+    ? '.sg-tray__card'
+    : sg.canCheck.value
+      ? '.sg-actions__check'
+      : '.sg-bed__slot--filled'
+  focusInLab(target)
 }
 function onRemove(i: number) {
   const card = sg.placed.value[i]
