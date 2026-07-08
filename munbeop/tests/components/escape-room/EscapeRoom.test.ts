@@ -90,6 +90,29 @@ describe('EscapeRoom (integration with store)', () => {
     expect(w.find('[data-testid="slot-selection"]').exists()).toBe(false)
   })
 
+  it('the puzzle overlay has modal semantics + a labelled close (was aria-label="✕")', async () => {
+    const w = await mountPlaying()
+    await openSlot1(w)
+    const overlay = w.get('[data-testid="puzzle-overlay"]')
+    expect(overlay.attributes('role')).toBe('dialog')
+    expect(overlay.attributes('aria-modal')).toBe('true')
+    expect(overlay.attributes('tabindex')).toBe('-1')
+    const close = w.get('[data-testid="puzzle-close"]')
+    expect(close.attributes('aria-label')).toBe('escape.close') // localized, not "✕"
+  })
+
+  it('a wrong answer shows a visible, announced nudge (feedback was audio-only)', async () => {
+    const w = await mountPlaying()
+    await openSlot1(w)
+    // wrong option (idx 1) — overlay stays open, so the nudge must be visible.
+    await w.findAll('[data-testid="slot-option"]')[1]!.trigger('click')
+    const nudge = w.get('[data-testid="puzzle-wrong"]')
+    expect(nudge.attributes('role')).toBe('status')
+    expect(nudge.text()).toContain('escape.wrong_nudge')
+    // hearts are exposed to AT (was aria-hidden with no label)
+    expect(w.get('[data-testid="er-hearts"]').attributes('aria-label')).toContain('escape.hearts_status')
+  })
+
   it('answering correctly resolves the slot and closes the panel', async () => {
     const w = await mountPlaying()
     await openSlot1(w)

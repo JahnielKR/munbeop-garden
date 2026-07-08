@@ -5,16 +5,23 @@
  * The roguelike restart is framed as the story slipping away rather than a
  * defeat: warm copy, immediate RETRY with a fresh puzzle draw.
  */
+import { onMounted, ref } from 'vue'
 
 defineEmits<{ retry: []; exit: [] }>()
 
 const { t } = useI18n()
+
+// The run ends by clearing the active slot, so focus would otherwise drop to
+// <body>. Move it here (mirrors SentenceSummary) and announce the state change
+// via role=status so screen-reader/keyboard users aren't stranded.
+const root = ref<HTMLElement | null>(null)
+onMounted(() => root.value?.focus())
 </script>
 
 <template>
-  <div class="gameover" data-testid="gameover-root">
+  <div class="gameover" data-testid="gameover-root" ref="root" tabindex="-1">
     <span class="gameover__icon" aria-hidden="true">🕯️</span>
-    <h2 class="gameover__title" data-testid="gameover-title">
+    <h2 class="gameover__title" data-testid="gameover-title" role="status">
       {{ t('escape.game_over_title') }}
     </h2>
     <p class="gameover__text">{{ t('escape.game_over_text') }}</p>
@@ -65,6 +72,11 @@ const { t } = useI18n()
   font-size: 15px;
   line-height: 1.6;
   color: #f2d8a8;
+}
+/* Programmatic focus target (tabindex=-1, not in the tab order): the focus is
+ * moved here for screen-reader/keyboard continuity, so no visible ring. */
+.gameover {
+  outline: none;
 }
 .gameover__text {
   margin: 0;

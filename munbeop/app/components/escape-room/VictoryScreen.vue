@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type { Level, RewardTier } from '~/lib/domain'
 import { useLocalized } from '~/composables/useLocalized'
 import { useEscapeRoomAudio } from '~/composables/useEscapeRoomAudio'
@@ -38,7 +38,11 @@ const { tl } = useLocalized()
 const { t } = useI18n()
 const audio = useEscapeRoomAudio()
 
+// Move focus to the outro on mount (the win clears the active slot, so focus
+// would drop to <body>); the title is a role=status so the state is announced.
+const root = ref<HTMLElement | null>(null)
 onMounted(() => {
+  root.value?.focus()
   // The climax: bell + rain-stop one-shots, then the monk's farewell line.
   if (props.bellTollAudio) audio.playSfx(props.bellTollAudio)
   if (props.rainStopAudio) audio.playSfx(props.rainStopAudio)
@@ -63,9 +67,9 @@ const outroParagraphs = computed(() =>
 </script>
 
 <template>
-  <div class="victory" data-testid="victory-root">
+  <div class="victory" data-testid="victory-root" ref="root" tabindex="-1">
     <p class="victory__voice" data-testid="victory-voice">{{ level.voiceOutro }}</p>
-    <h2 class="victory__title">{{ t('escape.victory_title') }}</h2>
+    <h2 class="victory__title" role="status">{{ t('escape.victory_title') }}</h2>
 
     <div class="victory__outro" data-testid="victory-outro">
       <p v-for="(p, i) in outroParagraphs" :key="i" class="victory__paragraph">{{ p }}</p>
@@ -93,6 +97,8 @@ const outroParagraphs = computed(() =>
 
 <style scoped>
 .victory {
+  /* Programmatic focus target (tabindex=-1): no visible ring, focus is for SR. */
+  outline: none;
   position: fixed;
   inset: 0;
   z-index: 60;

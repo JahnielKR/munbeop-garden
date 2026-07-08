@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { Level, RewardTier, ScriptedBeat, SelectionCandidate, CompletionCandidate, CreationCandidate } from '~/lib/domain'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
@@ -62,6 +62,13 @@ const retryCount = ref(0)
 const activeBeat = ref<ScriptedBeat | null>(null)
 /** NPC nudge shown inside the creation overlay after a soft-reject. */
 const softMessage = ref<string | null>(null)
+/** Visible + announced feedback for a non-fatal WRONG answer. The feedback used
+ *  to be audio-only, so a muted or deaf player got nothing (and re-tapped,
+ *  burning hearts). Cleared on the next answer / close. */
+const wrongNudge = ref<string | null>(null)
+/** The puzzle overlay element — focused on open and used to trap Tab (it is a
+ *  modal but had no dialog semantics). */
+const overlayEl = ref<HTMLElement | null>(null)
 
 const baseSeed = computed(() => props.seed ?? `run-${Date.now()}`)
 const imageBase = computed(() => `/escape-room/${props.level.id}/`)
@@ -227,6 +234,12 @@ function handleResult(slotId: string, result: AnswerOutcome) {
   // 'gameover' status watcher clears activeSlotId; nothing else is needed here.
   if (result === 'wrong' || result === 'game-over') {
     audio.playSfx(url(UI_SFX.wrong))
+    // A non-fatal wrong answer keeps the overlay open, so give a VISIBLE +
+    // announced nudge (audio alone is invisible to a muted/deaf player). On
+    // 'game-over' the overlay is torn down for GameOverScreen, so skip it there.
+    if (result === 'wrong') {
+      wrongNudge.value = t('escape.wrong_nudge', { left: heartsLeft.value })
+    }
     return
   }
   if (result === 'soft-reject') {
@@ -252,16 +265,19 @@ function handleResult(slotId: string, result: AnswerOutcome) {
 
 function onSelectionAnswer(idx: number) {
   if (!activeSlotId.value) return
+  wrongNudge.value = null
   handleResult(activeSlotId.value, store.answerSelection(activeSlotId.value, idx))
 }
 function onCompletionAnswer(text: string) {
   if (!activeSlotId.value) return
+  wrongNudge.value = null
   handleResult(activeSlotId.value, store.answerCompletion(activeSlotId.value, text))
 }
 function onCreationAnswer(order: number[]) {
   const slotId = activeSlotId.value
   if (!slotId) return
   softMessage.value = null
+  wrongNudge.value = null
   const result = store.answerCreation(slotId, order)
   if (result === 'soft-reject') {
     const cand = activeCandidate.value as CreationCandidate | null
@@ -300,10 +316,40 @@ function toggleAudio() {
   }
 }
 
-/** Close the puzzle overlay and clear any lingering soft-reject nudge. */
+/** Close the puzzle overlay and clear any lingering nudges. */
 function closeOverlay() {
   activeSlotId.value = null
   softMessage.value = null
+  wrongNudge.value = null
+}
+
+// The puzzle overlay is a modal: focus it on open so keyboard/SR users land
+// inside (not on <body>), and trap Tab so focus can't walk into the occluded
+// scene/HUD behind it. Esc closes it (wired in the template).
+watch(
+  () => !!activeSlot.value && !!activeCandidate.value,
+  (open) => {
+    if (open) void nextTick(() => overlayEl.value?.focus())
+  },
+)
+function trapTab(e: KeyboardEvent) {
+  if (e.key !== 'Tab' || !overlayEl.value) return
+  const focusables = Array.from(
+    overlayEl.value.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    ),
+  ).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null)
+  if (focusables.length === 0) return
+  const first = focusables[0]!
+  const last = focusables[focusables.length - 1]!
+  const active = document.activeElement
+  if (e.shiftKey && (active === first || active === overlayEl.value)) {
+    e.preventDefault()
+    last.focus()
+  } else if (!e.shiftKey && active === last) {
+    e.preventDefault()
+    first.focus()
+  }
 }
 
 function exitToBook() {
@@ -336,7 +382,13 @@ function exitToBook() {
         ◀
       </button>
       <span class="er__title">{{ tl(level.title) }}</span>
-      <span class="er__hearts" data-testid="er-hearts" :title="t('escape.attempts')">
+      <span
+        class="er__hearts"
+        data-testid="er-hearts"
+        role="img"
+        :aria-label="t('escape.hearts_status', { left: heartsLeft, total: heartsTotal })"
+        :title="t('escape.attempts')"
+      >
         <span v-for="i in heartsTotal" :key="i" class="er__heart" aria-hidden="true">
           {{ i <= heartsLeft ? '♥' : '♡' }}
         </span>
@@ -374,18 +426,37 @@ function exitToBook() {
     <!-- Active scene -->
     <Scene v-if="activeRoom" :room="activeRoom" :image-base="imageBase" :resolved-slots="store.resolvedSlots" @hotspot="onHotspot" />
 
-    <!-- Puzzle overlay -->
-    <div v-if="activeSlot && activeCandidate" class="er__overlay" data-testid="puzzle-overlay">
+    <!-- Puzzle overlay (a modal: dialog role, Tab trap, Esc, focus-on-open) -->
+    <div
+      v-if="activeSlot && activeCandidate"
+      ref="overlayEl"
+      class="er__overlay"
+      data-testid="puzzle-overlay"
+      role="dialog"
+      aria-modal="true"
+      :aria-label="tl(activeRoom?.title ?? level.title)"
+      tabindex="-1"
+      @keydown.esc="closeOverlay"
+      @keydown="trapTab"
+    >
       <div class="er__overlay-inner">
         <button
           type="button"
           class="er__overlay-close"
           data-testid="puzzle-close"
-          aria-label="✕"
+          :aria-label="t('escape.close')"
           @click="closeOverlay"
         >
-          ✕
+          <span aria-hidden="true">✕</span>
         </button>
+        <p
+          v-if="wrongNudge"
+          class="er__overlay-nudge"
+          role="status"
+          data-testid="puzzle-wrong"
+        >
+          {{ wrongNudge }}
+        </p>
         <SlotSelection
           v-if="activeSlot.type === 'selection'"
           :candidate="activeCandidate as SelectionCandidate"
@@ -532,11 +603,23 @@ function exitToBook() {
   padding: 24px 16px;
   z-index: 50;
   overflow-y: auto;
+  outline: none; /* focused on open for the modal trap; no ring on the backdrop */
 }
 .er__overlay-inner {
   position: relative;
   width: 100%;
   max-width: 600px;
+}
+.er__overlay-nudge {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--red, #c0392b);
+  border-radius: 6px;
+  text-align: center;
 }
 .er__overlay-close {
   position: absolute;

@@ -39,6 +39,21 @@ export interface PoseDefinition {
   autoReturnMs?: number
 }
 
+/**
+ * Reduce a pose group to a static frame for `prefers-reduced-motion`: collapse
+ * every keyframe array to its resting value (the last frame) and drop the
+ * looping transition. motion-v animates via WAAPI, which CSS reduced-motion
+ * rules can't stop, so Bomi applies this itself. Returns undefined passthrough.
+ */
+export function staticPoseGroup(g: PoseGroupAnimation | undefined): PoseGroupAnimation | undefined {
+  if (!g) return g
+  const animate: Record<string, unknown> = {}
+  for (const [k, v] of Object.entries(g.animate)) {
+    animate[k] = Array.isArray(v) ? v[v.length - 1] : v
+  }
+  return { animate, transition: { duration: 0 } }
+}
+
 export const POSES: Record<Pose, PoseDefinition> = {
   idle: {
     // idle is also the "reset all properties to defaults" pose. Every
