@@ -3,6 +3,7 @@ import type { SrsState } from '~/lib/domain'
 import { freshSrs, getWeight, recalculateMastery } from '~/lib/srs'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
+import { useAppStatus } from '~/stores/appStatus'
 import { useLogStore } from './log'
 
 type SrsMap = Record<string, SrsState>
@@ -34,7 +35,26 @@ export const useSrsStore = defineStore('srs', () => {
     return getWeight(peek(ko), now)
   }
 
+  /**
+   * True when the tracked data load failed. SRS writes are refused in this
+   * state: after a hydration failure (a network blip at login leaves a
+   * non-blocking DataErrorBanner up but the app still navigable) the srs map
+   * AND/OR the log are empty, so markSeen/recalculate would upsert a zeroed
+   * freshSrs / mastery OVER the user's real cloud row — clobbering
+   * easy/hard/mastery for every grammar touched that session, via the main
+   * practice loop or any lab. appStatus (not this store's own read success) is
+   * the authoritative signal: recalculate derives its value from the LOG store,
+   * so a log-load failure with a successful srs load must still block. A
+   * page-level re-hydrate that fails WITHOUT going through appStatus (e.g. the
+   * ruleta revisit pull) leaves status 'ready' and the in-memory map intact, so
+   * writes correctly proceed against the retained real data.
+   */
+  function writesBlocked(): boolean {
+    return useAppStatus().status === 'error'
+  }
+
   async function markSeen(ko: string, now: number = Date.now()) {
+    if (writesBlocked()) return
     const storage = useStorageAdapter()
     ensure(ko).lastSeen = now
     // Upsert just this ko's row, not the whole map (the session start fires
@@ -43,6 +63,7 @@ export const useSrsStore = defineStore('srs', () => {
   }
 
   async function recalculate(ko: string) {
+    if (writesBlocked()) return
     const storage = useStorageAdapter()
     const log = useLogStore().entries
     map.value[ko] = recalculateMastery(ko, log)
