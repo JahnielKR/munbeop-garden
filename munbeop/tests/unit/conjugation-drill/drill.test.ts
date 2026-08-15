@@ -2,6 +2,8 @@
 import { describe, it, expect } from 'vitest'
 import { DRILL_CLASSES, verbsForClass, buildItem, scoreOf, buildRound } from '~/lib/conjugation-drill'
 import { VERBS } from '~/lib/korean'
+import { CONJUGATION_GLOSSES } from '~/seed/conjugation-glosses'
+import { LOCALE_CODES } from '~/lib/domain'
 
 describe('drill classes', () => {
   it('exposes 9 real classes + mixed, mixed first', () => {
@@ -24,6 +26,16 @@ describe('buildItem', () => {
     expect(item.options).toContain('들어요')
     expect(item.options).toHaveLength(4)
     expect(new Set(item.options).size).toBe(4)
+  })
+
+  it('localizes every one of the 80 dataset glosses in all 8 locales', () => {
+    expect(VERBS).toHaveLength(80)
+    expect(Object.keys(CONJUGATION_GLOSSES)).toHaveLength(VERBS.length)
+    for (const verb of VERBS) {
+      const gloss = CONJUGATION_GLOSSES[verb.dict]
+      expect(gloss, verb.dict).toBeTruthy()
+      for (const locale of LOCALE_CODES) expect(gloss![locale].trim(), `${verb.dict}:${locale}`).not.toBe('')
+    }
   })
 })
 

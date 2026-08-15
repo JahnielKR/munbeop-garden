@@ -64,7 +64,7 @@ watch(
       height="16"
       :style="{ '--dx': b.dx, '--dy': b.dy, '--spin': b.spin, animationDelay: b.delay }"
       draggable="false"
-    />
+    >
   </div>
 </template>
 

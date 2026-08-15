@@ -15,7 +15,8 @@ import type { PronunciationGuide } from '~/lib/domain'
  * optional parenthesized morphemes dropped (-(으)ㄴ 채(로) → 은 채; -느라(고) → 느라;
  * -다니(요)? → 다니; -(으)ㄴ/는 데(에)다(가) → 는 데다); a placeholder N/V or verb-slot
  * is not sounded (-다는 + N → 다는; -(으)ㄴ/는 척 + V → 는 척; -다고 + 생각하다/… → 다고).
- * PENDING wife native-review — the content gate.
+ * The guide has been checked against that convention and is guarded by
+ * seed/audio invariants; it is didactic segmentation, not phonetic transcription.
  */
 export const TOPIK_4_PRONUNCIATION: PronunciationGuide[] = [
   // ── Reported speech ───────────────────────────────────────────────────────

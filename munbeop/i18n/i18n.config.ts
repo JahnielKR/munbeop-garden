@@ -3,9 +3,9 @@
  * i18n/ dir by convention).
  *
  * fallbackLocale: keys missing from a locale render the English string
- * instead of the raw key path — the contract the garden feature relies on
- * (garden.* only ships in en/es until the other six locales are
- * translated; same for nav.sidebar_*).
+ * instead of the raw key path. All eight locales are kept structurally
+ * complete; English remains the defensive fallback for a future missing key
+ * or a locale chunk that cannot be loaded.
  */
 export default defineI18nConfig(() => ({
   fallbackLocale: 'en',

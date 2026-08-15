@@ -31,7 +31,7 @@ const label = () =>
     :aria-label="label()"
     @click="navigateTo('/log')"
   >
-    <img class="chest__sprite pixel" src="/img/tree/ui/chest_16.png" alt="" width="32" height="32" draggable="false" />
+    <img class="chest__sprite pixel" src="/img/tree/ui/chest_16.png" alt="" width="32" height="32" draggable="false" >
     <span v-if="pending > 0" class="chest__badge font-pixel">{{ pending > 9 ? '9+' : pending }}</span>
     <span class="chest__tip" role="tooltip">{{ label() }}</span>
   </button>

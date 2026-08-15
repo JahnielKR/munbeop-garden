@@ -3,7 +3,7 @@
  * of single Hangul syllables the learner taps to hear it sounded out.
  *
  * A grammar point is a suffix, so alternation/jamo notation can't be sounded
- * verbatim. `parts` are the chosen didactic spoken syllables — native-reviewed.
+ * verbatim. `parts` are deliberately authored didactic spoken syllables.
  */
 export interface PronunciationForm {
   /** This realization's spoken syllables, in order — each one Hangul syllable. */

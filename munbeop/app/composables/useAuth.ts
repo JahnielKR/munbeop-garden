@@ -25,13 +25,16 @@ export function useAuth() {
   const { $supabase } = useNuxtApp()
   const authStore = useAuthStore()
 
-  function hydrateDataStores() {
-    return Promise.all([
-      useGrammarStore().hydrate(),
+  async function hydrateDataStores() {
+    // Custom decks validate their grammar ids against this catalog, so grammar
+    // hydration must finish first (especially when switching accounts).
+    await useGrammarStore().hydrate()
+    await Promise.all([
       useContextsStore().hydrate(),
       useSrsStore().hydrate(),
       useLogStore().hydrate(),
       useActivityStore().hydrate(),
+      useSettingsStore().hydrate(),
       useEscapeRoomProgress().hydrate(),
       useCustomDecksStore().hydrate(),
     ])
@@ -43,50 +46,42 @@ export function useAuth() {
     const router = useRouter()
     const { data } = await $supabase.auth.getSession()
     authStore.setSession(data.session ?? null)
-    $supabase.auth.onAuthStateChange(async (event, session) => {
-      authStore.setSession(session)
-      // Pull the account's synced preferences once a session exists. Theme
-      // applies immediately (DOM write); locale re-applies when default.vue
-      // (re)mounts on the post-sign-in navigation from /welcome.
-      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
-        await useSettingsStore().hydrate()
-        // INITIAL_SESSION is the hard-reload path: a persisted session is
-        // restored AFTER the layout already hydrated the data stores against
-        // the noop adapter (user still null), so they hold seed defaults. Pull
-        // them again now that the real session is in the store — otherwise the
-        // user sees the seed catalog / empty progress, and the next write would
-        // push those seeds over their real cloud data. SIGNED_IN flows hydrate
-        // explicitly via hydrateUserStores(), so we only do it here for the
-        // restore path to avoid a redundant double-pull.
-        if (event === 'INITIAL_SESSION') {
-          // The adapter throws on a Supabase error; route the pull through
-          // appStatus so a failure surfaces as a retryable 'error' in the shell
-          // (track() swallows the throw — no unhandled rejection here) instead
-          // of a silent empty state. The user is authed; the data just didn't
-          // load this round.
-          await useAppStatus().track(() => hydrateDataStores())
-        }
+
+    async function handleAuthEvent(
+      event: string,
+      session: typeof data.session,
+      previousUserId: string | null,
+      nextUserId: string | null,
+    ) {
+      if (
+        (event === 'INITIAL_SESSION' && session)
+        || (event === 'SIGNED_IN' && session && previousUserId !== nextUserId)
+      ) {
+        await useAppStatus().track(() => hydrateDataStores())
       }
-      // After SIGNED_OUT the stores still hold the previous user's data
-      // in memory. With no session pickAdapter yields the noop adapter,
-      // so hydrating resolves every store to its fallback — that is what
-      // clears the UI. (Handled here rather than inside signOutAndExit()
-      // so token-expiry sign-outs flow through the same code.)
       if (event === 'SIGNED_OUT') {
         await hydrateDataStores()
-        // hydrateDataStores() clears the data stores against the noop adapter,
-        // but the settings store isn't in that set (it hydrates on SIGNED_IN /
-        // INITIAL_SESSION). Reset its account-scoped prefs here so the next user
-        // on a shared device doesn't inherit deck-focus / avatar / goal.
+        if ((authStore.user?.id ?? null) !== nextUserId) return
         useSettingsStore().resetToDefaults()
-        // A passive sign-out (expired/revoked token) leaves the user
-        // parked on an app route with cleared stores — the middleware
-        // only runs on navigation, so push the gate ourselves. After
-        // signOutAndExit() this is a same-route no-op.
         if (!isPublicPath(router.currentRoute.value.path)) {
           await router.push('/welcome')
         }
       }
+    }
+
+    $supabase.auth.onAuthStateChange((event, session) => {
+      const previousUserId = authStore.user?.id ?? null
+      authStore.setSession(session)
+      const nextUserId = authStore.user?.id ?? null
+      // Supabase auth callbacks must stay synchronous: awaiting another client
+      // call here can hold the auth lock indefinitely. Defer all data I/O until
+      // the callback has returned, and ignore an event superseded meanwhile.
+      setTimeout(() => {
+        if ((authStore.user?.id ?? null) !== nextUserId) return
+        void handleAuthEvent(event, session, previousUserId, nextUserId).catch((error) => {
+          console.error('auth: deferred session handling failed', error)
+        })
+      }, 0)
     })
   }
 

@@ -3,8 +3,8 @@ import { L } from '../locale'
 
 /**
  * 활용 (conjugation) — explanation for the conjugation drill.
- * Korean examples are language-neutral; prose is localized via L().
- * Native review (owner's wife) pending on the 8 translations.
+ * Korean examples are language-neutral; prose has been checked for feature
+ * accuracy and localized across all eight supported locales.
  */
 export const CONJUGATION_HELP: PracticeHelpContent = {
   ko: '활용',

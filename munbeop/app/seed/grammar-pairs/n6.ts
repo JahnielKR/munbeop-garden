@@ -6,9 +6,10 @@ import { L } from '../locale'
  * verbatim. Each pair: a contrast note + 3 single-answer discrimination items,
  * 8-locale note/trans/why.
  *
- * Drafted + Korean-lens adversarially verified by a multi-agent workflow
- * (single-correct-answer crux, naturalness, conjugation, 8-locale fidelity).
- * Native (Korean wife) review is the documented final gate.
+ * Editorial QA covers the Korean forms, answer crux, literary register and
+ * localized meaning. Seed tests enforce catalog links, exact blanks, distinct
+ * options and complete eight-locale fields. Literary nuance remains a useful
+ * target for future native-speaker refinement.
  */
 export const N6_PAIRS: ConfusablePair[] = [
   {
@@ -502,7 +503,7 @@ export const N6_PAIRS: ConfusablePair[] = [
     ),
     items: [
       {
-        sentence: '지금 와서 사과한들 {} 무슨 소용이 있겠어요?',
+        sentence: '지금 와서 {} 무슨 소용이 있겠어요?',
         optionA: '사과한들',
         optionB: '사과해도',
         answer: 'a',

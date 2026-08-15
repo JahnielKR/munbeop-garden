@@ -13,12 +13,13 @@ import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import { usePremios, type Premio } from '~/composables/usePremios'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
+import PracticeSaveStatus from '~/components/practice/PracticeSaveStatus.vue'
 
 const { t } = useI18n()
 const { tl } = useLocalized()
 const { detailLevels, unlockedCount, totalCount } = usePremios()
 const store = useEscapeRoomStore()
-const { persist } = useEscapeRoomProgress()
+const { persist, retrySave, saveStatus } = useEscapeRoomProgress()
 
 /** Toggle a reward as the active cosmetic for its type, then persist. */
 function toggleEquip(row: Premio) {
@@ -36,6 +37,8 @@ function toggleEquip(row: Premio) {
         {{ unlockedCount }}/{{ totalCount }}
       </span>
     </header>
+
+    <PracticeSaveStatus :status="saveStatus" @retry="retrySave" />
 
     <p v-if="unlockedCount === 0" class="trophies__empty">{{ t('escape.premios_empty') }}</p>
 

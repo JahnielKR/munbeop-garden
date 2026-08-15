@@ -31,6 +31,26 @@ describe('cloze seed invariants', () => {
       expect(nonEmptyLocales(it_.why), 'why 8 locales').toBe(true)
     })
   }
+
+  it('does not repeat the same Korean prompt across TOPIK decks', () => {
+    const prompts = CLOZE_ITEMS.map((item) => item.sentence)
+    expect(new Set(prompts).size).toBe(prompts.length)
+  })
+
+  it('keeps the formerly ambiguous connective items single-answer and correctly spaced', () => {
+    const contrast = CLOZE_ITEMS.find((item) => item.answer === '비싸지만')!
+    expect(contrast.distractors).not.toContain('비싸고')
+
+    const tendency = CLOZE_ITEMS.find((item) => item.answer === '기 십상이에요')!
+    expect(tendency.sentence).toContain('지금 이 빙판길에서')
+    expect(tendency.why.en).toContain('is not limited to the past')
+
+    const critical = CLOZE_ITEMS.find((item) => item.answer === '마당에')!
+    expect(critical.distractors).not.toContain('와중에')
+
+    const farFrom = CLOZE_ITEMS.find((item) => item.answer === '커녕')!
+    expect(farFrom.sentence.replace('{}', farFrom.answer)).toContain('도와주기는커녕')
+  })
 })
 
 describe('cloze coverage', () => {

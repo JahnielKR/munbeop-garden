@@ -1,5 +1,5 @@
 import type { ClashFamily, ClashSet, DrillItem, DrillVerdict } from '../domain/particles'
-import { hasBatchim } from './hangul'
+import { hasBatchim, hasRieulBatchim } from './hangul'
 
 /** Pronouns whose subject form fuses with 가. */
 export const CONTRACTIONS: Record<string, string> = {
@@ -16,12 +16,15 @@ export function contractionTrap(noun: string): string {
 
 /** Every surface form a family can take (1 for invariant, 2 for allomorph). */
 export function formsOf(f: ClashFamily): string[] {
-  return f.invariant ? [f.form] : [f.afterConsonant, f.afterVowel]
+  return f.invariant
+    ? [f.form]
+    : [...new Set([f.afterConsonant, f.afterVowel, f.afterRieul].filter((x): x is string => !!x))]
 }
 
 /** The token a family takes for `noun` (받침-selected for allomorph families). */
 export function familyFormFor(f: ClashFamily, noun: string): string {
   if (f.invariant) return f.form
+  if (f.afterRieul && hasRieulBatchim(noun)) return f.afterRieul
   return hasBatchim(noun) ? f.afterConsonant : f.afterVowel
 }
 

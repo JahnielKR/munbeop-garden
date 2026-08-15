@@ -7,6 +7,16 @@ export const MAX_EOJEOL = 5
 
 const inRange = (n: number) => n >= MIN_EOJEOL && n <= MAX_EOJEOL
 
+/** Count examples that can become exact-order Sentence Garden rounds.
+ *  Deck pickers use this same gate instead of counting unrelated grammar rows. */
+export function eligibleRoundCount(
+  examples: readonly GrammarExample[],
+  kos: readonly string[],
+): number {
+  const koSet = new Set(kos)
+  return examples.filter((e) => koSet.has(e.ko) && inRange(eojeolsOf(e.sentence).length)).length
+}
+
 /**
  * Playable rounds for a deck: examples whose `ko` is in `kos` and whose sentence
  * is 3-5 eojeol (rigid order → safe exact-match). Each round's decoy is a real

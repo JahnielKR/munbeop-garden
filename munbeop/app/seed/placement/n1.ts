@@ -5,8 +5,8 @@ import { L } from '../locale'
 /**
  * TOPIK-1 placement items (choose the surface form the context forces).
  * Each item targets a different TOPIK-1 grammar point; `ko` matches
- * grammars-n1.ts verbatim. Single-correct-answer crux drafted + self-reviewed;
- * Korean wife native review = documented final gate.
+ * grammars-n1.ts verbatim. Editorial QA covers the Korean surface forms, answer
+ * crux and localized meaning; seed tests enforce blank/option/locale integrity.
  */
 
 export const N1_PLACEMENT: PlacementItem[] = [

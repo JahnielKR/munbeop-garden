@@ -5,8 +5,11 @@ import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
 import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
+import PracticeSaveStatus from '~/components/practice/PracticeSaveStatus.vue'
 import CounterCard from '~/components/counter-drill/CounterCard.vue'
 import CounterSummary from '~/components/counter-drill/CounterSummary.vue'
+import CounterMasterStrip from '~/components/counter-drill/CounterMasterStrip.vue'
+import CounterMasterCelebration from '~/components/counter-drill/CounterMasterCelebration.vue'
 import { useCounterDrill } from '~/composables/useCounterDrill'
 import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
 import { COUNTER_SETS } from '~/lib/counters/sets'
@@ -18,11 +21,13 @@ const drill = useCounterDrill()
 const phase = ref<'pick' | 'play'>('pick')
 const started = ref(false)
 
-useGameLeaveGuard(() => started.value && drill.phase.value !== 'done')
+useGameLeaveGuard(() => started.value && (
+  drill.phase.value !== 'done' || drill.master.locked.value
+))
 
 function begin(setId: string) {
   drill.selectSet(setId)
-  drill.start()
+  if (!drill.start()) return
   started.value = true
   phase.value = 'play'
 }
@@ -30,6 +35,7 @@ async function onNext() {
   await drill.next()
 }
 function restart() {
+  if (drill.master.locked.value) return
   phase.value = 'pick'
   started.value = false
 }
@@ -42,6 +48,13 @@ function restart() {
     <BilingualTitle ko="수 분류사 연구소" :latin="t('counters.title')" />
     <PracticeHelp mode="counters" />
     <p class="lab__lead">{{ t('counters.lead') }}</p>
+
+    <CounterMasterStrip
+      :per-set="drill.master.perSet.value"
+      :done-count="drill.master.doneCount.value"
+      :total="drill.master.total.value"
+      :earned="drill.master.earned.value"
+    />
 
     <div v-if="phase === 'pick'" class="lab__sets">
       <button
@@ -74,6 +87,7 @@ function restart() {
         :phase="drill.phase.value"
         :picked="drill.picked.value"
         :verdict="drill.phase.value === 'right' ? true : drill.phase.value === 'wrong' ? false : null"
+        :next-disabled="drill.master.locked.value"
         @answer="drill.answer"
         @next="onNext"
       />
@@ -81,10 +95,21 @@ function restart() {
         v-else
         :score="drill.score.value"
         :failed-items="drill.failedItems.value"
+        :locked="drill.master.locked.value"
         @restart="restart"
         @replay-failed="drill.replayFailed"
       />
+      <PracticeSaveStatus
+        :status="drill.master.saveStatus.value"
+        @retry="drill.master.retrySave"
+      />
     </template>
+
+    <CounterMasterCelebration
+      v-if="drill.master.celebrate.value"
+      :total="drill.master.total.value"
+      @dismiss="drill.master.dismiss"
+    />
   </div>
 </template>
 

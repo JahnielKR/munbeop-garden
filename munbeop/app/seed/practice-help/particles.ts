@@ -3,8 +3,8 @@ import { L } from '../locale'
 
 /**
  * 조사 (particles) — explanation for the particle lab.
- * Korean examples are language-neutral; prose is localized via L().
- * Native review (owner's wife) pending on the 8 translations.
+ * Korean examples are language-neutral; prose has been checked against all
+ * three live modes and localized across all eight supported locales.
  */
 export const PARTICLES_HELP: PracticeHelpContent = {
   ko: '조사',
@@ -155,6 +155,16 @@ export const PARTICLES_HELP: PracticeHelpContent = {
       'Beralih ke Bentrok (⚡) dan pilih satu set kartu, lalu pilih partikel yang benar — 은/는 vs 이/가 — untuk tiap kalimat.',
       'Chuyển sang Đối đầu (⚡) và chọn một bộ thẻ, rồi chọn tiểu từ đúng — 은/는 hay 이/가 — cho mỗi câu.',
       '対戦（⚡）に切り替えてカードセットを選び、各文に正しい助詞（은/는 か 이/가）を選ぶ。',
+    ),
+    L(
+      'Switch to Spacing (␣) to rebuild Korean word spacing: choose a level, toggle the possible gaps, then check the completed sentence.',
+      'Cambia a Espaciado (␣) para reconstruir los espacios del coreano: elige un nivel, activa o desactiva los huecos posibles y comprueba la frase completa.',
+      'Passez à Espacement (␣) pour reconstruire les espaces en coréen : choisissez un niveau, activez les coupures possibles, puis vérifiez la phrase complète.',
+      'Mude para Espaçamento (␣) para reconstruir os espaços em coreano: escolha um nível, ative ou desative os intervalos possíveis e confira a frase completa.',
+      'สลับไปโหมดเว้นวรรค (␣) เพื่อประกอบการเว้นวรรคภาษาเกาหลีใหม่: เลือกระดับ แตะช่องว่างที่เป็นไปได้ แล้วตรวจประโยคที่เสร็จแล้ว',
+      'Beralih ke Spasi (␣) untuk menyusun kembali pemenggalan kata Korea: pilih level, nyalakan atau matikan celah yang mungkin, lalu periksa kalimat lengkap.',
+      'Chuyển sang Tách khoảng (␣) để dựng lại khoảng cách từ tiếng Hàn: chọn cấp độ, bật hoặc tắt các vị trí có thể ngắt, rồi kiểm tra câu hoàn chỉnh.',
+      'スペース（␣）に切り替えて韓国語の分かち書きを組み直す。レベルを選び、候補の間隔を切り替え、完成した文をチェックする。',
     ),
     L(
       'A wrong 받침 match is blocked so you can retry; a wrong choice is logged. Clear the round to grow your garden; misses can be replayed.',

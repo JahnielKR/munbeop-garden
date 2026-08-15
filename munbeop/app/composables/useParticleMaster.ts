@@ -31,8 +31,12 @@ export function useParticleMaster() {
       if (!ready.value || import.meta.server) return
       if (!view.value.earned) return
       if (settings.labEarned.particle) return // already earned in a past session
+      // Settings rejects and rolls back when the synced blob cannot be saved.
+      // Celebrate only after confirmation; a fire-and-forget rejection would
+      // otherwise both leak an unhandled promise and show a phantom award.
       void settings.markLabEarned('particle')
-      celebrate.value = true // surface exactly once
+        .then(() => { celebrate.value = true })
+        .catch(() => {})
     },
     { immediate: true },
   )

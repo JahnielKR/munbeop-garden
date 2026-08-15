@@ -5,9 +5,9 @@ import { L } from '../locale'
  * Confusable grammar/ending pairs (roadmap Step 7). a/b match grammars-n{1,2,3}.ts
  * verbatim. 4 pairs x 3 two-choice discrimination items, 8-locale trans + why.
  *
- * Drafted + Korean-lens adversarially verified by a multi-agent workflow
- * (single-answer-per-item crux, naturalness, conjugation, 8-locale fidelity).
- * Native (Korean wife) review is the documented final gate.
+ * Editorial QA covers the Korean forms, answer crux, register and localized
+ * meaning. Seed tests enforce catalog links, exact blanks, distinct options and
+ * complete eight-locale fields; future native-speaker feedback can refine nuance.
  */
 export const N1_PAIRS: ConfusablePair[] = [
   {

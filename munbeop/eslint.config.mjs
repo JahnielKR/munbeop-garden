@@ -30,4 +30,12 @@ export default withNuxt(
       ],
     },
   },
+  {
+    // These files are command-line programs. Their stdout is the user-facing
+    // result, so console output is intentional rather than debug leakage.
+    files: ['scripts/**/*.mjs', 'tools/**/*.mjs'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
 )

@@ -309,6 +309,10 @@
     "toast_saved_easy": "✨ Đã lưu",
     "toast_saved_hard": "😤 Đã lưu",
     "toast_save_error": "⚠️ Không lưu được. Câu của bạn vẫn còn, chạm để thử lại.",
+    "save_error": "Không thể lưu tiến độ của bạn. Hãy thử lại.",
+    "save_saving": "Đang lưu tiến độ…",
+    "save_saved": "Đã lưu tiến độ.",
+    "save_retry": "THỬ LƯU LẠI",
     "start_failed": "Không bắt đầu được bài luyện tập. Kiểm tra kết nối và thử lại.",
     "no_sentence": "Viết câu trước đã",
     "custom": {
@@ -329,6 +333,7 @@
       "save": "Lưu bộ thẻ",
       "delete": "Xóa bộ thẻ",
       "confirm_delete": "Xóa bộ thẻ này? Không thể hoàn tác.",
+      "discard_confirm": "Bỏ các thay đổi bộ thẻ chưa lưu?",
       "empty_title": "Tạo bộ thẻ đầu tiên của bạn",
       "empty_hint": "Chọn ngữ pháp bạn muốn từ bất kỳ cấp độ nào, đặt tên và chơi."
     },
@@ -549,7 +554,8 @@
       "delete_confirm_body": "“{ko}” sẽ bị xóa khỏi các mẫu của bạn.",
       "empty": "Bạn chưa có mẫu nào của riêng mình. Trồng cái đầu tiên bên dưới.",
       "created": "Đã thêm ngữ pháp.",
-      "deleted": "Đã xóa ngữ pháp."
+      "deleted": "Đã xóa ngữ pháp.",
+      "cancel": "Hủy"
     },
     "dark_mode": "Chế độ tối",
     "appearance": {
@@ -974,6 +980,7 @@
     "title": "Phòng thí nghiệm chia động từ",
     "lead": "Chọn dạng chia đúng. Các lựa chọn sai là lỗi mà người học thực sự hay mắc phải.",
     "pick_class": "CHỌN LOẠI",
+    "change_class": "ĐỔI LOẠI",
     "prompt": "Chia động từ theo {ending}",
     "gloss_hint": "({gloss})",
     "pick_hint": "Chạm vào dạng đúng.",
@@ -1007,6 +1014,11 @@
       "dismiss": "Tuyệt!",
       "pip_done": "{ko} — đã hoàn thành",
       "pip_todo": "{ko} — chưa xong"
+    },
+    "persistence": {
+      "saving": "Đang lưu lỗi này…",
+      "failed": "Không lưu được lỗi này. Câu trả lời của bạn vẫn còn ở đây.",
+      "retry": "Thử lưu lại"
     }
   },
   "register": {
@@ -1037,6 +1049,11 @@
       "dismiss": "Tuyệt!",
       "pip_done": "{ko} — đã hoàn thành",
       "pip_todo": "{ko} — chưa xong"
+    },
+    "persistence": {
+      "saving": "Đang lưu lỗi này…",
+      "failed": "Chưa thể lưu lỗi này. Câu trả lời của bạn vẫn còn đây.",
+      "retry": "Thử lưu lại"
     }
   },
   "cloze": {
@@ -1044,6 +1061,8 @@
     "lead": "Chọn bộ bài rồi chọn ngữ pháp phù hợp với mỗi chỗ trống — vòng nhận diện nhanh bổ sung cho việc viết.",
     "pick_deck": "CHỌN BỘ BÀI",
     "deck_empty": "Bộ bài này chưa có mục điền từ — thử bộ khác.",
+    "custom_item_count": "{n} bài điền khuyết có thể chơi",
+    "custom_locked_need_items": "Cần 3 bài điền khuyết có thể chơi",
     "pick_hint": "Chạm vào dạng phù hợp với chỗ trống.",
     "correct": "Đúng rồi!",
     "wrong": "Gần đúng",
@@ -1088,6 +1107,20 @@
       "time_age": "Thời gian & tuổi",
       "things": "Đồ vật",
       "money_order": "Tiền & thứ tự"
+    },
+    "master": {
+      "label": "Bậc thầy đơn vị đếm",
+      "progress": "Đã hoàn thành {done}/{total} bộ",
+      "earned": "Hoàn thành cả 6 bộ!",
+      "celebrate_body": "Bạn đã hoàn thành tất cả {total} bộ đơn vị đếm. 잘했어요!",
+      "dismiss": "Tuyệt!",
+      "pip_done": "{ko} — đã hoàn thành",
+      "pip_todo": "{ko} — chưa xong"
+    },
+    "persistence": {
+      "saving": "Đang lưu lỗi này…",
+      "failed": "Không lưu được lỗi này. Câu trả lời của bạn vẫn còn ở đây.",
+      "retry": "Thử lưu lại"
     }
   },
   "reminder": {
@@ -1177,7 +1210,7 @@
   },
   "sentenceGarden": {
     "title": "Vườn câu",
-    "lead": "Ghép lại câu bằng cách sắp thứ tự các thẻ-từ. Một thẻ là bẫy.",
+    "lead": "Ghép lại câu bằng cách sắp thứ tự các thẻ-từ. Một số lượt có thêm một thẻ bẫy.",
     "pick_deck": "Chọn bộ thẻ",
     "deck_empty": "Bộ này chưa có câu ngắn.",
     "progress_label": "Câu",
@@ -1192,6 +1225,13 @@
     "replay_mode_label": "Đang chơi lại những câu sai",
     "summary_again": "Chơi lại",
     "summary_replay": "Chơi lại câu sai",
+    "custom_round_count": "{n} câu có thể chơi",
+    "custom_locked_need_rounds": "Cần 6 câu có thể chơi",
+    "persistence": {
+      "saving": "Đang lưu tiến độ của bạn…",
+      "failed": "Chưa thể lưu tiến độ. Không có dữ liệu nào bị bỏ.",
+      "retry": "Thử lưu lại"
+    },
     "next": "Tiếp"
   },
   "practiceHelp": {

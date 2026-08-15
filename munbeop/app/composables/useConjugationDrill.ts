@@ -11,6 +11,7 @@ import {
 } from '~/lib/conjugation-drill'
 import { useLogStore } from '~/stores/log'
 import { useActivityStore } from '~/stores/activity'
+import type { PracticeSaveStatus } from '~/lib/practice/persistence'
 
 export type ConjPhase = 'question' | 'right' | 'wrong' | 'done'
 export type ConjMode = 'normal' | 'replay'
@@ -31,6 +32,8 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
   const phase = ref<ConjPhase>('question')
   const picked = ref<string | null>(null)
   const results = ref<DrillResult[]>([])
+  const saveStatus = ref<PracticeSaveStatus>('idle')
+  const pendingMistake = ref<{ id: number; item: ConjItem; choice: string } | null>(null)
 
   const item = computed<ConjItem>(() => sessionItems.value[index.value]!)
   const score = computed(() => scoreOf(results.value))
@@ -51,6 +54,8 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
     phase.value = 'question'
     picked.value = null
     results.value = []
+    saveStatus.value = 'idle'
+    pendingMistake.value = null
   }
 
   function start() {
@@ -70,17 +75,25 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
   }
 
   async function answer(choice: string) {
-    if (phase.value !== 'question') return
+    if (phase.value !== 'question' || saveStatus.value === 'saving') return
     picked.value = choice
     const correct = choice === item.value.correct
     results.value.push({ itemId: item.value.id, correct })
     phase.value = correct ? 'right' : 'wrong'
     void activity.record()
-    if (!correct && mode.value === 'normal') await logMistake(item.value, choice)
+    if (!correct && mode.value === 'normal') {
+      pendingMistake.value = { id: logStore.createEntryId(), item: item.value, choice }
+      await persistPendingMistake()
+    }
   }
 
   async function next() {
-    if (phase.value === 'question' || phase.value === 'done') return
+    if (
+      phase.value === 'question' ||
+      phase.value === 'done' ||
+      saveStatus.value === 'saving' ||
+      saveStatus.value === 'error'
+    ) return
     if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
       return
@@ -88,20 +101,42 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
     index.value += 1
     phase.value = 'question'
     picked.value = null
+    saveStatus.value = 'idle'
+    pendingMistake.value = null
     shuffleOptions()
   }
 
-  async function logMistake(it: ConjItem, choice: string) {
-    await logStore.add({
-      ko: it.dict,
-      sentence: `${it.dict} + ${it.ending} → ${it.correct}`,
-      feedback: 'hard',
-      errorNote: t('conjugation.diary_note', { chosen: choice, correct: it.correct }),
-      errorDimension: 'ending',
-      reviewState: 'incorrect',
-      contextId: LAB_CONTEXT.id,
-      contextName: LAB_CONTEXT.name,
-    })
+  async function persistPendingMistake(): Promise<boolean> {
+    const pending = pendingMistake.value
+    if (!pending || saveStatus.value === 'saving') return false
+    saveStatus.value = 'saving'
+    try {
+      await logStore.add({
+        ko: pending.item.dict,
+        sentence: `${pending.item.dict} + ${pending.item.ending} → ${pending.item.correct}`,
+        feedback: 'hard',
+        errorNote: t('conjugation.diary_note', {
+          chosen: pending.choice,
+          correct: pending.item.correct,
+        }),
+        errorDimension: 'ending',
+        reviewState: 'incorrect',
+        contextId: LAB_CONTEXT.id,
+        contextName: LAB_CONTEXT.name,
+      }, pending.id)
+    } catch (error) {
+      console.error('conjugation: diary write failed', error)
+      saveStatus.value = 'error'
+      return false
+    }
+    pendingMistake.value = null
+    saveStatus.value = 'saved'
+    return true
+  }
+
+  async function retrySave(): Promise<boolean> {
+    if (saveStatus.value !== 'error') return false
+    return persistPendingMistake()
   }
 
   return {
@@ -115,10 +150,12 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
     item,
     score,
     failedItems,
+    saveStatus,
     selectClass,
     start,
     replayFailed,
     answer,
     next,
+    retrySave,
   }
 }

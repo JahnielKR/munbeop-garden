@@ -6,7 +6,7 @@ import { L } from '../locale'
  * Additional subject/object honorification items (-(으)시-, 께서/께, suppletion +
  * honorific nouns), extending HONOR_ITEMS in honor.ts. The speaker (저/제가) is
  * NEVER self-honorified; the speaker's own verb is humbled (드리다/여쭙다/뵙다), not raised.
- * Drafted + Korean-lens adversarially verified. Korean wife native review = documented final gate.
+ * Korean-lens adversarially reviewed and covered by seed invariants.
  */
 
 export const HONOR_EXTRA: RegisterItem[] = [

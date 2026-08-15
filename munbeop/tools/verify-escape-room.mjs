@@ -320,10 +320,69 @@ async function waitFor(expression, timeout = 30_000) {
   throw new Error(`Timed out waiting for: ${expression}\n${JSON.stringify(context)}`)
 }
 
+/**
+ * The product requires an authenticated account before the default layout
+ * renders its page slot. This isolated visual harness deliberately points at
+ * a non-existent Supabase instance, so it cannot restore a real session or
+ * hydrate cloud data. The synthetic localStorage token above gets the route
+ * through middleware; once Nuxt has finished its real auth bootstrap, set the
+ * two Pinia gate stores to a stable test account. This stays entirely inside
+ * the disposable Chrome profile and does not add a production auth bypass.
+ */
+async function openVisualCheckAccountGate() {
+  const storesReady = `(() => {
+    const app = document.querySelector('#__nuxt')?.__vue_app__
+    const providers = app?._context?.provides
+    const pinia = providers
+      ? Reflect.ownKeys(providers)
+          .map((key) => providers[key])
+          .find((candidate) => candidate?._s instanceof Map)
+      : null
+    return !!pinia?._s?.get('auth')?.ready && !!pinia?._s?.get('appStatus')
+  })()`
+  await waitFor(storesReady)
+
+  // Give Supabase's INITIAL_SESSION notification time to settle before the
+  // harness installs its stable account; otherwise that callback can race the
+  // assignment below and close the layout gate again.
+  await delay(100)
+  const opened = await evaluate(`(() => {
+    const app = document.querySelector('#__nuxt')?.__vue_app__
+    const providers = app?._context?.provides
+    const pinia = providers
+      ? Reflect.ownKeys(providers)
+          .map((key) => providers[key])
+          .find((candidate) => candidate?._s instanceof Map)
+      : null
+    const auth = pinia?._s?.get('auth')
+    const appStatus = pinia?._s?.get('appStatus')
+    if (!auth || !appStatus) return false
+    auth.setSession({
+      access_token: 'visual-check',
+      refresh_token: 'visual-check',
+      expires_at: 9999999999,
+      token_type: 'bearer',
+      user: {
+        id: 'visual-check-user',
+        email: 'visual-check@example.test',
+        aud: 'authenticated',
+        app_metadata: {},
+        user_metadata: {},
+        created_at: '2026-01-01T00:00:00.000Z'
+      }
+    })
+    appStatus.status = 'ready'
+    return auth.ready && auth.user?.id === 'visual-check-user' && appStatus.status === 'ready'
+  })()`)
+  if (!opened) throw new Error('Could not open the isolated visual-check account gate')
+}
+
 async function navigate(route) {
   await command('Page.navigate', { url: `${origin}${route}` }, sessionId)
   await waitFor("document.readyState === 'complete'")
   await delay(350)
+  await openVisualCheckAccountGate()
+  await delay(100)
 }
 
 /**
@@ -659,5 +718,12 @@ try {
   chrome.kill()
   devServer?.kill()
   await delay(150)
+  // Nuxt occasionally leaves this generated lock behind after a Windows
+  // child process is terminated, which makes the next isolated verification
+  // fail before it starts. Only remove it when this script launched the dev
+  // server itself; an explicit-origin run must never touch another server.
+  if (devServer) {
+    await rm(path.resolve('.nuxt/nuxt.lock'), { force: true }).catch(() => {})
+  }
   await rm(profileDir, { recursive: true, force: true }).catch(() => {})
 }

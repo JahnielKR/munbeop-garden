@@ -6,9 +6,9 @@ import { L } from '../locale'
  * 'ko' values verbatim. 2 pairs x 3 two-choice discrimination items, 8-locale
  * trans + why.
  *
- * Drafted + Korean-lens adversarially verified (single-correct-answer crux per
- * item, naturalness, conjugation, 8-locale fidelity). Native (Korean wife)
- * review is the documented final gate.
+ * Editorial QA covers the Korean forms, answer crux, register and localized
+ * meaning. Seed tests enforce catalog links, exact blanks, distinct options and
+ * complete eight-locale fields.
  */
 export const N5_PAIRS_EXTRA: ConfusablePair[] = [
   {

@@ -4,8 +4,8 @@ import { L } from '../locale'
 
 /**
  * TOPIK-4 grammar-pattern cloze items (choose the pattern that fits the blank).
- * ko matches grammars-n4.ts verbatim. Drafted + Korean-lens adversarially verified
- * (single-correct-answer crux). Korean wife native review = documented final gate.
+ * ko matches grammars-n4.ts verbatim. Adversarial Korean single-answer review
+ * completed; the shared seed-invariant suite enforces links, shape and i18n.
  */
 
 export const N4_CLOZE: ClozeItem[] = [

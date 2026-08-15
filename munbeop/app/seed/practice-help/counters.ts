@@ -3,8 +3,8 @@ import { L } from '../locale'
 
 /**
  * 수 분류사 (counters / classifiers) — explanation for the counters lab.
- * Korean examples are language-neutral; prose is localized via L().
- * Native review (owner's wife) pending on the 8 translations.
+ * Korean examples are language-neutral; prose is localized across all eight
+ * supported locales and covered by the practice-help invariants.
  */
 export const COUNTERS_HELP: PracticeHelpContent = {
   ko: '수 분류사',

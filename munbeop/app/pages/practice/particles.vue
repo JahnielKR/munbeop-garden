@@ -11,6 +11,7 @@ import SpacingLevelPicker from '~/components/particle-lab/SpacingLevelPicker.vue
 import ParticleMasterStrip from '~/components/particle-lab/ParticleMasterStrip.vue'
 import ParticleMasterCelebration from '~/components/particle-lab/ParticleMasterCelebration.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
+import PracticeSaveStatus from '~/components/practice/PracticeSaveStatus.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
 import PracticeHelp from '~/components/practice/PracticeHelp.vue'
@@ -38,18 +39,32 @@ const master = useParticleMaster()
 const initialMode: Mode =
   route.query.mode === 'drill' ? 'drill' : route.query.mode === 'spacing' ? 'spacing' : 'explore'
 const mode = ref<Mode>(initialMode)
+const drillSaveBlocked = computed(() => drill.saveBlocked.value)
+const modeSwitchLocked = computed(() =>
+  drillSaveBlocked.value
+  || (mode.value === 'drill' && drill.phase.value !== 'done')
+  || (mode.value === 'spacing' && spacing.phase.value !== 'done'),
+)
+
+function selectMode(nextMode: Mode) {
+  if (nextMode === mode.value || modeSwitchLocked.value) return
+  mode.value = nextMode
+}
 
 // Confirm before leaving an in-progress drill / spacing round (Explore is read-only).
 useGameLeaveGuard(
   () =>
-    (mode.value === 'drill' && drill.phase.value !== 'done') ||
+    (mode.value === 'drill' && (drill.phase.value !== 'done' || drillSaveBlocked.value)) ||
     (mode.value === 'spacing' && spacing.phase.value !== 'done'),
 )
 
 watch(mode, async (m) => {
-  await router.replace({ query: { ...route.query, mode: m } })
-  if (m === 'drill') await drill.start()
+  // Both starts initialize their render state synchronously before their first
+  // await. Do that before yielding to router.replace so the newly selected
+  // branch never renders with an undefined item/puzzle.
+  if (m === 'drill') void drill.start()
   else if (m === 'spacing') spacing.start()
+  await router.replace({ query: { ...route.query, mode: m } })
 })
 
 if (mode.value === 'drill') {
@@ -60,17 +75,21 @@ if (mode.value === 'drill') {
 }
 
 async function restartDrill() {
+  if (drillSaveBlocked.value) return
   await drill.start()
 }
 
 async function onReplayFailed() {
+  if (drillSaveBlocked.value) return
   await drill.replayFailed()
 }
 
 async function onSelectSet(id: string) {
+  if (drillSaveBlocked.value) return
   drill.selectSet(id)
+  const starting = drill.start()
   await router.replace({ query: { ...route.query, mode: 'drill', set: id } })
-  await drill.start()
+  await starting
 }
 
 function restartSpacing() {
@@ -107,8 +126,9 @@ function onSelectLevel(l: 1 | 2) {
         class="lab__tab"
         :class="{ 'lab__tab--active': mode === 'explore' }"
         :aria-pressed="mode === 'explore'"
+        :disabled="modeSwitchLocked"
         data-testid="tab-explore"
-        @click="mode = 'explore'"
+        @click="selectMode('explore')"
       >
         🧩 {{ t('particles.mode_explore') }}
       </button>
@@ -117,8 +137,9 @@ function onSelectLevel(l: 1 | 2) {
         class="lab__tab"
         :class="{ 'lab__tab--active': mode === 'drill' }"
         :aria-pressed="mode === 'drill'"
+        :disabled="modeSwitchLocked"
         data-testid="tab-drill"
-        @click="mode = 'drill'"
+        @click="selectMode('drill')"
       >
         ⚡ {{ t('particles.mode_drill') }}
       </button>
@@ -127,8 +148,9 @@ function onSelectLevel(l: 1 | 2) {
         class="lab__tab"
         :class="{ 'lab__tab--active': mode === 'spacing' }"
         :aria-pressed="mode === 'spacing'"
+        :disabled="modeSwitchLocked"
         data-testid="tab-spacing"
-        @click="mode = 'spacing'"
+        @click="selectMode('spacing')"
       >
         ␣ {{ t('particles.mode_spacing') }}
       </button>
@@ -165,19 +187,24 @@ function onSelectLevel(l: 1 | 2) {
         :verdict="drill.verdict.value"
         :picked="drill.picked.value"
         :blocked-choices="drill.blockedChoices.value"
+        :next-disabled="drill.saveStatus.value === 'saving' || drill.saveStatus.value === 'error'"
         @answer="drill.answer"
         @retry="drill.retry"
         @next="drill.next"
       />
+      <PracticeSaveStatus
+        :status="drill.saveStatus.value"
+        @retry="drill.retrySave"
+      />
       <DrillSummary
-        v-else
+        v-if="drill.phase.value === 'done' && !drillSaveBlocked"
         :score="drill.score.value"
         :failed-items="drill.failedItems.value"
         :set="drill.set.value"
         :garden-grew="drill.gardenGrew.value"
         @restart="restartDrill"
         @replay-failed="onReplayFailed"
-        @explore="mode = 'explore'"
+        @explore="selectMode('explore')"
       />
     </template>
 
@@ -218,7 +245,7 @@ function onSelectLevel(l: 1 | 2) {
         :failed-items="spacing.failedItems.value"
         @restart="restartSpacing"
         @replay-failed="onSpacingReplayFailed"
-        @explore="mode = 'explore'"
+        @explore="selectMode('explore')"
       />
     </template>
 
@@ -277,6 +304,10 @@ function onSelectLevel(l: 1 | 2) {
 }
 .lab__tab:hover {
   color: var(--text);
+}
+.lab__tab:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 .lab__tab--active {
   background: var(--accent);

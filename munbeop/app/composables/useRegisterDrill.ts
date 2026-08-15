@@ -12,6 +12,7 @@ import {
 import type { RegisterItem, RegisterMode } from '~/lib/domain'
 import { useLogStore } from '~/stores/log'
 import { useActivityStore } from '~/stores/activity'
+import type { PracticeSaveStatus } from '~/lib/practice/persistence'
 
 export type RegisterPhase = 'question' | 'right' | 'wrong' | 'done'
 export type RegisterRunMode = 'normal' | 'replay'
@@ -33,6 +34,10 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
   const phase = ref<RegisterPhase>('question')
   const picked = ref<string | null>(null)
   const results = ref<DrillResult[]>([])
+  const saveStatus = ref<PracticeSaveStatus>('idle')
+  const saving = computed(() => saveStatus.value === 'saving')
+  const saveError = computed(() => saveStatus.value === 'error')
+  let pendingMistake: { id: number; item: RegisterItem; choice: string } | null = null
 
   const item = computed<RegisterItem>(() => sessionItems.value[index.value]!)
   const score = computed(() => scoreOf(results.value))
@@ -55,6 +60,8 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
     phase.value = 'question'
     picked.value = null
     results.value = []
+    saveStatus.value = 'idle'
+    pendingMistake = null
   }
   function start() {
     runMode.value = 'normal'
@@ -71,16 +78,19 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
     shuffleOptions()
   }
   async function answer(choice: string) {
-    if (phase.value !== 'question') return
+    if (phase.value !== 'question' || saving.value) return
     picked.value = choice
     const correct = choice === item.value.answer
     results.value.push({ itemId: itemId(item.value), correct })
     phase.value = correct ? 'right' : 'wrong'
     void activity.record()
-    if (!correct && runMode.value === 'normal') await logMistake(item.value, choice)
+    if (!correct && runMode.value === 'normal') {
+      pendingMistake = { id: logStore.createEntryId(), item: item.value, choice }
+      await savePendingMistake()
+    }
   }
   async function next() {
-    if (phase.value === 'question' || phase.value === 'done') return
+    if (phase.value === 'question' || phase.value === 'done' || saving.value || saveError.value) return
     if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
       return
@@ -88,9 +98,11 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
     index.value += 1
     phase.value = 'question'
     picked.value = null
+    saveStatus.value = 'idle'
+    pendingMistake = null
     shuffleOptions()
   }
-  async function logMistake(it: RegisterItem, choice: string) {
+  async function logMistake(it: RegisterItem, choice: string, stableId: number) {
     await logStore.add({
       ko: it.source,
       sentence: `${it.source} → ${it.answer}`,
@@ -100,7 +112,28 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
       reviewState: 'incorrect',
       contextId: LAB_CONTEXT.id,
       contextName: LAB_CONTEXT.name,
-    })
+    }, stableId)
+  }
+
+  /** Persist the one outstanding diary entry. A failed request stays pending so
+   *  the learner can retry without answering again or silently losing the miss. */
+  async function savePendingMistake(): Promise<boolean> {
+    if (!pendingMistake || saving.value) return !pendingMistake && !saveError.value
+    saveStatus.value = 'saving'
+    try {
+      await logMistake(pendingMistake.item, pendingMistake.choice, pendingMistake.id)
+      pendingMistake = null
+      saveStatus.value = 'saved'
+      return true
+    } catch (error) {
+      saveStatus.value = 'error'
+      console.error('register: failed to save mistake', error)
+      return false
+    }
+  }
+
+  async function retrySave(): Promise<boolean> {
+    return savePendingMistake()
   }
 
   return {
@@ -112,6 +145,9 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
     index,
     phase,
     picked,
+    saving,
+    saveError,
+    saveStatus,
     item,
     score,
     failedItems,
@@ -120,6 +156,7 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
     start,
     replayFailed,
     answer,
+    retrySave,
     next,
   }
 }

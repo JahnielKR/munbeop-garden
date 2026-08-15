@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import type { ConfusablePair, Grammar, LocalizedString } from '~/lib/domain'
 import type { Leech } from '~/lib/srs'
 import { useRescueDrill } from '~/composables/useRescueDrill'
@@ -73,5 +73,30 @@ describe('useRescueDrill', () => {
     grammarByKo.mockReturnValue(undefined)
     const d = useRescueDrill('없음')
     expect(d.grammar.value).toBeNull()
+  })
+
+  it('reacts to a changed ko and resets the stage to reread', async () => {
+    const current = ref('-는데')
+    grammarByKo.mockImplementation((ko) => ({ ...grammar, ko }))
+    const d = useRescueDrill(current)
+    d.next()
+    expect(d.stage.value).toBe('examples')
+
+    current.value = '-지만'
+    await nextTick()
+    expect(d.grammar.value?.ko).toBe('-지만')
+    expect(d.stage.value).toBe('reread')
+  })
+
+  it('omits the empty examples stage for a custom grammar without an example', () => {
+    grammarByKo.mockReturnValue({ ...grammar, deckId: 'custom', example: undefined })
+    const d = useRescueDrill('-는데')
+    expect(d.stages.value).toEqual(['reread', 'produce'])
+  })
+
+  it('keeps the examples stage for a custom grammar with a canonical example', () => {
+    grammarByKo.mockReturnValue({ ...grammar, deckId: 'custom', example: '예문이에요.' })
+    const d = useRescueDrill('-는데')
+    expect(d.stages.value).toEqual(['reread', 'examples', 'produce'])
   })
 })

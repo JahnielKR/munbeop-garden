@@ -11,7 +11,13 @@ export function useNumberMarketMaster() {
     total: computed(() => m.view.value.total),
     earned: m.earned,
     celebrate: m.celebrate,
+    saveStatus: m.saveStatus,
+    saving: m.saving,
+    saveError: m.saveError,
+    locked: m.locked,
     recordRound: (domainId: string, accuracy: number) => m.record(domainId, accuracy),
+    retrySave: m.retrySave,
+    resetSaveStatus: m.resetSaveStatus,
     dismiss: m.dismiss,
   }
 }

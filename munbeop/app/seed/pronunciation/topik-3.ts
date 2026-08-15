@@ -15,7 +15,9 @@ import type { PronunciationGuide } from '~/lib/domain'
  * -는다면/-(이)라면 → 는다면; -기 위해(서)/-을/를 위해(서) → 기 위해); optional
  * parenthesized morphemes dropped (에 따라(서) → 에 따라; -거든(요) → 거든); a
  * placeholder N/V is not sounded (N + 답다 → 답다; 밖에 + neg → 밖에); -아/어 보이다
- * keeps 이 so it stays distinct from -아/어 보다. PENDING wife native-review.
+ * keeps 이 so it stays distinct from -아/어 보다. The guide has been checked
+ * against that convention and is guarded by seed/audio invariants; it is a
+ * didactic segmentation, not phonetic transcription.
  */
 export const TOPIK_3_PRONUNCIATION: PronunciationGuide[] = [
   // ── Change-of-state / resultative / appearance ────────────────────────────

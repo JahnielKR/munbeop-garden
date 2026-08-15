@@ -33,4 +33,11 @@ describe('NoopStorageAdapter', () => {
     await expect(adapter.upsertOne(STORAGE_KEYS.srs, { id: 'A', value: { n: 1 } })).resolves.toBeUndefined()
     await expect(adapter.read(STORAGE_KEYS.srs, {})).resolves.toEqual({})
   })
+
+  it('updateOne drops the entry silently like write', async () => {
+    const adapter = new NoopStorageAdapter()
+    await expect(
+      adapter.updateOne(STORAGE_KEYS.log, { id: 1, value: { id: 1 } }),
+    ).resolves.toBe(true)
+  })
 })

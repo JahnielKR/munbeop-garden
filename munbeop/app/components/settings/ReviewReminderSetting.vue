@@ -13,7 +13,7 @@ function onToggle(e: Event) {
   <section class="reminder-set" :aria-label="t('settings.review_reminders.title')">
     <h2 class="reminder-set__title">{{ t('settings.review_reminders.title') }}</h2>
     <label class="reminder-set__row">
-      <input type="checkbox" :checked="settings.reviewReminders" @change="onToggle" />
+      <input type="checkbox" :checked="settings.reviewReminders" @change="onToggle" >
       <span>{{ t('settings.review_reminders.label') }}</span>
     </label>
     <p class="reminder-set__hint">{{ t('settings.review_reminders.hint') }}</p>

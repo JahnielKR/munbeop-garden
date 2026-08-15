@@ -830,7 +830,7 @@
       { "id": "G283", "ko": "-(으)ㄹ 따름입니다", "fn": "merely-humble-formal", "stars": "★", "es": "Forma formal 합쇼체 de -(으)ㄹ 따름이다 (G104) — énfasis humilde" },
       { "id": "G284", "ko": "-아/어 마다하지 않다", "fn": "willing-to-anything", "stars": "★", "es": "No rehusar ni siquiera" },
       { "id": "G285", "ko": "-(으)면 -(으)ㄹ수록", "fn": "the-more-the-more", "stars": "★★", "es": "Cuanto más X, más Y (enfático)" },
-      { "id": "G286", "ko": "-(이)야말로 (확장)", "fn": "exactly-combinations", "stars": "★", "es": "Extensión de G115: combinaciones útiles con -(이)야말로" },
+      { "id": "G286", "ko": "-(이)야말로 (확장)", "fn": "exactly-combinations", "stars": "★", "es": "Extensión de G115: combinaciones útiles con -(이)야말로", "coveredBy": "G115" },
       { "id": "G287", "ko": "-(으)며 살다/지내다", "fn": "live-while", "stars": "★", "es": "Vivir + verbo (modo de vida)" },
       { "id": "G288", "ko": "-노라면", "fn": "if-one-keeps-doing", "stars": "★", "es": "Si uno sigue haciendo (literario)" },
       { "id": "G289", "ko": "-아/어 죽을 지경이다", "fn": "dying-extreme", "stars": "★", "es": "Estoy de morirme de (extremo)" },

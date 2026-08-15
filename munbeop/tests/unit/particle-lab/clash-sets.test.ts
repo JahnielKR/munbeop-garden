@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { CLASH_SETS, clashSetById } from '~/seed/clash-sets'
 import { PARTICLE_DRILLS } from '~/seed/particle-drills'
-import { correctForm, optionsFor, CONTRACTIONS } from '~/lib/particle-lab'
+import { correctForm, optionsFor, CONTRACTIONS, particleGrammarKos } from '~/lib/particle-lab'
+import { PARTICLES } from '~/seed/particles'
 
 describe('clash sets integrity', () => {
   it('every drill item references a real set + valid family index', () => {
@@ -49,6 +50,17 @@ describe('clash sets integrity', () => {
     for (const it of items) {
       expect(it.familyIndex, it.id).toBe(0)
       expect(Object.keys(CONTRACTIONS), it.id).toContain(it.noun)
+    }
+  })
+
+  it('lets every Particle Master grammar earn credit inside the drill itself', () => {
+    const drillKos = new Set(CLASH_SETS.flatMap((set) => set.families.map((f) => f.grammarKo)))
+    expect([...drillKos].sort()).toEqual([...particleGrammarKos(PARTICLES)].sort())
+    for (const set of CLASH_SETS) {
+      if (set.kind === 'contraction') continue
+      const items = PARTICLE_DRILLS.filter((item) => item.setId === set.id)
+      expect(items.filter((item) => item.familyIndex === 0).length, `${set.id}:0`).toBeGreaterThanOrEqual(3)
+      expect(items.filter((item) => item.familyIndex === 1).length, `${set.id}:1`).toBeGreaterThanOrEqual(3)
     }
   })
 })

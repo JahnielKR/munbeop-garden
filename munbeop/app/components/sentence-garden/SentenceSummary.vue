@@ -2,7 +2,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-defineProps<{ score: { correct: number; total: number }; failedCount: number }>()
+withDefaults(defineProps<{
+  score: { correct: number; total: number }
+  failedCount: number
+  locked?: boolean
+}>(), { locked: false })
 defineEmits<{ restart: []; replayFailed: [] }>()
 const { t } = useI18n()
 
@@ -14,8 +18,8 @@ onMounted(() => root.value?.focus())
   <section ref="root" tabindex="-1" class="sg-summary">
     <p class="sg-summary__score" role="status">{{ score.correct }} / {{ score.total }}</p>
     <div class="sg-summary__actions">
-      <button type="button" @click="$emit('restart')">{{ t('sentenceGarden.summary_again') }}</button>
-      <button v-if="failedCount > 0" type="button" @click="$emit('replayFailed')">
+      <button type="button" :disabled="locked" @click="$emit('restart')">{{ t('sentenceGarden.summary_again') }}</button>
+      <button v-if="failedCount > 0" type="button" :disabled="locked" @click="$emit('replayFailed')">
         {{ t('sentenceGarden.summary_replay') }}
       </button>
     </div>

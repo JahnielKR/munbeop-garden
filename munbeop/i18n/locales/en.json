@@ -309,6 +309,10 @@
     "toast_saved_easy": "✨ Saved",
     "toast_saved_hard": "😤 Saved",
     "toast_save_error": "⚠️ Couldn't save — your sentence is kept, tap to try again.",
+    "save_error": "We couldn't save your progress. Try again.",
+    "save_saving": "Saving your progress…",
+    "save_saved": "Progress saved.",
+    "save_retry": "RETRY SAVE",
     "start_failed": "Couldn't start the practice. Check your connection and try again.",
     "no_sentence": "Write a sentence first",
     "custom": {
@@ -329,6 +333,7 @@
       "save": "Save deck",
       "delete": "Delete deck",
       "confirm_delete": "Delete this deck? This can't be undone.",
+      "discard_confirm": "Discard your unsaved deck changes?",
       "empty_title": "Create your first deck",
       "empty_hint": "Pick the grammar you want from any level, name it, and play."
     },
@@ -549,7 +554,8 @@
       "delete_confirm_body": "“{ko}” will be removed from your patterns.",
       "empty": "No patterns of your own yet. Plant your first below.",
       "created": "Grammar added.",
-      "deleted": "Grammar removed."
+      "deleted": "Grammar removed.",
+      "cancel": "Cancel"
     },
     "dark_mode": "Dark mode",
     "appearance": {
@@ -930,6 +936,7 @@
     "title": "Conjugation Lab",
     "lead": "Pick the correct conjugated form. The wrong options are the mistakes learners actually make.",
     "pick_class": "PICK A CLASS",
+    "change_class": "CHANGE CLASS",
     "prompt": "Conjugate into {ending}",
     "gloss_hint": "({gloss})",
     "pick_hint": "Tap the correct form.",
@@ -963,6 +970,11 @@
       "dismiss": "Nice!",
       "pip_done": "{ko} — cleared",
       "pip_todo": "{ko} — not yet"
+    },
+    "persistence": {
+      "saving": "Saving this mistake…",
+      "failed": "We couldn't save this mistake. Your answer is still here.",
+      "retry": "Retry save"
     }
   },
   "escape": {
@@ -1014,6 +1026,8 @@
     "lead": "Pick a deck, then choose the grammar that fits each blank — a quick recognition round that complements writing.",
     "pick_deck": "PICK A DECK",
     "deck_empty": "This deck has no cloze items yet — try another.",
+    "custom_item_count": "{n} playable cloze items",
+    "custom_locked_need_items": "Needs 3 playable cloze items",
     "pick_hint": "Tap the form that fits the blank.",
     "correct": "Correct!",
     "wrong": "Not quite",
@@ -1054,6 +1068,11 @@
       "dismiss": "Nice!",
       "pip_done": "{ko} — cleared",
       "pip_todo": "{ko} — not yet"
+    },
+    "persistence": {
+      "saving": "Saving this mistake…",
+      "failed": "We couldn't save this mistake. Your answer is still here.",
+      "retry": "Retry save"
     }
   },
   "rescue": {
@@ -1088,6 +1107,20 @@
       "time_age": "Time & age",
       "things": "Things",
       "money_order": "Money & order"
+    },
+    "master": {
+      "label": "Counter Master",
+      "progress": "{done}/{total} sets cleared",
+      "earned": "All 6 sets cleared!",
+      "celebrate_body": "You cleared all {total} counter sets. 잘했어요!",
+      "dismiss": "Nice!",
+      "pip_done": "{ko} — cleared",
+      "pip_todo": "{ko} — not yet"
+    },
+    "persistence": {
+      "saving": "Saving this mistake…",
+      "failed": "We couldn't save this mistake. Your answer is still here.",
+      "retry": "Retry save"
     }
   },
   "reminder": {
@@ -1177,7 +1210,7 @@
   },
   "sentenceGarden": {
     "title": "Sentence Garden",
-    "lead": "Rebuild the sentence by ordering its word-cards. One card is a trap.",
+    "lead": "Rebuild the sentence by ordering its word-cards. Some rounds add a trap card.",
     "pick_deck": "Pick a deck",
     "deck_empty": "This deck has no short sentences yet.",
     "progress_label": "Sentence",
@@ -1192,6 +1225,13 @@
     "replay_mode_label": "Replaying the ones you missed",
     "summary_again": "Play again",
     "summary_replay": "Replay misses",
+    "custom_round_count": "{n} playable sentences",
+    "custom_locked_need_rounds": "Needs 6 playable sentences",
+    "persistence": {
+      "saving": "Saving your progress…",
+      "failed": "We couldn't save your progress. Nothing has been discarded.",
+      "retry": "Retry save"
+    },
     "next": "Next"
   },
   "practiceHelp": {

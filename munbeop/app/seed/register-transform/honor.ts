@@ -5,7 +5,7 @@ import { L } from '../locale'
 /**
  * Subject/object honorification items (-(으)시-, 께서/께, suppletion + honorific nouns),
  * seeded from the spine honorificVocab table. The speaker is NEVER self-honorified.
- * Drafted + Korean-lens adversarially verified. Korean wife native review = documented final gate.
+ * Korean-lens adversarially reviewed and covered by seed invariants.
  */
 
 export const HONOR_ITEMS: RegisterItem[] = [

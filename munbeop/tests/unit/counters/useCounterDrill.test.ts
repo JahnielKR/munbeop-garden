@@ -2,8 +2,12 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useCounterDrill } from '~/composables/useCounterDrill'
 import { COUNTER_SETS } from '~/lib/counters/sets'
+import { useSettingsStore } from '~/stores/settings'
 
 vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
+vi.mock('~/composables/useStorageAdapter', () => ({
+  useStorageAdapter: () => ({ read: vi.fn(async () => null), write: vi.fn(async () => {}), remove: vi.fn(), clear: vi.fn() }),
+}))
 
 beforeEach(() => setActivePinia(createPinia()))
 
@@ -40,5 +44,18 @@ describe('useCounterDrill', () => {
     d.replayFailed()
     expect(d.runMode.value).toBe('replay')
     expect(d.sessionItems.value.length).toBe(1)
+  })
+
+  it('exposes mastery and clears the selected set after a strong normal round', async () => {
+    const d = useCounterDrill()
+    const setId = COUNTER_SETS[0]!.id
+    d.selectSet(setId)
+    d.start()
+    while (d.phase.value !== 'done') {
+      await d.answer(d.item.value.answer)
+      await d.next()
+    }
+    expect(d.master.doneCount.value).toBe(1)
+    expect(useSettingsStore().labCleared.counter).toContain(setId)
   })
 })

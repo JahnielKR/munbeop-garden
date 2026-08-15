@@ -69,7 +69,7 @@ const isActive = (l: GardenLevel) => l.level === props.activeLevel
           width="24"
           height="24"
           draggable="false"
-        />
+        >
       </span>
 
       <span class="grove__meta">

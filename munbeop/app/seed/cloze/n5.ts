@@ -4,8 +4,8 @@ import { L } from '../locale'
 
 /**
  * TOPIK-5 grammar-pattern cloze items (choose the pattern that fits the blank).
- * ko matches grammars-n5.ts verbatim. Drafted + Korean-lens adversarially verified
- * (single-correct-answer crux). Korean wife native review = documented final gate.
+ * ko matches grammars-n5.ts verbatim. Adversarial Korean single-answer review
+ * completed; the shared seed-invariant suite enforces links, shape and i18n.
  */
 
 export const N5_CLOZE: ClozeItem[] = [
@@ -297,7 +297,7 @@ export const N5_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-는 커녕',
-    sentence: '도와주기는 {} 오히려 일을 더 망쳐 놓았어요.',
+    sentence: '도와주기는{} 오히려 일을 더 망쳐 놓았어요.',
     answer: '커녕',
     distractors: ['는데도', '거든요', '으려고'],
     trans: L(
@@ -323,28 +323,28 @@ export const N5_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-기 십상이다',
-    sentence: '그렇게 급하게 운전하면 사고가 나{}.',
+    sentence: '지금 이 빙판길에서 그렇게 급하게 운전하면 사고가 나{}.',
     answer: '기 십상이에요',
     distractors: ['기 나름이에요', '기 일쑤예요', '기 그지없어요'],
     trans: L(
-      'If you drive in such a hurry, you’re bound to end up in an accident.',
-      'Si conduces con tanta prisa, es muy fácil que acabes en un accidente.',
-      'Si tu conduis aussi vite, tu as toutes les chances de finir par avoir un accident.',
-      'Se você dirige com tanta pressa, é bem fácil acabar em um acidente.',
-      'ถ้าขับรถรีบขนาดนั้น มีโอกาสสูงที่จะเกิดอุบัติเหตุ',
-      'Kalau menyetir seterburu itu, mudah sekali berakhir kecelakaan.',
-      'Lái xe vội vàng như thế thì dễ gặp tai nạn lắm.',
-      'そんなに急いで運転すると、事故を起こしがちです。',
+      'If you drive that fast on this icy road right now, you’re very likely to crash.',
+      'Si conduces así de rápido ahora por esta carretera helada, es muy probable que tengas un accidente.',
+      'Si tu conduis aussi vite maintenant sur cette route verglacée, tu risques fort d’avoir un accident.',
+      'Se você dirigir tão rápido agora nesta estrada coberta de gelo, é muito provável que sofra um acidente.',
+      'ถ้าขับเร็วขนาดนั้นบนถนนที่เป็นน้ำแข็งตอนนี้ มีโอกาสสูงมากที่จะเกิดอุบัติเหตุ',
+      'Kalau sekarang menyetir secepat itu di jalan yang licin karena es, kemungkinan besar akan terjadi kecelakaan.',
+      'Nếu lái nhanh như vậy ngay lúc này trên con đường đóng băng, rất dễ xảy ra tai nạn.',
+      '今この凍った道でそんなに急いで運転したら、事故を起こす可能性が非常に高いです。',
     ),
     why: L(
-      'A conditional warning that a bad outcome is highly likely needs -기 십상이다; -기 나름이다 means "depends on how" (no warning), -기 일쑤이다 reports a past recurring habit (clashes with the future 운전하면), -기 그지없다 attaches only to emotion/state adjectives (그립기 그지없다), never to the eventive 사고가 나다 — only 십상이다 gives the "bound to (badly)" warning.',
-      'Una advertencia condicional de que un mal resultado es muy probable exige -기 십상이다; -기 나름이다 es "depende de cómo" (sin advertencia), -기 일쑤이다 narra un hábito pasado recurrente (choca con el futuro 운전하면), -기 그지없다 solo se une a adjetivos de emoción/estado (그립기 그지없다), nunca al eventivo 사고가 나다 — solo 십상이다 da la advertencia.',
-      'Un avertissement conditionnel qu’un mauvais résultat est très probable exige -기 십상이다 ; -기 나름이다 = « ça dépend » (pas d’avertissement), -기 일쑤이다 = habitude passée répétée (incompatible avec le futur 운전하면), -기 그지없다 ne s’attache qu’aux adjectifs d’émotion/état (그립기 그지없다), jamais à l’événementiel 사고가 나다 — seul 십상이다 avertit.',
-      'Um aviso condicional de que um mau resultado é muito provável exige -기 십상이다; -기 나름이다 é "depende de como" (sem aviso), -기 일쑤이다 narra um hábito passado recorrente (destoa do futuro 운전하면), -기 그지없다 só se liga a adjetivos de emoção/estado (그립기 그지없다), nunca ao eventivo 사고가 나다 — só 십상이다 dá o aviso.',
-      'คำเตือนแบบมีเงื่อนไขว่าผลร้ายมีโอกาสสูงต้องใช้ -기 십상이다; -기 나름이다 แปลว่า "ขึ้นอยู่กับวิธี" (ไม่ใช่คำเตือน), -기 일쑤이다 เล่านิสัยซ้ำในอดีต (ขัดกับอนาคต 운전하면), -기 그지없다 ใช้กับคำคุณศัพท์บอกอารมณ์/สภาพเท่านั้น (그립기 그지없다) ไม่ใช้กับ 사고가 나다 ที่เป็นเหตุการณ์ มีแต่ 십상이다 ที่เป็นคำเตือน',
-      'Peringatan bersyarat bahwa hasil buruk sangat mungkin butuh -기 십상이다; -기 나름이다 = "tergantung cara" (bukan peringatan), -기 일쑤이다 menceritakan kebiasaan lampau berulang (bentrok dengan futur 운전하면), -기 그지없다 hanya melekat pada adjektiva emosi/keadaan (그립기 그지없다), bukan pada peristiwa 사고가 나다 — hanya 십상이다 yang memberi peringatan.',
-      'Lời cảnh báo có điều kiện rằng kết quả xấu rất dễ xảy ra cần -기 십상이다; -기 나름이다 = "tùy cách" (không cảnh báo), -기 일쑤이다 kể thói quen lặp lại trong quá khứ (nghịch với tương lai 운전하면), -기 그지없다 chỉ gắn với tính từ cảm xúc/trạng thái (그립기 그지없다), không gắn với sự kiện 사고가 나다 — chỉ 십상이다 mới là lời cảnh báo.',
-      '悪い結果になりやすいという条件付きの警告には -기 십상이다 が必要。-기 나름이다 は「やり方次第」で警告ではなく、-기 일쑤이다 は過去の繰り返しの習慣で未来の 운전하면 と矛盾、-기 그지없다 は感情・状態の形容詞（그립기 그지없다）にしか付かず事象の 사고가 나다 には付かない。警告になるのは 십상이다 のみ。',
+      'This is a one-off, immediate warning about a highly likely bad outcome, so -기 십상이다 fits. -기 일쑤이다 is not limited to the past: it describes an unwanted event that actually happens repeatedly, which does not fit “right now on this icy road.”',
+      'Es una advertencia inmediata y puntual sobre un resultado malo muy probable, por eso encaja -기 십상이다. -기 일쑤이다 no se limita al pasado: describe un suceso indeseado que ocurre repetidamente, algo que no encaja con «ahora mismo en esta carretera helada».',
+      'Il s’agit d’un avertissement immédiat et ponctuel sur une conséquence négative très probable, d’où -기 십상이다. -기 일쑤이다 ne se limite pas au passé : il décrit un événement indésirable qui se répète réellement, ce qui ne convient pas à « maintenant sur cette route verglacée ».',
+      'É um aviso imediato e pontual sobre um resultado ruim muito provável, por isso cabe -기 십상이다. -기 일쑤이다 não se limita ao passado: descreve um acontecimento indesejado que realmente se repete, o que não combina com “agora nesta estrada coberta de gelo”.',
+      'นี่คือคำเตือนเฉพาะหน้าครั้งเดียวถึงผลร้ายที่มีโอกาสสูง จึงใช้ -기 십상이다 ส่วน -기 일쑤이다 ไม่ได้จำกัดแค่อดีต แต่บอกเหตุไม่พึงประสงค์ที่เกิดซ้ำจริง จึงไม่เข้ากับ “ตอนนี้บนถนนน้ำแข็งเส้นนี้”',
+      'Ini peringatan langsung untuk satu situasi tentang akibat buruk yang sangat mungkin, jadi -기 십상이다 tepat. -기 일쑤이다 tidak terbatas pada masa lalu; bentuk itu menggambarkan kejadian buruk yang benar-benar berulang, tidak cocok dengan “sekarang di jalan berlapis es ini”.',
+      'Đây là lời cảnh báo tức thời cho một tình huống duy nhất về hậu quả xấu rất dễ xảy ra, nên dùng -기 십상이다. -기 일쑤이다 không chỉ dùng cho quá khứ; nó tả việc không mong muốn thực sự lặp đi lặp lại, không hợp với “ngay lúc này trên con đường đóng băng”.',
+      'これは一度きりの目前の状況で悪い結果が起こりやすいという警告なので -기 십상이다 が適切。-기 일쑤이다 は過去に限らず、望ましくない出来事が実際に繰り返されることを表すため、「今この凍った道で」には合わない。',
     ),
   },
   {

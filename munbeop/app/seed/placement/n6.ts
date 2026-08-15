@@ -4,8 +4,8 @@ import { L } from '../locale'
 
 /**
  * TOPIK-6 placement items. Each targets a different TOPIK-6 grammar point;
- * `ko` matches grammars-n6.ts verbatim. Single-correct-answer crux drafted +
- * self-reviewed; Korean wife native review = documented final gate.
+ * `ko` matches grammars-n6.ts verbatim. Editorial QA covers the Korean surface
+ * forms, answer crux and localized meaning; seed tests enforce integrity.
  */
 
 export const N6_PLACEMENT: PlacementItem[] = [

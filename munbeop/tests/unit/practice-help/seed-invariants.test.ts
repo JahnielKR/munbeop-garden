@@ -50,4 +50,13 @@ describe('practice-help seed invariants', () => {
       }
     }
   })
+
+  it('documents the live particle-spacing mode and retakeable placement flow', () => {
+    const particles = helpFor('particles')!
+    expect(particles.howToPlay.some((step) => step.en.includes('Spacing'))).toBe(true)
+
+    const placement = helpFor('placement')!
+    expect(placement.concept.en).toContain('retake')
+    expect(placement.tip.en).not.toContain('only take it once')
+  })
 })

@@ -22,13 +22,35 @@ export class LocalStorageAdapter implements StorageAdapter {
 
   async append<T>(key: StorageKey, item: T): Promise<void> {
     const current = await this.read<T[]>(key, [])
-    await this.write(key, [...current, item])
+    const id = (item as { id?: unknown }).id
+    // Match the cloud adapter's idempotent retry semantics when an item carries
+    // an id. Collection items without an id retain ordinary append behaviour.
+    const existing = id === undefined
+      ? -1
+      : current.findIndex((candidate) => (candidate as { id?: unknown }).id === id)
+    await this.write(
+      key,
+      existing === -1 ? [...current, item] : current.map((candidate, i) => (i === existing ? item : candidate)),
+    )
   }
 
   async upsertOne<V>(key: StorageKey, entry: { id: string; value: V }): Promise<void> {
     const map = await this.read<Record<string, V>>(key, {})
     map[entry.id] = entry.value
     await this.write(key, map)
+  }
+
+  async updateOne<V>(
+    key: StorageKey,
+    entry: { id: string | number; value: V },
+  ): Promise<boolean> {
+    const list = await this.read<Array<{ id: string | number }>>(key, [])
+    const found = list.some((item) => item.id === entry.id)
+    await this.write(
+      key,
+      list.map((item) => (item.id === entry.id ? entry.value : item)),
+    )
+    return found
   }
 
   async deleteOne(key: StorageKey, id: string | number): Promise<void> {

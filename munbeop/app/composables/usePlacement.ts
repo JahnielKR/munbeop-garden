@@ -23,6 +23,8 @@ export function usePlacement() {
   const phase = ref<PlacementPhase>('question')
   const picked = ref<string | null>(null)
   const outcome = ref<PlacementOutcome | null>(null)
+  const saving = ref(false)
+  const saveError = ref(false)
 
   const item = computed<PlacementItem>(() => levelItems.value[indexInLevel.value]!)
 
@@ -34,10 +36,32 @@ export function usePlacement() {
     if (levelItems.value.length) displayOptions.value = shuffle(optionsFor(item.value))
   }
 
-  function start() {
+  function start(): boolean {
+    // Do not let a retake replace the outcome while its recommendation write is
+    // still in flight; the late response would otherwise mutate the new run.
+    if (saving.value || saveError.value) return false
     ladder.value = createLadder()
     outcome.value = null
+    saving.value = false
+    saveError.value = false
     loadLevel(ladder.value.currentLevel)
+    return true
+  }
+
+  async function saveRecommendation(): Promise<void> {
+    if (!outcome.value || saving.value) return
+    saving.value = true
+    saveError.value = false
+    try {
+      const saved = await settings.setStartingDeck(outcome.value.startingDeckId)
+      saveError.value = !saved
+    } catch {
+      // Keep the result visible and offer an explicit retry. Settings normally
+      // returns false, but this catch protects custom/test adapters that throw.
+      saveError.value = true
+    } finally {
+      saving.value = false
+    }
   }
 
   function answer(choice: string) {
@@ -56,7 +80,7 @@ export function usePlacement() {
     if (ladder.value.done) {
       outcome.value = ladderOutcome(ladder.value)
       phase.value = 'done'
-      await settings.setStartingDeck(outcome.value.startingDeckId)
+      await saveRecommendation()
       return
     }
     if (ladder.value.currentLevel !== prevLevel) {
@@ -69,5 +93,18 @@ export function usePlacement() {
     }
   }
 
-  return { ladder, item, displayOptions, phase, picked, outcome, start, answer, next }
+  return {
+    ladder,
+    item,
+    displayOptions,
+    phase,
+    picked,
+    outcome,
+    saving,
+    saveError,
+    start,
+    answer,
+    next,
+    retrySave: saveRecommendation,
+  }
 }

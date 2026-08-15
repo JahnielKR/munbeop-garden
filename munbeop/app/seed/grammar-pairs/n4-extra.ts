@@ -6,9 +6,9 @@ import { L } from '../locale'
  * a/b are copied verbatim from grammars-n4.ts catalog 'ko' fields.
  * Each pair: 8-locale note + >=3 single-correct-answer items (8-locale trans + why).
  *
- * Drafted + Korean-lens adversarially verified (single-answer-per-item crux,
- * naturalness, conjugation, 8-locale fidelity). Native (Korean wife) review is
- * the documented final gate.
+ * Editorial QA covers the Korean forms, answer crux, register and localized
+ * meaning. Seed tests enforce catalog links, exact blanks, distinct options and
+ * complete eight-locale fields.
  */
 export const N4_PAIRS_EXTRA: ConfusablePair[] = [
   {

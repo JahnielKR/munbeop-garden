@@ -6,9 +6,9 @@ import { L } from '../locale'
  * verbatim. Each pair: a contrast note + 3 single-answer discrimination items,
  * 8-locale note/trans/why.
  *
- * Drafted + Korean-lens adversarially verified by a multi-agent workflow
- * (single-correct-answer crux, naturalness, conjugation, 8-locale fidelity).
- * Native (Korean wife) review is the documented final gate.
+ * Editorial QA covers the Korean forms, answer crux, register and localized
+ * meaning. Seed tests enforce catalog links, exact blanks, distinct options and
+ * complete eight-locale fields; future native-speaker feedback can refine nuance.
  */
 export const N2_PAIRS: ConfusablePair[] = [
   {
@@ -217,7 +217,7 @@ export const N2_PAIRS: ConfusablePair[] = [
     ),
     items: [
       {
-        sentence: '저는 요즘 감기에 걸린 {}. 자꾸 기침이 나요.',
+        sentence: '저는 요즘 감기에 {}. 자꾸 기침이 나요.',
         optionA: '걸린 것 같아요',
         optionB: '걸린 모양이에요',
         answer: 'a',

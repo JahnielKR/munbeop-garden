@@ -12,8 +12,14 @@ export function useConjugationMaster() {
     total: computed(() => m.view.value.total),
     earned: m.earned,
     celebrate: m.celebrate,
+    saveStatus: m.saveStatus,
+    saving: m.saving,
+    saveError: m.saveError,
+    locked: m.locked,
     /** Call at round end with the class and the round accuracy. */
     recordRound: (klass: VerbClass, accuracy: number) => m.record(klass, accuracy),
+    retrySave: m.retrySave,
+    resetSaveStatus: m.resetSaveStatus,
     dismiss: m.dismiss,
   }
 }

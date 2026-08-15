@@ -13,6 +13,8 @@ const LOCALES = { en, es, fr, id, ja, ptBR, th, vi }
 const topKeys = (o: Record<string, unknown>) => Object.keys((o.register as Record<string, unknown>) ?? {})
 const masterKeys = (o: Record<string, unknown>) =>
   Object.keys(((o.register as Record<string, unknown>)?.master as Record<string, unknown>) ?? {})
+const persistenceKeys = (o: Record<string, unknown>) =>
+  Object.keys(((o.register as Record<string, unknown>)?.persistence as Record<string, unknown>) ?? {})
 
 describe('register i18n parity', () => {
   it('every locale has the same register.* keys as en', () => {
@@ -26,6 +28,13 @@ describe('register i18n parity', () => {
     const base = masterKeys(en).sort()
     for (const [name, loc] of Object.entries(LOCALES)) {
       expect({ name, keys: masterKeys(loc).sort() }).toEqual({ name, keys: base })
+    }
+  })
+  it('every locale has complete register.persistence copy', () => {
+    const base = persistenceKeys(en).sort()
+    expect(base).toEqual(['failed', 'retry', 'saving'])
+    for (const [name, loc] of Object.entries(LOCALES)) {
+      expect({ name, keys: persistenceKeys(loc).sort() }).toEqual({ name, keys: base })
     }
   })
   it('every locale has the games.register card keys', () => {

@@ -309,6 +309,10 @@
     "toast_saved_easy": "✨ Tersimpan",
     "toast_saved_hard": "😤 Tersimpan",
     "toast_save_error": "⚠️ Gagal menyimpan. Kalimatmu tetap ada, ketuk untuk coba lagi.",
+    "save_error": "Progresmu tidak dapat disimpan. Coba lagi.",
+    "save_saving": "Menyimpan progresmu…",
+    "save_saved": "Progres tersimpan.",
+    "save_retry": "COBA SIMPAN LAGI",
     "start_failed": "Gagal memulai latihan. Periksa koneksimu dan coba lagi.",
     "no_sentence": "Tulis kalimat dulu",
     "custom": {
@@ -329,6 +333,7 @@
       "save": "Simpan dek",
       "delete": "Hapus dek",
       "confirm_delete": "Hapus dek ini? Tidak bisa dibatalkan.",
+      "discard_confirm": "Buang perubahan dek yang belum disimpan?",
       "empty_title": "Buat dek pertamamu",
       "empty_hint": "Pilih tata bahasa yang kamu mau dari level mana pun, beri nama, lalu mainkan."
     },
@@ -549,7 +554,8 @@
       "delete_confirm_body": "“{ko}” akan dihapus dari polamu.",
       "empty": "Belum ada pola milikmu. Tanam yang pertama di bawah.",
       "created": "Tata bahasa ditambahkan.",
-      "deleted": "Tata bahasa dihapus."
+      "deleted": "Tata bahasa dihapus.",
+      "cancel": "Batal"
     },
     "dark_mode": "Mode gelap",
     "appearance": {
@@ -974,6 +980,7 @@
     "title": "Lab Konjugasi",
     "lead": "Pilih bentuk konjugasi yang benar. Pilihan salah adalah kesalahan yang benar-benar dilakukan pelajar.",
     "pick_class": "PILIH KELAS",
+    "change_class": "GANTI KELAS",
     "prompt": "Konjugasikan ke {ending}",
     "gloss_hint": "({gloss})",
     "pick_hint": "Ketuk bentuk yang benar.",
@@ -1007,6 +1014,11 @@
       "dismiss": "Oke!",
       "pip_done": "{ko} — selesai",
       "pip_todo": "{ko} — belum"
+    },
+    "persistence": {
+      "saving": "Menyimpan kesalahan ini…",
+      "failed": "Kesalahan ini belum dapat disimpan. Jawabanmu masih ada di sini.",
+      "retry": "Coba simpan lagi"
     }
   },
   "register": {
@@ -1037,6 +1049,11 @@
       "dismiss": "Bagus!",
       "pip_done": "{ko} — selesai",
       "pip_todo": "{ko} — belum"
+    },
+    "persistence": {
+      "saving": "Menyimpan kesalahan ini…",
+      "failed": "Kesalahan ini gagal disimpan. Jawabanmu masih ada di sini.",
+      "retry": "Coba simpan lagi"
     }
   },
   "cloze": {
@@ -1044,6 +1061,8 @@
     "lead": "Pilih dek lalu pilih tata bahasa yang cocok di setiap bagian kosong — ronde pengenalan cepat yang melengkapi menulis.",
     "pick_deck": "PILIH DEK",
     "deck_empty": "Dek ini belum memiliki item isian — coba yang lain.",
+    "custom_item_count": "{n} soal rumpang yang dapat dimainkan",
+    "custom_locked_need_items": "Perlu 3 soal rumpang yang dapat dimainkan",
     "pick_hint": "Ketuk bentuk yang cocok di bagian kosong.",
     "correct": "Benar!",
     "wrong": "Hampir",
@@ -1088,6 +1107,20 @@
       "time_age": "Waktu & usia",
       "things": "Benda",
       "money_order": "Uang & urutan"
+    },
+    "master": {
+      "label": "Master Penggolong",
+      "progress": "{done}/{total} set selesai",
+      "earned": "Semua 6 set selesai!",
+      "celebrate_body": "Kamu menyelesaikan semua {total} set penggolong. 잘했어요!",
+      "dismiss": "Bagus!",
+      "pip_done": "{ko} — selesai",
+      "pip_todo": "{ko} — belum"
+    },
+    "persistence": {
+      "saving": "Menyimpan kesalahan ini…",
+      "failed": "Kesalahan ini gagal disimpan. Jawabanmu masih ada di sini.",
+      "retry": "Coba simpan lagi"
     }
   },
   "reminder": {
@@ -1177,7 +1210,7 @@
   },
   "sentenceGarden": {
     "title": "Taman kalimat",
-    "lead": "Susun ulang kalimat dengan mengurutkan kartu-katanya. Satu kartu adalah jebakan.",
+    "lead": "Susun ulang kalimat dengan mengurutkan kartu-katanya. Beberapa ronde menambahkan satu kartu jebakan.",
     "pick_deck": "Pilih dek",
     "deck_empty": "Dek ini belum punya kalimat pendek.",
     "progress_label": "Kalimat",
@@ -1192,6 +1225,13 @@
     "replay_mode_label": "Mengulang yang meleset",
     "summary_again": "Main lagi",
     "summary_replay": "Ulang yang meleset",
+    "custom_round_count": "{n} kalimat yang dapat dimainkan",
+    "custom_locked_need_rounds": "Perlu 6 kalimat yang dapat dimainkan",
+    "persistence": {
+      "saving": "Menyimpan progresmu…",
+      "failed": "Progresmu belum dapat disimpan. Tidak ada yang dibuang.",
+      "retry": "Coba simpan lagi"
+    },
     "next": "Berikutnya"
   },
   "practiceHelp": {

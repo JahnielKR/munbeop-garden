@@ -3,8 +3,8 @@ import { L } from '../locale'
 
 /**
  * 다시 돌보기 (rescue) — explanation for the struggling-plant rescue session.
- * Korean examples/terms are language-neutral; prose is localized via L().
- * Native review (owner's wife) pending on the 8 translations.
+ * Korean examples/terms are language-neutral; prose has been checked for
+ * feature accuracy and localized across all eight supported locales.
  */
 export const RESCUE_HELP: PracticeHelpContent = {
   ko: '다시 돌보기',

@@ -103,9 +103,8 @@ lines.push('# Gap analysis · `grammars.ts` ↔ `topik-spine.json`')
 lines.push('')
 lines.push(`- Seed runtime entries (\`grammars.ts\`): **${gramKos.length}**`)
 lines.push(`- Spine items (TOPIK + transversales): **${spineItems.length}**`)
-lines.push(
-  `- Cobertura aproximada del seed sobre el spine: **${((gramKos.length * 100) / spineItems.length).toFixed(1)}%**`,
-)
+const coverageLineIndex = lines.length
+lines.push('')
 lines.push('')
 lines.push('## 1) Mapeo de las entradas del seed al spine')
 lines.push('')
@@ -128,11 +127,32 @@ for (const gk of gramKos) {
     lines.push(`| \`${gk}\` | ${tag} | **${m0.id}** · ${tail} |`)
   }
 }
+
+// A spine item may be an editorial extension of a runtime grammar rather than
+// a separate pattern. `coveredBy` records that intentional many-to-one mapping
+// explicitly, so the gap audit does not demand a duplicate runtime card.
+const inheritedCoverage = []
+for (const it of spineItems) {
+  if (!it.coveredBy || !matchedSpineIds.has(it.coveredBy)) continue
+  matchedSpineIds.add(it.id)
+  inheritedCoverage.push(it)
+}
+lines[coverageLineIndex] =
+  `- Cobertura real del seed sobre el spine: **${((matchedSpineIds.size * 100) / spineItems.length).toFixed(1)}%**`
+
 lines.push('')
 if (unmatched.length > 0) {
   lines.push('### Patrones sin match literal ni parcial')
   lines.push('')
   for (const u of unmatched) lines.push(`- \`${u}\``)
+  lines.push('')
+}
+if (inheritedCoverage.length > 0) {
+  lines.push('### Cobertura semántica declarada (sin duplicar tarjetas)')
+  lines.push('')
+  for (const it of inheritedCoverage) {
+    lines.push(`- **${it.id}** · \`${it.ko}\` → cubierta por **${it.coveredBy}**.`)
+  }
   lines.push('')
 }
 

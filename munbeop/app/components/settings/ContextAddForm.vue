@@ -5,9 +5,11 @@ import { useContextsStore } from '~/stores/contexts'
 import Field from '~/components/ui/Field.vue'
 import Input from '~/components/ui/Input.vue'
 import Button from '~/components/ui/Button.vue'
+import { useToast } from '~/composables/useToast'
 
 const { t } = useI18n()
 const store = useContextsStore()
+const { error } = useToast()
 const emit = defineEmits<{ created: [name: string] }>()
 
 const name = ref('')
@@ -34,7 +36,13 @@ async function submit() {
     sceneError.value = t('settings.contexts.error_scene_required')
     return
   }
-  const created = await store.addCustom(trimmedName, buildScene(trimmedScene))
+  let created
+  try {
+    created = await store.addCustom(trimmedName, buildScene(trimmedScene))
+  } catch {
+    error(t('errors.save_failed'))
+    return
+  }
   if (!created) {
     nameError.value = t('settings.contexts.error_duplicate')
     return

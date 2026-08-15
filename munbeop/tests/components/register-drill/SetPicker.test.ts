@@ -12,6 +12,13 @@ describe('ModeTabs', () => {
     await w.find('[data-testid="register-mode-honor"]').trigger('click')
     expect(w.emitted('select')?.[0]?.[0]).toBe('honor')
   })
+  it('cannot switch modes while a persistence retry is required', async () => {
+    const w = mount(ModeTabs, { props: { mode: 'level', disabled: true }, global: { mocks } })
+    const honor = w.find('[data-testid="register-mode-honor"]')
+    expect(honor.attributes('disabled')).toBeDefined()
+    await honor.trigger('click')
+    expect(w.emitted('select')).toBeUndefined()
+  })
 })
 
 describe('SetPicker', () => {

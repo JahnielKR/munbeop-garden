@@ -6,9 +6,9 @@ import { L } from '../locale'
  * 에/에서, and recipient 에게 vs target 에). a/b match grammars-n1.ts verbatim.
  * 2 pairs x 3 two-choice discrimination items, 8-locale trans + why.
  *
- * Drafted + Korean-lens adversarially verified (single-answer-per-item crux,
- * naturalness, particle selection, 8-locale fidelity). Native (Korean wife)
- * review is the documented final gate.
+ * Editorial QA covers the Korean forms, answer crux, particle selection and
+ * localized meaning. Seed tests enforce catalog links, exact blanks, distinct
+ * options and complete eight-locale fields.
  */
 export const N1_PAIRS_EXTRA: ConfusablePair[] = [
   {

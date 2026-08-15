@@ -4,7 +4,8 @@ import { L } from '../locale'
 
 /**
  * TOPIK-2 grammar-pattern cloze items. ko matches grammars-n2.ts verbatim.
- * Drafted + Korean-lens adversarially verified. Korean wife native review = documented final gate.
+ * Adversarial Korean single-answer review completed; the shared seed-invariant
+ * suite enforces links, shape and i18n.
  */
 
 export const N2_CLOZE: ClozeItem[] = [

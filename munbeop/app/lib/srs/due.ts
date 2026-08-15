@@ -38,7 +38,11 @@ export function dueKos(srsMap: Record<string, SrsState>, now: number): string[] 
  * or two items are actually due.
  */
 export function revisitPool(due: readonly string[], activeKos: readonly string[], min = 3): string[] {
-  const out = [...new Set(due)]
+  const active = new Set(activeKos)
+  // Progress rows can outlive a deleted custom grammar or a newly excluded
+  // deck. Never return those orphan kos to a session engine that cannot resolve
+  // them to catalog indices.
+  const out = [...new Set(due.filter((ko) => active.has(ko)))]
   if (out.length >= min) return out
   const have = new Set(out)
   for (const ko of activeKos) {

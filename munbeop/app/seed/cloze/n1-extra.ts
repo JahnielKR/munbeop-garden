@@ -5,8 +5,8 @@ import { L } from '../locale'
  * TOPIK-1 cloze EXTRA set — covers grammars the base N1_CLOZE leaves untouched
  * (purpose-of-motion, past experience, -겠어요, -(으)ㄹ래요?, -네요, -지요?,
  * permission, negative imperative, N 말고, 도, 만, honorific -아/어 드리다).
- * ko matches grammars-n1.ts verbatim. Drafted + Korean-lens adversarially
- * verified (single-correct-answer crux). Korean wife native review = final gate.
+ * ko matches grammars-n1.ts verbatim. Adversarial Korean single-answer review
+ * completed; the shared seed-invariant suite enforces links, shape and i18n.
  */
 
 export const N1_CLOZE_EXTRA: ClozeItem[] = [

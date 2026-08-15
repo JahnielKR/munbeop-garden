@@ -7,7 +7,7 @@ export const ERROR_DIMENSIONS = ['particle', 'ending', 'register', 'word_order',
 export type ErrorDimension = (typeof ERROR_DIMENSIONS)[number]
 
 export interface LogEntry {
-  /** Unique id (Date.now() + random in v1). */
+  /** Unique, positive, safe-integer id generated from 53 random bits. */
   id: number
   /** Grammar pattern key (Grammar.ko). */
   ko: string

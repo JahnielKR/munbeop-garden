@@ -4,8 +4,8 @@ import { L } from '../locale'
 
 /**
  * TOPIK-3 grammar-pattern cloze items (choose the pattern that fits the blank).
- * ko matches grammars-n3.ts verbatim. Drafted + Korean-lens adversarially verified
- * (single-correct-answer crux). Korean wife native review = documented final gate.
+ * ko matches grammars-n3.ts verbatim. Adversarial Korean single-answer review
+ * completed; the shared seed-invariant suite enforces links, shape and i18n.
  */
 
 export const N3_CLOZE: ClozeItem[] = [
@@ -219,18 +219,18 @@ export const N3_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-(으)ㄹ 것 같다',
-    sentence: '하늘이 어두운 걸 보니 곧 비가 {}.',
+    sentence: '하늘에 먹구름이 낀 걸 보니 곧 비가 {}.',
     answer: '올 것 같아요',
     distractors: ['왔을 것 같아요', '오는 것 같아요', '왔어요'],
     trans: L(
-      'Judging by how dark the sky is, it looks like it will rain soon.',
-      'Por lo oscuro que está el cielo, parece que pronto va a llover.',
-      "Vu comme le ciel est sombre, on dirait qu'il va bientôt pleuvoir.",
-      'Pelo céu escuro, parece que vai chover em breve.',
-      'ดูจากท้องฟ้าที่มืดครึ้ม เดี๋ยวฝนน่าจะตก',
-      'Melihat langit yang gelap, sepertinya sebentar lagi akan hujan.',
-      'Nhìn bầu trời tối thế kia, có vẻ sắp mưa rồi.',
-      '空が暗いのを見ると、もうすぐ雨が降りそうです。',
+      'Seeing dark clouds gather in the sky, it looks like it will rain soon.',
+      'Al ver que se acumulan nubes oscuras, parece que pronto va a llover.',
+      "En voyant les nuages noirs s'accumuler, on dirait qu'il va bientôt pleuvoir.",
+      'Vendo as nuvens escuras se juntarem, parece que vai chover em breve.',
+      'เห็นเมฆดำรวมตัวบนฟ้า ดูเหมือนว่าฝนจะตกในไม่ช้า',
+      'Melihat awan gelap berkumpul di langit, sepertinya sebentar lagi akan hujan.',
+      'Thấy mây đen kéo đến trên trời, có vẻ sắp mưa rồi.',
+      '空に黒い雲がかかっているのを見ると、もうすぐ雨が降りそうです。',
     ),
     why: L(
       '곧 (soon) makes this a conjecture about a future event → -(으)ㄹ 것 같다 (올 것 같아요); 왔을 것 같아요 guesses about the past ("it probably rained"), 오는 것 같아요 guesses about now ("it seems to be raining"), 왔어요 flatly asserts past rain — only the future-conjecture form fits 곧.',

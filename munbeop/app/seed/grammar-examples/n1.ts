@@ -6,9 +6,9 @@ import { L } from '../locale'
  * verbatim. 12 verb-ending/expression points x 3 register-tagged examples each
  * (formal/polite/casual), 8-locale translations.
  *
- * Drafted + Korean-lens adversarially verified by a multi-agent workflow
- * (grammaticality/naturalness, register-tag accuracy, 8-locale fidelity,
- * conjugation check). Native (Korean wife) review is the documented final gate.
+ * Editorial QA covers Korean form, register tags and localized meaning. Seed
+ * tests enforce catalog links, unique sentences, register-ending alignment and
+ * complete eight-locale fields.
  */
 export const TOPIK_1_EXAMPLES: GrammarExample[] = [
   {

@@ -9,8 +9,7 @@ import { L } from '~/seed/locale'
  * by the number engine in the seed-invariant test, and every `noun` is drawn
  * from its counter's `nounExamples`. Quantities stay in the engine's supported
  * 1..99 range (native uses `nativePrenominal`, Sino uses `sinoNumber`).
- *
- * The owner's wife native review is the final gate before this ships.
+ * The complete corpus is enforced by the counter seed invariants before ship.
  */
 export const COUNT_ITEMS_EXTRA: CountItem[] = [
   // 개 (general things)

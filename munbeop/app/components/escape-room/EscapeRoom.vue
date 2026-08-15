@@ -12,6 +12,7 @@ import { useEscapeRoomStore } from '~/stores/escape-room'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 import { useLocalized } from '~/composables/useLocalized'
 import { useEscapeRoomAudio } from '~/composables/useEscapeRoomAudio'
+import PracticeSaveStatus from '~/components/practice/PracticeSaveStatus.vue'
 import Scene from './Scene.vue'
 import IntroCinematic from './IntroCinematic.vue'
 import VictoryScreen from './VictoryScreen.vue'
@@ -39,7 +40,7 @@ const emit = defineEmits<{ exit: [] }>()
 const store = useEscapeRoomStore()
 // Persistence half of the store (it stays a pure state machine): write the
 // run's outcome — unlocked cosmetic + racha — back to the account on run end.
-const { persist } = useEscapeRoomProgress()
+const { persist, retrySave, saveStatus } = useEscapeRoomProgress()
 const { tl } = useLocalized()
 const { t } = useI18n()
 const audio = useEscapeRoomAudio()
@@ -534,6 +535,10 @@ function exitToBook() {
     />
 
     <!-- End screens -->
+    <PracticeSaveStatus
+      :status="saveStatus"
+      @retry="retrySave"
+    />
     <GameOverScreen v-if="store.status === 'gameover'" @retry="retry" @exit="exitToBook" />
     <VictoryScreen
       v-if="store.status === 'completed' && earnedTier && !activeBeat"

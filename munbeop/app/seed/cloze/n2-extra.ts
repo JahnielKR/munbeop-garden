@@ -6,8 +6,8 @@ import { L } from '../locale'
  * TOPIK-2 grammar-pattern cloze items — supplementary batch.
  * Covers grammars NOT exercised by n2.ts (ability, time-overlap, conjecture,
  * suggestion, auxiliaries, comparison, indirect question, reactions, etc.).
- * ko matches grammars-n2.ts verbatim. Drafted + Korean-lens adversarially
- * verified (single-correct-answer crux). Korean wife native review = final gate.
+ * ko matches grammars-n2.ts verbatim. Adversarial Korean single-answer review
+ * completed; the shared seed-invariant suite enforces links, shape and i18n.
  */
 
 export const N2_CLOZE_EXTRA: ClozeItem[] = [
