@@ -77,11 +77,68 @@ describe('useSettingsStore', () => {
     expect(useLocaleStore().current).toBe('en')
   })
 
-  it('hydrate swallows a read error (e.g. table not deployed) and keeps device values', async () => {
+  it('hydrate propagates a read error so the app can stay gated and retry', async () => {
     signIn()
     mockRead.mockRejectedValue(new Error('relation "user_settings" does not exist'))
-    await expect(useSettingsStore().hydrate()).resolves.toBeUndefined()
+    await expect(useSettingsStore().hydrate()).rejects.toThrow('user_settings')
     expect(useTheme().theme.value).toBe('light')
+  })
+
+  it('never writes a full default blob after the authenticated cloud read failed', async () => {
+    signIn()
+    mockRead.mockRejectedValueOnce(new Error('network down'))
+    const s = useSettingsStore()
+    await expect(s.hydrate()).rejects.toThrow('network down')
+
+    await expect(s.setStartingDeck('topik-4')).resolves.toBe(false)
+    await expect(s.recordLabClear('counter', 'money')).rejects.toThrow(
+      'Failed to save lab mastery',
+    )
+
+    expect(mockWrite).not.toHaveBeenCalled()
+    expect(s.startingDeckId).toBeNull()
+    expect(s.labCleared.counter).toEqual([])
+  })
+
+  it('discards a stale cloud read that resolves after account reset', async () => {
+    signIn()
+    let resolveRead!: (value: unknown) => void
+    mockRead.mockImplementationOnce(
+      () => new Promise((resolve) => { resolveRead = resolve }),
+    )
+    const s = useSettingsStore()
+    const hydration = s.hydrate()
+
+    s.resetToDefaults()
+    resolveRead({
+      dailyGoal: 99,
+      startingDeckId: 'topik-6',
+      chosenAvatarId: 'fox',
+    })
+    await hydration
+
+    expect(s.dailyGoal).toBe(DEFAULT_DAILY_GOAL)
+    expect(s.startingDeckId).toBeNull()
+    expect(s.chosenAvatarId).toBeNull()
+  })
+
+  it('does not apply or trust a read from a different signed-in account', async () => {
+    signIn()
+    let resolveRead!: (value: unknown) => void
+    mockRead.mockImplementationOnce(
+      () => new Promise((resolve) => { resolveRead = resolve }),
+    )
+    const s = useSettingsStore()
+    const hydration = s.hydrate()
+
+    useAuthStore().user = { id: 'u-2' } as never
+    resolveRead({ dailyGoal: 99, startingDeckId: 'topik-6' })
+    await hydration
+
+    expect(s.dailyGoal).toBe(DEFAULT_DAILY_GOAL)
+    expect(s.startingDeckId).toBeNull()
+    await expect(s.setStartingDeck('topik-2')).resolves.toBe(false)
+    expect(mockWrite).not.toHaveBeenCalled()
   })
 
   it('setTheme applies the theme and writes the full blob to the adapter', async () => {
@@ -109,11 +166,62 @@ describe('useSettingsStore', () => {
     expect(mockWrite).toHaveBeenCalledWith('munbeop.v1.settings', blob({ startingDeckId: 'topik-4' }))
   })
 
+  it('setStartingDeck re-enables an excluded recommendation atomically', async () => {
+    const s = useSettingsStore()
+    await s.toggleDeck('topik-4')
+    const saved = await s.setStartingDeck('topik-4')
+    expect(saved).toBe(true)
+    expect(s.startingDeckId).toBe('topik-4')
+    expect(s.excludedDeckIds).not.toContain('topik-4')
+    expect(mockWrite).toHaveBeenLastCalledWith(
+      'munbeop.v1.settings',
+      blob({ startingDeckId: 'topik-4' }),
+    )
+  })
+
+  it('setStartingDeck rolls local state back when persistence fails', async () => {
+    const s = useSettingsStore()
+    await s.toggleDeck('topik-4')
+    mockWrite.mockRejectedValueOnce(new Error('offline'))
+    const saved = await s.setStartingDeck('topik-4')
+    expect(saved).toBe(false)
+    expect(s.startingDeckId).toBeNull()
+    expect(s.excludedDeckIds).toContain('topik-4')
+  })
+
+  it('serializes blob writes and lets the newer recommendation win after an older failure', async () => {
+    const s = useSettingsStore()
+    let rejectFirst!: (error: Error) => void
+    mockWrite.mockImplementationOnce(
+      () => new Promise((_resolve, reject) => { rejectFirst = reject }),
+    )
+
+    const first = s.setStartingDeck('topik-2')
+    const second = s.setStartingDeck('topik-5')
+    expect(mockWrite).toHaveBeenCalledTimes(1)
+    expect(s.startingDeckId).toBe('topik-2')
+
+    rejectFirst(new Error('old request failed'))
+    await expect(first).resolves.toBe(false)
+    await expect(second).resolves.toBe(true)
+
+    expect(mockWrite).toHaveBeenCalledTimes(2)
+    expect(s.startingDeckId).toBe('topik-5')
+    expect(mockWrite.mock.calls[1]![1]).toMatchObject({ startingDeckId: 'topik-5' })
+  })
+
   it('hydrate applies a stored startingDeckId', async () => {
     signIn()
     mockRead.mockResolvedValue({ startingDeckId: 'topik-3' })
     await useSettingsStore().hydrate()
     expect(useSettingsStore().startingDeckId).toBe('topik-3')
+  })
+
+  it('hydrate drops a stale recommendation when that deck is excluded', async () => {
+    signIn()
+    mockRead.mockResolvedValue({ startingDeckId: 'topik-3', excludedDeckIds: ['topik-3'] })
+    await useSettingsStore().hydrate()
+    expect(useSettingsStore().startingDeckId).toBeNull()
   })
 
   it('toggleDeck excludes then re-includes a deck and persists the blob', async () => {
@@ -220,6 +328,25 @@ describe('useSettingsStore', () => {
     expect(useTheme().theme.value).toBe('dark')
   })
 
+  it('resetToDefaults invalidates mutations queued for the signed-out account', async () => {
+    const s = useSettingsStore()
+    let resolveFirst!: () => void
+    mockWrite.mockImplementationOnce(
+      () => new Promise<void>((resolve) => { resolveFirst = resolve }),
+    )
+
+    const inFlight = s.setChosenAvatar('fox')
+    const staleRecommendation = s.setStartingDeck('topik-4')
+    s.resetToDefaults()
+    resolveFirst()
+
+    await inFlight
+    await expect(staleRecommendation).resolves.toBe(false)
+    expect(mockWrite).toHaveBeenCalledTimes(1)
+    expect(s.chosenAvatarId).toBeNull()
+    expect(s.startingDeckId).toBeNull()
+  })
+
   // ─── Lab mastery (moved off global localStorage into the synced blob) ─────
 
   it('recordLabClear unions into the synced set and persists', async () => {
@@ -254,6 +381,17 @@ describe('useSettingsStore', () => {
     )
   })
 
+  it('recordLabClear rolls back and rejects when the blob cannot be saved', async () => {
+    const s = useSettingsStore()
+    mockWrite.mockRejectedValueOnce(new Error('offline'))
+
+    await expect(s.recordLabClear('counter', 'money', true)).rejects.toThrow(
+      'Failed to save lab mastery',
+    )
+    expect(s.labCleared.counter).toEqual([])
+    expect(s.labEarned.counter).toBe(false)
+  })
+
   it('markLabEarned sets the sticky flag once (no second write)', async () => {
     const s = useSettingsStore()
     await s.markLabEarned('particle')
@@ -276,6 +414,14 @@ describe('useSettingsStore', () => {
     expect(mockWrite).toHaveBeenCalledTimes(1)
   })
 
+  it('recordSpeedBest rolls back and rejects when the blob cannot be saved', async () => {
+    const s = useSettingsStore()
+    mockWrite.mockRejectedValueOnce(new Error('offline'))
+
+    await expect(s.recordSpeedBest('mixed', 8)).rejects.toThrow('Failed to save speed record')
+    expect(s.numberSpeedBest).toEqual({})
+  })
+
   it('hydrate applies stored lab mastery, filtering junk', async () => {
     signIn()
     mockRead.mockResolvedValue({
@@ -295,6 +441,8 @@ describe('useSettingsStore', () => {
   it('hydrate resets lab mastery so a second account cannot inherit the first', async () => {
     const s = useSettingsStore()
     signIn()
+    mockRead.mockResolvedValueOnce({})
+    await s.hydrate()
     await s.recordLabClear('conjugation', 'hada')
     await s.markLabEarned('particle')
     await s.recordSpeedBest('mixed', 9)
@@ -403,7 +551,7 @@ describe('useSettingsStore', () => {
     expect(s.chosenAvatarId).toBe('fox')
     signIn()
     mockRead.mockRejectedValue(new Error('network blip'))
-    await s.hydrate()
+    await expect(s.hydrate()).rejects.toThrow('network blip')
     expect(s.chosenAvatarId).toBe('fox')
     expect(s.unlockedAvatarIds).toEqual(['fox'])
   })

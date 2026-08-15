@@ -46,19 +46,23 @@ export function useCounterDrill() {
   }
 
   function start() {
+    if (!master.resetSaveStatus()) return false
     runMode.value = 'normal'
     sessionItems.value = buildRound(counterIdsOf(selectedSetId.value), ROUND_SIZE, shuffle)
     resetRound()
     if (sessionItems.value.length) shuffleOptions()
+    return true
   }
 
   function replayFailed() {
+    if (!master.resetSaveStatus()) return false
     const failed = failedItems.value
-    if (failed.length === 0) return
+    if (failed.length === 0) return false
     runMode.value = 'replay'
     sessionItems.value = shuffle(failed)
     resetRound()
     shuffleOptions()
+    return true
   }
 
   async function answer(choice: string) {
@@ -74,7 +78,9 @@ export function useCounterDrill() {
     if (phase.value === 'question' || phase.value === 'done') return
     if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
-      if (runMode.value === 'normal') master.recordRound(selectedSetId.value, score.value.accuracy)
+      if (runMode.value === 'normal') {
+        await master.recordRound(selectedSetId.value, score.value.accuracy)
+      }
       return
     }
     index.value += 1
@@ -84,6 +90,7 @@ export function useCounterDrill() {
   }
 
   return {
+    master,
     selectedSetId, sessionItems, displayOptions, runMode, index, phase, picked,
     item, score, failedItems,
     selectSet, start, replayFailed, answer, next,

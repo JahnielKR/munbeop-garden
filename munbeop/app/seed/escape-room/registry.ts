@@ -3,16 +3,22 @@ import { t } from './locale'
 import { LEVEL_01 } from './level-01'
 import { LEVEL_02 } from './level-02'
 import { LEVEL_03 } from './level-03'
+import { LEVEL_04 } from './level-04'
+import { LEVEL_05 } from './level-05'
+import { LEVEL_06 } from './level-06'
+import { LEVEL_07 } from './level-07'
+import { LEVEL_08 } from './level-08'
+import { LEVEL_09 } from './level-09'
+import { LEVEL_10 } from './level-10'
 
 /**
  * Level registry — the notebook's table of contents.
  *
- * One entry per level (playable or announced). The notebook page renders
+ * One entry per playable level. The notebook page renders
  * cover + title + tagline + mood; playable entries also surface rewards and
  * attempts pulled from their full `Level` definition.
  *
- * Covers are placeholder pixel-art concepts (AI-generated) chosen for tonal
- * direction — final art replaces them file-by-file without touching code.
+ * Covers are the final illustrated establishing shots for each closed story.
  *
  * Narrative bible: every level is a closed story (D1). Tone varies on
  * purpose — slice-of-life → mystery → drama → intrigue — so flipping
@@ -45,7 +51,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_01.title,
     tagline: LEVEL_01.tagline,
     mood: t('Slice of life · Cálido'),
-    cover: '/escape-room/covers/level-01.png',
+    cover: '/escape-room/covers/level-01-v2.webp',
     topikLevel: 1,
     status: 'playable',
     level: LEVEL_01,
@@ -56,7 +62,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_02.title,
     tagline: LEVEL_02.tagline,
     mood: t('Místico · Contemplativo'),
-    cover: '/escape-room/covers/level-02.png',
+    cover: '/escape-room/covers/level-02-v2.webp',
     topikLevel: 2,
     status: 'playable',
     level: LEVEL_02,
@@ -67,7 +73,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_03.title,
     tagline: LEVEL_03.tagline,
     mood: t('Energético · Callejero'),
-    cover: '/escape-room/covers/level-03.png',
+    cover: '/escape-room/covers/level-03-v2.webp',
     topikLevel: 2,
     status: 'playable',
     level: LEVEL_03,
@@ -75,86 +81,79 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
   {
     id: 'level-04',
     number: 4,
-    title: t('El último tren a Seúl'),
-    tagline: t(
-      'Las 23:47. El último KTX sale en trece minutos, tu billete está en coreano, y el andén que dice tu app no existe. Un guardia de estación muy paciente es tu única esperanza.',
-    ),
+    title: LEVEL_04.title,
+    tagline: LEVEL_04.tagline,
     mood: t('Urgente · Contemporáneo'),
-    cover: '/escape-room/covers/level-04.png',
+    cover: '/escape-room/covers/level-04-v2.webp',
     topikLevel: 3,
-    status: 'coming-soon',
+    status: 'playable',
+    level: LEVEL_04,
   },
   {
     id: 'level-05',
     number: 5,
-    title: t('La cocina del abuelo'),
-    tagline: t(
-      'Tu abuelo ya no recuerda muchas cosas. Pero dejó su receta de doenjang-jjigae escrita en libretas por toda la cocina — y tu madre quiere que la cocines tú, esta noche, exactamente como él.',
-    ),
+    title: LEVEL_05.title,
+    tagline: LEVEL_05.tagline,
     mood: t('Nostálgico · Familiar'),
-    cover: '/escape-room/covers/level-05.png',
+    cover: '/escape-room/covers/level-05-v2.webp',
     topikLevel: 3,
-    status: 'coming-soon',
+    status: 'playable',
+    level: LEVEL_05,
   },
   {
     id: 'level-06',
     number: 6,
-    title: t('El estudio de K-drama'),
-    tagline: t(
-      'Eres extra en un drama de verano y el actor principal no llegó. La directora te mira fijo: "Tú. Sabes coreano, ¿no?" El guion está lleno de marcas que no entiendes. Luces. Cámara.',
-    ),
+    title: LEVEL_06.title,
+    tagline: LEVEL_06.tagline,
     mood: t('Meta-pop · Divertido'),
-    cover: '/escape-room/covers/level-06.png',
+    cover: '/escape-room/covers/level-06-v2.webp',
     topikLevel: 4,
-    status: 'coming-soon',
+    status: 'playable',
+    level: LEVEL_06,
   },
   {
     id: 'level-07',
     number: 7,
-    title: t('El retiro de la empresa'),
-    tagline: t(
-      'Tu primer workshop con la oficina de Gangnam: montaña, fogata y juegos de equipo. El director ha escondido los premios del equipo por el campamento — y todas las pistas están en lenguaje formal.',
-    ),
+    title: LEVEL_07.title,
+    tagline: LEVEL_07.tagline,
     mood: t('Corporativo · Nocturno'),
-    cover: '/escape-room/covers/level-07.png',
+    cover: '/escape-room/covers/level-07-v2.webp',
     topikLevel: 4,
-    status: 'coming-soon',
+    status: 'playable',
+    level: LEVEL_07,
   },
   {
     id: 'level-08',
     number: 8,
-    title: t('El palacio de las linternas'),
-    tagline: t(
-      'La noche del festival, el palacio Joseon abre sus puertas una vez al año. Te quedaste dentro después del cierre — y los pasillos iluminados por linternas parecen reordenarse cuando no miras.',
-    ),
+    title: LEVEL_08.title,
+    tagline: LEVEL_08.tagline,
     mood: t('Histórico · Misterioso'),
-    cover: '/escape-room/covers/level-08.png',
+    cover: '/escape-room/covers/level-08-v2.webp',
     topikLevel: 5,
-    status: 'coming-soon',
+    status: 'playable',
+    level: LEVEL_08,
   },
   {
     id: 'level-09',
     number: 9,
-    title: t('La mansión del testamento'),
-    tagline: t(
-      'El magnate murió a medianoche y tú eres el intérprete del testamento. Siete herederos, una mansión victoriana en las afueras de Seúl, y un documento que cambia de sentido según cómo se lea cada cláusula.',
-    ),
+    title: LEVEL_09.title,
+    tagline: LEVEL_09.tagline,
     mood: t('Intriga · Denso'),
-    cover: '/escape-room/covers/level-09.png',
+    cover: '/escape-room/covers/level-09-v2.webp',
     topikLevel: 5,
-    status: 'coming-soon',
+    status: 'playable',
+    level: LEVEL_09,
   },
   {
     id: 'level-10',
     number: 10,
-    title: t('La cumbre de medianoche'),
-    tagline: t(
-      'Dos delegaciones, un castillo neutral, y un comunicado conjunto que debe firmarse antes del amanecer. Cada palabra del borrador importa. Tú sostienes la pluma.',
-    ),
+    title: LEVEL_10.title,
+    tagline: LEVEL_10.tagline,
     mood: t('Diplomático · Tenso'),
-    cover: '/escape-room/covers/level-10.png',
+    cover: '/escape-room/covers/level-10-v2.webp',
     topikLevel: 6,
-    status: 'coming-soon',
+    status: 'playable',
+    level: LEVEL_10,
   },
 ]
 

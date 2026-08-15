@@ -18,10 +18,14 @@ const grammarStore = useGrammarStore()
 const logStore = useLogStore()
 
 const ko = computed(() => (typeof route.query.ko === 'string' ? route.query.ko : ''))
-const drill = useRescueDrill(ko.value)
+const drill = useRescueDrill(ko)
 
 function goProduce() {
   void router.push(`/practice/ruleta?focus=${encodeURIComponent(ko.value)}`)
+}
+
+function navigateRelated(relatedKo: string) {
+  void router.push({ path: '/practice/rescue', query: { ko: relatedKo } })
 }
 
 onMounted(async () => {
@@ -53,6 +57,7 @@ onMounted(async () => {
       @next="drill.next()"
       @back="drill.back()"
       @produce="goProduce"
+      @navigate="navigateRelated"
     />
     <p v-else class="empty">{{ t('rescue.empty') }}</p>
   </div>

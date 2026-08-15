@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
-import { nextTick } from 'vue'
 import ContextAddForm from '~/components/settings/ContextAddForm.vue'
 import { useContextsStore } from '~/stores/contexts'
 
@@ -21,7 +20,7 @@ describe('ContextAddForm', () => {
     await wrapper.get('#ctx-name').setValue('banmal')
     await wrapper.get('#ctx-scene').setValue('with a friend')
     await wrapper.get('form').trigger('submit.prevent')
-    await nextTick()
+    await flushPromises()
     expect(wrapper.text()).toContain('settings.contexts.error_korean')
   })
 
@@ -29,7 +28,7 @@ describe('ContextAddForm', () => {
     const wrapper = mountForm()
     await wrapper.get('#ctx-name').setValue('우리집')
     await wrapper.get('form').trigger('submit.prevent')
-    await nextTick()
+    await flushPromises()
     expect(wrapper.text()).toContain('settings.contexts.error_scene_required')
   })
 
@@ -40,7 +39,7 @@ describe('ContextAddForm', () => {
     await wrapper.get('#ctx-name').setValue('우리집')
     await wrapper.get('#ctx-scene').setValue('at home')
     await wrapper.get('form').trigger('submit.prevent')
-    await nextTick()
+    await flushPromises()
     expect(spy).toHaveBeenCalledTimes(1)
     const [name, scene] = spy.mock.calls[0]!
     expect(name).toBe('우리집')
@@ -56,7 +55,7 @@ describe('ContextAddForm', () => {
     await wrapper.get('#ctx-name').setValue('반말')
     await wrapper.get('#ctx-scene').setValue('dup')
     await wrapper.get('form').trigger('submit.prevent')
-    await nextTick()
+    await flushPromises()
     expect(wrapper.text()).toContain('settings.contexts.error_duplicate')
   })
 })

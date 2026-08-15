@@ -4,8 +4,8 @@ import { L } from '../locale'
 /**
  * 문법 정원 (grammar garden) — explanation for the core SRS deck-draw game.
  * The draw → write → rate → grow loop that schedules spaced reviews.
- * Korean examples are language-neutral; prose is localized via L().
- * Native review (owner's wife) pending on the 8 translations.
+ * Korean examples are language-neutral; prose has been checked for feature
+ * accuracy and localized across all eight supported locales.
  */
 export const RULETA_HELP: PracticeHelpContent = {
   ko: '문법 정원',

@@ -5,6 +5,7 @@ import type { ConjItem } from '~/lib/conjugation-drill'
 interface Props {
   score: { correct: number; total: number; accuracy: number }
   failedItems: ConjItem[]
+  locked?: boolean
 }
 defineProps<Props>()
 defineEmits<{ restart: []; 'replay-failed': [] }>()
@@ -30,12 +31,13 @@ onMounted(() => root.value?.focus())
         v-if="failedItems.length"
         type="button"
         class="summary__btn summary__btn--primary"
+        :disabled="locked"
         data-testid="conj-replay"
         @click="$emit('replay-failed')"
       >
         <span aria-hidden="true">🔁</span> {{ $t('conjugation.replay_failed', { n: failedItems.length }) }}
       </button>
-      <button type="button" class="summary__btn" data-testid="conj-restart" @click="$emit('restart')">
+      <button type="button" class="summary__btn" :disabled="locked" data-testid="conj-restart" @click="$emit('restart')">
         {{ $t('conjugation.restart') }}
       </button>
     </div>
@@ -61,7 +63,8 @@ onMounted(() => root.value?.focus())
   font-family: var(--font-pixel-small); font-size: var(--text-xs); letter-spacing: 0.06em; cursor: pointer;
 }
 .summary__btn--primary { background: var(--accent); color: var(--text-on-accent); }
-.summary__btn:hover { transform: translate(-1px, -1px); box-shadow: var(--shadow-button-hover); }
+.summary__btn:disabled { opacity: 0.55; cursor: wait; transform: none; }
+.summary__btn:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: var(--shadow-button-hover); }
 .summary__btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 </style>

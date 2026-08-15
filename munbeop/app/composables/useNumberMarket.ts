@@ -10,8 +10,7 @@ export type MarketPhase = 'building' | 'right' | 'wrong' | 'done'
 export type MarketRunMode = 'normal' | 'replay'
 const ROUND_SIZE = 8
 
-export function useNumberMarket() {
-  const master = useNumberMarketMaster()
+export function useNumberMarket(master = useNumberMarketMaster()) {
   const activity = useActivityStore()
 
   const selectedDomain = ref<NumberDomain>(NUMBER_DOMAINS[0]!.id)
@@ -44,20 +43,24 @@ export function useNumberMarket() {
   }
 
   function start() {
+    if (!master.resetSaveStatus()) return false
     runMode.value = 'normal'
     // A freshly generated round each time → variety never feels predictable.
     sessionItems.value = generateItems(selectedDomain.value, ROUND_SIZE)
     resetRound()
     if (sessionItems.value.length) loadTiles()
+    return true
   }
 
   function replayFailed() {
+    if (!master.resetSaveStatus()) return false
     const failed = failedItems.value
-    if (failed.length === 0) return
+    if (failed.length === 0) return false
     runMode.value = 'replay'
     sessionItems.value = shuffle(failed)
     resetRound()
     loadTiles()
+    return true
   }
 
   function placeTile(poolIndex: number) {
@@ -91,11 +94,13 @@ export function useNumberMarket() {
     void activity.record()
   }
 
-  function next() {
+  async function next() {
     if (phase.value === 'building' || phase.value === 'done') return
     if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
-      if (runMode.value === 'normal') master.recordRound(selectedDomain.value, score.value.accuracy)
+      if (runMode.value === 'normal') {
+        await master.recordRound(selectedDomain.value, score.value.accuracy)
+      }
       return
     }
     index.value += 1

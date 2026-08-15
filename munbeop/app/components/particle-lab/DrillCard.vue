@@ -13,6 +13,7 @@ interface Props {
   verdict: DrillVerdict | null
   picked: string | null
   blockedChoices: ReadonlySet<string>
+  nextDisabled?: boolean
 }
 const props = defineProps<Props>()
 const emit = defineEmits<{ answer: [choice: string]; retry: []; next: [] }>()
@@ -135,10 +136,13 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
         <p class="feedback__sentence" lang="ko">{{ correctSentence(item, set) }}</p>
         <p class="feedback__trans">{{ tl(item.trans) }}</p>
         <p class="feedback__body">{{ tl(item.reason) }}</p>
-        <p v-if="phase === 'wrong'" class="feedback__diary">
-          <span aria-hidden="true">📓</span> {{ t('particles.drill.saved_to_diary') }}
-        </p>
-        <button ref="actionBtn" type="button" class="feedback__btn" @click="emit('next')">
+        <button
+          ref="actionBtn"
+          type="button"
+          class="feedback__btn"
+          :disabled="nextDisabled"
+          @click="emit('next')"
+        >
           {{ t('particles.drill.next') }} <span aria-hidden="true">►</span>
         </button>
       </div>
@@ -263,12 +267,6 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
   color: var(--text);
   line-height: 1.6;
 }
-.feedback__diary {
-  margin: 0;
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  color: var(--text-soft);
-}
 .feedback__btn {
   align-self: flex-end;
   padding: 10px 16px;
@@ -287,6 +285,11 @@ function stateOf(choice: string): 'idle' | 'blocked' | 'correct' | 'wrong' {
 .feedback__btn:hover {
   transform: translate(-1px, -1px);
   box-shadow: var(--shadow-button-hover);
+}
+.feedback__btn:disabled {
+  opacity: 0.55;
+  cursor: wait;
+  transform: none;
 }
 .feedback__btn:focus-visible {
   outline: 2px solid var(--focus-ring);

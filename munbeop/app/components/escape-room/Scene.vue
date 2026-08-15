@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import type { Room } from '~/lib/domain'
+import type { Hotspot as HotspotData, Room } from '~/lib/domain'
 import Hotspot from './Hotspot.vue'
+import { useLocalized } from '~/composables/useLocalized'
 
 /**
  * Scene — renders a Room (data) as a clickable scene with its hotspots overlaid.
@@ -23,10 +24,17 @@ interface Props {
   imageBase: string
   /** Slot ids resolved so far — drives the solved-variant swap. */
   resolvedSlots?: readonly string[]
+  /** Current sequential lock. Omit only in isolated previews/tests. */
+  unlockedSlotId?: string | null
 }
 
-const props = withDefaults(defineProps<Props>(), { resolvedSlots: () => [] })
+const props = withDefaults(defineProps<Props>(), {
+  resolvedSlots: () => [],
+  unlockedSlotId: undefined,
+})
 defineEmits<{ hotspot: [id: string] }>()
+const { tl } = useLocalized()
+const { t } = useI18n()
 
 const fullSrc = (path: string) => `${props.imageBase}${path}`
 
@@ -43,6 +51,18 @@ const isSolved = computed(
 )
 const effectiveImage = computed(() => (isSolved.value ? props.room.solvedImage! : props.room.image))
 
+function isHotspotDisabled(triggersSlot?: string): boolean {
+  if (!triggersSlot) return false
+  if (props.resolvedSlots.includes(triggersSlot)) return true
+  return props.unlockedSlotId !== undefined && props.unlockedSlotId !== triggersSlot
+}
+
+function hotspotLabel(hotspot: HotspotData): string {
+  if (hotspot.cosmeticDetail) return tl(hotspot.cosmeticDetail)
+  const clueNumber = hotspot.triggersSlot?.match(/\d+/)?.[0] ?? ''
+  return t('escape.clue_n', { n: clueNumber })
+}
+
 /** Hide the <img> while its file doesn't exist; the container's sunrise
  * gradient stands in. Reset on any image change (room switch OR solved-variant
  * swap) so the new art gets a fresh load attempt. */
@@ -57,14 +77,16 @@ watch(effectiveImage, () => (imageMissing.value = false))
       class="room__bg"
       data-testid="room-bg"
       :src="fullSrc(effectiveImage)"
-      :alt="room.id"
+      :alt="tl(room.title)"
       @error="imageMissing = true"
     >
     <Hotspot
       v-for="h in room.hotspots"
       :id="h.id"
       :key="h.id"
+      :label="hotspotLabel(h)"
       :rect="h.rect"
+      :disabled="isHotspotDisabled(h.triggersSlot)"
       @click="$emit('hotspot', h.id)"
     />
   </div>
@@ -86,6 +108,6 @@ watch(effectiveImage, () => (imageMissing.value = false))
   width: 100%;
   height: 100%;
   object-fit: cover;
-  image-rendering: pixelated;
+  image-rendering: auto;
 }
 </style>

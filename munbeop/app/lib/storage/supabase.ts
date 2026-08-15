@@ -69,7 +69,9 @@ export class SupabaseAdapter implements StorageAdapter {
   /** Map a domain LogEntry to its user_log row — shared by write() and append(). */
   private logRow(e: LogEntry) {
     return {
-      id: Math.floor(e.id), // user_log.id is bigserial; manual ids accepted
+      // New client ids are safe integers. Keep floor only as an import shim for
+      // legacy v1 exports whose timestamp id carried a fractional tiebreaker.
+      id: Number.isSafeInteger(e.id) ? e.id : Math.floor(e.id),
       user_id: this.userId,
       ko: e.ko,
       sentence: e.sentence,
@@ -349,8 +351,8 @@ export class SupabaseAdapter implements StorageAdapter {
 
       case STORAGE_KEYS.log: {
         // Replace-the-set semantics: a restore must drop journal rows absent
-        // from the payload, not leave stale entries behind. Normal appends go
-        // through append(); write() carries the full array (setReviewState/import).
+        // from the payload, not leave stale entries behind. Normal appends and
+        // review edits use append()/updateOne(); write() is reserved for import.
         const entries = value as LogEntry[]
         const rows = entries.map((e) => this.logRow(e))
         if (rows.length) {
@@ -478,8 +480,13 @@ export class SupabaseAdapter implements StorageAdapter {
   async append<T>(key: StorageKey, item: T): Promise<void> {
     switch (key) {
       case STORAGE_KEYS.log: {
-        // One-row insert instead of re-upserting the whole log on every add.
-        const { error } = await this.client.from('user_log').insert(this.logRow(item as LogEntry))
+        // One-row idempotent upsert instead of re-writing the whole log. A
+        // practice retry deliberately reuses the same random id: if Postgres
+        // committed the first request but its response was lost, retrying must
+        // confirm that row rather than create a duplicate journal event.
+        const { error } = await this.client
+          .from('user_log')
+          .upsert(this.logRow(item as LogEntry), { onConflict: 'user_id,id' })
         assertOk('write', key, error)
         return
       }
@@ -515,17 +522,54 @@ export class SupabaseAdapter implements StorageAdapter {
     }
   }
 
+  async updateOne<V>(
+    key: StorageKey,
+    entry: { id: string | number; value: V },
+  ): Promise<boolean> {
+    switch (key) {
+      case STORAGE_KEYS.log: {
+        const row = this.logRow(entry.value as LogEntry)
+        const changes = {
+          ko: row.ko,
+          sentence: row.sentence,
+          feedback: row.feedback,
+          error_note: row.error_note,
+          error_dimension: row.error_dimension,
+          review_state: row.review_state,
+          context_id: row.context_id,
+          context_name: row.context_name,
+          created_at: row.created_at,
+        }
+        // UPDATE (never UPSERT) is load-bearing here: if another tab deleted
+        // this journal row, a delayed review-state save must not resurrect it.
+        const normalizedId = Number.isSafeInteger(Number(entry.id))
+          ? Number(entry.id)
+          : Math.floor(Number(entry.id))
+        const { data, error } = await this.client
+          .from('user_log')
+          .update(changes)
+          .eq('user_id', this.userId)
+          .eq('id', normalizedId)
+          .select('id')
+        assertOk('write', key, error)
+        return (data?.length ?? 0) > 0
+      }
+      default:
+        throw new Error(`SupabaseAdapter.updateOne(${key}) is not supported`)
+    }
+  }
+
   async deleteOne(key: StorageKey, id: string | number): Promise<void> {
     switch (key) {
       case STORAGE_KEYS.log: {
         // One-row delete scoped to this user (RLS also enforces it). user_log.id
-        // is bigint; the in-memory LogEntry.id carries a fractional tiebreaker,
-        // so floor it to match the stored row (see logRow()).
+        // is bigint. New ids are exact safe integers; floor remains only for a
+        // legacy v1 fractional id that arrived through an old import.
         const { error } = await this.client
           .from('user_log')
           .delete()
           .eq('user_id', this.userId)
-          .eq('id', Math.floor(Number(id)))
+          .eq('id', Number.isSafeInteger(Number(id)) ? Number(id) : Math.floor(Number(id)))
         assertOk('write', key, error)
         return
       }

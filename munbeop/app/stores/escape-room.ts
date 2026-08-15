@@ -33,7 +33,13 @@ type Status = 'idle' | 'playing' | 'gameover' | 'completed'
  * present-tense (soft-reject) tile for the first time — no error charged, the
  * overlay stays open, and the NPC nudges the player with `softRejectMessage`.
  */
-type AnswerResult = 'correct' | 'wrong' | 'game-over' | 'level-complete' | 'soft-reject'
+type AnswerResult =
+  | 'correct'
+  | 'wrong'
+  | 'game-over'
+  | 'level-complete'
+  | 'soft-reject'
+  | 'locked'
 
 interface HintFlags {
   free: boolean
@@ -73,6 +79,12 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
     if (!currentLevel.value) return false
     return resolvedSlots.value.length === currentLevel.value.slots.length
   })
+
+  /** The only unresolved lock currently available in the authored story order. */
+  const nextSlotId = computed(
+    () =>
+      currentLevel.value?.slots.find((slot) => !resolvedSlots.value.includes(slot.id))?.id ?? null,
+  )
 
   // ─── Internal helpers ─────────────────────────────────────────────────────
   function ensureHintFlags(slotId: string): HintFlags {
@@ -123,14 +135,43 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
     startedAt.value = now
   }
 
+  /** Prevent later clues and scripted twists from being opened out of order. */
+  function isSlotUnlocked(slotId: string): boolean {
+    return status.value === 'playing' && nextSlotId.value === slotId
+  }
+
+  /**
+   * A room becomes available when its earliest lock has reached the front of
+   * the sequence. Already visited rooms remain available for backtracking.
+   * Rooms without puzzle hotspots are harmless scenery and stay accessible.
+   */
+  function isRoomUnlocked(roomId: string): boolean {
+    const level = currentLevel.value
+    if (!level) return false
+    const room = level.rooms.find((candidate) => candidate.id === roomId)
+    if (!room) return false
+
+    const triggeredSlots = room.hotspots.flatMap((hotspot) =>
+      hotspot.triggersSlot ? [hotspot.triggersSlot] : [],
+    )
+    if (triggeredSlots.length === 0) return true
+
+    const nextIndex = nextSlotId.value
+      ? level.slots.findIndex((slot) => slot.id === nextSlotId.value)
+      : level.slots.length
+    return triggeredSlots.some((slotId) => {
+      const slotIndex = level.slots.findIndex((slot) => slot.id === slotId)
+      return slotIndex >= 0 && slotIndex <= nextIndex
+    })
+  }
+
   function enterRoom(roomId: string) {
-    if (!currentLevel.value) return
-    const exists = currentLevel.value.rooms.some((r) => r.id === roomId)
-    if (exists) currentRoomId.value = roomId
+    if (isRoomUnlocked(roomId)) currentRoomId.value = roomId
   }
 
   function answerSelection(slotId: string, optionIndex: number): AnswerResult {
     if (status.value !== 'playing') return 'wrong'
+    if (!isSlotUnlocked(slotId)) return 'locked'
     const cand = drawnCandidate<SelectionCandidate>(slotId)
     if (!cand) return recordError()
     return optionIndex === cand.correctIndex ? resolveSlot(slotId) : recordError()
@@ -138,6 +179,7 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
 
   function answerCompletion(slotId: string, text: string): AnswerResult {
     if (status.value !== 'playing') return 'wrong'
+    if (!isSlotUnlocked(slotId)) return 'locked'
     const cand = drawnCandidate<CompletionCandidate>(slotId)
     if (!cand) return recordError()
     return normalizeCompletionAnswer(text) === normalizeCompletionAnswer(cand.answer)
@@ -147,6 +189,7 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
 
   function answerCreation(slotId: string, order: number[]): AnswerResult {
     if (status.value !== 'playing') return 'wrong'
+    if (!isSlotUnlocked(slotId)) return 'locked'
     const cand = drawnCandidate<CreationCandidate>(slotId)
     if (!cand) return recordError()
     // Soft-reject (present-tense tile, first time only): nudge, no error charged.
@@ -258,9 +301,12 @@ export const useEscapeRoomStore = defineStore('escape-room', () => {
     // computed
     usedPremiumHint,
     allSlotsResolved,
+    nextSlotId,
     // actions
     startRun,
     enterRoom,
+    isSlotUnlocked,
+    isRoomUnlocked,
     answerSelection,
     answerCompletion,
     answerCreation,

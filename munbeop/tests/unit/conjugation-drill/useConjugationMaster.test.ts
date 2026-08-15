@@ -24,30 +24,30 @@ beforeEach(() => {
 })
 
 describe('useConjugationMaster', () => {
-  it('does not clear a class when accuracy is below 0.7', () => {
+  it('does not clear a class when accuracy is below 0.7', async () => {
     const m = useConjugationMaster()
-    m.recordRound(MASTER_CLASS_IDS[0], 0.5)
+    await m.recordRound(MASTER_CLASS_IDS[0], 0.5)
     expect(m.doneCount.value).toBe(0)
   })
 
-  it('clears a class at accuracy >= 0.7 and is idempotent (no double count)', () => {
+  it('clears a class at accuracy >= 0.7 and is idempotent (no double count)', async () => {
     const m = useConjugationMaster()
-    m.recordRound(MASTER_CLASS_IDS[0], 0.7)
-    m.recordRound(MASTER_CLASS_IDS[0], 1)
+    await m.recordRound(MASTER_CLASS_IDS[0], 0.7)
+    await m.recordRound(MASTER_CLASS_IDS[0], 1)
     expect(m.doneCount.value).toBe(1)
   })
 
-  it('earns + celebrates once when all classes are cleared, persisting the sticky flag', () => {
+  it('earns + celebrates once when all classes are cleared, persisting the sticky flag', async () => {
     const m = useConjugationMaster()
-    for (const k of MASTER_CLASS_IDS) m.recordRound(k, 1)
+    for (const k of MASTER_CLASS_IDS) await m.recordRound(k, 1)
     expect(m.earned.value).toBe(true)
     expect(m.celebrate.value).toBe(true)
     expect(useSettingsStore().labEarned.conjugation).toBe(true)
   })
 
-  it('a fresh instance after earning does not re-celebrate but stays earned', () => {
+  it('a fresh instance after earning does not re-celebrate but stays earned', async () => {
     const first = useConjugationMaster()
-    for (const k of MASTER_CLASS_IDS) first.recordRound(k, 1)
+    for (const k of MASTER_CLASS_IDS) await first.recordRound(k, 1)
     const second = useConjugationMaster()
     expect(second.earned.value).toBe(true)
     expect(second.celebrate.value).toBe(false)
@@ -62,5 +62,28 @@ describe('useConjugationMaster', () => {
     const m = useConjugationMaster()
     expect(m.doneCount.value).toBe(0)
     expect(m.earned.value).toBe(true)
+  })
+
+  it('rolls back a failed clear and exposes retry before showing it as saved', async () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const m = useConjugationMaster()
+    for (const klass of MASTER_CLASS_IDS.slice(0, -1)) await m.recordRound(klass, 1)
+    const lastClass = MASTER_CLASS_IDS.at(-1)!
+    mockWrite.mockRejectedValueOnce(new Error('offline')).mockResolvedValueOnce(undefined)
+
+    await expect(m.recordRound(lastClass, 1)).resolves.toBe(false)
+    expect(m.saveStatus.value).toBe('error')
+    expect(m.doneCount.value).toBe(MASTER_CLASS_IDS.length - 1)
+    expect(m.earned.value).toBe(false)
+    expect(m.celebrate.value).toBe(false)
+    expect(useSettingsStore().labCleared.conjugation).not.toContain(lastClass)
+    expect(useSettingsStore().labEarned.conjugation).toBe(false)
+
+    await expect(m.retrySave()).resolves.toBe(true)
+    expect(m.saveStatus.value).toBe('saved')
+    expect(m.doneCount.value).toBe(MASTER_CLASS_IDS.length)
+    expect(m.earned.value).toBe(true)
+    expect(m.celebrate.value).toBe(true)
+    errorSpy.mockRestore()
   })
 })

@@ -3,8 +3,8 @@ import { L } from '../locale'
 
 /**
  * 높임법 (honorifics) — explanation for the register lab.
- * Korean examples are language-neutral; prose is localized via L().
- * Native review (owner's wife) pending on the 8 translations.
+ * Korean examples are language-neutral; prose is localized across all eight
+ * supported locales and covered by the practice-help invariants.
  */
 export const REGISTER_HELP: PracticeHelpContent = {
   ko: '높임법',

@@ -68,7 +68,7 @@ function onCreated() {
 
     <Modal
       :open="pendingDelete !== null"
-      :close-label="t('settings.custom_grammar.delete')"
+      :close-label="t('settings.custom_grammar.cancel')"
       :title="t('settings.custom_grammar.delete_confirm_title')"
       @close="cancelDelete"
     >
@@ -78,7 +78,7 @@ function onCreated() {
       </p>
       <div class="cg-del__actions">
         <Button variant="secondary" size="sm" @click="cancelDelete">
-          {{ t('settings.custom_grammar.delete') }}
+          {{ t('settings.custom_grammar.cancel') }}
         </Button>
         <Button variant="danger" size="sm" @click="confirmDelete">
           {{ t('settings.custom_grammar.delete') }}

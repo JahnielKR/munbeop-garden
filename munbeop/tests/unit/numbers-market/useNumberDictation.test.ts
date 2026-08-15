@@ -1,8 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useNumberDictation, normalizeValue } from '~/composables/useNumberDictation'
+import { useSettingsStore } from '~/stores/settings'
 
 vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
+vi.mock('~/composables/useStorageAdapter', () => ({
+  useStorageAdapter: () => ({ read: vi.fn(async () => null), write: vi.fn(async () => {}), remove: vi.fn(), clear: vi.fn() }),
+}))
 const play = vi.fn()
 vi.mock('~/composables/useNumberMarketAudio', () => ({ useNumberMarketAudio: () => ({ playReading: play, stop: vi.fn() }) }))
 
@@ -42,14 +46,14 @@ describe('useNumberDictation', () => {
     d.submit()
     expect(d.phase.value).toBe('right')
   })
-  it('a wrong entry is marked wrong and shows in failedItems', () => {
+  it('a wrong entry is marked wrong and shows in failedItems', async () => {
     const d = useNumberDictation()
     d.selectDomain('time')
     d.start()
     d.entry.value = 'zzz'
     d.submit()
     expect(d.phase.value).toBe('wrong')
-    d.next()
+    await d.next()
     expect(d.failedItems.value.length).toBe(1)
   })
   it('replay button re-plays the current reading', () => {
@@ -60,15 +64,34 @@ describe('useNumberDictation', () => {
     d.play()
     expect(play).toHaveBeenCalledWith(d.item.value.answer)
   })
-  it('next advances and replays; round ends at done', () => {
+  it('next advances and replays; round ends at done', async () => {
     const d = useNumberDictation()
     d.selectDomain('time')
     d.start()
     while (d.phase.value !== 'done') {
       d.entry.value = d.item.value.valueKey
       d.submit()
-      d.next()
+      await d.next()
     }
     expect(d.score.value.accuracy).toBe(1)
+    expect(useSettingsStore().labCleared.numberMarket).toContain('time')
+  })
+
+  it('does not award mastery for a replay of failed dictation items', async () => {
+    const d = useNumberDictation()
+    d.selectDomain('money')
+    d.start()
+    while (d.phase.value !== 'done') {
+      d.entry.value = 'wrong'
+      d.submit()
+      await d.next()
+    }
+    d.replayFailed()
+    while (d.phase.value !== 'done') {
+      d.entry.value = d.item.value.valueKey
+      d.submit()
+      await d.next()
+    }
+    expect(useSettingsStore().labCleared.numberMarket).not.toContain('money')
   })
 })

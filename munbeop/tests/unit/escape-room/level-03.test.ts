@@ -191,9 +191,9 @@ describe('LEVEL_03 — El mercado nocturno', () => {
     const variants = LEVEL_03.rooms.filter((r) => r.solvedImage)
     expect(variants.map((r) => r.id)).toEqual(['room-hotteok', 'room-manmulsang', 'room-busstop'])
     expect(variants.map((r) => r.solvedImage)).toEqual([
-      'rooms/room-01-hotteok-closing.png',
-      'rooms/room-03-manmulsang-wrapped.png',
-      'rooms/room-04-busstop-bus.png',
+      'rooms/room-01-hotteok-closing-v2.webp',
+      'rooms/room-03-manmulsang-wrapped-v2.webp',
+      'rooms/room-04-busstop-bus-v2.webp',
     ])
     for (const r of variants) {
       expect(existsSync(audioPath(r.solvedImage!)), r.solvedImage).toBe(true)

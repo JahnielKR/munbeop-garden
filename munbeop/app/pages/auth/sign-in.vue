@@ -1,4 +1,6 @@
 <script setup lang="ts">
+definePageMeta({ layout: false, surface: 'welcome' })
+
 // Legacy route. The auth UI lives in /welcome's sidebar now. We forward
 // here so old bookmarks and email magic-link callbacks still land somewhere
 // sensible. Once we're confident no surface still links to /auth/sign-in

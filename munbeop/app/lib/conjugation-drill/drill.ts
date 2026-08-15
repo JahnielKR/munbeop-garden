@@ -1,6 +1,8 @@
 // app/lib/conjugation-drill/drill.ts
 import { conjugate, VERBS, ENDINGS } from '~/lib/korean'
 import type { DatasetVerb, Ending, VerbClass } from '~/lib/korean'
+import type { LocalizedString } from '~/lib/domain'
+import { CONJUGATION_GLOSSES } from '~/seed/conjugation-glosses'
 import { buildDistractors } from './distractors'
 
 export type DrillClassId = VerbClass | 'mixed'
@@ -42,7 +44,7 @@ export function verbsForClass(klass: DrillClassId): DatasetVerb[] {
 export interface ConjItem {
   id: string
   dict: string
-  gloss: string
+  gloss: LocalizedString
   klass: VerbClass
   ending: Ending
   correct: string
@@ -53,10 +55,12 @@ export interface ConjItem {
 export function buildItem(v: DatasetVerb, ending: Ending): ConjItem {
   const correct = conjugate(v.dict, v.klass, ending)
   const distractors = buildDistractors(v, ending, correct)
+  const gloss = CONJUGATION_GLOSSES[v.dict]
+  if (!gloss) throw new Error(`Missing localized conjugation gloss for ${v.dict}`)
   return {
     id: `${v.dict}:${ending}`,
     dict: v.dict,
-    gloss: v.gloss,
+    gloss,
     klass: v.klass,
     ending,
     correct,

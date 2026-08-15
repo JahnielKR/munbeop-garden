@@ -6,7 +6,8 @@ import { L } from '~/seed/locale'
  * situational variety for the ruleta sentence game. Each frames the Korean
  * sentence the learner writes in a concrete, everyday register.
  *
- * Drafted + KO-verified. Wife native review = final gate.
+ * Korean labels and register/scene fit reviewed; every localized scene is
+ * intentionally phrased as a writing prompt rather than a model answer.
  */
 export const DEFAULT_CONTEXTS_EXTRA: Context[] = [
   {

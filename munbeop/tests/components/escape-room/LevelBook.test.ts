@@ -2,13 +2,18 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import LevelBook from '~/components/escape-room/LevelBook.vue'
 import LevelPage from '~/components/escape-room/LevelPage.vue'
-import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
+import { LEVEL_REGISTRY, type LevelBookEntry } from '~/seed/escape-room/registry'
 
 const stubs = { NuxtLink: { template: '<a><slot /></a>' } }
 
 describe('LevelPage', () => {
   const playable = LEVEL_REGISTRY[0]!
-  const comingSoon = LEVEL_REGISTRY.find((e) => e.status === 'coming-soon')!
+  const comingSoon = {
+    ...playable,
+    id: 'future-level',
+    status: 'coming-soon',
+    level: undefined,
+  } satisfies LevelBookEntry
 
   it('renders cover, title, tagline and TOPIK badge', () => {
     const w = mount(LevelPage, { props: { entry: playable }, global: { stubs } })

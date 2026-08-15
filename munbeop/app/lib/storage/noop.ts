@@ -30,6 +30,11 @@ export class NoopStorageAdapter implements StorageAdapter {
 
   async upsertOne<V>(_key: StorageKey, _entry: { id: string; value: V }): Promise<void> {}
 
+  async updateOne<V>(
+    _key: StorageKey,
+    _entry: { id: string | number; value: V },
+  ): Promise<boolean> { return true }
+
   async deleteOne(_key: StorageKey, _id: string | number): Promise<void> {}
 
   async remove(_key: StorageKey): Promise<void> {}

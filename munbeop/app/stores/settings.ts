@@ -85,6 +85,29 @@ export const useSettingsStore = defineStore('settings', () => {
   const labCleared = ref<LabClearedMap>(emptyLabCleared())
   const labEarned = ref<LabEarnedMap>(emptyLabEarned())
   const numberSpeedBest = ref<SpeedBestMap>({})
+  let settingsMutationTail: Promise<void> | null = null
+  let settingsStateRevision = 0
+  let accountEpoch = 0
+  let cloudHydratedUserId: string | null = null
+
+  /** All preferences share one JSON blob, so every read-modify-write mutation
+   * must be one FIFO transaction. Otherwise two valid writes can arrive in the
+   * opposite order and the older snapshot silently clobbers the newer fields. */
+  function enqueueSettingsMutation<T>(run: () => Promise<T>, staleResult?: T): Promise<T> {
+    const queuedEpoch = accountEpoch
+    const queuedUserId = authStore.user?.id ?? null
+    const guardedRun = () => queuedEpoch === accountEpoch
+      && (authStore.user?.id ?? null) === queuedUserId
+      ? run()
+      : Promise.resolve(staleResult as T)
+    const job = settingsMutationTail ? settingsMutationTail.then(guardedRun) : guardedRun()
+    const settled = job.then(() => undefined, () => undefined)
+    settingsMutationTail = settled
+    void settled.then(() => {
+      if (settingsMutationTail === settled) settingsMutationTail = null
+    })
+    return job
+  }
 
   /** Mirror the live avatar selection into the device cache (FOUC head start). */
   function cachePortrait(): void {
@@ -103,7 +126,12 @@ export const useSettingsStore = defineStore('settings', () => {
    * device-level (persisted in localStorage for FOUC by useTheme/useLocaleStore),
    * so clearing them on sign-out would flip the visible theme/language.
    */
-  function resetToDefaults(): void {
+  function resetToDefaults(invalidatePending = true): void {
+    if (invalidatePending) {
+      accountEpoch++
+      cloudHydratedUserId = null
+    }
+    settingsStateRevision++
     dailyGoal.value = DEFAULT_DAILY_GOAL
     reviewReminders.value = false
     startingDeckId.value = null
@@ -119,32 +147,46 @@ export const useSettingsStore = defineStore('settings', () => {
     clearPortraitCache()
   }
 
-  async function hydrate(): Promise<void> {
-    if (!authStore.user) return
-    let cloud: Partial<Settings> | null
-    try {
-      const storage = useStorageAdapter()
-      cloud = await storage.read<Partial<Settings> | null>(STORAGE_KEYS.settings, null)
-    } catch {
-      // Table may not exist yet (migration not deployed) or a network blip —
-      // keep device values (incl. the optimistic portrait cache); the app must
-      // not break, and the portrait must not blink back to the email initial.
-      return
-    }
+  function hydrate(): Promise<void> {
+    if (!authStore.user) return Promise.resolve()
+    const hydrateEpoch = accountEpoch
+    const hydrateUserId = authStore.user.id
+    return enqueueSettingsMutation(async () => {
+    // Table or network errors intentionally propagate: the app-status gate keeps
+    // interactions disabled and exposes a real retry instead of treating default
+    // device values as authoritative account data.
+    const storage = useStorageAdapter()
+    const cloud = await storage.read<Partial<Settings> | null>(STORAGE_KEYS.settings, null)
+    // A sign-out/account switch may happen while the cloud read is in flight.
+    // Never apply that previous account's blob after resetToDefaults() advanced
+    // the epoch.
+    if (hydrateEpoch !== accountEpoch || authStore.user?.id !== hydrateUserId) return
+    cloudHydratedUserId = hydrateUserId
     // The cloud blob is the source of truth: reset account-scoped prefs to their
     // defaults (so a field absent from THIS account's blob can't keep the
     // previous account's value), THEN apply the blob. Resetting AFTER the read —
     // not before the await — means the portrait never blinks to the initial
     // during a slow cloud round-trip.
-    resetToDefaults()
+    // This reset is part of the queued hydration for the same account; do not
+    // invalidate user actions already queued behind the cloud read. Sign-out
+    // calls resetToDefaults() with the default and does invalidate them.
+    resetToDefaults(false)
     if (cloud) {
       if (isTheme(cloud.theme)) applyTheme(cloud.theme)
-      if (isLocale(cloud.locale)) await localeStore.set(cloud.locale)
+      if (isLocale(cloud.locale)) {
+        await localeStore.set(cloud.locale)
+        if (hydrateEpoch !== accountEpoch || authStore.user?.id !== hydrateUserId) return
+      }
       if (typeof cloud.dailyGoal === 'number') dailyGoal.value = clampGoal(cloud.dailyGoal)
       if (typeof cloud.reviewReminders === 'boolean') reviewReminders.value = cloud.reviewReminders
       if (typeof cloud.startingDeckId === 'string') startingDeckId.value = cloud.startingDeckId
       if (Array.isArray(cloud.excludedDeckIds))
         excludedDeckIds.value = cloud.excludedDeckIds.filter((x): x is string => typeof x === 'string')
+      // A recommendation can outlive a later Library exclusion in older blobs.
+      // Never advertise a deck the user has explicitly disabled.
+      if (startingDeckId.value && excludedDeckIds.value.includes(startingDeckId.value)) {
+        startingDeckId.value = null
+      }
       if (typeof cloud.chosenAvatarId === 'string') chosenAvatarId.value = cloud.chosenAvatarId
       if (Array.isArray(cloud.unlockedAvatarIds))
         unlockedAvatarIds.value = cloud.unlockedAvatarIds.filter((x): x is string => typeof x === 'string')
@@ -169,12 +211,15 @@ export const useSettingsStore = defineStore('settings', () => {
         // Delete the (leaky) global keys only AFTER the cloud write is confirmed,
         // so a swallowed persist failure leaves them in place to retry next load
         // instead of losing the adopted progress.
-        if (await persistCloud()) clearLegacyLabProgress()
+        const migrated = await persistCloud()
+        if (hydrateEpoch !== accountEpoch || authStore.user?.id !== hydrateUserId) return
+        if (migrated) clearLegacyLabProgress()
       }
     }
     // Persist the reconciled avatar into the device cache so the NEXT cold load
     // paints it before this cloud read resolves — the core of the flash fix.
     if (cloud) cachePortrait()
+    })
   }
 
   /** Apply the lab-mastery fields of a cloud blob, validating shapes so a
@@ -206,88 +251,146 @@ export const useSettingsStore = defineStore('settings', () => {
   /** Write the full prefs blob. Returns true on success, false on a swallowed
    *  error (a failed cloud write must never throw into the UI). The boolean lets
    *  the one-time lab migration delete the legacy keys only once persisted. */
+  function settingsSnapshot(): Settings {
+    return {
+      theme: theme.value,
+      locale: localeStore.current,
+      dailyGoal: dailyGoal.value,
+      reviewReminders: reviewReminders.value,
+      startingDeckId: startingDeckId.value,
+      excludedDeckIds: [...excludedDeckIds.value],
+      chosenAvatarId: chosenAvatarId.value,
+      unlockedAvatarIds: [...unlockedAvatarIds.value],
+      labCleared: {
+        conjugation: [...labCleared.value.conjugation],
+        counter: [...labCleared.value.counter],
+        register: [...labCleared.value.register],
+        numberMarket: [...labCleared.value.numberMarket],
+      },
+      labEarned: { ...labEarned.value },
+      numberSpeedBest: { ...numberSpeedBest.value },
+    }
+  }
+
   async function persistCloud(): Promise<boolean> {
+    const userId = authStore.user?.id
+    // The adapter writes one full JSON blob. Never manufacture that blob from
+    // defaults after an authenticated cloud read failed (or before it ran),
+    // because doing so would erase fields that still exist remotely.
+    if (userId && cloudHydratedUserId !== userId) return false
     try {
       const storage = useStorageAdapter()
-      await storage.write(STORAGE_KEYS.settings, {
-        theme: theme.value,
-        locale: localeStore.current,
-        dailyGoal: dailyGoal.value,
-        reviewReminders: reviewReminders.value,
-        startingDeckId: startingDeckId.value,
-        excludedDeckIds: excludedDeckIds.value,
-        chosenAvatarId: chosenAvatarId.value,
-        unlockedAvatarIds: unlockedAvatarIds.value,
-        labCleared: labCleared.value,
-        labEarned: labEarned.value,
-        numberSpeedBest: numberSpeedBest.value,
-      } satisfies Settings)
+      await storage.write(STORAGE_KEYS.settings, settingsSnapshot())
       return true
     } catch {
       return false
     }
   }
 
-  async function setTheme(t: Theme): Promise<void> {
-    applyTheme(t)
-    await persistCloud()
+  function setTheme(t: Theme): Promise<void> {
+    return enqueueSettingsMutation(async () => {
+      applyTheme(t)
+      await persistCloud()
+    })
   }
 
-  async function setLocale(l: LocaleCode): Promise<void> {
-    await localeStore.set(l)
-    await persistCloud()
+  function setLocale(l: LocaleCode): Promise<void> {
+    return enqueueSettingsMutation(async () => {
+      await localeStore.set(l)
+      await persistCloud()
+    })
   }
 
-  async function setDailyGoal(n: number): Promise<void> {
-    dailyGoal.value = clampGoal(n)
-    await persistCloud()
+  function setDailyGoal(n: number): Promise<void> {
+    return enqueueSettingsMutation(async () => {
+      dailyGoal.value = clampGoal(n)
+      await persistCloud()
+    })
   }
 
-  async function setStartingDeck(deckId: string): Promise<void> {
-    startingDeckId.value = deckId
-    await persistCloud()
+  function setStartingDeck(deckId: string): Promise<boolean> {
+    return enqueueSettingsMutation(async () => {
+      const previousDeck = startingDeckId.value
+      const previousExcluded = excludedDeckIds.value
+      const nextExcluded = excludedDeckIds.value.filter((id) => id !== deckId)
+      startingDeckId.value = deckId
+      // Placement's recommendation must be immediately playable even if this
+      // level was previously disabled in Library focus mode.
+      excludedDeckIds.value = nextExcluded
+      const mutationRevision = ++settingsStateRevision
+      const saved = await persistCloud()
+      if (!saved && settingsStateRevision === mutationRevision) {
+        startingDeckId.value = previousDeck
+        excludedDeckIds.value = previousExcluded
+        settingsStateRevision++
+      }
+      return saved
+    }, false)
   }
 
   /** Toggle a deck's exclusion from the practice draw, then persist. */
-  async function toggleDeck(deckId: string): Promise<void> {
-    excludedDeckIds.value = excludedDeckIds.value.includes(deckId)
-      ? excludedDeckIds.value.filter((id) => id !== deckId)
-      : [...excludedDeckIds.value, deckId]
-    await persistCloud()
-  }
-
-  async function setReviewReminders(on: boolean): Promise<void> {
-    reviewReminders.value = on
-    if (on && typeof Notification !== 'undefined' && Notification.permission === 'default') {
-      try {
-        await Notification.requestPermission()
-      } catch {
-        // Permission prompt unavailable (e.g. insecure context) — the in-app banner still works.
+  function toggleDeck(deckId: string): Promise<boolean> {
+    return enqueueSettingsMutation(async () => {
+      const previousExcluded = excludedDeckIds.value
+      const previousStarting = startingDeckId.value
+      const excluding = !excludedDeckIds.value.includes(deckId)
+      const nextExcluded = excludedDeckIds.value.includes(deckId)
+        ? excludedDeckIds.value.filter((id) => id !== deckId)
+        : [...excludedDeckIds.value, deckId]
+      const nextStarting = excluding && startingDeckId.value === deckId
+        ? null
+        : startingDeckId.value
+      excludedDeckIds.value = nextExcluded
+      startingDeckId.value = nextStarting
+      const mutationRevision = ++settingsStateRevision
+      const saved = await persistCloud()
+      if (!saved && settingsStateRevision === mutationRevision) {
+        excludedDeckIds.value = previousExcluded
+        startingDeckId.value = previousStarting
+        settingsStateRevision++
       }
-    }
-    await persistCloud()
+      return saved
+    }, false)
   }
 
-  async function setChosenAvatar(id: string | null): Promise<void> {
-    chosenAvatarId.value = id
-    cachePortrait()
-    await persistCloud()
+  function setReviewReminders(on: boolean): Promise<void> {
+    return enqueueSettingsMutation(async () => {
+      reviewReminders.value = on
+      if (on && typeof Notification !== 'undefined' && Notification.permission === 'default') {
+        try {
+          await Notification.requestPermission()
+        } catch {
+          // Permission prompt unavailable (e.g. insecure context) — the in-app banner still works.
+        }
+      }
+      await persistCloud()
+    })
+  }
+
+  function setChosenAvatar(id: string | null): Promise<void> {
+    return enqueueSettingsMutation(async () => {
+      chosenAvatarId.value = id
+      cachePortrait()
+      await persistCloud()
+    })
   }
 
   /** Union new ids into the sticky owned set; only persists if it grew. */
-  async function unlockAvatars(ids: string[]): Promise<void> {
-    const next = new Set(unlockedAvatarIds.value)
-    let grew = false
-    for (const id of ids) {
-      if (!next.has(id)) {
-        next.add(id)
-        grew = true
+  function unlockAvatars(ids: string[]): Promise<void> {
+    return enqueueSettingsMutation(async () => {
+      const next = new Set(unlockedAvatarIds.value)
+      let grew = false
+      for (const id of ids) {
+        if (!next.has(id)) {
+          next.add(id)
+          grew = true
+        }
       }
-    }
-    if (!grew) return
-    unlockedAvatarIds.value = [...next]
-    cachePortrait()
-    await persistCloud()
+      if (!grew) return
+      unlockedAvatarIds.value = [...next]
+      cachePortrait()
+      await persistCloud()
+    })
   }
 
   /** Record that a drill lab cleared one class/set/domain, optionally flipping
@@ -295,27 +398,73 @@ export const useSettingsStore = defineStore('settings', () => {
    *  a race where two separate blob writes reorder and clobber labEarned back to
    *  false. Unions are idempotent; the in-memory update is synchronous so the
    *  lab's mastery view reflects it before the cloud write resolves. */
-  async function recordLabClear(lab: ClearedLabId, item: string, alsoEarn = false): Promise<void> {
-    const has = labCleared.value[lab].includes(item)
-    const needEarn = alsoEarn && !labEarned.value[lab]
-    if (has && !needEarn) return
-    if (!has) labCleared.value = { ...labCleared.value, [lab]: [...labCleared.value[lab], item] }
-    if (needEarn) labEarned.value = { ...labEarned.value, [lab]: true }
-    await persistCloud()
+  function recordLabClear(lab: ClearedLabId, item: string, alsoEarn = false): Promise<void> {
+    return enqueueSettingsMutation(async () => {
+      const has = labCleared.value[lab].includes(item)
+      const needEarn = alsoEarn && !labEarned.value[lab]
+      if (has && !needEarn) return
+      const previousCleared = labCleared.value
+      const previousEarned = labEarned.value
+      const nextCleared = has
+        ? previousCleared
+        : { ...previousCleared, [lab]: [...previousCleared[lab], item] }
+      const nextEarned = needEarn
+        ? { ...previousEarned, [lab]: true }
+        : previousEarned
+      labCleared.value = nextCleared
+      labEarned.value = nextEarned
+      const mutationRevision = ++settingsStateRevision
+      const saved = await persistCloud()
+      if (!saved) {
+        // Conditional rollback protects an external account reset while the
+        // request was in flight. Normal settings actions cannot interleave:
+        // they all run through this same queue.
+        if (settingsStateRevision === mutationRevision) {
+          labCleared.value = previousCleared
+          labEarned.value = previousEarned
+          settingsStateRevision++
+        }
+        throw new Error('Failed to save lab mastery')
+      }
+    })
   }
 
   /** Flip a lab's sticky "master earned" flag (never un-earns). No-op if set. */
-  async function markLabEarned(lab: EarnedLabId): Promise<void> {
-    if (labEarned.value[lab]) return
-    labEarned.value = { ...labEarned.value, [lab]: true }
-    await persistCloud()
+  function markLabEarned(lab: EarnedLabId): Promise<void> {
+    return enqueueSettingsMutation(async () => {
+      if (labEarned.value[lab]) return
+      const previous = labEarned.value
+      const next = { ...previous, [lab]: true }
+      labEarned.value = next
+      const mutationRevision = ++settingsStateRevision
+      const saved = await persistCloud()
+      if (!saved) {
+        if (settingsStateRevision === mutationRevision) {
+          labEarned.value = previous
+          settingsStateRevision++
+        }
+        throw new Error('Failed to save lab mastery')
+      }
+    })
   }
 
   /** Record a number-market speed best; only persists when it beats the prior. */
-  async function recordSpeedBest(deckId: string, score: number): Promise<void> {
-    if (score <= (numberSpeedBest.value[deckId] ?? 0)) return
-    numberSpeedBest.value = { ...numberSpeedBest.value, [deckId]: score }
-    await persistCloud()
+  function recordSpeedBest(deckId: string, score: number): Promise<void> {
+    return enqueueSettingsMutation(async () => {
+      if (score <= (numberSpeedBest.value[deckId] ?? 0)) return
+      const previous = numberSpeedBest.value
+      const next = { ...previous, [deckId]: score }
+      numberSpeedBest.value = next
+      const mutationRevision = ++settingsStateRevision
+      const saved = await persistCloud()
+      if (!saved) {
+        if (settingsStateRevision === mutationRevision) {
+          numberSpeedBest.value = previous
+          settingsStateRevision++
+        }
+        throw new Error('Failed to save speed record')
+      }
+    })
   }
 
   return { hydrate, resetToDefaults, setTheme, setLocale, dailyGoal, setDailyGoal, reviewReminders, setReviewReminders, startingDeckId, setStartingDeck, excludedDeckIds, toggleDeck, chosenAvatarId, unlockedAvatarIds, setChosenAvatar, unlockAvatars, labCleared, labEarned, numberSpeedBest, recordLabClear, markLabEarned, recordSpeedBest }

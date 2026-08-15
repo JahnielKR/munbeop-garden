@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useSrsStore } from '~/stores/srs'
 import { useAppStatus } from '~/stores/appStatus'
+import { useAuthStore } from '~/stores/auth'
 import { STORAGE_KEYS } from '~/lib/storage'
 
 // Spy on the adapter: a per-card SRS update should be a single-row upsertOne,
@@ -52,6 +53,25 @@ describe('useSrsStore — delta upsert', () => {
     expect(key).toBe(STORAGE_KEYS.srs)
     expect(entry.id).toBe('A')
   })
+
+  it('serializes markSeen before a later recalculation for the same grammar', async () => {
+    let resolveMarkSeen!: () => void
+    upsertOne
+      .mockImplementationOnce(() => new Promise<void>((resolve) => { resolveMarkSeen = resolve }))
+      .mockResolvedValueOnce(undefined)
+    const store = useSrsStore()
+
+    const marking = store.markSeen('A', 1717200000000)
+    const recalculating = store.recalculate('A')
+    await vi.waitFor(() => expect(upsertOne).toHaveBeenCalledTimes(1))
+
+    resolveMarkSeen()
+    await marking
+    await recalculating
+
+    expect(upsertOne).toHaveBeenCalledTimes(2)
+    expect(upsertOne.mock.calls.map((call) => call[1].id)).toEqual(['A', 'A'])
+  })
 })
 
 describe('useSrsStore — no writes while the data load failed (clobber guard)', () => {
@@ -73,6 +93,15 @@ describe('useSrsStore — no writes while the data load failed (clobber guard)',
     await store.markSeen('A')
     expect(upsertOne).not.toHaveBeenCalled()
     expect(store.map['A']).toBeUndefined() // never fabricated a zeroed row
+  })
+
+  it('does not write authenticated SRS state before that account hydrates', async () => {
+    useAuthStore().user = { id: 'u-1' } as never
+    const store = useSrsStore()
+    await store.markSeen('A')
+    await store.recalculate('A')
+    expect(upsertOne).not.toHaveBeenCalled()
+    expect(store.map['A']).toBeUndefined()
   })
 
   it('recalculate is a no-op when appStatus is error (covers a LOG-load failure)', async () => {

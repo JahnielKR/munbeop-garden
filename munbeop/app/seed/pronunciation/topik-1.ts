@@ -12,8 +12,10 @@ import type { PronunciationGuide } from '~/lib/domain'
  * the lexical verb group 가져가다/가져오다/데려가다/데려오다, and the comparison drills
  * (안 vs 못 (비교)). Those render no pronunciation section, as before.
  *
- * Drafting convention (PENDING wife native-review — the content gate). Each
- * `parts` entry is exactly one Hangul syllable. A grammar whose citation shows
+ * Authoring convention: this didactic segmentation has been checked against the
+ * catalog and audio model; seed/audio tests enforce its structural contract. It
+ * is a sound-it-out aid, not phonetic transcription. Each `parts` entry is
+ * exactly one Hangul syllable. A grammar whose citation shows
  * TRUE allomorphs of the SAME morpheme carries one `forms` entry per cleanly-
  * soundable realization, so the learner hears each form; everything else stays a
  * single representative form:

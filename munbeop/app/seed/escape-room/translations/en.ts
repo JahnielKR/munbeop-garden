@@ -93,14 +93,15 @@ export const en: Record<string, string> = {
   'Estructura: [hora] 시 [minutos] 분.': 'Structure: [hour] 시 [minutes] 분.',
   'El reloj muestra las 7:00. ¿Qué hora es?': 'The clock shows 7:00. What time is it?',
   '일곱 = siete (número nativo).': '일곱 = seven (native number).',
-  'En punto = X 시예요.': 'On the dot = X 시예요.',
+  'En punto = X 시예요.': 'On the hour = X 시예요.',
   'El reloj muestra las 6:00. ¿Qué hora es?': 'The clock shows 6:00. What time is it?',
   '여섯 = seis.': '여섯 = six.',
   'Patrón: 지금 + [número] + 시예요.': 'Pattern: 지금 + [number] + 시예요.',
   'El reloj muestra las 11:00. ¿Qué hora es?': 'The clock shows 11:00. What time is it?',
   '11 en nativo = 열한 (no 열일).': '11 in native = 열한 (not 열일).',
   '¿Dónde nos vemos?': 'Where shall we meet?',
-  'El nombre del café está en una nota anterior.': 'The name of the café is in an earlier note.',
+  'Ordena primero el nombre del café y después marca el lugar del encuentro con 에서.':
+    'Put the café name first, then mark the meeting place with 에서.',
   'Lugar DONDE pasa una acción usa 에서, no 에.':
     'The place WHERE an action happens uses 에서, not 에.',
   '¿A qué hora vas?': 'What time are you going?',
@@ -112,8 +113,8 @@ export const en: Record<string, string> = {
   'No es 에서 (lugar de acción) — es 에 (destino).':
     "It's not 에서 (place of action) — it's 에 (destination).",
   '¿A qué hora nos vemos en el café?': 'What time shall we meet at the café?',
-  'Necesitas tanto la hora como el lugar del encuentro (ambos están en notas previas).':
-    'You need both the time and the place of the meeting (both are in earlier notes).',
+  'Construye primero la hora con 에 y después el lugar del encuentro con 에서.':
+    'Build the time first with 에, then the meeting place with 에서.',
   '"A la hora X" → 시에 (G032). "Lugar donde pasa la acción" → 에서 (G005).':
     '"At time X" → 시에 (G032). "Place where the action happens" → 에서 (G005).',
   '¿Qué hay?': 'What is there?',
@@ -235,7 +236,7 @@ export const en: Record<string, string> = {
   'Antes de abrir la puerta, se barre el patio.':
     'Before opening the gate, the courtyard is swept.',
   '문을 열다 = abrir la puerta · 마당을 쓸다 = barrer el patio. El patio se recibe limpio.':
-    '문을 열다 = to open the gate · 마당을 쓸다 = to sweep the courtyard. The courtyard is received clean.',
+    '문을 열다 = to open the gate · 마당을 쓸다 = to sweep the courtyard. You find the courtyard clean.',
   '전에 exige -기: 열기 전에 (G035). La forma rival 연 후에 (열다 → 연) significa «después de abrir», y la hoja barre antes. -기 후에 y -(으)ㄴ 전에 no existen.':
     "전에 requires -기: 열기 전에 (G035). The rival form 연 후에 (열다 → 연) means «after opening», and the sheet sweeps before. -기 후에 and -(으)ㄴ 전에 don't exist.",
   'La segunda taza está vacía. ¿Qué le dices a 우담 en voz baja?':
@@ -317,7 +318,7 @@ export const en: Record<string, string> = {
   'Un día de lluvia llegó al templo un niño llorando sin parar, y el maestro inventó el cuento para consolarlo.':
     'On a rainy day a boy came to the temple crying without stop, and the master made up the tale to console him.',
   '만들어 줬어요 = «lo hice PARA alguien». Mira a quién: 우담에게.':
-    '만들어 줬어요 = «I made it FOR someone». Look at who: 우담에게.',
+    '만들어 줬어요 = «I made it FOR someone». Look at the recipient: 우담에게.',
   'Todos los verbos llevan -았/었어요 — ya ocurrió. 왔어요 no es 올 거예요 (vendrá).':
     'All the verbs carry -았/었어요 — it already happened. 왔어요 is not 올 거예요 (will come).',
   'El maestro oyó la leyenda que los niños del pueblo habían inventado, y se la contó al pequeño 우담.':
@@ -373,7 +374,7 @@ export const en: Record<string, string> = {
   '안 = elegiste no hacerlo. 못 = querías, pero no pudiste.':
     "안 = you chose not to do it. 못 = you wanted to, but you couldn't.",
   'Mira la segunda frase: 목이 메었어요 = «se me hizo un nudo en la garganta». Una garganta que se cierra sola no es una decisión — es un impedimento.':
-    "Look at the second sentence: 목이 메었어요 = «a lump came to my throat». A throat that closes on its own is not a decision — it's an impediment.",
+    "Look at the second sentence: 목이 메었어요 = «I got a lump in my throat». A throat that tightens on its own is not a decision — it's an impediment.",
   'No cerré la puerta del cuarto del maestro. Todavía no quería cerrarla.':
     "I didn't close the door to the master's room. I didn't want to close it yet.",
   'Mira la segunda frase: -고 싶지 않았어요 = «no quería». Donde hay querer (o no querer), hay elección.':
@@ -449,7 +450,7 @@ export const en: Record<string, string> = {
   '호떡 = el panqueque relleno de azúcar · 한 접시 = un plato · 갖다주다 = llevarle algo a alguien · 도윤이한테 = a 도윤.':
     '호떡 = the sugar-filled pancake · 한 접시 = one plate · 갖다주다 = to take something to someone · 도윤이한테 = to 도윤.',
   '-아/어 주다 (G039) = hacer algo en beneficio de otro; en 갖다줘요 el favor (llevar) va de ti hacia 도윤, y 도윤이한테 marca a quién. No es «que él te lo traiga a ti».':
-    "-아/어 주다 (G039) = to do something for someone else's benefit; in 갖다줘요 the favor (taking) goes from you toward 도윤, and 도윤이한테 marks who. It's not «for him to bring it to you».",
+    "-아/어 주다 (G039) = to do something for someone else's benefit; in 갖다줘요 the favor (bringing it) goes from you to 도윤, and 도윤이한테 marks the recipient. It does not mean that he brings it to you.",
   'Que vayas tú un momento a donde está 도윤.': 'To go yourself for a moment to where 도윤 is.',
   'Que le lleves algo de comer a 도윤 un momento.': 'To take 도윤 something to eat for a moment.',
   'Que le transmitas a 하나 el recado de que venga.': 'To pass on to 하나 the message to come.',
@@ -458,7 +459,7 @@ export const en: Record<string, string> = {
   '잠깐 = un momentito · 오다 = venir · 전하다 = transmitir / hacer llegar un recado · -아/어 주다 aquí = «transmíteselo, hazme el favor».':
     '잠깐 = just a moment · 오다 = to come · 전하다 = to pass on / deliver a message · -아/어 주다 here = «pass it on, do me the favor».',
   '전해 줘요 = 전하다 + -아/어 주다 (G039): el favor es llevarle el mensaje a 도윤 de tu parte. 오라고 = «que venga»; el que se mueve es 도윤, tú solo transmites.':
-    '전해 줘요 = 전하다 + -아/어 주다 (G039): the favor is taking the message to 도윤 on your behalf. 오라고 = «to come»; the one who moves is 도윤, you only pass it on.',
+    '전해 줘요 = 전하다 + -아/어 주다 (G039): the favor is passing your message on to 도윤. 오라고 = «to come»; 도윤 is the one who moves, while you only relay the message.',
   'Que le vendas una flor a la dueña de la floristería.':
     'To sell a flower to the owner of the flower shop.',
   'Que compres una flor en la floristería para ti.':
@@ -590,13 +591,13 @@ export const en: Record<string, string> = {
   'Este 호떡 es más barato que el de al lado, pero sabe igual.':
     'This 호떡 is cheaper than the one next door, but it tastes the same.',
   '싸다 = ser barato · 옆집 = el puesto de al lado · 맛은 똑같아요 = el sabor es idéntico. 이모 regatea: misma calidad, menos won.':
-    '싸다 = to be cheap · 옆집 = the stall next door · 맛은 똑같아요 = the taste is identical. 이모 haggles: same quality, fewer won.',
+    '싸다 = to be cheap · 옆집 = the stall next door · 맛은 똑같아요 = the taste is identical. 이모 haggles: the same quality for fewer won.',
   '«más barato, pero igual de bueno» = raíz + 지만: 싸다 → 싸지만. 비싸지만 («más caro pero igual») contradice el regateo de 이모. 싸고 enumera; 싸서 sería causa.':
     "«cheaper, but just as good» = stem + 지만: 싸다 → 싸지만. 비싸지만 («more expensive but the same») contradicts 이모's haggling. 싸고 lists; 싸서 would be cause.",
   'Estos guantes son lo bastante pequeños para caber en la mochila, pero abrigan mucho.':
     "These gloves are small enough to fit in the backpack, but they're very warm.",
   '작다 = ser pequeño · 가방에 들어가다 = caber en la mochila · 따뜻하다 = abrigar. Van en el paquete del 군대.':
-    '작다 = to be small · 가방에 들어가다 = to fit in the backpack · 따뜻하다 = to be warm. They go in the 군대 package.',
+    '작다 = to be small · 가방에 들어가다 = to fit in the backpack · 따뜻하다 = to be warm. They go in the military care package (군대).',
   '«Pequeños, PERO abrigan» = raíz + 지만: 작다 → 작지만. «가방에 들어갈 만큼» fija «pequeños», así que 크지만 choca de frente. 작아서 sería causa.':
     '«Small, BUT warm» = stem + 지만: 작다 → 작지만. «가방에 들어갈 만큼» fixes «small», so 크지만 clashes head-on. 작아서 would be cause.',
   'Do-yun se va lejos, pero su corazón siempre está aquí.':
@@ -608,7 +609,7 @@ export const en: Record<string, string> = {
   'El 달빛시장 tiene mucha gente y es ruidoso, pero a mí me encanta de verdad.':
     'The 달빛시장 is crowded and noisy, but I really love it.',
   '사람이 많다 = haber mucha gente · 시끄럽다 = ser ruidoso · 정말 = de verdad. El neón, el vapor y las voces: ese es su encanto.':
-    "사람이 많다 = there's a lot of people · 시끄럽다 = to be noisy · 정말 = really. The neon, the steam, and the voices: that's its charm.",
+    "사람이 많다 = there are many people · 시끄럽다 = to be noisy · 정말 = really. The neon, the steam, and the voices: that's its charm.",
   '«Ruidoso, PERO me encanta» = raíz + 지만: 시끄럽다 → 시끄럽지만 (지만 empieza por consonante, la raíz no sufre el cambio ㅂ-irregular). «사람도 많고» bloquea 조용하지만.':
     "«Noisy, BUT I love it» = stem + 지만: 시끄럽다 → 시끄럽지만 (지만 begins with a consonant, so the stem doesn't undergo the ㅂ-irregular change). «사람도 많고» blocks 조용하지만.",
   '¿Qué encadenó 이모 en su lista?': 'What did 이모 chain together in her list?',
@@ -621,7 +622,7 @@ export const en: Record<string, string> = {
   'Envolvió los hotteok, compró calcetines y escribió la carta.':
     'She wrapped the hotteok, bought socks, and wrote the letter.',
   '호떡 싸다 = envolver los hotteok · 양말 = calcetines · 편지(를) 넣다 → 넣었어요 = meter la carta.':
-    '호떡 싸다 = to wrap the hotteok · 양말 = socks · 편지(를) 넣다 → 넣었어요 = to put in the letter.',
+    '호떡 싸다 = to wrap the hotteok · 양말 = socks · 편지(를) 넣다 → 넣었어요 = to put the letter in.',
   '-고 (G019) encadena «y luego»: 싸고 → 사고 → 넣었어요. El pasado va SOLO en la última cláusula (넣었어요); las intermedias quedan desnudas (싸고, 사고), nunca 쌌고/샀고.':
     '-고 (G019) chains «and then»: 싸고 → 사고 → 넣었어요. The past goes ONLY in the last clause (넣었어요); the intermediate ones stay bare (싸고, 사고), never 쌌고/샀고.',
   'Hizo los hotteok, los metió en la bolsa y fue al mercado.':
@@ -645,7 +646,7 @@ export const en: Record<string, string> = {
   'Compró lo de 도윤, compró lo de 하나 y lo envolvió todo junto.':
     "She bought 도윤's, bought 하나's, and wrapped it all together.",
   '거 = «lo de» (도윤 거 = lo de 도윤) · 같이 = juntos / a la vez · 포장하다 → 포장했어요 = envolver.':
-    "거 = «'s / the one of» (도윤 거 = 도윤's) · 같이 = together / at once · 포장하다 → 포장했어요 = to wrap.",
+    "거 = possessive «'s / the one belonging to» (도윤 거 = 도윤's) · 같이 = together / at once · 포장하다 → 포장했어요 = to wrap.",
   '-고 (G019) enumera «y… y…»: 사고 → 사고 → 포장했어요. El tiempo se marca UNA sola vez, en la cláusula final (포장했어요). Las dos compras van en -고 sin tiempo propio (사고, no 샀고).':
     '-고 (G019) lists «and… and…»: 사고 → 사고 → 포장했어요. The tense is marked ONLY once, in the final clause (포장했어요). The two purchases go in -고 with no tense of their own (사고, not 샀고).',
   'Metió el kimchi, metió galletas y ató la caja.':
@@ -657,7 +658,7 @@ export const en: Record<string, string> = {
   'Ató la caja, metió el ramyeon y después metió el kimchi.':
     'She tied up the box, packed in the ramyeon, and then packed in the kimchi.',
   '김치(를) 담다 = meter/empaquetar el kimchi · 라면 = ramyeon · 박스(를) 묶다 → 묶었어요 = atar la caja.':
-    '김치(를) 담다 = to pack in / box up the kimchi · 라면 = ramyeon · 박스(를) 묶다 → 묶었어요 = to tie up the box.',
+    '김치(를) 담다 = to pack the kimchi · 라면 = ramyeon · 박스(를) 묶다 → 묶었어요 = to tie up the box.',
   '-고 (G019) encadena: 담고 → 넣고 → 묶었어요. El pasado va SOLO en la última (묶었어요); las intermedias se quedan en -고 (담고, no 담았고). El orden lo decide la lógica (atar va al final).':
     '-고 (G019) chains: 담고 → 넣고 → 묶었어요. The past goes ONLY in the last (묶었어요); the intermediate ones stay in -고 (담고, not 담았고). The logic decides the order (tying up goes last).',
   'Dejó enfriar los hotteok, los puso en la caja y los subió al autobús.':
@@ -689,7 +690,7 @@ export const en: Record<string, string> = {
   'Tienes que mirarle la cara a la tía antes de irte.':
     'You have to look your aunt in the face before you go.',
   '잘 다녀오다 = ir y volver bien (lo que dice quien se va de viaje y regresa) · 그동안 = todo este tiempo, ya cumplido.':
-    '잘 다녀오다 = to go and come back safely (what someone who leaves on a trip and returns says) · 그동안 = all this time, now fulfilled.',
+    '잘 다녀오다 = to go and come back safely (what someone who leaves on a trip and returns says) · 그동안 = all this time, now complete.',
   '다녀오겠습니다 lo dice EL QUE SE VA (1.ª persona, fórmula fija); 다녀오세요 lo dice quien SE QUEDA, al que parte. Y el gracias va en pasado: 고마웠어요 (G013), no 고마워요.':
     '다녀오겠습니다 is said by THE ONE WHO LEAVES (1st person, set phrase); 다녀오세요 is said by the one who STAYS, to the one departing. And the thank-you goes in the past: 고마웠어요 (G013), not 고마워요.',
   'Doyun. Es lo último… ¿de verdad no tienes nada que decir?':
@@ -710,8 +711,8 @@ export const en: Record<string, string> = {
     "You went up to the market to grab something to eat before the last bus. The lady at the 호떡 stall took your backpack, smiled, and said: «help me close up and I'll give it back».",
   'El último autobús sale en veinte minutos y tú solo querías una cosa caliente para el camino. Subes los tres escalones de hierro hacia 달빛시장 y el frío de la calle se queda atrás de golpe: dentro es todo vapor, aceite y luz. Los letreros de neón —rojo, verde menta, un rosa que parpadea— se reflejan partidos en el asfalto mojado. Huele a sésamo tostado, a caldo, a azúcar quemándose en una plancha. En alguna parte una radio vieja escupe un trot de los ochenta y nadie la apaga.\n\nSigues la nariz hasta una plancha dorada donde una mujer de unos sesenta años —delantal, manos rápidas, una sonrisa que llega antes que las palabras— voltea 호떡 con dos dedos y un palillo. «어서 와요!», te grita por encima del chisporroteo, como si te esperara desde hace rato. Le pides uno. Ella te lo está preparando ya, antes de que termines la frase.\n\nY entonces, sin dejar de sonreír, te quita la mochila del hombro con la naturalidad de quien te quita una pelusa de la chaqueta. La cuelga de un gancho detrás de la plancha, junto a los cucharones. «잠깐만 빌릴게요», dice —te la tomo prestada un momentito—. «우리 가게 문 닫는 거 좀 도와줘요. 그럼 돌려줄게요.» Ayúdame a cerrar el puesto y te la devuelvo. No es una amenaza: es una invitación con rehén. Te llaman 이모 todos los del mercado, así que tú también, ya, eres de la familia.\n\nVeinte minutos. El mercado entero baja la persiana en veinte minutos y tu autobús sale a la vez. 이모 te pone un 호떡 calentísimo en la mano «para el camino» y empieza a darte recados como quien reparte cartas: lleva esto, pregunta aquello, regatea aquello otro. Dos puestos más allá, un chico flaco de diecinueve años —도윤— finge estar muy ocupado limpiando una bandeja que ya está limpia, lanzando miraditas hacia el puesto de enfrente. En el puesto de enfrente, 하나 corta cebolleta sin levantar la vista, y sonríe sola.\n\nVas a pasar los próximos veinte minutos haciendo favores —trae, prueba, pregunta, regatea— en el coreano más fácil del mundo: -아/어 주세요, por favor, hazme el favor. Lo que todavía no sabes es que cada recado es una pieza de un plan, que el plan no es el que parece, y que la frase más difícil de toda la noche no llevará ninguna fórmula de cortesía: será solo un gracias, en pasado, dicho a la persona correcta antes de que el autobús arranque.':
     "The last bus leaves in twenty minutes and all you wanted was one hot thing for the road. You climb the three iron steps up to 달빛시장 and the cold of the street is left behind all at once: inside it's all steam, oil, and light. The neon signs —red, mint green, a flickering pink— are reflected, broken, in the wet asphalt. It smells of toasted sesame, of broth, of sugar burning on a griddle. Somewhere an old radio spits out an eighties trot and no one turns it off.\n\nYou follow your nose to a golden griddle where a woman of about sixty —apron, fast hands, a smile that arrives before the words— flips 호떡 with two fingers and a chopstick. «어서 와요!», she shouts to you over the sizzling, as if she'd been expecting you for a while. You order one. She's already making it for you, before you finish the sentence.\n\nAnd then, still smiling, she lifts the backpack off your shoulder with the ease of someone picking a piece of lint off your jacket. She hangs it on a hook behind the griddle, next to the ladles. «잠깐만 빌릴게요», she says —I'll borrow it just a moment—. «우리 가게 문 닫는 거 좀 도와줘요. 그럼 돌려줄게요.» Help me close up the stall and I'll give it back. It's not a threat: it's an invitation with a hostage. Everyone at the market calls her 이모, so you too, now, are family.\n\nTwenty minutes. The whole market pulls down its shutters in twenty minutes and your bus leaves at the same time. 이모 puts a piping-hot 호떡 in your hand «for the road» and starts handing you errands like someone dealing out cards: take this, ask that, haggle over that other thing. Two stalls down, a skinny nineteen-year-old boy —도윤— pretends to be very busy cleaning a tray that's already clean, sneaking glances toward the stall across the way. At the stall across the way, 하나 chops scallions without looking up, and smiles to herself.\n\nYou're going to spend the next twenty minutes doing favors —bring, try, ask, haggle— in the easiest Korean in the world: -아/어 주세요, please, do me the favor. What you don't know yet is that each errand is a piece of a plan, that the plan isn't what it seems, and that the hardest sentence of the whole night won't carry any polite formula: it'll be just a thank-you, in the past tense, said to the right person before the bus pulls away.",
-  'El mercado ya baja las persianas, una tras otra, con ese estruendo de metal que es el sonido de cerrar el día. 도윤 está plantado delante de 하나 con las orejas rojas y la bandeja todavía en la mano. Lo suelta de golpe, sin respirar —prueba, falla un poco, se ríe de sí mismo, y lo vuelve a decir mejor—; 하나, que era más lista que él desde el principio, ya lo sabía, y le guarda un sitio en su número de teléfono. Pero el chico no ha terminado. Se gira hacia la plancha, hacia 이모, y dice la frase que tú armaste pieza a pieza: «{farewell}». Y la frase pesa el doble, porque no es para la chica: es para la mujer que llevaba diez años dándole de comer.\n\n이모 no llora —tiene las manos demasiado ocupadas para llorar—. Coge un 호떡 recién hecho de la plancha, el más dorado, lo envuelve en una servilleta de papel a toda prisa y se lo aplasta en la mano al chico, todavía quemando. «버스에서 먹어. 식기 전에.» Cómetelo en el autobús. Antes de que se enfríe. Es lo único que se le ocurre hacer con las manos para no hacer otra cosa.\n\nEntonces se acuerda de ti. Descuelga tu mochila del gancho de detrás de la plancha, le sacude una mota imaginaria, y te la devuelve con las dos manos, como si fuera ella la que te debe algo. «고마워요. 진짜 도와줬어요.» Gracias. De verdad me ayudaste. Y a 도윤, que ya sube al estribo: «야, 머리 짧게 깎고 와. 자리 빼놓을게.» Oye —vuelve con el pelo corto. Te guardo el sitio.\n\nEl último autobús arranca con un suspiro de aire comprimido y se despega del bordillo. Por la ventanilla se ve la silueta del chico recién rapado, una mancha de luz de neón cruzándole la cara. En el andén, 이모 y 하나 de pie, hombro con hombro, levantan la mano. La plancha de 호떡 sigue echando vapor sola detrás de ellas. Los letreros del mercado se quedan flotando, partidos, en el asfalto mojado. Te quedas mirando un momento más de lo necesario.\n\nEl autobús dobla la esquina y el mercado desaparece. Te das cuenta de que sigues con el 호떡 caliente en la mano, el que 이모 te puso «para el camino» hace veinte minutos y nunca te comiste. Todavía quema un poco. Le das el primer mordisco. Sabe a sésamo, a azúcar y a una casa que no es la tuya pero que, durante veinte minutos, te dejaron ayudar a cerrar.\n\n«제일 어려운 말은 제일 따뜻한 말이었어요.» — La frase más difícil resultó ser la más cálida.\n\nEn el mercado dicen que a quien ayuda a cerrar el puesto, 이모 nunca lo deja irse con hambre. La próxima vez que pases por 달빛시장 —ya sabes a quién pedirle un 호떡.':
-    "The market is already pulling down its shutters, one after another, with that clang of metal that is the sound of closing the day. 도윤 is planted in front of 하나 with red ears and the tray still in his hand. He blurts it out all at once, without breathing —tries, stumbles a little, laughs at himself, and says it again better—; 하나, who was sharper than him from the start, already knew, and saves him a spot in her phone contacts. But the boy isn't done. He turns toward the griddle, toward 이모, and says the sentence you put together piece by piece: «{farewell}». And the sentence weighs twice as much, because it isn't for the girl: it's for the woman who'd spent ten years feeding him.\n\n이모 doesn't cry —her hands are too busy to cry—. She grabs a freshly made 호떡 off the griddle, the most golden one, wraps it in a paper napkin in a hurry, and presses it into the boy's hand, still burning. «버스에서 먹어. 식기 전에.» Eat it on the bus. Before it gets cold. It's the only thing she can think to do with her hands so she doesn't do something else.\n\nThen she remembers you. She takes your backpack off the hook behind the griddle, brushes an imaginary speck off it, and gives it back to you with both hands, as if she were the one who owed you something. «고마워요. 진짜 도와줬어요.» Thank you. You really helped me. And to 도윤, who's already stepping aboard: «야, 머리 짧게 깎고 와. 자리 빼놓을게.» Hey —come back with your hair cut short. I'll save your spot.\n\nThe last bus starts up with a sigh of compressed air and pulls away from the curb. Through the window you can see the silhouette of the freshly shorn boy, a smear of neon light crossing his face. On the platform, 이모 and 하나 stand shoulder to shoulder, raising their hands. The 호떡 griddle keeps steaming on its own behind them. The market signs stay floating, broken, in the wet asphalt. You stay looking a moment longer than necessary.\n\nThe bus turns the corner and the market disappears. You realize you're still holding the warm 호떡, the one 이모 put in your hand «for the road» twenty minutes ago and you never ate. It's still a little hot. You take the first bite. It tastes of sesame, of sugar, and of a home that isn't yours but that, for twenty minutes, let you help close up.\n\n«제일 어려운 말은 제일 따뜻한 말이었어요.» — The hardest sentence turned out to be the warmest.\n\nAt the market they say that whoever helps close up the stall, 이모 never lets leave hungry. The next time you pass through 달빛시장 —you already know who to ask for a 호떡.",
+  'El mercado ya baja las persianas, una tras otra, con ese estruendo de metal que es el sonido de cerrar el día. 도윤 está plantado delante de 하나 con las orejas rojas y la bandeja todavía en la mano. Lo suelta de golpe, sin respirar —prueba, falla un poco, se ríe de sí mismo, y lo vuelve a decir mejor—; 하나, que era más lista que él desde el principio, ya lo sabía, y guarda su número en el teléfono. Pero el chico no ha terminado. Se gira hacia la plancha, hacia 이모, y dice la frase que tú armaste pieza a pieza: «{farewell}». Y la frase pesa el doble, porque no es para la chica: es para la mujer que llevaba diez años dándole de comer.\n\n이모 no llora —tiene las manos demasiado ocupadas para llorar—. Coge un 호떡 recién hecho de la plancha, el más dorado, lo envuelve en una servilleta de papel a toda prisa y se lo aplasta en la mano al chico, todavía quemando. «버스에서 먹어. 식기 전에.» Cómetelo en el autobús. Antes de que se enfríe. Es lo único que se le ocurre hacer con las manos para no hacer otra cosa.\n\nEntonces se acuerda de ti. Descuelga tu mochila del gancho de detrás de la plancha, le sacude una mota imaginaria, y te la devuelve con las dos manos, como si fuera ella la que te debe algo. «고마워요. 진짜 도와줬어요.» Gracias. De verdad me ayudaste. Y a 도윤, que ya sube al estribo: «야, 머리 짧게 깎고 와. 자리 빼놓을게.» Oye —vuelve con el pelo corto. Te guardo el sitio.\n\nEl último autobús arranca con un suspiro de aire comprimido y se despega del bordillo. Por la ventanilla se ve la silueta del chico recién rapado, una mancha de luz de neón cruzándole la cara. En el andén, 이모 y 하나 de pie, hombro con hombro, levantan la mano. La plancha de 호떡 sigue echando vapor sola detrás de ellas. Los letreros del mercado se quedan flotando, partidos, en el asfalto mojado. Te quedas mirando un momento más de lo necesario.\n\nEl autobús dobla la esquina y el mercado desaparece. Te das cuenta de que sigues con el 호떡 caliente en la mano, el que 이모 te puso «para el camino» hace veinte minutos y nunca te comiste. Todavía quema un poco. Le das el primer mordisco. Sabe a sésamo, a azúcar y a una casa que no es la tuya pero que, durante veinte minutos, te dejaron ayudar a cerrar.\n\n«제일 어려운 말은 제일 따뜻한 말이었어요.» — La frase más difícil resultó ser la más cálida.\n\nEn el mercado dicen que a quien ayuda a cerrar el puesto, 이모 nunca lo deja irse con hambre. La próxima vez que pases por 달빛시장 —ya sabes a quién pedirle un 호떡.':
+    "The market is already pulling down its shutters, one after another, with that clang of metal that is the sound of closing the day. 도윤 is planted in front of 하나 with red ears and the tray still in his hand. He blurts it out all at once, without breathing —tries, stumbles a little, laughs at himself, and says it again better—; 하나, who was sharper than him from the start, already knew, and saves his number in her phone. But the boy isn't done. He turns toward the griddle, toward 이모, and says the sentence you put together piece by piece: «{farewell}». And the sentence weighs twice as much, because it isn't for the girl: it's for the woman who'd spent ten years feeding him.\n\n이모 doesn't cry —her hands are too busy to cry—. She grabs a freshly made 호떡 off the griddle, the most golden one, wraps it in a paper napkin in a hurry, and presses it into the boy's hand, still burning. «버스에서 먹어. 식기 전에.» Eat it on the bus. Before it gets cold. It's the only thing she can think to do with her hands so she doesn't do something else.\n\nThen she remembers you. She takes your backpack off the hook behind the griddle, brushes an imaginary speck off it, and gives it back to you with both hands, as if she were the one who owed you something. «고마워요. 진짜 도와줬어요.» Thank you. You really helped me. And to 도윤, who's already stepping aboard: «야, 머리 짧게 깎고 와. 자리 빼놓을게.» Hey —come back with your hair cut short. I'll save your spot.\n\nThe last bus starts up with a sigh of compressed air and pulls away from the curb. Through the window you can see the silhouette of the freshly shorn boy, a smear of neon light crossing his face. On the platform, 이모 and 하나 stand shoulder to shoulder, raising their hands. The 호떡 griddle keeps steaming on its own behind them. The market signs stay floating, broken, in the wet asphalt. You stay looking a moment longer than necessary.\n\nThe bus turns the corner and the market disappears. You realize you're still holding the warm 호떡, the one 이모 put in your hand «for the road» twenty minutes ago and you never ate. It's still a little hot. You take the first bite. It tastes of sesame, of sugar, and of a home that isn't yours but that, for twenty minutes, let you help close up.\n\n«제일 어려운 말은 제일 따뜻한 말이었어요.» — The hardest sentence turned out to be the warmest.\n\nAt the market they say that whoever helps close up the stall, 이모 never lets leave hungry. The next time you pass through 달빛시장 —you already know who to ask for a 호떡.",
   'El puesto de 호떡 (순자 이모)': 'The 호떡 stall (순자 이모)',
   'El callejón de la comida (먹자골목)': 'The food alley (먹자골목)',
   'El callejón del bazar (만물상 골목)': 'The bazaar alley (만물상 골목)',
@@ -730,33 +731,19 @@ export const en: Record<string, string> = {
     'The guest of the last bus: avatar with the warm 호떡 in hand wrapped in its napkin, pink-green neon frame with a string of bulbs, and the background of the final shot with the bus pulling away under the neon while 이모 and 하나 wave goodbye from the platform.',
   'Slice of life · Cálido': 'Slice of life · Warm',
   'Místico · Contemplativo': 'Mystical · Contemplative',
-  'Energético · Callejero': 'Energetic · Street-side',
+  'Energético · Callejero': 'Energetic · Streetwise',
   'El último tren a Seúl': 'The last train to Seoul',
-  'Las 23:47. El último KTX sale en trece minutos, tu billete está en coreano, y el andén que dice tu app no existe. Un guardia de estación muy paciente es tu única esperanza.':
-    "It's 23:47. The last KTX leaves in thirteen minutes, your ticket is in Korean, and the platform your app says doesn't exist. A very patient station guard is your only hope.",
   'Urgente · Contemporáneo': 'Urgent · Contemporary',
   'La cocina del abuelo': "Grandfather's kitchen",
-  'Tu abuelo ya no recuerda muchas cosas. Pero dejó su receta de doenjang-jjigae escrita en libretas por toda la cocina — y tu madre quiere que la cocines tú, esta noche, exactamente como él.':
-    "Your grandfather doesn't remember many things anymore. But he left his doenjang-jjigae recipe written in notebooks all over the kitchen — and your mother wants you to cook it, tonight, exactly the way he did.",
-  'Nostálgico · Familiar': 'Nostalgic · Familial',
+  'Nostálgico · Familiar': 'Nostalgic · Family-centered',
   'El estudio de K-drama': 'The K-drama studio',
-  'Eres extra en un drama de verano y el actor principal no llegó. La directora te mira fijo: "Tú. Sabes coreano, ¿no?" El guion está lleno de marcas que no entiendes. Luces. Cámara.':
-    "You're an extra in a summer drama and the lead actor didn't show up. The director stares at you: \"You. You know Korean, right?\" The script is full of marks you don't understand. Lights. Camera.",
   'Meta-pop · Divertido': 'Meta-pop · Fun',
   'El retiro de la empresa': 'The company retreat',
-  'Tu primer workshop con la oficina de Gangnam: montaña, fogata y juegos de equipo. El director ha escondido los premios del equipo por el campamento — y todas las pistas están en lenguaje formal.':
-    "Your first workshop with the Gangnam office: mountain, campfire, and team games. The director has hidden the team's prizes around the campsite — and all the clues are in formal language.",
-  'Corporativo · Nocturno': 'Corporate · Nocturnal',
+  'Corporativo · Nocturno': 'Corporate · After Dark',
   'El palacio de las linternas': 'The palace of lanterns',
-  'La noche del festival, el palacio Joseon abre sus puertas una vez al año. Te quedaste dentro después del cierre — y los pasillos iluminados por linternas parecen reordenarse cuando no miras.':
-    "On the night of the festival, the Joseon palace opens its gates once a year. You stayed inside after closing — and the lantern-lit corridors seem to rearrange themselves when you're not looking.",
   'Histórico · Misterioso': 'Historical · Mysterious',
   'La mansión del testamento': 'The mansion of the will',
-  'El magnate murió a medianoche y tú eres el intérprete del testamento. Siete herederos, una mansión victoriana en las afueras de Seúl, y un documento que cambia de sentido según cómo se lea cada cláusula.':
-    'The magnate died at midnight and you are the interpreter of the will. Seven heirs, a Victorian mansion on the outskirts of Seoul, and a document that shifts meaning depending on how each clause is read.',
-  'Intriga · Denso': 'Intrigue · Dense',
+  'Intriga · Denso': 'Intrigue · Brooding',
   'La cumbre de medianoche': 'The midnight summit',
-  'Dos delegaciones, un castillo neutral, y un comunicado conjunto que debe firmarse antes del amanecer. Cada palabra del borrador importa. Tú sostienes la pluma.':
-    'Two delegations, a neutral castle, and a joint communiqué that must be signed before dawn. Every word of the draft matters. You hold the pen.',
   'Diplomático · Tenso': 'Diplomatic · Tense',
 }

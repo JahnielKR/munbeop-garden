@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import WelcomeStage from '~/components/welcome/WelcomeStage.vue'
 import WelcomeScanlineOverlay from '~/components/welcome/WelcomeScanlineOverlay.vue'
 import WelcomeBrandMark from '~/components/welcome/WelcomeBrandMark.vue'
@@ -74,12 +74,26 @@ function onWelcomed() {
   // hook is reserved for future side-effects (analytics, toast, etc.).
 }
 
+function syncSidebarFromRoute() {
+  if (
+    route.query.open === 'signin'
+    && route.path.startsWith('/welcome')
+    && !sidebarOpen.value
+  ) {
+    openSidebar()
+  }
+}
+
+// WelcomePanel is intentionally always mounted by CameraStage. A legacy
+// /auth/sign-in route redirects after that mount, so onMounted alone cannot
+// observe its new /welcome?open=signin query. React to later route changes as
+// well so bookmarks and auth redirects reliably reveal the requested form.
+watch(() => route.fullPath, syncSidebarFromRoute)
+
 onMounted(() => {
   hydrateTheme()
   hydrateMusic()
-  if (route.query.open === 'signin' && route.path.startsWith('/welcome')) {
-    openSidebar()
-  }
+  syncSidebarFromRoute()
 })
 </script>
 

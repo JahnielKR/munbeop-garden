@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import type { Level, RewardTier, ScriptedBeat, SelectionCandidate, CompletionCandidate, CreationCandidate } from '~/lib/domain'
+import type {
+  Level,
+  RewardTier,
+  ScriptedBeat,
+  SelectionCandidate,
+  CompletionCandidate,
+  CreationCandidate,
+} from '~/lib/domain'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 import { useLocalized } from '~/composables/useLocalized'
 import { useEscapeRoomAudio } from '~/composables/useEscapeRoomAudio'
+import PracticeSaveStatus from '~/components/practice/PracticeSaveStatus.vue'
 import Scene from './Scene.vue'
 import IntroCinematic from './IntroCinematic.vue'
 import VictoryScreen from './VictoryScreen.vue'
@@ -32,7 +40,7 @@ const emit = defineEmits<{ exit: [] }>()
 const store = useEscapeRoomStore()
 // Persistence half of the store (it stays a pure state machine): write the
 // run's outcome — unlocked cosmetic + racha — back to the account on run end.
-const { persist } = useEscapeRoomProgress()
+const { persist, retrySave, saveStatus } = useEscapeRoomProgress()
 const { tl } = useLocalized()
 const { t } = useI18n()
 const audio = useEscapeRoomAudio()
@@ -50,6 +58,7 @@ const UI_SFX = {
 
 /** Join the level's asset base with a seed-relative path ('audio/...'). */
 function url(path: string): string {
+  if (!path) return ''
   return `${imageBase.value}${path}`
 }
 
@@ -79,6 +88,11 @@ const imageBase = computed(() => `/escape-room/${props.level.id}/`)
 const activeRoom = computed(
   () => props.level.rooms.find((r) => r.id === store.currentRoomId) ?? null,
 )
+
+function roomContainsNextSlot(roomId: string): boolean {
+  const room = props.level.rooms.find((candidate) => candidate.id === roomId)
+  return !!room?.hotspots.some((hotspot) => hotspot.triggersSlot === store.nextSlotId)
+}
 
 const activeSlot = computed(() => {
   if (!activeSlotId.value) return null
@@ -159,25 +173,27 @@ watch(
  * re-entering the same room never restarts it. On an actual room CHANGE (not
  * the first entry of the run) a wooden-door one-shot punctuates the move.
  */
-watch(
-  [() => store.currentRoomId, phase],
-  ([roomId], [prevRoomId, prevPhase]) => {
-    if (phase.value !== 'playing' || !activeRoom.value) return
-    const isRealRoomChange =
-      prevPhase === 'playing' && prevRoomId != null && prevRoomId !== roomId
-    if (isRealRoomChange) audio.playSfx(url(UI_SFX.door))
-    audio.playAmbient(url(activeRoom.value.ambientAudio))
-  },
-)
+watch([() => store.currentRoomId, phase], ([roomId], [prevRoomId, prevPhase]) => {
+  if (phase.value !== 'playing' || !activeRoom.value) return
+  const isRealRoomChange = prevPhase === 'playing' && prevRoomId != null && prevRoomId !== roomId
+  if (isRealRoomChange) audio.playSfx(url(UI_SFX.door))
+  audio.playAmbient(url(activeRoom.value.ambientAudio))
+})
 
-type AnswerOutcome = 'correct' | 'wrong' | 'game-over' | 'level-complete' | 'soft-reject'
+type AnswerOutcome =
+  | 'correct'
+  | 'wrong'
+  | 'game-over'
+  | 'level-complete'
+  | 'soft-reject'
+  | 'locked'
 
 function onHotspot(hotspotId: string) {
   const h = activeRoom.value?.hotspots.find((x) => x.id === hotspotId)
   if (!h) return
   // Cosmetic click sound for any hotspot that declares one (tea pour, purr, …).
   if (h.sfx) audio.playSfx(url(h.sfx))
-  if (h.triggersSlot && !store.resolvedSlots.includes(h.triggersSlot)) {
+  if (h.triggersSlot && store.isSlotUnlocked(h.triggersSlot)) {
     softMessage.value = null
     audio.playSfx(url(UI_SFX.select))
     activeSlotId.value = h.triggersSlot
@@ -230,6 +246,7 @@ function candidateSoftRejectVoiceAudio(slotId: string): string | null {
  *                      would instantly cancel the first.
  */
 function handleResult(slotId: string, result: AnswerOutcome) {
+  if (result === 'locked') return
   // 'game-over' is the run-ending mistake: it must play the WRONG feedback and
   // return, exactly like a non-fatal 'wrong'. Falling through to the correct/
   // level-complete branch would play the success chime + reaction voice and fire
@@ -378,6 +395,7 @@ function exitToBook() {
     <IntroCinematic
       v-if="phase === 'intro'"
       :narrative="level.intro"
+      :image="level.introImage ? url(level.introImage) : undefined"
       :voice-line="level.voiceIntro"
       :voice-audio="level.voiceIntroAudio ? url(level.voiceIntroAudio) : undefined"
       @done="phase = 'playing'"
@@ -428,16 +446,29 @@ function exitToBook() {
         :key="room.id"
         type="button"
         class="er__room-tab"
-        :class="{ 'er__room-tab--active': room.id === store.currentRoomId }"
+        :class="{
+          'er__room-tab--active': room.id === store.currentRoomId,
+          'er__room-tab--next': roomContainsNextSlot(room.id),
+        }"
+        :disabled="!store.isRoomUnlocked(room.id)"
+        :aria-current="room.id === store.currentRoomId ? 'location' : undefined"
         data-testid="room-tab"
         @click="store.enterRoom(room.id)"
       >
+        <span v-if="!store.isRoomUnlocked(room.id)" aria-hidden="true">🔒 </span>
         {{ tl(room.title) }}
       </button>
     </nav>
 
     <!-- Active scene -->
-    <Scene v-if="activeRoom" :room="activeRoom" :image-base="imageBase" :resolved-slots="store.resolvedSlots" @hotspot="onHotspot" />
+    <Scene
+      v-if="activeRoom"
+      :room="activeRoom"
+      :image-base="imageBase"
+      :resolved-slots="store.resolvedSlots"
+      :unlocked-slot-id="store.nextSlotId"
+      @hotspot="onHotspot"
+    />
 
     <!-- Puzzle overlay (a modal: dialog role, Tab trap, Esc, focus-on-open) -->
     <div
@@ -462,12 +493,7 @@ function exitToBook() {
         >
           <span aria-hidden="true">✕</span>
         </button>
-        <p
-          v-if="wrongNudge"
-          class="er__overlay-nudge"
-          role="status"
-          data-testid="puzzle-wrong"
-        >
+        <p v-if="wrongNudge" class="er__overlay-nudge" role="status" data-testid="puzzle-wrong">
           {{ wrongNudge }}
         </p>
         <SlotSelection
@@ -509,11 +535,16 @@ function exitToBook() {
     />
 
     <!-- End screens -->
+    <PracticeSaveStatus
+      :status="saveStatus"
+      @retry="retrySave"
+    />
     <GameOverScreen v-if="store.status === 'gameover'" @retry="retry" @exit="exitToBook" />
     <VictoryScreen
       v-if="store.status === 'completed' && earnedTier && !activeBeat"
       :level="level"
       :tier="earnedTier"
+      :image="level.outroImage ? url(level.outroImage) : undefined"
       :farewell="farewell"
       :bell-toll-audio="level.bellTollAudio ? url(level.bellTollAudio) : undefined"
       :rain-stop-audio="level.rainStopAudio ? url(level.rainStopAudio) : undefined"
@@ -601,6 +632,16 @@ function exitToBook() {
   color: var(--text-on-accent, #fff7eb);
   opacity: 1;
 }
+.er__room-tab--next:not(.er__room-tab--active) {
+  border-color: var(--focus-ring, #d8842f);
+  box-shadow: 0 0 0 2px rgba(216, 132, 47, 0.22);
+  opacity: 1;
+}
+.er__room-tab:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.8);
+  opacity: 0.38;
+}
 .er__room-tab:focus-visible {
   outline: 2px solid var(--focus-ring, #d8842f);
   outline-offset: 1px;
@@ -647,5 +688,64 @@ function exitToBook() {
   background: var(--surface, #fff7eb);
   cursor: pointer;
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 600px) {
+  .er {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 10px 96px;
+    overflow-x: hidden;
+  }
+
+  .er__hud {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 5px 8px;
+    padding: 8px;
+  }
+
+  .er__back {
+    grid-row: 1 / 3;
+    align-self: stretch;
+  }
+
+  .er__title {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .er__hearts {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+  }
+
+  .er__solved {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    justify-self: end;
+    font-size: 9px;
+  }
+
+  .er__mute {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    align-self: stretch;
+  }
+
+  .er__rooms {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+    scroll-snap-type: x proximity;
+  }
+
+  .er__room-tab {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
 }
 </style>

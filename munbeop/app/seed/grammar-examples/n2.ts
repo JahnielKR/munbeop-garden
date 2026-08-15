@@ -8,9 +8,9 @@ import { L } from '../locale'
  * grammars-n2.ts verbatim; sentences differ from each grammar's canonical
  * `Grammar.example` (the "above ≠ below" invariant).
  *
- * Drafted + Korean-lens adversarially verified by a multi-agent workflow
- * (grammaticality/naturalness, per-form realization, register-tag accuracy,
- * 8-locale fidelity). Native (Korean wife) review is the documented final gate.
+ * Editorial QA covers Korean form, per-form realization, register tags and
+ * localized meaning. Seed tests enforce catalog links, unique sentences,
+ * register-ending alignment and complete eight-locale fields.
  */
 export const TOPIK_2_EXAMPLES: GrammarExample[] = [
   {
@@ -1381,8 +1381,8 @@ export const TOPIK_2_EXAMPLES: GrammarExample[] = [
   // --- Sentence Garden short-sentence pilot: one short (3-5 eojeol), rigid
   // single-order example for the 19 TOPIK-2 grammars that previously had only
   // long (6+ eojeol) examples, so they were unplayable in 문장 정원. Authored +
-  // adversarially Korean-verified (grammaticality, single valid order, register,
-  // 8-locale fidelity); native (owner's wife) review is the final gate. ---
+  // editorially checked for grammar, constrained ordering, register and
+  // localized meaning; the shared seed tests guard the structural contract. ---
   {
     ko: '-(으)ㄹ 수 있다/없다',
     sentence: '저는 운전할 수 있어요.',

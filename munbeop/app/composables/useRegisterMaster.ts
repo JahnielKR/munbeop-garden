@@ -12,11 +12,17 @@ export function useRegisterMaster() {
     total: computed(() => m.view.value.total),
     earned: m.earned,
     celebrate: m.celebrate,
+    saveStatus: m.saveStatus,
+    saving: m.saving,
+    saveError: m.saveError,
+    locked: m.locked,
     /** Call at round end with the mode, the focused set, and the round accuracy. */
-    recordRound: (mode: RegisterMode, set: string, accuracy: number) => {
-      if (!isMasterySet(mode, set)) return
-      m.record(masteryKey(mode, set), accuracy)
+    recordRound: (mode: RegisterMode, set: string, accuracy: number): Promise<boolean> => {
+      if (!isMasterySet(mode, set)) return Promise.resolve(true)
+      return m.record(masteryKey(mode, set), accuracy)
     },
+    retrySave: m.retrySave,
+    resetSaveStatus: m.resetSaveStatus,
     dismiss: m.dismiss,
   }
 }

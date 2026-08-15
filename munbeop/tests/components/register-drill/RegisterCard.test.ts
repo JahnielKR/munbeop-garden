@@ -12,12 +12,13 @@ const item: RegisterItem = {
 }
 const options = ['저는 학생입니다.', '저는 학생이야.', '나는 학생입니다.', '저는 학생이세요.']
 
-function factory(phase = 'question', picked: string | null = null) {
+function factory(phase = 'question', picked: string | null = null, persistence = {}) {
   return mount(RegisterCard, {
     props: {
       item, options, phase,
       verdict: phase === 'wrong' ? false : phase === 'right' ? true : null,
       picked,
+      ...persistence,
     },
     global: { mocks: { $t: (k: string, p?: Record<string, unknown>) => (p ? `${k}:${JSON.stringify(p)}` : k) } },
   })
@@ -38,5 +39,12 @@ describe('RegisterCard', () => {
     const w = factory('wrong', '저는 학생이야.')
     expect(w.text()).toContain('register.reveal_correct')
     expect(w.text()).toContain('합쇼체 is -ㅂ니다.')
+  })
+  it('shows a retry and blocks next while the mistake save has failed', async () => {
+    const w = factory('wrong', options[1]!, { saveError: true })
+    expect(w.find('[data-testid="register-save-retry"]').exists()).toBe(true)
+    expect(w.find('.card__next').attributes('disabled')).toBeDefined()
+    await w.find('[data-testid="register-save-retry"]').trigger('click')
+    expect(w.emitted('retry')).toHaveLength(1)
   })
 })

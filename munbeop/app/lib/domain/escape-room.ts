@@ -218,8 +218,12 @@ export interface Level {
    * Multi-paragraph: paragraphs separated by a blank line (`\n\n`).
    */
   intro: LocalizedString
+  /** Optional illustrated backdrop shown behind the opening narrative. */
+  introImage?: string
   /** Closing narrative shown after the final lock opens. Same `\n\n` convention. */
   outro: LocalizedString
+  /** Optional illustrated backdrop shown behind the victory narrative. */
+  outroImage?: string
   /** NPC voice line (Korean, not translated) played over the intro cinematic. */
   voiceIntro: string
   /** NPC voice line (Korean) played over the outro. */

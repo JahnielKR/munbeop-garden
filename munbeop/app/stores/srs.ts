@@ -4,16 +4,23 @@ import { freshSrs, getWeight, recalculateMastery } from '~/lib/srs'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
 import { useAppStatus } from '~/stores/appStatus'
+import { useAuthStore } from '~/stores/auth'
 import { useLogStore } from './log'
 
 type SrsMap = Record<string, SrsState>
 
 export const useSrsStore = defineStore('srs', () => {
   const map = ref<SrsMap>({})
+  const writeQueues = new Map<string, Promise<void>>()
+  let hydratedUserId: string | null = null
 
   async function hydrate() {
+    const userId = useAuthStore().user?.id ?? null
     const storage = useStorageAdapter()
-    map.value = await storage.read(STORAGE_KEYS.srs, {} as SrsMap)
+    const cloud = await storage.read(STORAGE_KEYS.srs, {} as SrsMap)
+    if ((useAuthStore().user?.id ?? null) !== userId) return
+    map.value = cloud
+    hydratedUserId = userId
   }
 
   function ensure(ko: string): SrsState {
@@ -50,24 +57,57 @@ export const useSrsStore = defineStore('srs', () => {
    * writes correctly proceed against the retained real data.
    */
   function writesBlocked(): boolean {
-    return useAppStatus().status === 'error'
+    const userId = useAuthStore().user?.id
+    const dataStatus = useAppStatus().status
+    return dataStatus === 'error' || (
+      !!userId && (hydratedUserId !== userId || dataStatus !== 'ready')
+    )
+  }
+
+  /**
+   * Keep writes for one grammar point in invocation order. A session-level
+   * markSeen can still be in flight when a fast learner submits an answer;
+   * without this queue its older snapshot could land after recalculate and
+   * overwrite the newer mastery remotely. Different grammar points remain
+   * independent and can persist in parallel.
+   */
+  function enqueueWrite(ko: string, write: () => Promise<void>): Promise<void> {
+    const queuedUserId = useAuthStore().user?.id ?? null
+    const previous = writeQueues.get(ko) ?? Promise.resolve()
+    const task = previous.catch(() => undefined).then(async () => {
+      if ((useAuthStore().user?.id ?? null) !== queuedUserId) return
+      if (writesBlocked()) return
+      await write()
+    })
+    writeQueues.set(ko, task)
+    void task.then(
+      () => { if (writeQueues.get(ko) === task) writeQueues.delete(ko) },
+      () => { if (writeQueues.get(ko) === task) writeQueues.delete(ko) },
+    )
+    return task
   }
 
   async function markSeen(ko: string, now: number = Date.now()) {
     if (writesBlocked()) return
-    const storage = useStorageAdapter()
-    ensure(ko).lastSeen = now
-    // Upsert just this ko's row, not the whole map (the session start fires
-    // several markSeen in parallel; a full-map write each time is O(catalog)).
-    await storage.upsertOne(STORAGE_KEYS.srs, { id: ko, value: map.value[ko]! })
+    await enqueueWrite(ko, async () => {
+      const storage = useStorageAdapter()
+      const next = { ...ensure(ko), lastSeen: now }
+      map.value[ko] = next
+      // Upsert just this ko's row, not the whole map (the session start fires
+      // several markSeen in parallel; a full-map write each time is O(catalog)).
+      await storage.upsertOne(STORAGE_KEYS.srs, { id: ko, value: next })
+    })
   }
 
   async function recalculate(ko: string) {
     if (writesBlocked()) return
-    const storage = useStorageAdapter()
-    const log = useLogStore().entries
-    map.value[ko] = recalculateMastery(ko, log)
-    await storage.upsertOne(STORAGE_KEYS.srs, { id: ko, value: map.value[ko]! })
+    await enqueueWrite(ko, async () => {
+      const storage = useStorageAdapter()
+      const log = useLogStore().entries
+      const next = recalculateMastery(ko, log)
+      map.value[ko] = next
+      await storage.upsertOne(STORAGE_KEYS.srs, { id: ko, value: next })
+    })
   }
 
   return { map, hydrate, ensure, peek, weightFor, markSeen, recalculate }

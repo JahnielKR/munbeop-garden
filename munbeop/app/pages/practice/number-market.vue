@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from 'vue'
+import { computed, ref, onBeforeUnmount } from 'vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
 import PracticeHelp from '~/components/practice/PracticeHelp.vue'
+import PracticeSaveStatus from '~/components/practice/PracticeSaveStatus.vue'
 import DomainPicker from '~/components/numbers-market/DomainPicker.vue'
 import ModeToggle from '~/components/numbers-market/ModeToggle.vue'
 import PromptStage from '~/components/numbers-market/PromptStage.vue'
@@ -18,15 +19,17 @@ import DictationInput from '~/components/numbers-market/DictationInput.vue'
 import { useNumberMarket } from '~/composables/useNumberMarket'
 import { useNumberSpeed } from '~/composables/useNumberSpeed'
 import { useNumberDictation } from '~/composables/useNumberDictation'
+import { useNumberMarketMaster } from '~/composables/useNumberMarketMaster'
 import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
 import type { NumberDomain } from '~/lib/domain'
 
 definePageMeta({ surface: 'game' })
 
 const { t } = useI18n()
-const m = useNumberMarket()
-const s = useNumberSpeed()
-const d = useNumberDictation()
+const master = useNumberMarketMaster()
+const m = useNumberMarket(master)
+const s = useNumberSpeed(master)
+const d = useNumberDictation(master)
 const mode = ref<'learn' | 'speed' | 'dictation'>('learn')
 const phase = ref<'pick' | 'play'>('pick')
 const started = ref(false)
@@ -48,37 +51,52 @@ function startTimer() {
 }
 onBeforeUnmount(stopTimer)
 
+const activeSaveStatus = computed(() => (
+  mode.value === 'speed' ? s.saveStatus.value : master.saveStatus.value
+))
+const persistenceLocked = computed(() => (
+  activeSaveStatus.value === 'saving' || activeSaveStatus.value === 'error'
+))
+
 const dirty = () =>
   started.value &&
   (mode.value === 'learn'
-    ? m.phase.value !== 'done'
+    ? m.phase.value !== 'done' || persistenceLocked.value
     : mode.value === 'speed'
-      ? s.phase.value === 'playing'
-      : d.phase.value !== 'done')
+      ? s.phase.value === 'playing' || persistenceLocked.value
+      : d.phase.value !== 'done' || persistenceLocked.value)
 useGameLeaveGuard(dirty)
 
 function begin(deckId: string) {
-  started.value = true
-  phase.value = 'play'
+  if (persistenceLocked.value) return
+  let didStart = false
   if (mode.value === 'learn') {
     m.selectDomain(deckId as NumberDomain)
-    m.start()
+    didStart = m.start()
   } else if (mode.value === 'speed') {
-    s.start(deckId)
-    startTimer()
+    didStart = s.start(deckId)
+    if (didStart) startTimer()
   } else {
     d.selectDomain(deckId as NumberDomain)
-    d.start()
+    didStart = d.start()
   }
+  if (!didStart) return
+  started.value = true
+  phase.value = 'play'
 }
 function restart() {
+  if (persistenceLocked.value) return
   stopTimer()
   phase.value = 'pick'
   started.value = false
 }
 function playAgain() {
-  s.start(s.deckId.value)
+  if (persistenceLocked.value || !s.start(s.deckId.value)) return
   startTimer()
+}
+async function retrySave() {
+  if (mode.value === 'speed') await s.retrySave()
+  else await master.retrySave()
 }
 </script>
 
@@ -91,10 +109,10 @@ function playAgain() {
     <p class="lab__lead">{{ t('numberMarket.lead') }}</p>
 
     <MasterStrip
-      :per-domain="m.master.perDomain.value"
-      :done-count="m.master.doneCount.value"
-      :total="m.master.total.value"
-      :earned="m.master.earned.value"
+      :per-domain="master.perDomain.value"
+      :done-count="master.doneCount.value"
+      :total="master.total.value"
+      :earned="master.earned.value"
     />
 
     <template v-if="phase === 'pick'">
@@ -113,6 +131,7 @@ function playAgain() {
     </template>
 
     <template v-else-if="mode === 'learn'">
+      <PracticeSaveStatus :status="activeSaveStatus" @retry="retrySave" />
       <p
         v-if="m.runMode.value === 'replay' && m.phase.value !== 'done'"
         class="lab__replay"
@@ -150,6 +169,7 @@ function playAgain() {
           v-if="m.phase.value === 'right' || m.phase.value === 'wrong'"
           type="button"
           class="lab__next"
+          :disabled="persistenceLocked"
           @click="m.next"
         >
           {{ t('numberMarket.next') }}
@@ -159,12 +179,14 @@ function playAgain() {
         v-else
         :score="m.score.value"
         :failed-items="m.failedItems.value"
+        :locked="persistenceLocked"
         @restart="restart"
         @replay-failed="m.replayFailed"
       />
     </template>
 
     <template v-else-if="mode === 'speed'">
+      <PracticeSaveStatus :status="activeSaveStatus" @retry="retrySave" />
       <SpeedHud
         :time-left="s.timeLeft.value"
         :score="s.score.value"
@@ -193,13 +215,15 @@ function playAgain() {
         :score="s.score.value"
         :best="s.bestScore.value"
         :best-streak="s.bestStreak.value"
-        :is-record="s.score.value > 0 && s.score.value >= s.bestScore.value"
+        :is-record="s.newRecord.value"
+        :locked="persistenceLocked"
         @again="playAgain"
         @restart="restart"
       />
     </template>
 
     <template v-else>
+      <PracticeSaveStatus :status="activeSaveStatus" @retry="retrySave" />
       <p
         v-if="d.runMode.value === 'replay' && d.phase.value !== 'done'"
         class="lab__replay"
@@ -239,6 +263,7 @@ function playAgain() {
           v-if="d.phase.value === 'right' || d.phase.value === 'wrong'"
           type="button"
           class="lab__next"
+          :disabled="persistenceLocked"
           @click="d.next"
         >
           {{ t('numberMarket.next') }}
@@ -248,6 +273,7 @@ function playAgain() {
         v-else
         :score="d.score.value"
         :failed-items="d.failedItems.value"
+        :locked="persistenceLocked"
         @restart="restart"
         @replay-failed="d.replayFailed"
       />
@@ -280,5 +306,6 @@ function playAgain() {
 }
 .lab__verdict--no { color: var(--danger, #c62828); }
 .lab__next { align-self: flex-start; font-family: 'Inter', sans-serif; font-size: 14px; padding: 10px 18px; background: var(--accent, #2e7d32); color: var(--paper, #fff); border: 2px solid var(--accent, #2e7d32); cursor: pointer; }
+.lab__next:disabled { opacity: 0.55; cursor: wait; }
 .lab__next:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 </style>

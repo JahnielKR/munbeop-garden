@@ -4,13 +4,16 @@ import { setActivePinia, createPinia } from 'pinia'
 import { useConjugationDrill } from '~/composables/useConjugationDrill'
 
 const add = vi.fn()
-vi.mock('~/stores/log', () => ({ useLogStore: () => ({ add }) }))
+const createEntryId = vi.fn(() => 5252)
+vi.mock('~/stores/log', () => ({ useLogStore: () => ({ add, createEntryId }) }))
 vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (k: string) => k, locale: { value: 'en' } }) }))
 
 beforeEach(() => {
   setActivePinia(createPinia())
   add.mockClear()
+  add.mockResolvedValue(undefined)
+  createEntryId.mockClear()
 })
 
 describe('useConjugationDrill', () => {
@@ -75,5 +78,26 @@ describe('useConjugationDrill', () => {
     const r = d.item.value
     await d.answer(r.options.find((o) => o !== r.correct)!) // wrong in replay
     expect(add).not.toHaveBeenCalled()
+  })
+
+  it('keeps a failed diary write retryable and blocks next until it saves', async () => {
+    add.mockRejectedValueOnce(new Error('offline')).mockResolvedValueOnce(undefined)
+    const d = useConjugationDrill()
+    d.start()
+    const wrong = d.item.value.options.find((o) => o !== d.item.value.correct)!
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    await d.answer(wrong)
+    expect(d.saveStatus.value).toBe('error')
+    const index = d.index.value
+    await d.next()
+    expect(d.index.value).toBe(index)
+
+    await d.retrySave()
+    expect(d.saveStatus.value).toBe('saved')
+    expect(add).toHaveBeenCalledTimes(2)
+    expect(add.mock.calls.map((call) => call[1])).toEqual([5252, 5252])
+    expect(createEntryId).toHaveBeenCalledTimes(1)
+    errorSpy.mockRestore()
   })
 })

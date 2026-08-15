@@ -23,6 +23,7 @@ vi.mock('~/seed/placement', () => {
 beforeEach(() => {
   setActivePinia(createPinia())
   setStartingDeck.mockClear()
+  setStartingDeck.mockResolvedValue(true)
 })
 
 /** Answer the current question; pass `correct` to choose the right/wrong option. */
@@ -56,5 +57,45 @@ describe('usePlacement', () => {
     p.start()
     expect(p.displayOptions.value).toHaveLength(4)
     expect(p.displayOptions.value).toContain(p.item.value.answer)
+  })
+
+  it('surfaces a failed recommendation save and retries it', async () => {
+    setStartingDeck.mockResolvedValueOnce(false).mockResolvedValueOnce(true)
+    const p = usePlacement()
+    p.start()
+    for (let i = 0; i < 4; i++) await step(p, false)
+    expect(p.phase.value).toBe('done')
+    expect(p.saveError.value).toBe(true)
+    const completedOutcome = p.outcome.value
+
+    expect(p.start()).toBe(false)
+    expect(p.phase.value).toBe('done')
+    expect(p.outcome.value).toBe(completedOutcome)
+    expect(p.saveError.value).toBe(true)
+
+    await p.retrySave()
+    expect(p.saveError.value).toBe(false)
+    expect(setStartingDeck).toHaveBeenCalledTimes(2)
+  })
+
+  it('refuses a retake while the recommendation save is in flight', async () => {
+    let resolveSave!: (saved: boolean) => void
+    setStartingDeck.mockImplementationOnce(
+      () => new Promise<boolean>((resolve) => { resolveSave = resolve }),
+    )
+    const p = usePlacement()
+    p.start()
+    for (let i = 0; i < 3; i++) await step(p, false)
+    p.answer(p.item.value.distractors[0]!)
+    const finishing = p.next()
+    expect(p.saving.value).toBe(true)
+    const completedOutcome = p.outcome.value
+
+    expect(p.start()).toBe(false)
+    expect(p.phase.value).toBe('done')
+    expect(p.outcome.value).toBe(completedOutcome)
+
+    resolveSave(true)
+    await finishing
   })
 })

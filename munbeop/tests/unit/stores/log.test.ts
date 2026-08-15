@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useLogStore } from '~/stores/log'
 import { STORAGE_KEYS } from '~/lib/storage'
+import { useAuthStore } from '~/stores/auth'
 
 // Spy on the adapter so we can assert add() uses the one-row append path rather
 // than re-writing the whole collection (the O(history) cost the delta fix kills).
@@ -9,8 +10,9 @@ const append = vi.fn(async () => {})
 const write = vi.fn(async () => {})
 const read = vi.fn(async (_key: string, fallback: unknown) => fallback)
 const deleteOne = vi.fn(async () => {})
+const updateOne = vi.fn(async () => true)
 vi.mock('~/composables/useStorageAdapter', () => ({
-  useStorageAdapter: () => ({ read, write, append, deleteOne, remove: async () => {}, clear: async () => {} }),
+  useStorageAdapter: () => ({ read, write, append, updateOne, deleteOne, remove: async () => {}, clear: async () => {} }),
 }))
 
 const payload = {
@@ -23,11 +25,61 @@ const payload = {
   contextName: '반말',
 }
 
+beforeEach(() => {
+  read.mockReset()
+  read.mockImplementation(async (_key: string, fallback: unknown) => fallback)
+})
+
+describe('useLogStore hydration safety', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    append.mockClear()
+    append.mockResolvedValue(undefined)
+  })
+
+  it('does not apply account A journal rows after account B signs in', async () => {
+    useAuthStore().user = { id: 'a' } as never
+    let resolveRead!: (value: unknown) => void
+    read.mockImplementationOnce(() => new Promise((resolve) => { resolveRead = resolve }))
+    const store = useLogStore()
+    const hydration = store.hydrate()
+
+    await vi.waitFor(() => expect(read).toHaveBeenCalledTimes(1))
+    useAuthStore().user = { id: 'b' } as never
+    resolveRead([{ id: 7, date: '2026-01-01', ...payload }])
+    await hydration
+
+    expect(store.entries).toEqual([])
+  })
+
+  it('queues an add behind hydration so the read cannot erase the new row', async () => {
+    useAuthStore().user = { id: 'a' } as never
+    let resolveRead!: (value: unknown) => void
+    read.mockImplementationOnce(() => new Promise((resolve) => { resolveRead = resolve }))
+    const store = useLogStore()
+    const hydration = store.hydrate()
+    const addition = store.add(payload, 7001)
+
+    expect(append).not.toHaveBeenCalled()
+    await vi.waitFor(() => expect(read).toHaveBeenCalledTimes(1))
+    resolveRead([])
+    await hydration
+    await addition
+
+    expect(store.entries).toHaveLength(1)
+    expect(store.entries[0]?.id).toBe(7001)
+    expect(append).toHaveBeenCalledTimes(1)
+  })
+})
+
 describe('useLogStore.add — delta append', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     append.mockClear()
+    append.mockResolvedValue(undefined)
     write.mockClear()
+    updateOne.mockClear()
+    updateOne.mockResolvedValue(true)
     deleteOne.mockClear()
     deleteOne.mockResolvedValue(undefined)
   })
@@ -42,6 +94,30 @@ describe('useLogStore.add — delta append', () => {
     // still unshifted into memory, newest first (reactive proxy → structural eq)
     expect(store.entries).toHaveLength(1)
     expect(store.entries[0]).toStrictEqual(entry)
+    expect(Number.isSafeInteger(entry.id)).toBe(true)
+    expect(entry.id).toBeGreaterThan(0)
+  })
+
+  it('generates distinct safe-integer ids for a burst of entries', async () => {
+    const store = useLogStore()
+    const created = await Promise.all(
+      Array.from({ length: 64 }, (_, i) => store.add({ ...payload, sentence: `sentence-${i}` })),
+    )
+    expect(new Set(created.map((entry) => entry.id)).size).toBe(created.length)
+    expect(created.every((entry) => Number.isSafeInteger(entry.id) && entry.id > 0)).toBe(true)
+  })
+
+  it('reuses a caller-owned id so an ambiguous retry is idempotent', async () => {
+    const store = useLogStore()
+    const stableId = store.createEntryId()
+    append.mockRejectedValueOnce(new Error('response lost'))
+
+    await expect(store.add(payload, stableId)).rejects.toThrow('response lost')
+    const retried = await store.add(payload, stableId)
+
+    expect(retried.id).toBe(stableId)
+    expect(store.entries.filter((entry) => entry.id === stableId)).toHaveLength(1)
+    expect(append).toHaveBeenCalledTimes(2)
   })
 
   it('rolls back the optimistic insert and rethrows when the cloud append fails', async () => {
@@ -54,6 +130,26 @@ describe('useLogStore.add — delta append', () => {
     // duplicate it and inflate the journal / stats.
     expect(store.entries).toHaveLength(0)
   })
+
+  it('a failed concurrent append rolls back only itself and preserves a successful sibling', async () => {
+    const store = useLogStore()
+    let rejectFirst!: (error: Error) => void
+    let resolveSecond!: () => void
+    append
+      .mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectFirst = reject }))
+      .mockImplementationOnce(() => new Promise<void>((resolve) => { resolveSecond = resolve }))
+
+    const first = store.add({ ...payload, ko: 'A' })
+    const second = store.add({ ...payload, ko: 'B' })
+    expect(store.entries.map((entry) => entry.ko)).toEqual(['B', 'A'])
+
+    resolveSecond()
+    await second
+    rejectFirst(new Error('network down'))
+    await expect(first).rejects.toThrow('network down')
+
+    expect(store.entries.map((entry) => entry.ko)).toEqual(['B'])
+  })
 })
 
 describe('useLogStore.setReviewState', () => {
@@ -63,29 +159,35 @@ describe('useLogStore.setReviewState', () => {
     append.mockResolvedValue(undefined)
     write.mockClear()
     write.mockResolvedValue(undefined)
+    updateOne.mockClear()
+    updateOne.mockResolvedValue(true)
   })
 
-  it('flips the state, persists the full log, and reports success', async () => {
+  it('flips the state with a one-row update and reports success', async () => {
     const store = useLogStore()
     const e = await store.add(payload)
 
     const ok = await store.setReviewState(e.id, 'correct', 'note')
     expect(ok).toBe(true)
     expect(store.entries[0]).toMatchObject({ reviewState: 'correct', errorNote: 'note' })
-    expect(write).toHaveBeenCalledWith(STORAGE_KEYS.log, store.entries)
+    expect(updateOne).toHaveBeenCalledWith(STORAGE_KEYS.log, {
+      id: e.id,
+      value: expect.objectContaining({ id: e.id, reviewState: 'correct', errorNote: 'note' }),
+    })
+    expect(write).not.toHaveBeenCalled()
   })
 
   it('returns false for an unknown id and never touches the adapter', async () => {
     const store = useLogStore()
     const ok = await store.setReviewState(999, 'correct')
     expect(ok).toBe(false)
-    expect(write).not.toHaveBeenCalled()
+    expect(updateOne).not.toHaveBeenCalled()
   })
 
   it('rolls the flip back when the cloud write fails — the UI must not claim reviewed', async () => {
     const store = useLogStore()
     const e = await store.add(payload)
-    write.mockRejectedValueOnce(new Error('net drop'))
+    updateOne.mockRejectedValueOnce(new Error('net drop'))
 
     const ok = await store.setReviewState(e.id, 'correct')
     expect(ok).toBe(false)
@@ -102,7 +204,7 @@ describe('useLogStore.setReviewState', () => {
     const b = await store.add({ ...payload, ko: 'B' })
 
     let rejectA!: (e: Error) => void
-    write.mockImplementationOnce(
+    updateOne.mockImplementationOnce(
       () => new Promise((_resolve, reject) => { rejectA = reject }),
     )
     const flipA = store.setReviewState(a.id, 'correct')
@@ -117,6 +219,39 @@ describe('useLogStore.setReviewState', () => {
     expect(rowA.reviewState).toBe('unreviewed') // rolled back
     expect(rowB.reviewState).toBe('correct') // untouched by A's rollback
   })
+
+  it('serializes two flips of the same row so an older response cannot win', async () => {
+    const store = useLogStore()
+    const entry = await store.add(payload)
+    let resolveFirst!: (updated: boolean) => void
+    updateOne.mockImplementationOnce(
+      () => new Promise<boolean>((resolve) => { resolveFirst = resolve }),
+    )
+
+    const first = store.setReviewState(entry.id, 'correct', 'first')
+    const second = store.setReviewState(entry.id, 'incorrect', 'latest')
+    expect(updateOne).toHaveBeenCalledTimes(1)
+
+    resolveFirst(true)
+    await first
+    await second
+
+    expect(updateOne).toHaveBeenCalledTimes(2)
+    expect(store.entries[0]).toMatchObject({ reviewState: 'incorrect', errorNote: 'latest' })
+    expect(updateOne.mock.calls[1]![1]).toMatchObject({
+      id: entry.id,
+      value: { reviewState: 'incorrect', errorNote: 'latest' },
+    })
+  })
+
+  it('removes a local ghost when the cloud row was deleted in another tab', async () => {
+    const store = useLogStore()
+    const entry = await store.add(payload)
+    updateOne.mockResolvedValueOnce(false)
+
+    await expect(store.setReviewState(entry.id, 'correct')).resolves.toBe(false)
+    expect(store.entries.find((candidate) => candidate.id === entry.id)).toBeUndefined()
+  })
 })
 
 describe('useLogStore.deleteEntry', () => {
@@ -125,6 +260,8 @@ describe('useLogStore.deleteEntry', () => {
     append.mockClear()
     deleteOne.mockClear()
     deleteOne.mockResolvedValue(undefined)
+    updateOne.mockClear()
+    updateOne.mockResolvedValue(true)
   })
 
   it('removes the entry and deletes its cloud row by id', async () => {
@@ -161,8 +298,8 @@ describe('useLogStore.deleteEntry', () => {
     // revert B's confirmed flip (the immutable row replace broke the in-place
     // aliasing that used to mask this) — only A may be re-inserted.
     const store = useLogStore()
-    write.mockClear()
-    write.mockResolvedValue(undefined)
+    updateOne.mockClear()
+    updateOne.mockResolvedValue(true)
     const a = await store.add(payload)
     const b = await store.add({ ...payload, ko: 'B' })
 

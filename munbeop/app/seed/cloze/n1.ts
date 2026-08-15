@@ -4,8 +4,8 @@ import { L } from '../locale'
 
 /**
  * TOPIK-1 grammar-pattern cloze items (choose the pattern that fits the blank).
- * ko matches grammars-n1.ts verbatim. Drafted + Korean-lens adversarially verified
- * (single-correct-answer crux). Korean wife native review = documented final gate.
+ * ko matches grammars-n1.ts verbatim. Adversarial Korean single-answer review
+ * completed; the shared seed-invariant suite enforces links, shape and i18n.
  */
 
 export const N1_CLOZE: ClozeItem[] = [
@@ -559,7 +559,7 @@ export const N1_CLOZE: ClozeItem[] = [
     ko: '-지만',
     sentence: '이 옷이 {} 안 예뻐요.',
     answer: '비싸지만',
-    distractors: ['비싸고', '비싸서', '비싸면'],
+    distractors: ['비싸기 전에', '비싸려고', '비쌀 때'],
     trans: L(
       'These clothes are expensive but not pretty.',
       'Esta ropa es cara pero no es bonita.',
@@ -571,14 +571,14 @@ export const N1_CLOZE: ClozeItem[] = [
       'この服は高いけどかわいくないです。',
     ),
     why: L(
-      'Expensive yet not-pretty defies expectation → contrast -지만; -고 merely lists, -아/어서 would make price the cause of ugliness (illogical), -(으)면 is a condition (none).',
-      'Caro pero no bonito desafía lo esperado → contraste -지만; -고 solo enumera, -아/어서 haría el precio causa de la fealdad (ilógico), -(으)면 es condición (no hay).',
-      "Cher mais pas joli déjoue l'attente → contraste -지만 ; -고 énumère, -아/어서 ferait du prix la cause de la laideur (illogique), -(으)면 est une condition (absente).",
-      'Caro mas não bonito contraria a expectativa → contraste -지만; -고 só lista, -아/어서 faria o preço causar a feiura (ilógico), -(으)면 é condição (não há).',
-      'แพงแต่ไม่สวยขัดกับที่คาด → ขัดแย้ง -지만; -고 แค่เรียง, -아/어서 จะทำให้ราคาเป็นเหตุของความไม่สวย (ไม่สมเหตุผล), -(으)면 เป็นเงื่อนไข (ไม่มี).',
-      'Mahal tetapi tidak cantik melawan harapan → kontras -지만; -고 hanya mendaftar, -아/어서 menjadikan harga sebab keburukan (tak logis), -(으)면 syarat (tak ada).',
-      'Đắt mà không đẹp trái với kỳ vọng → tương phản -지만; -고 chỉ liệt kê, -아/어서 biến giá thành nguyên nhân của sự xấu (phi lý), -(으)면 là điều kiện (không có).',
-      '高いのにかわいくない＝予想に反する → 逆接の-지만。-고は羅列、-아/어서は値段が不格好さの原因になり不自然、-(으)면は条件（無し）。',
+      'The translation explicitly contrasts a high price with an unattractive design, so -지만 is required. The other choices mean “before it gets expensive,” an impossible intention “to become expensive,” or “when it is expensive.”',
+      'La traducción contrapone explícitamente el precio alto y el diseño poco bonito, así que exige -지만. Las otras opciones significan «antes de que sea caro», la intención imposible «para ser caro» o «cuando es caro».',
+      'La traduction oppose explicitement le prix élevé au manque d’élégance, donc -지만 est requis. Les autres choix signifient « avant que ce soit cher », l’intention impossible « pour devenir cher » ou « quand c’est cher ».',
+      'A tradução contrasta explicitamente o preço alto com o visual pouco bonito, então exige -지만. As outras opções significam “antes de ficar caro”, a intenção impossível “para ficar caro” ou “quando é caro”.',
+      'คำแปลเปรียบต่างอย่างชัดเจนระหว่างราคาแพงกับแบบที่ไม่สวย จึงต้องใช้ -지만 ตัวเลือกอื่นหมายถึง “ก่อนจะแพง” ความตั้งใจที่เป็นไปไม่ได้ว่า “เพื่อจะแพง” หรือ “ตอนที่แพง”',
+      'Terjemahannya jelas mempertentangkan harga mahal dengan desain yang tidak cantik, jadi perlu -지만. Pilihan lain berarti “sebelum menjadi mahal”, niat mustahil “agar menjadi mahal”, atau “saat mahal”.',
+      'Bản dịch đối chiếu rõ giá cao với thiết kế không đẹp, nên phải dùng -지만. Các lựa chọn khác nghĩa là “trước khi trở nên đắt”, ý định vô lý “để trở nên đắt”, hoặc “khi đắt”.',
+      '訳文は「高い」ことと「かわいくない」ことを明確に対比しているため -지만 が必要。他は「高くなる前」「高くなろうとして」「高い時」という意味になる。',
     ),
   },
   {

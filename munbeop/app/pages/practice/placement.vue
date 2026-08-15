@@ -19,13 +19,17 @@ const { t } = useI18n()
 const placement = usePlacement()
 const started = ref(false)
 
-useGameLeaveGuard(() => started.value && placement.phase.value !== 'done')
+useGameLeaveGuard(
+  () => started.value && (
+    placement.phase.value !== 'done' || placement.saving.value || placement.saveError.value
+  ),
+)
 
 function begin() {
-  placement.start()
-  started.value = true
+  if (placement.start()) started.value = true
 }
 function onRetake() {
+  if (placement.saving.value || placement.saveError.value) return
   placement.start()
 }
 </script>
@@ -61,7 +65,14 @@ function onRetake() {
           @next="placement.next"
         />
       </template>
-      <PlacementResult v-else :outcome="placement.outcome.value!" @retake="onRetake" />
+      <PlacementResult
+        v-else
+        :outcome="placement.outcome.value!"
+        :saving="placement.saving.value"
+        :save-error="placement.saveError.value"
+        @retry-save="placement.retrySave"
+        @retake="onRetake"
+      />
     </template>
   </div>
 </template>

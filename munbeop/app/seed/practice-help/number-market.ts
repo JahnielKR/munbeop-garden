@@ -3,8 +3,8 @@ import { L } from '../locale'
 
 /**
  * 숫자 (numbers) — explanation for the Number Market lab.
- * Korean examples/terms are language-neutral; prose is localized via L().
- * Native review (owner's wife) pending on the 8 translations + readings.
+ * Korean examples/terms are language-neutral; prose is localized across all
+ * eight supported locales and the readings are covered by seed/audio invariants.
  */
 export const NUMBER_MARKET_HELP: PracticeHelpContent = {
   ko: '숫자',
@@ -91,14 +91,14 @@ export const NUMBER_MARKET_HELP: PracticeHelpContent = {
       'サブモードを選ぶ：ラーン（タイルで読みを組み立てる）、スピード / 속도전（制限時間内に正しい読みを選ぶ）、ディクテーション / 받아쓰기（聞いて聞こえた通りに入力する）。',
     ),
     L(
-      'Choose a market stall first: counting, prices, time, dates, or phone numbers — each one drills a different domain.',
-      'Elige primero un puesto del mercado: contar, precios, hora, fechas o teléfonos — cada uno entrena un dominio distinto.',
-      "Choisissez d'abord un étal du marché : compter, prix, heure, dates ou numéros de téléphone — chacun entraîne un domaine différent.",
-      'Escolha primeiro uma banca do mercado: contar, preços, hora, datas ou telefones — cada uma treina um domínio diferente.',
-      'เลือกแผงในตลาดก่อน: การนับ ราคา เวลา วันที่ หรือเบอร์โทร — แต่ละแผงฝึกคนละหมวด',
-      'Pilih dulu lapak pasar: berhitung, harga, waktu, tanggal, atau nomor telepon — masing-masing melatih domain berbeda.',
-      'Trước tiên chọn một quầy chợ: đếm, giá tiền, giờ giấc, ngày tháng hoặc số điện thoại — mỗi quầy luyện một mảng khác nhau.',
-      'まず市場の屋台を選ぶ：数える・値段・時刻・日付・電話番号——それぞれ別の領域を練習する。',
+      'Choose a market stall first: counting, Sino-Korean basics, prices, time, dates, or phone numbers — each one drills a different domain.',
+      'Elige primero un puesto del mercado: conteo, fundamentos sino-coreanos, precios, hora, fechas o teléfonos; cada uno entrena un dominio distinto.',
+      "Choisissez d'abord un étal du marché : comptage, bases sino-coréennes, prix, heure, dates ou numéros de téléphone — chacun entraîne un domaine différent.",
+      'Escolha primeiro uma banca do mercado: contagem, fundamentos sino-coreanos, preços, hora, datas ou números de telefone — cada uma treina um domínio diferente.',
+      'เลือกแผงในตลาดก่อน: การนับ พื้นฐานตัวเลขจีน-เกาหลี ราคา เวลา วันที่ หรือหมายเลขโทรศัพท์ — แต่ละแผงฝึกคนละหมวด',
+      'Pilih dulu lapak pasar: berhitung, dasar angka Sino-Korea, harga, waktu, tanggal, atau nomor telepon — masing-masing melatih ranah berbeda.',
+      'Trước tiên chọn một quầy chợ: đếm số, nền tảng số Hán-Hàn, giá tiền, giờ giấc, ngày tháng hoặc số điện thoại — mỗi quầy luyện một mảng khác nhau.',
+      'まず市場の屋台を選ぶ：数え方・漢字語数詞の基礎・値段・時刻・日付・電話番号——それぞれ別の領域を練習する。',
     ),
     L(
       'Answer the prompt, then submit. Right answers grow your stall mastery; missed items can be replayed at the end.',

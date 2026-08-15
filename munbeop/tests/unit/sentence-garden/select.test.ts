@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { selectRounds, MIN_EOJEOL, MAX_EOJEOL } from '~/lib/sentence-garden/select'
+import { eligibleRoundCount, selectRounds, MIN_EOJEOL, MAX_EOJEOL } from '~/lib/sentence-garden/select'
 import type { GrammarExample } from '~/lib/domain'
 
 const L0 = { en: 'x', es: 'x', fr: 'x', 'pt-BR': 'x', th: 'x', id: 'x', vi: 'x', ja: 'x' }
@@ -35,5 +35,10 @@ describe('selectRounds', () => {
   it('caps the session size', () => {
     const many = Array.from({ length: 20 }, (_, i) => mk('-아/어요', `저는 물건 ${i}을 봐요.`))
     expect(selectRounds(many, ['-아/어요'], 8, () => 0)).toHaveLength(8)
+  })
+  it('counts only rounds that use a selected grammar and meet the exact-order length gate', () => {
+    expect(eligibleRoundCount(POOL, ['-아/어요'])).toBe(1)
+    expect(eligibleRoundCount(POOL, ['-지 않다'])).toBe(0)
+    expect(eligibleRoundCount(POOL, ['-네요'])).toBe(1)
   })
 })

@@ -73,8 +73,10 @@ export function buildDeckOptions(p: {
   })
 
   const activeDecks = sorted.filter((d) => !p.excludedDeckIds.includes(d.id))
-  const activeIds = new Set(activeDecks.map((d) => d.id))
-  const allCount = p.items.filter((g) => activeIds.has(g.deckId)).length
+  // Count the same pool the engine draws from. User-authored grammars use the
+  // reserved `custom` deck id (which has no official Deck row), but activeIndices
+  // includes them; excluding them here made the displayed total lie.
+  const allCount = p.items.filter((g) => !p.excludedDeckIds.includes(g.deckId)).length
   const all: DeckOption = {
     id: null,
     name: p.allName,
@@ -117,11 +119,15 @@ export interface CustomDeckOption extends DeckOption {
  */
 export function buildCustomDeckOptions(p: {
   decks: readonly CustomDeck[]
+  /** Current grammar catalog. When provided, stale/deleted kos and duplicates
+   * are excluded from the playable count just like the session engine does. */
+  catalogKos?: readonly string[]
 }): CustomDeckOption[] {
+  const known = p.catalogKos ? new Set(p.catalogKos) : null
   return [...p.decks]
     .sort((a, b) => a.order - b.order)
     .map((d) => {
-      const count = d.grammarKos.length
+      const count = [...new Set(d.grammarKos)].filter((ko) => !known || known.has(ko)).length
       const tooFew = count < MIN_CUSTOM_PLAYABLE
       return {
         id: d.id,

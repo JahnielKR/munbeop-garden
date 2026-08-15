@@ -7,6 +7,13 @@ import { th } from './th'
 import { id } from './id'
 import { vi } from './vi'
 import { ja } from './ja'
+import { enLevels04To10 } from './levels-04-10/en'
+import { frLevels04To10 } from './levels-04-10/fr'
+import { ptBRLevels04To10 } from './levels-04-10/pt-BR'
+import { thLevels04To10 } from './levels-04-10/th'
+import { idLevels04To10 } from './levels-04-10/id'
+import { viLevels04To10 } from './levels-04-10/vi'
+import { jaLevels04To10 } from './levels-04-10/ja'
 
 /**
  * Per-locale escape-room seed translations, keyed by Spanish source string.
@@ -14,11 +21,11 @@ import { ja } from './ja'
  */
 export const TRANSLATIONS: Record<LocaleCode, Record<string, string>> = {
   es: {},
-  en: en,
-  fr: fr,
-  'pt-BR': ptBR,
-  th: th,
-  id: id,
-  vi: vi,
-  ja: ja,
+  en: { ...en, ...enLevels04To10 },
+  fr: { ...fr, ...frLevels04To10 },
+  'pt-BR': { ...ptBR, ...ptBRLevels04To10 },
+  th: { ...th, ...thLevels04To10 },
+  id: { ...id, ...idLevels04To10 },
+  vi: { ...vi, ...viLevels04To10 },
+  ja: { ...ja, ...jaLevels04To10 },
 }

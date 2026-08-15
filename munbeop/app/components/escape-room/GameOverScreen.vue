@@ -19,7 +19,7 @@ onMounted(() => root.value?.focus())
 </script>
 
 <template>
-  <div class="gameover" data-testid="gameover-root" ref="root" tabindex="-1">
+  <div ref="root" class="gameover" data-testid="gameover-root" tabindex="-1">
     <span class="gameover__icon" aria-hidden="true">🕯️</span>
     <h2 class="gameover__title" data-testid="gameover-title" role="status">
       {{ t('escape.game_over_title') }}

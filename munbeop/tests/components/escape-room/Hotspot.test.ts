@@ -22,10 +22,17 @@ describe('Hotspot', () => {
     expect(style).toContain('height:20%')
   })
 
-  it('uses the id as an aria-label fallback', () => {
+  it('uses a human-readable id as an aria-label fallback', () => {
     const w = mount(Hotspot, {
       props: { id: 'note-1', rect: [0, 0, 10, 10] },
     })
-    expect(w.get('[data-testid="hotspot"]').attributes('aria-label')).toBe('note-1')
+    expect(w.get('[data-testid="hotspot"]').attributes('aria-label')).toBe('note 1')
+  })
+
+  it('prefers the supplied accessible label', () => {
+    const w = mount(Hotspot, {
+      props: { id: 'note-1', label: 'Pista 1', rect: [0, 0, 10, 10] },
+    })
+    expect(w.get('[data-testid="hotspot"]').attributes('aria-label')).toBe('Pista 1')
   })
 })

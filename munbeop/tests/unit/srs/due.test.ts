@@ -74,7 +74,7 @@ describe('revisitPool', () => {
   it('dedups the due set before padding', () => {
     expect(revisitPool(['A', 'A'], ['A', 'B', 'C'], 3)).toEqual(['A', 'B', 'C'])
   })
-  it('leaves a due set already >= min untouched', () => {
-    expect(revisitPool(['A', 'B', 'C', 'D'], ['E'], 3)).toEqual(['A', 'B', 'C', 'D'])
+  it('drops orphan due kos that are absent from the active grammar pool', () => {
+    expect(revisitPool(['A', 'B', 'C', 'D'], ['E'], 3)).toEqual(['E'])
   })
 })

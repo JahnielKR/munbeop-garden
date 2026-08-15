@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted } from 'vue'
+import { nextTick, watch } from 'vue'
 import GrammarCard from '~/components/practice/GrammarCard.vue'
 import RescueOfferBanner from '~/components/practice/RescueOfferBanner.vue'
 import CompletionBanner from '~/components/practice/CompletionBanner.vue'
@@ -21,10 +21,11 @@ import { dueKos, revisitPool } from '~/lib/srs'
 import { useLeeches } from '~/composables/useLeeches'
 import { useBomiStore } from '~/stores/bomi'
 import { useGrammarStore } from '~/stores/grammar'
-import { useContextsStore } from '~/stores/contexts'
 import { useCustomDecksStore } from '~/stores/customDecks'
 import { useSrsStore } from '~/stores/srs'
 import { useSettingsStore } from '~/stores/settings'
+import { useAuthStore } from '~/stores/auth'
+import { useAppStatus } from '~/stores/appStatus'
 
 definePageMeta({ surface: 'game' })
 
@@ -44,10 +45,11 @@ const toast = useToast()
 const { t } = useI18n()
 const bomi = useBomiStore()
 const grammarStore = useGrammarStore()
-const contextsStore = useContextsStore()
 const customDecks = useCustomDecksStore()
 const srsStore = useSrsStore()
 const settings = useSettingsStore()
+const auth = useAuthStore()
+const appStatus = useAppStatus()
 const route = useRoute()
 const router = useRouter()
 
@@ -65,14 +67,19 @@ function dismissRescue(pickIdx: number) {
 
 const builderOpen = ref(false)
 const editingDeckId = ref<string | null>(null)
+const builderDirty = ref(false)
+const builderBusy = ref(false)
 
 const phase = ref<'pick' | 'draw' | 'play'>('pick')
-// Confirm before leaving once a deck is picked (draw/play).
-useGameLeaveGuard(() => phase.value !== 'pick')
+// A completed round is safe to leave; an unsaved deck-builder edit is not.
+useGameLeaveGuard(() => builderDirty.value || builderBusy.value || (
+  phase.value !== 'pick' && !completed.value
+))
 // In-flight latch: a double-click on a deck mat must not run start() twice
-// (the second run would overwrite the session and mark extra grammars as
-// seen in the SRS without the user ever practicing them).
+// (the second run would overwrite the first session).
 const starting = ref(false)
+const deepLinkRunning = ref(false)
+const handledDeepLink = ref<string | null>(null)
 
 // Wrappers receive programmatic focus after each phase swap so keyboard
 // and screen-reader users land inside the new scene instead of on <body>.
@@ -94,7 +101,15 @@ const deckOptions = computed(() =>
   }),
 )
 
-const customDeckOptions = computed(() => buildCustomDeckOptions({ decks: customDecks.decks }))
+const recommendedDeckId = computed(() => {
+  const id = settings.startingDeckId
+  return deckOptions.value.some((option) => option.id === id && !option.disabled) ? id : null
+})
+
+const customDeckOptions = computed(() => buildCustomDeckOptions({
+  decks: customDecks.decks,
+  catalogKos: grammarStore.items.map((grammar) => grammar.ko),
+}))
 
 const drawCards = computed<DrawCard[]>(() => {
   const s = session.value
@@ -160,9 +175,17 @@ function onCustomEdit(deckId: string) {
   builderOpen.value = true
 }
 
-function onBuilderClose() {
+function closeBuilder() {
+  builderDirty.value = false
+  builderBusy.value = false
   builderOpen.value = false
   editingDeckId.value = null
+}
+
+function requestBuilderClose() {
+  if (builderBusy.value) return
+  if (builderDirty.value && !window.confirm(t('practice.custom.discard_confirm'))) return
+  closeBuilder()
 }
 
 async function onDrawDone() {
@@ -171,61 +194,112 @@ async function onDrawDone() {
   await focusPhaseWrap(playWrap)
 }
 
-onMounted(async () => {
-  // Focused round from the library study sheet: the grammar is already
-  // chosen, so the deck shelf and the draw theater would just be noise.
-  // On a hard refresh / deep link this page mounts BEFORE the layout's
-  // store hydration, so hydrate here first (idempotent) — otherwise the
-  // grammar list is empty and the focus lookup falls through.
-  if (typeof route.query.focus === 'string' && route.query.focus) {
-    // The adapter throws on a Supabase error now; if the focus-round hydrate
-    // fails, fall back to the normal picker rather than leaving an unhandled
-    // rejection / a blank deep-link page.
-    try {
-      await Promise.all([grammarStore.hydrate(), contextsStore.hydrate()])
-    } catch (err) {
-      console.error('ruleta: focus-round hydration failed', err)
-      return
-    }
-    await start()
-    if (error.value) {
-      // error.value is a raw exception message (English) — localize the toast,
-      // keep the technical string in console for debugging.
-      console.error('ruleta: session start failed:', error.value)
-      toast.error(t('practice.start_failed'))
-      return
-    }
-    phase.value = 'play'
+function deepLinkSignature(): string | null {
+  if (typeof route.query.focus === 'string' && route.query.focus) return `focus:${route.query.focus}`
+  if (route.query.revisit === 'due') return 'revisit:due'
+  if (typeof route.query.deck === 'string' && route.query.deck) return `deck:${route.query.deck}`
+  return null
+}
+
+async function consumeDeepLink(): Promise<void> {
+  const query = { ...route.query }
+  delete query.focus
+  delete query.revisit
+  delete query.deck
+  await router.replace({ query })
+}
+
+async function handleDeepLink(): Promise<void> {
+  const signature = deepLinkSignature()
+  if (!signature) {
+    handledDeepLink.value = null
     return
   }
+  // INITIAL_SESSION re-hydrates every user store through appStatus. Waiting for
+  // that ready signal prevents a hard-link round from reading the layout's
+  // earlier anonymous/noop seed state and overwriting real progress.
+  if (!auth.ready || !auth.user || appStatus.status !== 'ready') return
+  if (deepLinkRunning.value || handledDeepLink.value === signature) return
 
-  // Revisit round from the garden's "ready to revisit" hint: build a due-first
-  // pool (padded to >=3 from the active pool) and start a session over it. The
-  // weighted draw still front-loads the due items via getWeight's timeFactor.
-  // Mutually exclusive with ?focus= (focus returns above and keeps priority).
-  if (route.query.revisit === 'due') {
-    try {
-      await Promise.all([grammarStore.hydrate(), contextsStore.hydrate(), srsStore.hydrate()])
-    } catch (err) {
-      console.error('ruleta: revisit-round hydration failed', err)
+  deepLinkRunning.value = true
+  handledDeepLink.value = signature
+  reset()
+  phase.value = 'pick'
+  try {
+    if (signature.startsWith('focus:')) {
+      await start()
+      if (error.value || !session.value) {
+        console.error('ruleta: focused session start failed:', error.value)
+        toast.error(t('practice.start_failed'))
+        await consumeDeepLink()
+        await focusPhaseWrap(pickWrap)
+        return
+      }
+      phase.value = 'play'
+      await focusPhaseWrap(playWrap)
       return
     }
-    const activeKos = grammarStore.activeIndices
-      .map((idx) => grammarStore.items[idx]?.ko)
-      .filter((ko): ko is string => !!ko)
-    const pool = revisitPool(dueKos(srsStore.map, Date.now()), activeKos, 3)
-    if (pool.length < 3) return // nothing to revisit yet — fall back to the picker
-    await start({ customDeckGrammarKos: pool })
-    if (error.value) {
-      // error.value is a raw exception message (English) — localize the toast,
-      // keep the technical string in console for debugging.
-      console.error('ruleta: session start failed:', error.value)
+
+    if (signature === 'revisit:due') {
+      const activeKos = grammarStore.activeIndices
+        .map((idx) => grammarStore.items[idx]?.ko)
+        .filter((ko): ko is string => !!ko)
+      const activeSet = new Set(activeKos)
+      const eligibleDue = dueKos(srsStore.map, Date.now()).filter((ko) => activeSet.has(ko))
+      // Stale reminders and orphan progress rows are harmless: consume the
+      // query and show the picker instead of starting a random/empty round.
+      if (eligibleDue.length === 0) {
+        await consumeDeepLink()
+        await focusPhaseWrap(pickWrap)
+        return
+      }
+      const pool = revisitPool(eligibleDue, activeKos, 3)
+      if (pool.length < 3) {
+        await consumeDeepLink()
+        await focusPhaseWrap(pickWrap)
+        return
+      }
+      await start({ customDeckGrammarKos: pool })
+      if (error.value || !session.value) {
+        console.error('ruleta: revisit session start failed:', error.value)
+        toast.error(t('practice.start_failed'))
+        await consumeDeepLink()
+        await focusPhaseWrap(pickWrap)
+        return
+      }
+      phase.value = 'play'
+      await focusPhaseWrap(playWrap)
+      return
+    }
+
+    const deckId = typeof route.query.deck === 'string' ? route.query.deck : ''
+    const option = deckOptions.value.find((candidate) => candidate.id === deckId)
+    if (!option || option.disabled) {
       toast.error(t('practice.start_failed'))
+      await consumeDeepLink()
+      await focusPhaseWrap(pickWrap)
       return
     }
-    phase.value = 'play'
+    await start({ deckId })
+    if (error.value || !session.value) {
+      console.error('ruleta: recommended deck start failed:', error.value)
+      toast.error(t('practice.start_failed'))
+      await consumeDeepLink()
+      await focusPhaseWrap(pickWrap)
+      return
+    }
+    phase.value = 'draw'
+    await focusPhaseWrap(drawWrap)
+  } finally {
+    deepLinkRunning.value = false
   }
-})
+}
+
+watch(
+  () => [route.query.focus, route.query.revisit, route.query.deck, auth.ready, appStatus.status] as const,
+  () => void handleDeepLink(),
+  { immediate: true, flush: 'post' },
+)
 
 /**
  * After a save, scroll the next still-active card into view on mobile.
@@ -288,11 +362,13 @@ async function onSubmit(payload: {
 
 async function onRestart() {
   reset()
-  // Consume a leftover ?focus= param: without this, every deck picked
-  // after restarting a focused round would silently rebuild the same
-  // single-grammar session.
-  if (route.query.focus !== undefined || route.query.revisit !== undefined) {
-    await router.replace({ query: {} })
+  // Consume any auto-start query so the next manual deck choice is authoritative.
+  if (
+    route.query.focus !== undefined ||
+    route.query.revisit !== undefined ||
+    route.query.deck !== undefined
+  ) {
+    await consumeDeepLink()
   }
   phase.value = 'pick'
   await focusPhaseWrap(pickWrap)
@@ -312,7 +388,7 @@ async function onRestart() {
 
     <div v-if="phase === 'pick'" ref="pickWrap" tabindex="-1" class="phase-wrap">
       <p class="lead">{{ t('practice.deck_lead') }}</p>
-      <DeckPicker :options="deckOptions" :recommended-id="settings.startingDeckId" @select="onDeckSelect" />
+      <DeckPicker :options="deckOptions" :recommended-id="recommendedDeckId" @select="onDeckSelect" />
       <CustomDeckShelf
         :options="customDeckOptions"
         @select="onCustomDeckSelect"
@@ -349,9 +425,15 @@ async function onRestart() {
       :open="builderOpen"
       :title="t('practice.custom.builder_title')"
       :close-label="t('practice.custom.close')"
-      @close="onBuilderClose"
+      @close="requestBuilderClose"
     >
-      <CustomDeckBuilder :key="editingDeckId ?? 'new'" :deck-id="editingDeckId" @saved="onBuilderClose" />
+      <CustomDeckBuilder
+        :key="editingDeckId ?? 'new'"
+        :deck-id="editingDeckId"
+        @dirty="builderDirty = $event"
+        @busy="builderBusy = $event"
+        @saved="closeBuilder"
+      />
     </Modal>
   </div>
 </template>

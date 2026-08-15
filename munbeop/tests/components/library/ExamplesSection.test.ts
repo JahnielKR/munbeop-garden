@@ -14,9 +14,9 @@ vi.mock('~/lib/grammar-examples', () => ({
       : [],
 }))
 
-const mountWith = async (grammar: Record<string, unknown>) => {
+const mountWith = async (grammar: Record<string, unknown>, includeCanonicalFallback = false) => {
   const w = mount(ExamplesSection, {
-    props: { grammar: { deckId: 'topik-1', ...grammar } },
+    props: { grammar: { deckId: 'topik-1', ...grammar }, includeCanonicalFallback },
     global: { mocks: { $t: (k: string) => k }, stubs: {} },
   })
   await flushPromises() // let the async bank load resolve
@@ -41,5 +41,14 @@ describe('ExamplesSection', () => {
   it('renders nothing when there is neither a bank nor a canonical example', async () => {
     const w = await mountWith({ ko: '-고' })
     expect(w.find('.examples-section').exists()).toBe(false)
+  })
+  it('renders the canonical example as an opt-in Rescue fallback', async () => {
+    const w = await mountWith(
+      { ko: '-고', example: '밥을 먹고 잤어요.', trans: { en: 'I ate and slept.' } },
+      true,
+    )
+    expect(w.findAll('.example')).toHaveLength(1)
+    expect(w.text()).toContain('밥을 먹고 잤어요.')
+    expect(w.text()).toContain('I ate and slept.')
   })
 })

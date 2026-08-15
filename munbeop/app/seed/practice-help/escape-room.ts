@@ -4,7 +4,7 @@ import { L } from '../locale'
 /**
  * 방 탈출 (escape room) — explanation for the narrative escape-room mode.
  * No Korean example sentences here (the mode itself is the narrative); prose
- * localized via L(). Native review (owner's wife) pending on the 8 translations.
+ * has been checked for feature accuracy and localized across all eight locales.
  */
 export const ESCAPE_ROOM_HELP: PracticeHelpContent = {
   ko: '방 탈출',

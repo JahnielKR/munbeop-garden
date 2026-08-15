@@ -6,6 +6,9 @@ import ExampleAudioButton from './ExampleAudioButton.vue'
 
 interface Props {
   grammar: Grammar
+  /** Rescue can include the grammar's canonical example when no authored bank
+   * exists (notably for user-created grammars). */
+  includeCanonicalFallback?: boolean
 }
 const props = defineProps<Props>()
 const { t } = useI18n()
@@ -39,7 +42,10 @@ watch(
 </script>
 
 <template>
-  <section v-if="bank.length" class="examples-section">
+  <section
+    v-if="bank.length || (includeCanonicalFallback && grammar.example)"
+    class="examples-section"
+  >
     <h3 class="section-title">{{ t('library.modal.section.examples') }}</h3>
     <ul class="examples">
       <li v-for="(ex, i) in bank" :key="i" class="example">
@@ -49,6 +55,13 @@ watch(
           <span class="example__chip" lang="ko" :aria-label="t(REGISTER_ARIA[ex.level])">{{ REGISTER_KO[ex.level] }}</span>
         </p>
         <p class="example__trans">{{ tl(ex.trans) }}</p>
+      </li>
+      <li v-if="bank.length === 0 && grammar.example" class="example">
+        <p class="example__ko" lang="ko">
+          <ExampleAudioButton :sentence="grammar.example" />
+          <span class="example__sentence">{{ grammar.example }}</span>
+        </p>
+        <p v-if="grammar.trans" class="example__trans">{{ tl(grammar.trans) }}</p>
       </li>
     </ul>
   </section>

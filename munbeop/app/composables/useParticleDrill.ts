@@ -13,6 +13,8 @@ import { CLASH_SETS, clashSetById, DEFAULT_CLASH_SET_ID } from '~/seed/clash-set
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useActivityStore } from '~/stores/activity'
+import { useAuthStore } from '~/stores/auth'
+import type { PracticeSaveStatus } from '~/lib/practice/persistence'
 
 export type DrillPhase = 'question' | 'blocked' | 'right' | 'wrong' | 'done'
 export type DrillMode = 'normal' | 'replay'
@@ -28,6 +30,7 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
   const logStore = useLogStore()
   const srsStore = useSrsStore()
   const activity = useActivityStore()
+  const auth = useAuthStore()
   const { t, locale } = useI18n()
 
   const availableSets = CLASH_SETS
@@ -49,12 +52,23 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
   const results = ref<DrillItemResult[]>([])
   const slipsThisItem = ref(0)
   const gardenGrew = ref(false)
+  const saveStatus = ref<PracticeSaveStatus>('idle')
+  const pendingMistake = ref<{ id: number; item: DrillItem; choice: string } | null>(null)
+  const pendingCredits = ref<Array<{ id: number; grammarKo: string; item: DrillItem }>>([])
+  const completionPrepared = ref(false)
+  let runOwnerUserId: string | null = null
+  let runGeneration = 0
+
+  function runStillOwned(ownerUserId = runOwnerUserId, generation = runGeneration): boolean {
+    return (auth.user?.id ?? null) === ownerUserId && runGeneration === generation
+  }
 
   const item = computed<DrillItem>(() => sessionItems.value[index.value]!)
   const score = computed(() => scoreOf(results.value))
   const failedItems = computed(() =>
     sessionItems.value.filter((i) => results.value.some((r) => r.itemId === i.id && !r.correct)),
   )
+  const saveBlocked = computed(() => saveStatus.value === 'saving' || saveStatus.value === 'error')
 
   /** Switch the active clash set. Caller restarts the round. */
   function selectSet(id: string) {
@@ -70,27 +84,53 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
     results.value = []
     slipsThisItem.value = 0
     gardenGrew.value = false
+    saveStatus.value = 'idle'
+    pendingMistake.value = null
+    pendingCredits.value = []
+    completionPrepared.value = false
   }
 
   async function start() {
+    if (saveBlocked.value) return
+    runGeneration += 1
+    runOwnerUserId = auth.user?.id ?? null
+    const ownerUserId = runOwnerUserId
+    const generation = runGeneration
     mode.value = 'normal'
     sessionItems.value = shuffle(items.value)
     resetRound()
-    await Promise.all(set.value.families.map((f) => srsStore.markSeen(f.grammarKo)))
+    const markSeenResults = await Promise.allSettled(
+      set.value.families.map((family) => srsStore.markSeen(family.grammarKo)),
+    )
+    if (!runStillOwned(ownerUserId, generation)) return
+    if (markSeenResults.some((result) => result.status === 'rejected')) {
+      console.error('particle lab: one or more mark-seen writes failed')
+    }
   }
 
   /** Re-drill only the items missed in the round just finished (practice mode). */
   async function replayFailed() {
+    if (saveBlocked.value) return
     const failed = failedItems.value
     if (failed.length === 0) return
+    runGeneration += 1
+    runOwnerUserId = auth.user?.id ?? null
+    const ownerUserId = runOwnerUserId
+    const generation = runGeneration
     mode.value = 'replay'
     sessionItems.value = shuffle(failed)
     resetRound()
-    await Promise.all(set.value.families.map((f) => srsStore.markSeen(f.grammarKo)))
+    const markSeenResults = await Promise.allSettled(
+      set.value.families.map((family) => srsStore.markSeen(family.grammarKo)),
+    )
+    if (!runStillOwned(ownerUserId, generation)) return
+    if (markSeenResults.some((result) => result.status === 'rejected')) {
+      console.error('particle lab: one or more mark-seen writes failed')
+    }
   }
 
   async function answer(choice: string) {
-    if (phase.value !== 'question') return
+    if (phase.value !== 'question' || saveStatus.value === 'saving' || !runStillOwned()) return
     picked.value = choice
     const v = judge(item.value, choice, set.value)
     verdict.value = v
@@ -101,7 +141,7 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
         batchimSlips: slipsThisItem.value,
       })
       phase.value = 'right'
-      void activity.record()
+      if (runStillOwned()) void activity.record()
       return
     }
     if (v.kind === 'blocked') {
@@ -126,8 +166,11 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
       batchimSlips: slipsThisItem.value,
     })
     phase.value = 'wrong'
-    void activity.record()
-    if (mode.value === 'normal') await logMistake(item.value, choice)
+    if (runStillOwned()) void activity.record()
+    if (mode.value === 'normal') {
+      pendingMistake.value = { id: logStore.createEntryId(), item: item.value, choice }
+      await persistPendingMistake()
+    }
   }
 
   /** Leave the 받침 block and let the user pick again. */
@@ -136,7 +179,13 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
   }
 
   async function next() {
-    if (phase.value === 'done') return
+    // Only a resolved answer may advance. Repeated click/keyboard emits that
+    // arrive after reset must not skip the newly displayed question.
+    if (
+      (phase.value !== 'right' && phase.value !== 'wrong')
+      || saveStatus.value === 'saving'
+      || saveStatus.value === 'error'
+    ) return
     if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
       await finish()
@@ -148,47 +197,109 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
     picked.value = null
     blockedChoices.value = new Set()
     slipsThisItem.value = 0
+    saveStatus.value = 'idle'
+    pendingMistake.value = null
   }
 
-  /** Semantic error → one hard/incorrect diary entry with auto note (D6a). */
-  async function logMistake(it: DrillItem, choice: string) {
-    const grammarKo = set.value.families[it.familyIndex].grammarKo
-    await logStore.add({
-      ko: grammarKo,
-      sentence: correctSentence(it, set.value),
-      feedback: 'hard',
-      errorNote: `${t('particles.drill.diary_note', { choice })} ${localized(it.reason, locale.value as LocaleCode)}`,
-      errorDimension: 'particle',
-      reviewState: 'incorrect',
-      contextId: LAB_CONTEXT.id,
-      contextName: LAB_CONTEXT.name,
-    })
-    await srsStore.recalculate(grammarKo)
+  /** Semantic error → one hard/incorrect diary entry with retry-safe state. */
+  async function persistPendingMistake(): Promise<boolean> {
+    const pending = pendingMistake.value
+    if (!pending || saveStatus.value === 'saving') return false
+    const ownerUserId = runOwnerUserId
+    const generation = runGeneration
+    if (!runStillOwned(ownerUserId, generation)) return false
+    const grammarKo = set.value.families[pending.item.familyIndex].grammarKo
+    saveStatus.value = 'saving'
+    try {
+      await logStore.add({
+        ko: grammarKo,
+        sentence: correctSentence(pending.item, set.value),
+        feedback: 'hard',
+        errorNote: `${t('particles.drill.diary_note', { choice: pending.choice })} ${localized(pending.item.reason, locale.value as LocaleCode)}`,
+        errorDimension: 'particle',
+        reviewState: 'incorrect',
+        contextId: LAB_CONTEXT.id,
+        contextName: LAB_CONTEXT.name,
+      }, pending.id)
+      if (!runStillOwned(ownerUserId, generation)) return false
+    } catch (error) {
+      console.error('particle lab: diary write failed', error)
+      saveStatus.value = 'error'
+      return false
+    }
+    pendingMistake.value = null
+    try {
+      await srsStore.recalculate(grammarKo)
+      if (!runStillOwned(ownerUserId, generation)) return false
+    } catch (error) {
+      console.error('particle lab: SRS recalculation failed', error)
+    }
+    saveStatus.value = 'saved'
+    return true
   }
 
   /** Session end: accuracy gate, then one easy/correct entry per family (D6b). */
   async function finish() {
+    if (saveStatus.value === 'saving') return
     if (mode.value === 'replay') return
     if (score.value.accuracy < EASY_THRESHOLD) return
-    for (const [idx, family] of set.value.families.entries()) {
-      const corrects = sessionItems.value.filter(
-        (i) =>
-          i.familyIndex === idx &&
-          results.value.some((r) => r.itemId === i.id && r.correct),
-      )
-      if (corrects.length < MIN_FAMILY_CORRECT) continue
-      await logStore.add({
-        ko: family.grammarKo,
-        sentence: correctSentence(corrects[0]!, set.value),
-        feedback: 'easy',
-        errorNote: null,
-        reviewState: 'correct',
-        contextId: LAB_CONTEXT.id,
-        contextName: LAB_CONTEXT.name,
-      })
-      await srsStore.recalculate(family.grammarKo)
+    const ownerUserId = runOwnerUserId
+    const generation = runGeneration
+    if (!runStillOwned(ownerUserId, generation)) return
+    if (!completionPrepared.value) {
+      for (const [idx, family] of set.value.families.entries()) {
+        const corrects = sessionItems.value.filter(
+          (i) =>
+            i.familyIndex === idx &&
+            results.value.some((r) => r.itemId === i.id && r.correct),
+        )
+        if (corrects.length >= MIN_FAMILY_CORRECT) {
+          pendingCredits.value.push({
+            id: logStore.createEntryId(),
+            grammarKo: family.grammarKo,
+            item: corrects[0]!,
+          })
+        }
+      }
+      completionPrepared.value = true
+    }
+    if (pendingCredits.value.length === 0) return
+    saveStatus.value = 'saving'
+    while (pendingCredits.value.length > 0) {
+      if (!runStillOwned(ownerUserId, generation)) return
+      const credit = pendingCredits.value[0]!
+      try {
+        await logStore.add({
+          ko: credit.grammarKo,
+          sentence: correctSentence(credit.item, set.value),
+          feedback: 'easy',
+          errorNote: null,
+          reviewState: 'correct',
+          contextId: LAB_CONTEXT.id,
+          contextName: LAB_CONTEXT.name,
+        }, credit.id)
+        if (!runStillOwned(ownerUserId, generation)) return
+      } catch (error) {
+        console.error('particle lab: round credit write failed', error)
+        saveStatus.value = 'error'
+        return
+      }
+      pendingCredits.value.shift()
+      try {
+        await srsStore.recalculate(credit.grammarKo)
+        if (!runStillOwned(ownerUserId, generation)) return
+      } catch (error) {
+        console.error('particle lab: SRS recalculation failed', error)
+      }
       gardenGrew.value = true
     }
+    saveStatus.value = 'saved'
+  }
+
+  async function retrySave() {
+    if (saveStatus.value !== 'error') return
+    if (pendingMistake.value) await persistPendingMistake()
+    else await finish()
   }
 
   return {
@@ -207,11 +318,14 @@ export function useParticleDrill(initialSetId: string = DEFAULT_CLASH_SET_ID) {
     score,
     failedItems,
     gardenGrew,
+    saveStatus,
+    saveBlocked,
     selectSet,
     start,
     replayFailed,
     answer,
     retry,
     next,
+    retrySave,
   }
 }

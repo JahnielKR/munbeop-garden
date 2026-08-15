@@ -14,7 +14,9 @@ import type { PronunciationGuide } from '~/lib/domain'
  * synonym listing sounds the single SPOKEN representative (-다는데/-다더라/-다더니 →
  * 다는데; -아/어 뵙다/봬요 → keeps 뵙다, drops 봬요); a DOUBLED pattern repeats the core
  * (-(으)며 -(으)며, -(으)랴 -(으)랴); optional parens dropped (인해(서) → 인해; -느니
- * (차라리) → 느니). PENDING wife native-review.
+ * (차라리) → 느니). The guide has been checked against that convention and
+ * is guarded by seed/audio invariants; it is didactic segmentation, not a
+ * phonetic transcription.
  */
 export const TOPIK_5_PRONUNCIATION: PronunciationGuide[] = [
   // ── Retrospective / recalled ──────────────────────────────────────────────

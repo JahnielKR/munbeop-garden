@@ -16,7 +16,7 @@ async function mountPlaying(level = makeLevel(), seed = 'seed-test') {
 async function openSlot1(w: VueWrapper) {
   const spot = w
     .findAll('[data-testid="hotspot"]')
-    .find((h) => h.attributes('aria-label') === 'h-a-1')!
+    .find((h) => h.attributes('data-hotspot-id') === 'h-a-1')!
   await spot.trigger('click')
 }
 
@@ -82,6 +82,33 @@ describe('EscapeRoom (integration with store)', () => {
     expect(store.currentRoomId).toBe('room-b')
   })
 
+  it('reveals later room tabs only when their first sequential lock is reached', async () => {
+    const level = makeLevel({
+      rooms: [
+        ...makeLevel().rooms,
+        {
+          id: 'room-b',
+          title: {
+            en: 'Room B', es: 'Room B', fr: 'Room B', 'pt-BR': 'Room B',
+            th: 'Room B', id: 'Room B', vi: 'Room B', ja: 'Room B',
+          },
+          image: 'rooms/b.png',
+          ambientAudio: '',
+          hotspots: [{ id: 'h-b-1', rect: [0, 0, 44, 44], triggersSlot: 'slot-2' }],
+        },
+      ],
+    })
+    const w = await mountPlaying(level)
+    const laterTab = w.findAll('[data-testid="room-tab"]')[1]!
+    expect(laterTab.attributes('disabled')).toBeDefined()
+
+    useEscapeRoomStore().answerSelection('slot-1', 0)
+    await flushPromises()
+    expect(laterTab.attributes('disabled')).toBeUndefined()
+    await laterTab.trigger('click')
+    expect(useEscapeRoomStore().currentRoomId).toBe('room-b')
+  })
+
   it('opens the right puzzle panel per slot type', async () => {
     const w = await mountPlaying()
     await openSlot1(w)
@@ -107,7 +134,7 @@ describe('EscapeRoom (integration with store)', () => {
     await w.get('[data-testid="cinematic-skip"]').trigger('click')
     const spot = w
       .findAll('[data-testid="hotspot"]')
-      .find((h) => h.attributes('aria-label') === 'h-a-1')!
+      .find((h) => h.attributes('data-hotspot-id') === 'h-a-1')!
     ;(spot.element as HTMLElement).focus()
     await spot.trigger('click') // opens the overlay; focus moves into it
     await flushPromises()

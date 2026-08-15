@@ -48,6 +48,36 @@ describe('useEscapeRoomStore', () => {
     expect(store.currentRoomId).toBe('room-a')
   })
 
+  it('keeps later rooms and slots locked until the authored sequence reaches them', () => {
+    const store = useEscapeRoomStore()
+    const level = makeLevel({
+      rooms: [
+        ...makeLevel().rooms,
+        {
+          id: 'room-b',
+          title: ls('Room B'),
+          image: 'rooms/b.png',
+          ambientAudio: '',
+          hotspots: [{ id: 'h-b-1', rect: [0, 0, 44, 44], triggersSlot: 'slot-2' }],
+        },
+      ],
+    })
+    store.startRun(level, 'seed', 0)
+
+    expect(store.nextSlotId).toBe('slot-1')
+    expect(store.isRoomUnlocked('room-b')).toBe(false)
+    store.enterRoom('room-b')
+    expect(store.currentRoomId).toBe('room-a')
+    expect(store.answerCompletion('slot-2', '이')).toBe('locked')
+    expect(store.errorsMade).toBe(0)
+
+    store.answerSelection('slot-1', 0)
+    expect(store.nextSlotId).toBe('slot-2')
+    expect(store.isRoomUnlocked('room-b')).toBe(true)
+    store.enterRoom('room-b')
+    expect(store.currentRoomId).toBe('room-b')
+  })
+
   it('answerSelection with the correct option resolves the slot', () => {
     const store = useEscapeRoomStore()
     store.startRun(makeLevel(), 'seed-x', 0)
@@ -70,6 +100,7 @@ describe('useEscapeRoomStore', () => {
   it('answerCompletion trims whitespace before comparing', () => {
     const store = useEscapeRoomStore()
     store.startRun(makeLevel(), 'seed-x', 0)
+    store.answerSelection('slot-1', 0)
     // Fixture: slot-2 completion candidates all have answer === '이'
     expect(store.answerCompletion('slot-2', '  이  ')).toBe('correct')
     expect(store.resolvedSlots).toContain('slot-2')
@@ -83,6 +114,7 @@ describe('useEscapeRoomStore', () => {
       s2.candidates = s2.candidates.map((c) => ({ ...c, answer: '먹어 보세요' }))
     }
     store.startRun(level, 'seed-x', 0)
+    store.answerSelection('slot-1', 0)
     // 보조용언 spacing is optional (한글 맞춤법 §47): the closed form still matches.
     expect(store.answerCompletion('slot-2', '먹어보세요')).toBe('correct')
     expect(store.resolvedSlots).toContain('slot-2')
@@ -91,9 +123,11 @@ describe('useEscapeRoomStore', () => {
   it('answerCreation compares correctOrder array exactly', () => {
     const store = useEscapeRoomStore()
     store.startRun(makeLevel(), 'seed-x', 0)
+    store.answerSelection('slot-1', 0)
+    store.answerCompletion('slot-2', '이')
     // Fixture: slot-3 creation candidates all have correctOrder = [0, 1]
-    expect(store.answerCreation('slot-3', [0, 1])).toBe('correct')
     expect(store.answerCreation('slot-3', [0, 1, 2])).toBe('wrong')
+    expect(store.answerCreation('slot-3', [0, 1])).toBe('level-complete')
   })
 
   it('exceeding maxErrors triggers game over and resets racha', () => {
@@ -259,6 +293,8 @@ describe('useEscapeRoomStore', () => {
   it('soft-rejects a present-tense tile once (no error), then errors normally', () => {
     const store = useEscapeRoomStore()
     store.startRun(makeSoftLevel(), 'seed-soft', 0)
+    store.answerSelection('slot-1', 0)
+    store.answerCompletion('slot-2', '이')
     // First submission containing the soft tile (index 2): nudge, no error.
     expect(store.answerCreation('slot-3', [0, 1, 2])).toBe('soft-reject')
     expect(store.errorsMade).toBe(0)
@@ -267,13 +303,15 @@ describe('useEscapeRoomStore', () => {
     expect(store.answerCreation('slot-3', [0, 1, 2])).toBe('wrong')
     expect(store.errorsMade).toBe(1)
     // The correct order still resolves the slot afterwards.
-    expect(store.answerCreation('slot-3', [0, 1])).toBe('correct')
+    expect(store.answerCreation('slot-3', [0, 1])).toBe('level-complete')
     expect(store.resolvedSlots).toContain('slot-3')
   })
 
   it('does NOT soft-reject a wrong answer that omits the soft tile', () => {
     const store = useEscapeRoomStore()
     store.startRun(makeSoftLevel(), 'seed-soft-2', 0)
+    store.answerSelection('slot-1', 0)
+    store.answerCompletion('slot-2', '이')
     // Wrong order, but no soft tile → a normal error from the first try.
     expect(store.answerCreation('slot-3', [1, 0])).toBe('wrong')
     expect(store.errorsMade).toBe(1)
@@ -282,9 +320,13 @@ describe('useEscapeRoomStore', () => {
   it('resets the soft-reject pass on a new run', () => {
     const store = useEscapeRoomStore()
     store.startRun(makeSoftLevel(), 'seed-soft-3', 0)
+    store.answerSelection('slot-1', 0)
+    store.answerCompletion('slot-2', '이')
     expect(store.answerCreation('slot-3', [0, 1, 2])).toBe('soft-reject')
     store.reset()
     store.startRun(makeSoftLevel(), 'seed-soft-4', 0)
+    store.answerSelection('slot-1', 0)
+    store.answerCompletion('slot-2', '이')
     // Fresh run → the free pass is available again.
     expect(store.answerCreation('slot-3', [0, 1, 2])).toBe('soft-reject')
     expect(store.errorsMade).toBe(0)

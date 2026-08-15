@@ -4,8 +4,8 @@ import { L } from '../locale'
 
 /**
  * Speech-level transform items (반말 ↔ 해요체 ↔ 합쇼체), neutral subject.
- * Drafted + Korean-lens adversarially verified (single-correct-answer, no self-honorification,
- * plausible-wrong distractors, 8-locale). Korean wife native review = documented final gate.
+ * Korean-lens adversarially reviewed (single-correct-answer, no self-honorification,
+ * plausible-wrong distractors, 8-locale) and covered by seed invariants.
  */
 
 export const LEVEL_ITEMS: RegisterItem[] = [

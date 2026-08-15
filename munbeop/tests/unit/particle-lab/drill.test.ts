@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { ClashSet, DrillItem, LocalizedString } from '~/lib/domain'
-import { correctForm, correctSentence, deriveOptions, judge, optionsFor, scoreOf, sentenceParts } from '~/lib/particle-lab'
+import { correctForm, correctSentence, deriveOptions, familyFormFor, judge, optionsFor, scoreOf, sentenceParts } from '~/lib/particle-lab'
 
 const LS = (s: string): LocalizedString => ({
   en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s,
@@ -44,6 +44,17 @@ describe('drill engine (clash sets)', () => {
     expect(correctForm(mulSubject, TOPIC_SUBJECT)).toBe('이')
     expect(correctForm(jeoTopic, TOPIC_SUBJECT)).toBe('는')
     expect(correctForm(kokkiri, TOPIC_SUBJECT)).toBe('가')
+  })
+
+  it('supports the ㄹ-batchim exception of (으)로', () => {
+    const means: ClashSet['families'][number] = {
+      id: 'means', grammarKo: '(으)로', invariant: false,
+      afterConsonant: '으로', afterVowel: '로', afterRieul: '로', label: LS('means'),
+    }
+    expect(familyFormFor(means, '책')).toBe('으로')
+    expect(familyFormFor(means, '버스')).toBe('로')
+    expect(familyFormFor(means, '사과')).toBe('로')
+    expect(familyFormFor(means, '칼')).toBe('로')
   })
 
   it('assembles the correct sentence including lead', () => {

@@ -41,6 +41,16 @@ const UNTIL: ClashFamily = {
   id: 'until', grammarKo: '부터 / 까지', invariant: true, form: '까지',
   label: L('until', 'hasta', "jusqu'à", 'até', 'จนถึง', 'sampai', 'đến', '〜まで'),
 }
+const BY_MEANS: ClashFamily = {
+  id: 'by-means', grammarKo: '(으)로', invariant: false,
+  afterConsonant: '으로', afterVowel: '로', afterRieul: '로',
+  label: L('means/tool', 'medio/herramienta', 'moyen/outil', 'meio/ferramenta', 'วิธี/เครื่องมือ', 'cara/alat', 'phương tiện/công cụ', '手段・道具'),
+}
+const AND: ClashFamily = {
+  id: 'and', grammarKo: '와/과 · 하고 · (이)랑', invariant: false,
+  afterConsonant: '과', afterVowel: '와',
+  label: L('and/with', 'y/con', 'et/avec', 'e/com', 'และ/กับ', 'dan/dengan', 'và/với', '〜と'),
+}
 
 /** A set name that stays Korean across all 8 locales (brand mannerism). */
 const pair = (ko: string) => L(ko, ko, ko, ko, ko, ko, ko, ko)
@@ -53,6 +63,7 @@ export const CLASH_SETS: ClashSet[] = [
   { id: 'place-recipient', name: pair('에 vs 한테'), families: [PLACE_STATIC, RECIPIENT] },
   { id: 'also-only', name: pair('도 vs 만'), families: [ALSO, ONLY] },
   { id: 'from-until', name: pair('부터 vs 까지'), families: [FROM, UNTIL] },
+  { id: 'means-companion', name: pair('(으)로 vs 와/과'), families: [BY_MEANS, AND] },
   {
     id: 'contraction',
     kind: 'contraction',

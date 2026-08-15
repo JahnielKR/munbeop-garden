@@ -12,16 +12,22 @@ export type DataStatus = 'idle' | 'loading' | 'ready' | 'error'
 export const useAppStatus = defineStore('appStatus', () => {
   const status = ref<DataStatus>('idle')
   let lastRun: (() => Promise<unknown>) | null = null
+  let generation = 0
 
   async function track(run: () => Promise<unknown>) {
+    const runGeneration = ++generation
     lastRun = run
     status.value = 'loading'
     try {
       await run()
-      status.value = 'ready'
+      if (runGeneration === generation) status.value = 'ready'
     } catch (err) {
-      console.error('appStatus: data hydration failed', err)
-      status.value = 'error'
+      // A newer hydration owns the shell state. An older response must never
+      // publish ready/error while the latest account load is still in flight.
+      if (runGeneration === generation) {
+        console.error('appStatus: data hydration failed', err)
+        status.value = 'error'
+      }
     }
   }
 

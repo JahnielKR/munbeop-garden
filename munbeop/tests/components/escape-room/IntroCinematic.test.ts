@@ -3,7 +3,14 @@ import { mount, flushPromises } from '@vue/test-utils'
 import IntroCinematic from '~/components/escape-room/IntroCinematic.vue'
 
 const ls = (s: string) => ({
-  en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s,
+  en: s,
+  es: s,
+  fr: s,
+  'pt-BR': s,
+  th: s,
+  id: s,
+  vi: s,
+  ja: s,
 })
 
 const props = {
@@ -42,5 +49,21 @@ describe('IntroCinematic', () => {
     const w = mount(IntroCinematic, { props })
     await w.get('[data-testid="cinematic-skip"]').trigger('click')
     expect(w.emitted('done')).toBeTruthy()
+  })
+
+  it('uses separate keyboard controls instead of nesting a button in a button role', async () => {
+    const w = mount(IntroCinematic, { props, attachTo: document.body })
+    await flushPromises()
+    expect(w.get('[data-testid="cinematic-root"]').attributes('role')).toBeUndefined()
+    expect(w.get('[data-testid="cinematic-continue"]').element).toBe(document.activeElement)
+    expect(w.findAll('button')).toHaveLength(2)
+    w.unmount()
+  })
+
+  it('renders an optional cinematic illustration as decorative art', () => {
+    const w = mount(IntroCinematic, { props: { ...props, image: '/intro.webp' } })
+    const art = w.get('.cinematic__art')
+    expect(art.attributes('src')).toBe('/intro.webp')
+    expect(art.attributes('alt')).toBe('')
   })
 })

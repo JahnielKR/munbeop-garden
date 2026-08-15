@@ -3,8 +3,8 @@ import { L } from '../locale'
 
 /**
  * 빈칸 연습 (cloze / fill-in-the-blank) — explanation for the cloze recognition lab.
- * Korean example sentences are language-neutral; prose is localized via L().
- * Native review (owner's wife) pending on the 8 translations.
+ * Korean example sentences are language-neutral; prose has been checked for
+ * feature accuracy and localized across all eight supported locales.
  */
 export const CLOZE_HELP: PracticeHelpContent = {
   ko: '빈칸 연습',

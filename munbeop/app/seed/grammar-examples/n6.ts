@@ -8,9 +8,10 @@ import { L } from '../locale'
  * grammars-n6.ts verbatim; sentences differ from each grammar's canonical
  * `Grammar.example`.
  *
- * Drafted + Korean-lens (literary) adversarially verified by a multi-agent
- * workflow. Native (Korean wife) review is the documented final gate — these
- * elevated/archaic endings especially warrant it.
+ * Editorial QA covers Korean form, literary register and localized meaning.
+ * Seed tests enforce catalog links, unique sentences, register-ending alignment
+ * and complete eight-locale fields. Archaic nuance remains a useful target for
+ * future native-speaker refinement.
  */
 export const TOPIK_6_EXAMPLES: GrammarExample[] = [
   {

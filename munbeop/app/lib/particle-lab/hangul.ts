@@ -20,6 +20,13 @@ export function hasBatchim(word: string): boolean {
   return (last.charCodeAt(0) - HANGUL_FIRST) % JONGSEONG_COUNT !== 0
 }
 
+/** True when the last precomposed syllable has ㄹ (jongseong index 8). */
+export function hasRieulBatchim(word: string): boolean {
+  const last = word.charAt(word.length - 1)
+  if (!isHangulSyllable(last)) return false
+  return (last.charCodeAt(0) - HANGUL_FIRST) % JONGSEONG_COUNT === 8
+}
+
 /** Attach the correct allomorph of a particle to a noun (물 + 이/가 → 물이). */
 export function attach(
   noun: string,

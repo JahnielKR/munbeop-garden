@@ -10,7 +10,16 @@ import vi from '../../../i18n/locales/vi.json'
 
 const LOCALES = { en, es, fr, 'pt-BR': ptBR, th, id, vi, ja }
 const block = (o: Record<string, unknown>) => (o.sentenceGarden as Record<string, unknown>) ?? {}
-const keys = (o: Record<string, unknown>) => Object.keys(block(o))
+function flatten(value: Record<string, unknown>, prefix = ''): Record<string, string> {
+  const result: Record<string, string> = {}
+  for (const [key, child] of Object.entries(value)) {
+    const path = prefix ? `${prefix}.${key}` : key
+    if (typeof child === 'string') result[path] = child
+    else if (child && typeof child === 'object') Object.assign(result, flatten(child as Record<string, unknown>, path))
+  }
+  return result
+}
+const keys = (o: Record<string, unknown>) => Object.keys(flatten(block(o)))
 
 describe('sentenceGarden i18n parity', () => {
   it('every locale has the same sentenceGarden.* keys as en', () => {
@@ -22,8 +31,8 @@ describe('sentenceGarden i18n parity', () => {
   })
   it('every sentenceGarden.* value is a non-empty string', () => {
     for (const [name, loc] of Object.entries(LOCALES)) {
-      for (const [key, value] of Object.entries(block(loc))) {
-        expect({ name, key, ok: typeof value === 'string' && value.trim().length > 0 }).toEqual({
+      for (const [key, value] of Object.entries(flatten(block(loc)))) {
+        expect({ name, key, ok: value.trim().length > 0 }).toEqual({
           name,
           key,
           ok: true,
@@ -47,6 +56,7 @@ describe('sentenceGarden i18n parity', () => {
       // the interpolation params must survive translation
       expect((sg.sr_placed as string).includes('{word}')).toBe(true)
       expect((sg.sr_removed as string).includes('{word}')).toBe(true)
+      expect((sg.custom_round_count as string).includes('{n}')).toBe(true)
     }
   })
 

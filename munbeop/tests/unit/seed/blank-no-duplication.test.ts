@@ -57,4 +57,24 @@ describe('blank-substitution drills: no stem duplication before {}', () => {
     }
     expect(violations, `\n${violations.join('\n')}\n`).toHaveLength(0)
   })
+
+  it('every rendered option avoids doubled words and spaces before punctuation', () => {
+    const violations: string[] = []
+    for (const p of probes) {
+      for (const option of p.options) {
+        const rendered = p.sentence.replace('{}', option)
+        if (/\s+[.,!?]/u.test(rendered)) {
+          violations.push(`[${p.dataset}] ${p.ko} :: space before punctuation in "${rendered}"`)
+        }
+
+        const words = rendered.match(/[\uAC00-\uD7A3]+/gu) ?? []
+        for (let i = 1; i < words.length; i += 1) {
+          if (words[i] === words[i - 1] && words[i]!.length >= 2) {
+            violations.push(`[${p.dataset}] ${p.ko} :: doubled "${words[i]}" in "${rendered}"`)
+          }
+        }
+      }
+    }
+    expect(violations, `\n${violations.join('\n')}\n`).toHaveLength(0)
+  })
 })

@@ -309,6 +309,10 @@
     "toast_saved_easy": "✨ Guardada",
     "toast_saved_hard": "😤 Guardada",
     "toast_save_error": "⚠️ No se pudo guardar. Tu frase no se perdió, toca para reintentar.",
+    "save_error": "No se pudo guardar tu progreso. Inténtalo de nuevo.",
+    "save_saving": "Guardando tu progreso…",
+    "save_saved": "Progreso guardado.",
+    "save_retry": "REINTENTAR GUARDADO",
     "start_failed": "No se pudo empezar la práctica. Revisa tu conexión e inténtalo de nuevo.",
     "no_sentence": "Escribe una oración primero",
     "custom": {
@@ -329,6 +333,7 @@
       "save": "Guardar mazo",
       "delete": "Eliminar mazo",
       "confirm_delete": "¿Eliminar este mazo? No se puede deshacer.",
+      "discard_confirm": "¿Descartar los cambios del mazo sin guardar?",
       "empty_title": "Crea tu primer mazo",
       "empty_hint": "Elige las gramáticas que quieras de cualquier nivel, ponle nombre y juega."
     },
@@ -549,7 +554,8 @@
       "delete_confirm_body": "«{ko}» se quitará de tus patrones.",
       "empty": "Aún no tienes patrones propios. Planta el primero abajo.",
       "created": "Gramática añadida.",
-      "deleted": "Gramática eliminada."
+      "deleted": "Gramática eliminada.",
+      "cancel": "Cancelar"
     },
     "dark_mode": "Modo oscuro",
     "appearance": {
@@ -943,6 +949,7 @@
     "errors": "Errores",
     "solved": "Resueltos",
     "rooms": "Cuartos",
+    "clue_n": "Pista {n}",
     "game_over_title": "La historia se escapó…",
     "game_over_text": "Tres tropiezos. La puerta vuelve a cerrarse — pero la casa te recuerda. Inténtalo otra vez con notas nuevas.",
     "retry": "REINTENTAR",
@@ -973,6 +980,7 @@
     "title": "Laboratorio de conjugación",
     "lead": "Elige la forma conjugada correcta. Las opciones incorrectas son los errores que los estudiantes cometen de verdad.",
     "pick_class": "ELIGE UNA CLASE",
+    "change_class": "CAMBIAR CLASE",
     "prompt": "Conjuga en {ending}",
     "gloss_hint": "({gloss})",
     "pick_hint": "Toca la forma correcta.",
@@ -1006,6 +1014,11 @@
       "dismiss": "¡Genial!",
       "pip_done": "{ko} — completada",
       "pip_todo": "{ko} — pendiente"
+    },
+    "persistence": {
+      "saving": "Guardando este error…",
+      "failed": "No pudimos guardar este error. Tu respuesta sigue aquí.",
+      "retry": "Reintentar guardado"
     }
   },
   "register": {
@@ -1036,6 +1049,11 @@
       "dismiss": "¡Bien!",
       "pip_done": "{ko} — superado",
       "pip_todo": "{ko} — aún no"
+    },
+    "persistence": {
+      "saving": "Guardando este error…",
+      "failed": "No pudimos guardar este error. Tu respuesta sigue aquí.",
+      "retry": "Reintentar guardado"
     }
   },
   "cloze": {
@@ -1043,6 +1061,8 @@
     "lead": "Elige un mazo y luego escoge la gramática que encaja en cada hueco — una ronda rápida de reconocimiento que complementa la escritura.",
     "pick_deck": "ELIGE UN MAZO",
     "deck_empty": "Este mazo aún no tiene huecos — prueba otro.",
+    "custom_item_count": "{n} ejercicios de huecos jugables",
+    "custom_locked_need_items": "Necesita 3 ejercicios de huecos jugables",
     "pick_hint": "Toca la forma que encaja en el hueco.",
     "correct": "¡Correcto!",
     "wrong": "Casi",
@@ -1087,6 +1107,20 @@
       "time_age": "Tiempo y edad",
       "things": "Cosas",
       "money_order": "Dinero y orden"
+    },
+    "master": {
+      "label": "Maestría de clasificadores",
+      "progress": "{done}/{total} sets superados",
+      "earned": "¡Los 6 sets están superados!",
+      "celebrate_body": "Superaste los {total} sets de clasificadores. 잘했어요!",
+      "dismiss": "¡Genial!",
+      "pip_done": "{ko} — superado",
+      "pip_todo": "{ko} — pendiente"
+    },
+    "persistence": {
+      "saving": "Guardando este error…",
+      "failed": "No pudimos guardar este error. Tu respuesta sigue aquí.",
+      "retry": "Reintentar guardado"
     }
   },
   "reminder": {
@@ -1176,7 +1210,7 @@
   },
   "sentenceGarden": {
     "title": "Jardín de frases",
-    "lead": "Reconstruye la frase ordenando sus cartas-palabra. Una carta es trampa.",
+    "lead": "Reconstruye la frase ordenando sus cartas-palabra. Algunas rondas añaden una carta trampa.",
     "pick_deck": "Elige un mazo",
     "deck_empty": "Este mazo aún no tiene frases cortas.",
     "progress_label": "Frase",
@@ -1191,6 +1225,13 @@
     "replay_mode_label": "Repasando las que fallaste",
     "summary_again": "Jugar otra vez",
     "summary_replay": "Repasar fallos",
+    "custom_round_count": "{n} frases jugables",
+    "custom_locked_need_rounds": "Necesita 6 frases jugables",
+    "persistence": {
+      "saving": "Guardando tu progreso…",
+      "failed": "No pudimos guardar tu progreso. No se descartó nada.",
+      "retry": "Reintentar guardado"
+    },
     "next": "Siguiente"
   },
   "practiceHelp": {

@@ -10,6 +10,7 @@ interface Props {
   phase: 'question' | 'right' | 'wrong' | 'done'
   verdict: boolean | null
   picked: string | null
+  nextDisabled?: boolean
 }
 const props = defineProps<Props>()
 const emit = defineEmits<{ answer: [choice: string]; next: [] }>()
@@ -48,6 +49,10 @@ watch(
       <span>{{ parts[1] }}</span>
     </p>
 
+    <!-- Korean connectives can both be grammatical while expressing different
+         relations. The intended meaning belongs to the question itself. -->
+    <p class="card__trans">{{ tl(item.trans) }}</p>
+
     <p v-if="phase === 'question'" class="card__hint">{{ $t('cloze.pick_hint') }}</p>
 
     <div class="card__options">
@@ -69,8 +74,13 @@ watch(
       </p>
       <p v-if="!verdict" class="card__correct" lang="ko">{{ $t('cloze.reveal_correct', { correct: item.answer }) }}</p>
       <p class="card__why">{{ tl(item.why) }}</p>
-      <p class="card__trans">{{ tl(item.trans) }}</p>
-      <button type="button" class="card__next" :aria-label="$t('cloze.next')" @click="emit('next')">
+      <button
+        type="button"
+        class="card__next"
+        :aria-label="$t('cloze.next')"
+        :disabled="nextDisabled"
+        @click="emit('next')"
+      >
         <span aria-hidden="true">→</span>
       </button>
     </div>
@@ -97,6 +107,7 @@ watch(
   font-family: var(--font-pixel-small); font-size: var(--text-xs); letter-spacing: 0.06em; cursor: pointer;
 }
 .card__next:hover { transform: translate(-1px, -1px); box-shadow: var(--shadow-button-hover); }
+.card__next:disabled { opacity: 0.55; cursor: wait; transform: none; }
 .card__next:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (max-width: 480px) { .card__options { grid-template-columns: 1fr; } }
 </style>

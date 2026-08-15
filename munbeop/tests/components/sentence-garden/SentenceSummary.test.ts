@@ -12,4 +12,10 @@ describe('SentenceSummary', () => {
     const w = mount(SentenceSummary, { props: { score: { correct: 1, total: 3 }, failedCount: 2 } })
     expect(w.findAll('button')).toHaveLength(2)
   })
+  it('locks restart and replay while progress is still pending', () => {
+    const w = mount(SentenceSummary, {
+      props: { score: { correct: 1, total: 3 }, failedCount: 2, locked: true },
+    })
+    expect(w.findAll('button').every((button) => button.attributes('disabled') !== undefined)).toBe(true)
+  })
 })

@@ -4,9 +4,9 @@ import { L } from '../locale'
 
 /**
  * TOPIK-6 grammar-pattern cloze items (choose the literary/formal pattern that
- * fits the blank). ko matches grammars-n6.ts verbatim. Drafted + Korean-lens
- * adversarially verified (single-correct-answer crux). Korean wife native
- * review = documented final gate.
+ * fits the blank). ko matches grammars-n6.ts verbatim. Adversarial Korean
+ * single-answer review completed; the shared seed-invariant suite enforces
+ * links, shape, rendered-answer hygiene and i18n completeness.
  */
 
 export const N6_CLOZE: ClozeItem[] = [
@@ -144,7 +144,7 @@ export const N6_CLOZE: ClozeItem[] = [
     ko: '-는 마당에',
     sentence: '회사가 망하게 생긴 {} 휴가를 떠날 수는 없지요.',
     answer: '마당에',
-    distractors: ['김에', '바람에', '와중에'],
+    distractors: ['김에', '바람에', '덕분에'],
     trans: L(
       'With the company on the verge of collapse, there is no way I can go on vacation.',
       'Con la empresa al borde de la quiebra, no hay manera de irme de vacaciones.',
@@ -156,14 +156,14 @@ export const N6_CLOZE: ClozeItem[] = [
       '会社が潰れかけているこの状況で、休暇に出かけるわけにはいきません。',
     ),
     why: L(
-      'A grave, decisive situation framing an impossible choice takes -는 마당에; -는 김에 means "while I\'m at it" (an added bonus), -는 바람에 a sudden cause, -는 와중에 just "in the midst of" without the critical-stakes nuance — only -는 마당에 conveys the irreversible context.',
-      'Una situación grave y decisiva que enmarca una elección imposible toma -는 마당에; -는 김에 es "ya que estoy", -는 바람에 una causa súbita, -는 와중에 solo "en medio de" sin el matiz crítico — solo -는 마당에 transmite el contexto irreversible.',
-      "Une situation grave et décisive encadrant un choix impossible prend -는 마당에 ; -는 김에 = « tant qu'à faire », -는 바람에 = cause soudaine, -는 와중에 = « au milieu de » sans l'enjeu critique — seul -는 마당에 rend le contexte irréversible.",
-      'Uma situação grave e decisiva que enquadra uma escolha impossível usa -는 마당에; -는 김에 é "já que estou", -는 바람에 causa súbita, -는 와중에 só "em meio a" sem a nuance crítica — só -는 마당에 transmite o contexto irreversível.',
-      'สถานการณ์ร้ายแรงเด็ดขาดที่กรอบทางเลือกอันเป็นไปไม่ได้ใช้ -는 마당에; -는 김에 คือ "ถือโอกาส", -는 바람에 เหตุฉับพลัน, -는 와중에 แค่ "ท่ามกลาง" ไม่มีนัยวิกฤต มีแต่ -는 마당에 ที่สื่อบริบทย้อนกลับไม่ได้',
-      'Situasi gawat dan menentukan yang membingkai pilihan mustahil memakai -는 마당에; -는 김에 berarti "mumpung", -는 바람에 sebab mendadak, -는 와중에 sekadar "di tengah" tanpa nuansa kritis — hanya -는 마당에 yang menyampaikan konteks tak terbalikkan.',
-      'Một tình huống nghiêm trọng, quyết định khung cho lựa chọn bất khả dùng -는 마당에; -는 김에 nghĩa "nhân tiện", -는 바람에 nguyên nhân đột ngột, -는 와중에 chỉ "giữa lúc" không có sắc thái nguy cấp — chỉ -는 마당에 truyền tải bối cảnh không thể đảo ngược.',
-      '不可能な選択を枠づける重大で決定的な状況には -는 마당에 を用いる。-는 김에 は「ついでに」、-는 바람에 は突発的原因、-는 와중에 は危機のニュアンスなしの「最中に」で、後戻りできない文脈を表すのは -는 마당에 のみ。',
+      'A grave situation framing an impossible choice takes -는 마당에; -는 김에 means "while I\'m at it", -는 바람에 marks an unexpected cause, and -는 덕분에 credits a beneficial cause — impossible with a company collapse.',
+      'Una situación grave que enmarca una elección imposible exige -는 마당에; -는 김에 es "ya que estoy", -는 바람에 marca una causa inesperada y -는 덕분에 atribuye una causa beneficiosa, imposible con la quiebra de una empresa.',
+      "Une situation grave qui rend un choix impossible exige -는 마당에 ; -는 김에 signifie « tant qu'à faire », -는 바람에 marque une cause inattendue et -는 덕분에 une cause bénéfique, impossible avec la faillite d'une entreprise.",
+      'Uma situação grave que torna uma escolha impossível usa -는 마당에; -는 김에 é "já que estou", -는 바람에 marca causa inesperada e -는 덕분에 atribui uma causa benéfica, impossível com a falência da empresa.',
+      'สถานการณ์ร้ายแรงที่ทำให้ทางเลือกเป็นไปไม่ได้ใช้ -는 마당에; -는 김에 คือ "ถือโอกาส", -는 바람에 บอกเหตุไม่คาดคิด และ -는 덕분에 ให้เครดิตแก่เหตุที่เป็นผลดี ซึ่งใช้กับบริษัทล้มละลายไม่ได้',
+      'Situasi gawat yang membuat pilihan mustahil memakai -는 마당에; -는 김에 berarti "mumpung", -는 바람에 sebab tak terduga, dan -는 덕분에 sebab yang menguntungkan — mustahil untuk kebangkrutan perusahaan.',
+      'Tình huống nghiêm trọng khiến lựa chọn trở nên bất khả thi dùng -는 마당에; -는 김에 nghĩa là "nhân tiện", -는 바람에 chỉ nguyên nhân bất ngờ, còn -는 덕분에 ghi công một nguyên nhân có lợi — không thể dùng với việc công ty phá sản.',
+      '不可能な選択を迫る重大な状況には -는 마당에 を使う。-는 김에 は「ついでに」、-는 바람에 は予想外の原因、-는 덕분에 は有益な原因への感謝で、会社の倒産には合わない。',
     ),
   },
   {

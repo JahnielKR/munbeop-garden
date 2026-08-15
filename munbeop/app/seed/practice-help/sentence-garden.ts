@@ -3,7 +3,8 @@ import { L } from '../locale'
 
 /**
  * 문장 정원 (Sentence Garden) — explanation for the sentence-building card mode.
- * Prose localized via L(); native review (owner's wife) pending on the 8 translations.
+ * Prose is localized across all eight supported locales and covered by the
+ * practice-help invariants.
  */
 export const SENTENCE_GARDEN_HELP: PracticeHelpContent = {
   ko: '문장 정원',
@@ -19,14 +20,14 @@ export const SENTENCE_GARDEN_HELP: PracticeHelpContent = {
     '文を組み立てる庭',
   ),
   concept: L(
-    "Rebuild a real Korean sentence from its shuffled word (eojeol) cards. Korean is verb-final (SOV) and each particle sticks to the word before it, so the order matters. One card is a decoy that doesn't belong — there are always more cards than slots.",
-    'Reconstruye una frase coreana real con sus cartas-palabra (eojeol) barajadas. El coreano pone el verbo al final (SOV) y cada partícula se pega a la palabra anterior, así que el orden importa. Una carta es un cebo que no va — siempre hay más cartas que huecos.',
-    "Reconstruis une vraie phrase coréenne à partir de ses cartes-mots (eojeol) mélangées. Le coréen place le verbe à la fin (SOV) et chaque particule colle au mot précédent, donc l'ordre compte. Une carte est un leurre qui n'a pas sa place — il y a toujours plus de cartes que de cases.",
-    'Reconstrua uma frase coreana real com suas cartas-palavra (eojeol) embaralhadas. O coreano põe o verbo no fim (SOV) e cada partícula gruda na palavra anterior, então a ordem importa. Uma carta é um chamariz que não entra — sempre há mais cartas que espaços.',
-    'ประกอบประโยคภาษาเกาหลีจริงขึ้นใหม่จากการ์ดคำ (eojeol) ที่สับไว้ ภาษาเกาหลีวางกริยาไว้ท้าย (SOV) และอนุภาคติดกับคำข้างหน้า ลำดับจึงสำคัญ มีการ์ดหลอกหนึ่งใบที่ไม่เข้า—การ์ดมีมากกว่าช่องเสมอ',
-    'Susun ulang kalimat Korea asli dari kartu-kata (eojeol) yang diacak. Bahasa Korea menaruh verba di akhir (SOV) dan tiap partikel menempel pada kata sebelumnya, jadi urutan penting. Satu kartu adalah umpan yang tidak masuk — kartu selalu lebih banyak dari slot.',
-    'Ghép lại một câu tiếng Hàn thật từ các thẻ-từ (eojeol) đã xáo trộn. Tiếng Hàn đặt động từ ở cuối (SOV) và mỗi tiểu từ dính vào từ phía trước, nên thứ tự rất quan trọng. Một thẻ là mồi nhử không thuộc về câu — luôn có nhiều thẻ hơn ô.',
-    'シャッフルされた語（eojeol）のカードから本物の韓国語の文を組み立てる。韓国語は動詞が最後（SOV）で、助詞は前の語にくっつくので語順が大切。1枚はどこにも入らないダミー——カードは常にマスより多い。',
+    "Rebuild a real Korean sentence from its shuffled word (eojeol) cards. Korean is verb-final (SOV) and each particle sticks to the word before it, so the order matters. Many rounds also include one extra decoy card that doesn't belong.",
+    'Reconstruye una frase coreana real con sus cartas-palabra (eojeol) barajadas. El coreano pone el verbo al final (SOV) y cada partícula se pega a la palabra anterior, así que el orden importa. Muchas rondas también incluyen una carta-cebo adicional que no pertenece a la frase.',
+    "Reconstruis une vraie phrase coréenne à partir de ses cartes-mots (eojeol) mélangées. Le coréen place le verbe à la fin (SOV) et chaque particule colle au mot précédent, donc l'ordre compte. De nombreuses manches comprennent aussi une carte-leurre supplémentaire qui n'appartient pas à la phrase.",
+    'Reconstrua uma frase coreana real com suas cartas-palavra (eojeol) embaralhadas. O coreano põe o verbo no fim (SOV) e cada partícula gruda na palavra anterior, então a ordem importa. Muitas rodadas também incluem uma carta chamariz extra que não pertence à frase.',
+    'ประกอบประโยคภาษาเกาหลีจริงขึ้นใหม่จากการ์ดคำ (eojeol) ที่สับไว้ ภาษาเกาหลีวางกริยาไว้ท้าย (SOV) และอนุภาคติดกับคำข้างหน้า ลำดับจึงสำคัญ หลายรอบยังมีการ์ดหลอกเกินมาหนึ่งใบซึ่งไม่อยู่ในประโยค',
+    'Susun ulang kalimat Korea asli dari kartu-kata (eojeol) yang diacak. Bahasa Korea menaruh verba di akhir (SOV) dan tiap partikel menempel pada kata sebelumnya, jadi urutan penting. Banyak ronde juga menyertakan satu kartu umpan tambahan yang tidak termasuk dalam kalimat.',
+    'Ghép lại một câu tiếng Hàn thật từ các thẻ-từ (eojeol) đã xáo trộn. Tiếng Hàn đặt động từ ở cuối (SOV) và mỗi tiểu từ dính vào từ phía trước, nên thứ tự rất quan trọng. Nhiều lượt còn có thêm một thẻ mồi nhử không thuộc về câu.',
+    'シャッフルされた語（eojeol）のカードから本物の韓国語の文を組み立てる。韓国語は動詞が最後（SOV）で、助詞は前の語にくっつくので語順が大切。多くのラウンドでは、文に入らないダミーカードが1枚追加される。',
   ),
   howToPlay: [
     L(
@@ -61,13 +62,13 @@ export const SENTENCE_GARDEN_HELP: PracticeHelpContent = {
     ),
   ],
   tip: L(
-    "There's always one card too many — the decoy. If you finish and a real word is left with no slot, you placed the decoy; swap it out.",
-    'Siempre sobra una carta: el cebo. Si terminas y una palabra real se queda sin hueco, colocaste el cebo; cámbialo.',
-    'Il y a toujours une carte en trop : le leurre. Si à la fin un vrai mot reste sans case, tu as posé le leurre ; remplace-le.',
-    'Sempre sobra uma carta: o chamariz. Se terminar e uma palavra real ficar sem espaço, você colocou o chamariz; troque-o.',
-    'มีการ์ดเกินมาหนึ่งใบเสมอ คือการ์ดหลอก ถ้าทำเสร็จแล้วมีคำจริงเหลือไม่มีช่อง แสดงว่าคุณวางการ์ดหลอก ให้สลับออก',
-    'Selalu ada satu kartu berlebih — umpannya. Kalau selesai dan ada kata asli tanpa slot, kamu menaruh umpan; tukar.',
-    'Luôn dư một thẻ — mồi nhử. Nếu xong mà một từ thật không còn ô, bạn đã đặt mồi nhử; hãy đổi.',
-    '必ず1枚多い——それがダミー。終えて本物の語が余ったら、ダミーを置いている。入れ替えよう。',
+    "When a round has one card too many, that extra card is the decoy. If every slot is full and a real word remains, swap the decoy out.",
+    'Cuando una ronda tiene una carta de más, esa carta es el cebo. Si llenas todos los huecos y queda una palabra real, cambia el cebo.',
+    "Lorsqu'une manche contient une carte en trop, cette carte est le leurre. Si toutes les cases sont remplies et qu'un vrai mot reste, remplace le leurre.",
+    'Quando uma rodada tem uma carta a mais, essa carta é o chamariz. Se todos os espaços estiverem cheios e sobrar uma palavra real, troque o chamariz.',
+    'เมื่อรอบใดมีการ์ดเกินมาหนึ่งใบ ใบนั้นคือการ์ดหลอก ถ้าเติมครบทุกช่องแล้วยังเหลือคำจริง ให้สลับการ์ดหลอกออก',
+    'Jika suatu ronde memiliki satu kartu berlebih, kartu itu adalah umpannya. Kalau semua slot terisi dan masih ada kata asli, tukar kartu umpan.',
+    'Khi một lượt có dư một thẻ, đó là thẻ mồi nhử. Nếu mọi ô đã đầy mà vẫn còn một từ thật, hãy đổi thẻ mồi nhử ra.',
+    'カードが1枚多いラウンドでは、その余分な1枚がダミー。全マスを埋めても本物の語が残ったら、ダミーと入れ替えよう。',
   ),
 }

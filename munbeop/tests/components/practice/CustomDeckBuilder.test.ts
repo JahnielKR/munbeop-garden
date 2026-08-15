@@ -49,6 +49,38 @@ describe('CustomDeckBuilder', () => {
     expect(w.emitted('saved')).toHaveLength(1)
   })
 
+  it('latches save so a double click creates only one deck', async () => {
+    const store = useCustomDecksStore()
+    let release!: (deck: Awaited<ReturnType<typeof store.addDeck>>) => void
+    const add = vi.spyOn(store, 'addDeck').mockImplementation(
+      () => new Promise((resolve) => { release = resolve }),
+    )
+    const w = mount(CustomDeckBuilder, { props: { deckId: null } })
+    await w.find('[data-testid="builder-name"]').setValue('Only once')
+    const save = w.find('[data-testid="builder-save"]')
+
+    await save.trigger('click')
+    await save.trigger('click')
+    expect(add).toHaveBeenCalledTimes(1)
+    expect((save.element as HTMLButtonElement).disabled).toBe(true)
+
+    release({
+      id: 'deck-1', name: 'Only once', colorId: 'sky', icon: 'deck-star',
+      grammarKos: [], order: 0, createdAt: new Date().toISOString(),
+    })
+    await flushPromises()
+    expect(w.emitted('saved')).toHaveLength(1)
+  })
+
+  it('emits dirty state for unsaved edits and clears it after save', async () => {
+    const w = mount(CustomDeckBuilder, { props: { deckId: null } })
+    await w.find('[data-testid="builder-name"]').setValue('Draft')
+    expect(w.emitted('dirty')?.at(-1)).toEqual([true])
+    await w.find('[data-testid="builder-save"]').trigger('click')
+    await flushPromises()
+    expect(w.emitted('dirty')?.at(-1)).toEqual([false])
+  })
+
   it('prefills fields when editing an existing deck', async () => {
     const store = useCustomDecksStore()
     const d = await store.addDeck({ name: 'Seed', colorId: 'rose', icon: 'deck-flame', grammarKos: ['-는데'] })
@@ -77,5 +109,16 @@ describe('CustomDeckBuilder', () => {
     await w.vm.$nextTick()
     expect(w.find('[data-testid="grammar-opt--아서"]').exists()).toBe(true)
     expect(w.find('[data-testid="grammar-opt--니까"]').exists()).toBe(false)
+  })
+
+  it('lets a user add their own custom grammar to a custom deck', async () => {
+    useGrammarStore().items.push({
+      ko: '나만의 문법',
+      meaning: L('mine'),
+      deckId: 'custom',
+    })
+    const w = mount(CustomDeckBuilder, { props: { deckId: null } })
+    expect(w.find('[data-testid="grammar-opt-나만의 문법"]').exists()).toBe(true)
+    expect(w.text()).toContain('settings.custom_grammar.title')
   })
 })

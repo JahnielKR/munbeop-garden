@@ -4,13 +4,17 @@ import { setActivePinia, createPinia } from 'pinia'
 import { useRegisterDrill } from '~/composables/useRegisterDrill'
 
 const add = vi.fn()
-vi.mock('~/stores/log', () => ({ useLogStore: () => ({ add }) }))
+const createEntryId = vi.fn(() => 4242)
+vi.mock('~/stores/log', () => ({ useLogStore: () => ({ add, createEntryId }) }))
 vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (k: string) => k, locale: { value: 'en' } }) }))
 
 beforeEach(() => {
   setActivePinia(createPinia())
-  add.mockClear()
+  add.mockReset()
+  add.mockResolvedValue(undefined)
+  createEntryId.mockClear()
+  createEntryId.mockReturnValue(4242)
 })
 
 describe('useRegisterDrill', () => {
@@ -45,6 +49,53 @@ describe('useRegisterDrill', () => {
     await d.answer(d.item.value.answer)
     expect(d.phase.value).toBe('right')
     expect(add).not.toHaveBeenCalled()
+  })
+
+  it('keeps a failed mistake pending, blocks next, and retries the same write', async () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    add.mockRejectedValueOnce(new Error('offline'))
+    const d = useRegisterDrill('level', 'mixed')
+    d.start()
+    const firstIndex = d.index.value
+    await d.answer(d.item.value.distractors[0]!)
+
+    expect(d.phase.value).toBe('wrong')
+    expect(d.saveError.value).toBe(true)
+    await d.next()
+    expect(d.index.value).toBe(firstIndex)
+
+    add.mockResolvedValue(undefined)
+    await expect(d.retrySave()).resolves.toBe(true)
+    expect(d.saveError.value).toBe(false)
+    expect(add).toHaveBeenCalledTimes(2)
+    expect(add.mock.calls.map((call) => call[1])).toEqual([4242, 4242])
+    expect(createEntryId).toHaveBeenCalledTimes(1)
+    await d.next()
+    expect(d.index.value).toBe(firstIndex + 1)
+    errorSpy.mockRestore()
+  })
+
+  it('reuses one id when the remote commit succeeds but its response is lost', async () => {
+    const remoteIds = new Set<number>()
+    let loseResponse = true
+    add.mockImplementation(async (_payload: unknown, stableId: number) => {
+      remoteIds.add(stableId)
+      if (loseResponse) {
+        loseResponse = false
+        throw new Error('response lost after commit')
+      }
+    })
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const d = useRegisterDrill('level', 'mixed')
+    d.start()
+
+    await d.answer(d.item.value.distractors[0]!)
+    expect(d.saveStatus.value).toBe('error')
+    await expect(d.retrySave()).resolves.toBe(true)
+
+    expect(add.mock.calls.map((call) => call[1])).toEqual([4242, 4242])
+    expect(remoteIds).toEqual(new Set([4242]))
+    errorSpy.mockRestore()
   })
 
   it('replayFailed re-drills only the missed items and suppresses logging', async () => {

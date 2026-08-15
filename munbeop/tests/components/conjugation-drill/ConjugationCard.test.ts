@@ -2,9 +2,14 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ConjugationCard from '~/components/conjugation-drill/ConjugationCard.vue'
+import type { LocalizedString } from '~/lib/domain'
+
+const LS = (s: string): LocalizedString => ({
+  en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s,
+})
 
 const item = {
-  id: '듣다:-아/어요', dict: '듣다', gloss: 'listen', klass: 't_irr',
+  id: '듣다:-아/어요', dict: '듣다', gloss: LS('listen'), klass: 't_irr',
   ending: '-아/어요', correct: '들어요', options: ['들어요', '듣어요', '들으요', '듣아요'],
 }
 

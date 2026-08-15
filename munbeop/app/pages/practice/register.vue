@@ -1,10 +1,11 @@
 <!-- app/pages/practice/register.vue -->
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
+import PracticeSaveStatus from '~/components/practice/PracticeSaveStatus.vue'
 import ModeTabs from '~/components/register-drill/ModeTabs.vue'
 import SetPicker from '~/components/register-drill/SetPicker.vue'
 import RegisterCard from '~/components/register-drill/RegisterCard.vue'
@@ -17,6 +18,7 @@ import { useRegisterMaster } from '~/composables/useRegisterMaster'
 import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
 import { isValidSet, isMasterySet } from '~/lib/register-transform'
 import type { RegisterMode } from '~/lib/domain'
+import type { PracticeSaveStatus as SaveStatus } from '~/lib/practice/persistence'
 
 definePageMeta({ surface: 'game' })
 
@@ -30,15 +32,36 @@ const drill = useRegisterDrill(initialMode, initialSet)
 const master = useRegisterMaster()
 const started = ref(false)
 
-useGameLeaveGuard(() => started.value && drill.phase.value !== 'done')
+const overallSaveStatus = computed<SaveStatus>(() => {
+  if (master.saveStatus.value === 'saving' || master.saveStatus.value === 'error') {
+    return master.saveStatus.value
+  }
+  if (drill.saveStatus.value === 'saving' || drill.saveStatus.value === 'error') {
+    return drill.saveStatus.value
+  }
+  if (master.saveStatus.value === 'saved') return 'saved'
+  return drill.saveStatus.value
+})
+const persistenceLocked = computed(() => (
+  overallSaveStatus.value === 'saving' || overallSaveStatus.value === 'error'
+))
+const modeSwitchLocked = computed(() =>
+  persistenceLocked.value || (started.value && drill.phase.value !== 'done'),
+)
+
+useGameLeaveGuard(() => started.value && (
+  drill.phase.value !== 'done' || persistenceLocked.value
+))
 
 function onMode(m: RegisterMode) {
+  if (modeSwitchLocked.value) return
   drill.selectMode(m)
   started.value = false
   void router.replace({ query: { ...route.query, mode: m, set: 'mixed' } })
 }
 
 function begin(set: string) {
+  if (persistenceLocked.value || !master.resetSaveStatus()) return
   drill.selectSet(set)
   void router.replace({ query: { ...route.query, mode: drill.mode.value, set } })
   drill.start()
@@ -52,15 +75,21 @@ async function onNext() {
     drill.runMode.value === 'normal' &&
     isMasterySet(drill.mode.value, drill.selectedSet.value)
   ) {
-    master.recordRound(drill.mode.value, drill.selectedSet.value, drill.score.value.accuracy)
+    await master.recordRound(drill.mode.value, drill.selectedSet.value, drill.score.value.accuracy)
   }
 }
 
 function restart() {
+  if (persistenceLocked.value || !master.resetSaveStatus()) return
   drill.start()
 }
 function onReplayFailed() {
+  if (persistenceLocked.value || !master.resetSaveStatus()) return
   drill.replayFailed()
+}
+async function retrySave() {
+  if (drill.saveStatus.value === 'error') await drill.retrySave()
+  else await master.retrySave()
 }
 
 if (initialSet !== 'mixed' && isValidSet(initialMode, initialSet)) begin(initialSet)
@@ -81,7 +110,11 @@ if (initialSet !== 'mixed' && isValidSet(initialMode, initialSet)) begin(initial
       :earned="master.earned.value"
     />
 
-    <ModeTabs :mode="drill.mode.value" @select="onMode" />
+    <ModeTabs
+      :mode="drill.mode.value"
+      :disabled="modeSwitchLocked"
+      @select="onMode"
+    />
 
     <SetPicker v-if="!started" :mode="drill.mode.value" :selected="drill.selectedSet.value" @select="begin" />
 
@@ -102,15 +135,24 @@ if (initialSet !== 'mixed' && isValidSet(initialMode, initialSet)) begin(initial
         :phase="drill.phase.value"
         :verdict="drill.phase.value === 'right' ? true : drill.phase.value === 'wrong' ? false : null"
         :picked="drill.picked.value"
+        :saving="drill.saving.value"
+        :save-error="drill.saveError.value"
         @answer="drill.answer"
+        @retry="drill.retrySave"
         @next="onNext"
       />
       <RegisterSummary
         v-else
         :score="drill.score.value"
         :failed-items="drill.failedItems.value"
+        :locked="persistenceLocked"
         @restart="restart"
         @replay-failed="onReplayFailed"
+      />
+      <PracticeSaveStatus
+        v-if="drill.phase.value === 'done'"
+        :status="overallSaveStatus"
+        @retry="retrySave"
       />
     </template>
 

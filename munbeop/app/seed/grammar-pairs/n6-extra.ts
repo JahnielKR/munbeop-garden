@@ -6,9 +6,10 @@ import { L } from '../locale'
  * grammars-n*.ts kos verbatim. Each pair: a contrast note + 3 single-answer
  * discrimination items, 8-locale note/trans/why.
  *
- * Drafted + Korean-lens adversarially verified (single-correct-answer crux,
- * naturalness, conjugation, register, 8-locale fidelity). Native (Korean wife)
- * review is the documented final gate.
+ * Editorial QA covers the Korean forms, answer crux, literary register and
+ * localized meaning. Seed tests enforce catalog links, exact blanks, distinct
+ * options and complete eight-locale fields. Literary nuance remains a useful
+ * target for future native-speaker refinement.
  */
 export const N6_PAIRS_EXTRA: ConfusablePair[] = [
   {

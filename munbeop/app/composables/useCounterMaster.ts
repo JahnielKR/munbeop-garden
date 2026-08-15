@@ -11,7 +11,13 @@ export function useCounterMaster() {
     total: computed(() => m.view.value.total),
     earned: m.earned,
     celebrate: m.celebrate,
+    saveStatus: m.saveStatus,
+    saving: m.saving,
+    saveError: m.saveError,
+    locked: m.locked,
     recordRound: (setId: string, accuracy: number) => m.record(setId, accuracy),
+    retrySave: m.retrySave,
+    resetSaveStatus: m.resetSaveStatus,
     dismiss: m.dismiss,
   }
 }

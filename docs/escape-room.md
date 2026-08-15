@@ -1,7 +1,22 @@
 # Escape Room Coreano — Diseño Completo
 
 > Mini-juego embebido en la plataforma de gramática coreana. Documento maestro de diseño, mecánicas, producción y roadmap.
-> Última actualización: 2026-06-11 (v3 — hub de juegos como cartas, libreta de niveles, sistema narrativo, implementación V1 completa)
+> Última actualización: 2026-08-15 (v5 — catálogo completo de 10 niveles, arte final y localización integral en 8 idiomas)
+
+## v5 — Localización integral (implementada)
+
+- Los niveles 1-10 están localizados en `en`, `es`, `fr`, `pt-BR`, `th`, `id`, `vi` y `ja`: narrativa, salas, puzzles, pistas, desenlaces y recompensas.
+- El texto coreano se conserva sin traducir porque forma parte del contenido didáctico; solo cambia la interfaz y la explicación para el jugador.
+- Un auditor automatizado exige inventario exacto (sin claves vacías ni obsoletas), estructura narrativa y de glosas, comillas equilibradas, conservación exacta de tokens coreanos, separación tipográfica entre Hangul y texto latino, guardrails semánticos y ausencia de texto truncado o con codificación dañada.
+- La verificación de navegador recorre los diez niveles y comprueba además que cada uno de los ocho idiomas hidrata exactamente su propia narrativa e interfaz, sin errores de consola, overlays, recursos rotos ni páginas vacías. También forma parte del CI.
+- Comandos de control: `pnpm escape:i18n:extract`, `pnpm escape:i18n:audit` y `pnpm escape:verify`. El generador reproducible usa `node scripts/escape-i18n-gen.mjs <manifest.json> <translations.json> <outdir>` y rechaza bundles ligados a un inventario antiguo.
+
+## v4 — Catálogo completo (implementado)
+
+- Niveles 1-10 jugables de principio a fin, con dificultad progresiva de TOPIK 1 a TOPIK 6.
+- 59 slots y 295 candidatos de puzzle: cinco variantes por slot para que las partidas no sean idénticas.
+- Cuatro salas, introducción y desenlace ilustrados por nivel, con arte pixel 4:3 y hotspots alineados con los objetos visibles.
+- Narrativas autoconclusivas, pistas, fallos roguelike, recompensas cosméticas y verificación automatizada del catálogo.
 
 ## v3 — Decisiones de UX nuevas (implementadas)
 
@@ -19,9 +34,9 @@
 
 El selector de niveles es una **libreta hojeable** (`LevelBook.vue` + `LevelPage.vue`): espiral en el lomo, una hoja por nivel, animación de pasar página (flechas + teclado).
 
-Cada hoja muestra: **cover** (foto pegada con cinta), número de nivel + badge TOPIK, **título**, **mood**, **tagline narrativo** (el hook), las **4 recompensas por tier**, los **intentos disponibles** (♥♥♥ = maxErrors + 1) y el botón **▶ START** que entra al juego (`/escape-room/play?level=<id>`). Niveles futuros muestran un sello "Próximamente" en lugar de START.
+Cada hoja muestra: **cover** (foto pegada con cinta), número de nivel + badge TOPIK, **título**, **mood**, **tagline narrativo** (el hook), las **4 recompensas por tier**, los **intentos disponibles** (♥♥♥ = maxErrors + 1) y el botón **▶ START** que entra al juego (`/escape-room/play?level=<id>`). El componente conserva soporte para futuras entradas con sello "Próximamente", aunque el catálogo actual está completamente abierto.
 
-El registry vive en `app/seed/escape-room/registry.ts` (`LEVEL_REGISTRY`): 10 entradas, 1 jugable + 9 anunciadas.
+El registry vive en `app/seed/escape-room/registry.ts` (`LEVEL_REGISTRY`): **10 entradas y las 10 son jugables**. El catálogo suma 59 slots y 295 candidatos de puzzle; cada run toma una variante distinta por slot.
 
 ### Sistema narrativo
 
@@ -29,7 +44,7 @@ Cada `Level` lleva ahora: `tagline` (hook de libreta), `intro`/`outro` (narrativ
 
 Flujo en juego: **cinemática de entrada** (`IntroCinematic.vue`, typewriter párrafo a párrafo, tap para avanzar, botón saltar) → gameplay → **pantalla de victoria** (`VictoryScreen.vue`: outro narrativo + tier + cosmético desbloqueado) o **game over suave** (`GameOverScreen.vue`: copy cálido, retry inmediato sin cinemática).
 
-Las 10 narrativas (covers de inspiración en `public/escape-room/covers/`, placeholders AI hasta tener arte final):
+Las 10 narrativas y sus ilustraciones finales viven en `public/escape-room/`: cada nivel tiene cover, cinemática de entrada, cuatro escenas jugables y cinemática de salida en pixel art 4:3.
 
 | # | Nivel | Mood | Hook |
 |---|---|---|---|
@@ -318,8 +333,10 @@ Cada nivel tiene un **set temático coreano**. La idea es que coleccionar cosmé
 Ejemplos por nivel (ver Roadmap):
 - Nivel 1 (minbak): hanji, delantal de halmeoni, linterna de papel, amanecer en hanok
 - Nivel 2 (templo): linternas de templo, mandala, monje, cerezo de noche
-- Nivel 3 (oficina): badges corporativos, café en taza de papel, Gangnam skyline
-- Nivel 4 (mercado): carteles de hangul neón, comida callejera, gato del mercado
+- Nivel 3 (mercado): carteles de hangul neón, comida callejera, gato del mercado
+- Nivel 4 (estación): billete de papel, lámpara ferroviaria, raíles bajo la lluvia
+- Nivel 5 (cocina): tarro de fermentación, cucharón de receta, cocina familiar
+- Niveles 6-10: claqueta, insignias de equipo, puerta lunar, siete llaves y sellos diplomáticos
 
 ---
 
@@ -415,7 +432,7 @@ question: L(
 
 **El coreano (`ko`) NO se traduce** — es contenido didáctico. Esto es consistente con la regla del repo (`munbeop/README.md`: *"Coreano (`ko`, `name`, `example`) NO se traduce — es contenido didáctico"*).
 
-**V1 — estrategia pragmática:** llenar `es` (idioma materno del autor) y dejar los otros 7 locales con el mismo string en `es` *o* con el inglés como fallback. El runtime de `LocalizedString` ya hace fallback a `DEFAULT_LOCALE = 'en'` si la clave del idioma activo está vacía. Lo importante es **reservar el shape**, no traducir todo en V1.
+**Estado de producción:** los 10 niveles tienen contenido completo en los 8 locales. El runtime conserva el fallback a `DEFAULT_LOCALE = 'en'` como defensa, pero el auditor y las pruebas impiden que una clave de los niveles 1-10 llegue vacía o dependa de ese fallback.
 
 ### Diseño responsive
 
@@ -614,33 +631,26 @@ El tipo `Level` vive en `app/lib/domain/escape-room.ts`. Cada nivel exporta una 
 
 ## 11. Roadmap de niveles
 
-### MVP — Lanzar primero
+### Estado de producción — catálogo completo
 
-**Solo Nivel 1.** No esperar a tener 3 niveles antes de lanzar.
-
-Por qué:
-1. Validar la mecánica con usuarios reales antes de invertir más
-2. 1 nivel pulido > 3 mediocres
-3. Feedback temprano informa los niveles siguientes
-
-### Post-MVP — niveles propuestos
+Los diez niveles están implementados y disponibles en la libreta. Cada historia es autoconclusiva y dispone de cuatro salas, los tres tipos de puzzle (selección, completar y creación), pistas en dos niveles, recompensas por tier, cinemáticas de entrada/salida y un pool de cinco candidatos por slot.
 
 | # | Tema | TOPIK | Gramáticas objetivo | Tono |
 |---|---|---|---|---|
-| 1 | **Una mañana en el minbak** | 1 | G003, G005, G012, G027, G031, G032 | Cálido, slice-of-life ✅ DISEÑADO |
-| 2 | **El templo de la lluvia** | 2 | G013, G016, G034, G035, G036, G050 | Místico, contemplativo ✅ DISEÑADO |
-| 3 | **El mercado nocturno** | 2-3 | -아/어 보다, -아/어 주다, comparativos, G021 (-지만), G019 (-고) | Energético, callejero |
-| 4 | **El último tren a Seúl** | 3 | -면서, -자마자, -는 동안, -고 나서 | Urgente, contemporáneo |
-| 5 | **La cocina del abuelo** | 3 | -아/어 놓다/두다, -게 되다, voz pasiva | Nostálgico, familiar |
-| 6 | **El estudio de K-drama** | 3-4 | Discurso indirecto, -대요/-(이)래요 | Meta-pop, divertido |
-| 7 | **La oficina de Gangnam** | 4 | -았/었던, -ㄴ/는다는 것이다, formal -습니다 | Corporativo, frío |
-| 8 | **El palacio Joseon de noche** | 4-5 | Honoríficos altos, -(으)시-, formas literarias suaves | Histórico, misterioso |
-| 9 | **El juicio de la era moderna** | 5-6 | Causativos -게 하다, expresiones idiomáticas, refranes | Dramático, denso |
-| 10 | **La cumbre diplomática** | 5-6 | Lenguaje formal escrito, -(으)ㅁ/-기, periodístico | Formal, tenso |
+| 1 | **Una mañana en el minbak** | 1 | G003, G005, G012, G027, G031, G032 | Cálido, slice-of-life ✅ JUGABLE |
+| 2 | **El templo de la lluvia** | 2 | G013, G016, G034, G035, G036, G050 | Místico, contemplativo ✅ JUGABLE |
+| 3 | **El mercado nocturno** | 2-3 | G039, G038, G053, G021, G019, G013 | Energético, callejero ✅ JUGABLE |
+| 4 | **El último tren a Seúl** | 3 | G073, G067, G062, G069, G063, G060 | Urgente, contemporáneo ✅ JUGABLE |
+| 5 | **La cocina del abuelo** | 3 | G168, G078, G079, G061, G062, G066, G064 | Nostálgico, familiar ✅ JUGABLE |
+| 6 | **El estudio de K-drama** | 3-4 | G089, G090, G091, G092, G087, G094 | Meta-pop, divertido ✅ JUGABLE |
+| 7 | **El retiro de la empresa** | 4 | G011, G018, G175, G097, G174, G082, G080 | Corporativo, nocturno ✅ JUGABLE |
+| 8 | **El palacio de las linternas** | 4-5 | G099, G098, G238, G227, G189, G107 | Histórico, misterioso ✅ JUGABLE |
+| 9 | **La mansión del testamento** | 5-6 | G098, G110, G195, G111, G101, G248 | Intriga, denso ✅ JUGABLE |
+| 10 | **La cumbre de medianoche** | 5-6 | G201, G114, G198, G124, G280, G115, G122 | Diplomático, tenso ✅ JUGABLE |
 
 > El remapeo de gramáticas de los niveles 2-4 se decidió en el dossier del nivel 2 (§5.2 de [`escape-room-level-02.md`](./escape-room-level-02.md)): -기 전에/-(으)ㄴ 후에 (G035/G036) adelantan al nivel 2 porque el orden ritual del 49재 es su hogar narrativo; el nivel 3 hereda -지만/-고; el nivel 4 («El último tren a Seúl») gana -는 동안/-고 나서 para compensar.
 
-**Ritmo de release sugerido:** 1 nivel nuevo cada 3-4 semanas una vez el motor está estable. Objetivo a 6 meses: 5-6 niveles vivos. A 12 meses: 10-12.
+**Estado de release:** catálogo base completo (10/10). Las siguientes iteraciones se concentran en telemetría, balance con usuarios reales, localización completa y nuevos capítulos opcionales.
 
 ### Variedad de NPCs y locaciones
 
@@ -1129,6 +1139,10 @@ Una vez confirmadas las 7 decisiones abiertas, el orden de implementación es:
 
 ## Histórico de cambios
 
+- **2026-08-15 (v5)** — Localización completa y endurecimiento de calidad:
+  - Narrativa, gameplay, pistas, salas, recompensas y desenlaces de los niveles 1-10 disponibles en los 8 locales de producto.
+  - Auditoría estructural automática para cobertura, comillas, tokens coreanos y espaciado Hangul/latino.
+  - Verificación real en navegador de la selección persistida de idioma y del render localizado.
 - **2026-06-11 (v3)** — UX nueva + implementación V1 completa:
   - `/practice` es ahora un hub de cartas (`GameCard`); la ruleta vive en `/practice/ruleta`.
   - Selector de niveles = libreta hojeable (`LevelBook`/`LevelPage`) con covers, rewards, intentos y START por hoja.
