@@ -4,6 +4,112 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { createServer } from 'node:net'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
+import ts from 'typescript'
+
+const SUPPORTED_LOCALES = ['en', 'es', 'fr', 'pt-BR', 'th', 'id', 'vi', 'ja']
+const AUTHORED_LEVEL_IDS = Array.from(
+  { length: 10 },
+  (_, index) => `level-${String(index + 1).padStart(2, '0')}`,
+)
+
+function staticString(node) {
+  if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) return node.text
+  if (ts.isParenthesizedExpression(node)) return staticString(node.expression)
+  if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.PlusToken) {
+    return staticString(node.left) + staticString(node.right)
+  }
+  throw new Error(`Expected a static string, received ${ts.SyntaxKind[node.kind]}`)
+}
+
+function parseTypescript(filePath, contents) {
+  const sourceFile = ts.createSourceFile(
+    filePath,
+    contents,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS,
+  )
+  if (sourceFile.parseDiagnostics.length > 0) {
+    const details = sourceFile.parseDiagnostics
+      .map((diagnostic) => ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n'))
+      .join('; ')
+    throw new Error(`Could not parse ${filePath}: ${details}`)
+  }
+  return sourceFile
+}
+
+function stringMapFromSource(sourceFile) {
+  const entries = new Map()
+  const visit = (node) => {
+    if (
+      ts.isPropertyAssignment(node) &&
+      (ts.isStringLiteral(node.name) || ts.isNoSubstitutionTemplateLiteral(node.name)) &&
+      (ts.isStringLiteral(node.initializer) ||
+        ts.isNoSubstitutionTemplateLiteral(node.initializer))
+    ) {
+      entries.set(node.name.text, node.initializer.text)
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(sourceFile)
+  return entries
+}
+
+function introSourceFromLevel(sourceFile, levelId) {
+  let intro = null
+  const visit = (node) => {
+    if (
+      intro == null &&
+      ts.isPropertyAssignment(node) &&
+      ((ts.isIdentifier(node.name) && node.name.text === 'intro') ||
+        (ts.isStringLiteral(node.name) && node.name.text === 'intro')) &&
+      ts.isCallExpression(node.initializer) &&
+      ts.isIdentifier(node.initializer.expression) &&
+      node.initializer.expression.text === 't'
+    ) {
+      intro = staticString(node.initializer.arguments[0])
+      return
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(sourceFile)
+  if (!intro) throw new Error(`Could not extract the authored intro for ${levelId}`)
+  return intro
+}
+
+async function loadExpectedIntroParagraphs() {
+  const translationMaps = new Map()
+  for (const locale of SUPPORTED_LOCALES.filter((candidate) => candidate !== 'es')) {
+    const merged = new Map()
+    for (const relativePath of [
+      `app/seed/escape-room/translations/${locale}.ts`,
+      `app/seed/escape-room/translations/levels-04-10/${locale}.ts`,
+    ]) {
+      const contents = await readFile(path.resolve(relativePath), 'utf8')
+      const parsed = parseTypescript(relativePath, contents)
+      for (const [source, translated] of stringMapFromSource(parsed)) {
+        merged.set(source, translated)
+      }
+    }
+    translationMaps.set(locale, merged)
+  }
+
+  const expected = {}
+  for (const levelId of AUTHORED_LEVEL_IDS) {
+    const relativePath = `app/seed/escape-room/${levelId}.ts`
+    const contents = await readFile(path.resolve(relativePath), 'utf8')
+    const source = introSourceFromLevel(parseTypescript(relativePath, contents), levelId)
+    expected[levelId] = {}
+    for (const locale of SUPPORTED_LOCALES) {
+      const localized = locale === 'es' ? source : translationMaps.get(locale)?.get(source)
+      if (!localized) {
+        throw new Error(`Missing authored ${locale} intro while preparing browser QA for ${levelId}`)
+      }
+      expected[levelId][locale] = localized.split('\n\n')[0].trim()
+    }
+  }
+  return expected
+}
 
 function findChrome() {
   const candidates = [
@@ -54,6 +160,7 @@ const devPort = explicitOrigin ? null : await availablePort()
 const origin = (explicitOrigin ?? `http://127.0.0.1:${devPort}`).replace(/\/+$/u, '')
 const outputDir = path.resolve('.nuxt/escape-room-visual-check')
 await mkdir(outputDir, { recursive: true })
+const expectedIntroParagraphs = await loadExpectedIntroParagraphs()
 const profileDir = await mkdtemp(path.join(tmpdir(), 'munbeop-chrome-'))
 
 // Supplying an origin means “verify that existing deployment”; only an omitted
@@ -262,15 +369,11 @@ async function screenshot(name) {
   await writeFile(path.join(outputDir, name), Buffer.from(shot.data, 'base64'))
 }
 
-async function revealFirstCinematicParagraph() {
+async function revealFirstCinematicParagraph(expectedParagraph) {
   await waitFor("document.querySelector('[data-testid=cinematic-text]')?.textContent.length > 0")
-  const paragraphComplete = `(() => {
-    const root = document.querySelector('[data-testid=cinematic-root]')
-    const localized = root?.__vueParentComponent?.props?.narrative
-    const locale = document.documentElement.lang
-    const expected = (localized?.[locale] ?? '').split('\\n\\n')[0].trim()
-    return root?.querySelector('[data-testid=cinematic-text]')?.textContent.trim() === expected
-  })()`
+  const paragraphComplete =
+    `document.querySelector('[data-testid=cinematic-text]')?.textContent.trim()` +
+    ` === ${JSON.stringify(expectedParagraph)}`
   if (!(await evaluate(paragraphComplete))) {
     await evaluate("document.querySelector('[data-testid=cinematic-continue]').click()")
   }
@@ -287,8 +390,18 @@ async function resolveNextSlot() {
   return evaluate(`(() => {
     let instance = document.querySelector('[data-testid=escape-room]')?.__vueParentComponent
     while (instance && !instance.setupState?.store?.answerSelection) instance = instance.parent
-    const store = instance?.setupState?.store
-    if (!store) return { error: 'escape-room store was not exposed by the live component' }
+    let store = instance?.setupState?.store
+    if (!store) {
+      const app = document.querySelector('#__nuxt')?.__vue_app__
+      const providers = app?._context?.provides
+      const pinia = providers
+        ? Reflect.ownKeys(providers)
+            .map((key) => providers[key])
+            .find((candidate) => candidate?._s instanceof Map)
+        : null
+      store = pinia?._s?.get('escape-room')
+    }
+    if (!store) return { error: 'escape-room store was not exposed by Vue or Pinia' }
     const slotId = store.nextSlotId
     if (!slotId) return { done: true, status: store.status }
     const level = store.currentLevel
@@ -364,14 +477,11 @@ try {
     await screenshot('01-level-book-page-10.png')
     report.screenshots.push('01-level-book-page-10.png')
 
-    const levelIds = Array.from({ length: 10 }, (_, index) =>
-      `level-${String(index + 1).padStart(2, '0')}`,
-    )
-    for (const [levelIndex, level] of levelIds.entries()) {
+    for (const [levelIndex, level] of AUTHORED_LEVEL_IDS.entries()) {
       await navigate(`/escape-room/play?level=${level}`)
       await waitFor("document.querySelector('[data-testid=cinematic-root]')")
       await waitFor("document.querySelector('.cinematic__art')?.naturalWidth > 0")
-      await revealFirstCinematicParagraph()
+      await revealFirstCinematicParagraph(expectedIntroParagraphs[level][baselineLocale])
       const intro = await evaluate(`({
         src: document.querySelector('.cinematic__art')?.getAttribute('src'),
         loaded: !!document.querySelector('.cinematic__art')?.naturalWidth,
@@ -445,10 +555,9 @@ try {
   // the saved preference and renders each locale. Exercise the real locale
   // store + Nuxt i18n bridge on one authored level and capture the complete
   // first paragraph in all eight supported UI languages.
-  const locales = ['en', 'es', 'fr', 'pt-BR', 'th', 'id', 'vi', 'ja']
   const expectedSkipLabels = Object.fromEntries(
     await Promise.all(
-      locales.map(async (locale) => {
+      SUPPORTED_LOCALES.map(async (locale) => {
         const messages = JSON.parse(
           await readFile(path.resolve(`i18n/locales/${locale}.json`), 'utf8'),
         )
@@ -457,28 +566,23 @@ try {
     ),
   )
   report.locales = []
-  for (const locale of locales) {
+  for (const locale of SUPPORTED_LOCALES) {
     await navigateWithLocale('/escape-room/play?level=level-04', locale)
-    await revealFirstCinematicParagraph()
+    const expectedNarrative = expectedIntroParagraphs['level-04'][locale]
+    await revealFirstCinematicParagraph(expectedNarrative)
     report.locales.push(
       await evaluate(`({
         locale: ${JSON.stringify(locale)},
         storedLocale: JSON.parse(localStorage.getItem('munbeop.v1.locale')),
         htmlLang: document.documentElement.lang,
         narrative: document.querySelector('[data-testid=cinematic-text]').textContent.trim(),
-        expectedNarrative: (() => {
-          const component = document.querySelector('[data-testid=cinematic-root]').__vueParentComponent
-          const localized = component?.props?.narrative
-          return (localized?.[${JSON.stringify(locale)}] ?? '')
-            .split('\\n\\n')[0]
-            .trim()
-        })(),
+        expectedNarrative: ${JSON.stringify(expectedNarrative)},
         skipLabel: document.querySelector('[data-testid=cinematic-skip]').textContent.trim()
       })`),
     )
   }
   const renderedNarratives = new Set(report.locales.map((entry) => entry.narrative))
-  if (renderedNarratives.size !== locales.length) {
+  if (renderedNarratives.size !== SUPPORTED_LOCALES.length) {
     throw new Error(`Locale rendering reused a narrative: ${JSON.stringify(report.locales)}`)
   }
   for (const entry of report.locales) {
@@ -505,7 +609,7 @@ try {
       await navigateWithLocale(`/escape-room/play?level=${level}`, baselineLocale)
       await waitFor("document.querySelector('[data-testid=cinematic-root]')")
       await waitFor("document.querySelector('.cinematic__art')?.naturalWidth > 0")
-      await revealFirstCinematicParagraph()
+      await revealFirstCinematicParagraph(expectedIntroParagraphs[level][baselineLocale])
       const introShot = `mobile-${level}-intro.png`
       await screenshot(introShot)
       report.screenshots.push(introShot)
