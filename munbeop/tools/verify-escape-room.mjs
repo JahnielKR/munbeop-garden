@@ -330,6 +330,16 @@ async function waitFor(expression, timeout = 30_000) {
  * the disposable Chrome profile and does not add a production auth bypass.
  */
 async function openVisualCheckAccountGate() {
+  const dataStoreIds = [
+    'grammar',
+    'contexts',
+    'srs',
+    'log',
+    'activity',
+    'settings',
+    'locale',
+    'customDecks',
+  ]
   const storesReady = `(() => {
     const app = document.querySelector('#__nuxt')?.__vue_app__
     const providers = app?._context?.provides
@@ -338,14 +348,39 @@ async function openVisualCheckAccountGate() {
           .map((key) => providers[key])
           .find((candidate) => candidate?._s instanceof Map)
       : null
-    return !!pinia?._s?.get('auth')?.ready && !!pinia?._s?.get('appStatus')
+    const auth = pinia?._s?.get('auth')
+    return !!auth?.ready && !auth.user && !!pinia?._s?.get('appStatus') &&
+      ${JSON.stringify(dataStoreIds)}.every((id) => !!pinia._s.get(id))
   })()`
   await waitFor(storesReady)
 
-  // Give Supabase's INITIAL_SESSION notification time to settle before the
-  // harness installs its stable account; otherwise that callback can race the
-  // assignment below and close the layout gate again.
-  await delay(100)
+  // Cold Linux CI can still be importing the large grammar seed after auth is
+  // ready. Introducing the synthetic user in that window makes the remainder
+  // of default.vue's hydration switch from the noop adapter to Supabase. Drain
+  // every public store queue while the account is still anonymous; because
+  // customDecks is instantiated last by the layout, these calls form a stable
+  // barrier behind the layout's own hydration rather than relying on a delay.
+  const hydratedAnonymously = await evaluate(`(async () => {
+    const app = document.querySelector('#__nuxt')?.__vue_app__
+    const providers = app?._context?.provides
+    const pinia = providers
+      ? Reflect.ownKeys(providers)
+          .map((key) => providers[key])
+          .find((candidate) => candidate?._s instanceof Map)
+      : null
+    const auth = pinia?._s?.get('auth')
+    if (!auth?.ready || auth.user) return false
+    const stores = ${JSON.stringify(dataStoreIds)}.map((id) => pinia?._s?.get(id))
+    if (stores.some((store) => typeof store?.hydrate !== 'function')) return false
+    await stores[0].hydrate()
+    await Promise.all(stores.slice(1).map((store) => store.hydrate()))
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    return auth.ready && !auth.user
+  })()`)
+  if (!hydratedAnonymously) {
+    throw new Error('Could not drain the isolated visual-check hydration queues')
+  }
+
   const opened = await evaluate(`(() => {
     const app = document.querySelector('#__nuxt')?.__vue_app__
     const providers = app?._context?.provides
