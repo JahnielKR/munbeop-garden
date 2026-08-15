@@ -460,6 +460,8 @@ const SCRIPTED_BEATS: ScriptedBeat[] = [
 
 export const LEVEL_03: Level = {
   id: 'level-03',
+  introImage: 'rooms/cinematic-intro-v2.webp',
+  outroImage: 'rooms/cinematic-outro-v2.webp',
   title: t('El mercado nocturno'),
   tagline: t(
     'Subiste al mercado a comer algo antes del último autobús. La señora del puesto de 호떡 te quitó la mochila, sonrió y dijo: «ayúdame a cerrar y te la devuelvo».',
@@ -472,7 +474,7 @@ export const LEVEL_03: Level = {
       'Vas a pasar los próximos veinte minutos haciendo favores —trae, prueba, pregunta, regatea— en el coreano más fácil del mundo: -아/어 주세요, por favor, hazme el favor. Lo que todavía no sabes es que cada recado es una pieza de un plan, que el plan no es el que parece, y que la frase más difícil de toda la noche no llevará ninguna fórmula de cortesía: será solo un gracias, en pasado, dicho a la persona correcta antes de que el autobús arranque.',
   ),
   outro: t(
-    'El mercado ya baja las persianas, una tras otra, con ese estruendo de metal que es el sonido de cerrar el día. 도윤 está plantado delante de 하나 con las orejas rojas y la bandeja todavía en la mano. Lo suelta de golpe, sin respirar —prueba, falla un poco, se ríe de sí mismo, y lo vuelve a decir mejor—; 하나, que era más lista que él desde el principio, ya lo sabía, y le guarda un sitio en su número de teléfono. Pero el chico no ha terminado. Se gira hacia la plancha, hacia 이모, y dice la frase que tú armaste pieza a pieza: «{farewell}». Y la frase pesa el doble, porque no es para la chica: es para la mujer que llevaba diez años dándole de comer.\n\n' +
+    'El mercado ya baja las persianas, una tras otra, con ese estruendo de metal que es el sonido de cerrar el día. 도윤 está plantado delante de 하나 con las orejas rojas y la bandeja todavía en la mano. Lo suelta de golpe, sin respirar —prueba, falla un poco, se ríe de sí mismo, y lo vuelve a decir mejor—; 하나, que era más lista que él desde el principio, ya lo sabía, y guarda su número en el teléfono. Pero el chico no ha terminado. Se gira hacia la plancha, hacia 이모, y dice la frase que tú armaste pieza a pieza: «{farewell}». Y la frase pesa el doble, porque no es para la chica: es para la mujer que llevaba diez años dándole de comer.\n\n' +
       '이모 no llora —tiene las manos demasiado ocupadas para llorar—. Coge un 호떡 recién hecho de la plancha, el más dorado, lo envuelve en una servilleta de papel a toda prisa y se lo aplasta en la mano al chico, todavía quemando. «버스에서 먹어. 식기 전에.» Cómetelo en el autobús. Antes de que se enfríe. Es lo único que se le ocurre hacer con las manos para no hacer otra cosa.\n\n' +
       'Entonces se acuerda de ti. Descuelga tu mochila del gancho de detrás de la plancha, le sacude una mota imaginaria, y te la devuelve con las dos manos, como si fuera ella la que te debe algo. «고마워요. 진짜 도와줬어요.» Gracias. De verdad me ayudaste. Y a 도윤, que ya sube al estribo: «야, 머리 짧게 깎고 와. 자리 빼놓을게.» Oye —vuelve con el pelo corto. Te guardo el sitio.\n\n' +
       'El último autobús arranca con un suspiro de aire comprimido y se despega del bordillo. Por la ventanilla se ve la silueta del chico recién rapado, una mancha de luz de neón cruzándole la cara. En el andén, 이모 y 하나 de pie, hombro con hombro, levantan la mano. La plancha de 호떡 sigue echando vapor sola detrás de ellas. Los letreros del mercado se quedan flotando, partidos, en el asfalto mojado. Te quedas mirando un momento más de lo necesario.\n\n' +
@@ -491,8 +493,8 @@ export const LEVEL_03: Level = {
     {
       id: 'room-hotteok',
       title: t('El puesto de 호떡 (순자 이모)'),
-      image: 'rooms/room-01-hotteok.png',
-      solvedImage: 'rooms/room-01-hotteok-closing.png',
+      image: 'rooms/room-01-hotteok-v2.webp',
+      solvedImage: 'rooms/room-01-hotteok-closing-v2.webp',
       ambientAudio: 'audio/ambient-hotteok.ogg',
       hotspots: [
         // The figure of 이모 triggers Slot 1. NOTE: the dossier wants the SAME
@@ -510,7 +512,7 @@ export const LEVEL_03: Level = {
     {
       id: 'room-meokja',
       title: t('El callejón de la comida (먹자골목)'),
-      image: 'rooms/room-02-meokja.png',
+      image: 'rooms/room-02-meokja-v2.webp',
       ambientAudio: 'audio/ambient-meokja.ogg',
       hotspots: [
         { id: 'hana', rect: [65, 95, 65, 80], triggersSlot: 'slot-2' },
@@ -522,8 +524,8 @@ export const LEVEL_03: Level = {
     {
       id: 'room-manmulsang',
       title: t('El callejón del bazar (만물상 골목)'),
-      image: 'rooms/room-03-manmulsang.png',
-      solvedImage: 'rooms/room-03-manmulsang-wrapped.png',
+      image: 'rooms/room-03-manmulsang-v2.webp',
+      solvedImage: 'rooms/room-03-manmulsang-wrapped-v2.webp',
       ambientAudio: 'audio/ambient-manmulsang.ogg',
       hotspots: [
         { id: 'counter', rect: [105, 95, 80, 50], triggersSlot: 'slot-3' },
@@ -536,8 +538,8 @@ export const LEVEL_03: Level = {
     {
       id: 'room-busstop',
       title: t('La parada del bus (버스 정류장)'),
-      image: 'rooms/room-04-busstop.png',
-      solvedImage: 'rooms/room-04-busstop-bus.png',
+      image: 'rooms/room-04-busstop-v2.webp',
+      solvedImage: 'rooms/room-04-busstop-bus-v2.webp',
       ambientAudio: 'audio/ambient-busstop.ogg',
       hotspots: [
         { id: 'doyun', rect: [90, 90, 70, 90], triggersSlot: 'slot-6' },

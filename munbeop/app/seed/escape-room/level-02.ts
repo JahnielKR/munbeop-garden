@@ -537,6 +537,8 @@ const SCRIPTED_BEATS: ScriptedBeat[] = [
 
 export const LEVEL_02: Level = {
   id: 'level-02',
+  introImage: 'rooms/cinematic-intro-v2.webp',
+  outroImage: 'rooms/cinematic-outro-v2.webp',
   title: t('El templo de la lluvia'),
   tagline: t(
     'Subiste al templo a esperar que pasara el aguacero. El monje te sirvió té, sonrió, y dijo que la campana solo deja salir a quien entiende lo que perdió.',
@@ -571,7 +573,7 @@ export const LEVEL_02: Level = {
     {
       id: 'room-dasil',
       title: t('La sala de té (다실)'),
-      image: 'rooms/room-01-dasil.png',
+      image: 'rooms/room-01-dasil-v2.webp',
       ambientAudio: 'audio/ambient-dasil.ogg',
       hotspots: [
         // Slot 1 trigger is the MONK FIGURE, not the whole table, so the cosmetic
@@ -587,8 +589,8 @@ export const LEVEL_02: Level = {
     {
       id: 'room-daeungjeon',
       title: t('El salón principal (대웅전)'),
-      image: 'rooms/room-02-daeungjeon.png',
-      solvedImage: 'rooms/room-02-daeungjeon-complete.png',
+      image: 'rooms/room-02-daeungjeon-v2.webp',
+      solvedImage: 'rooms/room-02-daeungjeon-complete-v2.webp',
       ambientAudio: 'audio/ambient-daeungjeon.ogg',
       hotspots: [
         { id: 'ritual-sheet', rect: [28, 128, 52, 44], triggersSlot: 'slot-2', sfx: 'audio/sfx-paper-page.ogg' },
@@ -600,7 +602,7 @@ export const LEVEL_02: Level = {
     {
       id: 'room-seungbang',
       title: t('La celda del maestro (스승의 방)'),
-      image: 'rooms/room-03-seungbang.png',
+      image: 'rooms/room-03-seungbang-v2.webp',
       ambientAudio: 'audio/ambient-seungbang.ogg',
       hotspots: [
         { id: 'diary', rect: [138, 128, 48, 38], triggersSlot: 'slot-4', sfx: 'audio/sfx-paper-page.ogg' },
@@ -612,8 +614,8 @@ export const LEVEL_02: Level = {
     {
       id: 'room-jongnu',
       title: t('El pabellón de la campana (종루)'),
-      image: 'rooms/room-04-jongnu.png',
-      solvedImage: 'rooms/room-04-jongnu-clear.png',
+      image: 'rooms/room-04-jongnu-v2.webp',
+      solvedImage: 'rooms/room-04-jongnu-clear-v2.webp',
       ambientAudio: 'audio/ambient-jongnu.ogg',
       hotspots: [
         { id: 'bell-rope', rect: [120, 100, 80, 80], triggersSlot: 'slot-6' },

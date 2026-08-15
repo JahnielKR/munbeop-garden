@@ -943,6 +943,7 @@
     "errors": "Kesalahan",
     "solved": "Terpecahkan",
     "rooms": "Ruangan",
+    "clue_n": "Petunjuk {n}",
     "game_over_title": "Ceritanya lolos…",
     "game_over_text": "Tiga kali tersandung. Pintu terkunci lagi — tapi rumah ini mengingatmu. Coba lagi dengan catatan baru.",
     "retry": "COBA LAGI",

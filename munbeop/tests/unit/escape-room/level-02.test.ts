@@ -7,8 +7,7 @@ import { validateLevel } from '~/lib/escape-room/rules'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 /** Absolute path to a level-02 audio asset given its seed-relative path ('audio/...'). */
-const audioPath = (rel: string) =>
-  resolve(HERE, '../../../public/escape-room/level-02/', rel)
+const audioPath = (rel: string) => resolve(HERE, '../../../public/escape-room/level-02/', rel)
 
 describe('LEVEL_02 — El templo de la lluvia', () => {
   it('passes validateLevel with zero issues', () => {
@@ -19,8 +18,8 @@ describe('LEVEL_02 — El templo de la lluvia', () => {
     const variants = LEVEL_02.rooms.filter((r) => r.solvedImage)
     expect(variants.map((r) => r.id)).toEqual(['room-daeungjeon', 'room-jongnu'])
     expect(variants.map((r) => r.solvedImage)).toEqual([
-      'rooms/room-02-daeungjeon-complete.png',
-      'rooms/room-04-jongnu-clear.png',
+      'rooms/room-02-daeungjeon-complete-v2.webp',
+      'rooms/room-04-jongnu-clear-v2.webp',
     ])
     for (const r of variants) {
       expect(existsSync(audioPath(r.solvedImage!)), r.solvedImage).toBe(true)
@@ -149,7 +148,12 @@ describe('LEVEL_02 — El templo de la lluvia', () => {
   })
 
   it('has all four reward tiers with non-empty ids distinct from level 1', () => {
-    const level1Ids = ['cosmetic-bg-sunrise', 'cosmetic-frame-apron', 'cosmetic-avatar-lantern', 'cosmetic-set-complete']
+    const level1Ids = [
+      'cosmetic-bg-sunrise',
+      'cosmetic-frame-apron',
+      'cosmetic-avatar-lantern',
+      'cosmetic-set-complete',
+    ]
     for (const tier of ['common', 'rare', 'epic', 'legendary'] as const) {
       expect(LEVEL_02.rewards[tier].id.length).toBeGreaterThan(0)
       expect(level1Ids).not.toContain(LEVEL_02.rewards[tier].id)

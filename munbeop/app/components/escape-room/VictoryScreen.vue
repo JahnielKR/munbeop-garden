@@ -14,6 +14,8 @@ import { useEscapeRoomAudio } from '~/composables/useEscapeRoomAudio'
 interface Props {
   level: Level
   tier: RewardTier
+  /** Optional full-bleed farewell illustration behind the results. */
+  image?: string
   /**
    * The player's built farewell sentence (the final creation slot's answer).
    * Substituted for the `{farewell}` token in the outro so the closing
@@ -57,6 +59,7 @@ const TIER_DOTS: Record<RewardTier, string> = {
 }
 
 const reward = computed(() => props.level.rewards[props.tier])
+const rewardImage = computed(() => `/escape-room/${props.level.id}/${reward.value.image}`)
 const outroParagraphs = computed(() =>
   tl(props.level.outro)
     .replaceAll('{farewell}', props.farewell ?? '')
@@ -67,7 +70,8 @@ const outroParagraphs = computed(() =>
 </script>
 
 <template>
-  <div class="victory" data-testid="victory-root" ref="root" tabindex="-1">
+  <div ref="root" class="victory" data-testid="victory-root" tabindex="-1">
+    <img v-if="image" :src="image" alt="" class="victory__art" >
     <p class="victory__voice" data-testid="victory-voice">{{ level.voiceOutro }}</p>
     <h2 class="victory__title" role="status">{{ t('escape.victory_title') }}</h2>
 
@@ -76,6 +80,12 @@ const outroParagraphs = computed(() =>
     </div>
 
     <div class="victory__reward-box">
+      <img
+        class="victory__reward-image"
+        data-testid="victory-reward-image"
+        :src="rewardImage"
+        :alt="tl(reward.name)"
+      >
       <span class="victory__tier" data-testid="victory-tier">
         {{ TIER_DOTS[tier] }} {{ t(`escape.tier_${tier}`) }}
       </span>
@@ -84,12 +94,7 @@ const outroParagraphs = computed(() =>
       <span class="victory__reward-desc">{{ tl(reward.description) }}</span>
     </div>
 
-    <button
-      type="button"
-      class="victory__exit"
-      data-testid="victory-exit"
-      @click="$emit('exit')"
-    >
+    <button type="button" class="victory__exit" data-testid="victory-exit" @click="$emit('exit')">
       {{ t('escape.continue') }} ▸
     </button>
   </div>
@@ -111,6 +116,36 @@ const outroParagraphs = computed(() =>
   background: radial-gradient(ellipse at 50% 0%, #5a3f2a 0%, #1d130a 75%);
   color: #f3e6c8;
   overflow-y: auto;
+  isolation: isolate;
+}
+.victory::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 7, 10, 0.32) 0%,
+      rgba(8, 7, 10, 0.68) 48%,
+      rgba(8, 7, 10, 0.9) 100%
+    ),
+    radial-gradient(ellipse at 50% 35%, transparent 0%, rgba(8, 7, 10, 0.5) 80%);
+  pointer-events: none;
+}
+.victory__art {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+.victory > :not(.victory__art) {
+  position: relative;
+  z-index: 2;
 }
 .victory__voice {
   margin: 0;
@@ -131,6 +166,14 @@ const outroParagraphs = computed(() =>
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-height: min(40vh, 340px);
+  overflow-y: auto;
+  padding: 16px 20px;
+  border: 1px solid rgba(255, 225, 174, 0.22);
+  border-radius: 10px;
+  background: rgba(13, 10, 8, 0.7);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(3px);
 }
 .victory__paragraph {
   margin: 0;
@@ -153,6 +196,15 @@ const outroParagraphs = computed(() =>
   font-family: 'Press Start 2P', monospace;
   font-size: 12px;
   letter-spacing: 0.08em;
+}
+.victory__reward-image {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 225, 174, 0.6);
+  border-radius: 8px;
+  background: radial-gradient(circle, rgba(255, 240, 210, 0.2), rgba(8, 10, 24, 0.72));
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.38);
 }
 .victory__unlocked-label {
   font-family: 'Inter', 'Noto Sans KR', sans-serif;

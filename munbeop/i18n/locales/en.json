@@ -982,6 +982,7 @@
     "errors": "Mistakes",
     "solved": "Solved",
     "rooms": "Rooms",
+    "clue_n": "Clue {n}",
     "game_over_title": "The story slipped away…",
     "game_over_text": "Three stumbles. The door locks again — but the house remembers you. Try again with fresh notes.",
     "retry": "RETRY",

@@ -943,6 +943,7 @@
     "errors": "Erreurs",
     "solved": "Résolues",
     "rooms": "Pièces",
+    "clue_n": "Indice {n}",
     "game_over_title": "L'histoire s'est échappée…",
     "game_over_text": "Trois faux pas. La porte se referme — mais la maison se souvient de toi. Réessaie avec de nouvelles notes.",
     "retry": "RÉESSAYER",

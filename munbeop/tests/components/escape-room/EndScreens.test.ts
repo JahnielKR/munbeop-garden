@@ -10,6 +10,10 @@ describe('VictoryScreen', () => {
     const w = mount(VictoryScreen, { props: { level, tier: 'epic' } })
     expect(w.get('[data-testid="victory-tier"]').text()).toContain('escape.tier_epic')
     expect(w.get('[data-testid="victory-reward"]').text()).toContain('Epic')
+    expect(w.get('[data-testid="victory-reward-image"]').attributes('src')).toBe(
+      '/escape-room/test-level/e.png',
+    )
+    expect(w.get('[data-testid="victory-reward-image"]').attributes('alt')).toContain('Epic')
     expect(w.get('[data-testid="victory-outro"]').text()).toContain('outro p1')
     expect(w.get('[data-testid="victory-voice"]').text()).toContain('잘 가요!')
   })
@@ -20,8 +24,20 @@ describe('VictoryScreen', () => {
     expect(w.emitted('exit')).toBeTruthy()
   })
 
+  it('renders an optional farewell illustration as decorative art', () => {
+    const w = mount(VictoryScreen, {
+      props: { level: makeLevel(), tier: 'common', image: '/outro.webp' },
+    })
+    const art = w.get('.victory__art')
+    expect(art.attributes('src')).toBe('/outro.webp')
+    expect(art.attributes('alt')).toBe('')
+  })
+
   it('moves focus to the outro on mount and announces the title (role=status)', () => {
-    const w = mount(VictoryScreen, { props: { level: makeLevel(), tier: 'common' }, attachTo: document.body })
+    const w = mount(VictoryScreen, {
+      props: { level: makeLevel(), tier: 'common' },
+      attachTo: document.body,
+    })
     const root = w.get('[data-testid="victory-root"]')
     expect(root.attributes('tabindex')).toBe('-1')
     expect(root.element).toBe(document.activeElement)

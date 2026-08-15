@@ -23,7 +23,7 @@ describe('LEVEL_REGISTRY', () => {
 
   it('playable entries embed a Level that passes validateLevel', () => {
     const playable = LEVEL_REGISTRY.filter((e) => e.status === 'playable')
-    expect(playable.length).toBeGreaterThanOrEqual(1)
+    expect(playable).toHaveLength(10)
     for (const e of playable) {
       expect(e.level).toBeDefined()
       expect(validateLevel(e.level!)).toEqual([])
@@ -37,11 +37,11 @@ describe('LEVEL_REGISTRY', () => {
     }
   })
 
-  it('playableLevel resolves playable levels and rejects unknown/coming-soon ids', () => {
-    expect(playableLevel('level-01')?.id).toBe('level-01')
-    expect(playableLevel('level-02')?.id).toBe('level-02')
-    expect(playableLevel('level-03')?.id).toBe('level-03')
-    expect(playableLevel('level-04')).toBeNull() // still coming-soon
+  it('playableLevel resolves all ten levels and rejects unknown ids', () => {
+    for (let n = 1; n <= 10; n++) {
+      const id = `level-${String(n).padStart(2, '0')}`
+      expect(playableLevel(id)?.id).toBe(id)
+    }
     expect(playableLevel('nope')).toBeNull()
   })
 })

@@ -149,7 +149,7 @@ const hearts = computed(() =>
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
-  image-rendering: pixelated;
+  image-rendering: auto;
 }
 .sheet__tape {
   position: absolute;
@@ -257,7 +257,9 @@ const hearts = computed(() =>
   border: 3px solid var(--border-strong, #6b5b4a);
   cursor: pointer;
   box-shadow: 4px 4px 0 rgba(60, 42, 24, 0.35);
-  transition: transform 120ms, box-shadow 120ms;
+  transition:
+    transform 120ms,
+    box-shadow 120ms;
 }
 .sheet__start:hover {
   transform: translate(-1px, -2px);

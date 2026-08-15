@@ -81,7 +81,7 @@ async function mountPlaying(level = makeAudioLevel(), seed = 'seed-audio') {
 async function openSlot1(w: VueWrapper) {
   const spot = w
     .findAll('[data-testid="hotspot"]')
-    .find((h) => h.attributes('aria-label') === 'h-a-1')!
+    .find((h) => h.attributes('data-hotspot-id') === 'h-a-1')!
   await spot.trigger('click')
 }
 
@@ -137,7 +137,7 @@ describe('EscapeRoom audio wiring', () => {
     audioMock.playSfx.mockClear()
     const cosmetic = w
       .findAll('[data-testid="hotspot"]')
-      .find((h) => h.attributes('aria-label') === 'cosmetic')!
+      .find((h) => h.attributes('data-hotspot-id') === 'cosmetic')!
     await cosmetic.trigger('click')
     expect(audioMock.playSfx).toHaveBeenCalledWith('/escape-room/test-level/audio/sfx-purr.ogg')
   })

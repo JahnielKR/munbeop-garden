@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { LOCALE_CODES, localized, type LocalizedString } from '~/lib/domain'
 import { TRANSLATIONS } from '~/seed/escape-room/translations'
 import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
+import { report as qualityReport } from '../../../tools/audit-escape-translations'
 
 /**
  * Guards the escape-room i18n: the seed is authored in Spanish and translated
@@ -34,13 +35,58 @@ function* walkLocalized(node: unknown): Generator<LocalizedString> {
 
 const nn = (s: string) => s.split('\n\n').length
 const fw = (s: string) => s.split('{farewell}').length
+const quotePairs = [
+  ['«', '»'],
+  ['“', '”'],
+  ['「', '」'],
+  ['『', '』'],
+] as const
+const countToken = (s: string, token: string) => s.split(token).length - 1
+const orderedPair = (s: string, open: string, close: string) => {
+  let depth = 0
+  for (const character of s) {
+    if (character === open) depth += 1
+    if (character === close) depth -= 1
+    if (depth < 0) return false
+  }
+  return depth === 0
+}
+const balancedQuotes = (s: string) =>
+  quotePairs.every(([open, close]) => orderedPair(s, open, close)) &&
+  countToken(s, '"') % 2 === 0
+const koreanTokenPattern = /[\u3131-\u318e\uac00-\ud7a3]+/g
+const adjacentLatinHangul =
+  /[\u3131-\u318e\uac00-\ud7a3][A-Za-zÀ-ɏ]|[A-Za-zÀ-ɏ][\u3131-\u318e\uac00-\ud7a3]/
+const mojibake = /\uFFFD|Â[«»·]|Ã[¡©­³º±¼]|â(?:€”|€“|€œ|€|€™|€¦)/u
 
 describe('escape-room translations', () => {
-  it('all 7 target locales share the exact same key set', () => {
-    const enKeys = Object.keys(TRANSLATIONS.en).sort()
-    expect(enKeys.length).toBeGreaterThan(400)
+  it('passes the full structural, encoding and semantic quality audit', () => {
+    const issueGroups = {
+      missing: qualityReport.missingCounts,
+      empty: qualityReport.emptyTranslationCounts,
+      stale: qualityReport.staleTranslationCounts,
+      structure: qualityReport.structuralIssueCounts,
+      typography: qualityReport.typographyIssueCounts,
+      Korean: qualityReport.koreanTokenIssueCounts,
+      spacing: qualityReport.tokenSpacingIssueCounts,
+      encoding: qualityReport.encodingIssueCounts,
+      length: qualityReport.lengthIssueCounts,
+      semantics: qualityReport.semanticIssueCounts,
+      untranslatedSpanish: qualityReport.unexpectedIdenticalCounts,
+    }
+    for (const [group, counts] of Object.entries(issueGroups)) {
+      for (const [locale, count] of Object.entries(counts)) {
+        expect(count, `${group}: ${locale}`).toBe(0)
+      }
+    }
+    expect(qualityReport.inactiveSemanticRules, 'inactive semantic guardrails').toEqual([])
+  })
+
+  it('all 7 target locales match the exact live level 1–10 source inventory', () => {
+    const liveKeys = qualityReport.sources.map(({ source }) => source).sort()
+    expect(liveKeys.length).toBeGreaterThan(1500)
     for (const loc of TARGET) {
-      expect(Object.keys(TRANSLATIONS[loc]).sort(), loc).toEqual(enKeys)
+      expect(Object.keys(TRANSLATIONS[loc]).sort(), loc).toEqual(liveKeys)
     }
   })
 
@@ -62,13 +108,36 @@ describe('escape-room translations', () => {
     }
   })
 
-  it('every translatable string in the whole seed has a dictionary entry (drift guard)', () => {
-    const missing = new Set<string>()
+  it('fully localizes every translatable string in levels 1–10', () => {
     for (const ls of walkLocalized(LEVEL_REGISTRY)) {
       const es = ls.es
-      if (es && hasLatin(es) && !(es in TRANSLATIONS.en)) missing.add(es)
+      if (!es || !hasLatin(es)) continue
+
+      for (const locale of TARGET) {
+        expect(
+          Object.hasOwn(TRANSLATIONS[locale], es),
+          `${locale} missing: ${es.slice(0, 80)}`,
+        ).toBe(true)
+        const translated = localized(ls, locale)
+        expect(translated.trim().length, `${locale}: ${es.slice(0, 80)}`).toBeGreaterThan(0)
+        expect(balancedQuotes(translated), `quotes ${locale}: ${es.slice(0, 80)}`).toBe(true)
+        expect(mojibake.test(translated), `encoding ${locale}: ${es.slice(0, 80)}`).toBe(false)
+
+        for (const token of new Set(es.match(koreanTokenPattern) ?? [])) {
+          expect(
+            countToken(translated, token),
+            `Korean ${token} in ${locale}: ${es.slice(0, 60)}`,
+          ).toBe(countToken(es, token))
+        }
+
+        if (!adjacentLatinHangul.test(es)) {
+          expect(
+            adjacentLatinHangul.test(translated),
+            `spacing ${locale}: ${es.slice(0, 80)}`,
+          ).toBe(false)
+        }
+      }
     }
-    expect([...missing]).toEqual([])
   })
 
   it('renders real, non-Spanish text for the level-01 opening story in every locale', () => {

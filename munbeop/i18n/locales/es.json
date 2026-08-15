@@ -943,6 +943,7 @@
     "errors": "Errores",
     "solved": "Resueltos",
     "rooms": "Cuartos",
+    "clue_n": "Pista {n}",
     "game_over_title": "La historia se escapó…",
     "game_over_text": "Tres tropiezos. La puerta vuelve a cerrarse — pero la casa te recuerda. Inténtalo otra vez con notas nuevas.",
     "retry": "REINTENTAR",

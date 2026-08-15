@@ -38,6 +38,26 @@ describe('Scene', () => {
     expect(w.emitted('hotspot')).toEqual([['note-2']])
   })
 
+  it('enables only the current sequential puzzle hotspot while keeping cosmetics interactive', async () => {
+    const w = mount(Scene, {
+      props: {
+        room,
+        imageBase: '/escape-room/level-01/',
+        unlockedSlotId: 'slot-1',
+        resolvedSlots: [],
+      },
+    })
+    const hotspots = w.findAll('[data-testid="hotspot"]')
+    expect(hotspots[0]!.attributes('disabled')).toBeUndefined()
+    expect(hotspots[1]!.attributes('disabled')).toBeDefined()
+    expect(hotspots[2]!.attributes('disabled')).toBeUndefined()
+
+    await hotspots[1]!.trigger('click')
+    expect(w.emitted('hotspot')).toBeUndefined()
+    await hotspots[2]!.trigger('click')
+    expect(w.emitted('hotspot')).toEqual([['easter']])
+  })
+
   describe('solved-variant swap', () => {
     const solvedRoom: Room = { ...room, solvedImage: 'rooms/test-solved.png' }
     const base = '/escape-room/level-02/'
