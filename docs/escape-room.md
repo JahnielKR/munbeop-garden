@@ -26,9 +26,9 @@
 
 | Carta | Ruta | Estado |
 |---|---|---|
-| 🎲 La Ruleta | `/practice/ruleta` | Viva (el juego clásico movido aquí) |
+| 🎴 The Deck / La Baraja | `/practice/ruleta` | Viva (producción contextual 3×3 + SRS) |
 | 🗝️ Escape Room | `/escape-room` | Viva (libreta de niveles) |
-| 🌱 ??? | — | Bloqueada ("próximamente") |
+| 🧪 Laboratorios | `/practice/*` | Vivos (partículas, conjugación, cloze, contadores, registro, números, Sentence Garden, placement y rescate) |
 
 ### Libreta de niveles — `/escape-room`
 
@@ -75,8 +75,8 @@ Las 10 narrativas y sus ilustraciones finales viven en `public/escape-room/`: ca
 10. [Pipeline de producción](#10-pipeline-de-producción)
 11. [Roadmap de niveles](#11-roadmap-de-niveles)
 12. [📜 NIVEL 1 — DOSSIER COMPLETO](#12--nivel-1--dossier-completo)
-13. [Decisiones abiertas](#13-decisiones-abiertas)
-14. [Siguientes pasos](#14-siguientes-pasos)
+13. [Decisiones cerradas en producción](#13-decisiones-cerradas-en-producción)
+14. [Siguientes pasos post-release](#14-siguientes-pasos-post-release)
 
 ---
 
@@ -89,10 +89,10 @@ Un escape room **visual novel 2D** con estética **pixel art**, embebido como mi
 ### Por qué existe
 
 - La gramática tiene fama de aburrida. El escape room la **disfraza de aventura**.
-- La plataforma ya tiene BD + explicaciones + práctica. Le falta **motivación recurrente**.
+- La plataforma ya tiene BD + explicaciones + práctica; el Escape Room aporta **motivación recurrente** y una sesión inmersiva distinta del drill corto.
 - Es el complemento perfecto a:
-  - La **ruleta** (producción creativa rápida)
-  - El tercer juego TBD (probablemente velocidad/Tetris)
+  - **The Deck / La Baraja** (producción creativa rápida)
+  - Los **laboratorios** (práctica enfocada y sesiones cortas)
 - Cubre el ritmo de **sesión larga e inmersiva** (10-15 min por run), que ningún otro juego del set cubre.
 
 ### Qué NO es
@@ -125,7 +125,7 @@ Estas decisiones están **cerradas**. No se renegocian salvo motivo explícito.
 | D9 | **Sistema de pistas con tiers** | Da control al jugador sobre dificultad sin castigar la victoria |
 | D10 | **Gramática mapeada a códigos G### de la BD** | El juego refuerza exactamente lo que ya está en la plataforma |
 | D11 | **Embebido en la plataforma Nuxt**, no standalone | Forma parte del producto; no se distribuye como app aparte |
-| D12 | **Contenido modelado con `LocalizedString` desde el día 1** | V1 puede llenar solo `es`, pero el shape de 8 locales (`en/es/fr/pt-BR/th/id/vi/ja`) está reservado en el JSON. Evita migración futura. |
+| D12 | **Contenido modelado con `LocalizedString` desde el día 1** | Los 10 niveles se entregan completos en `en/es/fr/pt-BR/th/id/vi/ja`, con auditoría que impide vacíos o regresiones al fallback. |
 
 ---
 
@@ -399,7 +399,7 @@ El contenido lingüístico es **coreano contemporáneo educado** (-아/어요, -
 - **Estado del juego:** Pinia 3 (un store dedicado por nivel activo).
 - **Estilos:** Tailwind 3 + design tokens CSS (los mismos que `app/assets/styles/`).
 - **i18n:** `@nuxtjs/i18n` 9.5 (ya configurado en la plataforma con 8 locales).
-- **Audio:** Howler.js (se añade a `dependencies` — mejor control de loops/fades que HTML5 Audio crudo, y Web Audio API directo es overkill).
+- **Audio:** `useEscapeRoomAudio.ts` sobre HTML5 `Audio`, con canales singleton de ambiente/voz, pool acotado de SFX, fades cancelables y degradación segura cuando el navegador bloquea autoplay.
 - **Hotspots:** `<div>` posicionados absolutamente sobre `<img>` de fondo, mínimo `44×44 px` de área táctil.
 - **Sin Phaser/PixiJS** salvo necesidad de animaciones complejas (no para V1).
 
@@ -450,39 +450,37 @@ munbeop/
 ├── app/
 │   ├── components/escape-room/
 │   │   ├── EscapeRoom.vue          # root, orquesta nivel + transiciones
-│   │   ├── Room.vue                # escena (bg image + hotspots)
+│   │   ├── Scene.vue               # escena (bg image + hotspots)
 │   │   ├── Hotspot.vue             # rect clickable sobre escena
 │   │   ├── SlotSelection.vue       # puzzle Tipo A
 │   │   ├── SlotCompletion.vue      # puzzle Tipo B
 │   │   ├── SlotCreation.vue        # puzzle Tipo C (drag-and-drop tiles)
 │   │   ├── HintPanel.vue
 │   │   ├── GameOverScreen.vue
-│   │   ├── VictoryScreen.vue
-│   │   └── RewardReveal.vue
+│   │   └── VictoryScreen.vue
 │   ├── composables/
-│   │   ├── useEscapeRoom.ts        # API pública del juego
-│   │   └── useAudio.ts             # wrapper Howler.js
+│   │   ├── useEscapeRoomAudio.ts    # ambiente, voz, SFX y mute
+│   │   └── useEscapeRoomProgress.ts # persistencia por cuenta + retry
 │   ├── lib/domain/
 │   │   └── escape-room.ts          # types: Level, Room, Slot, Candidate, Reward, Hint
 │   ├── lib/escape-room/
-│   │   ├── shuffle.ts              # sorteo determinista por run-id (testeable)
+│   │   ├── answer.ts               # normalización y evaluación de respuestas
+│   │   ├── shuffle.ts              # sorteo de candidatos por run
 │   │   ├── scoring.ts              # cálculo de tier alcanzado
 │   │   └── rules.ts                # 2 errores, pista 2 = solo común, etc.
 │   ├── stores/
 │   │   └── escape-room.ts          # Pinia: estado del run actual
 │   ├── pages/escape-room/
-│   │   └── [levelId].vue           # ruta `/escape-room/nivel-01`
+│   │   ├── index.vue               # libreta `/escape-room`
+│   │   └── play.vue                # juego `/escape-room/play?level=level-01`
 │   └── seed/escape-room/
-│       └── level-01.ts             # JSON del Nivel 1 en TS (type-checked)
-├── public/escape-room/level-01/
-│   ├── rooms/*.png
-│   ├── objects/*.png
-│   ├── cosmetics/*.png
-│   └── audio/*.ogg
-└── tests/unit/escape-room/
-    ├── shuffle.test.ts
-    ├── scoring.test.ts
-    └── rules.test.ts
+│       ├── level-01.ts … level-10.ts
+│       ├── registry.ts             # catálogo de 10/10 niveles jugables
+│       └── translations/           # localización narrativa en 8 idiomas
+├── public/escape-room/
+│   ├── covers/                     # 10 portadas
+│   └── level-01/ … level-10/       # salas, cinemáticas, cosméticos y audio/SFX
+└── tests/unit/escape-room/          # reglas, contenido, i18n y persistencia
 ```
 
 ### Contrato de datos (TypeScript schema)
@@ -602,9 +600,9 @@ El tipo `Level` vive en `app/lib/domain/escape-room.ts`. Cada nivel exporta una 
    - Conectar al motor (si motor ya existe, este paso es casi nulo)
    - 5-10 horas si motor existe, 40-60h si es el primer nivel
 5. **Integración + testing**
-   - Embebido en la plataforma (`pages/escape-room/[levelId].vue`)
-   - Tests unitarios para `shuffle.ts`, `scoring.ts`, `rules.ts`
-   - QA: jugar 5-10 runs, ajustar dificultad
+   - Registrar el nivel y abrirlo desde `/escape-room/play?level=<id>`
+   - Tests de reglas, contenido, traducciones y persistencia
+   - QA Chrome de arte/narrativa + 5-10 runs humanos para ajustar dificultad
    - 15-25 horas
 
 ### Herramientas recomendadas
@@ -650,7 +648,7 @@ Los diez niveles están implementados y disponibles en la libreta. Cada historia
 
 > El remapeo de gramáticas de los niveles 2-4 se decidió en el dossier del nivel 2 (§5.2 de [`escape-room-level-02.md`](./escape-room-level-02.md)): -기 전에/-(으)ㄴ 후에 (G035/G036) adelantan al nivel 2 porque el orden ritual del 49재 es su hogar narrativo; el nivel 3 hereda -지만/-고; el nivel 4 («El último tren a Seúl») gana -는 동안/-고 나서 para compensar.
 
-**Estado de release:** catálogo base completo (10/10). Las siguientes iteraciones se concentran en telemetría, balance con usuarios reales, localización completa y nuevos capítulos opcionales.
+**Estado de release:** catálogo base completo (10/10). Las siguientes iteraciones se concentran en balance con usuarios reales, revisión lingüística nativa, rendimiento/accesibilidad y nuevos capítulos opcionales.
 
 ### Variedad de NPCs y locaciones
 
@@ -1016,7 +1014,9 @@ Tema: **"Amanecer en el minbak"**
 | 🟣 Épico | Sin Pista 2 + run < 8 min | **Avatar "Linterna Hanji"** | Avatar pixel animado: silueta con linterna de papel coreano brillando |
 | 🟡 Legendario | 3 runs consecutivos sin game over (sin Pista 2 en ningún run de la racha) | **Set completo + título "민박 손님"** | Avatar + marco + fondo + título "Huésped del minbak" |
 
-### 12.8 Lista de assets del nivel 1
+### 12.8 Lista histórica de assets del nivel 1
+
+> Snapshot del plan de producción original. Se conserva para trazabilidad creativa; las casillas siguientes **no representan trabajo pendiente actual**. Los assets finales entregados viven en `public/escape-room/level-01/` y su contrato se verifica automáticamente.
 
 #### Imágenes pixel art (16 totales)
 
@@ -1086,14 +1086,14 @@ Todos los assets viven bajo `munbeop/public/escape-room/level-01/`.
 - [ ] Pantalla "Game Over" estilo Stardew Valley (no agresiva)
 - [ ] Pantalla de victoria con cosmético desbloqueado
 
-### 12.9 Estimación de producción del Nivel 1
+### 12.9 Estimación histórica de producción del Nivel 1
 
 | Fase | Horas |
 |---|---|
 | Escritura de puzzles + revisión gramática | ~10 h (ya cubierto en este doc) |
 | Generación arte (16 imágenes pixel) | 30-50 h |
 | Audio TTS + edición | 5-8 h |
-| Programación motor del juego (Vue + Pinia + Howler) | 40-60 h (una sola vez para toda la franquicia) |
+| Programación motor del juego (Vue + Pinia + audio) | 40-60 h (una sola vez para toda la franquicia) |
 | Integración + testing (incluye tests unitarios de `shuffle/scoring/rules`) | 15-25 h |
 | **Total Nivel 1** | **100-150 h** (~3-4 semanas full-time, 6-8 semanas part-time) |
 
@@ -1101,39 +1101,33 @@ Niveles 2+: ~50-80 h cada uno (motor ya hecho).
 
 ---
 
-## 13. Decisiones abiertas
+## 13. Decisiones cerradas en producción
 
-Cosas asumidas en este documento que necesitan visto bueno explícito antes de avanzar a producción:
+Las decisiones que en la v1 estaban abiertas ya tienen una implementación verificable:
 
-| # | Decisión asumida | Alternativa | Necesario para |
-|---|---|---|---|
-| 1 | Reinicio en game over = nivel actual | Reinicio del juego entero | Cerrar la mecánica roguelike |
-| 2 | 2 errores = game over | 1 (más brutal) o 3 (más permisivo) | Configurar la dificultad inicial |
-| 3 | Gramáticas del Nivel 1: G003, G005, G012, G027, G031, G032 | Otra combinación TOPIK 1 | Empezar producción del Nivel 1 |
-| 4 | Tono "minbak con halmeoni" (cálido/Ghibli) | Misterio, aventura, horror suave | Empezar concept art del Nivel 1 |
-| 5 | Fuente Hangul: Neodgm | Galmuri u otra | Decidir UI y arte |
-| 6 | 4 tiers de cosméticos | Simplificar a 2 (común/raro) | Cerrar sistema de recompensas |
-| 7 | V1 textual solo en `es`, shape `LocalizedString` reservado | Llenar los 8 locales desde V1 (TTS solo `ko`) | Definir scope de traducción V1 |
-
-> La fila "framework de la plataforma" de la v1 ya se cerró: la plataforma corre en **Nuxt 4 + Vue 3 + Pinia + Tailwind**, y el escape room hereda ese stack (ver Sección 9). Se elimina de esta lista.
+| # | Decisión final |
+|---|---|
+| 1 | Game over reinicia el nivel actual, no todo el catálogo. |
+| 2 | Los 10 niveles permiten 2 errores; el tercero termina el run. |
+| 3 | Cada nivel fija su mapa de gramáticas TOPIK y lo valida contra el catálogo. |
+| 4 | El Nivel 1 conserva el tono cálido del minbak; los niveles 2–10 diversifican mood y género. |
+| 5 | UI pixel con `Press Start 2P`; texto didáctico coreano legible con `Noto Sans KR`. |
+| 6 | Cuatro tiers cosméticos: común, raro, épico y legendario. |
+| 7 | Narrativa, salas, pistas, puzzles y recompensas completas en los 8 locales. |
+| 8 | Motor integrado en Nuxt 4 + Vue 3 + Pinia + Tailwind, con audio HTML5 nativo. |
 
 ---
 
-## 14. Siguientes pasos
+## 14. Siguientes pasos post-release
 
-Una vez confirmadas las 7 decisiones abiertas, el orden de implementación es:
+El motor, el catálogo, el arte y la localización ya están entregados. El trabajo de segunda generación es:
 
-1. **Crear `app/lib/domain/escape-room.ts`** con los tipos `Level`, `Room`, `Slot`, `Candidate` (selección/completar/creación), `Hint`, `Reward`. Es la fundación type-checked de todo el resto.
-2. **Crear `app/lib/escape-room/shuffle.ts`, `scoring.ts`, `rules.ts`** con tests unitarios en `tests/unit/escape-room/`. Estos módulos son puros (sin Vue), fáciles de testear, y encapsulan toda la lógica del juego.
-3. **Cablear el store Pinia `app/stores/escape-room.ts`** con: estado del run actual (cuarto activo, candidatos sorteados, errores cometidos, pistas usadas, tiempo transcurrido).
-4. **Escribir `app/seed/escape-room/level-01.ts`** transcribiendo las 5 secciones de puzzle de este documento al shape de `Level` (con `LocalizedString` rellenado en `es`, los otros 7 locales pueden quedar vacíos y caer al fallback).
-5. **Construir el prototipo de UN cuarto** (`Room.vue` + `SlotSelection.vue` + `HintPanel.vue`) renderizando el Slot 1 con placeholders de imagen — solo para validar la arquitectura.
-6. **Generar arte real** del Cuarto 1 + sus 5 candidatos visuales, sustituir placeholders.
-7. **Producir TTS coreano** de las 22 líneas de halmeoni con voz consistente, exportar a OGG bajo `public/escape-room/level-01/audio/`.
-8. **Integrar Howler.js** vía `composables/useAudio.ts` con loops ambient + SFX + voz.
-9. **Resto de cuartos y slots**, iterando.
-10. **Página `pages/escape-room/[levelId].vue`** con embed responsive (móvil + desktop).
-11. **QA con usuarios reales** — 5-10 personas que aprendan coreano juegan el Nivel 1, ajustar dificultad/timing en base a observación.
+1. **QA pedagógico y lingüístico humano** con profesores de coreano y hablantes nativos de los 8 idiomas.
+2. **Beta de balance** con estudiantes reales: abandono por sala, uso de pistas, errores por slot y finalización por nivel.
+3. **Rendimiento de assets**: imágenes responsive, precarga solo de la sala actual/siguiente y presupuestos de peso por nivel.
+4. **Auditoría formal de accesibilidad**: teclado, foco, lector de pantalla, contraste y movimiento reducido.
+5. **E2E periódico con cuenta de staging** para validar login, progreso, reload y reintentos contra un Supabase real de pruebas.
+6. **Pipeline de autoría** para añadir capítulos, traducciones e ilustraciones sin editar manualmente tantos archivos TypeScript.
 
 ---
 
@@ -1143,6 +1137,9 @@ Una vez confirmadas las 7 decisiones abiertas, el orden de implementación es:
   - Narrativa, gameplay, pistas, salas, recompensas y desenlaces de los niveles 1-10 disponibles en los 8 locales de producto.
   - Auditoría estructural automática para cobertura, comillas, tokens coreanos y espaciado Hangul/latino.
   - Verificación real en navegador de la selección persistida de idioma y del render localizado.
+- **2026-08-15 (v4)** — Catálogo completo:
+  - Niveles 4–10 añadidos con historias autoconclusivas, 28 salas nuevas, dificultad TOPIK progresiva y recompensas propias.
+  - Registro final de 10 niveles, 59 slots y 295 candidatos; 10 portadas, 40 salas, cinemáticas y cosméticos verificados en navegador.
 - **2026-06-11 (v3)** — UX nueva + implementación V1 completa:
   - `/practice` es ahora un hub de cartas (`GameCard`); la ruleta vive en `/practice/ruleta`.
   - Selector de niveles = libreta hojeable (`LevelBook`/`LevelPage`) con covers, rewards, intentos y START por hoja.

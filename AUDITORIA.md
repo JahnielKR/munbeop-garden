@@ -1,5 +1,8 @@
-# Auditoría de Munbeop Garden — tercera pasada (2026-07-06)
+# Auditoría de Munbeop Garden — tercera pasada (snapshot histórico, 2026-07-06)
 _Stack: Nuxt 4 SPA (`ssr:false`), Vue 3, Pinia, Supabase (anon + RLS, cuentas obligatorias), i18n 8 locales, Vitest ~7.300 tests, pnpm · Auditorías previas: 2026-06-18, 2026-06-19, 2026-06-28 (pass 1 y 2)._
+
+> [!IMPORTANT]
+> Este informe queda preservado como evidencia del estado **anterior** al release del 2026-08-15; no es el backlog vigente. El [PR #159](https://github.com/JahnielKR/munbeop-garden/pull/159) cerró los niveles 4–10 del Escape Room, la localización integral en 8 idiomas y los hallazgos de persistencia/cambio de cuenta en Practice, labs, settings y progreso. El release posterior pasó lint, typecheck, build, 7.754 tests y QA Chrome de 10 portadas, 40 salas, 10 finales, 8 idiomas y móvil, también contra producción. El estado actual y la siguiente etapa se mantienen en [`README.md`](./README.md).
 
 > Auditoría multi-agente (48 agentes: 3 verificando la auditoría previa, 11 lentes de búsqueda, verificación adversarial de cada hallazgo importante). Todos los hallazgos 🟡 de este informe **sobrevivieron un intento activo de refutación** con traza de código independiente. Anclado al código actual (post-PRs #128–#152).
 
