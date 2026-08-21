@@ -5,6 +5,7 @@ import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Button from '~/components/ui/Button.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
 import PlacementCard from '~/components/placement/PlacementCard.vue'
 import PlacementResult from '~/components/placement/PlacementResult.vue'
@@ -18,13 +19,17 @@ const { t } = useI18n()
 const placement = usePlacement()
 const started = ref(false)
 
-useGameLeaveGuard(() => started.value && placement.phase.value !== 'done')
+useGameLeaveGuard(
+  () => started.value && (
+    placement.phase.value !== 'done' || placement.saving.value || placement.saveError.value
+  ),
+)
 
 function begin() {
-  placement.start()
-  started.value = true
+  if (placement.start()) started.value = true
 }
 function onRetake() {
+  if (placement.saving.value || placement.saveError.value) return
   placement.start()
 }
 </script>
@@ -34,6 +39,7 @@ function onRetake() {
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="배치 테스트" :latin="t('placement.title')" />
+    <PracticeHelp mode="placement" />
     <p class="lab__lead">{{ t('placement.lead') }}</p>
 
     <div v-if="!started" class="lab__intro">
@@ -59,7 +65,14 @@ function onRetake() {
           @next="placement.next"
         />
       </template>
-      <PlacementResult v-else :outcome="placement.outcome.value!" @retake="onRetake" />
+      <PlacementResult
+        v-else
+        :outcome="placement.outcome.value!"
+        :saving="placement.saving.value"
+        :save-error="placement.saveError.value"
+        @retry-save="placement.retrySave"
+        @retake="onRetake"
+      />
     </template>
   </div>
 </template>

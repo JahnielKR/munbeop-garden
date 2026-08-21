@@ -11,9 +11,11 @@ interface Props {
   phase: 'question' | 'right' | 'wrong' | 'done'
   verdict: boolean | null
   picked: string | null
+  saving?: boolean
+  saveError?: boolean
 }
-const props = defineProps<Props>()
-const emit = defineEmits<{ answer: [choice: string]; next: [] }>()
+const props = withDefaults(defineProps<Props>(), { saving: false, saveError: false })
+const emit = defineEmits<{ answer: [choice: string]; next: []; retry: [] }>()
 const { tl } = useLocalized()
 const { t } = useI18n()
 
@@ -72,7 +74,20 @@ watch(
       <p v-if="!verdict" class="card__correct" lang="ko">{{ t('register.reveal_correct', { correct: item.answer }) }}</p>
       <p class="card__why">{{ tl(item.why) }}</p>
       <p class="card__trans">{{ tl(item.trans) }}</p>
-      <button type="button" class="card__next" :aria-label="t('register.next')" @click="emit('next')">
+      <p v-if="saving" class="card__save-status" role="status">{{ t('register.persistence.saving') }}</p>
+      <div v-else-if="saveError" class="card__save-error" role="alert">
+        <span>{{ t('register.persistence.failed') }}</span>
+        <button type="button" class="card__retry" data-testid="register-save-retry" @click="emit('retry')">
+          {{ t('register.persistence.retry') }}
+        </button>
+      </div>
+      <button
+        type="button"
+        class="card__next"
+        :disabled="saving || saveError"
+        :aria-label="t('register.next')"
+        @click="emit('next')"
+      >
         <span aria-hidden="true">→</span>
       </button>
     </div>
@@ -98,12 +113,17 @@ watch(
 .card__correct { margin: 0; font-family: var(--font-ko); font-size: var(--text-md); color: var(--text); }
 .card__why { margin: 0; font-family: var(--font-ui); font-size: var(--text-sm); color: var(--text); line-height: 1.6; }
 .card__trans { margin: 0; font-family: var(--font-ui); font-size: var(--text-sm); color: var(--text-soft); }
+.card__save-status { margin: 0; font-family: var(--font-ui); font-size: var(--text-sm); color: var(--text-soft); }
+.card__save-error { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 12px; color: var(--danger); background: var(--surface); border-left: 4px solid var(--danger); font-family: var(--font-ui); font-size: var(--text-sm); }
+.card__retry { padding: 6px 10px; color: var(--text); background: var(--paper-warm, var(--surface)); border: 2px solid var(--border-strong); cursor: pointer; font: inherit; }
+.card__retry:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .card__next {
   align-self: flex-end; padding: 10px 16px; background: var(--accent); color: var(--text-on-accent);
   border: 3px solid var(--ink-line); box-shadow: var(--shadow-button);
   font-family: var(--font-pixel-small); font-size: var(--text-xs); letter-spacing: 0.06em; cursor: pointer;
 }
 .card__next:hover { transform: translate(-1px, -1px); box-shadow: var(--shadow-button-hover); }
+.card__next:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 .card__next:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (max-width: 480px) { .card__options { grid-template-columns: 1fr; } }
 </style>

@@ -83,7 +83,13 @@ interface ClashFamilyBase {
 }
 export type ClashFamily =
   | (ClashFamilyBase & { invariant: true; form: string })
-  | (ClashFamilyBase & { invariant: false; afterConsonant: string; afterVowel: string })
+  | (ClashFamilyBase & {
+      invariant: false
+      afterConsonant: string
+      afterVowel: string
+      /** Optional ㄹ-batchim exception, used by (으)로: 길로, not 길으로. */
+      afterRieul?: string
+    })
 
 export interface ClashSet {
   id: string

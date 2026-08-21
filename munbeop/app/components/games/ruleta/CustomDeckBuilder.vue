@@ -6,10 +6,10 @@ import { useToast } from '~/composables/useToast'
 import {
   deckColorVar, DECK_COLOR_IDS, DECK_ICONS, MIN_CUSTOM_PLAYABLE,
 } from '~/components/games/ruleta/cards'
-import { DEFAULT_DECK_COLOR_ID, DEFAULT_DECK_ICON } from '~/lib/domain'
+import { CUSTOM_DECK_ID, DEFAULT_DECK_COLOR_ID, DEFAULT_DECK_ICON } from '~/lib/domain'
 
 const props = defineProps<{ deckId: string | null }>()
-const emit = defineEmits<{ saved: [] }>()
+const emit = defineEmits<{ saved: []; dirty: [dirty: boolean]; busy: [busy: boolean] }>()
 
 const { t, locale } = useI18n()
 const toast = useToast()
@@ -22,6 +22,19 @@ const icon = ref<string>(DEFAULT_DECK_ICON)
 const selected = ref<string[]>([])
 const search = ref('')
 const confirmingDelete = ref(false)
+const busy = ref(false)
+const baseline = ref('')
+
+watch(busy, (value) => emit('busy', value), { immediate: true })
+
+function formSnapshot(): string {
+  return JSON.stringify({
+    name: name.value.trim(),
+    colorId: colorId.value,
+    icon: icon.value,
+    grammarKos: [...selected.value].sort(),
+  })
+}
 
 onMounted(() => {
   confirmingDelete.value = false
@@ -34,10 +47,20 @@ onMounted(() => {
       selected.value = [...d.grammarKos]
     }
   }
+  baseline.value = formSnapshot()
+  emit('dirty', false)
 })
 
+watch(
+  [name, colorId, icon, selected],
+  () => {
+    if (baseline.value) emit('dirty', formSnapshot() !== baseline.value)
+  },
+  { deep: true },
+)
+
 const selectedSet = computed(() => new Set(selected.value))
-const canSave = computed(() => name.value.trim().length > 0)
+const canSave = computed(() => name.value.trim().length > 0 && !busy.value)
 
 /** Grammar grouped by level (deck order), filtered by the search query. */
 const groups = computed(() => {
@@ -47,13 +70,29 @@ const groups = computed(() => {
     !q ||
     g.ko.toLowerCase().includes(q) ||
     String(g.meaning[loc] ?? '').toLowerCase().includes(q)
-  return [...grammarStore.decks]
+  const official = [...grammarStore.decks]
     .sort((a, b) => a.order - b.order)
     .map((deck) => ({
       deck,
       items: grammarStore.items.filter((g) => g.deckId === deck.id && matches(g)),
     }))
     .filter((group) => group.items.length > 0)
+  const customItems = grammarStore.items.filter(
+    (g) => g.deckId === CUSTOM_DECK_ID && matches(g),
+  )
+  if (customItems.length) {
+    official.push({
+      deck: {
+        id: CUSTOM_DECK_ID,
+        name: t('settings.custom_grammar.title'),
+        colorId: 'violet',
+        order: Number.MAX_SAFE_INTEGER,
+        collapsed: false,
+      },
+      items: customItems,
+    })
+  }
+  return official
 })
 
 function toggle(ko: string) {
@@ -63,30 +102,43 @@ function toggle(ko: string) {
 }
 
 async function save() {
+  if (busy.value) return
   const trimmed = name.value.trim()
   if (!trimmed) return
   const payload = { name: trimmed, colorId: colorId.value, icon: icon.value, grammarKos: [...selected.value] }
   // The store rolls back its in-memory state on a failed cloud write; surface a
   // retry toast and keep the builder open instead of closing as if it saved.
+  busy.value = true
   try {
     if (props.deckId) await customDecks.updateDeck(props.deckId, payload)
     else await customDecks.addDeck(payload)
   } catch {
     toast.error(t('errors.save_failed'))
     return
+  } finally {
+    busy.value = false
   }
+  baseline.value = formSnapshot()
+  emit('dirty', false)
   emit('saved')
 }
 
 async function remove() {
+  if (busy.value) return
+  busy.value = true
   if (props.deckId) {
     try {
       await customDecks.removeDeck(props.deckId)
     } catch {
       toast.error(t('errors.save_failed'))
       return
+    } finally {
+      busy.value = false
     }
+  } else {
+    busy.value = false
   }
+  emit('dirty', false)
   emit('saved')
 }
 </script>
@@ -98,6 +150,7 @@ async function remove() {
       <input
         v-model="name"
         type="text"
+        :disabled="busy"
         class="builder__input"
         data-testid="builder-name"
         :placeholder="t('practice.custom.name_placeholder')"
@@ -117,6 +170,7 @@ async function remove() {
           :data-testid="`color-${c}`"
           :aria-label="c"
           :aria-pressed="colorId === c"
+          :disabled="busy"
           @click="colorId = c"
         />
       </div>
@@ -134,6 +188,7 @@ async function remove() {
           :data-testid="`icon-${ic}`"
           :aria-label="ic"
           :aria-pressed="icon === ic"
+          :disabled="busy"
           @click="icon = ic"
         >
           <Icon :name="(ic as IconName)" :size="20" />
@@ -157,6 +212,7 @@ async function remove() {
       <input
         v-model="search"
         type="search"
+        :disabled="busy"
         class="builder__input"
         data-testid="builder-search"
         :placeholder="t('practice.custom.search_placeholder')"
@@ -173,6 +229,7 @@ async function remove() {
               :class="{ 'grammar-opt--on': selectedSet.has(g.ko) }"
               :data-testid="`grammar-opt-${g.ko}`"
               :aria-pressed="selectedSet.has(g.ko)"
+              :disabled="busy"
               @click="toggle(g.ko)"
             >
               <span class="grammar-opt__check" aria-hidden="true">
@@ -192,6 +249,7 @@ async function remove() {
           type="button"
           class="builder__btn builder__btn--danger"
           data-testid="builder-delete"
+          :disabled="busy"
           @click="confirmingDelete = true"
         >
           {{ t('practice.custom.delete') }}
@@ -201,6 +259,7 @@ async function remove() {
           type="button"
           class="builder__btn builder__btn--danger"
           data-testid="builder-delete-confirm"
+          :disabled="busy"
           @click="remove"
         >
           {{ t('practice.custom.confirm_delete') }}

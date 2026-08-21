@@ -2,6 +2,7 @@
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import LevelBook from '~/components/escape-room/LevelBook.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
 
 /**
@@ -25,6 +26,7 @@ function onStart(levelId: string) {
   <div class="er-index">
     <GameExitButton />
     <BilingualTitle ko="탈출" latin="Escape Room" />
+    <PracticeHelp mode="escape-room" />
     <p class="er-index__lead">{{ t('escape.book_lead') }}</p>
     <LevelBook :entries="LEVEL_REGISTRY" @start="onStart" />
   </div>

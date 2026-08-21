@@ -4,8 +4,13 @@ import type { CustomDeckOption } from '~/components/games/ruleta/cards'
 
 interface Props {
   options: CustomDeckOption[]
+  countLabelKey?: string
+  lockedLabelKey?: string
 }
-defineProps<Props>()
+withDefaults(defineProps<Props>(), {
+  countLabelKey: 'practice.deck_count',
+  lockedLabelKey: 'practice.custom.locked_need_six',
+})
 defineEmits<{ select: [deckId: string]; create: []; edit: [deckId: string] }>()
 
 const { t } = useI18n()
@@ -40,13 +45,13 @@ const { t } = useI18n()
           @click="$emit('select', o.id)"
         >
           <span class="custom-mat__cover" aria-hidden="true" :style="{ '--mat-color': o.colors[0] }">
-            <img v-if="o.imageUrl" :src="o.imageUrl" alt="" class="custom-mat__img" >
+            <img v-if="o.imageUrl" :src="o.imageUrl" alt="" class="custom-mat__img">
             <Icon v-else :name="(o.icon as IconName)" :size="34" />
           </span>
           <span class="custom-mat__name">{{ o.name }}</span>
-          <span class="custom-mat__count">{{ t('practice.deck_count', { n: o.count }) }}</span>
+          <span class="custom-mat__count">{{ t(countLabelKey, { n: o.count }) }}</span>
           <span v-if="o.reason === 'too_few'" class="custom-mat__locked">
-            {{ t('practice.custom.locked_need_six') }}
+            {{ t(lockedLabelKey) }}
           </span>
         </button>
         <button

@@ -309,6 +309,11 @@
     "toast_saved_easy": "✨ Salva",
     "toast_saved_hard": "😤 Salva",
     "toast_save_error": "⚠️ Não foi possível salvar. Sua frase foi mantida, toque para tentar de novo.",
+    "save_error": "Não foi possível salvar seu progresso. Tente novamente.",
+    "save_saving": "Salvando seu progresso…",
+    "save_saved": "Progresso salvo.",
+    "save_retry": "TENTAR SALVAR DE NOVO",
+    "start_failed": "Não foi possível começar a prática. Verifique sua conexão e tente de novo.",
     "no_sentence": "Escreve uma frase primeiro",
     "custom": {
       "section": "Decks personalizados",
@@ -328,6 +333,7 @@
       "save": "Salvar deck",
       "delete": "Excluir deck",
       "confirm_delete": "Excluir este deck? Não dá para desfazer.",
+      "discard_confirm": "Descartar as alterações não salvas do deck?",
       "empty_title": "Crie seu primeiro deck",
       "empty_hint": "Escolha a gramática que quiser, de qualquer nível, dê um nome e jogue."
     },
@@ -497,6 +503,7 @@
     "submit_sign_up": "Cadastrar",
     "submit_magic_link": "Enviar link mágico",
     "magic_link_sent": "Confere teu e-mail para o link de acesso.",
+    "signup_confirm_sent": "Confere teu e-mail para confirmar tua conta.",
     "checking": "Verificando link…",
     "callback_success": "Pronto! Redirecionando…",
     "callback_error": "O link é inválido ou expirou.",
@@ -513,6 +520,12 @@
     "new_password_label": "Nova senha",
     "current_password_label": "Senha atual",
     "password_min": "Pelo menos 8 caracteres.",
+    "error_invalid_credentials": "E-mail ou senha incorretos.",
+    "error_email_not_confirmed": "Confirme seu e-mail primeiro — verifique sua caixa de entrada.",
+    "error_user_exists": "Já existe uma conta com este e-mail.",
+    "error_rate_limited": "Muitas tentativas. Aguarde um momento e tente de novo.",
+    "error_weak_password": "Essa senha é muito fraca — tente uma mais longa.",
+    "error_generic": "Algo deu errado. Tente de novo em instantes.",
     "submit_new_password": "Atualizar senha",
     "password_updated": "Senha atualizada.",
     "reset_error": "Não foi possível atualizar sua senha. Tente novamente.",
@@ -541,7 +554,8 @@
       "delete_confirm_body": "“{ko}” será removido dos seus padrões.",
       "empty": "Você ainda não tem padrões próprios. Plante o primeiro abaixo.",
       "created": "Gramática adicionada.",
-      "deleted": "Gramática removida."
+      "deleted": "Gramática removida.",
+      "cancel": "Cancelar"
     },
     "dark_mode": "Modo escuro",
     "appearance": {
@@ -912,6 +926,10 @@
     "numberMarket": {
       "name": "Mercado de Números",
       "desc": "Leia qualquer número à coreana: contar, hora, dinheiro, datas."
+    },
+    "sentenceGarden": {
+      "name": "Jardim de frases",
+      "desc": "Ordene as cartas-palavra para reconstruir uma frase coreana real."
     }
   },
   "escape": {
@@ -931,10 +949,14 @@
     "errors": "Erros",
     "solved": "Resolvidos",
     "rooms": "Cômodos",
+    "clue_n": "Pista {n}",
     "game_over_title": "A história escapou…",
     "game_over_text": "Três tropeços. A porta se fecha de novo — mas a casa lembra de você. Tente outra vez com notas novas.",
     "retry": "TENTAR DE NOVO",
     "back_to_book": "Voltar ao caderno",
+    "close": "Fechar",
+    "wrong_nudge": "Quase — restam {left} ♥",
+    "hearts_status": "{left} de {total} tentativas restantes",
     "victory_title": "Você escapou!",
     "reward_unlocked": "Recompensa desbloqueada",
     "premios_title": "Troféus",
@@ -958,6 +980,7 @@
     "title": "Laboratório de Conjugação",
     "lead": "Escolha a forma conjugada correta. As opções erradas são os erros que os estudantes realmente cometem.",
     "pick_class": "ESCOLHA UMA CLASSE",
+    "change_class": "TROCAR DE CLASSE",
     "prompt": "Conjugue em {ending}",
     "gloss_hint": "({gloss})",
     "pick_hint": "Toque na forma correta.",
@@ -991,6 +1014,11 @@
       "dismiss": "Ótimo!",
       "pip_done": "{ko} — concluída",
       "pip_todo": "{ko} — ainda não"
+    },
+    "persistence": {
+      "saving": "Salvando este erro…",
+      "failed": "Não foi possível salvar este erro. Sua resposta continua aqui.",
+      "retry": "Tentar salvar de novo"
     }
   },
   "register": {
@@ -1021,6 +1049,11 @@
       "dismiss": "Ótimo!",
       "pip_done": "{ko} — concluído",
       "pip_todo": "{ko} — ainda não"
+    },
+    "persistence": {
+      "saving": "Salvando este erro…",
+      "failed": "Não foi possível salvar este erro. Sua resposta continua aqui.",
+      "retry": "Tentar salvar novamente"
     }
   },
   "cloze": {
@@ -1028,6 +1061,8 @@
     "lead": "Escolha um baralho e selecione a gramática que encaixa em cada lacuna — uma rodada rápida de reconhecimento que complementa a escrita.",
     "pick_deck": "ESCOLHA UM BARALHO",
     "deck_empty": "Este baralho ainda não tem itens de lacuna — tente outro.",
+    "custom_item_count": "{n} exercícios de lacunas jogáveis",
+    "custom_locked_need_items": "Precisa de 3 exercícios de lacunas jogáveis",
     "pick_hint": "Toque na forma que encaixa na lacuna.",
     "correct": "Correto!",
     "wrong": "Quase",
@@ -1072,6 +1107,20 @@
       "time_age": "Tempo e idade",
       "things": "Coisas",
       "money_order": "Dinheiro e ordem"
+    },
+    "master": {
+      "label": "Mestre dos classificadores",
+      "progress": "{done}/{total} conjuntos concluídos",
+      "earned": "Todos os 6 conjuntos concluídos!",
+      "celebrate_body": "Você concluiu os {total} conjuntos de classificadores. 잘했어요!",
+      "dismiss": "Ótimo!",
+      "pip_done": "{ko} — concluído",
+      "pip_todo": "{ko} — ainda não"
+    },
+    "persistence": {
+      "saving": "Salvando este erro…",
+      "failed": "Não foi possível salvar este erro. Sua resposta continua aqui.",
+      "retry": "Tentar salvar de novo"
     }
   },
   "reminder": {
@@ -1160,5 +1209,36 @@
       "fmt_date": "ex. 6/15",
       "fmt_phone": "ex. 01012345678"
     }
+  },
+  "sentenceGarden": {
+    "title": "Jardim de frases",
+    "lead": "Reconstrua a frase ordenando as cartas-palavra. Algumas rodadas adicionam uma carta-armadilha.",
+    "pick_deck": "Escolha um baralho",
+    "deck_empty": "Este baralho ainda não tem frases curtas.",
+    "progress_label": "Frase",
+    "check": "Conferir",
+    "hear": "Ouvir",
+    "tray_label": "Cartas-palavra",
+    "bed_label": "Sua frase",
+    "reveal_correct": "Ordem correta: {correct}",
+    "correct": "Correto!",
+    "sr_placed": "Colocado: {word}",
+    "sr_removed": "Removido: {word}",
+    "replay_mode_label": "Repassando as que você errou",
+    "summary_again": "Jogar de novo",
+    "summary_replay": "Repassar erros",
+    "custom_round_count": "{n} frases jogáveis",
+    "custom_locked_need_rounds": "Precisa de 6 frases jogáveis",
+    "persistence": {
+      "saving": "Salvando seu progresso…",
+      "failed": "Não foi possível salvar seu progresso. Nada foi descartado.",
+      "retry": "Tentar salvar novamente"
+    },
+    "next": "Próxima"
+  },
+  "practiceHelp": {
+    "button": "Explicação",
+    "close": "Fechar",
+    "section": { "concept": "O que é?", "types": "Seus tipos", "howToPlay": "Como jogar", "tip": "Dica" }
   }
 }

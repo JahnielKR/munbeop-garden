@@ -37,6 +37,15 @@ export interface StorageAdapter {
   /** Restore all supplied keys as one backend operation when supported. */
   restore(data: StorageRestore): Promise<void>
   /**
+   * Update one existing row without inserting it when it is already gone. This
+   * distinction matters for journal review edits: an update racing a delete in
+   * another tab must never resurrect the deleted entry.
+   */
+  updateOne<V>(
+    key: StorageKey,
+    entry: { id: string | number; value: V },
+  ): Promise<boolean>
+  /**
    * Delete a single row from a collection-valued key by its id (e.g. one journal
    * entry), so a delete is one row instead of re-writing the whole collection.
    * Only meaningful for keys with row ids; the Supabase adapter throws for keys

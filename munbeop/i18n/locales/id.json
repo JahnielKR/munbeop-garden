@@ -309,6 +309,11 @@
     "toast_saved_easy": "✨ Tersimpan",
     "toast_saved_hard": "😤 Tersimpan",
     "toast_save_error": "⚠️ Gagal menyimpan. Kalimatmu tetap ada, ketuk untuk coba lagi.",
+    "save_error": "Progresmu tidak dapat disimpan. Coba lagi.",
+    "save_saving": "Menyimpan progresmu…",
+    "save_saved": "Progres tersimpan.",
+    "save_retry": "COBA SIMPAN LAGI",
+    "start_failed": "Gagal memulai latihan. Periksa koneksimu dan coba lagi.",
     "no_sentence": "Tulis kalimat dulu",
     "custom": {
       "section": "Dek khusus",
@@ -328,6 +333,7 @@
       "save": "Simpan dek",
       "delete": "Hapus dek",
       "confirm_delete": "Hapus dek ini? Tidak bisa dibatalkan.",
+      "discard_confirm": "Buang perubahan dek yang belum disimpan?",
       "empty_title": "Buat dek pertamamu",
       "empty_hint": "Pilih tata bahasa yang kamu mau dari level mana pun, beri nama, lalu mainkan."
     },
@@ -497,6 +503,7 @@
     "submit_sign_up": "Daftar",
     "submit_magic_link": "Kirim link ajaib",
     "magic_link_sent": "Cek emailmu untuk link masuk.",
+    "signup_confirm_sent": "Cek emailmu untuk mengonfirmasi akunmu.",
     "checking": "Memeriksa link…",
     "callback_success": "Berhasil masuk! Mengalihkan…",
     "callback_error": "Link tidak valid atau kedaluwarsa.",
@@ -513,6 +520,12 @@
     "new_password_label": "Kata sandi baru",
     "current_password_label": "Kata sandi saat ini",
     "password_min": "Minimal 8 karakter.",
+    "error_invalid_credentials": "Email atau kata sandi salah.",
+    "error_email_not_confirmed": "Konfirmasi emailmu dulu — periksa kotak masukmu.",
+    "error_user_exists": "Sudah ada akun dengan email ini.",
+    "error_rate_limited": "Terlalu banyak percobaan. Tunggu sebentar lalu coba lagi.",
+    "error_weak_password": "Kata sandi itu terlalu lemah — coba yang lebih panjang.",
+    "error_generic": "Terjadi kesalahan. Coba lagi sebentar lagi.",
     "submit_new_password": "Perbarui kata sandi",
     "password_updated": "Kata sandi diperbarui.",
     "reset_error": "Gagal memperbarui kata sandimu. Coba lagi.",
@@ -541,7 +554,8 @@
       "delete_confirm_body": "“{ko}” akan dihapus dari polamu.",
       "empty": "Belum ada pola milikmu. Tanam yang pertama di bawah.",
       "created": "Tata bahasa ditambahkan.",
-      "deleted": "Tata bahasa dihapus."
+      "deleted": "Tata bahasa dihapus.",
+      "cancel": "Batal"
     },
     "dark_mode": "Mode gelap",
     "appearance": {
@@ -912,6 +926,10 @@
     "numberMarket": {
       "name": "Pasar Angka",
       "desc": "Baca angka ala Korea: berhitung, waktu, uang, tanggal."
+    },
+    "sentenceGarden": {
+      "name": "Taman kalimat",
+      "desc": "Urutkan kartu-kata untuk menyusun kalimat Korea asli."
     }
   },
   "escape": {
@@ -931,10 +949,14 @@
     "errors": "Kesalahan",
     "solved": "Terpecahkan",
     "rooms": "Ruangan",
+    "clue_n": "Petunjuk {n}",
     "game_over_title": "Ceritanya lolos…",
     "game_over_text": "Tiga kali tersandung. Pintu terkunci lagi — tapi rumah ini mengingatmu. Coba lagi dengan catatan baru.",
     "retry": "COBA LAGI",
     "back_to_book": "Kembali ke buku catatan",
+    "close": "Tutup",
+    "wrong_nudge": "Belum tepat — sisa {left} ♥",
+    "hearts_status": "{left} dari {total} percobaan tersisa",
     "victory_title": "Kamu lolos!",
     "reward_unlocked": "Hadiah terbuka",
     "premios_title": "Trofi",
@@ -958,6 +980,7 @@
     "title": "Lab Konjugasi",
     "lead": "Pilih bentuk konjugasi yang benar. Pilihan salah adalah kesalahan yang benar-benar dilakukan pelajar.",
     "pick_class": "PILIH KELAS",
+    "change_class": "GANTI KELAS",
     "prompt": "Konjugasikan ke {ending}",
     "gloss_hint": "({gloss})",
     "pick_hint": "Ketuk bentuk yang benar.",
@@ -991,6 +1014,11 @@
       "dismiss": "Oke!",
       "pip_done": "{ko} — selesai",
       "pip_todo": "{ko} — belum"
+    },
+    "persistence": {
+      "saving": "Menyimpan kesalahan ini…",
+      "failed": "Kesalahan ini belum dapat disimpan. Jawabanmu masih ada di sini.",
+      "retry": "Coba simpan lagi"
     }
   },
   "register": {
@@ -1021,6 +1049,11 @@
       "dismiss": "Bagus!",
       "pip_done": "{ko} — selesai",
       "pip_todo": "{ko} — belum"
+    },
+    "persistence": {
+      "saving": "Menyimpan kesalahan ini…",
+      "failed": "Kesalahan ini gagal disimpan. Jawabanmu masih ada di sini.",
+      "retry": "Coba simpan lagi"
     }
   },
   "cloze": {
@@ -1028,6 +1061,8 @@
     "lead": "Pilih dek lalu pilih tata bahasa yang cocok di setiap bagian kosong — ronde pengenalan cepat yang melengkapi menulis.",
     "pick_deck": "PILIH DEK",
     "deck_empty": "Dek ini belum memiliki item isian — coba yang lain.",
+    "custom_item_count": "{n} soal rumpang yang dapat dimainkan",
+    "custom_locked_need_items": "Perlu 3 soal rumpang yang dapat dimainkan",
     "pick_hint": "Ketuk bentuk yang cocok di bagian kosong.",
     "correct": "Benar!",
     "wrong": "Hampir",
@@ -1072,6 +1107,20 @@
       "time_age": "Waktu & usia",
       "things": "Benda",
       "money_order": "Uang & urutan"
+    },
+    "master": {
+      "label": "Master Penggolong",
+      "progress": "{done}/{total} set selesai",
+      "earned": "Semua 6 set selesai!",
+      "celebrate_body": "Kamu menyelesaikan semua {total} set penggolong. 잘했어요!",
+      "dismiss": "Bagus!",
+      "pip_done": "{ko} — selesai",
+      "pip_todo": "{ko} — belum"
+    },
+    "persistence": {
+      "saving": "Menyimpan kesalahan ini…",
+      "failed": "Kesalahan ini gagal disimpan. Jawabanmu masih ada di sini.",
+      "retry": "Coba simpan lagi"
     }
   },
   "reminder": {
@@ -1160,5 +1209,36 @@
       "fmt_date": "mis. 6/15",
       "fmt_phone": "mis. 01012345678"
     }
+  },
+  "sentenceGarden": {
+    "title": "Taman kalimat",
+    "lead": "Susun ulang kalimat dengan mengurutkan kartu-katanya. Beberapa ronde menambahkan satu kartu jebakan.",
+    "pick_deck": "Pilih dek",
+    "deck_empty": "Dek ini belum punya kalimat pendek.",
+    "progress_label": "Kalimat",
+    "check": "Periksa",
+    "hear": "Dengar",
+    "tray_label": "Kartu kata",
+    "bed_label": "Kalimatmu",
+    "reveal_correct": "Urutan yang benar: {correct}",
+    "correct": "Benar!",
+    "sr_placed": "Menaruh {word}",
+    "sr_removed": "Mengambil {word}",
+    "replay_mode_label": "Mengulang yang meleset",
+    "summary_again": "Main lagi",
+    "summary_replay": "Ulang yang meleset",
+    "custom_round_count": "{n} kalimat yang dapat dimainkan",
+    "custom_locked_need_rounds": "Perlu 6 kalimat yang dapat dimainkan",
+    "persistence": {
+      "saving": "Menyimpan progresmu…",
+      "failed": "Progresmu belum dapat disimpan. Tidak ada yang dibuang.",
+      "retry": "Coba simpan lagi"
+    },
+    "next": "Berikutnya"
+  },
+  "practiceHelp": {
+    "button": "Penjelasan",
+    "close": "Tutup",
+    "section": { "concept": "Apa itu?", "types": "Jenis-jenisnya", "howToPlay": "Cara bermain", "tip": "Tips" }
   }
 }

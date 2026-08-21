@@ -4,8 +4,8 @@ import { L } from '../locale'
 
 /**
  * TOPIK-1 grammar-pattern cloze items (choose the pattern that fits the blank).
- * ko matches grammars-n1.ts verbatim. Drafted + Korean-lens adversarially verified
- * (single-correct-answer crux). Korean wife native review = documented final gate.
+ * ko matches grammars-n1.ts verbatim. Adversarial Korean single-answer review
+ * completed; the shared seed-invariant suite enforces links, shape and i18n.
  */
 
 export const N1_CLOZE: ClozeItem[] = [
@@ -401,7 +401,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고',
-    sentence: '저는 키가 크{} 머리가 길어요.',
+    sentence: '저는 키가 {} 머리가 길어요.',
     answer: '크고',
     distractors: ['커서', '크지만', '크면'],
     trans: L(
@@ -427,7 +427,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고',
-    sentence: '이 방은 넓{} 깨끗해요.',
+    sentence: '이 방은 {} 깨끗해요.',
     answer: '넓고',
     distractors: ['넓어서', '넓지만', '넓으면'],
     trans: L(
@@ -453,7 +453,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고',
-    sentence: '동생은 빵을 먹{} 저는 밥을 먹어요.',
+    sentence: '동생은 빵을 {} 저는 밥을 먹어요.',
     answer: '먹고',
     distractors: ['먹어서', '먹으면', '먹은'],
     trans: L(
@@ -479,7 +479,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-아/어서',
-    sentence: '비가 많이 와{} 우리는 집에 있었어요.',
+    sentence: '비가 많이 {} 우리는 집에 있었어요.',
     answer: '와서',
     distractors: ['오면', '오지만', '오는'],
     trans: L(
@@ -505,7 +505,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-아/어서',
-    sentence: '어제 너무 피곤해{} 일찍 잤어요.',
+    sentence: '어제 너무 {} 일찍 잤어요.',
     answer: '피곤해서',
     distractors: ['피곤하면', '피곤하지만', '피곤한'],
     trans: L(
@@ -531,7 +531,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-아/어서',
-    sentence: '늦{} 정말 죄송합니다.',
+    sentence: '{} 정말 죄송합니다.',
     answer: '늦어서',
     distractors: ['늦고', '늦지만', '늦으면'],
     trans: L(
@@ -557,9 +557,9 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-지만',
-    sentence: '이 옷이 비싸{} 안 예뻐요.',
+    sentence: '이 옷이 {} 안 예뻐요.',
     answer: '비싸지만',
-    distractors: ['비싸고', '비싸서', '비싸면'],
+    distractors: ['비싸기 전에', '비싸려고', '비쌀 때'],
     trans: L(
       'These clothes are expensive but not pretty.',
       'Esta ropa es cara pero no es bonita.',
@@ -571,19 +571,19 @@ export const N1_CLOZE: ClozeItem[] = [
       'この服は高いけどかわいくないです。',
     ),
     why: L(
-      'Expensive yet not-pretty defies expectation → contrast -지만; -고 merely lists, -아/어서 would make price the cause of ugliness (illogical), -(으)면 is a condition (none).',
-      'Caro pero no bonito desafía lo esperado → contraste -지만; -고 solo enumera, -아/어서 haría el precio causa de la fealdad (ilógico), -(으)면 es condición (no hay).',
-      "Cher mais pas joli déjoue l'attente → contraste -지만 ; -고 énumère, -아/어서 ferait du prix la cause de la laideur (illogique), -(으)면 est une condition (absente).",
-      'Caro mas não bonito contraria a expectativa → contraste -지만; -고 só lista, -아/어서 faria o preço causar a feiura (ilógico), -(으)면 é condição (não há).',
-      'แพงแต่ไม่สวยขัดกับที่คาด → ขัดแย้ง -지만; -고 แค่เรียง, -아/어서 จะทำให้ราคาเป็นเหตุของความไม่สวย (ไม่สมเหตุผล), -(으)면 เป็นเงื่อนไข (ไม่มี).',
-      'Mahal tetapi tidak cantik melawan harapan → kontras -지만; -고 hanya mendaftar, -아/어서 menjadikan harga sebab keburukan (tak logis), -(으)면 syarat (tak ada).',
-      'Đắt mà không đẹp trái với kỳ vọng → tương phản -지만; -고 chỉ liệt kê, -아/어서 biến giá thành nguyên nhân của sự xấu (phi lý), -(으)면 là điều kiện (không có).',
-      '高いのにかわいくない＝予想に反する → 逆接の-지만。-고は羅列、-아/어서は値段が不格好さの原因になり不自然、-(으)면は条件（無し）。',
+      'The translation explicitly contrasts a high price with an unattractive design, so -지만 is required. The other choices mean “before it gets expensive,” an impossible intention “to become expensive,” or “when it is expensive.”',
+      'La traducción contrapone explícitamente el precio alto y el diseño poco bonito, así que exige -지만. Las otras opciones significan «antes de que sea caro», la intención imposible «para ser caro» o «cuando es caro».',
+      'La traduction oppose explicitement le prix élevé au manque d’élégance, donc -지만 est requis. Les autres choix signifient « avant que ce soit cher », l’intention impossible « pour devenir cher » ou « quand c’est cher ».',
+      'A tradução contrasta explicitamente o preço alto com o visual pouco bonito, então exige -지만. As outras opções significam “antes de ficar caro”, a intenção impossível “para ficar caro” ou “quando é caro”.',
+      'คำแปลเปรียบต่างอย่างชัดเจนระหว่างราคาแพงกับแบบที่ไม่สวย จึงต้องใช้ -지만 ตัวเลือกอื่นหมายถึง “ก่อนจะแพง” ความตั้งใจที่เป็นไปไม่ได้ว่า “เพื่อจะแพง” หรือ “ตอนที่แพง”',
+      'Terjemahannya jelas mempertentangkan harga mahal dengan desain yang tidak cantik, jadi perlu -지만. Pilihan lain berarti “sebelum menjadi mahal”, niat mustahil “agar menjadi mahal”, atau “saat mahal”.',
+      'Bản dịch đối chiếu rõ giá cao với thiết kế không đẹp, nên phải dùng -지만. Các lựa chọn khác nghĩa là “trước khi trở nên đắt”, ý định vô lý “để trở nên đắt”, hoặc “khi đắt”.',
+      '訳文は「高い」ことと「かわいくない」ことを明確に対比しているため -지만 が必要。他は「高くなる前」「高くなろうとして」「高い時」という意味になる。',
     ),
   },
   {
     ko: '-지만',
-    sentence: '한국어는 어렵{} 정말 재미있어요.',
+    sentence: '한국어는 {} 정말 재미있어요.',
     answer: '어렵지만',
     distractors: ['어렵고', '어려워서', '어려우면'],
     trans: L(
@@ -609,7 +609,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-지만',
-    sentence: '동생은 키가 크{} 저는 작아요.',
+    sentence: '동생은 키가 {} 저는 작아요.',
     answer: '크지만',
     distractors: ['크고', '커서', '크면'],
     trans: L(
@@ -635,7 +635,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-(으)면',
-    sentence: '내일 비가 오{} 우리는 안 갈 거예요.',
+    sentence: '내일 비가 {} 우리는 안 갈 거예요.',
     answer: '오면',
     distractors: ['오고', '와서', '오지만'],
     trans: L(
@@ -661,7 +661,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-(으)면',
-    sentence: '시간이 있{} 저한테 전화하세요.',
+    sentence: '시간이 {} 저한테 전화하세요.',
     answer: '있으면',
     distractors: ['있고', '있어서', '있지만'],
     trans: L(
@@ -687,7 +687,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-(으)면',
-    sentence: '이 약을 먹{} 금방 나을 거예요.',
+    sentence: '이 약을 {} 금방 나을 거예요.',
     answer: '먹으면',
     distractors: ['먹고', '먹어서', '먹지만'],
     trans: L(
@@ -713,7 +713,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-ㄴ/는데',
-    sentence: '시간이 좀 있{}, 같이 커피 마실까요?',
+    sentence: '시간이 좀 {}, 같이 커피 마실까요?',
     answer: '있는데',
     distractors: ['있어서', '있지만', '있고'],
     trans: L(
@@ -739,7 +739,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-ㄴ/는데',
-    sentence: '이 식당 음식이 맛있{}, 한번 가 보세요.',
+    sentence: '이 식당 음식이 {}, 한번 가 보세요.',
     answer: '맛있는데',
     distractors: ['맛있어서', '맛있으면', '맛있지만'],
     trans: L(
@@ -765,7 +765,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-ㄴ/는데',
-    sentence: '어제 백화점에 갔{}, 사람이 정말 많았어요.',
+    sentence: '어제 백화점에 {}, 사람이 정말 많았어요.',
     answer: '갔는데',
     distractors: ['가지만', '가면', '가고'],
     trans: L(
@@ -791,7 +791,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 싶다',
-    sentence: '주말에 바다를 보러 부산에 가{} 싶어요.',
+    sentence: '주말에 바다를 보러 부산에 {} 싶어요.',
     answer: '가고',
     distractors: ['가서', '가지만', '가면'],
     trans: L(
@@ -817,7 +817,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 싶다',
-    sentence: '오늘은 집에서 푹 쉬{} 싶어요.',
+    sentence: '오늘은 집에서 푹 {} 싶어요.',
     answer: '쉬고',
     distractors: ['쉬어서', '쉬면', '쉬지만'],
     trans: L(
@@ -843,7 +843,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 싶다',
-    sentence: '배가 너무 고파서 빨리 뭐 좀 먹{} 싶어요.',
+    sentence: '배가 너무 고파서 빨리 뭐 좀 {} 싶어요.',
     answer: '먹고',
     distractors: ['먹어서', '먹지만', '먹으면'],
     trans: L(
@@ -869,7 +869,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 있다',
-    sentence: '동생은 지금 방에서 게임을 하{} 있어요.',
+    sentence: '동생은 지금 방에서 게임을 {} 있어요.',
     answer: '하고',
     distractors: ['했고', '할', '하면'],
     trans: L(
@@ -895,7 +895,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 있다',
-    sentence: '여보세요? 저는 지금 버스를 기다리{} 있어요.',
+    sentence: '여보세요? 저는 지금 버스를 {} 있어요.',
     answer: '기다리고',
     distractors: ['기다렸고', '기다릴', '기다려서'],
     trans: L(
@@ -921,7 +921,7 @@ export const N1_CLOZE: ClozeItem[] = [
   },
   {
     ko: '-고 있다',
-    sentence: '엄마가 지금 부엌에서 저녁을 만들{} 있어요.',
+    sentence: '엄마가 지금 부엌에서 저녁을 {} 있어요.',
     answer: '만들고',
     distractors: ['만들었고', '만들', '만들면'],
     trans: L(

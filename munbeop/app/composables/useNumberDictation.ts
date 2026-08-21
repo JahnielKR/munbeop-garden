@@ -5,6 +5,7 @@ import { NUMBER_DOMAINS } from '~/lib/numbers-market/sets'
 import type { MarketItem, NumberDomain } from '~/lib/domain'
 import { useNumberMarketAudio } from '~/composables/useNumberMarketAudio'
 import { useActivityStore } from '~/stores/activity'
+import { useNumberMarketMaster } from '~/composables/useNumberMarketMaster'
 
 export type DictationPhase = 'input' | 'right' | 'wrong' | 'done'
 export type DictationRunMode = 'normal' | 'replay'
@@ -24,7 +25,7 @@ export function normalizeValue(s: string): string {
   return t
 }
 
-export function useNumberDictation() {
+export function useNumberDictation(master = useNumberMarketMaster()) {
   const audio = useNumberMarketAudio()
   const activity = useActivityStore()
 
@@ -57,19 +58,23 @@ export function useNumberDictation() {
   }
 
   function start() {
+    if (!master.resetSaveStatus()) return false
     runMode.value = 'normal'
     sessionItems.value = buildRound(selectedDomain.value, ROUND_SIZE, shuffle)
     resetRound()
     if (sessionItems.value.length) play()
+    return true
   }
 
   function replayFailed() {
+    if (!master.resetSaveStatus()) return false
     const failed = failedItems.value
-    if (failed.length === 0) return
+    if (failed.length === 0) return false
     runMode.value = 'replay'
     sessionItems.value = shuffle(failed)
     resetRound()
     play()
+    return true
   }
 
   function submit() {
@@ -77,15 +82,17 @@ export function useNumberDictation() {
     const correct = normalizeValue(entry.value) === item.value.valueKey
     results.value.push({ itemId: itemId(item.value), correct })
     phase.value = correct ? 'right' : 'wrong'
-    // Fire-and-forget heatmap tick; swallow a transient cloud error so it never
-    // surfaces as an unhandled rejection.
-    void activity.record().catch(() => {})
+    // Fire-and-forget heatmap tick; record() swallows transient cloud errors.
+    void activity.record()
   }
 
-  function next() {
+  async function next() {
     if (phase.value === 'input' || phase.value === 'done') return
     if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
+      if (runMode.value === 'normal') {
+        await master.recordRound(selectedDomain.value, score.value.accuracy)
+      }
       return
     }
     index.value += 1
@@ -95,6 +102,7 @@ export function useNumberDictation() {
   }
 
   return {
+    master,
     selectedDomain, sessionItems, runMode, index, phase, entry,
     item, score, failedItems,
     selectDomain, start, replayFailed, play, submit, next,

@@ -5,9 +5,8 @@ import GameCard from '~/components/games/GameCard.vue'
 /**
  * Practice hub — every game mode as a selectable card.
  *
- * Each card routes to its own game page: the ruleta keeps the classic
- * sentence-production loop, the escape room opens its level notebook.
- * The third slot stays locked until that game exists.
+ * Each card routes to its own complete game page: the ruleta keeps the classic
+ * sentence-production loop, while the escape room opens its level notebook.
  */
 
 definePageMeta({ surface: 'game' })
@@ -74,6 +73,12 @@ const { t } = useI18n()
         :name="t('games.numberMarket.name')"
         :description="t('games.numberMarket.desc')"
         image="/games/number-market-cover.png"
+      />
+      <GameCard
+        to="/practice/sentence-garden"
+        :name="t('games.sentenceGarden.name')"
+        :description="t('games.sentenceGarden.desc')"
+        image="/games/sentence-garden-cover.png"
       />
     </div>
   </div>

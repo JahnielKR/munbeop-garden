@@ -4,143 +4,149 @@ import { CUSTOM_DECK_ID, dedupeGrammarByKo, isHangulName } from '~/lib/domain'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
 import { useSettingsStore } from '~/stores/settings'
+import { useAuthStore } from '~/stores/auth'
 
 export const useGrammarStore = defineStore('grammar', () => {
   const items = ref<Grammar[]>([])
   const decks = ref<Deck[]>([])
-  // "Focus mode" deck exclusions live in the account-synced settings blob
-  // (persistence owner). We re-expose them here as a read-only computed so the
-  // existing consumers (activeIndices, the ruleta/cloze DeckPickers) keep
-  // reading grammarStore.excludedDeckIds unchanged, while writes go through
-  // the settings store via toggleDeck().
   const settings = useSettingsStore()
-  const excludedDeckIds = computed(() => settings.excludedDeckIds)
+  const authStore = useAuthStore()
+  let mutationTail: Promise<void> = Promise.resolve()
+  let hydratedUserId: string | null = null
 
+  function enqueueMutation<T>(run: () => Promise<T>): Promise<T> {
+    const job = mutationTail.then(run)
+    mutationTail = job.then(() => undefined, () => undefined)
+    return job
+  }
+
+  function assertSafeToMutate(): void {
+    const userId = authStore.user?.id
+    if (userId && hydratedUserId !== userId) {
+      throw new Error('Grammar data is unavailable until account data loads')
+    }
+  }
+
+  const excludedDeckIds = computed(() => settings.excludedDeckIds)
   const activeIndices = computed(() =>
     items.value
-      .map((g, idx) => ({ g, idx }))
-      .filter(({ g }) => !excludedDeckIds.value.includes(g.deckId))
+      .map((grammar, idx) => ({ grammar, idx }))
+      .filter(({ grammar }) => !excludedDeckIds.value.includes(grammar.deckId))
       .map(({ idx }) => idx),
   )
-
   const customGrammars = computed(() =>
-    items.value.filter((g) => g.deckId === CUSTOM_DECK_ID),
+    items.value.filter((grammar) => grammar.deckId === CUSTOM_DECK_ID),
   )
-
-  // The Library shows the official catalog only — user-authored custom grammars
-  // (the 'custom' deck) are managed in settings + practiced via the Ruleta, but
-  // must NOT surface in the grammar catalog browser.
   const catalogItems = computed(() =>
-    items.value.filter((g) => g.deckId !== CUSTOM_DECK_ID),
+    items.value.filter((grammar) => grammar.deckId !== CUSTOM_DECK_ID),
   )
 
   function grammarByKo(ko: string): Grammar | undefined {
-    return items.value.find((g) => g.ko === ko)
+    return items.value.find((grammar) => grammar.ko === ko)
   }
 
-  async function hydrate() {
-    const storage = useStorageAdapter()
-    // Dedupe by ko so a polluted catalog ∪ custom union (the Supabase bug where
-    // catalog rows were copied into user_custom_grammars) never renders a
-    // grammar twice in the Library. Catalog-first ordering → the catalog wins.
-    items.value = dedupeGrammarByKo(await storage.read(STORAGE_KEYS.grammar, [] as Grammar[]))
-    decks.value = await storage.read(STORAGE_KEYS.decks, [] as Deck[])
-    // The ~893 KB TOPIK seed is only a first-run fallback — for mandatory-account
-    // users the catalog comes from Supabase, so it's dead weight on the eager
-    // entry chunk. Load it on demand only when storage genuinely returns empty,
-    // which Vite/Rollup then splits into a separate async chunk.
-    if (items.value.length === 0 || decks.value.length === 0) {
-      const { DEFAULT_GRAMMAR, TOPIK_DECKS } = await import('~/seed/grammars')
-      if (items.value.length === 0) {
-        items.value = [...DEFAULT_GRAMMAR]
-        await storage.write(STORAGE_KEYS.grammar, items.value)
+  function hydrate(): Promise<void> {
+    return enqueueMutation(async () => {
+      const userId = authStore.user?.id ?? null
+      const storage = useStorageAdapter()
+      let nextItems = dedupeGrammarByKo(
+        await storage.read(STORAGE_KEYS.grammar, [] as Grammar[]),
+      )
+      let nextDecks = await storage.read(STORAGE_KEYS.decks, [] as Deck[])
+      if ((authStore.user?.id ?? null) !== userId) return
+
+      // The large TOPIK seed is a first-run fallback and remains code-split.
+      if (nextItems.length === 0 || nextDecks.length === 0) {
+        const { DEFAULT_GRAMMAR, TOPIK_DECKS } = await import('~/seed/grammars')
+        if (nextItems.length === 0) {
+          nextItems = [...DEFAULT_GRAMMAR]
+          await storage.write(STORAGE_KEYS.grammar, nextItems)
+        }
+        if (nextDecks.length === 0) {
+          nextDecks = [...TOPIK_DECKS]
+          await storage.write(STORAGE_KEYS.decks, nextDecks)
+        }
       }
-      if (decks.value.length === 0) {
-        decks.value = [...TOPIK_DECKS]
-        await storage.write(STORAGE_KEYS.decks, decks.value)
-      }
-    }
+      if ((authStore.user?.id ?? null) !== userId) return
+      items.value = nextItems
+      decks.value = nextDecks
+      hydratedUserId = userId
+    })
   }
 
-  /** Exclude/include a deck from the practice draw. Delegates to the settings
-   * store, which owns persistence of the focus-mode exclusions. */
-  function toggleDeck(deckId: string): Promise<void> {
+  function toggleDeck(deckId: string): Promise<boolean> {
     return settings.toggleDeck(deckId)
   }
 
-  /**
-   * Toggle a deck's `collapsed` flag and persist the change. Distinct from
-   * {@link toggleDeck} — that one excludes the deck from practice; this one
-   * just hides or shows its body in the Library UI.
-   */
-  async function toggleDeckCollapsed(deckId: string) {
-    const idx = decks.value.findIndex((d) => d.id === deckId)
-    if (idx === -1) return
-    const snapshot = decks.value
-    // Re-assign to a new array so reactivity fires reliably across adapters.
-    decks.value = decks.value.map((d, i) =>
-      i === idx ? { ...d, collapsed: !d.collapsed } : d,
-    )
-    const storage = useStorageAdapter()
-    try {
-      await storage.upsertOne(STORAGE_KEYS.decks, {
-        id: deckId,
-        value: decks.value[idx]!,
-      })
-    } catch (error) {
-      decks.value = snapshot
-      throw error
-    }
+  function toggleDeckCollapsed(deckId: string): Promise<void> {
+    return enqueueMutation(async () => {
+      assertSafeToMutate()
+      const idx = decks.value.findIndex((deck) => deck.id === deckId)
+      if (idx === -1) return
+      const snapshot = decks.value
+      decks.value = decks.value.map((deck, index) =>
+        index === idx ? { ...deck, collapsed: !deck.collapsed } : deck,
+      )
+      try {
+        const storage = useStorageAdapter()
+        await storage.upsertOne(STORAGE_KEYS.decks, {
+          id: deckId,
+          value: decks.value[idx]!,
+        })
+      } catch (error) {
+        decks.value = snapshot
+        throw error
+      }
+    })
   }
 
-  /**
-   * Add a user-authored grammar. The single meaning text is expected pre-built
-   * into all 8 locale slots by the caller (see CustomGrammarAddForm). Returns
-   * the new Grammar, or null when the ko is not Korean or already exists.
-   */
-  async function addCustomGrammar(p: {
+  function addCustomGrammar(input: {
     ko: string
     meaning: LocalizedString
     example?: string
   }): Promise<Grammar | null> {
-    const ko = p.ko.trim()
-    if (!isHangulName(ko)) return null
-    if (items.value.some((g) => g.ko === ko)) return null
-    const example = p.example?.trim()
-    const grammar: Grammar = {
-      ko,
-      meaning: p.meaning,
-      deckId: CUSTOM_DECK_ID,
-      ...(example ? { example } : {}),
-    }
-    // Persist just the new custom row. Snapshot + rollback keeps the local list
-    // aligned if the atomic upsert fails.
-    const snapshot = items.value
-    items.value = [...items.value, grammar]
-    const storage = useStorageAdapter()
-    try {
-      await storage.upsertOne(STORAGE_KEYS.grammar, { id: grammar.ko, value: grammar })
-    } catch (e) {
-      items.value = snapshot
-      throw e
-    }
-    return grammar
+    return enqueueMutation(async () => {
+      assertSafeToMutate()
+      const ko = input.ko.trim()
+      if (!isHangulName(ko) || items.value.some((grammar) => grammar.ko === ko)) return null
+      const example = input.example?.trim()
+      const grammar: Grammar = {
+        ko,
+        meaning: input.meaning,
+        deckId: CUSTOM_DECK_ID,
+        ...(example ? { example } : {}),
+      }
+      const snapshot = items.value
+      items.value = [...items.value, grammar]
+      try {
+        const storage = useStorageAdapter()
+        await storage.upsertOne(STORAGE_KEYS.grammar, { id: grammar.ko, value: grammar })
+      } catch (error) {
+        items.value = snapshot
+        throw error
+      }
+      return grammar
+    })
   }
 
-  /** Remove a user-authored grammar by ko. Returns false if not a custom item. */
-  async function removeCustomGrammar(ko: string): Promise<boolean> {
-    const target = items.value.find((g) => g.ko === ko && g.deckId === CUSTOM_DECK_ID)
-    if (!target) return false
-    const snapshot = items.value
-    items.value = items.value.filter((g) => g !== target)
-    const storage = useStorageAdapter()
-    try {
-      await storage.deleteOne(STORAGE_KEYS.grammar, ko)
-    } catch (e) {
-      items.value = snapshot
-      throw e
-    }
-    return true
+  function removeCustomGrammar(ko: string): Promise<boolean> {
+    return enqueueMutation(async () => {
+      assertSafeToMutate()
+      const target = items.value.find(
+        (grammar) => grammar.ko === ko && grammar.deckId === CUSTOM_DECK_ID,
+      )
+      if (!target) return false
+      const snapshot = items.value
+      items.value = items.value.filter((grammar) => grammar !== target)
+      try {
+        const storage = useStorageAdapter()
+        await storage.deleteOne(STORAGE_KEYS.grammar, ko)
+      } catch (error) {
+        items.value = snapshot
+        throw error
+      }
+      return true
+    })
   }
 
   return {

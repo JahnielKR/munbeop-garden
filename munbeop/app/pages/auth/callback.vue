@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { NuxtLink } from '#components'
 
+definePageMeta({ layout: false, surface: 'welcome' })
+
 const { t } = useI18n()
 const status = ref<'checking' | 'success' | 'error'>('checking')
 const toast = useToast()

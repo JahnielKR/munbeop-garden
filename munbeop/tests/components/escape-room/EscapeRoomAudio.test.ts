@@ -81,7 +81,7 @@ async function mountPlaying(level = makeAudioLevel(), seed = 'seed-audio') {
 async function openSlot1(w: VueWrapper) {
   const spot = w
     .findAll('[data-testid="hotspot"]')
-    .find((h) => h.attributes('aria-label') === 'h-a-1')!
+    .find((h) => h.attributes('data-hotspot-id') === 'h-a-1')!
   await spot.trigger('click')
 }
 
@@ -137,7 +137,7 @@ describe('EscapeRoom audio wiring', () => {
     audioMock.playSfx.mockClear()
     const cosmetic = w
       .findAll('[data-testid="hotspot"]')
-      .find((h) => h.attributes('aria-label') === 'cosmetic')!
+      .find((h) => h.attributes('data-hotspot-id') === 'cosmetic')!
     await cosmetic.trigger('click')
     expect(audioMock.playSfx).toHaveBeenCalledWith('/escape-room/test-level/audio/sfx-purr.ogg')
   })
@@ -159,6 +159,26 @@ describe('EscapeRoom audio wiring', () => {
     await w.findAll('[data-testid="slot-option"]')[1]!.trigger('click')
     expect(audioMock.playSfx).toHaveBeenCalledWith('/escape-room/test-level/audio/sfx-wrong.ogg')
     expect(audioMock.playSfx).not.toHaveBeenCalledWith('/escape-room/test-level/audio/sfx-correct.ogg')
+  })
+
+  it('plays the wrong sfx (never the success chime / reaction voice) on the game-over mistake', async () => {
+    const w = await mountPlaying()
+    const store = useEscapeRoomStore()
+    await openSlot1(w)
+    // Deplete hearts to the brink (fixture maxErrors = 2) without ending the run.
+    store.answerSelection('slot-1', 1)
+    store.answerSelection('slot-1', 1)
+    expect(store.status).toBe('playing')
+    await flushPromises()
+    audioMock.playSfx.mockClear()
+    audioMock.playVoice.mockClear()
+    // The next wrong answer — via the UI — is the fatal one → 'game-over'.
+    await w.findAll('[data-testid="slot-option"]')[1]!.trigger('click')
+    await flushPromises()
+    expect(store.status).toBe('gameover')
+    expect(audioMock.playSfx).toHaveBeenCalledWith('/escape-room/test-level/audio/sfx-wrong.ogg')
+    expect(audioMock.playSfx).not.toHaveBeenCalledWith('/escape-room/test-level/audio/sfx-correct.ogg')
+    expect(audioMock.playVoice).not.toHaveBeenCalled()
   })
 
   it('passes the resolved intro voice URL to the intro cinematic', async () => {
@@ -186,6 +206,16 @@ describe('EscapeRoom audio wiring', () => {
   it('stops all audio on exit', async () => {
     const w = await mountPlaying()
     await w.get('[data-testid="er-exit"]').trigger('click')
+    expect(audioMock.stopAll).toHaveBeenCalled()
+  })
+
+  it('stops all audio when the component unmounts (route navigation away)', async () => {
+    // Regression: the looping ambient is a module singleton, so leaving the
+    // level via the app nav / browser back (exitToBook never runs) kept it
+    // playing app-wide until a full reload.
+    const w = await mountPlaying()
+    expect(audioMock.stopAll).not.toHaveBeenCalled()
+    w.unmount()
     expect(audioMock.stopAll).toHaveBeenCalled()
   })
 

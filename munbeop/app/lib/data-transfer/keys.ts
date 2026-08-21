@@ -14,8 +14,29 @@ export const EXPORT_KEYS = [
   STORAGE_KEYS.inactiveContextIds,
   STORAGE_KEYS.settings,
   STORAGE_KEYS.escapeRoom,
+  // Heatmap/streak source: lab answers are recorded ONLY here (not in the log),
+  // so a backup without it silently loses every lab-practice day on restore.
   STORAGE_KEYS.activity,
 ] as const
+
+/**
+ * Coarse expected JSON shape of each export key's value, used by import
+ * validation to reject a corrupt/hand-edited file before writing garbage into
+ * storage. 'array' → must be an array; 'object' → a non-array object (null is
+ * tolerated as "absent"). Kept intentionally coarse to never reject a real export.
+ */
+export const EXPORT_KEY_SHAPES: Record<string, 'array' | 'object'> = {
+  [STORAGE_KEYS.grammar]: 'array',
+  [STORAGE_KEYS.srs]: 'object',
+  [STORAGE_KEYS.log]: 'array',
+  [STORAGE_KEYS.decks]: 'array',
+  [STORAGE_KEYS.customContexts]: 'array',
+  [STORAGE_KEYS.inactiveContextIds]: 'array',
+  [STORAGE_KEYS.settings]: 'object',
+  [STORAGE_KEYS.escapeRoom]: 'object',
+  [STORAGE_KEYS.customDecks]: 'array',
+  [STORAGE_KEYS.activity]: 'object',
+}
 
 export interface ExportPayload {
   exportedAt: string

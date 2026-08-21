@@ -6,9 +6,9 @@ import { L } from '../locale'
  * verbatim. Each pair: a contrast note + 3 single-answer discrimination items,
  * 8-locale note/trans/why.
  *
- * Drafted + Korean-lens adversarially verified by a multi-agent workflow
- * (single-correct-answer crux, naturalness, conjugation, 8-locale fidelity).
- * Native (Korean wife) review is the documented final gate.
+ * Editorial QA covers the Korean forms, answer crux, register and localized
+ * meaning. Seed tests enforce catalog links, exact blanks, distinct options and
+ * complete eight-locale fields; future native-speaker feedback can refine nuance.
  */
 export const N2_PAIRS: ConfusablePair[] = [
   {
@@ -217,7 +217,7 @@ export const N2_PAIRS: ConfusablePair[] = [
     ),
     items: [
       {
-        sentence: '저는 요즘 감기에 걸린 {}. 자꾸 기침이 나요.',
+        sentence: '저는 요즘 감기에 {}. 자꾸 기침이 나요.',
         optionA: '걸린 것 같아요',
         optionB: '걸린 모양이에요',
         answer: 'a',
@@ -407,7 +407,7 @@ export const N2_PAIRS: ConfusablePair[] = [
     ),
     items: [
       {
-        sentence: '주말에는 보통 집에서 커피{} 차를 마셔요.',
+        sentence: '주말에는 보통 집에서 {} 차를 마셔요.',
         optionA: '커피거나',
         optionB: '커피나',
         answer: 'b',
@@ -433,7 +433,7 @@ export const N2_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '주말에 심심할 때는 영화를 보{} 책을 읽어요.',
+        sentence: '주말에 심심할 때는 영화를 {} 책을 읽어요.',
         optionA: '보거나',
         optionB: '보나',
         answer: 'a',
@@ -459,7 +459,7 @@ export const N2_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '날씨가 너무 덥{} 추우면 저는 밖에 안 나가요.',
+        sentence: '날씨가 너무 {} 추우면 저는 밖에 안 나가요.',
         optionA: '덥거나',
         optionB: '더우나',
         answer: 'a',

@@ -1,10 +1,18 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
-import type { Level, RewardTier, ScriptedBeat, SelectionCandidate, CompletionCandidate, CreationCandidate } from '~/lib/domain'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import type {
+  Level,
+  RewardTier,
+  ScriptedBeat,
+  SelectionCandidate,
+  CompletionCandidate,
+  CreationCandidate,
+} from '~/lib/domain'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 import { useLocalized } from '~/composables/useLocalized'
 import { useEscapeRoomAudio } from '~/composables/useEscapeRoomAudio'
+import PracticeSaveStatus from '~/components/practice/PracticeSaveStatus.vue'
 import Scene from './Scene.vue'
 import IntroCinematic from './IntroCinematic.vue'
 import VictoryScreen from './VictoryScreen.vue'
@@ -32,7 +40,7 @@ const emit = defineEmits<{ exit: [] }>()
 const store = useEscapeRoomStore()
 // Persistence half of the store (it stays a pure state machine): write the
 // run's outcome — unlocked cosmetic + racha — back to the account on run end.
-const { persist } = useEscapeRoomProgress()
+const { persist, retrySave, saveStatus } = useEscapeRoomProgress()
 const { tl } = useLocalized()
 const { t } = useI18n()
 const audio = useEscapeRoomAudio()
@@ -50,6 +58,7 @@ const UI_SFX = {
 
 /** Join the level's asset base with a seed-relative path ('audio/...'). */
 function url(path: string): string {
+  if (!path) return ''
   return `${imageBase.value}${path}`
 }
 
@@ -62,6 +71,16 @@ const retryCount = ref(0)
 const activeBeat = ref<ScriptedBeat | null>(null)
 /** NPC nudge shown inside the creation overlay after a soft-reject. */
 const softMessage = ref<string | null>(null)
+/** Visible + announced feedback for a non-fatal WRONG answer. The feedback used
+ *  to be audio-only, so a muted or deaf player got nothing (and re-tapped,
+ *  burning hearts). Cleared on the next answer / close. */
+const wrongNudge = ref<string | null>(null)
+/** The puzzle overlay element — focused on open and used to trap Tab (it is a
+ *  modal but had no dialog semantics). */
+const overlayEl = ref<HTMLElement | null>(null)
+/** The element (a hotspot button) that opened the overlay, so focus can be
+ *  restored to it on close instead of dropping to <body>. */
+const overlayTrigger = ref<HTMLElement | null>(null)
 
 const baseSeed = computed(() => props.seed ?? `run-${Date.now()}`)
 const imageBase = computed(() => `/escape-room/${props.level.id}/`)
@@ -69,6 +88,11 @@ const imageBase = computed(() => `/escape-room/${props.level.id}/`)
 const activeRoom = computed(
   () => props.level.rooms.find((r) => r.id === store.currentRoomId) ?? null,
 )
+
+function roomContainsNextSlot(roomId: string): boolean {
+  const room = props.level.rooms.find((candidate) => candidate.id === roomId)
+  return !!room?.hotspots.some((hotspot) => hotspot.triggersSlot === store.nextSlotId)
+}
 
 const activeSlot = computed(() => {
   if (!activeSlotId.value) return null
@@ -118,6 +142,13 @@ onMounted(() => {
   phase.value = 'intro'
 })
 
+// The ambient bed is a looping module-singleton <audio> that outlives this
+// component. retry()/exitToBook() stop it, but navigating away via the app nav
+// or browser back — including from the victory/game-over screens, where the
+// leave guard is disarmed — used to leave it looping app-wide until a full
+// reload. stopAll() is idempotent, so double-stopping via exitToBook is fine.
+onBeforeUnmount(() => audio.stopAll())
+
 watch(
   () => store.status,
   (s) => {
@@ -142,25 +173,27 @@ watch(
  * re-entering the same room never restarts it. On an actual room CHANGE (not
  * the first entry of the run) a wooden-door one-shot punctuates the move.
  */
-watch(
-  [() => store.currentRoomId, phase],
-  ([roomId], [prevRoomId, prevPhase]) => {
-    if (phase.value !== 'playing' || !activeRoom.value) return
-    const isRealRoomChange =
-      prevPhase === 'playing' && prevRoomId != null && prevRoomId !== roomId
-    if (isRealRoomChange) audio.playSfx(url(UI_SFX.door))
-    audio.playAmbient(url(activeRoom.value.ambientAudio))
-  },
-)
+watch([() => store.currentRoomId, phase], ([roomId], [prevRoomId, prevPhase]) => {
+  if (phase.value !== 'playing' || !activeRoom.value) return
+  const isRealRoomChange = prevPhase === 'playing' && prevRoomId != null && prevRoomId !== roomId
+  if (isRealRoomChange) audio.playSfx(url(UI_SFX.door))
+  audio.playAmbient(url(activeRoom.value.ambientAudio))
+})
 
-type AnswerOutcome = 'correct' | 'wrong' | 'game-over' | 'level-complete' | 'soft-reject'
+type AnswerOutcome =
+  | 'correct'
+  | 'wrong'
+  | 'game-over'
+  | 'level-complete'
+  | 'soft-reject'
+  | 'locked'
 
 function onHotspot(hotspotId: string) {
   const h = activeRoom.value?.hotspots.find((x) => x.id === hotspotId)
   if (!h) return
   // Cosmetic click sound for any hotspot that declares one (tea pour, purr, …).
   if (h.sfx) audio.playSfx(url(h.sfx))
-  if (h.triggersSlot && !store.resolvedSlots.includes(h.triggersSlot)) {
+  if (h.triggersSlot && store.isSlotUnlocked(h.triggersSlot)) {
     softMessage.value = null
     audio.playSfx(url(UI_SFX.select))
     activeSlotId.value = h.triggersSlot
@@ -213,8 +246,20 @@ function candidateSoftRejectVoiceAudio(slotId: string): string | null {
  *                      would instantly cancel the first.
  */
 function handleResult(slotId: string, result: AnswerOutcome) {
-  if (result === 'wrong') {
+  if (result === 'locked') return
+  // 'game-over' is the run-ending mistake: it must play the WRONG feedback and
+  // return, exactly like a non-fatal 'wrong'. Falling through to the correct/
+  // level-complete branch would play the success chime + reaction voice and fire
+  // the next scripted narrative beat on top of the game-over screen. The store's
+  // 'gameover' status watcher clears activeSlotId; nothing else is needed here.
+  if (result === 'wrong' || result === 'game-over') {
     audio.playSfx(url(UI_SFX.wrong))
+    // A non-fatal wrong answer keeps the overlay open, so give a VISIBLE +
+    // announced nudge (audio alone is invisible to a muted/deaf player). On
+    // 'game-over' the overlay is torn down for GameOverScreen, so skip it there.
+    if (result === 'wrong') {
+      wrongNudge.value = t('escape.wrong_nudge', { left: heartsLeft.value })
+    }
     return
   }
   if (result === 'soft-reject') {
@@ -240,16 +285,19 @@ function handleResult(slotId: string, result: AnswerOutcome) {
 
 function onSelectionAnswer(idx: number) {
   if (!activeSlotId.value) return
+  wrongNudge.value = null
   handleResult(activeSlotId.value, store.answerSelection(activeSlotId.value, idx))
 }
 function onCompletionAnswer(text: string) {
   if (!activeSlotId.value) return
+  wrongNudge.value = null
   handleResult(activeSlotId.value, store.answerCompletion(activeSlotId.value, text))
 }
 function onCreationAnswer(order: number[]) {
   const slotId = activeSlotId.value
   if (!slotId) return
   softMessage.value = null
+  wrongNudge.value = null
   const result = store.answerCreation(slotId, order)
   if (result === 'soft-reject') {
     const cand = activeCandidate.value as CreationCandidate | null
@@ -288,10 +336,50 @@ function toggleAudio() {
   }
 }
 
-/** Close the puzzle overlay and clear any lingering soft-reject nudge. */
+/** Close the puzzle overlay and clear any lingering nudges. */
 function closeOverlay() {
   activeSlotId.value = null
   softMessage.value = null
+  wrongNudge.value = null
+}
+
+// The puzzle overlay is a modal: focus it on open so keyboard/SR users land
+// inside (not on <body>), and trap Tab so focus can't walk into the occluded
+// scene/HUD behind it. Esc closes it (wired in the template). On close, restore
+// focus to the hotspot that opened it (any close path — Esc, ✕, correct answer)
+// so focus never drops to <body>. When a new screen takes over (victory /
+// game-over / scripted beat), that screen's own onMounted focus wins the race.
+watch(
+  () => !!activeSlot.value && !!activeCandidate.value,
+  (open, wasOpen) => {
+    if (open) {
+      overlayTrigger.value = (document.activeElement as HTMLElement | null) ?? null
+      void nextTick(() => overlayEl.value?.focus())
+    } else if (wasOpen) {
+      const trigger = overlayTrigger.value
+      overlayTrigger.value = null
+      void nextTick(() => trigger?.focus())
+    }
+  },
+)
+function trapTab(e: KeyboardEvent) {
+  if (e.key !== 'Tab' || !overlayEl.value) return
+  const focusables = Array.from(
+    overlayEl.value.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    ),
+  ).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null)
+  if (focusables.length === 0) return
+  const first = focusables[0]!
+  const last = focusables[focusables.length - 1]!
+  const active = document.activeElement
+  if (e.shiftKey && (active === first || active === overlayEl.value)) {
+    e.preventDefault()
+    last.focus()
+  } else if (!e.shiftKey && active === last) {
+    e.preventDefault()
+    first.focus()
+  }
 }
 
 function exitToBook() {
@@ -307,6 +395,7 @@ function exitToBook() {
     <IntroCinematic
       v-if="phase === 'intro'"
       :narrative="level.intro"
+      :image="level.introImage ? url(level.introImage) : undefined"
       :voice-line="level.voiceIntro"
       :voice-audio="level.voiceIntroAudio ? url(level.voiceIntroAudio) : undefined"
       @done="phase = 'playing'"
@@ -324,7 +413,13 @@ function exitToBook() {
         ◀
       </button>
       <span class="er__title">{{ tl(level.title) }}</span>
-      <span class="er__hearts" data-testid="er-hearts" :title="t('escape.attempts')">
+      <span
+        class="er__hearts"
+        data-testid="er-hearts"
+        role="img"
+        :aria-label="t('escape.hearts_status', { left: heartsLeft, total: heartsTotal })"
+        :title="t('escape.attempts')"
+      >
         <span v-for="i in heartsTotal" :key="i" class="er__heart" aria-hidden="true">
           {{ i <= heartsLeft ? '♥' : '♡' }}
         </span>
@@ -351,29 +446,56 @@ function exitToBook() {
         :key="room.id"
         type="button"
         class="er__room-tab"
-        :class="{ 'er__room-tab--active': room.id === store.currentRoomId }"
+        :class="{
+          'er__room-tab--active': room.id === store.currentRoomId,
+          'er__room-tab--next': roomContainsNextSlot(room.id),
+        }"
+        :disabled="!store.isRoomUnlocked(room.id)"
+        :aria-current="room.id === store.currentRoomId ? 'location' : undefined"
         data-testid="room-tab"
         @click="store.enterRoom(room.id)"
       >
+        <span v-if="!store.isRoomUnlocked(room.id)" aria-hidden="true">🔒 </span>
         {{ tl(room.title) }}
       </button>
     </nav>
 
     <!-- Active scene -->
-    <Scene v-if="activeRoom" :room="activeRoom" :image-base="imageBase" :resolved-slots="store.resolvedSlots" @hotspot="onHotspot" />
+    <Scene
+      v-if="activeRoom"
+      :room="activeRoom"
+      :image-base="imageBase"
+      :resolved-slots="store.resolvedSlots"
+      :unlocked-slot-id="store.nextSlotId"
+      @hotspot="onHotspot"
+    />
 
-    <!-- Puzzle overlay -->
-    <div v-if="activeSlot && activeCandidate" class="er__overlay" data-testid="puzzle-overlay">
+    <!-- Puzzle overlay (a modal: dialog role, Tab trap, Esc, focus-on-open) -->
+    <div
+      v-if="activeSlot && activeCandidate"
+      ref="overlayEl"
+      class="er__overlay"
+      data-testid="puzzle-overlay"
+      role="dialog"
+      aria-modal="true"
+      :aria-label="tl(activeRoom?.title ?? level.title)"
+      tabindex="-1"
+      @keydown.esc="closeOverlay"
+      @keydown="trapTab"
+    >
       <div class="er__overlay-inner">
         <button
           type="button"
           class="er__overlay-close"
           data-testid="puzzle-close"
-          aria-label="✕"
+          :aria-label="t('escape.close')"
           @click="closeOverlay"
         >
-          ✕
+          <span aria-hidden="true">✕</span>
         </button>
+        <p v-if="wrongNudge" class="er__overlay-nudge" role="status" data-testid="puzzle-wrong">
+          {{ wrongNudge }}
+        </p>
         <SlotSelection
           v-if="activeSlot.type === 'selection'"
           :candidate="activeCandidate as SelectionCandidate"
@@ -413,11 +535,16 @@ function exitToBook() {
     />
 
     <!-- End screens -->
+    <PracticeSaveStatus
+      :status="saveStatus"
+      @retry="retrySave"
+    />
     <GameOverScreen v-if="store.status === 'gameover'" @retry="retry" @exit="exitToBook" />
     <VictoryScreen
       v-if="store.status === 'completed' && earnedTier && !activeBeat"
       :level="level"
       :tier="earnedTier"
+      :image="level.outroImage ? url(level.outroImage) : undefined"
       :farewell="farewell"
       :bell-toll-audio="level.bellTollAudio ? url(level.bellTollAudio) : undefined"
       :rain-stop-audio="level.rainStopAudio ? url(level.rainStopAudio) : undefined"
@@ -505,6 +632,16 @@ function exitToBook() {
   color: var(--text-on-accent, #fff7eb);
   opacity: 1;
 }
+.er__room-tab--next:not(.er__room-tab--active) {
+  border-color: var(--focus-ring, #d8842f);
+  box-shadow: 0 0 0 2px rgba(216, 132, 47, 0.22);
+  opacity: 1;
+}
+.er__room-tab:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.8);
+  opacity: 0.38;
+}
 .er__room-tab:focus-visible {
   outline: 2px solid var(--focus-ring, #d8842f);
   outline-offset: 1px;
@@ -520,11 +657,23 @@ function exitToBook() {
   padding: 24px 16px;
   z-index: 50;
   overflow-y: auto;
+  outline: none; /* focused on open for the modal trap; no ring on the backdrop */
 }
 .er__overlay-inner {
   position: relative;
   width: 100%;
   max-width: 600px;
+}
+.er__overlay-nudge {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--red, #c0392b);
+  border-radius: 6px;
+  text-align: center;
 }
 .er__overlay-close {
   position: absolute;
@@ -539,5 +688,64 @@ function exitToBook() {
   background: var(--surface, #fff7eb);
   cursor: pointer;
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 600px) {
+  .er {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 10px 96px;
+    overflow-x: hidden;
+  }
+
+  .er__hud {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 5px 8px;
+    padding: 8px;
+  }
+
+  .er__back {
+    grid-row: 1 / 3;
+    align-self: stretch;
+  }
+
+  .er__title {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .er__hearts {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+  }
+
+  .er__solved {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    justify-self: end;
+    font-size: 9px;
+  }
+
+  .er__mute {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    align-self: stretch;
+  }
+
+  .er__rooms {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+    scroll-snap-type: x proximity;
+  }
+
+  .er__room-tab {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
 }
 </style>

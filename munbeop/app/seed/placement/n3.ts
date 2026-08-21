@@ -4,8 +4,8 @@ import { L } from '../locale'
 
 /**
  * TOPIK-3 placement items. Each targets a different TOPIK-3 grammar point;
- * `ko` matches grammars-n3.ts verbatim. Single-correct-answer crux drafted +
- * self-reviewed; Korean wife native review = documented final gate.
+ * `ko` matches grammars-n3.ts verbatim. Editorial QA covers the Korean surface
+ * forms, answer crux and localized meaning; seed tests enforce integrity.
  */
 
 export const N3_PLACEMENT: PlacementItem[] = [

@@ -5,6 +5,7 @@ import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
 import { playableLevel } from '~/seed/escape-room/registry'
 import { useGameLeaveGuard } from '~/composables/useGameLeaveGuard'
 import { useEscapeRoomStore } from '~/stores/escape-room'
+import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 
 /**
  * Escape Room — gameplay host.
@@ -18,9 +19,11 @@ definePageMeta({ surface: 'game' })
 const route = useRoute()
 const router = useRouter()
 const escape = useEscapeRoomStore()
+const { saveBlocked } = useEscapeRoomProgress()
 
-// Confirm before leaving an active run (not idle / gameover / completed).
-useGameLeaveGuard(() => escape.status === 'playing')
+// Confirm before leaving an active run or abandoning an outcome that still
+// needs to reach the account store.
+useGameLeaveGuard(() => escape.status === 'playing' || saveBlocked.value)
 
 const level = computed(() => playableLevel(String(route.query.level ?? '')))
 

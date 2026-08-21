@@ -1,4 +1,5 @@
 import type { Context, LocalizedString } from '~/lib/domain'
+import { DEFAULT_CONTEXTS_EXTRA } from './contexts-extra'
 
 const L = (
   en: string,
@@ -11,7 +12,7 @@ const L = (
   ja: string,
 ): LocalizedString => ({ en, es, fr, 'pt-BR': ptBR, th, id, vi, ja })
 
-export const DEFAULT_CONTEXTS: Context[] = [
+const BUILTIN_CONTEXTS: Context[] = [
   {
     id: 'banmal',
     name: '반말',
@@ -141,3 +142,5 @@ export const DEFAULT_CONTEXTS: Context[] = [
     builtin: true,
   },
 ]
+
+export const DEFAULT_CONTEXTS: Context[] = [...BUILTIN_CONTEXTS, ...DEFAULT_CONTEXTS_EXTRA]

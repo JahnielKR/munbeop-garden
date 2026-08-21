@@ -1,6 +1,6 @@
 import { watchDebounced } from '@vueuse/core'
 import type { Grammar, GrammarType, LocaleCode, TopikLevel } from '~/lib/domain'
-import { TOPIK_LEVELS, categoryOf, levelOf, itemsByTheme } from '~/lib/domain'
+import { TOPIK_LEVELS, categoryOf, levelOf, itemsByTheme, presentCategories } from '~/lib/domain'
 import { searchLibrary } from '~/lib/library/search'
 import {
   filterByMastery,
@@ -34,9 +34,15 @@ export function useLibrarySearch() {
     const n = Number(route.query.level)
     return (TOPIK_LEVELS as readonly number[]).includes(n) ? (n as TopikLevel) : null
   })
-  const category = computed<GrammarType | null>(() =>
-    typeof route.query.cat === 'string' ? (route.query.cat as GrammarType) : null,
-  )
+  const category = computed<GrammarType | null>(() => {
+    // Validate against the categories that actually exist (like ?level= /
+    // ?mastery=): a stale/typo/renamed ?cat= would otherwise filter out every
+    // item and leave the <select> blank with no cue why results vanished.
+    const cat = route.query.cat
+    return typeof cat === 'string' && presentCategories().includes(cat as GrammarType)
+      ? (cat as GrammarType)
+      : null
+  })
   const mastery = computed<MasteryFilterValue | null>(() =>
     isMasteryFilterValue(route.query.mastery) ? route.query.mastery : null,
   )
@@ -49,7 +55,11 @@ export function useLibrarySearch() {
   const zoneLabel = computed<string | null>(() => {
     const theme = typeof route.query.theme === 'string' ? route.query.theme : null
     if (!theme) return null
-    const src = itemsByTheme(theme)[0]?.source
+    const items = itemsByTheme(theme)
+    // An unknown/stale ?theme= resolves to no items (themeKos is null, so it
+    // does not filter) — don't show a chip labelled with the raw id for it.
+    if (!items.length) return null
+    const src = items[0]?.source
     // The spine's themeTitle is fixed Spanish metadata — resolve the display
     // name through i18n (keyed by themeId) so the filter chip follows the UI
     // locale. Falls back to the raw theme id when it isn't a TOPIK theme.

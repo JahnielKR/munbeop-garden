@@ -6,9 +6,9 @@ import { L } from '../locale'
  * verbatim. Each pair: a contrast note + 3 single-answer discrimination items,
  * 8-locale note/trans/why.
  *
- * Drafted + Korean-lens adversarially verified by a multi-agent workflow
- * (single-correct-answer crux, naturalness, conjugation, 8-locale fidelity).
- * Native (Korean wife) review is the documented final gate.
+ * Editorial QA covers the Korean forms, answer crux, register and localized
+ * meaning. Seed tests enforce catalog links, exact blanks, distinct options and
+ * complete eight-locale fields; future native-speaker feedback can refine nuance.
  */
 export const N4_PAIRS: ConfusablePair[] = [
   {
@@ -217,7 +217,7 @@ export const N4_PAIRS: ConfusablePair[] = [
     ),
     items: [
       {
-        sentence: '그 사람은 약속에 자주 늦을 {} 사과도 안 해서 사람들이 싫어해요.',
+        sentence: '그 사람은 약속에 자주 {} 사과도 안 해서 사람들이 싫어해요.',
         optionA: '늦을 뿐만 아니라',
         optionB: '늦는 데다가',
         answer: 'b',
@@ -269,7 +269,7 @@ export const N4_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '이 노트북은 디자인이 예쁠 {} 보안 기능까지 뛰어나서 전문가들이 추천해요.',
+        sentence: '이 노트북은 디자인이 {} 보안 기능까지 뛰어나서 전문가들이 추천해요.',
         optionA: '예쁠 뿐만 아니라',
         optionB: '예쁜 데다가',
         answer: 'a',
@@ -435,7 +435,7 @@ export const N4_PAIRS: ConfusablePair[] = [
       {
         sentence: '아까 그 카페에서 케이크가 진짜 맛있어 보였는데, 그냥 {} 그랬어.',
         optionA: '먹었어야',
-        optionB: '먹을',
+        optionB: '먹을걸',
         answer: 'b',
         trans: L(
           'That cake at the cafe earlier looked really delicious; I should have just eaten it.',
@@ -502,7 +502,7 @@ export const N4_PAIRS: ConfusablePair[] = [
     ),
     items: [
       {
-        sentence: '숙제를 하{} 너무 졸려서 그냥 잤어요.',
+        sentence: '숙제를 {} 너무 졸려서 그냥 잤어요.',
         optionA: '하다가',
         optionB: '하고',
         answer: 'a',
@@ -528,7 +528,7 @@ export const N4_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '매일 아침에 일어나{} 물을 한 잔 마셔요.',
+        sentence: '매일 아침에 {} 물을 한 잔 마셔요.',
         optionA: '일어나다가',
         optionB: '일어나고',
         answer: 'b',
@@ -554,7 +554,7 @@ export const N4_PAIRS: ConfusablePair[] = [
         ),
       },
       {
-        sentence: '학교에 가{} 친구를 만나서 같이 카페에 갔어요.',
+        sentence: '학교에 {} 친구를 만나서 같이 카페에 갔어요.',
         optionA: '가다가',
         optionB: '가고',
         answer: 'a',

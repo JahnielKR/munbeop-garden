@@ -26,13 +26,16 @@ export function useAuth() {
   const { $supabase } = useNuxtApp()
   const authStore = useAuthStore()
 
-  function hydrateDataStores() {
-    return Promise.all([
-      useGrammarStore().hydrate(),
+  async function hydrateDataStores() {
+    // Custom decks validate their grammar ids against this catalog, so grammar
+    // hydration must finish first (especially when switching accounts).
+    await useGrammarStore().hydrate()
+    await Promise.all([
       useContextsStore().hydrate(),
       useSrsStore().hydrate(),
       useLogStore().hydrate(),
       useActivityStore().hydrate(),
+      useSettingsStore().hydrate(),
       useEscapeRoomProgress().hydrate(),
       useCustomDecksStore().hydrate(),
     ])
@@ -45,64 +48,42 @@ export function useAuth() {
     const { data } = await $supabase.auth.getSession()
     authStore.setSession(data.session ?? null)
 
-    async function applyAuthStateChange(event: AuthChangeEvent, session: Session | null) {
-      // Pull the account's synced preferences once a session exists. Theme
-      // applies immediately (DOM write); locale re-applies when default.vue
-      // (re)mounts on the post-sign-in navigation from /welcome.
-      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
-        await useSettingsStore().hydrate()
-        // INITIAL_SESSION is the hard-reload path: a persisted session is
-        // restored AFTER the layout already hydrated the data stores against
-        // the noop adapter (user still null), so they hold seed defaults. Pull
-        // them again now that the real session is in the store — otherwise the
-        // user sees the seed catalog / empty progress, and the next write would
-        // push those seeds over their real cloud data. SIGNED_IN flows hydrate
-        // explicitly via hydrateUserStores(), so we only do it here for the
-        // restore path to avoid a redundant double-pull.
-        if (event === 'INITIAL_SESSION') {
-          // The adapter throws on a Supabase error; route the pull through
-          // appStatus so a failure surfaces as a retryable 'error' in the shell
-          // (track() swallows the throw — no unhandled rejection here) instead
-          // of a silent empty state. The user is authed; the data just didn't
-          // load this round.
-          await useAppStatus().track(() => hydrateDataStores())
-        }
+    async function handleAuthEvent(
+      event: AuthChangeEvent,
+      session: Session | null,
+      previousUserId: string | null,
+      nextUserId: string | null,
+    ) {
+      if (
+        (event === 'INITIAL_SESSION' && session)
+        || (event === 'SIGNED_IN' && session && previousUserId !== nextUserId)
+      ) {
+        await useAppStatus().track(() => hydrateDataStores())
       }
-      // After SIGNED_OUT the stores still hold the previous user's data
-      // in memory. With no session pickAdapter yields the noop adapter,
-      // so hydrating resolves every store to its fallback — that is what
-      // clears the UI. (Handled here rather than inside signOutAndExit()
-      // so token-expiry sign-outs flow through the same code.)
       if (event === 'SIGNED_OUT') {
         // Keep sign-out cleanup moving even if an unexpected adapter failure
         // occurs. The route and account-scoped settings must still be cleared.
         await useAppStatus().track(() => hydrateDataStores())
-        // hydrateDataStores() clears the data stores against the noop adapter,
-        // but the settings store isn't in that set (it hydrates on SIGNED_IN /
-        // INITIAL_SESSION). Reset its account-scoped prefs here so the next user
-        // on a shared device doesn't inherit deck-focus / avatar / goal.
+        if ((authStore.user?.id ?? null) !== nextUserId) return
         useSettingsStore().resetToDefaults()
-        // A passive sign-out (expired/revoked token) leaves the user
-        // parked on an app route with cleared stores — the middleware
-        // only runs on navigation, so push the gate ourselves. After
-        // signOutAndExit() this is a same-route no-op.
         if (!isPublicPath(router.currentRoute.value.path)) {
           await router.push('/welcome')
         }
       }
     }
 
-    // Supabase documents a client deadlock when another async Supabase call is
-    // awaited from inside onAuthStateChange. Keep the callback synchronous and
-    // defer cloud hydration until the auth callback has fully returned. The
-    // promise chain also preserves event order during rapid sign-in/sign-out.
-    let authWork = Promise.resolve()
     $supabase.auth.onAuthStateChange((event, session) => {
+      const previousUserId = authStore.user?.id ?? null
       authStore.setSession(session)
+      const nextUserId = authStore.user?.id ?? null
+      // Supabase auth callbacks must stay synchronous: awaiting another client
+      // call here can hold the auth lock indefinitely. Defer all data I/O until
+      // the callback has returned, and ignore an event superseded meanwhile.
       setTimeout(() => {
-        authWork = authWork
-          .then(() => applyAuthStateChange(event, session))
-          .catch((err) => console.error('auth state sync failed', err))
+        if ((authStore.user?.id ?? null) !== nextUserId) return
+        void handleAuthEvent(event, session, previousUserId, nextUserId).catch((error) => {
+          console.error('auth: deferred session handling failed', error)
+        })
       }, 0)
     })
   }
@@ -119,9 +100,13 @@ export function useAuth() {
   }
 
   async function signUp(email: string, password: string) {
-    const { error } = await $supabase.auth.signUp({ email, password })
+    const { data, error } = await $supabase.auth.signUp({ email, password })
     if (!error) await hydrateUserStores()
-    return { error }
+    // With the Supabase project's "Confirm email" ON, signUp resolves error:null
+    // but WITHOUT a session — the user must click the emailed link first. Signal
+    // that so the UI shows a "check your email" message and stays on /welcome,
+    // instead of navigating into a gated route that bounces straight back.
+    return { error, needsConfirmation: !error && !data.session }
   }
 
   async function signIn(email: string, password: string) {
@@ -149,11 +134,27 @@ export function useAuth() {
    * fires the pan-left camera move automatically.
    */
   async function signOutAndExit() {
-    // A normal sign-out should affect this browser session only. Supabase's
-    // default is global, which unexpectedly signs the learner out everywhere.
-    const { error } = await $supabase.auth.signOut({ scope: 'local' })
     const router = useRouter()
-    if (!error) await router.push('/welcome')
+    // The default 'global' sign-out is a network op that can REJECT (offline /
+    // DNS / reset) or return an error. Either way the user asked to leave, so we
+    // must never stay in a signed-in state. On failure, fall back to a
+    // local-scope sign-out (clears the local session + fires SIGNED_OUT, which
+    // clears the data stores) and navigate to /welcome regardless — otherwise
+    // the previous user's in-memory data would linger on a shared device.
+    let error: { message?: string } | null = null
+    try {
+      error = (await $supabase.auth.signOut()).error
+    } catch (e) {
+      error = { message: e instanceof Error ? e.message : 'sign-out failed' }
+    }
+    if (error) {
+      try {
+        await $supabase.auth.signOut({ scope: 'local' })
+      } catch {
+        /* best-effort local teardown; navigate anyway below */
+      }
+    }
+    await router.push('/welcome')
     return { error }
   }
 

@@ -22,8 +22,8 @@
 
 ## ✨ Características
 
-### 🎴 Loop central — Ruleta + SRS contextual
-- **Ruleta de mazos** (`/practice/ruleta`): eliges un mazo TOPIK (o "todos los niveles"), se reparten 3 cartas de gramática y produces frases en tus contextos activos — el loop 3×3.
+### 🎴 Loop central — The Deck + SRS contextual
+- **The Deck / La Baraja** (`/practice/ruleta`): eliges un mazo TOPIK (o "todos los niveles"), se reparten 3 cartas de gramática y produces frases en tus contextos activos — el loop 3×3.
 - **SRS adaptativo**: cada gramática tiene un estado de maestría (brote → planta → árbol) calculado desde tu historial; las que tocan repasar aparecen con más probabilidad.
 - **Contextos**: practicas la misma gramática en varios registros/escenarios. Vienen de fábrica (formalidad y situacionales) y puedes **añadir los tuyos**.
 - **Rondas enfocadas**: desde la biblioteca, "practicar esto ahora" abre una sesión sobre una sola gramática.
@@ -40,12 +40,13 @@ Drills especializados, cada uno con su propio sistema de maestría que desbloque
 | **숫자 시장** Mercado de números | `/practice/number-market` | Lectura de números — modos **Aprender / Velocidad / Dictado** |
 | **Cloze** | `/practice/cloze` | Rellenar el hueco gramatical en frases completas |
 | **높임법 연구소** Registro/honoríficos | `/practice/register` | Nivel de habla y vocabulario honorífico |
+| **문장 정원** Sentence Garden | `/practice/sentence-garden` | Reconstrucción de frases por eojeol, orden SOV y detección de señuelos |
 | **배치 테스트** Placement | `/practice/placement` | Test diagnóstico tipo escalera → estima tu nivel TOPIK |
 | **다시 돌보기** Rescate | `/practice/rescue` | Drill guiado para las gramáticas problemáticas ("leeches") |
 | **진도** Caminos | `/paths` | Vista de progresión por nivel TOPIK |
 
 ### 📚 Biblioteca y ficha de estudio
-- Catálogo completo TOPIK 1–6 (~300 gramáticas) con **búsqueda** y **filtros** (nivel, categoría, estado de maestría) y conteos por filtro.
+- Catálogo completo TOPIK 1–6 (**301 gramáticas**) con **búsqueda** y **filtros** (nivel, categoría, estado de maestría) y conteos por filtro.
 - **Ficha de estudio** por gramática: significado localizado, ejemplos etiquetados por registro, **notas de uso**, **guía de pronunciación con audio (TTS)**, breadcrumb del currículo, y logros/historial.
 - Banner de "puntos débiles" que enlaza al rescate.
 
@@ -55,8 +56,9 @@ Drills especializados, cada uno con su propio sistema de maestría que desbloque
 - Anillo de meta diaria, nudge de "listo para repasar", y onboarding de primera frase para cuentas nuevas.
 
 ### 🔓 Escape room narrativo
-- Salas de escape con historia, arte y audio. **3 niveles jugables** (El café, La excursión escolar, La comida callejera) y **7 en "coming soon"** con teaser.
-- Hotspots interactivos, sistema de slots para responder, pantallas de victoria y **recompensas cosméticas** (común/raro/épico/legendario).
+- **10 niveles jugables de principio a fin**, desde *Una mañana en el minbak* hasta *La cumbre de medianoche*, con progresión TOPIK 1–6.
+- 40 salas ilustradas, cinemáticas de entrada/salida, audio/SFX, hotspots, 59 slots y 295 variantes de puzzle.
+- Narrativa, interfaz, pistas y recompensas completas en los **8 idiomas** del producto, con cosméticos común/raro/épico/legendario.
 
 ### 🏆 Avatares y trofeos
 - **36 avatares de jardín** en 4 tiers, desbloqueables por progreso (árboles plantados, % dominado, rachas, labs completados, niveles TOPIK…). El legendario lleva marco + aura.
@@ -75,7 +77,7 @@ Drills especializados, cada uno con su propio sistema de maestría que desbloque
 ### 🔐 Cuentas y sincronización (Supabase)
 - Cuentas obligatorias con email/contraseña, magic-link y flujo PKCE; recuperación de contraseña.
 - **Sync multi-dispositivo**: tu progreso (SRS, log, contextos, ajustes, escape room…) vive en Supabase con **RLS por usuario** (cada quien solo ve sus datos).
-- Capa de almacenamiento con adaptadores (Supabase ↔ localStorage de respaldo) tras una interfaz única.
+- Persistencia protegida por cuenta, colas de escritura, rollback, reintentos y estado de guardado visible; las ventanas sin sesión usan un adaptador `noop` para no mezclar datos entre usuarios.
 - Borrado de cuenta vía Edge Function que verifica el JWT del propio usuario.
 
 ### 🌍 Internacionalización
@@ -85,13 +87,13 @@ Drills especializados, cada uno con su propio sistema de maestría que desbloque
 
 Carga perezosa por locale (`lazy: true`), estrategia `no_prefix`, fallback a inglés.
 
-### 📱 PWA
-Iconos, splash screens por dispositivo, manifest y service worker (la v2.22 legacy es instalable como PWA single-file).
+### 📱 Web responsive + PWA legacy
+La v3 está optimizada para escritorio y móvil. La v2.22 legacy conserva su manifest y service worker como PWA instalable; el soporte offline de la v3 queda como una decisión futura explícita, no como una función ya entregada.
 
 ---
 
 ## 🎓 Cobertura TOPIK
-Currículo completo **TOPIK 1–6** (no solo lo básico): ~300 gramáticas organizadas por nivel y tema (formalidad, situacional, categorías semánticas) más secciones transversales (auxiliares, estilo indirecto, gramática complementaria).
+Currículo completo **TOPIK 1–6** (no solo lo básico): 301 gramáticas organizadas por nivel y tema (formalidad, situacional, categorías semánticas) más secciones transversales (auxiliares, estilo indirecto, gramática complementaria).
 
 ---
 
@@ -99,19 +101,20 @@ Currículo completo **TOPIK 1–6** (no solo lo básico): ~300 gramáticas organ
 
 Desarrollo **activo** y desplegado en producción. Es un proyecto personal (gramática coreana para uso propio y de mi esposa), construido con un flujo PR-por-feature.
 
-- ✅ **116+ PRs mergeados** a `main`, cada uno con su gate verde.
-- ✅ **CI** en GitHub Actions (`.github/workflows/ci.yml`): lint + typecheck + ~295 archivos de test (Vitest) en cada push/PR.
+- ✅ **150+ PRs mergeados** a `main`, cada uno con su gate verde.
+- ✅ **CI** en GitHub Actions (`.github/workflows/ci.yml`): lint + typecheck + **350 archivos / 7.754 tests** (Vitest) + recorrido visual completo del Escape Room + build.
 - ✅ **Auto-deploy a Vercel** desde `main` (+ backend Supabase live, `ap-northeast-2`).
 - ✅ **Rewrite v2→v3 completo**: el prototipo legacy (`index.html`, single-file de ~5.5k LOC) está reescrito como app Nuxt 4 modular en `munbeop/`.
-- ✅ Núcleo cerrado: loop de práctica, SRS, biblioteca con ficha completa (ejemplos + pronunciación + notas + audio), jardín + Bomi, escape room (3 niveles), avatares, stats con heatmap, ajustes, auth + sync.
+- ✅ Núcleo cerrado: The Deck, SRS, 9 laboratorios/modos complementarios, biblioteca completa, jardín + Bomi, **10 Escape Rooms**, avatares, stats, ajustes, auth y sync seguro por cuenta.
 
-**Auditorías:** el repo mantiene un historial de auditorías técnicas (`AUDITORIA.md` + archivos fechados). La última (2026-06-28) no encontró hallazgos críticos; seguridad verificada en vivo (12/12 tablas con RLS).
+**Calidad del release (2026-08-15):** lint, tipos, build, 7.754 tests, auditoría de traducciones y QA Chrome de 10 portadas, 40 salas, 10 finales, 8 idiomas y vistas móviles; además se repitió el recorrido contra producción sin errores de consola. `AUDITORIA.md` y los archivos fechados se conservan como snapshots históricos, no como backlog vigente.
 
-**Próximamente (roadmap):**
-- 💳 **Monetización** — división free / premium (la página de precios actual es un placeholder hasta definir el modelo y el cobro, p. ej. Toss/KakaoPay).
-- 🔓 Escape room niveles 4–10.
-- 🌐 Copy localizado de las páginas públicas (precios/features/políticas).
-- 📈 Captura de errores (respetando "sin trackers de terceros").
+**Siguiente etapa (roadmap post-release):**
+- 🧭 Ruta diaria personalizada a partir de placement, SRS, errores y dominio.
+- 🗣️ Revisión pedagógica y lingüística con profesores de coreano y hablantes nativos de los 8 idiomas.
+- 🧪 Beta con estudiantes reales y métricas de activación, finalización y retorno respetuosas con la privacidad.
+- ⚡ Optimización de bundles/assets y auditoría formal de accesibilidad (teclado, foco, lector de pantalla y movimiento reducido).
+- 📱 Evaluar PWA/offline y monetización solo después de validar aprendizaje y retención con evidencia.
 
 ---
 
@@ -122,16 +125,16 @@ Desarrollo **activo** y desplegado en producción. Es un proyecto personal (gram
 ├── index.html            # Legacy v2.22 — PWA single-file (GitHub Pages)
 ├── munbeop/              # ★ App nueva: Nuxt 4 + TypeScript + Pinia + i18n (Vercel)
 │   ├── app/
-│   │   ├── pages/        # 25 rutas (jardín, práctica, biblioteca, escape-room, stats, settings…)
-│   │   ├── components/   # 200+ componentes pixel-art
-│   │   ├── composables/  # 50 composables (orquestación read/write)
+│   │   ├── pages/        # Jardín, práctica, biblioteca, escape-room, stats, settings…
+│   │   ├── components/   # UI, juegos, jardín, biblioteca y layouts
+│   │   ├── composables/  # Orquestación de dominio, audio y persistencia
 │   │   ├── stores/       # 12 stores Pinia (setup syntax)
 │   │   ├── lib/          # Lógica pura por dominio (srs, garden, korean, avatars, stats…)
 │   │   ├── seed/         # Catálogo de gramática + ejemplos + pronunciación + notas
-│   │   └── i18n/locales/ # 8 archivos de traducción
+│   ├── i18n/locales/     # 8 archivos de traducción de interfaz
 │   └── supabase/         # Migraciones SQL (RLS) + Edge Function delete-account
 ├── docs/                 # Specs y planes de implementación
-├── AUDITORIA.md          # Auditoría técnica vigente (+ archivos fechados)
+├── AUDITORIA.md          # Snapshot técnico histórico (+ archivos fechados)
 └── LICENSE               # MIT
 ```
 
@@ -146,7 +149,7 @@ Desarrollo **activo** y desplegado en producción. Es un proyecto personal (gram
 - **Estilos**: Tailwind 3 + tokens CSS (temas claro/oscuro)
 - **i18n**: `@nuxtjs/i18n` 9 (8 locales, lazy)
 - **Animación**: `motion-v` · `@vueuse/core`
-- **Tests**: Vitest 3 + `@vue/test-utils` (~295 archivos) · ESLint 9 · Prettier 3
+- **Tests**: Vitest 3 + `@vue/test-utils` (**350 archivos / 7.754 tests**) · ESLint 9 · Prettier 3
 - **Gestor**: pnpm 9 · Node 20+ (CI: Node 24)
 
 ---
@@ -159,13 +162,13 @@ La app vive en `munbeop/`:
 cd munbeop
 pnpm install
 pnpm dev          # http://localhost:3000
-pnpm test         # Vitest (~295 archivos)
+pnpm test         # Vitest (350 archivos / 7.754 tests en el release 2026-08-15)
 pnpm lint         # ESLint
 pnpm typecheck    # vue-tsc
 pnpm build        # build de producción
 ```
 
-Requisitos: Node 20+, pnpm 9+. Para sync/auth necesitas las variables de entorno de Supabase (`NUXT_PUBLIC_SUPABASE_URL`, `NUXT_PUBLIC_SUPABASE_ANON_KEY`, `NUXT_PUBLIC_APP_URL`); sin ellas la app cae al adaptador de localStorage.
+Requisitos: Node 20+, pnpm 9+. Para sync/auth necesitas las variables de entorno de Supabase (`NUXT_PUBLIC_SUPABASE_URL`, `NUXT_PUBLIC_SUPABASE_ANON_KEY`, `NUXT_PUBLIC_APP_URL`). Sin ellas no existe una cuenta/backend válido: el modo transitorio `noop` evita escrituras locales que puedan simular una sincronización inexistente.
 
 ---
 

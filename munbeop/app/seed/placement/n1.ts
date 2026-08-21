@@ -5,8 +5,8 @@ import { L } from '../locale'
 /**
  * TOPIK-1 placement items (choose the surface form the context forces).
  * Each item targets a different TOPIK-1 grammar point; `ko` matches
- * grammars-n1.ts verbatim. Single-correct-answer crux drafted + self-reviewed;
- * Korean wife native review = documented final gate.
+ * grammars-n1.ts verbatim. Editorial QA covers the Korean surface forms, answer
+ * crux and localized meaning; seed tests enforce blank/option/locale integrity.
  */
 
 export const N1_PLACEMENT: PlacementItem[] = [
@@ -121,7 +121,7 @@ export const N1_PLACEMENT: PlacementItem[] = [
   {
     ko: '-아/어서',
     level: 1,
-    sentence: '비가 많이 와{} 우리는 집에 있었어요.',
+    sentence: '비가 많이 {} 우리는 집에 있었어요.',
     answer: '와서',
     distractors: ['오면', '오지만', '오거나'],
     trans: L(

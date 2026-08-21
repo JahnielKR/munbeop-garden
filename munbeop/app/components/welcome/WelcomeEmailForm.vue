@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import { isPasswordLongEnough } from '~/lib/auth/password'
+import { authErrorKey } from '~/lib/auth/error-message'
 
 const props = defineProps<{ mode: 'signin' | 'signup' | 'magic' }>()
 const emit = defineEmits<{
@@ -39,7 +40,9 @@ async function onForgotPassword() {
   }
   const { error } = await resetPassword(addr)
   if (error) {
-    emit('error', error.message)
+    // Localize: GoTrue messages are English-only (raw message → console).
+    console.error('auth: reset-password failed', error)
+    emit('error', t(authErrorKey(error)))
     return
   }
   emit('info', t('auth.reset_email_sent'))
@@ -49,21 +52,33 @@ async function submit() {
   if (loading.value) return
   loading.value = true
   try {
-    let result: { error: { message: string } | null }
-    if (props.mode === 'signin') {
-      result = await signIn(email.value.trim(), password.value)
-    } else if (props.mode === 'signup') {
-      result = await signUp(email.value.trim(), password.value)
+    if (props.mode === 'signup') {
+      const { error, needsConfirmation } = await signUp(email.value.trim(), password.value)
+      if (error) {
+        console.error('auth: sign-up failed', error)
+        emit('error', t(authErrorKey(error)))
+        return
+      }
+      // "Confirm email" is ON: there is no session yet, so don't navigate into
+      // the app (it would bounce back to /welcome). Tell the user to check mail.
+      if (needsConfirmation) {
+        emit('info', t('auth.signup_confirm_sent'))
+        return
+      }
     } else {
-      result = await signInMagicLink(email.value.trim())
-    }
-    if (result.error) {
-      emit('error', result.error.message)
-      return
-    }
-    if (props.mode === 'magic') {
-      emit('info', t('auth.magic_link_sent'))
-      return
+      const result =
+        props.mode === 'signin'
+          ? await signIn(email.value.trim(), password.value)
+          : await signInMagicLink(email.value.trim())
+      if (result.error) {
+        console.error('auth: sign-in failed', result.error)
+        emit('error', t(authErrorKey(result.error)))
+        return
+      }
+      if (props.mode === 'magic') {
+        emit('info', t('auth.magic_link_sent'))
+        return
+      }
     }
     emit('success')
     const { fadeOut } = useWelcomeMusic()

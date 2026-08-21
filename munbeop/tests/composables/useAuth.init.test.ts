@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useAuth } from '~/composables/useAuth'
 import { useAppStatus } from '~/stores/appStatus'
@@ -7,13 +7,16 @@ import { useAppStatus } from '~/stores/appStatus'
 // Supabase would fire (INITIAL_SESSION on a hard reload, SIGNED_IN, etc.).
 let authCallback: (event: string, session: unknown) => Promise<void> | void = () => {}
 
-async function fireAuth(event: string, session: unknown): Promise<void> {
-  authCallback(event, session)
-  // Auth side effects deliberately leave onAuthStateChange via setTimeout(0)
-  // before making any Supabase query (avoids the supabase-js auth deadlock).
-  await new Promise((resolve) => setTimeout(resolve, 0))
-  await new Promise((resolve) => setTimeout(resolve, 0))
-}
+const { authStoreMock } = vi.hoisted(() => {
+  const store: { user: { id: string } | null; setSession: ReturnType<typeof vi.fn> } = {
+    user: null,
+    setSession: vi.fn(),
+  }
+  store.setSession.mockImplementation((session: { user?: { id: string } } | null) => {
+    store.user = session?.user ?? null
+  })
+  return { authStoreMock: store }
+})
 
 const getSession = vi.fn(async () => ({ data: { session: null } }))
 const signInWithPassword = vi.fn(async () => ({ error: null as { message: string } | null }))
@@ -33,8 +36,8 @@ vi.stubGlobal('useNuxtApp', () => ({
   $supabase: { auth: { getSession, onAuthStateChange, signInWithPassword } },
 }))
 vi.stubGlobal('useRouter', () => ({ push: vi.fn(), currentRoute: { value: { path: '/welcome' } } }))
-vi.stubGlobal('useAuthStore', () => ({ setSession: vi.fn(), user: { id: 'u' } }))
-vi.mock('~/stores/auth', () => ({ useAuthStore: () => ({ setSession: vi.fn(), user: { id: 'u' } }) }))
+vi.stubGlobal('useAuthStore', () => authStoreMock)
+vi.mock('~/stores/auth', () => ({ useAuthStore: () => authStoreMock }))
 vi.mock('~/stores/grammar', () => ({ useGrammarStore: () => ({ hydrate: grammarHydrate }) }))
 vi.mock('~/stores/contexts', () => ({ useContextsStore: () => ({ hydrate: contextsHydrate }) }))
 vi.mock('~/stores/srs', () => ({ useSrsStore: () => ({ hydrate: srsHydrate }) }))
@@ -48,10 +51,18 @@ vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ hydrate: vi.fn(
 
 describe('useAuth().init — session restored on reload', () => {
   beforeEach(() => {
+    vi.useFakeTimers()
     setActivePinia(createPinia())
     vi.clearAllMocks()
+    authStoreMock.user = { id: 'u' }
     getSession.mockResolvedValue({ data: { session: null } })
   })
+  afterEach(() => vi.useRealTimers())
+
+  async function flushAuthEvent() {
+    await vi.runAllTimersAsync()
+    await Promise.resolve()
+  }
 
   // The bug: on a hard reload, the layout hydrates the data stores against the
   // noop adapter BEFORE getSession() resolves, so they hold seed defaults. When
@@ -60,7 +71,9 @@ describe('useAuth().init — session restored on reload', () => {
   // later write could overwrite the account's real cloud data with seeds).
   it('re-hydrates the data stores on INITIAL_SESSION, not just settings', async () => {
     await useAuth().init()
-    await fireAuth('INITIAL_SESSION', { user: { id: 'u' } })
+    authCallback('INITIAL_SESSION', { user: { id: 'u' } })
+    expect(grammarHydrate).not.toHaveBeenCalled()
+    await flushAuthEvent()
 
     expect(settingsHydrate).toHaveBeenCalled()
     expect(grammarHydrate).toHaveBeenCalled()
@@ -72,7 +85,8 @@ describe('useAuth().init — session restored on reload', () => {
 
   it('does not hydrate data stores on INITIAL_SESSION when there is no session', async () => {
     await useAuth().init()
-    await fireAuth('INITIAL_SESSION', null)
+    authCallback('INITIAL_SESSION', null)
+    await flushAuthEvent()
 
     expect(grammarHydrate).not.toHaveBeenCalled()
     expect(settingsHydrate).not.toHaveBeenCalled()
@@ -85,7 +99,8 @@ describe('useAuth().init — session restored on reload', () => {
   it('swallows a data-store hydrate failure on INITIAL_SESSION', async () => {
     grammarHydrate.mockRejectedValueOnce(new Error('rls denied'))
     await useAuth().init()
-    await expect(fireAuth('INITIAL_SESSION', { user: { id: 'u' } })).resolves.toBeUndefined()
+    authCallback('INITIAL_SESSION', { user: { id: 'u' } })
+    await expect(flushAuthEvent()).resolves.toBeUndefined()
   })
 
   it('signIn resolves error:null even if post-auth data hydration fails', async () => {
@@ -101,13 +116,31 @@ describe('useAuth().init — session restored on reload', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
     grammarHydrate.mockRejectedValueOnce(new Error('rls denied'))
     await useAuth().init()
-    await fireAuth('INITIAL_SESSION', { user: { id: 'u' } })
+    authCallback('INITIAL_SESSION', { user: { id: 'u' } })
+    await flushAuthEvent()
     expect(useAppStatus().status).toBe('error')
   })
 
   it('marks app data status ready when INITIAL_SESSION hydration succeeds', async () => {
     await useAuth().init()
-    await fireAuth('INITIAL_SESSION', { user: { id: 'u' } })
+    authCallback('INITIAL_SESSION', { user: { id: 'u' } })
+    await flushAuthEvent()
+    expect(useAppStatus().status).toBe('ready')
+  })
+
+  it('re-hydrates when SIGNED_IN switches from account A to account B', async () => {
+    getSession.mockResolvedValueOnce({
+      data: { session: { user: { id: 'account-a' } } },
+    } as never)
+    await useAuth().init()
+    expect(authStoreMock.user?.id).toBe('account-a')
+
+    authCallback('SIGNED_IN', { user: { id: 'account-b' } })
+    await flushAuthEvent()
+
+    expect(authStoreMock.user?.id).toBe('account-b')
+    expect(grammarHydrate).toHaveBeenCalledTimes(1)
+    expect(settingsHydrate).toHaveBeenCalledTimes(1)
     expect(useAppStatus().status).toBe('ready')
   })
 })

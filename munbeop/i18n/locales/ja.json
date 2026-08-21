@@ -309,6 +309,11 @@
     "toast_saved_easy": "✨ 保存しました",
     "toast_saved_hard": "😤 保存しました",
     "toast_save_error": "⚠️ 保存できませんでした。文は残っています。もう一度タップしてください。",
+    "save_error": "進捗を保存できませんでした。もう一度お試しください。",
+    "save_saving": "進捗を保存しています…",
+    "save_saved": "進捗を保存しました。",
+    "save_retry": "もう一度保存",
+    "start_failed": "練習を開始できませんでした。接続を確認して再試行してください。",
     "no_sentence": "先に文を書いてください",
     "custom": {
       "section": "カスタムデッキ",
@@ -328,6 +333,7 @@
       "save": "デッキを保存",
       "delete": "デッキを削除",
       "confirm_delete": "このデッキを削除しますか？元に戻せません。",
+      "discard_confirm": "保存していないデッキの変更を破棄しますか？",
       "empty_title": "最初のデッキを作ろう",
       "empty_hint": "好きな文法をどのレベルからでも選び、名前を付けてプレイ。"
     },
@@ -497,6 +503,7 @@
     "submit_sign_up": "登録",
     "submit_magic_link": "マジックリンクを送る",
     "magic_link_sent": "メールでサインインリンクを確認してください。",
+    "signup_confirm_sent": "アカウントを確認するにはメールをご確認ください。",
     "checking": "リンクを確認中…",
     "callback_success": "サインインしました!リダイレクト中…",
     "callback_error": "リンクが無効または期限切れです。",
@@ -513,6 +520,12 @@
     "new_password_label": "新しいパスワード",
     "current_password_label": "現在のパスワード",
     "password_min": "8文字以上。",
+    "error_invalid_credentials": "メールアドレスまたはパスワードが正しくありません。",
+    "error_email_not_confirmed": "先にメールを確認してください。受信トレイをチェックしてください。",
+    "error_user_exists": "このメールアドレスのアカウントは既に存在します。",
+    "error_rate_limited": "試行回数が多すぎます。しばらく待ってから再試行してください。",
+    "error_weak_password": "パスワードが弱すぎます。もっと長いものを試してください。",
+    "error_generic": "エラーが発生しました。しばらくしてから再試行してください。",
     "submit_new_password": "パスワードを更新",
     "password_updated": "パスワードを更新しました。",
     "reset_error": "パスワードを更新できませんでした。もう一度お試しください。",
@@ -541,7 +554,8 @@
       "delete_confirm_body": "「{ko}」をあなたの表現から削除します。",
       "empty": "まだ自分の表現がありません。下から最初の表現を植えましょう。",
       "created": "文法を追加しました。",
-      "deleted": "文法を削除しました。"
+      "deleted": "文法を削除しました。",
+      "cancel": "キャンセル"
     },
     "dark_mode": "ダークモード",
     "appearance": {
@@ -912,6 +926,10 @@
     "numberMarket": {
       "name": "数の市場",
       "desc": "韓国語式に数を読む：数える・時刻・お金・日付。"
+    },
+    "sentenceGarden": {
+      "name": "文の庭",
+      "desc": "語カードを並べて本物の韓国語の文を組み立てよう。"
     }
   },
   "escape": {
@@ -931,10 +949,14 @@
     "errors": "ミス",
     "solved": "クリア",
     "rooms": "部屋",
+    "clue_n": "手がかり {n}",
     "game_over_title": "物語が逃げてしまった…",
     "game_over_text": "3回のつまずき。扉はまた閉じた — でも家はあなたを覚えている。新しいメモでもう一度。",
     "retry": "リトライ",
     "back_to_book": "ノートに戻る",
+    "close": "閉じる",
+    "wrong_nudge": "惜しい — 残り {left} ♥",
+    "hearts_status": "残り {left}/{total} 回",
     "victory_title": "脱出成功!",
     "reward_unlocked": "ごほうび解放",
     "premios_title": "トロフィー",
@@ -958,6 +980,7 @@
     "title": "活用ラボ",
     "lead": "正しい活用形を選ぼう。間違いの選択肢は学習者が実際によくするミスだよ。",
     "pick_class": "クラスを選ぶ",
+    "change_class": "クラスを変更",
     "prompt": "{ending} に活用しよう",
     "gloss_hint": "({gloss})",
     "pick_hint": "正しい形をタップしよう。",
@@ -991,6 +1014,11 @@
       "dismiss": "やった！",
       "pip_done": "{ko} — クリア済み",
       "pip_todo": "{ko} — まだ"
+    },
+    "persistence": {
+      "saving": "この間違いを保存しています…",
+      "failed": "この間違いを保存できませんでした。回答はそのまま残っています。",
+      "retry": "もう一度保存"
     }
   },
   "register": {
@@ -1021,6 +1049,11 @@
       "dismiss": "やった！",
       "pip_done": "{ko} — 完了",
       "pip_todo": "{ko} — まだ"
+    },
+    "persistence": {
+      "saving": "この間違いを保存中…",
+      "failed": "この間違いを保存できませんでした。回答はそのまま残っています。",
+      "retry": "保存を再試行"
     }
   },
   "cloze": {
@@ -1028,6 +1061,8 @@
     "lead": "デッキを選び、各空欄に合う文法を選びましょう — ライティングを補うクイック認識ラウンドです。",
     "pick_deck": "デッキを選ぶ",
     "deck_empty": "このデッキにはまだ穴埋め項目がありません — 別のデッキをお試しください。",
+    "custom_item_count": "プレイ可能な穴埋め問題：{n}",
+    "custom_locked_need_items": "プレイ可能な穴埋め問題が3問必要",
     "pick_hint": "空欄に合う形をタップしてください。",
     "correct": "正解！",
     "wrong": "もう少し",
@@ -1072,6 +1107,20 @@
       "time_age": "時間と年齢",
       "things": "物",
       "money_order": "お金と順番"
+    },
+    "master": {
+      "label": "助数詞マスター",
+      "progress": "{done}/{total}セット完了",
+      "earned": "全6セット完了！",
+      "celebrate_body": "助数詞の全{total}セットを完了しました。잘했어요!",
+      "dismiss": "やった！",
+      "pip_done": "{ko} — 完了",
+      "pip_todo": "{ko} — まだ"
+    },
+    "persistence": {
+      "saving": "この間違いを保存しています…",
+      "failed": "この間違いを保存できませんでした。回答はそのまま残っています。",
+      "retry": "もう一度保存"
     }
   },
   "reminder": {
@@ -1160,5 +1209,36 @@
       "fmt_date": "例: 6/15",
       "fmt_phone": "例: 01012345678"
     }
+  },
+  "sentenceGarden": {
+    "title": "文の庭",
+    "lead": "語カードを並べて文を組み立てよう。ラウンドによってはダミーが1枚加わる。",
+    "pick_deck": "デッキを選ぶ",
+    "deck_empty": "このデッキにはまだ短い文がありません。",
+    "progress_label": "文",
+    "check": "チェック",
+    "hear": "聞く",
+    "tray_label": "語カード",
+    "bed_label": "あなたの文",
+    "reveal_correct": "正しい順番：{correct}",
+    "correct": "正解！",
+    "sr_placed": "{word} を置きました",
+    "sr_removed": "{word} を戻しました",
+    "replay_mode_label": "間違えた文をもう一度",
+    "summary_again": "もう一度",
+    "summary_replay": "間違いを再挑戦",
+    "custom_round_count": "プレイ可能な文：{n}",
+    "custom_locked_need_rounds": "プレイ可能な文が6つ必要",
+    "persistence": {
+      "saving": "進捗を保存中…",
+      "failed": "進捗を保存できませんでした。データは失われていません。",
+      "retry": "保存を再試行"
+    },
+    "next": "次へ"
+  },
+  "practiceHelp": {
+    "button": "説明",
+    "close": "閉じる",
+    "section": { "concept": "これは何？", "types": "種類", "howToPlay": "遊び方", "tip": "コツ" }
   }
 }

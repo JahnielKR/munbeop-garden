@@ -118,6 +118,38 @@ const SPECS: SeedSpec[] = [
   { id: 'phone-010-1111-2222', domain: 'phone', digits: '01011112222', groups: [3, 4, 4] },
   { id: 'phone-010-5678-1234', domain: 'phone', digits: '01056781234', groups: [3, 4, 4] },
   { id: 'phone-010-7777-8888', domain: 'phone', digits: '01077778888', groups: [3, 4, 4] },
+
+  // ── extra: broaden the dictation pool (readings still engine-rendered) ──
+  // counting
+  { id: 'count-apple-10', domain: 'counting', nounIdx: 0, n: 10 },
+  { id: 'count-book-2', domain: 'counting', nounIdx: 7, n: 2 },
+  { id: 'count-person-8', domain: 'counting', nounIdx: 5, n: 8 },
+  { id: 'count-age-50', domain: 'counting', nounIdx: -1, n: 50 },
+  // sino-basics
+  { id: 'sino-23', domain: 'sino-basics', n: 23 },
+  { id: 'sino-47', domain: 'sino-basics', n: 47 },
+  { id: 'sino-250', domain: 'sino-basics', n: 250 },
+  { id: 'sino-8888', domain: 'sino-basics', n: 8888 },
+  // time
+  { id: 'time-1-30', domain: 'time', h: 1, m: 30 },
+  { id: 'time-7-50', domain: 'time', h: 7, m: 50 },
+  { id: 'time-10-15', domain: 'time', h: 10, m: 15 },
+  { id: 'time-12-45', domain: 'time', h: 12, m: 45 },
+  // money
+  { id: 'money-700', domain: 'money', n: 700 },
+  { id: 'money-4500', domain: 'money', n: 4500 },
+  { id: 'money-20000', domain: 'money', n: 20000 },
+  { id: 'money-88000', domain: 'money', n: 88000 },
+  // dates
+  { id: 'date-1-15', domain: 'dates', mth: 1, d: 15 },
+  { id: 'date-5-8', domain: 'dates', mth: 5, d: 8 },
+  { id: 'date-9-24', domain: 'dates', mth: 9, d: 24 },
+  { id: 'date-11-11', domain: 'dates', mth: 11, d: 11 },
+  // phone / digit strings
+  { id: 'phone-1330', domain: 'phone', digits: '1330', groups: [4] },
+  { id: 'phone-0102468', domain: 'phone', digits: '0102468', groups: [3, 4] },
+  { id: 'phone-010-2468-1357', domain: 'phone', digits: '01024681357', groups: [3, 4, 4] },
+  { id: 'phone-1588-1588', domain: 'phone', digits: '15881588', groups: [4, 4] },
 ]
 
 export const MARKET_ITEMS: MarketItem[] = SPECS.map((s) => buildFromSpec(s, s.id))

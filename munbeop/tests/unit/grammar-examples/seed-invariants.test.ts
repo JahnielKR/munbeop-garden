@@ -23,6 +23,22 @@ describe('grammar-examples seed invariants', () => {
     })
   }
 
+  it('keeps every Korean bank sentence unique', () => {
+    const sentences = GRAMMAR_EXAMPLES.map((example) => example.sentence)
+    expect(new Set(sentences).size).toBe(sentences.length)
+  })
+
+  it('keeps the speech-level tag aligned with the sentence ending', () => {
+    for (const example of GRAMMAR_EXAMPLES) {
+      const endsPolite = /(?:요|죠)[.!?]?$/u.test(example.sentence)
+      if (example.level === 'polite') {
+        expect(endsPolite, `${example.ko}: ${example.sentence}`).toBe(true)
+      } else {
+        expect(endsPolite, `${example.ko}: ${example.sentence}`).toBe(false)
+      }
+    }
+  })
+
   // Coverage: the TOPIK-1 batch must cover all 12 target points, ≥2 each.
   const TOPIK_1_BATCH = [
     '-아/어요', '-았/었어요', '-ㅂ/습니다', '-(으)세요', '-(으)ㄹ 거예요', '-고',

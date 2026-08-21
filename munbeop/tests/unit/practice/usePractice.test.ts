@@ -4,6 +4,8 @@
 import { usePractice } from '~/composables/usePractice'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
+import { useAppStatus } from '~/stores/appStatus'
+import { useAuthStore } from '~/stores/auth'
 
 // ---------------------------------------------------------------------------
 // Store mocks — hoisted by vitest before the SUT import executes.
@@ -12,13 +14,14 @@ import { setActivePinia, createPinia } from 'pinia'
 const markSeen = vi.fn(async () => {})
 const recalculate = vi.fn(async () => {})
 const add = vi.fn(async (e: unknown) => ({ id: 1, ...(e as object) }))
+const createEntryId = vi.fn(() => 7001)
 
 vi.mock('~/stores/srs', () => ({
   useSrsStore: () => ({ markSeen, recalculate, weightFor: () => 1 }),
 }))
 
 vi.mock('~/stores/log', () => ({
-  useLogStore: () => ({ add, entries: [] }),
+  useLogStore: () => ({ add, createEntryId, entries: [] }),
 }))
 
 // Build a grammar pool of 5 items — 3+ satisfies the engine's hard floor.
@@ -75,12 +78,19 @@ let routeQuery: Record<string, unknown> = {}
 
 beforeEach(() => {
   setActivePinia(createPinia())
+  const auth = useAuthStore()
+  auth.ready = true
+  auth.user = { id: 'user-1' } as never
+  useAppStatus().status = 'ready'
   // Reset stubs.
   routeQuery = {}
   vi.stubGlobal('useRoute', () => ({ query: routeQuery }))
   markSeen.mockClear()
   recalculate.mockClear()
   add.mockClear()
+  add.mockResolvedValue({ id: 1 })
+  createEntryId.mockClear()
+  createEntryId.mockReturnValue(7001)
   // Restore full context list between tests.
   mockActiveContexts = MOCK_CONTEXTS
 })
@@ -106,6 +116,27 @@ describe('usePractice', () => {
   })
 
   // -------------------------------------------------------------------------
+  // 1b. Failed hydration (appStatus 'error') → data error, no session, no write
+  // -------------------------------------------------------------------------
+  it('refuses to start with a data error when hydration failed, marking nothing seen', async () => {
+    useAppStatus().status = 'error'
+    const p = usePractice()
+    await p.start()
+    expect(p.error.value).toBe('errors.data_failed')
+    expect(p.session.value).toBeNull()
+    // Critical: no SRS write — that is what would clobber the real cloud row.
+    expect(markSeen).not.toHaveBeenCalled()
+  })
+
+  it('refuses to start while auth/session data is still restoring', async () => {
+    useAuthStore().ready = false
+    const p = usePractice()
+    await p.start()
+    expect(p.error.value).toBe('errors.data_failed')
+    expect(p.session.value).toBeNull()
+  })
+
+  // -------------------------------------------------------------------------
   // 2. Focus round: route.query.focus points at a known ko
   // -------------------------------------------------------------------------
   it('creates a 3-pick single-grammar session when route.query.focus matches a ko', async () => {
@@ -120,9 +151,18 @@ describe('usePractice', () => {
     for (const pick of picks) {
       expect(pick.grammarIdx).toBe(focusIdx)
     }
-    // markSeen called exactly once with the focused ko.
-    expect(markSeen).toHaveBeenCalledTimes(1)
-    expect(markSeen).toHaveBeenCalledWith('은/는')
+    // Dealing/abandoning a card is not practice; lastSeen changes only after a
+    // saved answer via the SRS recalculation.
+    expect(markSeen).not.toHaveBeenCalled()
+  })
+
+  it('rejects an unknown focus ko instead of falling through to a random draw', async () => {
+    routeQuery = { focus: '없는-문법' }
+    const p = usePractice()
+    await p.start()
+    expect(p.error.value).toBe('practice.no_grammars')
+    expect(p.session.value).toBeNull()
+    expect(markSeen).not.toHaveBeenCalled()
   })
 
   // -------------------------------------------------------------------------
@@ -135,7 +175,7 @@ describe('usePractice', () => {
     expect(p.error.value).toBeNull()
     expect(p.session.value).not.toBeNull()
     expect(p.session.value!.picks).toHaveLength(3)
-    expect(markSeen).toHaveBeenCalledTimes(3)
+    expect(markSeen).not.toHaveBeenCalled()
   })
 
   // -------------------------------------------------------------------------
@@ -158,7 +198,7 @@ describe('usePractice', () => {
     expect(p.error.value).toBeNull()
     expect(p.session.value).not.toBeNull()
     expect(p.session.value!.picks).toHaveLength(3)
-    expect(markSeen).toHaveBeenCalledTimes(3)
+    expect(markSeen).not.toHaveBeenCalled()
   })
 
   // -------------------------------------------------------------------------
@@ -187,8 +227,7 @@ describe('usePractice', () => {
     // In a focus round all 3 picks share the same grammarIdx.
     // A deck draw picks from the whole pool → it is NOT forced to be all the same.
     // We verify that this is NOT a forced single-grammar focus by checking that
-    // markSeen was called 3 times (focus only calls it once with the focused ko).
-    expect(markSeen).toHaveBeenCalledTimes(3)
+    expect(markSeen).not.toHaveBeenCalled()
     // All 3 picks must come from topik-1 indices (0, 1, 2).
     for (const pick of picks) {
       expect([0, 1, 2]).toContain(pick.grammarIdx)
@@ -292,6 +331,26 @@ describe('usePractice', () => {
     expect(recalculate).not.toHaveBeenCalled()
   })
 
+  it('reuses the journal id when retrying an ambiguously failed write', async () => {
+    const p = usePractice()
+    await p.start()
+    const params = {
+      pickIndex: 0,
+      sentence: '저는 학생이에요.',
+      feedback: 'easy' as const,
+      errorNote: null,
+    }
+    add.mockRejectedValueOnce(new Error('response lost'))
+
+    await expect(p.persistEntry(params)).resolves.toBeNull()
+    await expect(p.persistEntry(params)).resolves.not.toBeNull()
+
+    expect(createEntryId).toHaveBeenCalledTimes(1)
+    expect(add.mock.calls[0]![1]).toBe(7001)
+    expect(add.mock.calls[1]![1]).toBe(7001)
+    expect(p.session.value!.picks[0]!.progress).toBe(1)
+  })
+
   // -------------------------------------------------------------------------
   // 6f. persistEntry: the SRS recalc is secondary. If the log entry saved but
   // the recalc throws, we must NOT lose the saved entry or block the card —
@@ -313,6 +372,68 @@ describe('usePractice', () => {
     expect(result).not.toBeNull()
     expect(add).toHaveBeenCalledTimes(1)
     expect(p.session.value!.picks[0]!.progress).toBe(before + 1)
+  })
+
+  it('serializes cross-card save pipelines so SRS never sees a rollback-pending sibling', async () => {
+    const p = usePractice()
+    await p.start()
+    let releaseFirst!: (entry: { id: number }) => void
+    add
+      .mockImplementationOnce(() => new Promise((resolve) => { releaseFirst = resolve }))
+      .mockResolvedValueOnce({ id: 2 })
+
+    const first = p.persistEntry({
+      pickIndex: 0,
+      sentence: '첫 문장',
+      feedback: 'easy',
+      errorNote: null,
+    })
+    const second = p.persistEntry({
+      pickIndex: 1,
+      sentence: '둘째 문장',
+      feedback: 'easy',
+      errorNote: null,
+    })
+
+    await Promise.resolve()
+    expect(add).toHaveBeenCalledTimes(1)
+    releaseFirst({ id: 1 })
+    await first
+    await second
+    expect(add).toHaveBeenCalledTimes(2)
+    expect(recalculate).toHaveBeenCalledTimes(2)
+  })
+
+  it('drops queued account-A cards after account B signs in', async () => {
+    const p = usePractice()
+    await p.start()
+    const beforeFirst = p.session.value!.picks[0]!.progress
+    const beforeSecond = p.session.value!.picks[1]!.progress
+    let releaseFirst!: (entry: { id: number }) => void
+    add.mockImplementationOnce(() => new Promise((resolve) => { releaseFirst = resolve }))
+
+    const first = p.persistEntry({
+      pickIndex: 0,
+      sentence: 'A 첫 문장',
+      feedback: 'easy',
+      errorNote: null,
+    })
+    const second = p.persistEntry({
+      pickIndex: 1,
+      sentence: 'A 둘째 문장',
+      feedback: 'easy',
+      errorNote: null,
+    })
+    await vi.waitFor(() => expect(add).toHaveBeenCalledTimes(1))
+
+    useAuthStore().user = { id: 'user-2' } as never
+    releaseFirst({ id: 1 })
+    await Promise.all([first, second])
+
+    expect(add).toHaveBeenCalledTimes(1)
+    expect(recalculate).not.toHaveBeenCalled()
+    expect(p.session.value!.picks[0]!.progress).toBe(beforeFirst)
+    expect(p.session.value!.picks[1]!.progress).toBe(beforeSecond)
   })
 
   // -------------------------------------------------------------------------

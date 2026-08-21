@@ -7,6 +7,7 @@ interface Props {
   phase: 'question' | 'right' | 'wrong' | 'done'
   picked: string | null
   verdict: boolean | null
+  nextDisabled?: boolean
 }
 const props = defineProps<Props>()
 defineEmits<{ answer: [choice: string]; next: [] }>()
@@ -47,7 +48,13 @@ function optionState(opt: string): 'idle' | 'correct' | 'wrong' | 'muted' {
         {{ verdict ? t('counters.correct') : t('counters.wrong') }}
       </p>
       <p class="counter-card__why" lang="ko">{{ item.answer }} · {{ tl(item.trans) }}</p>
-      <button type="button" class="counter-card__btn" data-testid="counter-next" @click="$emit('next')">
+      <button
+        type="button"
+        class="counter-card__btn"
+        data-testid="counter-next"
+        :disabled="nextDisabled"
+        @click="$emit('next')"
+      >
         {{ t('counters.next') }}
       </button>
     </div>
@@ -71,5 +78,6 @@ function optionState(opt: string): 'idle' | 'correct' | 'wrong' | 'muted' {
 .counter-card__verdict.is-no { color: var(--danger); }
 .counter-card__why { margin: 0; font-family: 'Noto Sans KR', sans-serif; font-size: 14px; color: var(--ink); }
 .counter-card__btn { align-self: flex-start; padding: 6px 14px; background: var(--accent); color: var(--text-on-accent); border: 2px solid var(--ink-line); font-family: 'Press Start 2P', monospace; font-size: 9px; cursor: pointer; }
+.counter-card__btn:disabled { opacity: 0.55; cursor: wait; }
 @media (max-width: 480px) { .counter-card__options { grid-template-columns: 1fr; } }
 </style>

@@ -1,6 +1,47 @@
 import type { DrillItem } from '~/lib/domain'
 import { L } from './locale'
 
+const MEANS_CUE = L(
+  'The noun names the means, tool, or language used.',
+  'El sustantivo nombra el medio, la herramienta o el idioma utilizado.',
+  'Le nom indique le moyen, l’outil ou la langue utilisée.',
+  'O substantivo indica o meio, a ferramenta ou o idioma usado.',
+  'คำนามบอกวิธี เครื่องมือ หรือภาษาที่ใช้',
+  'Nomina menyebut cara, alat, atau bahasa yang dipakai.',
+  'Danh từ chỉ phương tiện, công cụ hoặc ngôn ngữ được dùng.',
+  '名詞が手段・道具・使用言語を表す。',
+)
+const MEANS_REASON = L(
+  'A means, instrument, route, or language takes (으)로.',
+  'Un medio, instrumento, ruta o idioma lleva (으)로.',
+  'Un moyen, un instrument, un trajet ou une langue prend (으)로.',
+  'Um meio, instrumento, trajeto ou idioma leva (으)로.',
+  'วิธี เครื่องมือ เส้นทาง หรือภาษาใช้ (으)로',
+  'Cara, alat, rute, atau bahasa memakai (으)로.',
+  'Phương tiện, công cụ, tuyến đường hoặc ngôn ngữ dùng (으)로.',
+  '手段・道具・経路・言語には (으)로 を使う。',
+)
+const COMPANION_CUE = L(
+  'The noun is a companion or one item in a pair.',
+  'El sustantivo es un acompañante o un elemento de una pareja.',
+  'Le nom est un compagnon ou un élément d’une paire.',
+  'O substantivo é um acompanhante ou um item de um par.',
+  'คำนามคือผู้ร่วมทำหรือสิ่งหนึ่งในคู่',
+  'Nomina adalah teman atau salah satu benda dalam pasangan.',
+  'Danh từ là người đồng hành hoặc một món trong một cặp.',
+  '名詞が同伴者、または対になる一方を表す。',
+)
+const COMPANION_REASON = L(
+  'A companion or paired noun takes 와/과 (“with/and”).',
+  'Un acompañante o sustantivo emparejado lleva 와/과 («con/y»).',
+  'Un compagnon ou un nom coordonné prend 와/과 (« avec/et »).',
+  'Um acompanhante ou substantivo coordenado leva 와/과 (“com/e”).',
+  'ผู้ร่วมทำหรือคำนามที่เชื่อมเป็นคู่ใช้ 와/과 (“กับ/และ”)',
+  'Teman atau nomina berpasangan memakai 와/과 (“dengan/dan”).',
+  'Người đồng hành hoặc danh từ ghép cặp dùng 와/과 (“với/và”).',
+  '同伴者や並列する名詞には 와/과（「と」）を使う。',
+)
+
 /** 은/는 vs 이/가 shock-filter drill. Fixed pedagogical order. */
 export const PARTICLE_DRILLS: DrillItem[] = [
   {
@@ -2736,6 +2777,96 @@ export const PARTICLE_DRILLS: DrillItem[] = [
       'Siapa yang menang?',
       'Ai đã thắng?',
       '誰が勝ちましたか？',
+    ),
+  },
+  {
+    id: 'mc-01-bus', cue: MEANS_CUE, noun: '버스', rest: ' 학교에 가요.',
+    setId: 'means-companion', familyIndex: 0, reason: MEANS_REASON,
+    trans: L(
+      'I go to school by bus.', 'Voy a la escuela en autobús.', 'Je vais à l’école en bus.',
+      'Vou à escola de ônibus.', 'ฉันไปโรงเรียนโดยรถบัส', 'Saya pergi ke sekolah naik bus.',
+      'Tôi đi học bằng xe buýt.', 'バスで学校へ行きます。',
+    ),
+  },
+  {
+    id: 'mc-02-pencil', cue: MEANS_CUE, noun: '연필', rest: ' 이름을 써요.',
+    setId: 'means-companion', familyIndex: 0, reason: MEANS_REASON,
+    trans: L(
+      'I write my name with a pencil.', 'Escribo mi nombre con lápiz.', 'J’écris mon nom au crayon.',
+      'Escrevo meu nome a lápis.', 'ฉันเขียนชื่อด้วยดินสอ', 'Saya menulis nama dengan pensil.',
+      'Tôi viết tên bằng bút chì.', '鉛筆で名前を書きます。',
+    ),
+  },
+  {
+    id: 'mc-03-knife', cue: MEANS_CUE, noun: '칼', rest: ' 사과를 잘라요.',
+    setId: 'means-companion', familyIndex: 0, reason: MEANS_REASON,
+    trans: L(
+      'I cut the apple with a knife.', 'Corto la manzana con un cuchillo.', 'Je coupe la pomme avec un couteau.',
+      'Corto a maçã com uma faca.', 'ฉันหั่นแอปเปิลด้วยมีด', 'Saya memotong apel dengan pisau.',
+      'Tôi cắt táo bằng dao.', 'ナイフでりんごを切ります。',
+    ),
+  },
+  {
+    id: 'mc-04-subway', cue: MEANS_CUE, noun: '지하철', rest: ' 출근해요.',
+    setId: 'means-companion', familyIndex: 0, reason: MEANS_REASON,
+    trans: L(
+      'I commute by subway.', 'Voy al trabajo en metro.', 'Je vais au travail en métro.',
+      'Vou ao trabalho de metrô.', 'ฉันไปทำงานโดยรถไฟใต้ดิน', 'Saya berangkat kerja naik kereta bawah tanah.',
+      'Tôi đi làm bằng tàu điện ngầm.', '地下鉄で通勤します。',
+    ),
+  },
+  {
+    id: 'mc-05-korean', cue: MEANS_CUE, noun: '한국어', rest: ' 대답해 주세요.',
+    setId: 'means-companion', familyIndex: 0, reason: MEANS_REASON,
+    trans: L(
+      'Please answer in Korean.', 'Responde en coreano, por favor.', 'Répondez en coréen, s’il vous plaît.',
+      'Responda em coreano, por favor.', 'กรุณาตอบเป็นภาษาเกาหลี', 'Tolong jawab dalam bahasa Korea.',
+      'Vui lòng trả lời bằng tiếng Hàn.', '韓国語で答えてください。',
+    ),
+  },
+  {
+    id: 'mc-06-friend', cue: COMPANION_CUE, noun: '친구', rest: ' 영화를 봐요.',
+    setId: 'means-companion', familyIndex: 1, reason: COMPANION_REASON,
+    trans: L(
+      'I watch a movie with a friend.', 'Veo una película con un amigo.', 'Je regarde un film avec un ami.',
+      'Assisto a um filme com um amigo.', 'ฉันดูหนังกับเพื่อน', 'Saya menonton film bersama teman.',
+      'Tôi xem phim với bạn.', '友達と映画を見ます。',
+    ),
+  },
+  {
+    id: 'mc-07-apple', cue: COMPANION_CUE, noun: '사과', rest: ' 바나나를 샀어요.',
+    setId: 'means-companion', familyIndex: 1, reason: COMPANION_REASON,
+    trans: L(
+      'I bought apples and bananas.', 'Compré manzanas y plátanos.', 'J’ai acheté des pommes et des bananes.',
+      'Comprei maçãs e bananas.', 'ฉันซื้อแอปเปิลกับกล้วย', 'Saya membeli apel dan pisang.',
+      'Tôi đã mua táo và chuối.', 'りんごとバナナを買いました。',
+    ),
+  },
+  {
+    id: 'mc-08-sibling', cue: COMPANION_CUE, noun: '동생', rest: ' 공원에 갔어요.',
+    setId: 'means-companion', familyIndex: 1, reason: COMPANION_REASON,
+    trans: L(
+      'I went to the park with my younger sibling.', 'Fui al parque con mi hermano menor.', 'Je suis allé au parc avec mon cadet.',
+      'Fui ao parque com meu irmão mais novo.', 'ฉันไปสวนสาธารณะกับน้อง', 'Saya pergi ke taman bersama adik.',
+      'Tôi đi công viên với em.', '弟や妹と公園へ行きました。',
+    ),
+  },
+  {
+    id: 'mc-09-teacher', cue: COMPANION_CUE, noun: '선생님', rest: ' 이야기했어요.',
+    setId: 'means-companion', familyIndex: 1, reason: COMPANION_REASON,
+    trans: L(
+      'I spoke with the teacher.', 'Hablé con el profesor.', 'J’ai parlé avec le professeur.',
+      'Conversei com o professor.', 'ฉันคุยกับคุณครู', 'Saya berbicara dengan guru.',
+      'Tôi đã nói chuyện với giáo viên.', '先生と話しました。',
+    ),
+  },
+  {
+    id: 'mc-10-parents', cue: COMPANION_CUE, noun: '부모님', rest: ' 살아요.',
+    setId: 'means-companion', familyIndex: 1, reason: COMPANION_REASON,
+    trans: L(
+      'I live with my parents.', 'Vivo con mis padres.', 'Je vis avec mes parents.',
+      'Moro com meus pais.', 'ฉันอยู่กับพ่อแม่', 'Saya tinggal bersama orang tua.',
+      'Tôi sống cùng bố mẹ.', '両親と暮らしています。',
     ),
   },
 ]

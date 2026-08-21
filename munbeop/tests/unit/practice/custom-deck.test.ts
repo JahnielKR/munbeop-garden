@@ -43,4 +43,13 @@ describe('buildCustomDeckOptions', () => {
   it('exposes the 6-grammar play minimum', () => {
     expect(MIN_CUSTOM_PLAYABLE).toBe(6)
   })
+
+  it('counts only distinct kos that still exist in the grammar catalog', () => {
+    const opts = buildCustomDeckOptions({
+      decks: [deck({ grammarKos: [...SIX, SIX[0]!, 'deleted-ko'] })],
+      catalogKos: SIX,
+    })
+    expect(opts[0]!.count).toBe(6)
+    expect(opts[0]!.disabled).toBe(false)
+  })
 })

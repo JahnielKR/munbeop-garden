@@ -41,4 +41,31 @@ describe('appStatus', () => {
     await s.retry()
     expect(s.status).toBe('idle')
   })
+
+  it('ignores an older completion while the latest hydration is still loading', async () => {
+    const s = useAppStatus()
+    let finishFirst!: () => void
+    let finishSecond!: () => void
+    const first = s.track(() => new Promise<void>((resolve) => { finishFirst = resolve }))
+    const second = s.track(() => new Promise<void>((resolve) => { finishSecond = resolve }))
+
+    finishFirst()
+    await first
+    expect(s.status).toBe('loading')
+
+    finishSecond()
+    await second
+    expect(s.status).toBe('ready')
+  })
+
+  it('ignores an older failure after a newer hydration succeeds', async () => {
+    const s = useAppStatus()
+    let failFirst!: (error: Error) => void
+    const first = s.track(() => new Promise<void>((_resolve, reject) => { failFirst = reject }))
+    await s.track(async () => {})
+
+    failFirst(new Error('stale failure'))
+    await first
+    expect(s.status).toBe('ready')
+  })
 })

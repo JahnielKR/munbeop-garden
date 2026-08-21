@@ -11,15 +11,18 @@ import {
   type SpacingResult,
 } from '~/lib/particle-lab'
 import { PARTICLE_SENTENCES } from '~/seed/particle-sentences'
+import { useActivityStore } from '~/stores/activity'
 
 export type SpacingPhase = 'question' | 'answered' | 'done'
 export type SpacingMode = 'normal' | 'replay'
 
 /**
- * 띄어쓰기 (spacing) drill loop. Self-contained: no SRS/diary writes — spacing is
- * orthography, not particle mastery. Mirrors useParticleDrill's shape.
+ * 띄어쓰기 (spacing) drill loop. It has no SRS/diary writes because spacing is
+ * orthography rather than particle mastery, but each checked answer still
+ * contributes to the shared daily-activity count.
  */
 export function useParticleSpacing() {
+  const activity = useActivityStore()
   const level = ref<SpacingLevel>(1)
   const sessionItems = ref<LabSentence[]>([])
   const mode = ref<SpacingMode>('normal')
@@ -88,10 +91,13 @@ export function useParticleSpacing() {
     result.value = r
     results.value.push({ itemId: sentence.value.id, correct: r.correct, batchimSlips: 0 })
     phase.value = 'answered'
+    void activity.record()
   }
 
   function next() {
-    if (phase.value === 'done') return
+    // Ignore duplicate emits after reset; a question that has not been checked
+    // is never eligible to advance.
+    if (phase.value !== 'answered') return
     if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
       return

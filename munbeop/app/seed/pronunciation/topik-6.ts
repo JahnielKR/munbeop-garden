@@ -15,8 +15,10 @@ import type { PronunciationGuide } from '~/lib/domain'
  * beginning the morpheme rides the 이 carrier (-ㄴ들 → 인·들), bare ㄴ/는 ending → 는
  * (-ㄴ/는다 → 는·다); a synonym listing sounds the single representative (생각건대/
  * 바라건대 → 건대; -로다/-(이)로다 → 로다; 련만 variant dropped); optional parens dropped
- * (-(으)리라(고) drops 고; -아/어 주십사 (하고) → 어 주십사). PENDING wife native-review.
- * PENDING wife native-review — the content gate.
+ * (-(으)리라(고) drops 고; -아/어 주십사 (하고) → 어 주십사). The guide has
+ * been checked against that convention and is guarded by seed/audio invariants;
+ * it is didactic segmentation, not phonetic transcription. Literary nuance
+ * remains a useful target for future native-speaker refinement.
  */
 export const TOPIK_6_PRONUNCIATION: PronunciationGuide[] = [
   // ── Concessive ────────────────────────────────────────────────────────────

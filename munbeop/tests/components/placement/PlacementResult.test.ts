@@ -13,7 +13,7 @@ describe('PlacementResult', () => {
     })
     expect(w.text()).toContain('placement.result.your_level 3')
     expect(w.text()).toContain('placement.result.cta 4')
-    expect(w.get('[data-testid="placement-cta"]').attributes('to')).toBe('/practice/ruleta')
+    expect(w.get('[data-testid="placement-cta"]').attributes('to')).toBe('/practice/ruleta?deck=topik-4')
   })
 
   it('shows the "just starting" copy when nothing was cleared', () => {
@@ -31,5 +31,37 @@ describe('PlacementResult', () => {
     })
     await w.get('[data-testid="placement-retake"]').trigger('click')
     expect(w.emitted('retake')).toHaveLength(1)
+  })
+
+  it('shows an explicit retry and withholds the CTA when saving failed', async () => {
+    const w = mount(PlacementResult, {
+      props: {
+        outcome: { clearedLevel: 2, startingLevel: 3, startingDeckId: 'topik-3' },
+        saveError: true,
+      },
+      global: { stubs },
+    })
+    expect(w.find('[data-testid="placement-cta"]').exists()).toBe(false)
+    expect(w.text()).toContain('errors.save_failed')
+    const retake = w.get('[data-testid="placement-retake"]')
+    expect(retake.attributes('disabled')).toBeDefined()
+    await retake.trigger('click')
+    expect(w.emitted('retake')).toBeUndefined()
+    await w.get('[data-testid="placement-retry-save"]').trigger('click')
+    expect(w.emitted('retrySave')).toHaveLength(1)
+  })
+
+  it('disables retake while the recommendation is still saving', async () => {
+    const w = mount(PlacementResult, {
+      props: {
+        outcome: { clearedLevel: 2, startingLevel: 3, startingDeckId: 'topik-3' },
+        saving: true,
+      },
+      global: { stubs },
+    })
+    const retake = w.get('[data-testid="placement-retake"]')
+    expect(retake.attributes('disabled')).toBeDefined()
+    await retake.trigger('click')
+    expect(w.emitted('retake')).toBeUndefined()
   })
 })

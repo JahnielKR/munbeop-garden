@@ -28,6 +28,10 @@ function assertNever(key: never): never {
   throw new Error(`SupabaseAdapter: unmapped storage key ${String(key)}`)
 }
 
+/** Cap on ids per orphan-delete request so a large collection can't blow the
+ *  PostgREST URL-length limit (the delete filter rides the query string). */
+const ORPHAN_DELETE_CHUNK = 200
+
 /**
  * SupabaseAdapter — implements StorageAdapter against Supabase Postgres.
  *
@@ -63,8 +67,11 @@ export class SupabaseAdapter implements StorageAdapter {
   ) {}
 
   /** Map a domain LogEntry to its user_log row — shared by write() and append(). */
-  private logRow(e: LogEntry, includeId = true) {
-    const row = {
+  private logRow(e: LogEntry) {
+    return {
+      // New client ids are safe integers. Keep floor only as an import shim for
+      // legacy v1 exports whose timestamp id carried a fractional tiebreaker.
+      id: Number.isSafeInteger(e.id) ? e.id : Math.floor(e.id),
       user_id: this.userId,
       ko: e.ko,
       sentence: e.sentence,
@@ -76,7 +83,6 @@ export class SupabaseAdapter implements StorageAdapter {
       context_name: e.contextName,
       created_at: e.date,
     }
-    return includeId ? { id: Math.trunc(e.id), ...row } : row
   }
 
   private customGrammarRow(g: Grammar) {
@@ -121,6 +127,43 @@ export class SupabaseAdapter implements StorageAdapter {
       id: c.id,
       name: c.name,
       scene: c.scene as Json,
+    }
+  }
+
+  /**
+   * The delete half of an upsert-FIRST replace: remove the user's rows in
+   * `table` whose `idCol` is NOT in `keepIds`. Run AFTER the upsert so a
+   * mid-write failure leaves the table as (new ∪ orphans) — never empty. The
+   * old delete-THEN-upsert ordering emptied the table if the connection dropped
+   * between the two requests and the upsert never landed. Reads only the id
+   * column (a body payload, no URL limit) and chunks the delete so a large
+   * collection never blows the URL length. Uses the untyped client so one helper
+   * serves every collection table; the typed upsert in each arm still checks
+   * columns.
+   */
+  private async pruneOrphans(
+    key: StorageKey,
+    table: string,
+    idCol: string,
+    keepIds: ReadonlySet<string | number>,
+  ): Promise<void> {
+    const client = this.client as unknown as SupabaseClient
+    if (keepIds.size === 0) {
+      // Nothing to keep → drop the whole set. A failed delete-all leaves the old
+      // rows in place, which is safe: the intent was "empty", so nothing is lost.
+      const del = await client.from(table).delete().eq('user_id', this.userId)
+      assertOk('write', key, del.error)
+      return
+    }
+    const sel = await client.from(table).select(idCol).eq('user_id', this.userId)
+    assertOk('write', key, sel.error)
+    const orphans = ((sel.data ?? []) as unknown as Array<Record<string, unknown>>)
+      .map((r) => r[idCol] as string | number)
+      .filter((id) => !keepIds.has(id))
+    for (let i = 0; i < orphans.length; i += ORPHAN_DELETE_CHUNK) {
+      const chunk = orphans.slice(i, i + ORPHAN_DELETE_CHUNK)
+      const del = await client.from(table).delete().eq('user_id', this.userId).in(idCol, chunk)
+      assertOk('write', key, del.error)
     }
   }
 
@@ -313,84 +356,96 @@ export class SupabaseAdapter implements StorageAdapter {
         // Only user-authored grammars (the reserved custom deck) persist here;
         // the catalog is read-only from the client (enforced by RLS).
         const customs = (value as Grammar[]).filter((g) => g.deckId === CUSTOM_DECK_ID)
-        const del = await this.client.from('user_custom_grammars').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         if (customs.length) {
+          // onConflict must be the (user_id, ko) UNIQUE, NOT the surrogate
+          // bigserial PK: the payload omits `id`, so the default PK conflict
+          // target would always INSERT and then violate UNIQUE(user_id, ko) on
+          // a re-write (upsert-first now hits existing rows; delete-first didn't).
           const { error } = await this.client.from('user_custom_grammars').upsert(
             customs.map((g) => this.customGrammarRow(g)),
+            { onConflict: 'user_id,ko' },
           )
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_custom_grammars', 'ko', new Set(customs.map((g) => g.ko)))
         return
       }
 
       case STORAGE_KEYS.srs: {
+        // Replace-the-set semantics (like decks/contexts): a restore must DROP
+        // rows absent from the payload, not merge onto stale progress. Normal
+        // per-answer saves go through upsertOne, so write() only runs on
+        // import/remove where full-replace is exactly what's wanted. Upsert
+        // first, then prune, so a mid-write failure never empties the table.
         const map = value as Record<string, SrsState>
         const rows = Object.entries(map).map(([ko, s]) => this.srsRow(ko, s))
         if (rows.length) {
           const { error } = await this.client.from('user_progress').upsert(rows)
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_progress', 'ko', new Set(rows.map((r) => r.ko)))
         return
       }
 
       case STORAGE_KEYS.log: {
+        // Replace-the-set semantics: a restore must drop journal rows absent
+        // from the payload, not leave stale entries behind. Normal appends and
+        // review edits use append()/updateOne(); write() is reserved for import.
         const entries = value as LogEntry[]
-        if (!entries.length) return
-        const { error } = await this.client.from('user_log').upsert(entries.map((e) => this.logRow(e)))
-        assertOk('write', key, error)
+        const rows = entries.map((e) => this.logRow(e))
+        if (rows.length) {
+          const { error } = await this.client.from('user_log').upsert(rows)
+          assertOk('write', key, error)
+        }
+        await this.pruneOrphans(key, 'user_log', 'id', new Set(rows.map((r) => r.id)))
         return
       }
 
       case STORAGE_KEYS.decks: {
         const decks = value as Deck[]
-        const del = await this.client.from('user_decks').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         if (decks.length) {
           const { error } = await this.client.from('user_decks').upsert(
             decks.map((d) => this.deckRow(d)),
           )
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_decks', 'id', new Set(decks.map((d) => d.id)))
         return
       }
 
       case STORAGE_KEYS.customDecks: {
         const decks = value as CustomDeck[]
-        const del = await this.client.from('user_custom_decks').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         if (decks.length) {
           const { error } = await this.client.from('user_custom_decks').upsert(
             decks.map((d) => this.customDeckRow(d)),
           )
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_custom_decks', 'id', new Set(decks.map((d) => d.id)))
         return
       }
 
       case STORAGE_KEYS.customContexts: {
         const contexts = value as Context[]
-        const del = await this.client.from('user_custom_contexts').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         if (contexts.length) {
           const { error } = await this.client.from('user_custom_contexts').upsert(
             contexts.map((c) => this.customContextRow(c)),
           )
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_custom_contexts', 'id', new Set(contexts.map((c) => c.id)))
         return
       }
 
       case STORAGE_KEYS.inactiveContextIds: {
         const ids = value as string[]
-        const del = await this.client.from('user_inactive_contexts').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         if (ids.length) {
           const { error } = await this.client
             .from('user_inactive_contexts')
             .upsert(ids.map((context_id) => ({ user_id: this.userId, context_id })))
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_inactive_contexts', 'context_id', new Set(ids))
         return
       }
 
@@ -416,8 +471,6 @@ export class SupabaseAdapter implements StorageAdapter {
 
       case STORAGE_KEYS.activity: {
         const map = value as Record<string, ActivityDay>
-        const del = await this.client.from('user_activity').delete().eq('user_id', this.userId)
-        assertOk('write', key, del.error)
         const rows = Object.entries(map).map(([day, v]) => ({
           user_id: this.userId,
           day,
@@ -428,6 +481,7 @@ export class SupabaseAdapter implements StorageAdapter {
           const { error } = await this.client.from('user_activity').upsert(rows)
           assertOk('write', key, error)
         }
+        await this.pruneOrphans(key, 'user_activity', 'day', new Set(rows.map((r) => r.day)))
         return
       }
 
@@ -442,17 +496,15 @@ export class SupabaseAdapter implements StorageAdapter {
   async append<T>(key: StorageKey, item: T): Promise<T> {
     switch (key) {
       case STORAGE_KEYS.log: {
-        // user_log.id is global. Let Postgres assign its bigserial instead of
-        // using a client timestamp that can collide across concurrent users.
-        const entry = item as LogEntry
-        const { data, error } = await this.client
+        // One-row idempotent upsert instead of re-writing the whole log. A
+        // practice retry deliberately reuses the same random id: if Postgres
+        // committed the first request but its response was lost, retrying must
+        // confirm that row rather than create a duplicate journal event.
+        const { error } = await this.client
           .from('user_log')
-          .insert(this.logRow(entry, false))
-          .select('id')
-          .single()
+          .upsert(this.logRow(item as LogEntry), { onConflict: 'user_id,id' })
         assertOk('write', key, error)
-        if (!data) throw new Error(`SupabaseAdapter.append(${key}) returned no id`)
-        return { ...entry, id: data.id } as T
+        return item
       }
       default:
         throw new Error(`SupabaseAdapter.append(${key}) is not supported`)
@@ -498,7 +550,7 @@ export class SupabaseAdapter implements StorageAdapter {
         }
         const { error } = await this.client
           .from('user_custom_grammars')
-          .upsert(this.customGrammarRow(value))
+          .upsert(this.customGrammarRow(value), { onConflict: 'user_id,ko' })
         assertOk('write', key, error)
         return
       }
@@ -573,17 +625,54 @@ export class SupabaseAdapter implements StorageAdapter {
     if (restored !== true) throw new Error('SupabaseAdapter.restore returned no confirmation')
   }
 
+  async updateOne<V>(
+    key: StorageKey,
+    entry: { id: string | number; value: V },
+  ): Promise<boolean> {
+    switch (key) {
+      case STORAGE_KEYS.log: {
+        const row = this.logRow(entry.value as LogEntry)
+        const changes = {
+          ko: row.ko,
+          sentence: row.sentence,
+          feedback: row.feedback,
+          error_note: row.error_note,
+          error_dimension: row.error_dimension,
+          review_state: row.review_state,
+          context_id: row.context_id,
+          context_name: row.context_name,
+          created_at: row.created_at,
+        }
+        // UPDATE (never UPSERT) is load-bearing here: if another tab deleted
+        // this journal row, a delayed review-state save must not resurrect it.
+        const normalizedId = Number.isSafeInteger(Number(entry.id))
+          ? Number(entry.id)
+          : Math.floor(Number(entry.id))
+        const { data, error } = await this.client
+          .from('user_log')
+          .update(changes)
+          .eq('user_id', this.userId)
+          .eq('id', normalizedId)
+          .select('id')
+        assertOk('write', key, error)
+        return (data?.length ?? 0) > 0
+      }
+      default:
+        throw new Error(`SupabaseAdapter.updateOne(${key}) is not supported`)
+    }
+  }
+
   async deleteOne(key: StorageKey, id: string | number): Promise<void> {
     switch (key) {
       case STORAGE_KEYS.log: {
         // One-row delete scoped to this user (RLS also enforces it). user_log.id
-        // is bigint; the in-memory LogEntry.id carries a fractional tiebreaker,
-        // so floor it to match the stored row (see logRow()).
+        // is bigint. New ids are exact safe integers; floor remains only for a
+        // legacy v1 fractional id that arrived through an old import.
         const { error } = await this.client
           .from('user_log')
           .delete()
           .eq('user_id', this.userId)
-          .eq('id', Math.trunc(Number(id)))
+          .eq('id', Number.isSafeInteger(Number(id)) ? Number(id) : Math.floor(Number(id)))
         assertOk('write', key, error)
         return
       }

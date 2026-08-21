@@ -1,9 +1,17 @@
 import { describe, it, expect } from 'vitest'
 import { DEFAULT_DAILY_GOAL, clampGoal, todayCount } from '~/lib/stats/goal'
 
-const DAY = 86_400_000
 const now = 1_700_000_000_000
-const dayMs = (k: number) => (Math.floor(now / DAY) - k) * DAY + 3_600_000
+// A timestamp at LOCAL midday, `k` local calendar days before `now`. Building
+// off the local day (not a UTC floor) keeps the test deterministic in any
+// runner timezone — the machine is UTC+9, CI is UTC, and todayCount now buckets
+// by local day.
+const dayMs = (k: number) => {
+  const d = new Date(now)
+  d.setHours(12, 0, 0, 0)
+  d.setDate(d.getDate() - k)
+  return d.getTime()
+}
 
 describe('clampGoal', () => {
   it('clamps to [1, 20] and floors', () => {

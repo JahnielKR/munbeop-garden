@@ -14,6 +14,8 @@ import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useLeeches } from '~/composables/useLeeches'
 import { useActivityStore } from '~/stores/activity'
+import { useAppStatus } from '~/stores/appStatus'
+import { useAuthStore } from '~/stores/auth'
 
 type PracticeSession = Session<number, Context>
 
@@ -23,6 +25,7 @@ export function usePractice() {
   const srsStore = useSrsStore()
   const logStore = useLogStore()
   const activity = useActivityStore()
+  const auth = useAuthStore()
   const route = useRoute()
   const { t } = useI18n()
   const { leechKos } = useLeeches()
@@ -30,8 +33,42 @@ export function usePractice() {
   const session = ref<PracticeSession | null>(null)
   const error = ref<string | null>(null)
 
+  type PersistParams = {
+    pickIndex: number
+    sentence: string
+    feedback: Feedback
+    errorNote: string | null
+    errorDimension?: ErrorDimension | null
+  }
+
+  type PersistTask = PersistParams & {
+    ownerUserId: string
+    ownerSession: PracticeSession
+    grammar: Grammar
+    context: Context
+    stableId: number
+  }
+
+  // Three cards are interactive at once. Serialize their save pipelines so an
+  // SRS recalculation can never observe a sibling's optimistic log row that
+  // later rolls back.
+  let persistenceTail: Promise<void> = Promise.resolve()
+  const pendingEntryIds = new Map<number, number>()
+  let sessionOwnerUserId: string | null = null
+
   async function start(opts?: { deckId?: string | null; customDeckGrammarKos?: readonly string[] }) {
     error.value = null
+    // Never start against the transient anonymous/noop stores used while the
+    // persisted session is restoring. INITIAL_SESSION marks appStatus ready
+    // only after the authenticated cloud pull completes; the banner's retry
+    // does the same after a hydration failure.
+    const dataStatus = useAppStatus().status
+    if (!auth.ready || !auth.user || dataStatus !== 'ready') {
+      error.value = t('errors.data_failed')
+      return
+    }
+    sessionOwnerUserId = auth.user.id
+    pendingEntryIds.clear()
     try {
       const activeContexts = contextsStore.active
       if (activeContexts.length < MIN_ACTIVE_CONTEXTS) {
@@ -52,6 +89,13 @@ export function usePractice() {
         ? grammarStore.items.findIndex((g) => g.ko === focusKo)
         : -1
 
+      // A malformed or stale deep link must not silently become an unrelated
+      // random draw.
+      if (focusKo && focusIdx < 0) {
+        error.value = t('practice.no_grammars')
+        return
+      }
+
       if (focusIdx >= 0) {
         session.value = {
           picks: [0, 1, 2].map(() => ({
@@ -60,7 +104,6 @@ export function usePractice() {
             progress: 0,
           })),
         }
-        await srsStore.markSeen(grammarStore.items[focusIdx]!.ko)
         return
       }
 
@@ -80,11 +123,6 @@ export function usePractice() {
           contextPool: activeContexts,
           weightOf: (idx) => srsStore.weightFor(grammarStore.items[idx]!.ko),
         })
-        await Promise.all(
-          session.value.picks.map((pick) =>
-            srsStore.markSeen(grammarStore.items[pick.grammarIdx]!.ko),
-          ),
-        )
         return
       }
 
@@ -107,12 +145,8 @@ export function usePractice() {
         // three picks may be a leech (the SRS weight already over-draws them).
         capPredicate: (idx) => leechKos.value.has(grammarStore.items[idx]!.ko),
       })
-      // Mark every picked grammar as seen — runs in parallel against storage.
-      await Promise.all(
-        session.value.picks.map((pick) =>
-          srsStore.markSeen(grammarStore.items[pick.grammarIdx]!.ko),
-        ),
-      )
+      // Do not mark a card as seen merely because it was dealt. recalculate()
+      // derives lastSeen from the first journal entry after real practice.
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'Unknown error'
     }
@@ -134,18 +168,12 @@ export function usePractice() {
     return pick.contexts[pick.progress] ?? null
   }
 
-  async function persistEntry(p: {
-    pickIndex: number
-    sentence: string
-    feedback: Feedback
-    errorNote: string | null
-    errorDimension?: ErrorDimension | null
-  }): Promise<LogEntry | null> {
-    const s = session.value
-    if (!s) return null
-    const grammar = grammarOf(p.pickIndex)
-    const ctx = currentContextOf(p.pickIndex)
-    if (!grammar || !ctx) return null
+  function taskStillOwned(task: PersistTask): boolean {
+    return auth.user?.id === task.ownerUserId && session.value === task.ownerSession
+  }
+
+  async function persistEntryNow(p: PersistTask): Promise<LogEntry | null> {
+    if (!taskStillOwned(p)) return null
     const hasNote = p.errorNote !== null && p.errorNote.trim().length > 0
     const reviewState: ReviewState = p.feedback === 'hard' && hasNote ? 'incorrect' : 'unreviewed'
     // The log write persists the learner's sentence — the thing we must never
@@ -155,38 +183,69 @@ export function usePractice() {
     let entry: LogEntry
     try {
       entry = await logStore.add({
-        ko: grammar.ko,
+        ko: p.grammar.ko,
         sentence: p.sentence,
         feedback: p.feedback,
         errorNote: hasNote ? p.errorNote : null,
         errorDimension: p.errorDimension ?? null,
         reviewState,
-        contextId: ctx.id,
-        contextName: ctx.name,
-      })
+        contextId: p.context.id,
+        contextName: p.context.name,
+      }, p.stableId)
     } catch (e) {
       console.error('persistEntry: log write failed', e)
       return null
     }
+    if (!taskStillOwned(p)) return null
+    pendingEntryIds.delete(p.pickIndex)
     // Fire-and-forget: the heatmap tick is intentionally decoupled so it never
-    // blocks the answer. Swallow a transient cloud error so it doesn't surface
-    // as an unhandled rejection.
-    void activity.record().catch(() => {})
+    // blocks the answer. record() swallows transient cloud errors itself.
+    void activity.record()
     // SRS recalc is secondary — the sentence is already saved. A failure here
     // must not lose that or block the card; SRS self-heals on the next answer
     // (recalculateMastery re-derives mastery from the full log each time).
     try {
-      await srsStore.recalculate(grammar.ko)
+      await srsStore.recalculate(p.grammar.ko)
     } catch (e) {
       console.error('persistEntry: SRS recalc failed', e)
     }
-    advanceProgress(s, p.pickIndex)
+    if (!taskStillOwned(p)) return null
+    advanceProgress(p.ownerSession, p.pickIndex)
     return entry
+  }
+
+  function persistEntry(p: PersistParams): Promise<LogEntry | null> {
+    const ownerSession = session.value
+    const ownerUserId = sessionOwnerUserId
+    const grammar = grammarOf(p.pickIndex)
+    const context = currentContextOf(p.pickIndex)
+    if (!ownerSession || !ownerUserId || auth.user?.id !== ownerUserId || !grammar || !context) {
+      return Promise.resolve(null)
+    }
+    const stableId = pendingEntryIds.get(p.pickIndex) ?? logStore.createEntryId()
+    pendingEntryIds.set(p.pickIndex, stableId)
+    // Capture every mutable lookup before entering the FIFO. A queued card must
+    // never re-read account/session state after another user signs in.
+    const task: PersistTask = {
+      ...p,
+      ownerUserId,
+      ownerSession,
+      grammar,
+      context,
+      stableId,
+    }
+    const job = persistenceTail.then(() => persistEntryNow(task))
+    // A failed job must not poison the queue; later cards retain their own
+    // independent save attempt.
+    persistenceTail = job.then(() => undefined, () => undefined)
+    return job
   }
 
   function reset() {
     session.value = null
     error.value = null
+    pendingEntryIds.clear()
+    sessionOwnerUserId = null
   }
 
   const completed = computed(() =>

@@ -4,7 +4,9 @@ import { computed, onMounted, ref } from 'vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import GameLeaveConfirm from '~/components/games/GameLeaveConfirm.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import ProgressDots from '~/components/practice/ProgressDots.vue'
+import PracticeSaveStatus from '~/components/practice/PracticeSaveStatus.vue'
 import DeckPicker from '~/components/games/ruleta/DeckPicker.vue'
 import CustomDeckShelf from '~/components/games/ruleta/CustomDeckShelf.vue'
 import CustomDeckBuilder from '~/components/games/ruleta/CustomDeckBuilder.vue'
@@ -31,8 +33,13 @@ const phase = ref<'pick' | 'play'>('pick')
 const started = ref(false)
 const builderOpen = ref(false)
 const editingDeckId = ref<string | null>(null)
+const builderDirty = ref(false)
+const builderBusy = ref(false)
+const saveBlocked = computed(() => drill.saveBlocked.value)
 
-useGameLeaveGuard(() => started.value && drill.phase.value !== 'done')
+useGameLeaveGuard(() => builderDirty.value || builderBusy.value || (
+  started.value && (drill.phase.value !== 'done' || saveBlocked.value)
+))
 
 const deckOptions = computed(() =>
   buildDeckOptions({
@@ -42,7 +49,23 @@ const deckOptions = computed(() =>
     allName: t('practice.deck_all'),
   }),
 )
-const customDeckOptions = computed(() => buildCustomDeckOptions({ decks: customDecks.decks }))
+const customDeckOptions = computed(() => {
+  const decksById = new Map(customDecks.decks.map((deck) => [deck.id, deck]))
+  return buildCustomDeckOptions({
+    decks: customDecks.decks,
+    catalogKos: grammarStore.items.map((grammar) => grammar.ko),
+  }).map((option) => {
+    const deck = decksById.get(option.id)
+    const count = deck ? itemsForKos(deck.grammarKos).length : 0
+    const tooFew = count < MIN_ITEMS
+    return {
+      ...option,
+      count,
+      disabled: tooFew,
+      reason: tooFew ? 'too_few' as const : null,
+    }
+  })
+})
 
 function beginDeck(kos: string[]) {
   if (itemsForKos(kos).length < MIN_ITEMS) {
@@ -69,9 +92,17 @@ function onCustomEdit(deckId: string) {
   editingDeckId.value = deckId
   builderOpen.value = true
 }
-function onBuilderClose() {
+function closeBuilder() {
+  builderDirty.value = false
+  builderBusy.value = false
   builderOpen.value = false
   editingDeckId.value = null
+}
+
+function requestBuilderClose() {
+  if (builderBusy.value) return
+  if (builderDirty.value && !window.confirm(t('practice.custom.discard_confirm'))) return
+  closeBuilder()
 }
 
 async function onNext() {
@@ -79,10 +110,12 @@ async function onNext() {
   if (drill.phase.value === 'done') await drill.finish()
 }
 function restart() {
+  if (saveBlocked.value) return
   phase.value = 'pick'
   started.value = false
 }
 function onReplayFailed() {
+  if (saveBlocked.value) return
   drill.replayFailed()
 }
 
@@ -110,6 +143,7 @@ onMounted(async () => {
     <GameExitButton />
     <GameLeaveConfirm />
     <BilingualTitle ko="빈칸 연습" :latin="t('cloze.title')" />
+    <PracticeHelp mode="cloze" />
     <p class="lab__lead">{{ t('cloze.lead') }}</p>
 
     <div v-if="phase === 'pick'">
@@ -117,6 +151,8 @@ onMounted(async () => {
       <DeckPicker :options="deckOptions" @select="onDeckSelect" />
       <CustomDeckShelf
         :options="customDeckOptions"
+        count-label-key="cloze.custom_item_count"
+        locked-label-key="cloze.custom_locked_need_items"
         @select="onCustomDeckSelect"
         @create="onCustomCreate"
         @edit="onCustomEdit"
@@ -140,11 +176,16 @@ onMounted(async () => {
         :phase="drill.phase.value"
         :verdict="drill.phase.value === 'right' ? true : drill.phase.value === 'wrong' ? false : null"
         :picked="drill.picked.value"
+        :next-disabled="drill.saveStatus.value === 'saving' || drill.saveStatus.value === 'error'"
         @answer="drill.answer"
         @next="onNext"
       />
+      <PracticeSaveStatus
+        :status="drill.saveStatus.value"
+        @retry="drill.retrySave"
+      />
       <ClozeSummary
-        v-else
+        v-if="drill.phase.value === 'done' && !saveBlocked"
         :score="drill.score.value"
         :failed-items="drill.failedItems.value"
         @restart="restart"
@@ -156,9 +197,15 @@ onMounted(async () => {
       :open="builderOpen"
       :title="t('practice.custom.builder_title')"
       :close-label="t('practice.custom.close')"
-      @close="onBuilderClose"
+      @close="requestBuilderClose"
     >
-      <CustomDeckBuilder :key="editingDeckId ?? 'new'" :deck-id="editingDeckId" @saved="onBuilderClose" />
+      <CustomDeckBuilder
+        :key="editingDeckId ?? 'new'"
+        :deck-id="editingDeckId"
+        @dirty="builderDirty = $event"
+        @busy="builderBusy = $event"
+        @saved="closeBuilder"
+      />
     </Modal>
   </div>
 </template>

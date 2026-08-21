@@ -3,6 +3,7 @@ import type { ActivityDay } from '~/lib/stats/activity'
 import { localDayKey } from '~/lib/stats/activity'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
+import { useAuthStore } from '~/stores/auth'
 
 type ActivityMap = Record<string, ActivityDay>
 
@@ -11,14 +12,18 @@ export const useActivityStore = defineStore('activity', () => {
   const pending = new Map<string, number>()
   const flushing = new Map<string, Promise<boolean>>()
   let storageEpoch = 0
+  let hydratedUserId: string | null = null
 
   async function hydrate() {
     const epoch = ++storageEpoch
+    const userId = useAuthStore().user?.id ?? null
     pending.clear()
     flushing.clear()
     const storage = useStorageAdapter()
     const stored = await storage.read(STORAGE_KEYS.activity, {} as ActivityMap)
-    if (epoch === storageEpoch) map.value = stored
+    if (epoch !== storageEpoch || (useAuthStore().user?.id ?? null) !== userId) return
+    map.value = stored
+    hydratedUserId = userId
   }
 
   function flush(
@@ -62,6 +67,8 @@ export const useActivityStore = defineStore('activity', () => {
 
   /** Count one answer and atomically flush all unsynced ticks for this day. */
   async function record(now: number = Date.now()): Promise<boolean> {
+    const userId = useAuthStore().user?.id
+    if (userId && hydratedUserId !== userId) return false
     const storage = useStorageAdapter()
     const key = localDayKey(now)
     const next: ActivityDay = { count: (map.value[key]?.count ?? 0) + 1 }

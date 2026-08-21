@@ -16,6 +16,9 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "typecheck": "nuxt typecheck",
+    "escape:i18n:extract": "node scripts/escape-i18n-extract.mjs .nuxt/escape-i18n-strings.json",
+    "escape:i18n:audit": "vite-node --config vitest.config.ts tools/audit-escape-translations.ts",
+    "escape:verify": "node tools/verify-escape-room.mjs",
     "gap": "node scripts/topik-spine-gap.mjs",
     "catalog:sql": "node scripts/regenerate-catalog-sql.mjs",
     "db:types": "supabase gen types typescript --project-id zbohswpyydwvzowvjaiw > app/types/database.types.ts"
@@ -39,7 +42,7 @@
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.27.0",
-    "happy-dom": "^17.4.0",
+    "happy-dom": "^20.8.9",
     "pinia": "^3.0.2",
     "postcss": "^8.5.0",
     "prettier": "^3.5.0",

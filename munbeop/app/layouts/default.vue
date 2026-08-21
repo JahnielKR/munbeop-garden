@@ -13,13 +13,20 @@ import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 import { useCustomDecksStore } from '~/stores/customDecks'
 import { syncLocaleToI18n } from '~/lib/i18n/sync-locale'
 import { useReviewReminder } from '~/composables/useReviewReminder'
+import { useAuthStore } from '~/stores/auth'
+import { useAppStatus } from '~/stores/appStatus'
 
 // useI18n() must be called from inside the layout's setup() — never from
 // a defineNuxtPlugin handler. The latter triggers a fatal 'SyntaxError: 26'
 // during client init on Nuxt 4 + @nuxtjs/i18n v9 (see prior commit history).
-const { setLocale, locale } = useI18n()
+const { setLocale, locale, t } = useI18n()
 const localeStore = useLocaleStore()
 const reminder = useReviewReminder()
+const authStore = useAuthStore()
+const appStatus = useAppStatus()
+const accountDataReady = computed(
+  () => authStore.ready && !!authStore.user && appStatus.status === 'ready',
+)
 
 // Bridge the locale store → i18n runtime for the layout's whole lifetime, not
 // just at mount. A reactive watch means a locale that arrives AFTER mount —
@@ -30,18 +37,25 @@ syncLocaleToI18n(() => localeStore.current, locale, setLocale)
 // Hydrate all stores in parallel, then restore the user's saved locale.
 // Stores are now async (Plan 2) so we await before reading localeStore.current.
 onMounted(async () => {
+  // Auth bootstrap owns the authoritative tracked hydration after a session is
+  // restored. Do not start a second untracked read once that bootstrap is
+  // loading/ready/error: a late duplicate response could replace newer writes.
+  if (appStatus.status !== 'idle') return
   // On a hard reload this runs against the noop adapter (the session isn't in
   // the store yet); useAuth().init() re-pulls the data stores on INITIAL_SESSION
   // once getSession() resolves. The adapter now throws on a Supabase error, so
   // guard the pull: a transient failure must not become an unhandled rejection
   // or trigger a destructive re-seed — the stores keep their last-known state.
   try {
+    // Custom decks validate their grammar ids against this catalog, so hydrate
+    // grammar first instead of racing both reads.
+    await useGrammarStore().hydrate()
     await Promise.all([
-      useGrammarStore().hydrate(),
       useContextsStore().hydrate(),
       useSrsStore().hydrate(),
       useLogStore().hydrate(),
       useActivityStore().hydrate(),
+      useSettingsStore().hydrate(),
       localeStore.hydrate(),
       useEscapeRoomProgress().hydrate(),
       useCustomDecksStore().hydrate(),
@@ -49,24 +63,46 @@ onMounted(async () => {
   } catch (err) {
     console.error('default.vue: store hydration failed', err)
   }
-  // Cloud preferences win: override the device theme/locale just loaded above.
-  // The syncLocaleToI18n watch above carries the resulting localeStore.current
-  // into the i18n runtime — no explicit setLocale needed here.
-  await useSettingsStore().hydrate()
-  // Opt-in return-visit nudge: settings (opt-in) + srs/log (readyCount) are
-  // hydrated now, so the decision is accurate.
-  reminder.check()
 })
+
+let reminderCheckedForUser: string | null = null
+watch(
+  () => accountDataReady.value ? authStore.user?.id ?? null : null,
+  (userId) => {
+    if (!userId || reminderCheckedForUser === userId) return
+    reminderCheckedForUser = userId
+    reminder.check()
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
   <AppShell>
     <DataErrorBanner />
     <ReviewReminderBanner
-      v-if="reminder.show.value"
+      v-if="accountDataReady && reminder.show.value"
       :count="reminder.count.value"
       @dismiss="reminder.dismiss"
     />
-    <slot />
+    <slot v-if="accountDataReady" />
+    <div
+      v-else-if="appStatus.status !== 'error'"
+      class="data-loading"
+      role="status"
+      aria-live="polite"
+    >
+      {{ t('garden.loading') }}
+    </div>
   </AppShell>
 </template>
+
+<style scoped>
+.data-loading {
+  min-height: 40vh;
+  display: grid;
+  place-items: center;
+  color: var(--text-soft);
+  font-family: var(--font-ui);
+}
+</style>

@@ -2,8 +2,8 @@
 <script setup lang="ts">
 import type { RegisterMode } from '~/lib/domain'
 
-interface Props { mode: RegisterMode }
-defineProps<Props>()
+interface Props { mode: RegisterMode; disabled?: boolean }
+withDefaults(defineProps<Props>(), { disabled: false })
 defineEmits<{ select: [mode: RegisterMode] }>()
 const { t } = useI18n()
 
@@ -22,6 +22,7 @@ const TABS: { id: RegisterMode; key: string }[] = [
       role="tab"
       class="tabs__tab"
       :class="{ 'tabs__tab--active': mode === tab.id }"
+      :disabled="disabled"
       :aria-selected="mode === tab.id"
       :data-testid="`register-mode-${tab.id}`"
       @click="$emit('select', tab.id)"
@@ -39,6 +40,7 @@ const TABS: { id: RegisterMode; key: string }[] = [
   cursor: pointer; transition: background var(--motion-quick) var(--ease-out), color var(--motion-quick) var(--ease-out);
 }
 .tabs__tab:hover { color: var(--text); }
+.tabs__tab:disabled { opacity: 0.55; cursor: not-allowed; }
 .tabs__tab--active { background: var(--accent); color: var(--text-on-accent); border-color: var(--ink-line); }
 .tabs__tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 </style>

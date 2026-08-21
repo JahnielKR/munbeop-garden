@@ -8,8 +8,9 @@ import { L } from '../locale'
  * form. `ko` values match grammars-n4.ts verbatim; sentences differ from each
  * grammar's canonical `Grammar.example`.
  *
- * Drafted + Korean-lens adversarially verified by a multi-agent workflow.
- * Native (Korean wife) review is the documented final gate.
+ * Editorial QA covers Korean form, register tags and localized meaning. Seed
+ * tests enforce catalog links, unique sentences, register-ending alignment and
+ * complete eight-locale fields.
  */
 export const TOPIK_4_EXAMPLES: GrammarExample[] = [
   {

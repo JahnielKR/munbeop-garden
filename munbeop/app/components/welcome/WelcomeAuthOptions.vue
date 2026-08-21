@@ -16,6 +16,16 @@ const { fadeOut: fadeOutMusic } = useWelcomeMusic()
 const expanded = ref<'signin' | 'signup' | 'magic' | null>(props.initialEmailMode)
 const loading = ref<'kakao' | 'google' | null>(null)
 
+// CameraStage keeps the welcome panel alive while legacy auth routes redirect
+// into /welcome. The prop can therefore arrive after setup rather than only on
+// first mount; keep the expanded form synchronized with that route intent.
+watch(
+  () => props.initialEmailMode,
+  (mode) => {
+    if (mode) expanded.value = mode
+  },
+)
+
 async function provider(name: 'kakao' | 'google') {
   if (loading.value) return
   loading.value = name

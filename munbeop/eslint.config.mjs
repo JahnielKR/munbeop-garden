@@ -31,8 +31,8 @@ export default withNuxt(
     },
   },
   {
-    // These files are executable CLI utilities; stdout is their user-facing
-    // result, unlike application code where stray console output is noise.
+    // These files are command-line programs. Their stdout is the user-facing
+    // result, so console output is intentional rather than debug leakage.
     files: ['scripts/**/*.mjs', 'tools/**/*.mjs'],
     rules: {
       'no-console': 'off',

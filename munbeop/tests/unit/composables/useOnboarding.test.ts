@@ -5,6 +5,7 @@ import { useGrammarStore } from '~/stores/grammar'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useAppStatus } from '~/stores/appStatus'
+import { useAuthStore } from '~/stores/auth'
 import type { Grammar } from '~/lib/domain'
 
 // Deterministic, storage-free adapter so add()/markSeen()/recalculate() resolve
@@ -12,7 +13,7 @@ import type { Grammar } from '~/lib/domain'
 // (vi.mock is hoisted above the imports by Vitest, so the stores pick it up.)
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({
-    read: vi.fn().mockResolvedValue(undefined),
+    read: vi.fn(async (_key: string, fallback: unknown) => fallback),
     write: vi.fn().mockResolvedValue(undefined),
     append: vi.fn(async (_key: string, value: Record<string, unknown>) => ({ ...value, id: 1 })),
     upsertOne: vi.fn().mockResolvedValue(undefined),
@@ -26,9 +27,12 @@ function seedStarterGrammar() {
 }
 
 describe('useOnboarding', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     setActivePinia(createPinia())
     localStorage.clear()
+    useAuthStore().user = { id: 'user-1' } as never
+    await Promise.all([useLogStore().hydrate(), useSrsStore().hydrate()])
+    useAppStatus().status = 'ready'
   })
 
   it('complete writes exactly one log entry, marks the grammar seen, sets the flag, closes', async () => {
@@ -42,7 +46,7 @@ describe('useOnboarding', () => {
     expect(log.entries[0]!.contextId).toBe('banmal')
     expect(log.entries[0]!.feedback).toBe('easy')
     expect(useSrsStore().map[STARTER_KO]).toBeTruthy()
-    expect(localStorage.getItem('munbeop.onboarded')).toBe('1')
+    expect(localStorage.getItem('munbeop.onboarded.user-1')).toBe('1')
     expect(ob.open.value).toBe(false)
     expect(entry).not.toBeNull()
   })
@@ -52,7 +56,7 @@ describe('useOnboarding', () => {
     const ob = useOnboarding()
     const entry = await ob.complete('whatever')
     expect(useLogStore().entries).toHaveLength(0)
-    expect(localStorage.getItem('munbeop.onboarded')).toBe('1')
+    expect(localStorage.getItem('munbeop.onboarded.user-1')).toBe('1')
     expect(entry).toBeNull()
   })
 
@@ -60,7 +64,7 @@ describe('useOnboarding', () => {
     const ob = useOnboarding()
     ob.skip()
     expect(useLogStore().entries).toHaveLength(0)
-    expect(localStorage.getItem('munbeop.onboarded')).toBe('1')
+    expect(localStorage.getItem('munbeop.onboarded.user-1')).toBe('1')
     expect(ob.open.value).toBe(false)
   })
 

@@ -1,6 +1,7 @@
 import { setActivePinia, createPinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { useActivityStore } from '~/stores/activity'
+import { useAuthStore } from '~/stores/auth'
 
 const increment = vi.fn()
 const read = vi.fn(async () => ({}))
@@ -17,7 +18,8 @@ describe('useActivityStore', () => {
       remoteCount += amount
       return remoteCount
     })
-    read.mockClear()
+    read.mockReset()
+    read.mockResolvedValue({})
   })
 
   it('record() increments today through the atomic counter', async () => {
@@ -28,6 +30,28 @@ describe('useActivityStore', () => {
     expect(store.map['2026-06-26']).toEqual({ count: 2 })
     expect(increment).toHaveBeenNthCalledWith(1, 'munbeop.v1.activity', '2026-06-26', 1)
     expect(increment).toHaveBeenNthCalledWith(2, 'munbeop.v1.activity', '2026-06-26', 1)
+  })
+
+  it('record() swallows a failed cloud write and still ticks the in-memory day', async () => {
+    // Every drill answer fires record() fire-and-forget; a flaky-network reject
+    // must never escape as an unhandled rejection (it would flood /api/errors).
+    increment.mockRejectedValueOnce(new Error('network down'))
+    const store = useActivityStore()
+    const now = new Date(2026, 6, 6, 10).getTime()
+    await expect(store.record(now)).resolves.toBe(false)
+    expect(store.map['2026-07-06']).toEqual({ count: 1 })
+  })
+
+  it('does not replace a cloud count when the authenticated hydration failed', async () => {
+    useAuthStore().user = { id: 'u-1' } as never
+    read.mockRejectedValueOnce(new Error('network down'))
+    const store = useActivityStore()
+
+    await expect(store.hydrate()).rejects.toThrow('network down')
+    await store.record(new Date(2026, 6, 7, 10).getTime())
+
+    expect(increment).not.toHaveBeenCalled()
+    expect(store.map).toEqual({})
   })
 
   it('hydrate() loads the map from storage', async () => {

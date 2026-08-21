@@ -3,6 +3,7 @@ import { setActivePinia, createPinia } from 'pinia'
 import { useContextsStore } from '~/stores/contexts'
 import type { LocalizedString } from '~/lib/domain'
 import { LOCALE_CODES } from '~/lib/domain'
+import { STORAGE_KEYS } from '~/lib/storage'
 
 // Adapter whose row-level methods can reject, to exercise rollback paths.
 const write = vi.fn(async () => {})
@@ -32,16 +33,14 @@ describe('useContextsStore — rollback on cloud write failure', () => {
     const store = useContextsStore()
     const before = [...store.inactiveIds]
     upsertOne.mockRejectedValueOnce(new Error('cloud down'))
-    const ok = await store.toggleActive('banmal')
-    expect(ok).toBe(false)
+    await expect(store.toggleActive('banmal')).rejects.toThrow('cloud down')
     expect(store.inactiveIds).toEqual(before) // not left deactivated in memory
   })
 
   it('addCustom removes the optimistic context when the write fails', async () => {
     const store = useContextsStore()
     upsertOne.mockRejectedValueOnce(new Error('cloud down'))
-    const created = await store.addCustom('우리집', scene('at home'))
-    expect(created).toBeNull()
+    await expect(store.addCustom('우리집', scene('at home'))).rejects.toThrow('cloud down')
     expect(store.custom).toEqual([])
     expect(store.all.some((c) => c.name === '우리집')).toBe(false)
   })
@@ -51,8 +50,26 @@ describe('useContextsStore — rollback on cloud write failure', () => {
     const ctx = await store.addCustom('우리집', scene('at home')) // write resolves
     expect(ctx).not.toBeNull()
     deleteOne.mockRejectedValueOnce(new Error('cloud down'))
-    const ok = await store.removeCustom(ctx!.id)
-    expect(ok).toBe(false)
+    await expect(store.removeCustom(ctx!.id)).rejects.toThrow('cloud down')
     expect(store.all.some((c) => c.id === ctx!.id)).toBe(true) // still there
+  })
+
+  it('commits deletion before best-effort inactive-id cleanup', async () => {
+    const store = useContextsStore()
+    const ctx = await store.addCustom('우리집', scene('at home'))
+    await store.toggleActive(ctx!.id)
+    deleteOne.mockClear()
+    deleteOne
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error('cleanup down'))
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    await expect(store.removeCustom(ctx!.id)).resolves.toBe(true)
+
+    expect(store.all.some((candidate) => candidate.id === ctx!.id)).toBe(false)
+    expect(deleteOne.mock.calls.map((call) => call[0])).toEqual([
+      STORAGE_KEYS.customContexts,
+      STORAGE_KEYS.inactiveContextIds,
+    ])
   })
 })

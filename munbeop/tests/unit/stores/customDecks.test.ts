@@ -1,29 +1,22 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useCustomDecksStore } from '~/stores/customDecks'
+import { useGrammarStore } from '~/stores/grammar'
 import { STORAGE_KEYS } from '~/lib/storage'
+import { useAuthStore } from '~/stores/auth'
 
 let stored: Record<string, unknown> = {}
 let failNextWrite = false
+const { read, upsertOne, deleteOne } = vi.hoisted(() => ({
+  read: vi.fn(),
+  upsertOne: vi.fn(),
+  deleteOne: vi.fn(),
+}))
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({
-    read: async (key: string, fallback: unknown) => (key in stored ? stored[key] : fallback),
-    upsertOne: async (key: string, entry: { id: string; value: unknown }) => {
-      if (failNextWrite) {
-        failNextWrite = false
-        throw new Error('cloud write failed')
-      }
-      const rows = (stored[key] as Array<{ id: string }> | undefined) ?? []
-      stored[key] = [...rows.filter((row) => row.id !== entry.id), entry.value]
-    },
-    deleteOne: async (key: string, id: string) => {
-      if (failNextWrite) {
-        failNextWrite = false
-        throw new Error('cloud write failed')
-      }
-      const rows = (stored[key] as Array<{ id: string }> | undefined) ?? []
-      stored[key] = rows.filter((row) => row.id !== id)
-    },
+    read,
+    upsertOne,
+    deleteOne,
   }),
 }))
 
@@ -31,6 +24,26 @@ beforeEach(() => {
   setActivePinia(createPinia())
   stored = {}
   failNextWrite = false
+  read.mockReset()
+  read.mockImplementation(async (key: string, fallback: unknown) => (key in stored ? stored[key] : fallback))
+  upsertOne.mockReset()
+  upsertOne.mockImplementation(async (key: string, entry: { id: string; value: unknown }) => {
+    if (failNextWrite) {
+      failNextWrite = false
+      throw new Error('cloud write failed')
+    }
+    const rows = (stored[key] as Array<{ id: string }> | undefined) ?? []
+    stored[key] = [...rows.filter((row) => row.id !== entry.id), entry.value]
+  })
+  deleteOne.mockReset()
+  deleteOne.mockImplementation(async (key: string, id: string) => {
+    if (failNextWrite) {
+      failNextWrite = false
+      throw new Error('cloud write failed')
+    }
+    const rows = (stored[key] as Array<{ id: string }> | undefined) ?? []
+    stored[key] = rows.filter((row) => row.id !== id)
+  })
 })
 
 describe('useCustomDecksStore', () => {
@@ -60,6 +73,25 @@ describe('useCustomDecksStore', () => {
     expect(b.order).toBe(1)
   })
 
+  it('serializes concurrent adds so both survive with distinct order', async () => {
+    const s = useCustomDecksStore()
+    let releaseFirst!: () => void
+    upsertOne.mockImplementationOnce(
+      () => new Promise<void>((resolve) => { releaseFirst = resolve }),
+    )
+
+    const first = s.addDeck({ name: 'a' })
+    const second = s.addDeck({ name: 'b' })
+    await Promise.resolve()
+    await Promise.resolve()
+    expect(upsertOne).toHaveBeenCalledTimes(1)
+
+    releaseFirst()
+    const [a, b] = await Promise.all([first, second])
+    expect([a.order, b.order]).toEqual([0, 1])
+    expect(s.decks.map((deck) => deck.name)).toEqual(['a', 'b'])
+  })
+
   it('updateDeck patches fields and trims the name', async () => {
     const s = useCustomDecksStore()
     const d = await s.addDeck({ name: 'a' })
@@ -85,6 +117,62 @@ describe('useCustomDecksStore', () => {
     const s = useCustomDecksStore()
     await s.hydrate()
     expect(s.deckById('x')!.name).toBe('seed')
+  })
+
+  it('rejects authenticated mutations after hydration fails without replacing cloud decks', async () => {
+    useAuthStore().user = { id: 'u-1' } as never
+    read.mockRejectedValueOnce(new Error('network down'))
+    const s = useCustomDecksStore()
+
+    await expect(s.hydrate()).rejects.toThrow('network down')
+    await expect(s.addDeck({ name: 'unsafe' })).rejects.toThrow(
+      'Custom decks are unavailable',
+    )
+
+    expect(upsertOne).not.toHaveBeenCalled()
+    expect(s.decks).toEqual([])
+  })
+
+  it('queues hydrate with mutations so a stale read cannot erase a concurrent add', async () => {
+    let resolveRead!: (value: unknown) => void
+    read.mockImplementationOnce(() => new Promise((resolve) => { resolveRead = resolve }))
+    const s = useCustomDecksStore()
+
+    const hydration = s.hydrate()
+    const addition = s.addDeck({ name: 'new' })
+    await Promise.resolve()
+    expect(upsertOne).not.toHaveBeenCalled()
+
+    resolveRead([
+      { id: 'cloud', name: 'cloud', colorId: 'gold', icon: 'deck-book', grammarKos: [], order: 0, createdAt: '2026-06-20T00:00:00.000Z' },
+    ])
+    await Promise.all([hydration, addition])
+
+    expect(s.decks.map((deck) => deck.name)).toEqual(['cloud', 'new'])
+    expect(upsertOne).toHaveBeenLastCalledWith(
+      STORAGE_KEYS.customDecks,
+      expect.objectContaining({ value: expect.objectContaining({ name: 'new' }) }),
+    )
+  })
+
+  it('sanitizes duplicate and ghost grammar ids against the hydrated catalog', async () => {
+    useGrammarStore().items = [{
+      ko: 'valid',
+      meaning: { en: 'v', es: 'v', fr: 'v', 'pt-BR': 'v', th: 'v', id: 'v', vi: 'v', ja: 'v' },
+      deckId: 'topik-1',
+    }]
+    stored[STORAGE_KEYS.customDecks] = [
+      {
+        id: 'x', name: 'seed', colorId: 'gold', icon: 'deck-book',
+        grammarKos: ['valid', 'ghost', 'valid', 7], order: 0,
+        createdAt: '2026-06-20T00:00:00.000Z',
+      },
+    ]
+    const s = useCustomDecksStore()
+    await s.hydrate()
+
+    expect(s.deckById('x')!.grammarKos).toEqual(['valid'])
+    expect(upsertOne).not.toHaveBeenCalled()
   })
 
   // A failed atomic row mutation rolls the optimistic local state back.

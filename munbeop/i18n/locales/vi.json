@@ -309,6 +309,11 @@
     "toast_saved_easy": "✨ Đã lưu",
     "toast_saved_hard": "😤 Đã lưu",
     "toast_save_error": "⚠️ Không lưu được. Câu của bạn vẫn còn, chạm để thử lại.",
+    "save_error": "Không thể lưu tiến độ của bạn. Hãy thử lại.",
+    "save_saving": "Đang lưu tiến độ…",
+    "save_saved": "Đã lưu tiến độ.",
+    "save_retry": "THỬ LƯU LẠI",
+    "start_failed": "Không bắt đầu được bài luyện tập. Kiểm tra kết nối và thử lại.",
     "no_sentence": "Viết câu trước đã",
     "custom": {
       "section": "Bộ thẻ tùy chỉnh",
@@ -328,6 +333,7 @@
       "save": "Lưu bộ thẻ",
       "delete": "Xóa bộ thẻ",
       "confirm_delete": "Xóa bộ thẻ này? Không thể hoàn tác.",
+      "discard_confirm": "Bỏ các thay đổi bộ thẻ chưa lưu?",
       "empty_title": "Tạo bộ thẻ đầu tiên của bạn",
       "empty_hint": "Chọn ngữ pháp bạn muốn từ bất kỳ cấp độ nào, đặt tên và chơi."
     },
@@ -497,6 +503,7 @@
     "submit_sign_up": "Đăng ký",
     "submit_magic_link": "Gửi liên kết kỳ diệu",
     "magic_link_sent": "Kiểm tra email để nhận liên kết đăng nhập.",
+    "signup_confirm_sent": "Kiểm tra email để xác nhận tài khoản của bạn.",
     "checking": "Đang kiểm tra liên kết…",
     "callback_success": "Đăng nhập thành công! Đang chuyển…",
     "callback_error": "Liên kết không hợp lệ hoặc đã hết hạn.",
@@ -513,6 +520,12 @@
     "new_password_label": "Mật khẩu mới",
     "current_password_label": "Mật khẩu hiện tại",
     "password_min": "Ít nhất 8 ký tự.",
+    "error_invalid_credentials": "Email hoặc mật khẩu không đúng.",
+    "error_email_not_confirmed": "Hãy xác nhận email trước — kiểm tra hộp thư của bạn.",
+    "error_user_exists": "Đã có tài khoản dùng email này.",
+    "error_rate_limited": "Quá nhiều lần thử. Chờ một lát rồi thử lại.",
+    "error_weak_password": "Mật khẩu này quá yếu — hãy thử mật khẩu dài hơn.",
+    "error_generic": "Đã xảy ra lỗi. Hãy thử lại sau giây lát.",
     "submit_new_password": "Cập nhật mật khẩu",
     "password_updated": "Đã cập nhật mật khẩu.",
     "reset_error": "Không thể cập nhật mật khẩu. Thử lại.",
@@ -541,7 +554,8 @@
       "delete_confirm_body": "“{ko}” sẽ bị xóa khỏi các mẫu của bạn.",
       "empty": "Bạn chưa có mẫu nào của riêng mình. Trồng cái đầu tiên bên dưới.",
       "created": "Đã thêm ngữ pháp.",
-      "deleted": "Đã xóa ngữ pháp."
+      "deleted": "Đã xóa ngữ pháp.",
+      "cancel": "Hủy"
     },
     "dark_mode": "Chế độ tối",
     "appearance": {
@@ -912,6 +926,10 @@
     "numberMarket": {
       "name": "Chợ Số",
       "desc": "Đọc số kiểu Hàn: đếm, giờ, tiền, ngày tháng."
+    },
+    "sentenceGarden": {
+      "name": "Vườn câu",
+      "desc": "Sắp thứ tự các thẻ-từ để ghép một câu tiếng Hàn thật."
     }
   },
   "escape": {
@@ -931,10 +949,14 @@
     "errors": "Lỗi",
     "solved": "Đã giải",
     "rooms": "Phòng",
+    "clue_n": "Manh mối {n}",
     "game_over_title": "Câu chuyện vụt mất…",
     "game_over_text": "Ba lần vấp. Cánh cửa lại khóa — nhưng ngôi nhà vẫn nhớ bạn. Thử lại với những mẩu giấy mới.",
     "retry": "THỬ LẠI",
     "back_to_book": "Về cuốn sổ",
+    "close": "Đóng",
+    "wrong_nudge": "Chưa đúng — còn {left} ♥",
+    "hearts_status": "Còn {left} trên {total} lượt",
     "victory_title": "Bạn đã thoát!",
     "reward_unlocked": "Đã mở phần thưởng",
     "premios_title": "Cúp thưởng",
@@ -958,6 +980,7 @@
     "title": "Phòng thí nghiệm chia động từ",
     "lead": "Chọn dạng chia đúng. Các lựa chọn sai là lỗi mà người học thực sự hay mắc phải.",
     "pick_class": "CHỌN LOẠI",
+    "change_class": "ĐỔI LOẠI",
     "prompt": "Chia động từ theo {ending}",
     "gloss_hint": "({gloss})",
     "pick_hint": "Chạm vào dạng đúng.",
@@ -991,6 +1014,11 @@
       "dismiss": "Tuyệt!",
       "pip_done": "{ko} — đã hoàn thành",
       "pip_todo": "{ko} — chưa xong"
+    },
+    "persistence": {
+      "saving": "Đang lưu lỗi này…",
+      "failed": "Không lưu được lỗi này. Câu trả lời của bạn vẫn còn ở đây.",
+      "retry": "Thử lưu lại"
     }
   },
   "register": {
@@ -1021,6 +1049,11 @@
       "dismiss": "Tuyệt!",
       "pip_done": "{ko} — đã hoàn thành",
       "pip_todo": "{ko} — chưa xong"
+    },
+    "persistence": {
+      "saving": "Đang lưu lỗi này…",
+      "failed": "Chưa thể lưu lỗi này. Câu trả lời của bạn vẫn còn đây.",
+      "retry": "Thử lưu lại"
     }
   },
   "cloze": {
@@ -1028,6 +1061,8 @@
     "lead": "Chọn bộ bài rồi chọn ngữ pháp phù hợp với mỗi chỗ trống — vòng nhận diện nhanh bổ sung cho việc viết.",
     "pick_deck": "CHỌN BỘ BÀI",
     "deck_empty": "Bộ bài này chưa có mục điền từ — thử bộ khác.",
+    "custom_item_count": "{n} bài điền khuyết có thể chơi",
+    "custom_locked_need_items": "Cần 3 bài điền khuyết có thể chơi",
     "pick_hint": "Chạm vào dạng phù hợp với chỗ trống.",
     "correct": "Đúng rồi!",
     "wrong": "Gần đúng",
@@ -1072,6 +1107,20 @@
       "time_age": "Thời gian & tuổi",
       "things": "Đồ vật",
       "money_order": "Tiền & thứ tự"
+    },
+    "master": {
+      "label": "Bậc thầy đơn vị đếm",
+      "progress": "Đã hoàn thành {done}/{total} bộ",
+      "earned": "Hoàn thành cả 6 bộ!",
+      "celebrate_body": "Bạn đã hoàn thành tất cả {total} bộ đơn vị đếm. 잘했어요!",
+      "dismiss": "Tuyệt!",
+      "pip_done": "{ko} — đã hoàn thành",
+      "pip_todo": "{ko} — chưa xong"
+    },
+    "persistence": {
+      "saving": "Đang lưu lỗi này…",
+      "failed": "Không lưu được lỗi này. Câu trả lời của bạn vẫn còn ở đây.",
+      "retry": "Thử lưu lại"
     }
   },
   "reminder": {
@@ -1160,5 +1209,36 @@
       "fmt_date": "vd. 6/15",
       "fmt_phone": "vd. 01012345678"
     }
+  },
+  "sentenceGarden": {
+    "title": "Vườn câu",
+    "lead": "Ghép lại câu bằng cách sắp thứ tự các thẻ-từ. Một số lượt có thêm một thẻ bẫy.",
+    "pick_deck": "Chọn bộ thẻ",
+    "deck_empty": "Bộ này chưa có câu ngắn.",
+    "progress_label": "Câu",
+    "check": "Kiểm tra",
+    "hear": "Nghe",
+    "tray_label": "Thẻ từ",
+    "bed_label": "Câu của bạn",
+    "reveal_correct": "Thứ tự đúng: {correct}",
+    "correct": "Chính xác!",
+    "sr_placed": "Đã đặt {word}",
+    "sr_removed": "Đã bỏ {word}",
+    "replay_mode_label": "Đang chơi lại những câu sai",
+    "summary_again": "Chơi lại",
+    "summary_replay": "Chơi lại câu sai",
+    "custom_round_count": "{n} câu có thể chơi",
+    "custom_locked_need_rounds": "Cần 6 câu có thể chơi",
+    "persistence": {
+      "saving": "Đang lưu tiến độ của bạn…",
+      "failed": "Chưa thể lưu tiến độ. Không có dữ liệu nào bị bỏ.",
+      "retry": "Thử lưu lại"
+    },
+    "next": "Tiếp"
+  },
+  "practiceHelp": {
+    "button": "Giải thích",
+    "close": "Đóng",
+    "section": { "concept": "Là gì?", "types": "Các loại", "howToPlay": "Cách chơi", "tip": "Mẹo" }
   }
 }

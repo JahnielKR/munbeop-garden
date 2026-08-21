@@ -3,6 +3,7 @@ import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
+import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 import RescuePanel from '~/components/practice/RescuePanel.vue'
 import { useRescueDrill } from '~/composables/useRescueDrill'
 import { useGrammarStore } from '~/stores/grammar'
@@ -17,10 +18,14 @@ const grammarStore = useGrammarStore()
 const logStore = useLogStore()
 
 const ko = computed(() => (typeof route.query.ko === 'string' ? route.query.ko : ''))
-const drill = useRescueDrill(ko.value)
+const drill = useRescueDrill(ko)
 
 function goProduce() {
   void router.push(`/practice/ruleta?focus=${encodeURIComponent(ko.value)}`)
+}
+
+function navigateRelated(relatedKo: string) {
+  void router.push({ path: '/practice/rescue', query: { ko: relatedKo } })
 }
 
 onMounted(async () => {
@@ -40,6 +45,7 @@ onMounted(async () => {
   <div class="page">
     <GameExitButton />
     <BilingualTitle ko="다시 돌보기" :latin="t('rescue.title')" />
+    <PracticeHelp mode="rescue" />
 
     <RescuePanel
       v-if="drill.grammar.value"
@@ -51,6 +57,7 @@ onMounted(async () => {
       @next="drill.next()"
       @back="drill.back()"
       @produce="goProduce"
+      @navigate="navigateRelated"
     />
     <p v-else class="empty">{{ t('rescue.empty') }}</p>
   </div>

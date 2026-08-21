@@ -1,17 +1,22 @@
-const WEEK = 7 * 86_400_000
+import { localDayKey, ordinalOf } from './activity'
 
 /**
  * Sentence counts per week for the trailing `weeks` window, oldest first and
- * the current week last. Weeks are bucketed by floor(ms / WEEK); `now` is
- * injected for deterministic tests. Entries outside the window are ignored.
+ * the current week last. Weeks are trailing 7-LOCAL-day windows anchored to
+ * today (the last bucket is today and the six local days before it), so the
+ * chart agrees with the heatmap/streak instead of breaking on the raw
+ * epoch-week (Thursday-UTC) boundary. `now` is injected for deterministic
+ * tests. Entries outside the window are ignored.
  */
 export function weeklyCounts(dateMs: number[], now: number, weeks = 8): number[] {
-  const current = Math.floor(now / WEEK)
-  const start = current - (weeks - 1)
+  const todayOrd = ordinalOf(localDayKey(now))
   const out = new Array<number>(weeks).fill(0)
   for (const ms of dateMs) {
-    const w = Math.floor(ms / WEEK)
-    if (w >= start && w <= current) out[w - start] = (out[w - start] ?? 0) + 1
+    const weeksAgo = Math.floor((todayOrd - ordinalOf(localDayKey(ms))) / 7)
+    if (weeksAgo >= 0 && weeksAgo < weeks) {
+      const idx = weeks - 1 - weeksAgo
+      out[idx] = (out[idx] ?? 0) + 1
+    }
   }
   return out
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type { ErrorDimension, Grammar, LocalizedString } from '~/lib/domain'
 import { notesFor } from '~/lib/usage-notes'
 import ExamplesSection from '~/components/library/GrammarStudySheet/ExamplesSection.vue'
@@ -14,9 +14,10 @@ interface Props {
   canBack: boolean
 }
 const props = defineProps<Props>()
-defineEmits<{ next: []; back: []; produce: [] }>()
+defineEmits<{ next: []; back: []; produce: []; navigate: [ko: string] }>()
 const { t } = useI18n()
 const { tl } = useLocalized()
+const root = ref<HTMLElement | null>(null)
 
 const header = computed(() =>
   props.dominantDimension
@@ -30,18 +31,47 @@ const usageNotes = ref<LocalizedString | undefined>(undefined)
 watch(
   () => [props.grammar.ko, props.grammar.deckId] as const,
   async ([ko, deckId]) => {
-    const result = await notesFor(ko, deckId)
+    // Never show the previous grammar's note while the new seed chunk loads.
+    usageNotes.value = undefined
+    let result: LocalizedString | undefined
+    try {
+      result = await notesFor(ko, deckId)
+    } catch {
+      // A failed lazy chunk should leave this optional note empty, not surface
+      // an unhandled Vue watcher rejection or break the rescue flow.
+      return
+    }
     // Ignore a stale resolve if the grammar changed while the chunk loaded.
-    if (props.grammar.ko === ko) usageNotes.value = result
+    if (props.grammar.ko === ko && props.grammar.deckId === deckId) usageNotes.value = result
   },
   { immediate: true },
+)
+
+function focusPanel(): void {
+  root.value?.focus({ preventScroll: true })
+}
+onMounted(focusPanel)
+
+watch(
+  () => [props.grammar.ko, props.stage] as const,
+  async () => {
+    await nextTick()
+    focusPanel()
+  },
+  { flush: 'post' },
 )
 </script>
 
 <template>
-  <section class="rescue" data-testid="rescue-panel">
+  <section
+    ref="root"
+    tabindex="-1"
+    class="rescue"
+    data-testid="rescue-panel"
+    aria-labelledby="rescue-panel-title"
+  >
     <header class="rescue__head">
-      <h2 class="rescue__title">{{ t('rescue.title') }}</h2>
+      <h2 id="rescue-panel-title" class="rescue__title">{{ t('rescue.title') }}</h2>
       <p class="rescue__sub">{{ header }}</p>
       <p class="rescue__stage" lang="ko">{{ t(`rescue.stage_${stage}`) }}</p>
     </header>
@@ -52,9 +82,17 @@ watch(
       <p v-if="usageNotes" class="rescue__notes">{{ tl(usageNotes) }}</p>
     </div>
 
-    <ExamplesSection v-else-if="stage === 'examples'" :grammar="grammar" />
+    <ExamplesSection
+      v-else-if="stage === 'examples'"
+      :grammar="grammar"
+      include-canonical-fallback
+    />
 
-    <ConfusedWithSection v-else-if="stage === 'discriminate'" :grammar="grammar" />
+    <ConfusedWithSection
+      v-else-if="stage === 'discriminate'"
+      :grammar="grammar"
+      @navigate="$emit('navigate', $event)"
+    />
 
     <div v-else class="rescue__produce">
       <p class="rescue__produce-body">{{ t('rescue.produce_body') }}</p>
@@ -95,6 +133,11 @@ watch(
   border: 2px solid var(--border);
   border-radius: 10px;
   padding: 18px;
+  outline: 3px solid transparent;
+  outline-offset: 3px;
+}
+.rescue:focus {
+  outline-color: var(--focus-ring, var(--sky));
 }
 .rescue__head {
   display: flex;

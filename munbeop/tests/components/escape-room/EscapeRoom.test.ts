@@ -16,7 +16,7 @@ async function mountPlaying(level = makeLevel(), seed = 'seed-test') {
 async function openSlot1(w: VueWrapper) {
   const spot = w
     .findAll('[data-testid="hotspot"]')
-    .find((h) => h.attributes('aria-label') === 'h-a-1')!
+    .find((h) => h.attributes('data-hotspot-id') === 'h-a-1')!
   await spot.trigger('click')
 }
 
@@ -82,12 +82,79 @@ describe('EscapeRoom (integration with store)', () => {
     expect(store.currentRoomId).toBe('room-b')
   })
 
+  it('reveals later room tabs only when their first sequential lock is reached', async () => {
+    const level = makeLevel({
+      rooms: [
+        ...makeLevel().rooms,
+        {
+          id: 'room-b',
+          title: {
+            en: 'Room B', es: 'Room B', fr: 'Room B', 'pt-BR': 'Room B',
+            th: 'Room B', id: 'Room B', vi: 'Room B', ja: 'Room B',
+          },
+          image: 'rooms/b.png',
+          ambientAudio: '',
+          hotspots: [{ id: 'h-b-1', rect: [0, 0, 44, 44], triggersSlot: 'slot-2' }],
+        },
+      ],
+    })
+    const w = await mountPlaying(level)
+    const laterTab = w.findAll('[data-testid="room-tab"]')[1]!
+    expect(laterTab.attributes('disabled')).toBeDefined()
+
+    useEscapeRoomStore().answerSelection('slot-1', 0)
+    await flushPromises()
+    expect(laterTab.attributes('disabled')).toBeUndefined()
+    await laterTab.trigger('click')
+    expect(useEscapeRoomStore().currentRoomId).toBe('room-b')
+  })
+
   it('opens the right puzzle panel per slot type', async () => {
     const w = await mountPlaying()
     await openSlot1(w)
     expect(w.find('[data-testid="slot-selection"]').exists()).toBe(true)
     await w.get('[data-testid="puzzle-close"]').trigger('click')
     expect(w.find('[data-testid="slot-selection"]').exists()).toBe(false)
+  })
+
+  it('the puzzle overlay has modal semantics + a labelled close (was aria-label="✕")', async () => {
+    const w = await mountPlaying()
+    await openSlot1(w)
+    const overlay = w.get('[data-testid="puzzle-overlay"]')
+    expect(overlay.attributes('role')).toBe('dialog')
+    expect(overlay.attributes('aria-modal')).toBe('true')
+    expect(overlay.attributes('tabindex')).toBe('-1')
+    const close = w.get('[data-testid="puzzle-close"]')
+    expect(close.attributes('aria-label')).toBe('escape.close') // localized, not "✕"
+  })
+
+  it('restores focus to the triggering hotspot when the overlay closes', async () => {
+    const w = mount(EscapeRoom, { props: { level: makeLevel(), seed: 's' }, attachTo: document.body })
+    await flushPromises()
+    await w.get('[data-testid="cinematic-skip"]').trigger('click')
+    const spot = w
+      .findAll('[data-testid="hotspot"]')
+      .find((h) => h.attributes('data-hotspot-id') === 'h-a-1')!
+    ;(spot.element as HTMLElement).focus()
+    await spot.trigger('click') // opens the overlay; focus moves into it
+    await flushPromises()
+    expect(document.activeElement).not.toBe(spot.element) // focus moved into the modal
+    await w.get('[data-testid="puzzle-close"]').trigger('click')
+    await flushPromises()
+    expect(document.activeElement).toBe(spot.element) // restored, not dropped to <body>
+    w.unmount()
+  })
+
+  it('a wrong answer shows a visible, announced nudge (feedback was audio-only)', async () => {
+    const w = await mountPlaying()
+    await openSlot1(w)
+    // wrong option (idx 1) — overlay stays open, so the nudge must be visible.
+    await w.findAll('[data-testid="slot-option"]')[1]!.trigger('click')
+    const nudge = w.get('[data-testid="puzzle-wrong"]')
+    expect(nudge.attributes('role')).toBe('status')
+    expect(nudge.text()).toContain('escape.wrong_nudge')
+    // hearts are exposed to AT (was aria-hidden with no label)
+    expect(w.get('[data-testid="er-hearts"]').attributes('aria-label')).toContain('escape.hearts_status')
   })
 
   it('answering correctly resolves the slot and closes the panel', async () => {

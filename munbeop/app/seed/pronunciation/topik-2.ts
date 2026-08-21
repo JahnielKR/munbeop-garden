@@ -15,8 +15,9 @@ import type { PronunciationGuide } from '~/lib/domain'
  * -군요/-구나 → 군요; 하다/되다 → 하다); optional parenthesized morphemes are
  * dropped (에 대해(서) → 에 대해; -다(가) 말다 → 다 말다); a placeholder N/V is not
  * sounded, but an embedded particle pair still sounds both (이/가 되다 → 이 되다 |
- * 가 되다); written/dictionary syllables (no liaison respell).
- * PENDING wife native-review — the content gate.
+ * 가 되다); written/dictionary syllables (no liaison respell). The guide has
+ * been editorially checked against that convention and is guarded by seed/audio
+ * invariants; it is a didactic segmentation, not phonetic transcription.
  */
 export const TOPIK_2_PRONUNCIATION: PronunciationGuide[] = [
   // ── Ability / time connectives ────────────────────────────────────────────

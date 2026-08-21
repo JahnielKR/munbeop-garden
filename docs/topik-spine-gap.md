@@ -2,7 +2,7 @@
 
 - Seed runtime entries (`grammars.ts`): **300**
 - Spine items (TOPIK + transversales): **301**
-- Cobertura aproximada del seed sobre el spine: **99.7%**
+- Cobertura real del seed sobre el spine: **100.0%**
 
 ## 1) Mapeo de las entradas del seed al spine
 
@@ -309,6 +309,10 @@
 | `-노라면` | EXACT | **G288** · complementary |
 | `-아/어 죽을 지경이다` | EXACT | **G289** · complementary |
 
+### Cobertura semántica declarada (sin duplicar tarjetas)
+
+- **G286** · `-(이)야말로 (확장)` → cubierta por **G115**.
+
 ## 2) Cobertura por nivel TOPIK
 
 | Nivel | Total spine | En seed | Faltan |
@@ -336,8 +340,7 @@ Total frecuentes ausentes: **0**
 
 ## 5) Items matiz (★) ausentes — referencia
 
-Total matiz ausentes: **1**
+Total matiz ausentes: **0**
 
 | ID | Patrón | Origen | Resumen |
 |---|---|---|---|
-| G286 | `-(이)야말로 (확장)` | complementary | Extensión de G115: combinaciones útiles con -(이)야말로 |

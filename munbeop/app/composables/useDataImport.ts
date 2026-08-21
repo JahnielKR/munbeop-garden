@@ -14,7 +14,11 @@ export function useDataImport() {
 
   async function applyImport(payload: ExportPayload): Promise<boolean> {
     const storage = useStorageAdapter()
-    const keys = EXPORT_KEYS.filter((key) => payload.data[key] !== undefined)
+    // Presence and value are distinct: an absent key leaves the target intact,
+    // while an explicitly exported null clears that collection transactionally.
+    const keys = EXPORT_KEYS.filter((key) =>
+      Object.prototype.hasOwnProperty.call(payload.data, key),
+    )
     if (keys.length === 0) return true
 
     const data: StorageRestore = {}

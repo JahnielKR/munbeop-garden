@@ -2,9 +2,14 @@ import { ref } from 'vue'
 import { shouldNudge } from '~/lib/reminders/nudge'
 import { useReadyCount } from '~/composables/useReadyCount'
 import { useSettingsStore } from '~/stores/settings'
+import { useAuthStore } from '~/stores/auth'
 
 const LAST_VISIT_KEY = 'reminder.lastVisitAt'
 const LAST_NUDGE_KEY = 'reminder.lastNudgeAt'
+
+function userKey(base: string, userId: string): string {
+  return `${base}.${userId}`
+}
 
 function readTs(key: string): number | null {
   if (typeof localStorage === 'undefined') return null
@@ -24,6 +29,7 @@ function writeTs(key: string, v: number): void {
  */
 export function useReviewReminder() {
   const settings = useSettingsStore()
+  const authStore = useAuthStore()
   const { readyCount } = useReadyCount()
   const { t } = useI18n()
 
@@ -31,14 +37,21 @@ export function useReviewReminder() {
   const count = ref(0)
 
   function check(now: number = Date.now()): void {
-    const lastVisitAt = readTs(LAST_VISIT_KEY)
-    const lastNudgeAt = readTs(LAST_NUDGE_KEY)
+    // A new account check must never reuse the prior account's visible banner.
+    show.value = false
+    count.value = 0
+    const userId = authStore.user?.id
+    if (!userId) return
+    const visitKey = userKey(LAST_VISIT_KEY, userId)
+    const nudgeKey = userKey(LAST_NUDGE_KEY, userId)
+    const lastVisitAt = readTs(visitKey)
+    const lastNudgeAt = readTs(nudgeKey)
     const ready = readyCount.value
 
     if (shouldNudge({ enabled: settings.reviewReminders, readyCount: ready, lastVisitAt, lastNudgeAt, now })) {
       show.value = true
       count.value = ready
-      writeTs(LAST_NUDGE_KEY, now)
+      writeTs(nudgeKey, now)
       if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         try {
           new Notification(t('reminder.notif_title'), {
@@ -50,7 +63,7 @@ export function useReviewReminder() {
         }
       }
     }
-    writeTs(LAST_VISIT_KEY, now) // stamp this visit last, so absence is measured from the previous one
+    writeTs(visitKey, now) // stamp this visit last, so absence is measured from the previous one
   }
 
   function dismiss(): void {

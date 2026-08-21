@@ -26,6 +26,18 @@ describe('CustomDeckShelf', () => {
     expect(w.emitted('select')).toBeUndefined()
   })
 
+  it('accepts mode-specific count and lock labels for Sentence Garden', () => {
+    const w = mount(CustomDeckShelf, {
+      props: {
+        options: [opt({ count: 2, disabled: true, reason: 'too_few' })],
+        countLabelKey: 'sentenceGarden.custom_round_count',
+        lockedLabelKey: 'sentenceGarden.custom_locked_need_rounds',
+      },
+    })
+    expect(w.text()).toContain('sentenceGarden.custom_round_count 2')
+    expect(w.text()).toContain('sentenceGarden.custom_locked_need_rounds')
+  })
+
   it('emits edit (not select) when the pencil is clicked', async () => {
     const w = mount(CustomDeckShelf, { props: { options: [opt({ id: 'abc' })] } })
     await w.find('[data-testid="custom-deck-edit-abc"]').trigger('click')

@@ -63,7 +63,7 @@ describe('Modal', () => {
   it('emits "close" when Escape is pressed', async () => {
     const wrapper = mountModal(true)
     await flushTransitions()
-    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
     await flushTransitions()
     expect(wrapper.emitted('close')).toBeTruthy()
   })

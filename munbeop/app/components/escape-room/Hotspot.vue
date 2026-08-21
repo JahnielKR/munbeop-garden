@@ -11,15 +11,21 @@ import { computed } from 'vue'
 
 interface Props {
   id: string
+  /** Human-readable accessible name. Falls back to a prettified id in isolated previews. */
+  label?: string
   /** `[x, y, w, h]` in scene base coords. */
   rect: readonly [number, number, number, number]
   sceneWidth?: number
   sceneHeight?: number
+  /** Locked/resolved puzzle hotspots stay in place but cannot be activated. */
+  disabled?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  label: '',
   sceneWidth: 320,
   sceneHeight: 240,
+  disabled: false,
 })
 
 defineEmits<{ click: [] }>()
@@ -33,6 +39,8 @@ const style = computed(() => {
     height: `${(h / props.sceneHeight) * 100}%`,
   }
 })
+
+const accessibleLabel = computed(() => props.label?.trim() || props.id.replace(/[-_]+/g, ' '))
 </script>
 
 <template>
@@ -40,11 +48,13 @@ const style = computed(() => {
     type="button"
     class="hotspot"
     data-testid="hotspot"
-    :aria-label="id"
+    :data-hotspot-id="id"
+    :aria-label="accessibleLabel"
     :style="style"
+    :disabled="disabled"
     @click="$emit('click')"
   >
-    <span class="hotspot__sr-only">{{ id }}</span>
+    <span class="hotspot__sr-only">{{ accessibleLabel }}</span>
   </button>
 </template>
 
@@ -63,6 +73,10 @@ const style = computed(() => {
 .hotspot:focus-visible {
   border-color: var(--focus-ring, #ffc850);
   outline: none;
+}
+.hotspot:disabled {
+  cursor: default;
+  pointer-events: none;
 }
 .hotspot__sr-only {
   position: absolute;

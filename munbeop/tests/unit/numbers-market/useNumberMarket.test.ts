@@ -1,8 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useNumberMarket } from '~/composables/useNumberMarket'
+import { useSettingsStore } from '~/stores/settings'
 
 vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
+// Lab mastery persists through the account-synced settings blob now; mock the
+// adapter so the persist is a no-op.
+vi.mock('~/composables/useStorageAdapter', () => ({
+  useStorageAdapter: () => ({ read: vi.fn(async () => null), write: vi.fn(async () => {}), remove: vi.fn(), clear: vi.fn() }),
+}))
 
 beforeEach(() => {
   setActivePinia(createPinia())
@@ -48,21 +54,21 @@ describe('useNumberMarket (Learn)', () => {
     expect(m.built.value).toEqual([])
   })
 
-  it('advancing to done records mastery for a clean normal round', () => {
+  it('advancing to done records mastery for a clean normal round', async () => {
     const m = useNumberMarket()
     m.selectDomain('time')
     m.start()
     while (m.phase.value !== 'done') {
       for (const tile of m.item.value.tiles) m.placeTile(m.pool.value.indexOf(tile))
       m.submit()
-      m.next()
+      await m.next()
     }
     expect(m.score.value.accuracy).toBe(1)
     expect(m.master.doneCount.value).toBe(1)
-    expect(localStorage.getItem('number-market.cleared')).toContain('time')
+    expect(useSettingsStore().labCleared.numberMarket).toContain('time')
   })
 
-  it('replayFailed re-drills only the missed items', () => {
+  it('replayFailed re-drills only the missed items', async () => {
     const m = useNumberMarket()
     m.selectDomain('time')
     m.start()
@@ -75,7 +81,7 @@ describe('useNumberMarket (Learn)', () => {
         for (const tile of m.item.value.tiles) m.placeTile(m.pool.value.indexOf(tile))
       }
       m.submit()
-      m.next()
+      await m.next()
     }
     expect(m.failedItems.value.length).toBe(1)
     m.replayFailed()

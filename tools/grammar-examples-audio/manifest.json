@@ -1,588 +1,4842 @@
 [
-  { "id": "50cbe0e7", "sentence": "저는 물을 마셔요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "55398bdc", "sentence": "친구가 책을 읽어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "b559f68d", "sentence": "오늘 날씨가 좋아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "545c8a42", "sentence": "어제 친구를 만났어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "1ba7e0cf", "sentence": "아침에 빵을 먹었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "704f14ce", "sentence": "어젯밤에 일찍 잤어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "08779fac", "sentence": "저는 학생입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "44d62326", "sentence": "매일 아침을 먹습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "1658d62a", "sentence": "지금 학교에 갑니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "231ef68e", "sentence": "천천히 오세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a24909d3", "sentence": "이 책을 읽으세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "e77f77c4", "sentence": "약을 드세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "8661050b", "sentence": "내일 친구를 만날 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "cea39cce", "sentence": "저는 집에서 밥을 먹을 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "d6b87320", "sentence": "주말에 책을 읽을 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "0cf30fa0", "sentence": "손을 씻고 밥을 먹습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "d6b5083f", "sentence": "방이 크고 깨끗해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "57946469", "sentence": "숙제를 하고 놀았어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "e55b1311", "sentence": "늦어서 죄송합니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "f4dcb35b", "sentence": "비가 와서 집에 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a50c713b", "sentence": "피곤해서 일찍 잤어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "0e76789a", "sentence": "한국어는 어렵지만 재미있습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "911ba62e", "sentence": "비가 오지만 우산이 없어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "1507ea3d", "sentence": "배고프지만 돈이 없어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "a4911393", "sentence": "비가 오면 집에 있습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "f374f1eb", "sentence": "시간이 있으면 전화하세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "bcc5008b", "sentence": "피곤하면 일찍 자.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "81edfc0c", "sentence": "지금 비가 오는데 우산이 없습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "27d44754", "sentence": "이 옷이 예쁜데 좀 비싸요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "da1add9d", "sentence": "시간이 없는데 우리 빨리 가자.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "9ce7e325", "sentence": "물을 마시고 싶습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "77426662", "sentence": "집에 가고 싶어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "66256861", "sentence": "빵을 먹고 싶어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "2d1d9284", "sentence": "저는 지금 밥을 먹고 있습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "06c8d6c1", "sentence": "친구가 책을 읽고 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "4970411d", "sentence": "동생이 음악을 듣고 있어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "900c65f7", "sentence": "동생은 지금 학교에 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "6ac1c08f", "sentence": "오늘 날씨는 정말 좋네요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "ca505625", "sentence": "값이 너무 비싸요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "88b30a3d", "sentence": "오늘 날씨가 정말 좋다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "d323d6b6", "sentence": "동생이 물을 마셔요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "02075dc9", "sentence": "저는 영화를 좋아해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a2886fd7", "sentence": "아침에 빵과 우유를 먹습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "90ab4db4", "sentence": "주말에 가족하고 공원에 갔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "ee6ef59a", "sentence": "동생이랑 같이 떡볶이 먹자.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "aeca432d", "sentence": "동생에게 편지를 보냈어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3ddfd3eb", "sentence": "나 친구한테 문자 보냈어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "8a26a0a3", "sentence": "할머니께 선물을 드렸습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "b816a40d", "sentence": "방학은 다음 주부터 시작해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "024d3a75", "sentence": "이 책을 내일까지 다 읽으세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "7a97dc40", "sentence": "저는 가족하고 함께 공원에 갔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "5e922785", "sentence": "동생이랑 같이 영화를 봤어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "15313c55", "sentence": "여기가 우리 학교예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "565181b9", "sentence": "저 사람은 제 동생이 아니에요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "025082b1", "sentence": "냉장고에 우유가 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "600e7fff", "sentence": "오늘은 숙제가 없어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "cec6db82", "sentence": "저는 제주도에서 산 적이 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "72749f4b", "sentence": "저는 김치를 만든 적이 없어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "d33e9674", "sentence": "저는 커피를 안 마셔요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "23ce928e", "sentence": "오늘은 날씨가 춥지 않아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "517cb575", "sentence": "저는 운전을 못 해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "5118af0f", "sentence": "매워서 김치를 먹지 못해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "7eac7587", "sentence": "저는 강아지를 좋아해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "4c046b08", "sentence": "저는 벌레를 싫어해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a835624e", "sentence": "이 책은 제 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "fba261dc", "sentence": "그 영화 정말 재미있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "cd8866e3", "sentence": "저 산 이름이 뭐예요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "54d8f951", "sentence": "점심을 먹으러 식당에 갔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "2db31f65", "sentence": "친구가 우리 집에 놀러 왔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "eb3e989c", "sentence": "주말마다 방을 청소해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "7a348cc6", "sentence": "저는 오늘 아침에 공원에서 운동했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "1fc8f5fd", "sentence": "이 식당은 음식이 좋은데 너무 비싸요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "07ae32c0", "sentence": "숙제를 끝낸 후에 친구를 만났어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "fcbfa204", "sentence": "손을 씻은 다음에 과일을 먹었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "285216b6", "sentence": "내일은 시간이 있어서 모임에 갈 수 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "7d9bfcb7", "sentence": "다리를 다쳐서 지금은 빨리 걸을 수 없어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "fabcc876", "sentence": "감기에 걸렸으니까 병원에 갈 필요가 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a5e70245", "sentence": "이미 다 준비했으니까 더 살 필요가 없어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3b8cb176", "sentence": "운동을 하고 나서 샤워를 했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "be28082c", "sentence": "이 책을 다 읽고 나면 마음이 편해질 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "d17bce02", "sentence": "오늘 날씨가 정말 춥군요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "5fc9555d", "sentence": "너 벌써 다 컸구나.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "dde10fbf", "sentence": "겨울에는 길이 미끄러워서 넘어지기 쉬워요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "bed83bda", "sentence": "외국어로 농담을 이해하기 어려워요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "6e766f36", "sentence": "지금 밖에 비가 온다고요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a0b973dc", "sentence": "저분이 새로 오신 선생님이라고요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "285577c8", "sentence": "창문을 열어 놓았으니까 방이 곧 시원해질 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "f529c7a0", "sentence": "친구 전화번호를 휴대폰에 저장해 뒀어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "80546530", "sentence": "약을 먹기 전에 밥을 먼저 먹어야 해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "7f68760b", "sentence": "내일 아침에 일찍 일어나야 돼요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "fa8f2341", "sentence": "오늘 날씨가 봄처럼 따뜻해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "16ba4a09", "sentence": "동생은 토끼같이 빨리 뛰어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "9f9fc611", "sentence": "시험 때문에 요즘 너무 바빠요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "bc74c251", "sentence": "내일 일찍 일어나야 하기 때문에 지금 자려고 해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "2dd4c42d", "sentence": "급하니까 아무 펜이나 주세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "6ecaa88c", "sentence": "주말이라서 가게에 아무 손님도 없었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "48ee2d39", "sentence": "엄마는 아직 안 주무세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "b6c3db9d", "sentence": "벌써 12시예요? 시간 정말 빠르네요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "218f5670", "sentence": "제가 도착했을 때 회의는 이미 끝났어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "bf67bc21", "sentence": "불이 꺼져 있어서 아무도 없는 줄 알았어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "8759b9ff", "sentence": "네가 매운 음식을 못 먹는 줄 몰랐어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "9758d53c", "sentence": "제 동생은 자전거를 탈 줄 알아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "b94f0806", "sentence": "저는 아직 운전할 줄 몰라요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "0b975be2", "sentence": "한국어 시험에 합격하기 위해서 매일 단어를 외워요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "98fb3a33", "sentence": "부모님을 위해서 작은 선물을 준비했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3b11c074", "sentence": "복권에 당첨된다면 제일 먼저 부모님께 집을 사 드리고 싶어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "079b4aea", "sentence": "제가 사장이라면 직원들에게 휴가를 더 많이 줄 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "96cc6cbc", "sentence": "친구가 저한테 시험이 많이 어렵냐고 했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "11f425a7", "sentence": "동생이 언제 집에 오냐고 물었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "d490a8da", "sentence": "이번 시험은 생각보다 어려울 듯해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "d4b42037", "sentence": "그는 모든 걸 다 아는 듯이 고개를 끄덕였어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "9463bed6", "sentence": "한 가정의 가장으로서 저는 가족의 생계를 책임지고 있습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "5dbd6fe8", "sentence": "꾸준한 운동으로써 건강을 지킬 수 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "7b3e97c6", "sentence": "이렇게 비싼 약은 먹어 봤자 효과도 없어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "de435e9f", "sentence": "이미 다 끝난 일인데 후회해 봐야 소용없어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "cb012015", "sentence": "고민만 하지 말고 일단 지원하고 봐요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "7060ed93", "sentence": "급하게 짐을 싸고 보니까 여권을 안 챙겼더라고요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "8e6250e5", "sentence": "이번 주말에 부산으로 이사 가신다면서요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3141d72f", "sentence": "너 다음 달에 군대 간다며?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "0242b9aa", "sentence": "저는 이 일이 생각보다 어렵다고 생각해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "17870905", "sentence": "이번 겨울이 유난히 춥다고 들었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "cd249227", "sentence": "요즘 들어 시간이 정말 빠르다고 느껴요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "010b3539", "sentence": "불이 다 꺼진 걸 보니 가족들이 벌써 잠든 듯해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "2c0a6a0e", "sentence": "그 식당은 평일인데도 줄이 긴 걸 보면 꽤 유명한 듯싶어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "747b49cf", "sentence": "친구가 약속을 잊었다고 할까 봐 미리 문자를 보냈어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "dc5f18c6", "sentence": "네가 또 바쁘다고 할 줄 알았어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "8c234491", "sentence": "내일 비가 많이 온다는데 우산 챙기는 게 좋겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "b4b0ccaf", "sentence": "그 영화 진짜 무섭다더라, 혼자 보지 마.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "231b4763", "sentence": "오늘 하루 종일 안 바쁘다더니 왜 이렇게 연락이 안 됐어?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "ff308c11", "sentence": "다음 주 월요일에 본사로 회장님을 직접 찾아 뵙겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "6c6f1413", "sentence": "부장님, 그럼 회의 끝나고 로비에서 봬요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "5f1b4a92", "sentence": "할머니는 시골에서 작은 텃밭을 가꾸며 사세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "2ad79d05", "sentence": "요즘은 매일 운동하며 건강하게 지내고 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "4ab56fc5", "sentence": "비가 흠뻑 내리면 메마른 논밭에 더없이 좋으련마는 하늘은 야속하게도 구름 한 점 내주지 않는구나.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "50c1baec", "sentence": "벗이 곁에 있다면 이 먼 길도 함께 가련만 홀로 떠나는 나그네의 발걸음이 한없이 무겁기만 하구나.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "df60b0b2", "sentence": "듣건대, 그 고을의 백성들이 오랜 가뭄으로 큰 고초를 겪고 있다 하더이다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "c39c27f6", "sentence": "생각건대, 나라의 흥망은 결국 백성의 마음을 얻느냐 잃느냐에 달려 있는 것이다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "871d7608", "sentence": "바라건대, 이 땅에 다시는 그와 같은 비극이 되풀이되지 않기를.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "1467f5a3", "sentence": "아, 이 강산이 천하의 절경이로구나… 참으로 빼어난 경치로다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "5f7242bb", "sentence": "오랜 세월을 견뎌 온 이 한 그루 소나무야말로 이 산의 주인이로다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "9a89fea6", "sentence": "주말에 친구를 만나요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "34041471", "sentence": "책상 위에 안경이 있어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "26b1b89b", "sentence": "주말에 친구들하고 공원에서 자전거를 탔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "da6b2c8c", "sentence": "이 사과는 시골에서 왔어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "e6350671", "sentence": "오늘은 비도 오고 바람도 불어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "cd1100ab", "sentence": "나도 그 영화 봤어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "3d49d76b", "sentence": "나는 너만 믿어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "6c30c0c7", "sentence": "주말에는 집에서만 쉬었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "d42b6018", "sentence": "이것은 우리 회사의 새 제품입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "9947cdcf", "sentence": "어제 엄마의 생일이라서 케이크를 샀어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "b8ca492f", "sentence": "이 글자는 빨간색 펜으로 써.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "dfbb0170", "sentence": "사거리에서 오른쪽으로 가시면 됩니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "d668ed36", "sentence": "버스가 십 분마다 와요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "be5ba503", "sentence": "주말마다 할머니 댁에 갑니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "b64b7185", "sentence": "주말에 영화나 볼까?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "7f2f7e13", "sentence": "시간이 있으면 책이나 좀 읽으세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "36548626", "sentence": "내일은 비가 오겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "2e96fe74", "sentence": "제가 이 짐을 들어 드리겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "66d30163", "sentence": "날씨도 좋은데 커피 한 잔 마실래요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "383e601b", "sentence": "피곤하면 먼저 집에 갈래?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "32c4b4c6", "sentence": "밖에 눈이 많이 왔네요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "47171069", "sentence": "어, 벌써 시간이 이렇게 됐네!", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "952d17db", "sentence": "오늘 날씨가 정말 춥죠?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "9bba754b", "sentence": "회의가 세 시에 시작하지요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "9857fa3f", "sentence": "오늘은 일이 별로 없으니까 좀 일찍 가도 돼요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "e55caf53", "sentence": "엄마, 이 과자 다 먹어도 돼?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "0be0326e", "sentence": "내일은 일요일이라서 일찍 일어나지 않아도 돼요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "72950e66", "sentence": "내가 이미 다 해 놨으니까 너는 도와주지 않아도 돼.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "65769949", "sentence": "할머니, 제가 짐을 들어 드릴게요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "75144324", "sentence": "손님, 선물이니까 예쁘게 포장해 드리겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "540f90d2", "sentence": "수업 시간에 휴대폰 보지 마세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "83eca90d", "sentence": "내일 비 온대, 우산 가져오는 거 잊지 마.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "2df9ef05", "sentence": "이거 말고 저거 보여 주세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "e02fa6d9", "sentence": "내일 말고 모레 만나자.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "7a97e6d2", "sentence": "운전할 때는 휴대폰을 보면 안 됩니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "f31a7158", "sentence": "어렸을 때 시골에서 할머니랑 살았어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "aab0d21d", "sentence": "회사에 가기 전에 커피를 한 잔 마셔요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "0641bd78", "sentence": "밥을 먹기 전에 손을 깨끗이 씻어라.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "22b2b1ac", "sentence": "제가 회의하는 동안 아이를 좀 봐 주시겠어요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "331affc2", "sentence": "비가 오는 동안 우리는 카페에서 기다렸어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "68c6cca9", "sentence": "운동하는 것이 건강에 정말 좋아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "bdf3927c", "sentence": "혼자 영화 보는 거 별로 안 좋아해.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "bdbaf60c", "sentence": "민수 씨는 벌써 집에 간 것 같아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "971741ff", "sentence": "밖에 비가 오는 것 같아.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "690f54b0", "sentence": "표가 매진됐네요. 이 영화가 인기가 많은 모양이에요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "1487543f", "sentence": "옆집 형은 요즘 매일 도서관에 가던데, 시험이 곧 있는 모양이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "67bca6c6", "sentence": "이 약은 하루에 세 번 식사 후에 먹으면 됩니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "66b4f843", "sentence": "걱정하지 마, 늦으면 그냥 나한테 전화하면 돼.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "810cf009", "sentence": "수업 시간에 휴대폰을 보면 안 됩니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "32e836af", "sentence": "이건 비밀이니까 누구한테도 말하면 안 돼.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "32bc4e30", "sentence": "내일 아침에 일찍 전화할게요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "de0d571b", "sentence": "설거지는 내가 할게.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "53e9f6f9", "sentence": "창문을 좀 열까요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "84e8d33c", "sentence": "내일 날씨가 좋을까요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "6fdb3e8b", "sentence": "버스를 놓치지 않으려고 아침 일찍 집을 나섰어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "4dff6829", "sentence": "건강을 지키려고 매일 아침 공원에서 운동합니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "d99b6c8d", "sentence": "제주도에 한번 가 보세요. 정말 좋아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "13319b6a", "sentence": "이 신발 한번 신어 봐도 돼요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "0c2947db", "sentence": "창문 좀 열어 주세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "d1e40f9e", "sentence": "친구가 무거운 가방을 들어 줬어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "a62eecc5", "sentence": "버스가 눈앞에서 그냥 가 버렸어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "8fc22a72", "sentence": "배가 너무 고파서 케이크를 혼자 다 먹어 버렸어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "5f5b8179", "sentence": "지금 길이 많이 막히니까 우리 지하철로 가자.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "9d1c887d", "sentence": "처음 오셨으니까 제가 사무실을 안내해 드리겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "59aebaa7", "sentence": "심심할 때는 게임을 하거나 친구한테 전화해.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "fbe44ba2", "sentence": "면접에 늦거나 결석하면 합격하기 어렵습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "06d29cc3", "sentence": "동생이 저보다 키가 더 커요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "bbf60644", "sentence": "오늘은 어제보다 훨씬 추워.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "26fb8345", "sentence": "내일 비가 올지 안 올지 잘 모르겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3882466b", "sentence": "이 영화가 왜 그렇게 인기가 많은지 모르겠다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "7ec8de6b", "sentence": "지금 밖에 비가 오는데요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "407cd116", "sentence": "저는 매운 거 잘 못 먹는데요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "e278b97a", "sentence": "이 영화가 얼마나 재미있는지 몰라. 너도 꼭 봐.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "45e889e6", "sentence": "어제 하루 종일 얼마나 많이 걸었는지 다리가 너무 아파요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "f7894b7e", "sentence": "이번 사고에 대해서 자세히 설명해 주시겠습니까?", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "66ed5fbe", "sentence": "나 그 영화에 대해 아무것도 몰라.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "12a8ee6a", "sentence": "친구가 화났을까 봐 계속 연락했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "feaa0589", "sentence": "늦을까 봐 택시를 탔어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "d78ee47a", "sentence": "아무리 바쁘더라도 가족과 보내는 시간은 꼭 챙기세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "beb825a1", "sentence": "내일 비가 오더라도 우리는 예정대로 등산을 갈 거야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "af1f7801", "sentence": "지금 출발 안 하면 기차를 놓칠지도 몰라요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a7f2be6a", "sentence": "민수는 아직 그 소식을 모를지도 몰라.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "ec1b6762", "sentence": "내일 시험 있잖아요, 오늘은 일찍 자야겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "f21afae5", "sentence": "야, 그거 내가 어제 말했잖아.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "f15df843", "sentence": "오랜만에 고향에 갔더니 동네가 정말 많이 변했더라고요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "0175c38d", "sentence": "어제 새로 산 신발을 신어 봤는데 생각보다 좀 작더라고요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "f46b8e0e", "sentence": "어제는 다리가 후들거릴 만큼 오래 걸었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "8a3522d9", "sentence": "그 영화는 두 번 봐도 안 질릴 만큼 재미있어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "4482e0c2", "sentence": "시간 없으면 라면이라도 끓여 먹어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "f2041861", "sentence": "잠깐이라도 쉬셨으면 좋겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "c41f2f3f", "sentence": "우리 딸이 벌써 대학생이 되었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "13721e9a", "sentence": "열심히 연습하면 너도 좋은 가수가 될 거야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "da24f9b4", "sentence": "오늘 날씨가 너무 더워 죽겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "87c8fe55", "sentence": "할 일이 너무 많아서 힘들어 죽겠다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "5a49d6ad", "sentence": "어제 친구를 만나 가지고 늦게까지 수다를 떨었어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "74df02f2", "sentence": "국이 너무 짜 가지고 물을 좀 더 넣었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "19960ec2", "sentence": "밥을 먹다가 말고 갑자기 밖으로 나가 버렸어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3b792802", "sentence": "어제 청소를 하다가 말아서 방이 아직 엉망이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "d5a204dd", "sentence": "여행을 가려고 했는데 갑자기 일이 생겨서 못 가게 됐어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "6f6eabf6", "sentence": "처음엔 김치를 싫어했는데 한국에 살다 보니 이제 좋아하게 됐어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "242f4766", "sentence": "운동을 시작하고 나서 몸이 건강해졌어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "7ccf9996", "sentence": "요즘 한국어가 점점 재미있어졌어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "6fcbba18", "sentence": "벽에 가족사진이 걸려 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "c6c01204", "sentence": "할머니는 소파에 앉아 있다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "940732be", "sentence": "이 옷을 입으니까 훨씬 어려 보여요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "4de82856", "sentence": "그 식당 음식이 사진보다 더 맛있어 보인다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "df395db4", "sentence": "내일 시험이 있기 때문에 오늘은 친구를 못 만나요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "f4467aad", "sentence": "길이 많이 막혔기 때문에 회의에 늦었습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "2cac4f5b", "sentence": "전화하면서 운전하면 너무 위험해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "1ab57419", "sentence": "형은 웃으면서 내 어깨를 두드렸다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "fd55afd9", "sentence": "물가가 계속 오르니까 외식을 줄일 수밖에 없어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "389df1fe", "sentence": "약속 시간에 늦었는데 차까지 막혀서 정말 미안하다고 할 수밖에 없었어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "a5eebc54", "sentence": "사람마다 생각이 다르니까 상황에 따라서 결정하는 게 좋아.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "9c712e85", "sentence": "이번 정책에 따라 내년부터 세금이 조금 오를 예정입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "74a89ca0", "sentence": "이 식당은 가격에 비해 양이 정말 많아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "e9895122", "sentence": "형은 나에 비해서 키가 훨씬 커.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "12ced60e", "sentence": "이 영화 정말 재미있을 것 같아.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "60c019e6", "sentence": "길이 많이 막혀서 약속에 좀 늦을 것 같습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "7cc7c831", "sentence": "그 사람은 모든 걸 다 아는 것처럼 말해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "80421357", "sentence": "동생이 자기가 그린 것처럼 내 그림을 자랑했어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "965d62fb", "sentence": "이번 시험에 꼭 합격하면 좋겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "9098547d", "sentence": "네가 우리 집에 자주 놀러 오면 좋겠어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "31d9ac8b", "sentence": "노력하면 언젠가는 성공하기 마련입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "ff73d79f", "sentence": "겨울이 지나면 봄이 오기 마련이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "89909346", "sentence": "우리는 다음 달부터 매일 아침에 운동하기로 했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "637099b1", "sentence": "건강을 위해서 이제부터 담배를 끊기로 했어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "7eef5565", "sentence": "우리 형은 말이 별로 없고 조용한 편이에요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "2cbea63a", "sentence": "나는 약속 시간보다 좀 일찍 도착하는 편이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "65ff575d", "sentence": "감기에 걸리지 않도록 따뜻하게 입으세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "076324c9", "sentence": "내일 늦지 않도록 알람을 다섯 개나 맞춰 놨어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "c39c9da0", "sentence": "알람이 울리자마자 바로 일어났어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "63a1ef6d", "sentence": "소식을 듣자마자 너한테 전화했어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "f0e1adec", "sentence": "이 동네로 이사 온 지 벌써 석 달이 지났어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "804b9de3", "sentence": "우리 강아지가 죽은 지 일 년이 다 돼 간다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "880b57cf", "sentence": "아무리 바빠도 밥은 꼭 챙겨 먹어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "13cadc8e", "sentence": "값이 비싸도 품질이 좋으면 삽니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "1c100983", "sentence": "약을 먹었는데도 아직 머리가 아파요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a208a928", "sentence": "주말인데도 회사에 가야 해.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "fd1b2c41", "sentence": "오늘은 너무 바빠서 한 시간밖에 못 잤어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "89092821", "sentence": "냉장고에 우유밖에 없네.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "d24256b8", "sentence": "버스를 타려다가 시간이 없어서 택시를 탔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "f98eb9b5", "sentence": "케이크를 직접 만들려다가 너무 어려워서 그냥 사 왔어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "a11167a8", "sentence": "매일 일기를 쓰다 보면 글솜씨가 좋아져요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "0863d4fe", "sentence": "서울에 살다 보면 지하철이 편해질 거야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "892f0e73", "sentence": "매일 지하철로 출퇴근하다 보니 책 읽는 습관이 생겼어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "969096d2", "sentence": "혼자 살다 보니 요리 실력이 많이 늘었어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "d66bf23b", "sentence": "옆집 개가 밤새 짖어 대서 한숨도 못 잤어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "483964f3", "sentence": "그만 좀 떠들어 대, 정신 사나워 죽겠어!", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "eeb95cb3", "sentence": "아끼던 컵을 떨어뜨려서 깨고 말았어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "8815663a", "sentence": "다이어트 중인데 결국 케이크를 다 먹고 말았어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "9a868fbf", "sentence": "이제 봄이 다 돼 가네요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "63c24f42", "sentence": "조금씩 한국 생활에 익숙해져 갑니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "2124ea20", "sentence": "지금까지 이 가게를 혼자서 운영해 왔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "deecd282", "sentence": "우리 가족은 30년 동안 이 동네에서 살아왔다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "24764405", "sentence": "포기하지 않고 끝까지 버텨 냈습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "6e6b1ab5", "sentence": "온 가족이 힘을 모아서 결국 그 돈을 다 갚아 냈어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "28c03337", "sentence": "그렇게 걱정되면 의사한테 한번 물어보지 그래요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "5e6bc642", "sentence": "계속 졸리면 커피 한 잔 마시지 그래?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "7dcf1289", "sentence": "건강을 위해서 이제부터 운동을 좀 해야지요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "4bb34333", "sentence": "또 늦었어? 다음부터는 좀 일찍 나와야지.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "996faa74", "sentence": "내일은 일찍 자야 해요. 아침에 중요한 면접이 있거든요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "b8152503", "sentence": "그 식당은 미리 예약하는 게 좋아. 주말에는 항상 사람이 많거든.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "15a39d3e", "sentence": "역시 프로 선수답게 어려운 상황에서도 침착하더라고요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "58aefb5a", "sentence": "날씨가 이제 좀 봄답게 따뜻해졌네.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "da4d3cc3", "sentence": "어른들 앞에서 그렇게 행동하다니, 정말 자랑스럽구나.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "7819628e", "sentence": "처음 보는 사람이 비싼 선물을 줘서 너무 부담스러워요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "875e58d9", "sentence": "친구가 요즘 너무 바쁘다고 했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "46f12acc", "sentence": "엄마가 저녁에 비가 온다고 하니까 우산 챙겨.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "638645d6", "sentence": "의사 선생님이 약을 식사 후에 드시라고 했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "d974c878", "sentence": "엄마가 동생한테 빨리 자라고 했어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "0a835f74", "sentence": "주말에 등산 가자고 했는데 비가 와서 취소했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "c3e3bbe2", "sentence": "팀장님이 회의를 내일로 미루자고 하셨어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "fdfe3e09", "sentence": "민수 씨, 다음 달에 회사를 그만두신다면서요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "be38870f", "sentence": "너 요즘 강아지 키운다며?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "4235aab6", "sentence": "그 배우는 연기를 잘할 뿐만 아니라 노래도 정말 잘해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "c685898c", "sentence": "오늘은 길이 막힐 뿐만 아니라 비까지 와서 회사에 늦었어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "7bfb2e56", "sentence": "이 식당은 음식 값이 싼 반면에 양이 좀 적어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "93fcd102", "sentence": "도시는 생활이 편리한 반면에 시골은 공기가 맑다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "2fc5c623", "sentence": "열심히 준비했음에도 불구하고 시험에 떨어졌습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "37f7f0ac", "sentence": "몸살에도 불구하고 끝까지 회의에 참석했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "65398c11", "sentence": "나이가 들수록 시간이 빨리 가는 것 같아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "ef5fd600", "sentence": "이 노래는 들으면 들을수록 좋아져.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "a3a90dc1", "sentence": "비밀번호를 잊어버리지 않는 한 계정에 다시 들어갈 수 있어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a88cbd1d", "sentence": "내가 여기 있는 한 아무도 너를 못 건드려.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "c2667c80", "sentence": "이 식당은 음식이 맛있는 데다가 값도 싸서 자주 가요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "18ce1e28", "sentence": "그 사람은 일을 빨리 끝낸 데다가 실수도 거의 안 했어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "8d2708ee", "sentence": "그 식당은 음식이 맛있을 뿐더러 사장님도 친절하셔서 자주 가요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "cf1b9df5", "sentence": "이번 프로젝트는 일정이 촉박할 뿐더러 예산까지 부족해서 정말 힘들었다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "42d55b52", "sentence": "형은 회사에 다니는 한편 주말마다 봉사 활동도 해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "c32a2326", "sentence": "이번 정책은 일부 사람들에게 도움이 되는 한편 다른 사람들에게는 부담이 된다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "f25b0e56", "sentence": "주말에는 카페는 물론이고 식당도 사람이 너무 많아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3c10a06f", "sentence": "그 배우는 연기는 물론이고 노래까지 잘해서 정말 부러워.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "5e063137", "sentence": "버스를 놓치는 바람에 약속에 늦었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "aabe437c", "sentence": "옆집에서 밤새 공사를 하는 바람에 한숨도 못 잤어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "ba54cb01", "sentence": "옆집에서 밤새 공사를 하는 통에 한숨도 못 잤습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "e2b201b8", "sentence": "사람들이 갑자기 몰려드는 통에 지갑을 잃어버렸어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "9473fe96", "sentence": "지금 출발하면 길이 많이 막힐 텐데 지하철로 가는 게 어때요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "c232ea6b", "sentence": "내일 시험인데 친구가 아직도 공부를 안 하네. 분명 후회할 텐데.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "fc89cdd8", "sentence": "민수가 벌써 집에 갔을 리가 없어요. 아까 도서관에서 봤는데요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "aa9b07b6", "sentence": "이렇게 열심히 공부했는데 시험에 떨어질 리가 없어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "2150ab29", "sentence": "표를 미리 예매할걸 그랬어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a561a7e2", "sentence": "어제 일찍 잘걸 그랬다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "9d70e58e", "sentence": "하늘이 잔뜩 흐린 것을 보니 곧 비가 오겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "c51adeb1", "sentence": "민수가 밥을 두 그릇이나 먹는 걸 보니 배가 많이 고팠나 봐.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "af86ce49", "sentence": "집에 가다가 친구를 만났어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "8cdb9c9d", "sentence": "텔레비전을 보다가 갑자기 전화가 왔어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "c2dbaa18", "sentence": "동생이 자는 척해서 깨우기가 좀 그래요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "8610e853", "sentence": "많이 아프면서 괜찮은 척하지 마.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "a2dad83d", "sentence": "엄마가 동생에게 방을 청소하게 했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "045d085a", "sentence": "그 영화가 나를 많이 울게 했어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "a9245d84", "sentence": "공항에 도착하는 대로 바로 전화드릴게요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "5fb3b9c1", "sentence": "설명서에 적힌 대로 조립했더니 문제가 없었습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "8fb14ecf", "sentence": "그 식당은 한번 가 볼 만해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "9cdd4bf6", "sentence": "오늘은 그렇게 안 추워서 밖에서 좀 걸을 만해.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "5de3b7e7", "sentence": "배가 아플 정도로 많이 웃었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3108c934", "sentence": "그 가수는 모르는 사람이 없을 정도로 유명해.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "5e8d1f52", "sentence": "회의를 시작하기에 앞서 지난 회의록을 잠깐 검토하겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "b08dccc6", "sentence": "본격적인 등산을 하기에 앞서 가벼운 준비 운동을 하는 게 좋아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "390b9dab", "sentence": "조금만 일찍 출발했더라면 기차를 놓치지 않았을 텐데.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "50e4bfa2", "sentence": "그날 우산을 챙겼더라면 비를 안 맞았을 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "e5a83753", "sentence": "조용히 문을 닫는다는 것이 그만 쾅 닫아 버렸어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "635cfe6c", "sentence": "커피에 설탕을 넣는다는 것이 그만 소금을 넣어 버렸다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "5a522ed3", "sentence": "병원에 가고서야 그게 큰 병이라는 걸 알았어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "617e1185", "sentence": "직접 키워 보고서야 부모님의 마음을 이해하게 됐어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "5069a86e", "sentence": "이 국이 싱거워 빠져서 도저히 못 먹겠어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "82ab8b84", "sentence": "그 가방은 낡아 빠져서 이제 그만 버리는 게 좋겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "cab5f72f", "sentence": "쌓인 설거지를 한꺼번에 다 해 치웠어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "35475253", "sentence": "남은 음식은 그냥 다 먹어 치웠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "82e0ced4", "sentence": "올해는 담배를 반드시 끊고 말겠어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "2353575e", "sentence": "어떤 어려움이 있어도 저는 이 회사를 꼭 성공시키고 말겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "90a35b9b", "sentence": "어제 약을 먹었어야 했는데 깜빡했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "62d71efa", "sentence": "그때 너한테 솔직하게 말했어야 했어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "e1106111", "sentence": "지금쯤 길이 막힐 테니까 지하철로 가는 게 좋겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "f71e9f9e", "sentence": "내가 먼저 가서 자리 잡고 있을 테니까 천천히 와.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "c7b6ecae", "sentence": "창문을 열어 둔 채로 외출해서 방이 추워졌어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "ab283b2c", "sentence": "그는 눈을 감은 채 한참 동안 음악을 들었다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "f7d06c62", "sentence": "청소하는 김에 창문도 닦았어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "fc0f7a9d", "sentence": "서울에 출장 온 김에 친구도 만나고 가려고.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "584c61a6", "sentence": "회사에 가는 길에 우체국에 잠깐 들렀어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a972653f", "sentence": "퇴근하는 길에 마트에 들러서 우유 좀 사 와.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "1be2ddf0", "sentence": "디자인 공부도 할 겸 미술관에 자주 가요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "aaace715", "sentence": "오랜만에 부모님도 뵐 겸 고향에 다녀왔습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "ddf6e236", "sentence": "아이를 돌보느라 점심도 못 먹었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "513c2ff4", "sentence": "어제 친구랑 노느라 숙제를 다 못 했어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "fe4e79c5", "sentence": "친구가 맛있다고 추천하길래 그 식당에 한번 가 봤어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "03b1333a", "sentence": "동생이 자꾸 졸길래 일찍 재웠어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "27574760", "sentence": "운전하면서 자꾸 휴대폰을 보다가는 큰 사고가 날 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "72ab10fc", "sentence": "돈을 그렇게 펑펑 쓰다가는 월급날도 되기 전에 다 떨어진다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "177a46d6", "sentence": "벌써 시험이 끝났다니, 시간 진짜 빠르다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "c63d21d3", "sentence": "이렇게 어려운 문제를 혼자 다 풀었다니요? 정말 대단하네요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "0ddd93d0", "sentence": "내가 거기 가 봤다니까. 음식 진짜 별로였어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "51e10109", "sentence": "저 벌써 출발했다니까요. 조금만 더 기다려 주세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "b6235669", "sentence": "내일부터 출근 안 한다고요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "fa4884a5", "sentence": "벌써 다 끝났다고?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "170855fe", "sentence": "다음 주에 회의가 취소됐다는 메일을 받았어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "e3e4c7c7", "sentence": "친구가 곧 결혼한다는 말을 듣고 깜짝 놀랐어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "bebd9328", "sentence": "동생이 아직도 안 일어난 걸 보니 어제 많이 피곤했나 봐.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "f3b99017", "sentence": "옆집에서 계속 웃음소리가 나는 걸 보니 손님이 왔나 봐요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "32f8fe2a", "sentence": "표정이 어두운 걸 보니 동생이 시험을 망쳤나 봐요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "35462c9d", "sentence": "창문에 불이 다 꺼져 있네. 집에 아무도 없나 봐.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "e9bc4052", "sentence": "지금 가도 식당 문 닫았을걸요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "e5dd7c11", "sentence": "이렇게 막힐 줄 알았으면 지하철을 탈걸.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "2f89d2f0", "sentence": "그 사람은 돈이 많으면서도 항상 없다고 해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3df3cdc7", "sentence": "동생은 시험이 코앞이면서도 게임만 하고 있어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "bebcb48e", "sentence": "도서관에서 책을 빌려다가 집에서 읽었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "db308fdc", "sentence": "마당에서 꽃을 꺾어다 꽃병에 꽂았어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "e686c824", "sentence": "비가 많이 온 만큼 길이 많이 막혀요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3b74984b", "sentence": "월급을 많이 받는 만큼 일도 그만큼 힘들어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "9f5097b2", "sentence": "동생은 다 아는 척 고개를 끄덕였어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "ccd33aa7", "sentence": "엄마가 부를까 봐 자는 척 눈을 감고 있었어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "ae2e1fdf", "sentence": "예전에는 담배를 피웠었는데 지금은 끊었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "158309d9", "sentence": "작년에 그 영화 봤었는데 내용이 하나도 기억 안 나.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "e21b551a", "sentence": "어머니가 그렇게까지 부탁하시는데 도와드리지 않을 수 없었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "4232a1af", "sentence": "증거가 이렇게 명확하니 그의 말을 믿지 않을 수 없다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "cd60d652", "sentence": "이 식당은 음식이 맛있는 데다가 값도 싸서 항상 손님이 많아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "515506a2", "sentence": "그 사람은 일도 잘하는 데다가 성격도 좋아서 회사에서 인기가 많아.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "77efb61f", "sentence": "목마른데 물 좀 떠다 줘.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "b47b08a4", "sentence": "약국에서 약을 받아다 줄게요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a2c5f349", "sentence": "운동은 하면 할수록 몸이 가벼워지는 것 같아요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "c3530fa5", "sentence": "그 사람은 알면 알수록 정이 가더라.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "8e9c8d23", "sentence": "네가 그때 진실을 말했어야 했는데, 결국 아무 말도 안 했잖아.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "5871bfb2", "sentence": "약을 미리 챙겼어야 했는데 깜빡하고 집에 두고 왔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "e26b93ae", "sentence": "동생이 어제 늦게까지 게임을 하더니 오늘 아침에 못 일어나네요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a37d6a17", "sentence": "민수가 한동안 말이 없더니 갑자기 회사를 그만뒀어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "a0999137", "sentence": "이거 제가 마시던 커피인데 한 모금 드실래요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "b129912b", "sentence": "그렇게 매일 운동하던 형이 요즘은 왜 안 나와?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "cb047ce8", "sentence": "아침까지 날씨가 멀쩡하더니만 갑자기 비가 쏟아지네요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "61ba98df", "sentence": "동생이 밤새 게임만 하더니만 결국 시험을 완전히 망쳤어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "bd6c7463", "sentence": "회사가 망할지언정 직원들 월급은 절대 미루지 않겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "19025353", "sentence": "시험에 떨어질지언정 남의 답을 베끼는 짓은 하지 않을 거야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "a31a38fc", "sentence": "비록 실패할지라도 도전해 볼 가치는 있습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "bda3aa89", "sentence": "아무리 바쁠지라도 가족과의 약속은 꼭 지켜요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "7207d17a", "sentence": "그 사람은 잘못을 하고도 사과 한마디 안 했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3c914e8f", "sentence": "분명히 알고도 모르는 척하지 마.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "053c4e40", "sentence": "이렇게 매일 야근하느니 차라리 회사를 그만두는 게 낫겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "2062d459", "sentence": "그 사람한테 부탁하느니 차라리 내가 직접 하고 말지.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "7decc32b", "sentence": "지금 출발하면 몰라도 그 시간에 도착하기는 어려울 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "ecf1241b", "sentence": "네가 직접 사과하면 몰라도 그냥 넘어가면 형은 절대 안 풀려.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "e6379869", "sentence": "아무리 바쁘다손 치더라도 부모님 전화는 받아야지.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "77053e05", "sentence": "그 계획이 완벽하다손 치더라도 예산이 없으면 실행할 수 없습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "b8529a5b", "sentence": "이번 달엔 사고 싶은 걸 거의 다 샀으니까 돈을 다 쓴 셈이에요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "244937b2", "sentence": "열 명 중에 아홉 명이 찬성했으니까 거의 다 찬성한 셈이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "44cd567e", "sentence": "저는 그저 제 일을 했을 따름입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "189518b6", "sentence": "이미 끝난 일인데 후회해도 마음만 아플 따름이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "4e380f0b", "sentence": "저는 그냥 시키는 대로 했을 뿐입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "43ded8fc", "sentence": "걱정하지 마, 난 그냥 농담했을 뿐이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "780a855d", "sentence": "그건 핑계에 불과합니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "9889b339", "sentence": "우리가 만난 지 일주일밖에 안 됐으니까 아직 서로 모르는 사이에 불과해.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "e2b477af", "sentence": "아이는 부모가 가르치기 나름이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "92b044b0", "sentence": "건강은 평소에 관리하기 나름입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "a46b7db6", "sentence": "이 식당 음식은 맛도 좋고 가격도 싸서 더 바랄 나위가 없어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "5a4b9d9c", "sentence": "그 친구가 얼마나 성실한지는 더 말할 나위도 없지.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "95ae0e16", "sentence": "택시 부를 것 없이 그냥 같이 걸어가요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "d01a742f", "sentence": "별것 아니니까 멀리서 찾을 것 없이 우리 집에서 먹자.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "61a9839f", "sentence": "이 옷이 마음에 안 들면 그냥 환불받으면 그만이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "68e4a9c7", "sentence": "남들이 뭐라고 하든 저는 제 일만 열심히 하면 그만입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "5cce0739", "sentence": "비가 오기에 우산을 챙겨 나왔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "0c89d06a", "sentence": "친구가 부산에 간다기에 나도 같이 가기로 했어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "45eb9ca6", "sentence": "어제 비가 많이 온 탓에 길이 많이 막혔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "c06811b2", "sentence": "급하게 먹은 탓에 배탈이 났어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "501d666f", "sentence": "이번 폭설로 인해 모든 항공편이 결항되었습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "fcc37a31", "sentence": "윗집 소음으로 인해서 어젯밤에 한숨도 못 잤어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "37a82982", "sentence": "회사의 경쟁력을 높이고자 신기술 도입을 추진하고 있습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "f3c42aae", "sentence": "그동안의 연구 결과를 발표하고자 이 자리에 섰습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "b876a805", "sentence": "시험 결과를 걱정한 나머지 밤새 한숨도 못 잤어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "ee6740f5", "sentence": "그 소식을 듣고 너무 놀란 나머지 들고 있던 컵을 떨어뜨렸다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "c9e9dbcb", "sentence": "배가 너무 고파서 죽을 지경이에요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "9e6e9ac7", "sentence": "아이들이 하루 종일 떠들어서 머리가 터질 지경이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "7b1dce8a", "sentence": "주말에 쉬기는커녕 회사에 또 나가야 돼.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "6ab9cb35", "sentence": "그 식당은 맛있기는커녕 너무 짜서 한 입도 못 먹었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "3a139b32", "sentence": "밥을 먹든지 빵을 먹든지 빨리 정하세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "0a07c2be", "sentence": "네가 가든지 말든지 나는 신경 안 써.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "98e86bd3", "sentence": "오랜 시간 연습한 끝에 드디어 운전면허를 땄습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "d3ec6c49", "sentence": "한참을 헤맨 끝에 겨우 호텔을 찾았어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "0e9aff32", "sentence": "버스에서 내리자 비가 쏟아지기 시작했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "5b0b0b79", "sentence": "선생님이 교실을 나가자 아이들이 떠들기 시작했다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "43938dd9", "sentence": "손을 깨끗이 씻고서 밥을 먹었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "e3aa6cbc", "sentence": "지갑을 집에 두고서 그냥 나와 버렸어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "e028c66d", "sentence": "그 케이크는 달다 못해 머리가 아플 정도였어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "d29d17f0", "sentence": "동생은 참다 못해 결국 화를 냈습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "92a9546d", "sentence": "친구가 그 영화가 재미있다고 해서 주말에 보러 갈 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "ba05e854", "sentence": "내일 비가 온다고 해서 우산을 미리 챙겼어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "66498901", "sentence": "아무리 바쁘다고 해도 밥은 꼭 챙겨 드세요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "9cc5b2c9", "sentence": "그 사람이 천재라고 해도 난 별로 안 부러워.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "a3688eba", "sentence": "매일 운동한다는 게 생각보다 쉽지 않더라고요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "ac96706a", "sentence": "혼자 외국에서 산다는 게 가끔은 너무 외로워.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "b80ffa9c", "sentence": "비가 올까 싶어서 우산을 챙겼어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "6179442f", "sentence": "오늘은 그냥 집에서 쉴까 싶다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "39a78b6c", "sentence": "이번 시험은 생각보다 어렵지 싶어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "4c858b04", "sentence": "지금 출발하면 늦지 싶다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "f7a733f3", "sentence": "요즘 그 친구가 좀 힘든가 싶어서 자주 연락해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "74192b8f", "sentence": "내가 아까 말실수를 한 건가 싶어서 계속 신경 쓰여.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "ac711647", "sentence": "내일 오후 2시에 팀 회의 있음. 회의 자료 미리 준비할 것.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "2b1b9d11", "sentence": "경찰은 그가 범인임을 밝혀냈습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "2fdf9bba", "sentence": "한국어를 배우는 데에 시간이 꽤 많이 걸렸어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "9faa03a3", "sentence": "이 가위는 종이를 자르는 데에 정말 편해.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "a58a2ac1", "sentence": "잠깐이나마 쉴 수 있어서 다행이었어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "007ffcd3", "sentence": "사진으로나마 고향 풍경을 볼 수 있어서 좋다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "0ff02e57", "sentence": "마음에도 없는 사과는 차라리 안 하느니만 못합니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "c5b3aceb", "sentence": "이렇게 대충 공부할 거면 아예 안 하느니만 못해.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "cd071634", "sentence": "조금만 일찍 출발했던들 막차를 놓치지는 않았을 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "4974c13a", "sentence": "그의 경고를 귀담아들었던들 이런 참사는 일어나지 않았으리라.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "a0e27bca", "sentence": "아이가 넘어져서 울 새도 없이 다시 일어나 뛰어갔어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "73f672c3", "sentence": "손님이 계속 밀려와서 점심을 먹을 새 없이 일했다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "4841db0d", "sentence": "회사를 그만두는 한이 있어도 이 프로젝트는 끝까지 책임지겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "5cf0956a", "sentence": "밤을 새우는 한이 있어도 내일까지 이거 다 끝낼 거야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "06acdeed", "sentence": "다이어트한답시고 점심을 굶더니 저녁에 폭식했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "9380e826", "sentence": "어른이랍시고 큰소리만 치고 책임은 안 지더라.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "330d176b", "sentence": "심심하면 게임을 한다거나 유튜브를 본다거나 하면서 시간을 보내.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "3b38e909", "sentence": "스트레스를 받으면 매운 걸 먹는다거나 노래방에 간다거나 해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "27438a1c", "sentence": "그는 음악을 들으며 천천히 공원을 걸었다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "90f925b0", "sentence": "저는 보통 아침을 먹으며 뉴스를 봐요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "2e92d331", "sentence": "할머니는 콩나물을 다듬으며 노래를 흥얼거리며 옛날이야기를 들려주셨다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "f208e77f", "sentence": "그 카페는 분위기도 좋으며 커피도 맛있으며 가격까지 저렴해서 자주 가요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "1b9cad32", "sentence": "이 식당은 값은 비싸나 맛은 정말 좋습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "983e8f93", "sentence": "동생에게 여러 번 전화했으나 한 번도 받지 않았다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "cd075cef", "sentence": "동생은 뭐든지 혼자 하려고 들어서 가끔 위험해요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "8a5d5e01", "sentence": "그 사람은 내 말을 끝까지 안 듣고 자기 생각만 밀어붙이려고 든다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "d06e4400", "sentence": "초보자는 그런 실수를 하기 십상이에요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "791be119", "sentence": "급하게 결정하면 나중에 후회하기 십상이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "6a446287", "sentence": "오늘은 운동도 못 했으니까 엘리베이터 안 탄 셈 치고 계단으로 걸어 올라가요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "23cd2fda", "sentence": "그 돈은 친구한테 빌려준 게 아니라 그냥 밥 한 끼 산 셈 치기로 했어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "7256ad0c", "sentence": "슬픈 영화를 보다가 눈물이 날락 말락 했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "0d93760d", "sentence": "안개 때문에 산 정상이 보일락 말락 해.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "0c182175", "sentence": "어제 너무 피곤해서 청소를 하는 둥 마는 둥 하고 그냥 잤어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "0c54b25d", "sentence": "동생은 시험이 코앞인데 공부를 하는 둥 마는 둥 하더니 결국 떨어졌어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "7d861434", "sentence": "평소에 어떻게 관리하느냐에 따라서 결과가 완전히 달라질 수 있습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "9c381830", "sentence": "네가 어떤 친구를 사귀느냐에 따라 성격도 달라진다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "89bd4886", "sentence": "경기가 침체된 가운데 정부가 새로운 대책을 발표했습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "afb6a860", "sentence": "여러 가지로 어수선한 가운데 이렇게 자리를 빛내 주셔서 진심으로 감사합니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "78052890", "sentence": "아이 키우랴 회사 다니랴 하루가 어떻게 가는지 모르겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "35a92305", "sentence": "어제는 청소하랴 손님 맞으랴 정신이 하나도 없었어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "c5a5b55c", "sentence": "소금을 넣는다는 게 설탕을 넣어 버렸어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "d6834abb", "sentence": "친구한테 문자를 보낸다는 게 엄마한테 보냈어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "8a3b85d2", "sentence": "저는 그저 제가 맡은 일을 했을 따름입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "859a6883", "sentence": "최선을 다했지만 결과가 이렇게 되어 안타까울 따름입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "25436003", "sentence": "아무리 비싼 옷을 입은들 마음이 고약하면 무슨 소용이에요?", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a8a7db98", "sentence": "천하를 다 가진들 사랑하는 사람이 없다면 그게 다 무슨 의미가 있겠습니까?", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "3a289ab9", "sentence": "시험에 떨어질망정 남의 답안을 베끼지는 않겠습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "a4f8b956", "sentence": "굶을망정 친구한테 손을 벌리고 싶지는 않아.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "2947d64c", "sentence": "아무리 화가 나기로서니 부모님께 그렇게 말하면 안 되지.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "25210a99", "sentence": "사정이 급하기로서니 남의 물건에 함부로 손을 대서야 되겠습니까?", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "79fb5c89", "sentence": "이번 폭우로 말미암아 농작물 피해가 막대했습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "59a2bd8d", "sentence": "오랜 전쟁으로 말미암아 수많은 사람들이 고향을 떠나야 했어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "b1c7e79b", "sentence": "이번 회의는 비공개로 진행됩니다. 즉 외부 인사의 참석은 허용되지 않습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "bbfb5ca1", "sentence": "마감이 내일이래. 즉 오늘 밤 안에 다 끝내야 한다는 거지.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "99a040fa", "sentence": "오늘은 날씨도 춥거니와 바람까지 불어서 도저히 못 나가겠어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "f3be407d", "sentence": "이 식당은 음식이 맛있거니와 값도 싸서 늘 손님이 많아.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "fedeb929", "sentence": "회사가 망하는 마당에 월급 인상을 바랄 수는 없죠.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "61bf658d", "sentence": "다 같이 굶는 마당에 너만 혼자 살겠다고 도망치냐?", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "55a979ab", "sentence": "건강이야말로 가장 큰 재산입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "9ef28731", "sentence": "이번 여행이야말로 정말 잊지 못할 추억이었어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "91abe317", "sentence": "회사 생활에 있어서 가장 중요한 것은 동료들과의 신뢰입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "6e9142d6", "sentence": "건강 관리에 있어서 규칙적인 운동만큼 좋은 게 없어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "59708654", "sentence": "급하게 먹으면 체하는 법입니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "125e38b0", "sentence": "시간이 지나면 아픈 기억도 잊히는 법이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "365ac105", "sentence": "회사에 입사한 이상 회사 규칙을 따라야 합니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "bbfce4fb", "sentence": "시험을 보는 이상 최선을 다해야지.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "ed7c6bb8", "sentence": "보시다시피 지금 가게가 너무 바빠서 잠깐 기다려 주셔야 할 것 같습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "abecab4c", "sentence": "너도 알다시피 나 요즘 시험 준비 때문에 정신이 하나도 없어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "0c248631", "sentence": "나는 매일 아침 일곱 시에 일어난다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "59c385f3", "sentence": "동생은 주말마다 도서관에서 책을 읽는다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "614ca445", "sentence": "내 너에게 한 가지 약속을 하노라.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "62983132", "sentence": "오늘 우리는 마침내 자유를 얻었노라.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "d9feca62", "sentence": "이미 엎질러진 물일진대 후회한들 무슨 소용이 있겠는가.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "b8086754", "sentence": "그가 진심으로 뉘우쳤을진대 우리가 어찌 용서하지 않을 수 있으랴.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "b50ec368", "sentence": "내가 그깟 시련에 무너질쏘냐.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "b6473b5f", "sentence": "조상님이 물려주신 이 뜻을 후손이 어찌 저버릴쏘냐.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "0270ac31", "sentence": "두 분의 결혼을 진심으로 축하해 마지않습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "5607f406", "sentence": "선생님의 빠른 쾌유를 바라 마지않습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "c29439a9", "sentence": "약속을 어긴 사람은 비난받아 마땅합니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "8a738a0c", "sentence": "이렇게 열심히 일했으니 너는 상을 받아 마땅해.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "730e58de", "sentence": "그는 반드시 돌아오리라고 다짐하며 길을 떠났다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "74417c14", "sentence": "내일은 날씨가 맑으리라 생각하고 우산을 안 가져왔어.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "3a2ae75e", "sentence": "행여 부모님이 걱정하실세라 매일 안부 전화를 드립니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "8aaf0089", "sentence": "혹시 비밀이 새어 나갈세라 우리는 작은 목소리로 속삭였다.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "d637a375", "sentence": "분명히 약속했건만 그는 끝내 나타나지 않았다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "3713eb7c", "sentence": "열심히 노력했건만 결과는 신통치 않네요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "6cede16a", "sentence": "회장님께 행사에 꼭 참석해 주십사 하고 정중히 청하였습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "81c6397f", "sentence": "선생님께 추천서를 좀 써 주십사 하고 조심스럽게 여쭤봤어요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "54b912e5", "sentence": "그 의사는 환자를 살리기 위해 밤샘 수술도 마다하지 않았습니다.", "level": "formal", "voice": "ko-KR-InJoonNeural", "rate": "-4%", "pitch": "-3Hz" },
-  { "id": "8ea801d9", "sentence": "그 친구는 내가 부탁하면 궂은일도 마다하지 않아.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "4f6d4e9a", "sentence": "매일 꾸준히 연습하노라면 어느새 실력이 늘어 있을 거예요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a0597440", "sentence": "이 길을 묵묵히 걷노라면 언젠가 끝이 보이겠지.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" },
-  { "id": "54ab7f30", "sentence": "요즘 일이 너무 많아서 바빠 죽을 지경이에요.", "level": "polite", "voice": "ko-KR-SunHiNeural", "rate": "+0%", "pitch": "+4Hz" },
-  { "id": "a287e62f", "sentence": "아까부터 배가 아파 죽을 지경이야.", "level": "casual", "voice": "ko-KR-SunHiNeural", "rate": "+6%", "pitch": "+16Hz" }
+  {
+    "id": "50cbe0e7",
+    "sentence": "저는 물을 마셔요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "55398bdc",
+    "sentence": "친구가 책을 읽어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "b559f68d",
+    "sentence": "오늘 날씨가 좋아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "545c8a42",
+    "sentence": "어제 친구를 만났어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "1ba7e0cf",
+    "sentence": "아침에 빵을 먹었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "704f14ce",
+    "sentence": "어젯밤에 일찍 잤어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "08779fac",
+    "sentence": "저는 학생입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "44d62326",
+    "sentence": "매일 아침을 먹습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "1658d62a",
+    "sentence": "지금 학교에 갑니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "231ef68e",
+    "sentence": "천천히 오세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a24909d3",
+    "sentence": "이 책을 읽으세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e77f77c4",
+    "sentence": "약을 드세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "8661050b",
+    "sentence": "내일 친구를 만날 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "cea39cce",
+    "sentence": "저는 집에서 밥을 먹을 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "d6b87320",
+    "sentence": "주말에 책을 읽을 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "0cf30fa0",
+    "sentence": "손을 씻고 밥을 먹습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "d6b5083f",
+    "sentence": "방이 크고 깨끗해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "57946469",
+    "sentence": "숙제를 하고 놀았어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "e55b1311",
+    "sentence": "늦어서 죄송합니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "f4dcb35b",
+    "sentence": "비가 와서 집에 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a50c713b",
+    "sentence": "피곤해서 일찍 잤어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "0e76789a",
+    "sentence": "한국어는 어렵지만 재미있습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "911ba62e",
+    "sentence": "비가 오지만 우산이 없어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "1507ea3d",
+    "sentence": "배고프지만 돈이 없어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "a4911393",
+    "sentence": "비가 오면 집에 있습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "f374f1eb",
+    "sentence": "시간이 있으면 전화하세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "bcc5008b",
+    "sentence": "피곤하면 일찍 자.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "81edfc0c",
+    "sentence": "지금 비가 오는데 우산이 없습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "27d44754",
+    "sentence": "이 옷이 예쁜데 좀 비싸요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "da1add9d",
+    "sentence": "시간이 없는데 우리 빨리 가자.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "9ce7e325",
+    "sentence": "물을 마시고 싶습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "77426662",
+    "sentence": "집에 가고 싶어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "66256861",
+    "sentence": "빵을 먹고 싶어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "2d1d9284",
+    "sentence": "저는 지금 밥을 먹고 있습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "06c8d6c1",
+    "sentence": "친구가 책을 읽고 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "4970411d",
+    "sentence": "동생이 음악을 듣고 있어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "900c65f7",
+    "sentence": "동생은 지금 학교에 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "6ac1c08f",
+    "sentence": "오늘 날씨는 정말 좋네요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "ca505625",
+    "sentence": "값이 너무 비싸요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "88b30a3d",
+    "sentence": "오늘 날씨가 정말 좋다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "d323d6b6",
+    "sentence": "동생이 물을 마셔요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "02075dc9",
+    "sentence": "저는 영화를 좋아해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a2886fd7",
+    "sentence": "아침에 빵과 우유를 먹습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "90ab4db4",
+    "sentence": "주말에 가족하고 공원에 갔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "ee6ef59a",
+    "sentence": "동생이랑 같이 떡볶이 먹자.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "aeca432d",
+    "sentence": "동생에게 편지를 보냈어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3ddfd3eb",
+    "sentence": "나 친구한테 문자 보냈어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "8a26a0a3",
+    "sentence": "할머니께 선물을 드렸습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "b816a40d",
+    "sentence": "방학은 다음 주부터 시작해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "024d3a75",
+    "sentence": "이 책을 내일까지 다 읽으세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "7a97dc40",
+    "sentence": "저는 가족하고 함께 공원에 갔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "5e922785",
+    "sentence": "동생이랑 같이 영화를 봤어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "15313c55",
+    "sentence": "여기가 우리 학교예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "565181b9",
+    "sentence": "저 사람은 제 동생이 아니에요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "025082b1",
+    "sentence": "냉장고에 우유가 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "600e7fff",
+    "sentence": "오늘은 숙제가 없어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "cec6db82",
+    "sentence": "저는 제주도에서 산 적이 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "72749f4b",
+    "sentence": "저는 김치를 만든 적이 없어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "d33e9674",
+    "sentence": "저는 커피를 안 마셔요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "23ce928e",
+    "sentence": "오늘은 날씨가 춥지 않아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "517cb575",
+    "sentence": "저는 운전을 못 해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "5118af0f",
+    "sentence": "매워서 김치를 먹지 못해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "7eac7587",
+    "sentence": "저는 강아지를 좋아해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "4c046b08",
+    "sentence": "저는 벌레를 싫어해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a835624e",
+    "sentence": "이 책은 제 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "fba261dc",
+    "sentence": "그 영화 정말 재미있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "cd8866e3",
+    "sentence": "저 산 이름이 뭐예요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "54d8f951",
+    "sentence": "점심을 먹으러 식당에 갔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "2db31f65",
+    "sentence": "친구가 우리 집에 놀러 왔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "eb3e989c",
+    "sentence": "주말마다 방을 청소해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "7a348cc6",
+    "sentence": "저는 오늘 아침에 공원에서 운동했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "1fc8f5fd",
+    "sentence": "이 식당은 음식이 좋은데 너무 비싸요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "07ae32c0",
+    "sentence": "숙제를 끝낸 후에 친구를 만났어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "fcbfa204",
+    "sentence": "손을 씻은 다음에 과일을 먹었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "285216b6",
+    "sentence": "내일은 시간이 있어서 모임에 갈 수 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "7d9bfcb7",
+    "sentence": "다리를 다쳐서 지금은 빨리 걸을 수 없어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "fabcc876",
+    "sentence": "감기에 걸렸으니까 병원에 갈 필요가 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a5e70245",
+    "sentence": "이미 다 준비했으니까 더 살 필요가 없어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3b8cb176",
+    "sentence": "운동을 하고 나서 샤워를 했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "be28082c",
+    "sentence": "이 책을 다 읽고 나면 마음이 편해질 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "d17bce02",
+    "sentence": "오늘 날씨가 정말 춥군요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "5fc9555d",
+    "sentence": "너 벌써 다 컸구나.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "dde10fbf",
+    "sentence": "겨울에는 길이 미끄러워서 넘어지기 쉬워요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "bed83bda",
+    "sentence": "외국어로 농담을 이해하기 어려워요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "6e766f36",
+    "sentence": "지금 밖에 비가 온다고요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a0b973dc",
+    "sentence": "저분이 새로 오신 선생님이라고요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "285577c8",
+    "sentence": "창문을 열어 놓았으니까 방이 곧 시원해질 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "f529c7a0",
+    "sentence": "친구 전화번호를 휴대폰에 저장해 뒀어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "80546530",
+    "sentence": "약을 먹기 전에 밥을 먼저 먹어야 해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "7f68760b",
+    "sentence": "내일 아침에 일찍 일어나야 돼요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "fa8f2341",
+    "sentence": "오늘 날씨가 봄처럼 따뜻해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "16ba4a09",
+    "sentence": "동생은 토끼같이 빨리 뛰어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "9f9fc611",
+    "sentence": "시험 때문에 요즘 너무 바빠요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "bc74c251",
+    "sentence": "내일 일찍 일어나야 하기 때문에 지금 자려고 해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "2dd4c42d",
+    "sentence": "급하니까 아무 펜이나 주세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "6ecaa88c",
+    "sentence": "주말이라서 가게에 아무 손님도 없었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "48ee2d39",
+    "sentence": "엄마는 아직 안 주무세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "b6c3db9d",
+    "sentence": "벌써 12시예요? 시간 정말 빠르네요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "218f5670",
+    "sentence": "제가 도착했을 때 회의는 이미 끝났어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "bf67bc21",
+    "sentence": "불이 꺼져 있어서 아무도 없는 줄 알았어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "8759b9ff",
+    "sentence": "네가 매운 음식을 못 먹는 줄 몰랐어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "9758d53c",
+    "sentence": "제 동생은 자전거를 탈 줄 알아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "b94f0806",
+    "sentence": "저는 아직 운전할 줄 몰라요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "0b975be2",
+    "sentence": "한국어 시험에 합격하기 위해서 매일 단어를 외워요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "98fb3a33",
+    "sentence": "부모님을 위해서 작은 선물을 준비했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3b11c074",
+    "sentence": "복권에 당첨된다면 제일 먼저 부모님께 집을 사 드리고 싶어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "079b4aea",
+    "sentence": "제가 사장이라면 직원들에게 휴가를 더 많이 줄 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "96cc6cbc",
+    "sentence": "친구가 저한테 시험이 많이 어렵냐고 했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "11f425a7",
+    "sentence": "동생이 언제 집에 오냐고 물었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "d490a8da",
+    "sentence": "이번 시험은 생각보다 어려울 듯해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "d4b42037",
+    "sentence": "그는 모든 걸 다 아는 듯이 고개를 끄덕였어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "9463bed6",
+    "sentence": "한 가정의 가장으로서 저는 가족의 생계를 책임지고 있습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "5dbd6fe8",
+    "sentence": "꾸준한 운동으로써 건강을 지킬 수 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "7b3e97c6",
+    "sentence": "이렇게 비싼 약은 먹어 봤자 효과도 없어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "de435e9f",
+    "sentence": "이미 다 끝난 일인데 후회해 봐야 소용없어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "cb012015",
+    "sentence": "고민만 하지 말고 일단 지원하고 봐요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "7060ed93",
+    "sentence": "급하게 짐을 싸고 보니까 여권을 안 챙겼더라고요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "8e6250e5",
+    "sentence": "이번 주말에 부산으로 이사 가신다면서요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3141d72f",
+    "sentence": "너 다음 달에 군대 간다며?",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "0242b9aa",
+    "sentence": "저는 이 일이 생각보다 어렵다고 생각해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "17870905",
+    "sentence": "이번 겨울이 유난히 춥다고 들었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "cd249227",
+    "sentence": "요즘 들어 시간이 정말 빠르다고 느껴요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "010b3539",
+    "sentence": "불이 다 꺼진 걸 보니 가족들이 벌써 잠든 듯해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "2c0a6a0e",
+    "sentence": "그 식당은 평일인데도 줄이 긴 걸 보면 꽤 유명한 듯싶어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "747b49cf",
+    "sentence": "친구가 약속을 잊었다고 할까 봐 미리 문자를 보냈어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "dc5f18c6",
+    "sentence": "네가 또 바쁘다고 할 줄 알았어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "8c234491",
+    "sentence": "내일 비가 많이 온다는데 우산 챙기는 게 좋겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "b4b0ccaf",
+    "sentence": "그 영화 진짜 무섭다더라, 혼자 보지 마.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "231b4763",
+    "sentence": "오늘 하루 종일 안 바쁘다더니 왜 이렇게 연락이 안 됐어?",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "ff308c11",
+    "sentence": "다음 주 월요일에 본사로 회장님을 직접 찾아 뵙겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "6c6f1413",
+    "sentence": "부장님, 그럼 회의 끝나고 로비에서 봬요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "5f1b4a92",
+    "sentence": "할머니는 시골에서 작은 텃밭을 가꾸며 사세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "2ad79d05",
+    "sentence": "요즘은 매일 운동하며 건강하게 지내고 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "4ab56fc5",
+    "sentence": "비가 흠뻑 내리면 메마른 논밭에 더없이 좋으련마는 하늘은 야속하게도 구름 한 점 내주지 않는구나.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "50c1baec",
+    "sentence": "벗이 곁에 있다면 이 먼 길도 함께 가련만 홀로 떠나는 나그네의 발걸음이 한없이 무겁기만 하구나.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "df60b0b2",
+    "sentence": "듣건대, 그 고을의 백성들이 오랜 가뭄으로 큰 고초를 겪고 있다 하더이다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "c39c27f6",
+    "sentence": "생각건대, 나라의 흥망은 결국 백성의 마음을 얻느냐 잃느냐에 달려 있는 것이다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "871d7608",
+    "sentence": "바라건대, 이 땅에 다시는 그와 같은 비극이 되풀이되지 않기를.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "1467f5a3",
+    "sentence": "아, 이 강산이 천하의 절경이로구나… 참으로 빼어난 경치로다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "5f7242bb",
+    "sentence": "오랜 세월을 견뎌 온 이 한 그루 소나무야말로 이 산의 주인이로다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "9a89fea6",
+    "sentence": "주말에 친구를 만나요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "34041471",
+    "sentence": "책상 위에 안경이 있어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "26b1b89b",
+    "sentence": "주말에 친구들하고 공원에서 자전거를 탔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "da6b2c8c",
+    "sentence": "이 사과는 시골에서 왔어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "e6350671",
+    "sentence": "오늘은 비도 오고 바람도 불어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "cd1100ab",
+    "sentence": "나도 그 영화 봤어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "3d49d76b",
+    "sentence": "나는 너만 믿어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "6c30c0c7",
+    "sentence": "주말에는 집에서만 쉬었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "d42b6018",
+    "sentence": "이것은 우리 회사의 새 제품입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "9947cdcf",
+    "sentence": "어제 엄마의 생일이라서 케이크를 샀어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "b8ca492f",
+    "sentence": "이 글자는 빨간색 펜으로 써.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "dfbb0170",
+    "sentence": "사거리에서 오른쪽으로 가시면 됩니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "d668ed36",
+    "sentence": "버스가 십 분마다 와요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "be5ba503",
+    "sentence": "주말마다 할머니 댁에 갑니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "b64b7185",
+    "sentence": "주말에 영화나 볼까?",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7f2f7e13",
+    "sentence": "시간이 있으면 책이나 좀 읽으세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "36548626",
+    "sentence": "내일은 비가 오겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "2e96fe74",
+    "sentence": "제가 이 짐을 들어 드리겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "66d30163",
+    "sentence": "날씨도 좋은데 커피 한 잔 마실래요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "383e601b",
+    "sentence": "피곤하면 먼저 집에 갈래?",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "32c4b4c6",
+    "sentence": "밖에 눈이 많이 왔네요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "47171069",
+    "sentence": "어, 벌써 시간이 이렇게 됐네!",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "952d17db",
+    "sentence": "오늘 날씨가 정말 춥죠?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "9bba754b",
+    "sentence": "회의가 세 시에 시작하지요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "9857fa3f",
+    "sentence": "오늘은 일이 별로 없으니까 좀 일찍 가도 돼요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e55caf53",
+    "sentence": "엄마, 이 과자 다 먹어도 돼?",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "0be0326e",
+    "sentence": "내일은 일요일이라서 일찍 일어나지 않아도 돼요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "72950e66",
+    "sentence": "내가 이미 다 해 놨으니까 너는 도와주지 않아도 돼.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "65769949",
+    "sentence": "할머니, 제가 짐을 들어 드릴게요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "75144324",
+    "sentence": "손님, 선물이니까 예쁘게 포장해 드리겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "540f90d2",
+    "sentence": "수업 시간에 휴대폰 보지 마세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "83eca90d",
+    "sentence": "내일 비 온대, 우산 가져오는 거 잊지 마.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "2df9ef05",
+    "sentence": "이거 말고 저거 보여 주세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e02fa6d9",
+    "sentence": "내일 말고 모레 만나자.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7a97e6d2",
+    "sentence": "운전할 때는 휴대폰을 보면 안 됩니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "f31a7158",
+    "sentence": "어렸을 때 시골에서 할머니랑 살았어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "aab0d21d",
+    "sentence": "회사에 가기 전에 커피를 한 잔 마셔요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "0641bd78",
+    "sentence": "밥을 먹기 전에 손을 깨끗이 씻어라.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "22b2b1ac",
+    "sentence": "제가 회의하는 동안 아이를 좀 봐 주시겠어요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "331affc2",
+    "sentence": "비가 오는 동안 우리는 카페에서 기다렸어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "68c6cca9",
+    "sentence": "운동하는 것이 건강에 정말 좋아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "bdf3927c",
+    "sentence": "혼자 영화 보는 거 별로 안 좋아해.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "bdbaf60c",
+    "sentence": "민수 씨는 벌써 집에 간 것 같아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "971741ff",
+    "sentence": "밖에 비가 오는 것 같아.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "690f54b0",
+    "sentence": "표가 매진됐네요. 이 영화가 인기가 많은 모양이에요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "1487543f",
+    "sentence": "옆집 형은 요즘 매일 도서관에 가던데, 시험이 곧 있는 모양이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "67bca6c6",
+    "sentence": "이 약은 하루에 세 번 식사 후에 먹으면 됩니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "66b4f843",
+    "sentence": "걱정하지 마, 늦으면 그냥 나한테 전화하면 돼.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "810cf009",
+    "sentence": "수업 시간에 휴대폰을 보면 안 됩니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "32e836af",
+    "sentence": "이건 비밀이니까 누구한테도 말하면 안 돼.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "32bc4e30",
+    "sentence": "내일 아침에 일찍 전화할게요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "de0d571b",
+    "sentence": "설거지는 내가 할게.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "53e9f6f9",
+    "sentence": "창문을 좀 열까요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "84e8d33c",
+    "sentence": "내일 날씨가 좋을까요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "6fdb3e8b",
+    "sentence": "버스를 놓치지 않으려고 아침 일찍 집을 나섰어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "4dff6829",
+    "sentence": "건강을 지키려고 매일 아침 공원에서 운동합니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "d99b6c8d",
+    "sentence": "제주도에 한번 가 보세요. 정말 좋아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "13319b6a",
+    "sentence": "이 신발 한번 신어 봐도 돼요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "0c2947db",
+    "sentence": "창문 좀 열어 주세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "d1e40f9e",
+    "sentence": "친구가 무거운 가방을 들어 줬어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "a62eecc5",
+    "sentence": "버스가 눈앞에서 그냥 가 버렸어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "8fc22a72",
+    "sentence": "배가 너무 고파서 케이크를 혼자 다 먹어 버렸어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "5f5b8179",
+    "sentence": "지금 길이 많이 막히니까 우리 지하철로 가자.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "9d1c887d",
+    "sentence": "처음 오셨으니까 제가 사무실을 안내해 드리겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "59aebaa7",
+    "sentence": "심심할 때는 게임을 하거나 친구한테 전화해.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "fbe44ba2",
+    "sentence": "면접에 늦거나 결석하면 합격하기 어렵습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "06d29cc3",
+    "sentence": "동생이 저보다 키가 더 커요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "bbf60644",
+    "sentence": "오늘은 어제보다 훨씬 추워.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "26fb8345",
+    "sentence": "내일 비가 올지 안 올지 잘 모르겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3882466b",
+    "sentence": "이 영화가 왜 그렇게 인기가 많은지 모르겠다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7ec8de6b",
+    "sentence": "지금 밖에 비가 오는데요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "407cd116",
+    "sentence": "저는 매운 거 잘 못 먹는데요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e278b97a",
+    "sentence": "이 영화가 얼마나 재미있는지 몰라. 너도 꼭 봐.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "45e889e6",
+    "sentence": "어제 하루 종일 얼마나 많이 걸었는지 다리가 너무 아파요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "f7894b7e",
+    "sentence": "이번 사고에 대해서 자세히 설명해 주시겠습니까?",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "66ed5fbe",
+    "sentence": "나 그 영화에 대해 아무것도 몰라.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "12a8ee6a",
+    "sentence": "친구가 화났을까 봐 계속 연락했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "feaa0589",
+    "sentence": "늦을까 봐 택시를 탔어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "d78ee47a",
+    "sentence": "아무리 바쁘더라도 가족과 보내는 시간은 꼭 챙기세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "beb825a1",
+    "sentence": "내일 비가 오더라도 우리는 예정대로 등산을 갈 거야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "af1f7801",
+    "sentence": "지금 출발 안 하면 기차를 놓칠지도 몰라요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a7f2be6a",
+    "sentence": "민수는 아직 그 소식을 모를지도 몰라.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "ec1b6762",
+    "sentence": "내일 시험 있잖아요, 오늘은 일찍 자야겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "f21afae5",
+    "sentence": "야, 그거 내가 어제 말했잖아.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "f15df843",
+    "sentence": "오랜만에 고향에 갔더니 동네가 정말 많이 변했더라고요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "0175c38d",
+    "sentence": "어제 새로 산 신발을 신어 봤는데 생각보다 좀 작더라고요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "f46b8e0e",
+    "sentence": "어제는 다리가 후들거릴 만큼 오래 걸었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "8a3522d9",
+    "sentence": "그 영화는 두 번 봐도 안 질릴 만큼 재미있어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "4482e0c2",
+    "sentence": "시간 없으면 라면이라도 끓여 먹어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "f2041861",
+    "sentence": "잠깐이라도 쉬셨으면 좋겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "c41f2f3f",
+    "sentence": "우리 딸이 벌써 대학생이 되었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "13721e9a",
+    "sentence": "열심히 연습하면 너도 좋은 가수가 될 거야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "da24f9b4",
+    "sentence": "오늘 날씨가 너무 더워 죽겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "87c8fe55",
+    "sentence": "할 일이 너무 많아서 힘들어 죽겠다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "5a49d6ad",
+    "sentence": "어제 친구를 만나 가지고 늦게까지 수다를 떨었어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "74df02f2",
+    "sentence": "국이 너무 짜 가지고 물을 좀 더 넣었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "19960ec2",
+    "sentence": "밥을 먹다가 말고 갑자기 밖으로 나가 버렸어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3b792802",
+    "sentence": "어제 청소를 하다가 말아서 방이 아직 엉망이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "d5a204dd",
+    "sentence": "여행을 가려고 했는데 갑자기 일이 생겨서 못 가게 됐어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "6f6eabf6",
+    "sentence": "처음엔 김치를 싫어했는데 한국에 살다 보니 이제 좋아하게 됐어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "242f4766",
+    "sentence": "운동을 시작하고 나서 몸이 건강해졌어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "7ccf9996",
+    "sentence": "요즘 한국어가 점점 재미있어졌어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "6fcbba18",
+    "sentence": "벽에 가족사진이 걸려 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "c6c01204",
+    "sentence": "할머니는 소파에 앉아 있다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "940732be",
+    "sentence": "이 옷을 입으니까 훨씬 어려 보여요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "4de82856",
+    "sentence": "그 식당 음식이 사진보다 더 맛있어 보인다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "df395db4",
+    "sentence": "내일 시험이 있기 때문에 오늘은 친구를 못 만나요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "f4467aad",
+    "sentence": "길이 많이 막혔기 때문에 회의에 늦었습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "2cac4f5b",
+    "sentence": "전화하면서 운전하면 너무 위험해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "1ab57419",
+    "sentence": "형은 웃으면서 내 어깨를 두드렸다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "fd55afd9",
+    "sentence": "물가가 계속 오르니까 외식을 줄일 수밖에 없어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "389df1fe",
+    "sentence": "약속 시간에 늦었는데 차까지 막혀서 정말 미안하다고 할 수밖에 없었어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "a5eebc54",
+    "sentence": "사람마다 생각이 다르니까 상황에 따라서 결정하는 게 좋아.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "9c712e85",
+    "sentence": "이번 정책에 따라 내년부터 세금이 조금 오를 예정입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "74a89ca0",
+    "sentence": "이 식당은 가격에 비해 양이 정말 많아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e9895122",
+    "sentence": "형은 나에 비해서 키가 훨씬 커.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "12ced60e",
+    "sentence": "이 영화 정말 재미있을 것 같아.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "60c019e6",
+    "sentence": "길이 많이 막혀서 약속에 좀 늦을 것 같습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "7cc7c831",
+    "sentence": "그 사람은 모든 걸 다 아는 것처럼 말해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "80421357",
+    "sentence": "동생이 자기가 그린 것처럼 내 그림을 자랑했어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "965d62fb",
+    "sentence": "이번 시험에 꼭 합격하면 좋겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "9098547d",
+    "sentence": "네가 우리 집에 자주 놀러 오면 좋겠어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "31d9ac8b",
+    "sentence": "노력하면 언젠가는 성공하기 마련입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "ff73d79f",
+    "sentence": "겨울이 지나면 봄이 오기 마련이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "89909346",
+    "sentence": "우리는 다음 달부터 매일 아침에 운동하기로 했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "637099b1",
+    "sentence": "건강을 위해서 이제부터 담배를 끊기로 했어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7eef5565",
+    "sentence": "우리 형은 말이 별로 없고 조용한 편이에요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "2cbea63a",
+    "sentence": "나는 약속 시간보다 좀 일찍 도착하는 편이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "65ff575d",
+    "sentence": "감기에 걸리지 않도록 따뜻하게 입으세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "076324c9",
+    "sentence": "내일 늦지 않도록 알람을 다섯 개나 맞춰 놨어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "c39c9da0",
+    "sentence": "알람이 울리자마자 바로 일어났어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "63a1ef6d",
+    "sentence": "소식을 듣자마자 너한테 전화했어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "f0e1adec",
+    "sentence": "이 동네로 이사 온 지 벌써 석 달이 지났어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "804b9de3",
+    "sentence": "우리 강아지가 죽은 지 일 년이 다 돼 간다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "880b57cf",
+    "sentence": "아무리 바빠도 밥은 꼭 챙겨 먹어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "13cadc8e",
+    "sentence": "값이 비싸도 품질이 좋으면 삽니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "1c100983",
+    "sentence": "약을 먹었는데도 아직 머리가 아파요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a208a928",
+    "sentence": "주말인데도 회사에 가야 해.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "fd1b2c41",
+    "sentence": "오늘은 너무 바빠서 한 시간밖에 못 잤어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "89092821",
+    "sentence": "냉장고에 우유밖에 없네.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "d24256b8",
+    "sentence": "버스를 타려다가 시간이 없어서 택시를 탔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "f98eb9b5",
+    "sentence": "케이크를 직접 만들려다가 너무 어려워서 그냥 사 왔어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "a11167a8",
+    "sentence": "매일 일기를 쓰다 보면 글솜씨가 좋아져요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "0863d4fe",
+    "sentence": "서울에 살다 보면 지하철이 편해질 거야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "892f0e73",
+    "sentence": "매일 지하철로 출퇴근하다 보니 책 읽는 습관이 생겼어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "969096d2",
+    "sentence": "혼자 살다 보니 요리 실력이 많이 늘었어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "d66bf23b",
+    "sentence": "옆집 개가 밤새 짖어 대서 한숨도 못 잤어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "483964f3",
+    "sentence": "그만 좀 떠들어 대, 정신 사나워 죽겠어!",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "eeb95cb3",
+    "sentence": "아끼던 컵을 떨어뜨려서 깨고 말았어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "8815663a",
+    "sentence": "다이어트 중인데 결국 케이크를 다 먹고 말았어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "9a868fbf",
+    "sentence": "이제 봄이 다 돼 가네요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "63c24f42",
+    "sentence": "조금씩 한국 생활에 익숙해져 갑니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "2124ea20",
+    "sentence": "지금까지 이 가게를 혼자서 운영해 왔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "deecd282",
+    "sentence": "우리 가족은 30년 동안 이 동네에서 살아왔다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "24764405",
+    "sentence": "포기하지 않고 끝까지 버텨 냈습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "6e6b1ab5",
+    "sentence": "온 가족이 힘을 모아서 결국 그 돈을 다 갚아 냈어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "28c03337",
+    "sentence": "그렇게 걱정되면 의사한테 한번 물어보지 그래요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "5e6bc642",
+    "sentence": "계속 졸리면 커피 한 잔 마시지 그래?",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7dcf1289",
+    "sentence": "건강을 위해서 이제부터 운동을 좀 해야지요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "4bb34333",
+    "sentence": "또 늦었어? 다음부터는 좀 일찍 나와야지.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "996faa74",
+    "sentence": "내일은 일찍 자야 해요. 아침에 중요한 면접이 있거든요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "b8152503",
+    "sentence": "그 식당은 미리 예약하는 게 좋아. 주말에는 항상 사람이 많거든.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "15a39d3e",
+    "sentence": "역시 프로 선수답게 어려운 상황에서도 침착하더라고요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "58aefb5a",
+    "sentence": "날씨가 이제 좀 봄답게 따뜻해졌네.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "da4d3cc3",
+    "sentence": "어른들 앞에서 그렇게 행동하다니, 정말 자랑스럽구나.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7819628e",
+    "sentence": "처음 보는 사람이 비싼 선물을 줘서 너무 부담스러워요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "875e58d9",
+    "sentence": "친구가 요즘 너무 바쁘다고 했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "46f12acc",
+    "sentence": "엄마가 저녁에 비가 온다고 하니까 우산 챙겨.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "638645d6",
+    "sentence": "의사 선생님이 약을 식사 후에 드시라고 했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "d974c878",
+    "sentence": "엄마가 동생한테 빨리 자라고 했어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "0a835f74",
+    "sentence": "주말에 등산 가자고 했는데 비가 와서 취소했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "c3e3bbe2",
+    "sentence": "팀장님이 회의를 내일로 미루자고 하셨어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "fdfe3e09",
+    "sentence": "민수 씨, 다음 달에 회사를 그만두신다면서요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "be38870f",
+    "sentence": "너 요즘 강아지 키운다며?",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "4235aab6",
+    "sentence": "그 배우는 연기를 잘할 뿐만 아니라 노래도 정말 잘해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "c685898c",
+    "sentence": "오늘은 길이 막힐 뿐만 아니라 비까지 와서 회사에 늦었어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7bfb2e56",
+    "sentence": "이 식당은 음식 값이 싼 반면에 양이 좀 적어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "93fcd102",
+    "sentence": "도시는 생활이 편리한 반면에 시골은 공기가 맑다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "2fc5c623",
+    "sentence": "열심히 준비했음에도 불구하고 시험에 떨어졌습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "37f7f0ac",
+    "sentence": "몸살에도 불구하고 끝까지 회의에 참석했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "65398c11",
+    "sentence": "나이가 들수록 시간이 빨리 가는 것 같아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "ef5fd600",
+    "sentence": "이 노래는 들으면 들을수록 좋아져.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "a3a90dc1",
+    "sentence": "비밀번호를 잊어버리지 않는 한 계정에 다시 들어갈 수 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a88cbd1d",
+    "sentence": "내가 여기 있는 한 아무도 너를 못 건드려.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "c2667c80",
+    "sentence": "이 식당은 음식이 맛있는 데다가 값도 싸서 자주 가요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "18ce1e28",
+    "sentence": "그 사람은 일을 빨리 끝낸 데다가 실수도 거의 안 했어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "8d2708ee",
+    "sentence": "그 식당은 음식이 맛있을 뿐더러 사장님도 친절하셔서 자주 가요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "cf1b9df5",
+    "sentence": "이번 프로젝트는 일정이 촉박할 뿐더러 예산까지 부족해서 정말 힘들었다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "42d55b52",
+    "sentence": "형은 회사에 다니는 한편 주말마다 봉사 활동도 해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "c32a2326",
+    "sentence": "이번 정책은 일부 사람들에게 도움이 되는 한편 다른 사람들에게는 부담이 된다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "f25b0e56",
+    "sentence": "주말에는 카페는 물론이고 식당도 사람이 너무 많아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3c10a06f",
+    "sentence": "그 배우는 연기는 물론이고 노래까지 잘해서 정말 부러워.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "5e063137",
+    "sentence": "버스를 놓치는 바람에 약속에 늦었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "aabe437c",
+    "sentence": "옆집에서 밤새 공사를 하는 바람에 한숨도 못 잤어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "ba54cb01",
+    "sentence": "옆집에서 밤새 공사를 하는 통에 한숨도 못 잤습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "e2b201b8",
+    "sentence": "사람들이 갑자기 몰려드는 통에 지갑을 잃어버렸어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "9473fe96",
+    "sentence": "지금 출발하면 길이 많이 막힐 텐데 지하철로 가는 게 어때요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "c232ea6b",
+    "sentence": "내일 시험인데 친구가 아직도 공부를 안 하네. 분명 후회할 텐데.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "fc89cdd8",
+    "sentence": "민수가 벌써 집에 갔을 리가 없어요. 아까 도서관에서 봤는데요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "aa9b07b6",
+    "sentence": "이렇게 열심히 공부했는데 시험에 떨어질 리가 없어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "2150ab29",
+    "sentence": "표를 미리 예매할걸 그랬어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a561a7e2",
+    "sentence": "어제 일찍 잘걸 그랬다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "9d70e58e",
+    "sentence": "하늘이 잔뜩 흐린 것을 보니 곧 비가 오겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "c51adeb1",
+    "sentence": "민수가 밥을 두 그릇이나 먹는 걸 보니 배가 많이 고팠나 봐.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "af86ce49",
+    "sentence": "집에 가다가 친구를 만났어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "8cdb9c9d",
+    "sentence": "텔레비전을 보다가 갑자기 전화가 왔어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "c2dbaa18",
+    "sentence": "동생이 자는 척해서 깨우기가 좀 그래요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "8610e853",
+    "sentence": "많이 아프면서 괜찮은 척하지 마.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "a2dad83d",
+    "sentence": "엄마가 동생에게 방을 청소하게 했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "045d085a",
+    "sentence": "그 영화가 나를 많이 울게 했어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "a9245d84",
+    "sentence": "공항에 도착하는 대로 바로 전화드릴게요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "5fb3b9c1",
+    "sentence": "설명서에 적힌 대로 조립했더니 문제가 없었습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "8fb14ecf",
+    "sentence": "그 식당은 한번 가 볼 만해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "9cdd4bf6",
+    "sentence": "오늘은 그렇게 안 추워서 밖에서 좀 걸을 만해.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "5de3b7e7",
+    "sentence": "배가 아플 정도로 많이 웃었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3108c934",
+    "sentence": "그 가수는 모르는 사람이 없을 정도로 유명해.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "5e8d1f52",
+    "sentence": "회의를 시작하기에 앞서 지난 회의록을 잠깐 검토하겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "b08dccc6",
+    "sentence": "본격적인 등산을 하기에 앞서 가벼운 준비 운동을 하는 게 좋아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "390b9dab",
+    "sentence": "조금만 일찍 출발했더라면 기차를 놓치지 않았을 텐데.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "50e4bfa2",
+    "sentence": "그날 우산을 챙겼더라면 비를 안 맞았을 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e5a83753",
+    "sentence": "조용히 문을 닫는다는 것이 그만 쾅 닫아 버렸어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "635cfe6c",
+    "sentence": "커피에 설탕을 넣는다는 것이 그만 소금을 넣어 버렸다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "5a522ed3",
+    "sentence": "병원에 가고서야 그게 큰 병이라는 걸 알았어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "617e1185",
+    "sentence": "직접 키워 보고서야 부모님의 마음을 이해하게 됐어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "5069a86e",
+    "sentence": "이 국이 싱거워 빠져서 도저히 못 먹겠어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "82ab8b84",
+    "sentence": "그 가방은 낡아 빠져서 이제 그만 버리는 게 좋겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "cab5f72f",
+    "sentence": "쌓인 설거지를 한꺼번에 다 해 치웠어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "35475253",
+    "sentence": "남은 음식은 그냥 다 먹어 치웠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "82e0ced4",
+    "sentence": "올해는 담배를 반드시 끊고 말겠어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "2353575e",
+    "sentence": "어떤 어려움이 있어도 저는 이 회사를 꼭 성공시키고 말겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "90a35b9b",
+    "sentence": "어제 약을 먹었어야 했는데 깜빡했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "62d71efa",
+    "sentence": "그때 너한테 솔직하게 말했어야 했어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "e1106111",
+    "sentence": "지금쯤 길이 막힐 테니까 지하철로 가는 게 좋겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "f71e9f9e",
+    "sentence": "내가 먼저 가서 자리 잡고 있을 테니까 천천히 와.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "c7b6ecae",
+    "sentence": "창문을 열어 둔 채로 외출해서 방이 추워졌어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "ab283b2c",
+    "sentence": "그는 눈을 감은 채 한참 동안 음악을 들었다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "f7d06c62",
+    "sentence": "청소하는 김에 창문도 닦았어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "fc0f7a9d",
+    "sentence": "서울에 출장 온 김에 친구도 만나고 가려고.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "584c61a6",
+    "sentence": "회사에 가는 길에 우체국에 잠깐 들렀어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a972653f",
+    "sentence": "퇴근하는 길에 마트에 들러서 우유 좀 사 와.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "1be2ddf0",
+    "sentence": "디자인 공부도 할 겸 미술관에 자주 가요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "aaace715",
+    "sentence": "오랜만에 부모님도 뵐 겸 고향에 다녀왔습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "ddf6e236",
+    "sentence": "아이를 돌보느라 점심도 못 먹었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "513c2ff4",
+    "sentence": "어제 친구랑 노느라 숙제를 다 못 했어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "fe4e79c5",
+    "sentence": "친구가 맛있다고 추천하길래 그 식당에 한번 가 봤어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "03b1333a",
+    "sentence": "동생이 자꾸 졸길래 일찍 재웠어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "27574760",
+    "sentence": "운전하면서 자꾸 휴대폰을 보다가는 큰 사고가 날 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "72ab10fc",
+    "sentence": "돈을 그렇게 펑펑 쓰다가는 월급날도 되기 전에 다 떨어진다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "177a46d6",
+    "sentence": "벌써 시험이 끝났다니, 시간 진짜 빠르다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "c63d21d3",
+    "sentence": "이렇게 어려운 문제를 혼자 다 풀었다니요? 정말 대단하네요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "0ddd93d0",
+    "sentence": "내가 거기 가 봤다니까. 음식 진짜 별로였어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "51e10109",
+    "sentence": "저 벌써 출발했다니까요. 조금만 더 기다려 주세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "b6235669",
+    "sentence": "내일부터 출근 안 한다고요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "fa4884a5",
+    "sentence": "벌써 다 끝났다고?",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "170855fe",
+    "sentence": "다음 주에 회의가 취소됐다는 메일을 받았어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e3e4c7c7",
+    "sentence": "친구가 곧 결혼한다는 말을 듣고 깜짝 놀랐어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "bebd9328",
+    "sentence": "동생이 아직도 안 일어난 걸 보니 어제 많이 피곤했나 봐.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "f3b99017",
+    "sentence": "옆집에서 계속 웃음소리가 나는 걸 보니 손님이 왔나 봐요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "32f8fe2a",
+    "sentence": "표정이 어두운 걸 보니 동생이 시험을 망쳤나 봐요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "35462c9d",
+    "sentence": "창문에 불이 다 꺼져 있네. 집에 아무도 없나 봐.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "e9bc4052",
+    "sentence": "지금 가도 식당 문 닫았을걸요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e5dd7c11",
+    "sentence": "이렇게 막힐 줄 알았으면 지하철을 탈걸.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "2f89d2f0",
+    "sentence": "그 사람은 돈이 많으면서도 항상 없다고 해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3df3cdc7",
+    "sentence": "동생은 시험이 코앞이면서도 게임만 하고 있어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "bebcb48e",
+    "sentence": "도서관에서 책을 빌려다가 집에서 읽었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "db308fdc",
+    "sentence": "마당에서 꽃을 꺾어다 꽃병에 꽂았어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "e686c824",
+    "sentence": "비가 많이 온 만큼 길이 많이 막혀요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3b74984b",
+    "sentence": "월급을 많이 받는 만큼 일도 그만큼 힘들어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "9f5097b2",
+    "sentence": "동생은 다 아는 척 고개를 끄덕였어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "ccd33aa7",
+    "sentence": "엄마가 부를까 봐 자는 척 눈을 감고 있었어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "ae2e1fdf",
+    "sentence": "예전에는 담배를 피웠었는데 지금은 끊었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "158309d9",
+    "sentence": "작년에 그 영화 봤었는데 내용이 하나도 기억 안 나.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "e21b551a",
+    "sentence": "어머니가 그렇게까지 부탁하시는데 도와드리지 않을 수 없었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "4232a1af",
+    "sentence": "증거가 이렇게 명확하니 그의 말을 믿지 않을 수 없다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "cd60d652",
+    "sentence": "이 식당은 음식이 맛있는 데다가 값도 싸서 항상 손님이 많아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "515506a2",
+    "sentence": "그 사람은 일도 잘하는 데다가 성격도 좋아서 회사에서 인기가 많아.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "77efb61f",
+    "sentence": "목마른데 물 좀 떠다 줘.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "b47b08a4",
+    "sentence": "약국에서 약을 받아다 줄게요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a2c5f349",
+    "sentence": "운동은 하면 할수록 몸이 가벼워지는 것 같아요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "c3530fa5",
+    "sentence": "그 사람은 알면 알수록 정이 가더라.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "8e9c8d23",
+    "sentence": "네가 그때 진실을 말했어야 했는데, 결국 아무 말도 안 했잖아.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "5871bfb2",
+    "sentence": "약을 미리 챙겼어야 했는데 깜빡하고 집에 두고 왔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e26b93ae",
+    "sentence": "동생이 어제 늦게까지 게임을 하더니 오늘 아침에 못 일어나네요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a37d6a17",
+    "sentence": "민수가 한동안 말이 없더니 갑자기 회사를 그만뒀어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "a0999137",
+    "sentence": "이거 제가 마시던 커피인데 한 모금 드실래요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "b129912b",
+    "sentence": "그렇게 매일 운동하던 형이 요즘은 왜 안 나와?",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "cb047ce8",
+    "sentence": "아침까지 날씨가 멀쩡하더니만 갑자기 비가 쏟아지네요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "61ba98df",
+    "sentence": "동생이 밤새 게임만 하더니만 결국 시험을 완전히 망쳤어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "bd6c7463",
+    "sentence": "회사가 망할지언정 직원들 월급은 절대 미루지 않겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "19025353",
+    "sentence": "시험에 떨어질지언정 남의 답을 베끼는 짓은 하지 않을 거야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "a31a38fc",
+    "sentence": "비록 실패할지라도 도전해 볼 가치는 있습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "bda3aa89",
+    "sentence": "아무리 바쁠지라도 가족과의 약속은 꼭 지켜요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "7207d17a",
+    "sentence": "그 사람은 잘못을 하고도 사과 한마디 안 했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3c914e8f",
+    "sentence": "분명히 알고도 모르는 척하지 마.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "053c4e40",
+    "sentence": "이렇게 매일 야근하느니 차라리 회사를 그만두는 게 낫겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "2062d459",
+    "sentence": "그 사람한테 부탁하느니 차라리 내가 직접 하고 말지.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7decc32b",
+    "sentence": "지금 출발하면 몰라도 그 시간에 도착하기는 어려울 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "ecf1241b",
+    "sentence": "네가 직접 사과하면 몰라도 그냥 넘어가면 형은 절대 안 풀려.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "e6379869",
+    "sentence": "아무리 바쁘다손 치더라도 부모님 전화는 받아야지.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "77053e05",
+    "sentence": "그 계획이 완벽하다손 치더라도 예산이 없으면 실행할 수 없습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "b8529a5b",
+    "sentence": "이번 달엔 사고 싶은 걸 거의 다 샀으니까 돈을 다 쓴 셈이에요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "244937b2",
+    "sentence": "열 명 중에 아홉 명이 찬성했으니까 거의 다 찬성한 셈이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "44cd567e",
+    "sentence": "저는 그저 제 일을 했을 따름입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "189518b6",
+    "sentence": "이미 끝난 일인데 후회해도 마음만 아플 따름이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "4e380f0b",
+    "sentence": "저는 그냥 시키는 대로 했을 뿐입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "43ded8fc",
+    "sentence": "걱정하지 마, 난 그냥 농담했을 뿐이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "780a855d",
+    "sentence": "그건 핑계에 불과합니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "9889b339",
+    "sentence": "우리가 만난 지 일주일밖에 안 됐으니까 아직 서로 모르는 사이에 불과해.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "e2b477af",
+    "sentence": "아이는 부모가 가르치기 나름이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "92b044b0",
+    "sentence": "건강은 평소에 관리하기 나름입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "a46b7db6",
+    "sentence": "이 식당 음식은 맛도 좋고 가격도 싸서 더 바랄 나위가 없어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "5a4b9d9c",
+    "sentence": "그 친구가 얼마나 성실한지는 더 말할 나위도 없지.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "95ae0e16",
+    "sentence": "택시 부를 것 없이 그냥 같이 걸어가요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "d01a742f",
+    "sentence": "별것 아니니까 멀리서 찾을 것 없이 우리 집에서 먹자.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "61a9839f",
+    "sentence": "이 옷이 마음에 안 들면 그냥 환불받으면 그만이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "68e4a9c7",
+    "sentence": "남들이 뭐라고 하든 저는 제 일만 열심히 하면 그만입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "5cce0739",
+    "sentence": "비가 오기에 우산을 챙겨 나왔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "0c89d06a",
+    "sentence": "친구가 부산에 간다기에 나도 같이 가기로 했어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "45eb9ca6",
+    "sentence": "어제 비가 많이 온 탓에 길이 많이 막혔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "c06811b2",
+    "sentence": "급하게 먹은 탓에 배탈이 났어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "501d666f",
+    "sentence": "이번 폭설로 인해 모든 항공편이 결항되었습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "fcc37a31",
+    "sentence": "윗집 소음으로 인해서 어젯밤에 한숨도 못 잤어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "37a82982",
+    "sentence": "회사의 경쟁력을 높이고자 신기술 도입을 추진하고 있습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "f3c42aae",
+    "sentence": "그동안의 연구 결과를 발표하고자 이 자리에 섰습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "b876a805",
+    "sentence": "시험 결과를 걱정한 나머지 밤새 한숨도 못 잤어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "ee6740f5",
+    "sentence": "그 소식을 듣고 너무 놀란 나머지 들고 있던 컵을 떨어뜨렸다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "c9e9dbcb",
+    "sentence": "배가 너무 고파서 죽을 지경이에요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "9e6e9ac7",
+    "sentence": "아이들이 하루 종일 떠들어서 머리가 터질 지경이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7b1dce8a",
+    "sentence": "주말에 쉬기는커녕 회사에 또 나가야 돼.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "6ab9cb35",
+    "sentence": "그 식당은 맛있기는커녕 너무 짜서 한 입도 못 먹었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "3a139b32",
+    "sentence": "밥을 먹든지 빵을 먹든지 빨리 정하세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "0a07c2be",
+    "sentence": "네가 가든지 말든지 나는 신경 안 써.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "98e86bd3",
+    "sentence": "오랜 시간 연습한 끝에 드디어 운전면허를 땄습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "d3ec6c49",
+    "sentence": "한참을 헤맨 끝에 겨우 호텔을 찾았어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "0e9aff32",
+    "sentence": "버스에서 내리자 비가 쏟아지기 시작했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "5b0b0b79",
+    "sentence": "선생님이 교실을 나가자 아이들이 떠들기 시작했다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "43938dd9",
+    "sentence": "손을 깨끗이 씻고서 밥을 먹었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e3aa6cbc",
+    "sentence": "지갑을 집에 두고서 그냥 나와 버렸어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "e028c66d",
+    "sentence": "그 케이크는 달다 못해 머리가 아플 정도였어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "d29d17f0",
+    "sentence": "동생은 참다 못해 결국 화를 냈습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "92a9546d",
+    "sentence": "친구가 그 영화가 재미있다고 해서 주말에 보러 갈 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "ba05e854",
+    "sentence": "내일 비가 온다고 해서 우산을 미리 챙겼어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "66498901",
+    "sentence": "아무리 바쁘다고 해도 밥은 꼭 챙겨 드세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "9cc5b2c9",
+    "sentence": "그 사람이 천재라고 해도 난 별로 안 부러워.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "a3688eba",
+    "sentence": "매일 운동한다는 게 생각보다 쉽지 않더라고요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "ac96706a",
+    "sentence": "혼자 외국에서 산다는 게 가끔은 너무 외로워.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "b80ffa9c",
+    "sentence": "비가 올까 싶어서 우산을 챙겼어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "6179442f",
+    "sentence": "오늘은 그냥 집에서 쉴까 싶다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "39a78b6c",
+    "sentence": "이번 시험은 생각보다 어렵지 싶어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "4c858b04",
+    "sentence": "지금 출발하면 늦지 싶다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "f7a733f3",
+    "sentence": "요즘 그 친구가 좀 힘든가 싶어서 자주 연락해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "74192b8f",
+    "sentence": "내가 아까 말실수를 한 건가 싶어서 계속 신경 쓰여.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "ac711647",
+    "sentence": "내일 오후 2시에 팀 회의 있음. 회의 자료 미리 준비할 것.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "2b1b9d11",
+    "sentence": "경찰은 그가 범인임을 밝혀냈습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "2fdf9bba",
+    "sentence": "한국어를 배우는 데에 시간이 꽤 많이 걸렸어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "9faa03a3",
+    "sentence": "이 가위는 종이를 자르는 데에 정말 편해.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "a58a2ac1",
+    "sentence": "잠깐이나마 쉴 수 있어서 다행이었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "007ffcd3",
+    "sentence": "사진으로나마 고향 풍경을 볼 수 있어서 좋다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "0ff02e57",
+    "sentence": "마음에도 없는 사과는 차라리 안 하느니만 못합니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "c5b3aceb",
+    "sentence": "이렇게 대충 공부할 거면 아예 안 하느니만 못해.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "cd071634",
+    "sentence": "조금만 일찍 출발했던들 막차를 놓치지는 않았을 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "4974c13a",
+    "sentence": "그의 경고를 귀담아들었던들 이런 참사는 일어나지 않았으리라.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "a0e27bca",
+    "sentence": "아이가 넘어져서 울 새도 없이 다시 일어나 뛰어갔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "73f672c3",
+    "sentence": "손님이 계속 밀려와서 점심을 먹을 새 없이 일했다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "4841db0d",
+    "sentence": "회사를 그만두는 한이 있어도 이 프로젝트는 끝까지 책임지겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "5cf0956a",
+    "sentence": "밤을 새우는 한이 있어도 내일까지 이거 다 끝낼 거야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "06acdeed",
+    "sentence": "다이어트한답시고 점심을 굶더니 저녁에 폭식했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "9380e826",
+    "sentence": "어른이랍시고 큰소리만 치고 책임은 안 지더라.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "330d176b",
+    "sentence": "심심하면 게임을 한다거나 유튜브를 본다거나 하면서 시간을 보내.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "3b38e909",
+    "sentence": "스트레스를 받으면 매운 걸 먹는다거나 노래방에 간다거나 해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "27438a1c",
+    "sentence": "그는 음악을 들으며 천천히 공원을 걸었다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "90f925b0",
+    "sentence": "저는 보통 아침을 먹으며 뉴스를 봐요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "2e92d331",
+    "sentence": "할머니는 콩나물을 다듬으며 노래를 흥얼거리며 옛날이야기를 들려주셨다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "f208e77f",
+    "sentence": "그 카페는 분위기도 좋으며 커피도 맛있으며 가격까지 저렴해서 자주 가요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "1b9cad32",
+    "sentence": "이 식당은 값은 비싸나 맛은 정말 좋습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "983e8f93",
+    "sentence": "동생에게 여러 번 전화했으나 한 번도 받지 않았다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "cd075cef",
+    "sentence": "동생은 뭐든지 혼자 하려고 들어서 가끔 위험해요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "8a5d5e01",
+    "sentence": "그 사람은 내 말을 끝까지 안 듣고 자기 생각만 밀어붙이려고 든다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "d06e4400",
+    "sentence": "초보자는 그런 실수를 하기 십상이에요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "791be119",
+    "sentence": "급하게 결정하면 나중에 후회하기 십상이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "6a446287",
+    "sentence": "오늘은 운동도 못 했으니까 엘리베이터 안 탄 셈 치고 계단으로 걸어 올라가요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "23cd2fda",
+    "sentence": "그 돈은 친구한테 빌려준 게 아니라 그냥 밥 한 끼 산 셈 치기로 했어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7256ad0c",
+    "sentence": "슬픈 영화를 보다가 눈물이 날락 말락 했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "0d93760d",
+    "sentence": "안개 때문에 산 정상이 보일락 말락 해.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "0c182175",
+    "sentence": "어제 너무 피곤해서 청소를 하는 둥 마는 둥 하고 그냥 잤어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "0c54b25d",
+    "sentence": "동생은 시험이 코앞인데 공부를 하는 둥 마는 둥 하더니 결국 떨어졌어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7d861434",
+    "sentence": "평소에 어떻게 관리하느냐에 따라서 결과가 완전히 달라질 수 있습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "9c381830",
+    "sentence": "네가 어떤 친구를 사귀느냐에 따라 성격도 달라진다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "89bd4886",
+    "sentence": "경기가 침체된 가운데 정부가 새로운 대책을 발표했습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "afb6a860",
+    "sentence": "여러 가지로 어수선한 가운데 이렇게 자리를 빛내 주셔서 진심으로 감사합니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "78052890",
+    "sentence": "아이 키우랴 회사 다니랴 하루가 어떻게 가는지 모르겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "35a92305",
+    "sentence": "어제는 청소하랴 손님 맞으랴 정신이 하나도 없었어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "c5a5b55c",
+    "sentence": "소금을 넣는다는 게 설탕을 넣어 버렸어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "d6834abb",
+    "sentence": "친구한테 문자를 보낸다는 게 엄마한테 보냈어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "8a3b85d2",
+    "sentence": "저는 그저 제가 맡은 일을 했을 따름입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "859a6883",
+    "sentence": "최선을 다했지만 결과가 이렇게 되어 안타까울 따름입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "25436003",
+    "sentence": "아무리 비싼 옷을 입은들 마음이 고약하면 무슨 소용이에요?",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a8a7db98",
+    "sentence": "천하를 다 가진들 사랑하는 사람이 없다면 그게 다 무슨 의미가 있겠습니까?",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "3a289ab9",
+    "sentence": "시험에 떨어질망정 남의 답안을 베끼지는 않겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "a4f8b956",
+    "sentence": "굶을망정 친구한테 손을 벌리고 싶지는 않아.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "2947d64c",
+    "sentence": "아무리 화가 나기로서니 부모님께 그렇게 말하면 안 되지.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "25210a99",
+    "sentence": "사정이 급하기로서니 남의 물건에 함부로 손을 대서야 되겠습니까?",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "79fb5c89",
+    "sentence": "이번 폭우로 말미암아 농작물 피해가 막대했습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "59a2bd8d",
+    "sentence": "오랜 전쟁으로 말미암아 수많은 사람들이 고향을 떠나야 했어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "b1c7e79b",
+    "sentence": "이번 회의는 비공개로 진행됩니다. 즉 외부 인사의 참석은 허용되지 않습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "bbfb5ca1",
+    "sentence": "마감이 내일이래. 즉 오늘 밤 안에 다 끝내야 한다는 거지.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "99a040fa",
+    "sentence": "오늘은 날씨도 춥거니와 바람까지 불어서 도저히 못 나가겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "f3be407d",
+    "sentence": "이 식당은 음식이 맛있거니와 값도 싸서 늘 손님이 많아.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "fedeb929",
+    "sentence": "회사가 망하는 마당에 월급 인상을 바랄 수는 없죠.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "61bf658d",
+    "sentence": "다 같이 굶는 마당에 너만 혼자 살겠다고 도망치냐?",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "55a979ab",
+    "sentence": "건강이야말로 가장 큰 재산입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "9ef28731",
+    "sentence": "이번 여행이야말로 정말 잊지 못할 추억이었어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "91abe317",
+    "sentence": "회사 생활에 있어서 가장 중요한 것은 동료들과의 신뢰입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "6e9142d6",
+    "sentence": "건강 관리에 있어서 규칙적인 운동만큼 좋은 게 없어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "59708654",
+    "sentence": "급하게 먹으면 체하는 법입니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "125e38b0",
+    "sentence": "시간이 지나면 아픈 기억도 잊히는 법이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "365ac105",
+    "sentence": "회사에 입사한 이상 회사 규칙을 따라야 합니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "bbfce4fb",
+    "sentence": "시험을 보는 이상 최선을 다해야지.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "ed7c6bb8",
+    "sentence": "보시다시피 지금 가게가 너무 바빠서 잠깐 기다려 주셔야 할 것 같습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "abecab4c",
+    "sentence": "너도 알다시피 나 요즘 시험 준비 때문에 정신이 하나도 없어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "0c248631",
+    "sentence": "나는 매일 아침 일곱 시에 일어난다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "59c385f3",
+    "sentence": "동생은 주말마다 도서관에서 책을 읽는다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "614ca445",
+    "sentence": "내 너에게 한 가지 약속을 하노라.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "62983132",
+    "sentence": "오늘 우리는 마침내 자유를 얻었노라.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "d9feca62",
+    "sentence": "이미 엎질러진 물일진대 후회한들 무슨 소용이 있겠는가.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "b8086754",
+    "sentence": "그가 진심으로 뉘우쳤을진대 우리가 어찌 용서하지 않을 수 있으랴.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "b50ec368",
+    "sentence": "내가 그깟 시련에 무너질쏘냐.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "b6473b5f",
+    "sentence": "조상님이 물려주신 이 뜻을 후손이 어찌 저버릴쏘냐.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "0270ac31",
+    "sentence": "두 분의 결혼을 진심으로 축하해 마지않습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "5607f406",
+    "sentence": "선생님의 빠른 쾌유를 바라 마지않습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "c29439a9",
+    "sentence": "약속을 어긴 사람은 비난받아 마땅합니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "8a738a0c",
+    "sentence": "이렇게 열심히 일했으니 너는 상을 받아 마땅해.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "730e58de",
+    "sentence": "그는 반드시 돌아오리라고 다짐하며 길을 떠났다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "74417c14",
+    "sentence": "내일은 날씨가 맑으리라 생각하고 우산을 안 가져왔어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "3a2ae75e",
+    "sentence": "행여 부모님이 걱정하실세라 매일 안부 전화를 드립니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "8aaf0089",
+    "sentence": "혹시 비밀이 새어 나갈세라 우리는 작은 목소리로 속삭였다.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "d637a375",
+    "sentence": "분명히 약속했건만 그는 끝내 나타나지 않았다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "3713eb7c",
+    "sentence": "열심히 노력했건만 결과는 신통치 않네요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "6cede16a",
+    "sentence": "회장님께 행사에 꼭 참석해 주십사 하고 정중히 청하였습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "81c6397f",
+    "sentence": "선생님께 추천서를 좀 써 주십사 하고 조심스럽게 여쭤봤어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "54b912e5",
+    "sentence": "그 의사는 환자를 살리기 위해 밤샘 수술도 마다하지 않았습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "8ea801d9",
+    "sentence": "그 친구는 내가 부탁하면 궂은일도 마다하지 않아.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "4f6d4e9a",
+    "sentence": "매일 꾸준히 연습하노라면 어느새 실력이 늘어 있을 거예요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a0597440",
+    "sentence": "이 길을 묵묵히 걷노라면 언젠가 끝이 보이겠지.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "54ab7f30",
+    "sentence": "요즘 일이 너무 많아서 바빠 죽을 지경이에요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a287e62f",
+    "sentence": "아까부터 배가 아파 죽을 지경이야.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "6712e9c2",
+    "sentence": "저는 운전할 수 있어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "8904412e",
+    "sentence": "예약할 필요가 없어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "be3236ff",
+    "sentence": "출발하기 전에 전화하세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "4ae4a1ca",
+    "sentence": "제가 요리하는 동안 전화가 왔어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "46384f1a",
+    "sentence": "밖에 비가 오는 모양이에요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e1e6f393",
+    "sentence": "여기에 이름을 쓰면 됩니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "a444d445",
+    "sentence": "여기에서 사진을 찍으면 안 됩니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "8eab54a6",
+    "sentence": "저는 살을 빼려고 운동해.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "2b385f8d",
+    "sentence": "이 옷을 입어 보세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "73580454",
+    "sentence": "날씨가 좋으니까 산책하자.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "2f0167ca",
+    "sentence": "여기가 어디인지 모르겠어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "02bb211b",
+    "sentence": "집에서 회사까지 얼마나 걸려?",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "7e992e25",
+    "sentence": "한국 역사에 대해서 발표하겠습니다.",
+    "level": "formal",
+    "voice": "ko-KR-InJoonNeural",
+    "rate": "-4%",
+    "pitch": "-3Hz"
+  },
+  {
+    "id": "7607661d",
+    "sentence": "힘들더라도 끝까지 해 보세요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "8f155930",
+    "sentence": "생각보다 비쌀지도 몰라요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "a9374fad",
+    "sentence": "날씨가 정말 춥더라고요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "9ccb8896",
+    "sentence": "배가 터질 만큼 많이 먹었어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  },
+  {
+    "id": "e217e838",
+    "sentence": "늦잠을 자 가지고 지각했어.",
+    "level": "casual",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+6%",
+    "pitch": "+16Hz"
+  },
+  {
+    "id": "22962197",
+    "sentence": "편지를 쓰다가 말았어요.",
+    "level": "polite",
+    "voice": "ko-KR-SunHiNeural",
+    "rate": "+0%",
+    "pitch": "+4Hz"
+  }
 ]

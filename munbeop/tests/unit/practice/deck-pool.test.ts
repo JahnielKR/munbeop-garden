@@ -98,4 +98,14 @@ describe('buildDeckOptions', () => {
     expect(opts[0]!.disabled).toBe(true)
     expect(opts[0]!.colors.length).toBeGreaterThan(0)
   })
+
+  it('includes user-authored grammars in the all-levels count', () => {
+    const opts = buildDeckOptions({
+      decks: DECKS,
+      items: [...ITEMS, { deckId: 'custom' }],
+      excludedDeckIds: [],
+      allName: 'All',
+    })
+    expect(opts[0]!.count).toBe(ITEMS.length + 1)
+  })
 })

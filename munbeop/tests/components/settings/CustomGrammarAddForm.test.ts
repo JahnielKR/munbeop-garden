@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
-import { nextTick } from 'vue'
 import CustomGrammarAddForm from '~/components/settings/CustomGrammarAddForm.vue'
 import { useGrammarStore } from '~/stores/grammar'
 
@@ -15,7 +14,7 @@ describe('CustomGrammarAddForm', () => {
     await w.get('#cg-ko').setValue('abc')
     await w.get('#cg-meaning').setValue('you see')
     await w.get('form').trigger('submit.prevent')
-    await nextTick()
+    await flushPromises()
     expect(w.text()).toContain('settings.custom_grammar.error_korean')
   })
 
@@ -27,7 +26,7 @@ describe('CustomGrammarAddForm', () => {
     await w.get('#cg-meaning').setValue('giving a reason')
     await w.get('#cg-example').setValue('바빠서 못 갔거든요')
     await w.get('form').trigger('submit.prevent')
-    await nextTick()
+    await flushPromises()
     expect(spy).toHaveBeenCalledTimes(1)
     const arg = spy.mock.calls[0]![0]
     expect(arg.ko).toBe('-거든요')
@@ -44,7 +43,7 @@ describe('CustomGrammarAddForm', () => {
     await w.get('#cg-ko').setValue('-거든요')
     await w.get('#cg-meaning').setValue('dup')
     await w.get('form').trigger('submit.prevent')
-    await nextTick()
+    await flushPromises()
     expect(w.text()).toContain('settings.custom_grammar.error_duplicate')
   })
 })

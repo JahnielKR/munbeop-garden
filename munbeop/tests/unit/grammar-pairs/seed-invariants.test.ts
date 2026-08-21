@@ -20,7 +20,7 @@ describe('grammar-pairs seed invariants', () => {
       expect(nonEmptyLocales(p.note), `${p.id} note`).toBe(true)
       expect(p.items.length).toBeGreaterThanOrEqual(2)
       for (const it of p.items) {
-        expect(it.sentence).toContain('{}')
+        expect(it.sentence.split('{}'), `${p.id} blank count`).toHaveLength(2)
         expect(['a', 'b']).toContain(it.answer)
         expect(it.optionA.trim().length, `${p.id} optionA`).toBeGreaterThan(0)
         expect(it.optionB.trim().length, `${p.id} optionB`).toBeGreaterThan(0)
@@ -32,6 +32,18 @@ describe('grammar-pairs seed invariants', () => {
       }
     })
   }
+
+  it('does not repeat a Korean discrimination prompt', () => {
+    const prompts = GRAMMAR_PAIRS.flatMap((pair) => pair.items.map((item) => item.sentence))
+    expect(new Set(prompts).size).toBe(prompts.length)
+  })
+
+  it('keeps the regret construction complete before 그랬다', () => {
+    const pair = GRAMMAR_PAIRS.find((item) => item.id === 'eoyahaetda-georeotda')!
+    const regret = pair.items.find((item) => item.sentence.includes('그랬어'))!
+    expect(regret.optionB).toBe('먹을걸')
+    expect(regret.sentence.replace('{}', regret.optionB)).toContain('먹을걸 그랬어')
+  })
 
   // Coverage: every authored pair (TOPIK 1 + the TOPIK 2/3 batches) must be
   // present with ≥3 single-answer items.

@@ -1,4 +1,4 @@
-const DAY = 86_400_000
+import { localDayKey } from './activity'
 
 /** Default plants-per-day goal for a new user. */
 export const DEFAULT_DAILY_GOAL = 3
@@ -9,8 +9,13 @@ export function clampGoal(n: number): number {
   return Math.max(1, Math.min(20, Math.floor(n)))
 }
 
-/** Number of practice timestamps in today's UTC-day bucket. */
+/**
+ * Number of practice timestamps in today's LOCAL-day bucket. Uses localDayKey
+ * (not a raw UTC floor) so the goal ring agrees with the heatmap and streak,
+ * which also bucket by local calendar day — otherwise a Korea (UTC+9) user's
+ * ring would disagree with the heatmap for the first 9h of each day.
+ */
 export function todayCount(dateMs: number[], now: number): number {
-  const today = Math.floor(now / DAY)
-  return dateMs.filter((ms) => Math.floor(ms / DAY) === today).length
+  const today = localDayKey(now)
+  return dateMs.filter((ms) => localDayKey(ms) === today).length
 }

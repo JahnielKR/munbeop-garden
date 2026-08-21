@@ -2,6 +2,7 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type { ConjItem } from '~/lib/conjugation-drill'
 import ConjugationOption from './ConjugationOption.vue'
+import { useLocalized } from '~/composables/useLocalized'
 
 interface Props {
   item: ConjItem
@@ -9,10 +10,12 @@ interface Props {
   phase: 'question' | 'right' | 'wrong' | 'done'
   verdict: boolean | null
   picked: string | null
+  nextDisabled?: boolean
 }
 const props = defineProps<Props>()
 const emit = defineEmits<{ answer: [choice: string]; next: [] }>()
 const { t } = useI18n()
+const { tl } = useLocalized()
 
 const card = ref<HTMLDivElement | null>(null)
 const revealed = computed(() => props.phase === 'right' || props.phase === 'wrong')
@@ -41,7 +44,7 @@ watch(
   <div ref="card" class="card" tabindex="-1" :data-testid="`conj-card-${item.id}`">
     <div class="card__prompt">
       <span class="card__dict" lang="ko">{{ item.dict }}</span>
-      <span class="card__gloss">{{ t('conjugation.gloss_hint', { gloss: item.gloss }) }}</span>
+      <span class="card__gloss">{{ t('conjugation.gloss_hint', { gloss: tl(item.gloss) }) }}</span>
       <span class="card__ending">{{ t('conjugation.prompt', { ending: item.ending }) }}</span>
     </div>
 
@@ -68,7 +71,13 @@ watch(
         {{ t('conjugation.reveal_correct', { correct: item.correct }) }}
       </p>
       <p v-if="!verdict" class="card__rule">{{ t(`conjugation.rule.${item.klass}`) }}</p>
-      <button type="button" class="card__next" :aria-label="t('conjugation.next')" @click="emit('next')"><span aria-hidden="true">→</span></button>
+      <button
+        type="button"
+        class="card__next"
+        :aria-label="t('conjugation.next')"
+        :disabled="nextDisabled"
+        @click="emit('next')"
+      ><span aria-hidden="true">→</span></button>
     </div>
   </div>
 </template>
@@ -97,6 +106,7 @@ watch(
   font-family: var(--font-pixel-small); font-size: var(--text-xs); letter-spacing: 0.06em; cursor: pointer;
 }
 .card__next:hover { transform: translate(-1px, -1px); box-shadow: var(--shadow-button-hover); }
+.card__next:disabled { opacity: 0.55; cursor: wait; transform: none; }
 .card__next:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (max-width: 480px) { .card__options { grid-template-columns: 1fr; } }
 </style>

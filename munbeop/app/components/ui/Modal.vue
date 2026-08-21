@@ -56,14 +56,12 @@ watch(
     if (nowOpen) {
       previouslyFocused = document.activeElement as HTMLElement | null
       lockBodyScroll(true)
-      window.addEventListener('keydown', onKeydown)
       document.addEventListener('keydown', onKeydown)
       await Promise.resolve()
       const first = focusableElements()[0]
       first?.focus()
     } else {
       lockBodyScroll(false)
-      window.removeEventListener('keydown', onKeydown)
       document.removeEventListener('keydown', onKeydown)
       previouslyFocused?.focus()
       previouslyFocused = null
@@ -74,7 +72,6 @@ watch(
 
 onBeforeUnmount(() => {
   lockBodyScroll(false)
-  window.removeEventListener('keydown', onKeydown)
   document.removeEventListener('keydown', onKeydown)
 })
 

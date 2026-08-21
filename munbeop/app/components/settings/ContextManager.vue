@@ -10,7 +10,7 @@ import ContextAddForm from '~/components/settings/ContextAddForm.vue'
 
 const { t } = useI18n()
 const { tl } = useLocalized()
-const { success } = useToast()
+const { success, error } = useToast()
 const store = useContextsStore()
 
 const CATEGORIES = ['formalidad', 'situacional', 'custom'] as const
@@ -28,7 +28,11 @@ function toggleLocked(id: string): boolean {
   return isActive(id) && store.active.length <= MIN_ACTIVE_CONTEXTS
 }
 async function onToggle(id: string) {
-  await store.toggleActive(id)
+  try {
+    await store.toggleActive(id)
+  } catch {
+    error(t('errors.save_failed'))
+  }
 }
 
 const pendingDelete = ref<Context | null>(null)
@@ -41,9 +45,19 @@ function cancelDelete() {
 async function confirmDelete() {
   const ctx = pendingDelete.value
   if (!ctx) return
-  const ok = await store.removeCustom(ctx.id)
-  pendingDelete.value = null
-  if (ok) success(t('settings.contexts.deleted'))
+  try {
+    const ok = await store.removeCustom(ctx.id)
+    if (!ok) {
+      error(t('settings.contexts.min_active_hint'))
+      return
+    }
+    pendingDelete.value = null
+    success(t('settings.contexts.deleted'))
+  } catch {
+    // Keep the confirmation open so the user can retry after connectivity
+    // returns; the store already restored the optimistic removal.
+    error(t('errors.save_failed'))
+  }
 }
 
 function onCreated() {

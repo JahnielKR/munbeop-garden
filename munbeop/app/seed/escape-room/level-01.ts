@@ -302,7 +302,7 @@ const SLOT_5_CANDIDATES: CreationCandidate[] = [
     tiles: ['별빛 카페에서', '만나요', '별빛 카페에', '별빛 카페가'],
     correctOrder: [0, 1],
     hints: {
-      free: t('El nombre del café está en una nota anterior.'),
+      free: t('Ordena primero el nombre del café y después marca el lugar del encuentro con 에서.'),
       premium: t('Lugar DONDE pasa una acción usa 에서, no 에.'),
     },
   },
@@ -332,7 +332,7 @@ const SLOT_5_CANDIDATES: CreationCandidate[] = [
     tiles: ['여덟 시에', '카페에서', '만나요', '여덟 시에서', '카페에', '봐요'],
     correctOrder: [0, 1, 2],
     hints: {
-      free: t('Necesitas tanto la hora como el lugar del encuentro (ambos están en notas previas).'),
+      free: t('Construye primero la hora con 에 y después el lugar del encuentro con 에서.'),
       premium: t('"A la hora X" → 시에 (G032). "Lugar donde pasa la acción" → 에서 (G005).'),
     },
   },
@@ -352,6 +352,8 @@ const SLOT_5_CANDIDATES: CreationCandidate[] = [
 
 export const LEVEL_01: Level = {
   id: 'level-01',
+  introImage: 'rooms/cinematic-intro-v2.webp',
+  outroImage: 'rooms/cinematic-outro-v2.webp',
   title: t('Una mañana en el minbak'),
   tagline: t('Despiertas en una casa que no es tuya. Huele a arroz recién hecho. Y alguien te dejó una nota.'),
   intro: t(
@@ -374,8 +376,8 @@ export const LEVEL_01: Level = {
     {
       id: 'room-bedroom',
       title: t('La habitación de huéspedes (손님방)'),
-      image: 'rooms/room-01-bedroom.png',
-      ambientAudio: 'audio/ambient-bedroom.ogg',
+      image: 'rooms/room-01-bedroom-v2.webp',
+      ambientAudio: '',
       hotspots: [
         { id: 'note-1', rect: [130, 140, 40, 30], triggersSlot: 'slot-1' },
         { id: 'window', rect: [240, 50, 60, 80], cosmeticDetail: t('Pájaros del amanecer.') },
@@ -385,8 +387,8 @@ export const LEVEL_01: Level = {
     {
       id: 'room-living',
       title: t('La sala (거실)'),
-      image: 'rooms/room-02-living.png',
-      ambientAudio: 'audio/ambient-living.ogg',
+      image: 'rooms/room-02-living-v2.webp',
+      ambientAudio: '',
       hotspots: [
         { id: 'note-2', rect: [120, 110, 40, 30], triggersSlot: 'slot-2' },
         {
@@ -404,8 +406,8 @@ export const LEVEL_01: Level = {
     {
       id: 'room-kitchen',
       title: t('La cocina (부엌)'),
-      image: 'rooms/room-03-kitchen.png',
-      ambientAudio: 'audio/ambient-kitchen.ogg',
+      image: 'rooms/room-03-kitchen-v2.webp',
+      ambientAudio: '',
       hotspots: [
         { id: 'note-3', rect: [30, 60, 40, 30], triggersSlot: 'slot-3' },
         { id: 'kitchen-clock', rect: [150, 30, 30, 30], triggersSlot: 'slot-4' },
@@ -424,8 +426,8 @@ export const LEVEL_01: Level = {
     {
       id: 'room-entrance',
       title: t('La entrada (현관)'),
-      image: 'rooms/room-04-entrance.png',
-      ambientAudio: 'audio/ambient-entrance.ogg',
+      image: 'rooms/room-04-entrance-v2.webp',
+      ambientAudio: '',
       hotspots: [
         { id: 'note-final', rect: [140, 80, 40, 30], triggersSlot: 'slot-5' },
         { id: 'lock', rect: [150, 110, 30, 40], cosmeticDetail: t('Candado con código.') },
