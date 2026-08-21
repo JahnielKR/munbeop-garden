@@ -44,7 +44,7 @@ import WelcomePanel from '~/components/welcome/WelcomePanel.vue'
 const route = useRoute()
 const currentPanel = computed(() => {
   const p = route.path
-  return (p === '/welcome' || p === '/welcome/') ? 0 : 1
+  return p === '/welcome' || p === '/welcome/' ? 0 : 1
 })
 const stageStyle = computed(() => ({
   transform: `translateX(${-100 * currentPanel.value}vw)`,
@@ -53,10 +53,18 @@ const stageStyle = computed(() => ({
 
 <template>
   <div class="camera-stage" :style="stageStyle">
-    <div class="camera-stage__panel camera-stage__panel--welcome">
+    <div
+      class="camera-stage__panel camera-stage__panel--welcome"
+      :aria-hidden="currentPanel !== 0 ? 'true' : undefined"
+      :inert="currentPanel !== 0 || undefined"
+    >
       <WelcomePanel />
     </div>
-    <div class="camera-stage__panel camera-stage__panel--app">
+    <div
+      class="camera-stage__panel camera-stage__panel--app"
+      :aria-hidden="currentPanel !== 1 ? 'true' : undefined"
+      :inert="currentPanel !== 1 || undefined"
+    >
       <div class="camera-stage__scroll">
         <slot />
       </div>
@@ -104,6 +112,8 @@ const stageStyle = computed(() => ({
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .camera-stage { transition: opacity 200ms linear; }
+  .camera-stage {
+    transition: opacity 200ms linear;
+  }
 }
 </style>

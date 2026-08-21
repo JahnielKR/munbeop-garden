@@ -340,7 +340,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_user_activity: {
+        Args: {
+          p_day: string
+          p_delta: number
+        }
+        Returns: number
+      }
+      restore_user_backup: {
+        Args: {
+          p_data: Json
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

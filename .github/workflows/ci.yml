@@ -1,8 +1,7 @@
 name: CI
 
-# Run the quality gates the project already owns (lint, typecheck, test) on
-# every push to main and every PR, so a broken commit can't reach the Vercel
-# auto-deploy unnoticed. The app lives in ./munbeop.
+# Run the project's quality gates on every push to main and every PR.
+# The app lives in ./munbeop.
 on:
   push:
     branches: [main]
@@ -36,6 +35,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Audit production dependencies
+        run: pnpm audit --prod --audit-level=high
 
       - name: Lint
         run: pnpm lint

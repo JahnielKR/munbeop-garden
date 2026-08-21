@@ -4,12 +4,13 @@ import { DRILL_CLASSES, type DrillClassId } from '~/lib/conjugation-drill'
 interface Props { selected: DrillClassId }
 defineProps<Props>()
 defineEmits<{ select: [id: DrillClassId] }>()
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="picker">
-    <h2 class="picker__title">{{ $t('conjugation.pick_class') }}</h2>
-    <div class="picker__chips" role="group" :aria-label="$t('conjugation.pick_class')">
+    <h2 class="picker__title">{{ t('conjugation.pick_class') }}</h2>
+    <div class="picker__chips" role="group" :aria-label="t('conjugation.pick_class')">
       <button
         v-for="c in DRILL_CLASSES"
         :key="c.id"

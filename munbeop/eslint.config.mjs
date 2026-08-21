@@ -30,4 +30,12 @@ export default withNuxt(
       ],
     },
   },
+  {
+    // These files are executable CLI utilities; stdout is their user-facing
+    // result, unlike application code where stray console output is noise.
+    files: ['scripts/**/*.mjs', 'tools/**/*.mjs'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
 )

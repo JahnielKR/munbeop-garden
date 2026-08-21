@@ -21,6 +21,8 @@ const label = () =>
   props.pending > 0
     ? `${t('garden.diary_chest')} — ${t('garden.diary_pending', { n: props.pending })}`
     : t('garden.diary_chest')
+
+const openDiary = () => navigateTo('/log')
 </script>
 
 <template>
@@ -29,9 +31,9 @@ const label = () =>
     class="chest"
     :style="{ top: CHEST_ANCHOR.top, left: CHEST_ANCHOR.left }"
     :aria-label="label()"
-    @click="navigateTo('/log')"
+    @click="openDiary"
   >
-    <img class="chest__sprite pixel" src="/img/tree/ui/chest_16.png" alt="" width="32" height="32" draggable="false" />
+    <img class="chest__sprite pixel" src="/img/tree/ui/chest_16.png" alt="" width="32" height="32" draggable="false" >
     <span v-if="pending > 0" class="chest__badge font-pixel">{{ pending > 9 ? '9+' : pending }}</span>
     <span class="chest__tip" role="tooltip">{{ label() }}</span>
   </button>

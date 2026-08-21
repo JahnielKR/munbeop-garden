@@ -5,24 +5,45 @@ import DataImport from '~/components/settings/DataImport.vue'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { APP_ID } from '~/lib/data-transfer/keys'
 
-const write = vi.fn(async () => {})
+const restore = vi.fn(async () => {})
 vi.mock('~/composables/useStorageAdapter', () => ({
-  useStorageAdapter: () => ({ read: vi.fn(), write, remove: vi.fn(), clear: vi.fn() }),
+  useStorageAdapter: () => ({ restore }),
 }))
 // reload is imported at module-load by the component, so the mock factory runs
 // before an outer const would initialize — hoist the spy with vi.hoisted.
 const { reloadPage } = vi.hoisted(() => ({ reloadPage: vi.fn() }))
 vi.mock('~/lib/data-transfer/reload', () => ({ reloadPage }))
 
-const VALID = JSON.stringify({ exportedAt: 'x', app: APP_ID, data: { [STORAGE_KEYS.log]: [1] } })
+const validLogEntry = {
+  id: 1,
+  ko: '-고 싶다',
+  sentence: '한국에 가고 싶어요.',
+  feedback: 'easy',
+  errorNote: null,
+  reviewState: 'unreviewed',
+  contextId: 'polite',
+  contextName: '존댓말',
+  date: '2026-01-01T00:00:00.000Z',
+}
+const VALID = JSON.stringify({
+  exportedAt: '2026-01-01T00:00:00.000Z',
+  app: APP_ID,
+  data: { [STORAGE_KEYS.log]: [validLogEntry] },
+})
 
 function mountIt() {
   setActivePinia(createPinia())
   return mount(DataImport, {
     global: {
       stubs: {
-        Modal: { template: '<div v-if="open"><slot /></div>', props: ['open', 'title', 'closeLabel'] },
-        Button: { template: '<button @click="$emit(\'click\')"><slot /></button>', emits: ['click'] },
+        Modal: {
+          template: '<div v-if="open"><slot /></div>',
+          props: ['open', 'title', 'closeLabel'],
+        },
+        Button: {
+          template: '<button @click="$emit(\'click\')"><slot /></button>',
+          emits: ['click'],
+        },
       },
     },
   })
@@ -37,8 +58,8 @@ async function selectFile(w: ReturnType<typeof mountIt>, contents: string) {
 }
 
 beforeEach(() => {
-  write.mockClear()
-  write.mockResolvedValue(undefined)
+  restore.mockClear()
+  restore.mockResolvedValue(undefined)
   reloadPage.mockClear()
 })
 
@@ -47,7 +68,7 @@ describe('DataImport', () => {
     const w = mountIt()
     await selectFile(w, 'not json{')
     expect(w.find('[data-testid="import-confirm"]').exists()).toBe(false)
-    expect(write).not.toHaveBeenCalled()
+    expect(restore).not.toHaveBeenCalled()
   })
   it('a valid file opens the confirm modal; confirming writes + reloads', async () => {
     const w = mountIt()
@@ -55,7 +76,7 @@ describe('DataImport', () => {
     const confirm = w.get('[data-testid="import-confirm"]')
     await confirm.trigger('click')
     await flushPromises()
-    expect(write).toHaveBeenCalledWith(STORAGE_KEYS.log, [1])
+    expect(restore).toHaveBeenCalledWith({ [STORAGE_KEYS.log]: [validLogEntry] })
     expect(reloadPage).toHaveBeenCalledTimes(1)
   })
 })

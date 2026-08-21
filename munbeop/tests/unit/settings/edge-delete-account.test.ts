@@ -12,7 +12,9 @@ describe('delete-account edge function', () => {
   it('verifies the caller JWT, uses the service role, and deletes the user', () => {
     expect(src).toMatch(/auth\.getUser\(\)/)
     expect(src).toMatch(/SUPABASE_SERVICE_ROLE_KEY/)
+    expect(src).toMatch(/auth\.admin\.signOut/)
     expect(src).toMatch(/auth\.admin\.deleteUser/)
+    expect(src).toMatch(/supabase-js@\d+\.\d+\.\d+/)
   })
   it('handles CORS preflight', () => {
     expect(src).toMatch(/OPTIONS/)

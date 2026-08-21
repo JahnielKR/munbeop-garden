@@ -9,6 +9,7 @@ interface Props {
 }
 defineProps<Props>()
 defineEmits<{ retake: [] }>()
+const { t } = useI18n()
 
 const root = ref<HTMLElement | null>(null)
 onMounted(() => root.value?.focus())
@@ -17,20 +18,20 @@ onMounted(() => root.value?.focus())
 <template>
   <section ref="root" tabindex="-1" class="result" data-testid="placement-result">
     <p v-if="outcome.clearedLevel === 0" class="result__lead" role="status">
-      {{ $t('placement.result.just_starting') }}
+      {{ t('placement.result.just_starting') }}
     </p>
     <p v-else class="result__level" role="status">
-      {{ $t('placement.result.your_level', { level: outcome.clearedLevel }) }}
+      {{ t('placement.result.your_level', { level: outcome.clearedLevel }) }}
     </p>
 
-    <p class="result__start">{{ $t('placement.result.start_with', { level: outcome.startingLevel }) }}</p>
+    <p class="result__start">{{ t('placement.result.start_with', { level: outcome.startingLevel }) }}</p>
 
     <div class="result__actions">
       <NuxtLink class="result__btn result__btn--primary" data-testid="placement-cta" to="/practice/ruleta">
-        {{ $t('placement.result.cta', { level: outcome.startingLevel }) }}
+        {{ t('placement.result.cta', { level: outcome.startingLevel }) }}
       </NuxtLink>
       <button type="button" class="result__btn" data-testid="placement-retake" @click="$emit('retake')">
-        {{ $t('placement.result.retake') }}
+        {{ t('placement.result.retake') }}
       </button>
     </div>
   </section>

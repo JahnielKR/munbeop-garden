@@ -26,6 +26,7 @@ const props = defineProps<Props>()
 const { t } = useI18n()
 
 const stateLabel = computed(() => t(`garden.state.${props.stateKey}`))
+const openPractice = () => navigateTo('/practice')
 </script>
 
 <template>
@@ -49,7 +50,7 @@ const stateLabel = computed(() => t(`garden.state.${props.stateKey}`))
 
     <span class="hud__state">{{ stateLabel }}</span>
 
-    <Button size="sm" @click="navigateTo('/practice')">
+    <Button size="sm" @click="openPractice">
       {{ t('garden.practice_cta') }}
     </Button>
   </div>

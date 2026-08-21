@@ -15,6 +15,7 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits<{ answer: [choice: string]; next: [] }>()
 const { tl } = useLocalized()
+const { t } = useI18n()
 
 const card = ref<HTMLDivElement | null>(null)
 const revealed = computed(() => props.phase === 'right' || props.phase === 'wrong')
@@ -46,10 +47,10 @@ watch(
       <span class="card__source" lang="ko">{{ item.source }}</span>
       <span class="card__arrow" aria-hidden="true">→</span>
       <span class="card__target" lang="ko">{{ promptKo }}</span>
-      <span class="card__hint-tag">{{ item.mode === 'level' ? $t('register.prompt_level') : $t('register.prompt_honor') }}</span>
+      <span class="card__hint-tag">{{ item.mode === 'level' ? t('register.prompt_level') : t('register.prompt_honor') }}</span>
     </div>
 
-    <p v-if="phase === 'question'" class="card__hint">{{ $t('register.pick_hint') }}</p>
+    <p v-if="phase === 'question'" class="card__hint">{{ t('register.pick_hint') }}</p>
 
     <div class="card__options">
       <RegisterOption
@@ -66,12 +67,12 @@ watch(
     <div v-if="revealed" class="card__feedback" role="status">
       <p class="card__verdict" :class="verdict ? 'card__verdict--ok' : 'card__verdict--no'">
         <span aria-hidden="true">{{ verdict ? '✅' : '✏️' }}</span>
-        {{ verdict ? $t('register.correct') : $t('register.wrong') }}
+        {{ verdict ? t('register.correct') : t('register.wrong') }}
       </p>
-      <p v-if="!verdict" class="card__correct" lang="ko">{{ $t('register.reveal_correct', { correct: item.answer }) }}</p>
+      <p v-if="!verdict" class="card__correct" lang="ko">{{ t('register.reveal_correct', { correct: item.answer }) }}</p>
       <p class="card__why">{{ tl(item.why) }}</p>
       <p class="card__trans">{{ tl(item.trans) }}</p>
-      <button type="button" class="card__next" :aria-label="$t('register.next')" @click="emit('next')">
+      <button type="button" class="card__next" :aria-label="t('register.next')" @click="emit('next')">
         <span aria-hidden="true">→</span>
       </button>
     </div>

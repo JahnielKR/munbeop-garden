@@ -70,7 +70,7 @@ watch(() => props.kind, regenerate, { immediate: true })
         height="16"
         :style="{ left: p.left, animationDelay: p.delay, animationDuration: p.duration, '--drift': p.drift }"
         draggable="false"
-      />
+      >
     </template>
 
     <template v-else>

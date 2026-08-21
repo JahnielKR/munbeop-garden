@@ -42,7 +42,8 @@ export const useContextsStore = defineStore('contexts', () => {
       ? inactiveIds.value.filter((x) => x !== id)
       : [...inactiveIds.value, id]
     try {
-      await storage.write(STORAGE_KEYS.inactiveContextIds, inactiveIds.value)
+      if (isInactive) await storage.deleteOne(STORAGE_KEYS.inactiveContextIds, id)
+      else await storage.upsertOne(STORAGE_KEYS.inactiveContextIds, { id, value: true })
     } catch {
       inactiveIds.value = snapshot
       return false
@@ -65,7 +66,7 @@ export const useContextsStore = defineStore('contexts', () => {
     const snapshot = custom.value
     custom.value = [...custom.value, ctx]
     try {
-      await storage.write(STORAGE_KEYS.customContexts, custom.value)
+      await storage.upsertOne(STORAGE_KEYS.customContexts, { id: ctx.id, value: ctx })
     } catch {
       custom.value = snapshot
       return null
@@ -87,12 +88,18 @@ export const useContextsStore = defineStore('contexts', () => {
     custom.value = custom.value.filter((c) => c.id !== id)
     if (wasInactive) inactiveIds.value = inactiveIds.value.filter((x) => x !== id)
     try {
-      if (wasInactive) await storage.write(STORAGE_KEYS.inactiveContextIds, inactiveIds.value)
-      await storage.write(STORAGE_KEYS.customContexts, custom.value)
+      await storage.deleteOne(STORAGE_KEYS.customContexts, id)
     } catch {
       custom.value = customSnap
       inactiveIds.value = inactiveSnap
       return false
+    }
+    if (wasInactive) {
+      try {
+        await storage.deleteOne(STORAGE_KEYS.inactiveContextIds, id)
+      } catch {
+        // A stale inactive marker is harmless after its custom context is gone.
+      }
     }
     return true
   }

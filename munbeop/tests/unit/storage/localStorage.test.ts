@@ -43,6 +43,24 @@ describe('LocalStorageAdapter (async)', () => {
     expect(await adapter.read(STORAGE_KEYS.srs, {})).toEqual({ A: 9, B: 2 })
   })
 
+  it('increment adds a delta to an activity counter', async () => {
+    await expect(adapter.increment(STORAGE_KEYS.activity, '2026-08-21')).resolves.toBe(1)
+    await expect(adapter.increment(STORAGE_KEYS.activity, '2026-08-21', 2)).resolves.toBe(3)
+    expect(await adapter.read(STORAGE_KEYS.activity, {})).toEqual({
+      '2026-08-21': { count: 3 },
+    })
+  })
+
+  it('restore applies all supplied values and clears null keys', async () => {
+    await adapter.write(STORAGE_KEYS.log, [{ id: 1 }])
+    await adapter.restore({
+      [STORAGE_KEYS.log]: null,
+      [STORAGE_KEYS.srs]: { A: { easyCount: 2 } },
+    })
+    expect(await adapter.read(STORAGE_KEYS.log, null)).toBeNull()
+    expect(await adapter.read(STORAGE_KEYS.srs, {})).toEqual({ A: { easyCount: 2 } })
+  })
+
   it('clear wipes known keys only', async () => {
     localStorage.setItem('unrelated', 'keep')
     await adapter.write(STORAGE_KEYS.grammar, ['a'])

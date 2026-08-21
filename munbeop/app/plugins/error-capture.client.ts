@@ -17,7 +17,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   const router = useRouter()
   const route = () => {
     try {
-      return router.currentRoute.value.fullPath
+      // Query strings can contain one-time OAuth/recovery codes. Error logs
+      // need the route for diagnosis, never credentials from the URL.
+      return router.currentRoute.value.path
     } catch {
       return undefined
     }

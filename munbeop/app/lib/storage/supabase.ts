@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database, Json } from '~/types/database.types'
-import type { StorageAdapter } from './adapter'
+import type { StorageAdapter, StorageRestore } from './adapter'
 import { STORAGE_KEYS, type StorageKey } from './keys'
 import type { Grammar, Context, Deck, CustomDeck, LogEntry, SrsState } from '~/lib/domain'
 import type { ActivityDay } from '~/lib/stats/activity'
@@ -63,9 +63,8 @@ export class SupabaseAdapter implements StorageAdapter {
   ) {}
 
   /** Map a domain LogEntry to its user_log row — shared by write() and append(). */
-  private logRow(e: LogEntry) {
-    return {
-      id: Math.floor(e.id), // user_log.id is bigserial; manual ids accepted
+  private logRow(e: LogEntry, includeId = true) {
+    const row = {
       user_id: this.userId,
       ko: e.ko,
       sentence: e.sentence,
@@ -76,6 +75,52 @@ export class SupabaseAdapter implements StorageAdapter {
       context_id: e.contextId,
       context_name: e.contextName,
       created_at: e.date,
+    }
+    return includeId ? { id: Math.trunc(e.id), ...row } : row
+  }
+
+  private customGrammarRow(g: Grammar) {
+    return {
+      user_id: this.userId,
+      ko: g.ko,
+      meaning: g.meaning as Json,
+      example: g.example ?? null,
+      trans: (g.trans ?? null) as Json | null,
+      deck_id: g.deckId,
+    }
+  }
+
+  private deckRow(d: Deck) {
+    return {
+      user_id: this.userId,
+      id: d.id,
+      name: d.name,
+      color_id: d.colorId,
+      position: d.order,
+      collapsed: d.collapsed,
+    }
+  }
+
+  private customDeckRow(d: CustomDeck) {
+    return {
+      user_id: this.userId,
+      id: d.id,
+      name: d.name,
+      color_id: d.colorId,
+      icon: d.icon,
+      image_url: d.imageUrl ?? null,
+      grammar_kos: d.grammarKos as Json,
+      position: d.order,
+      created_at: d.createdAt,
+    }
+  }
+
+  private customContextRow(c: Context) {
+    return {
+      user_id: this.userId,
+      id: c.id,
+      name: c.name,
+      scene: c.scene as Json,
     }
   }
 
@@ -272,14 +317,7 @@ export class SupabaseAdapter implements StorageAdapter {
         assertOk('write', key, del.error)
         if (customs.length) {
           const { error } = await this.client.from('user_custom_grammars').upsert(
-            customs.map((g) => ({
-              user_id: this.userId,
-              ko: g.ko,
-              meaning: g.meaning as Json,
-              example: g.example ?? null,
-              trans: (g.trans ?? null) as Json | null,
-              deck_id: g.deckId,
-            })),
+            customs.map((g) => this.customGrammarRow(g)),
           )
           assertOk('write', key, error)
         }
@@ -310,14 +348,7 @@ export class SupabaseAdapter implements StorageAdapter {
         assertOk('write', key, del.error)
         if (decks.length) {
           const { error } = await this.client.from('user_decks').upsert(
-            decks.map((d) => ({
-              user_id: this.userId,
-              id: d.id,
-              name: d.name,
-              color_id: d.colorId,
-              position: d.order,
-              collapsed: d.collapsed,
-            })),
+            decks.map((d) => this.deckRow(d)),
           )
           assertOk('write', key, error)
         }
@@ -330,17 +361,7 @@ export class SupabaseAdapter implements StorageAdapter {
         assertOk('write', key, del.error)
         if (decks.length) {
           const { error } = await this.client.from('user_custom_decks').upsert(
-            decks.map((d) => ({
-              user_id: this.userId,
-              id: d.id,
-              name: d.name,
-              color_id: d.colorId,
-              icon: d.icon,
-              image_url: d.imageUrl ?? null,
-              grammar_kos: d.grammarKos as Json,
-              position: d.order,
-              created_at: d.createdAt,
-            })),
+            decks.map((d) => this.customDeckRow(d)),
           )
           assertOk('write', key, error)
         }
@@ -353,12 +374,7 @@ export class SupabaseAdapter implements StorageAdapter {
         assertOk('write', key, del.error)
         if (contexts.length) {
           const { error } = await this.client.from('user_custom_contexts').upsert(
-            contexts.map((c) => ({
-              user_id: this.userId,
-              id: c.id,
-              name: c.name,
-              scene: c.scene as Json,
-            })),
+            contexts.map((c) => this.customContextRow(c)),
           )
           assertOk('write', key, error)
         }
@@ -423,26 +439,36 @@ export class SupabaseAdapter implements StorageAdapter {
     }
   }
 
-  async append<T>(key: StorageKey, item: T): Promise<void> {
+  async append<T>(key: StorageKey, item: T): Promise<T> {
     switch (key) {
       case STORAGE_KEYS.log: {
-        // One-row insert instead of re-upserting the whole log on every add.
-        const { error } = await this.client.from('user_log').insert(this.logRow(item as LogEntry))
+        // user_log.id is global. Let Postgres assign its bigserial instead of
+        // using a client timestamp that can collide across concurrent users.
+        const entry = item as LogEntry
+        const { data, error } = await this.client
+          .from('user_log')
+          .insert(this.logRow(entry, false))
+          .select('id')
+          .single()
         assertOk('write', key, error)
-        return
+        if (!data) throw new Error(`SupabaseAdapter.append(${key}) returned no id`)
+        return { ...entry, id: data.id } as T
       }
       default:
         throw new Error(`SupabaseAdapter.append(${key}) is not supported`)
     }
   }
 
-  async upsertOne<V>(key: StorageKey, entry: { id: string; value: V }): Promise<void> {
+  async upsertOne<V>(
+    key: StorageKey,
+    entry: { id: string | number; value: V },
+  ): Promise<void> {
     switch (key) {
       case STORAGE_KEYS.srs: {
         // One-row upsert instead of re-upserting the whole SRS map per card.
         const { error } = await this.client
           .from('user_progress')
-          .upsert(this.srsRow(entry.id, entry.value as SrsState))
+          .upsert(this.srsRow(String(entry.id), entry.value as SrsState))
         assertOk('write', key, error)
         return
       }
@@ -450,9 +476,61 @@ export class SupabaseAdapter implements StorageAdapter {
         const v = entry.value as ActivityDay
         const { error } = await this.client.from('user_activity').upsert({
           user_id: this.userId,
-          day: entry.id,
+          day: String(entry.id),
           count: v.count,
           updated_at: new Date().toISOString(),
+        })
+        assertOk('write', key, error)
+        return
+      }
+
+      case STORAGE_KEYS.log: {
+        const value = { ...(entry.value as LogEntry), id: Number(entry.id) }
+        const { error } = await this.client.from('user_log').upsert(this.logRow(value))
+        assertOk('write', key, error)
+        return
+      }
+
+      case STORAGE_KEYS.grammar: {
+        const value = entry.value as Grammar
+        if (value.deckId !== CUSTOM_DECK_ID) {
+          throw new Error('SupabaseAdapter.upsertOne(grammar) only accepts custom grammars')
+        }
+        const { error } = await this.client
+          .from('user_custom_grammars')
+          .upsert(this.customGrammarRow(value))
+        assertOk('write', key, error)
+        return
+      }
+
+      case STORAGE_KEYS.decks: {
+        const { error } = await this.client
+          .from('user_decks')
+          .upsert(this.deckRow(entry.value as Deck))
+        assertOk('write', key, error)
+        return
+      }
+
+      case STORAGE_KEYS.customDecks: {
+        const { error } = await this.client
+          .from('user_custom_decks')
+          .upsert(this.customDeckRow(entry.value as CustomDeck))
+        assertOk('write', key, error)
+        return
+      }
+
+      case STORAGE_KEYS.customContexts: {
+        const { error } = await this.client
+          .from('user_custom_contexts')
+          .upsert(this.customContextRow(entry.value as Context))
+        assertOk('write', key, error)
+        return
+      }
+
+      case STORAGE_KEYS.inactiveContextIds: {
+        const { error } = await this.client.from('user_inactive_contexts').upsert({
+          user_id: this.userId,
+          context_id: String(entry.id),
         })
         assertOk('write', key, error)
         return
@@ -461,6 +539,38 @@ export class SupabaseAdapter implements StorageAdapter {
       default:
         throw new Error(`SupabaseAdapter.upsertOne(${key}) is not supported`)
     }
+  }
+
+  async increment(
+    key: StorageKey,
+    id: string | number,
+    amount = 1,
+  ): Promise<number | null> {
+    if (key !== STORAGE_KEYS.activity) {
+      throw new Error(`SupabaseAdapter.increment(${key}) is not supported`)
+    }
+    if (!Number.isInteger(amount) || amount < 1 || amount > 1000) {
+      throw new Error('SupabaseAdapter.increment amount must be between 1 and 1000')
+    }
+    const { data, error } = await this.client.rpc('increment_user_activity', {
+      p_day: String(id),
+      p_delta: amount,
+    })
+    assertOk('write', key, error)
+    if (typeof data !== 'number') {
+      throw new Error(`SupabaseAdapter.increment(${key}) returned no count`)
+    }
+    return data
+  }
+
+  async restore(data: StorageRestore): Promise<void> {
+    const { data: restored, error } = await this.client.rpc('restore_user_backup', {
+      p_data: data as Json,
+    })
+    if (error) {
+      throw new Error(`SupabaseAdapter.restore failed: ${error.message ?? 'unknown error'}`)
+    }
+    if (restored !== true) throw new Error('SupabaseAdapter.restore returned no confirmation')
   }
 
   async deleteOne(key: StorageKey, id: string | number): Promise<void> {
@@ -473,7 +583,52 @@ export class SupabaseAdapter implements StorageAdapter {
           .from('user_log')
           .delete()
           .eq('user_id', this.userId)
-          .eq('id', Math.floor(Number(id)))
+          .eq('id', Math.trunc(Number(id)))
+        assertOk('write', key, error)
+        return
+      }
+      case STORAGE_KEYS.grammar: {
+        const { error } = await this.client
+          .from('user_custom_grammars')
+          .delete()
+          .eq('user_id', this.userId)
+          .eq('ko', String(id))
+        assertOk('write', key, error)
+        return
+      }
+      case STORAGE_KEYS.decks: {
+        const { error } = await this.client
+          .from('user_decks')
+          .delete()
+          .eq('user_id', this.userId)
+          .eq('id', String(id))
+        assertOk('write', key, error)
+        return
+      }
+      case STORAGE_KEYS.customDecks: {
+        const { error } = await this.client
+          .from('user_custom_decks')
+          .delete()
+          .eq('user_id', this.userId)
+          .eq('id', String(id))
+        assertOk('write', key, error)
+        return
+      }
+      case STORAGE_KEYS.customContexts: {
+        const { error } = await this.client
+          .from('user_custom_contexts')
+          .delete()
+          .eq('user_id', this.userId)
+          .eq('id', String(id))
+        assertOk('write', key, error)
+        return
+      }
+      case STORAGE_KEYS.inactiveContextIds: {
+        const { error } = await this.client
+          .from('user_inactive_contexts')
+          .delete()
+          .eq('user_id', this.userId)
+          .eq('context_id', String(id))
         assertOk('write', key, error)
         return
       }

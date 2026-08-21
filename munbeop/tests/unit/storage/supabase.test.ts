@@ -18,8 +18,11 @@ function makeMockClient() {
     user_inactive_contexts: [],
     user_settings: [],
     user_custom_decks: [],
+    user_activity: [],
   }
   const writes: Array<{ table: string; op: 'upsert' | 'delete' | 'insert'; payload: unknown }> = []
+  const rpcCalls: Array<{ name: string; args: Record<string, unknown> }> = []
+  const rpcCounts: Record<string, number> = {}
   // Per-table injected error: when set, reads/writes for that table resolve
   // with { error } the way @supabase/supabase-js does on an RLS denial or a
   // network/PostgREST failure (it does NOT throw — it returns the error).
@@ -27,7 +30,19 @@ function makeMockClient() {
   return {
     data,
     writes,
+    rpcCalls,
     errors,
+    rpc(name: string, args: Record<string, unknown>) {
+      rpcCalls.push({ name, args })
+      if (errors[name]) return Promise.resolve({ data: null, error: errors[name] })
+      if (name === 'restore_user_backup') {
+        return Promise.resolve({ data: true, error: null })
+      }
+      const day = String(args.p_day)
+      const count = (rpcCounts[day] ?? 0) + Number(args.p_delta)
+      rpcCounts[day] = count
+      return Promise.resolve({ data: count, error: null })
+    },
     from(table: string) {
       return {
         select: (_cols?: string) => {
@@ -53,11 +68,26 @@ function makeMockClient() {
           return Promise.resolve({ error: null })
         },
         insert: (rowOrRows: unknown) => {
-          if (errors[table]) return Promise.resolve({ error: errors[table] })
           const arr = Array.isArray(rowOrRows) ? rowOrRows : [rowOrRows]
-          data[table] = [...(data[table] ?? []), ...arr]
-          writes.push({ table, op: 'insert', payload: rowOrRows })
-          return Promise.resolve({ error: null })
+          const maxId = (data[table] ?? []).reduce(
+            (max, row) => Math.max(max, Number((row as { id?: unknown }).id ?? 0)),
+            0,
+          )
+          const saved = arr.map((row, index) => ({
+            ...(row as Record<string, unknown>),
+            id: (row as { id?: unknown }).id ?? maxId + index + 1,
+          }))
+          if (!errors[table]) {
+            data[table] = [...(data[table] ?? []), ...saved]
+            writes.push({ table, op: 'insert', payload: rowOrRows })
+          }
+          const result = errors[table]
+            ? { data: null, error: errors[table]! }
+            : { data: saved[0] ?? null, error: null }
+          return {
+            select: (_cols?: string) => ({ single: async () => result }),
+            then: (cb: (value: typeof result) => unknown) => cb(result),
+          }
         },
         delete: () => {
           // Chainable like select so `.delete().eq(...).eq(...)` (deleteOne's
@@ -416,12 +446,12 @@ describe('SupabaseAdapter', () => {
   })
 
   describe('deleteOne', () => {
-    it('log: deletes the single user_log row by floored id, scoped to the user', async () => {
+    it('log: deletes the single user_log row by id, scoped to the user', async () => {
       client.data.user_log = [
         { id: 5, user_id: USER },
         { id: 9, user_id: USER },
       ]
-      // The in-memory LogEntry.id carries a fractional tiebreaker — floor it.
+      // Legacy fractional ids are still truncated for backwards compatibility.
       await adapter.deleteOne(STORAGE_KEYS.log, 9.0007)
 
       const del = client.writes.find((w) => w.table === 'user_log' && w.op === 'delete')
@@ -471,7 +501,7 @@ describe('SupabaseAdapter', () => {
     }
 
     it('log: inserts ONE user_log row (not the whole collection) with snake_case + user_id', async () => {
-      await adapter.append(STORAGE_KEYS.log, entry)
+      const saved = await adapter.append(STORAGE_KEYS.log, entry)
       const inserts = client.writes.filter((w) => w.table === 'user_log' && w.op === 'insert')
       expect(inserts).toHaveLength(1)
       expect(Array.isArray(inserts[0]!.payload)).toBe(false)
@@ -480,6 +510,8 @@ describe('SupabaseAdapter', () => {
       expect(row.ko).toBe('A')
       expect(row.review_state).toBe('unreviewed')
       expect(row.context_id).toBe('banmal')
+      expect(row).not.toHaveProperty('id')
+      expect(saved.id).toBe(1)
       // no full-collection upsert happened
       expect(client.writes.some((w) => w.op === 'upsert')).toBe(false)
     })
@@ -515,8 +547,76 @@ describe('SupabaseAdapter', () => {
       await expect(adapter.upsertOne(STORAGE_KEYS.srs, { id: 'A', value: state })).rejects.toThrow()
     })
 
-    it('throws for a key that does not support upsertOne', async () => {
-      await expect(adapter.upsertOne(STORAGE_KEYS.log, { id: 'A', value: state })).rejects.toThrow()
+    it('log: upserts one existing journal row for review-state edits', async () => {
+      const logEntry = {
+        id: 12,
+        ko: 'A',
+        sentence: 'x',
+        feedback: 'hard' as const,
+        errorNote: null,
+        reviewState: 'correct' as const,
+        contextId: 'banmal',
+        contextName: 'banmal',
+        date: '2026-06-03T00:00:00Z',
+      }
+      await adapter.upsertOne(STORAGE_KEYS.log, { id: 12, value: logEntry })
+      const upsert = client.writes.find((w) => w.table === 'user_log' && w.op === 'upsert')
+      expect(upsert?.payload).toMatchObject({ id: 12, review_state: 'correct', user_id: USER })
+    })
+  })
+
+  describe('increment', () => {
+    it('activity: delegates deltas to the atomic RPC and returns its total', async () => {
+      await expect(adapter.increment(STORAGE_KEYS.activity, '2026-08-21', 1)).resolves.toBe(1)
+      await expect(adapter.increment(STORAGE_KEYS.activity, '2026-08-21', 2)).resolves.toBe(3)
+      expect(client.rpcCalls).toEqual([
+        {
+          name: 'increment_user_activity',
+          args: { p_day: '2026-08-21', p_delta: 1 },
+        },
+        {
+          name: 'increment_user_activity',
+          args: { p_day: '2026-08-21', p_delta: 2 },
+        },
+      ])
+    })
+
+    it('activity: surfaces RPC errors and rejects invalid deltas', async () => {
+      client.errors.increment_user_activity = { message: 'offline' }
+      await expect(adapter.increment(STORAGE_KEYS.activity, '2026-08-21')).rejects.toThrow(
+        'offline',
+      )
+      await expect(adapter.increment(STORAGE_KEYS.activity, '2026-08-21', 0)).rejects.toThrow(
+        'between 1 and 1000',
+      )
+    })
+
+    it('rejects keys without an atomic counter', async () => {
+      await expect(adapter.increment(STORAGE_KEYS.srs, 'A')).rejects.toThrow('not supported')
+    })
+  })
+
+  describe('restore', () => {
+    it('sends the complete backup data in one RPC call', async () => {
+      const data = {
+        [STORAGE_KEYS.srs]: { A: { easyCount: 1 } },
+        [STORAGE_KEYS.log]: null,
+      }
+      await adapter.restore(data)
+      expect(client.rpcCalls).toEqual([
+        {
+          name: 'restore_user_backup',
+          args: { p_data: data },
+        },
+      ])
+      expect(client.writes).toHaveLength(0)
+    })
+
+    it('surfaces restore RPC errors', async () => {
+      client.errors.restore_user_backup = { message: 'transaction aborted' }
+      await expect(adapter.restore({ [STORAGE_KEYS.log]: [] })).rejects.toThrow(
+        'transaction aborted',
+      )
     })
   })
 

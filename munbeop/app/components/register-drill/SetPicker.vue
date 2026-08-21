@@ -7,14 +7,15 @@ import type { RegisterMode } from '~/lib/domain'
 interface Props { mode: RegisterMode; selected: string }
 const props = defineProps<Props>()
 defineEmits<{ select: [id: string] }>()
+const { t } = useI18n()
 
 const sets = computed(() => setsForMode(props.mode))
 </script>
 
 <template>
   <div class="picker">
-    <h2 class="picker__title">{{ $t('register.pick_set') }}</h2>
-    <div class="picker__chips" role="group" :aria-label="$t('register.pick_set')">
+    <h2 class="picker__title">{{ t('register.pick_set') }}</h2>
+    <div class="picker__chips" role="group" :aria-label="t('register.pick_set')">
       <button
         v-for="s in sets"
         :key="s.id"

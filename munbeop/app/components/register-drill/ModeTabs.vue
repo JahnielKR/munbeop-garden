@@ -5,6 +5,7 @@ import type { RegisterMode } from '~/lib/domain'
 interface Props { mode: RegisterMode }
 defineProps<Props>()
 defineEmits<{ select: [mode: RegisterMode] }>()
+const { t } = useI18n()
 
 const TABS: { id: RegisterMode; key: string }[] = [
   { id: 'level', key: 'register.mode_level' },
@@ -13,7 +14,7 @@ const TABS: { id: RegisterMode; key: string }[] = [
 </script>
 
 <template>
-  <div class="tabs" role="tablist" :aria-label="$t('register.title')">
+  <div class="tabs" role="tablist" :aria-label="t('register.title')">
     <button
       v-for="tab in TABS"
       :key="tab.id"
@@ -25,7 +26,7 @@ const TABS: { id: RegisterMode; key: string }[] = [
       :data-testid="`register-mode-${tab.id}`"
       @click="$emit('select', tab.id)"
     >
-      {{ $t(tab.key) }}
+      {{ t(tab.key) }}
     </button>
   </div>
 </template>

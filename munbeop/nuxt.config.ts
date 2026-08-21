@@ -1,9 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2026-06-01',
-  devtools: { enabled: true },
+  // Opt in explicitly when needed. Keeping the DevTools RPC off by default
+  // narrows the local dev-server attack surface on shared networks.
+  devtools: { enabled: process.env.NUXT_DEVTOOLS === 'true' },
   // SPA mode: the app is a learning game that stores everything in
-  // localStorage on the client. SSR + hydration with Nuxt 4 + @nuxtjs/i18n v9
+  // localStorage on the client. SSR + hydration with Nuxt 4 + @nuxtjs/i18n
   // was producing 'SyntaxError: 26' in devalue's payload parser on the
   // client during hydration, blocking the whole app from initializing.
   // SPA mode eliminates hydration entirely. SEO/first-paint trade-off
@@ -15,7 +17,6 @@ export default defineNuxtConfig({
   // Values default to empty strings here; Nuxt overrides them at runtime
   // from environment variables (NUXT_PUBLIC_* on the client, others server-only).
   runtimeConfig: {
-    supabaseServiceRoleKey: '',
     public: {
       supabaseUrl: '',
       supabaseAnonKey: '',
@@ -45,17 +46,13 @@ export default defineNuxtConfig({
     // on hydration (SyntaxError: 26). LocaleSwitcher + the i18n-persist
     // client plugin handle locale selection without needing this.
     detectBrowserLanguage: false,
-    bundle: {
-      optimizeTranslationDirective: false,
-    },
-    // Lazy-load locale messages: only the active (and fallback 'en') locale's
-    // JSON ships in the entry bundle; the other six split into async chunks
+    // @nuxtjs/i18n v10 lazy-loads every configured locale file: only the active
+    // (and fallback 'en') JSON ships initially; the other seven are async chunks
     // fetched on demand when the user switches. Safe here because every locale
     // switch goes through i18n's setLocale() (LocaleSwitcher.vue,
     // lib/i18n/sync-locale.ts) — which triggers the async message load — and
     // never assigns locale.value directly. fallbackLocale 'en'
     // (i18n/i18n.config.ts) is loaded eagerly by @nuxtjs/i18n.
-    lazy: true,
   },
   app: {
     head: {

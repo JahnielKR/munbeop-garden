@@ -4,11 +4,13 @@ import { useContextsStore } from '~/stores/contexts'
 import type { LocalizedString } from '~/lib/domain'
 import { LOCALE_CODES } from '~/lib/domain'
 
-// Adapter whose write() can be made to reject, to exercise the rollback path.
+// Adapter whose row-level methods can reject, to exercise rollback paths.
 const write = vi.fn(async () => {})
+const upsertOne = vi.fn(async () => {})
+const deleteOne = vi.fn(async () => {})
 const read = vi.fn(async () => [] as unknown[])
 vi.mock('~/composables/useStorageAdapter', () => ({
-  useStorageAdapter: () => ({ read, write, append: vi.fn(), upsertOne: vi.fn(), remove: vi.fn(), clear: vi.fn() }),
+  useStorageAdapter: () => ({ read, write, append: vi.fn(), upsertOne, deleteOne, remove: vi.fn(), clear: vi.fn() }),
 }))
 
 function scene(text: string): LocalizedString {
@@ -20,12 +22,16 @@ describe('useContextsStore — rollback on cloud write failure', () => {
     setActivePinia(createPinia())
     write.mockReset()
     write.mockResolvedValue(undefined)
+    upsertOne.mockReset()
+    upsertOne.mockResolvedValue(undefined)
+    deleteOne.mockReset()
+    deleteOne.mockResolvedValue(undefined)
   })
 
   it('toggleActive restores inactiveIds when the write fails', async () => {
     const store = useContextsStore()
     const before = [...store.inactiveIds]
-    write.mockRejectedValueOnce(new Error('cloud down'))
+    upsertOne.mockRejectedValueOnce(new Error('cloud down'))
     const ok = await store.toggleActive('banmal')
     expect(ok).toBe(false)
     expect(store.inactiveIds).toEqual(before) // not left deactivated in memory
@@ -33,7 +39,7 @@ describe('useContextsStore — rollback on cloud write failure', () => {
 
   it('addCustom removes the optimistic context when the write fails', async () => {
     const store = useContextsStore()
-    write.mockRejectedValueOnce(new Error('cloud down'))
+    upsertOne.mockRejectedValueOnce(new Error('cloud down'))
     const created = await store.addCustom('우리집', scene('at home'))
     expect(created).toBeNull()
     expect(store.custom).toEqual([])
@@ -44,7 +50,7 @@ describe('useContextsStore — rollback on cloud write failure', () => {
     const store = useContextsStore()
     const ctx = await store.addCustom('우리집', scene('at home')) // write resolves
     expect(ctx).not.toBeNull()
-    write.mockRejectedValueOnce(new Error('cloud down'))
+    deleteOne.mockRejectedValueOnce(new Error('cloud down'))
     const ok = await store.removeCustom(ctx!.id)
     expect(ok).toBe(false)
     expect(store.all.some((c) => c.id === ctx!.id)).toBe(true) // still there

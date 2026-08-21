@@ -1,5 +1,5 @@
 /**
- * vue-i18n runtime options (@nuxtjs/i18n v9 picks this file up from the
+ * vue-i18n runtime options (@nuxtjs/i18n picks this file up from the
  * i18n/ dir by convention).
  *
  * fallbackLocale: keys missing from a locale render the English string

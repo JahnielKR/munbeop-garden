@@ -1103,6 +1103,8 @@
   "paths": {
     "title": "Tes parcours TOPIK",
     "lead": "Chaque niveau dans l’ordre : vois ta progression et quoi étudier ensuite.",
+    "loading": "Chargement de tes parcours TOPIK...",
+    "empty": "Aucun parcours TOPIK n'est encore disponible.",
     "progress_label": "{learned} / {total}",
     "next_label": "À suivre",
     "practice_cta": "S’entraîner",

@@ -12,6 +12,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 const emit = defineEmits<{ answer: [choice: string]; next: [] }>()
+const { t } = useI18n()
 
 const card = ref<HTMLDivElement | null>(null)
 const revealed = computed(() => props.phase === 'right' || props.phase === 'wrong')
@@ -40,11 +41,11 @@ watch(
   <div ref="card" class="card" tabindex="-1" :data-testid="`conj-card-${item.id}`">
     <div class="card__prompt">
       <span class="card__dict" lang="ko">{{ item.dict }}</span>
-      <span class="card__gloss">{{ $t('conjugation.gloss_hint', { gloss: item.gloss }) }}</span>
-      <span class="card__ending">{{ $t('conjugation.prompt', { ending: item.ending }) }}</span>
+      <span class="card__gloss">{{ t('conjugation.gloss_hint', { gloss: item.gloss }) }}</span>
+      <span class="card__ending">{{ t('conjugation.prompt', { ending: item.ending }) }}</span>
     </div>
 
-    <p v-if="phase === 'question'" class="card__hint">{{ $t('conjugation.pick_hint') }}</p>
+    <p v-if="phase === 'question'" class="card__hint">{{ t('conjugation.pick_hint') }}</p>
 
     <div class="card__options">
       <ConjugationOption
@@ -61,13 +62,13 @@ watch(
     <div v-if="revealed" class="card__feedback" role="status">
       <p class="card__verdict" :class="verdict ? 'card__verdict--ok' : 'card__verdict--no'">
         <span aria-hidden="true">{{ verdict ? '✅' : '✏️' }}</span>
-        {{ verdict ? $t('conjugation.correct') : $t('conjugation.wrong') }}
+        {{ verdict ? t('conjugation.correct') : t('conjugation.wrong') }}
       </p>
       <p v-if="!verdict" class="card__correct" lang="ko">
-        {{ $t('conjugation.reveal_correct', { correct: item.correct }) }}
+        {{ t('conjugation.reveal_correct', { correct: item.correct }) }}
       </p>
-      <p v-if="!verdict" class="card__rule">{{ $t(`conjugation.rule.${item.klass}`) }}</p>
-      <button type="button" class="card__next" :aria-label="$t('conjugation.next')" @click="emit('next')"><span aria-hidden="true">→</span></button>
+      <p v-if="!verdict" class="card__rule">{{ t(`conjugation.rule.${item.klass}`) }}</p>
+      <button type="button" class="card__next" :aria-label="t('conjugation.next')" @click="emit('next')"><span aria-hidden="true">→</span></button>
     </div>
   </div>
 </template>

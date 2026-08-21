@@ -1103,6 +1103,8 @@
   "paths": {
     "title": "Jalur TOPIK kamu",
     "lead": "Tiap level berurutan — lihat progresmu dan apa yang dipelajari berikutnya.",
+    "loading": "Memuat jalur TOPIK...",
+    "empty": "Belum ada jalur TOPIK yang tersedia.",
     "progress_label": "{learned} / {total}",
     "next_label": "Berikutnya",
     "practice_cta": "Latih",

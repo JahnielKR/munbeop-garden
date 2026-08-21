@@ -5,12 +5,13 @@ import { STORAGE_KEYS } from '~/lib/storage'
 
 // Spy on the adapter so we can assert add() uses the one-row append path rather
 // than re-writing the whole collection (the O(history) cost the delta fix kills).
-const append = vi.fn(async () => {})
+const append = vi.fn(async (_key: string, entry: { id: number }) => ({ ...entry, id: 42 }))
 const write = vi.fn(async () => {})
 const read = vi.fn(async (_key: string, fallback: unknown) => fallback)
 const deleteOne = vi.fn(async () => {})
+const upsertOne = vi.fn(async () => {})
 vi.mock('~/composables/useStorageAdapter', () => ({
-  useStorageAdapter: () => ({ read, write, append, deleteOne, remove: async () => {}, clear: async () => {} }),
+  useStorageAdapter: () => ({ read, write, append, upsertOne, deleteOne, remove: async () => {}, clear: async () => {} }),
 }))
 
 const payload = {
@@ -27,7 +28,9 @@ describe('useLogStore.add — delta append', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     append.mockClear()
+    append.mockImplementation(async (_key: string, entry: { id: number }) => ({ ...entry, id: 42 }))
     write.mockClear()
+    upsertOne.mockClear()
     deleteOne.mockClear()
     deleteOne.mockResolvedValue(undefined)
   })
@@ -37,8 +40,12 @@ describe('useLogStore.add — delta append', () => {
     const entry = await store.add(payload)
 
     expect(append).toHaveBeenCalledTimes(1)
-    expect(append).toHaveBeenCalledWith(STORAGE_KEYS.log, entry)
+    expect(append).toHaveBeenCalledWith(
+      STORAGE_KEYS.log,
+      expect.objectContaining({ sentence: payload.sentence }),
+    )
     expect(write).not.toHaveBeenCalled()
+    expect(entry.id).toBe(42)
     // still unshifted into memory, newest first (reactive proxy → structural eq)
     expect(store.entries).toHaveLength(1)
     expect(store.entries[0]).toStrictEqual(entry)
@@ -60,6 +67,7 @@ describe('useLogStore.deleteEntry', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     append.mockClear()
+    append.mockImplementation(async (_key: string, entry: { id: number }) => ({ ...entry, id: 42 }))
     deleteOne.mockClear()
     deleteOne.mockResolvedValue(undefined)
   })
@@ -90,5 +98,37 @@ describe('useLogStore.deleteEntry', () => {
     const ok = await store.deleteEntry(e.id)
     expect(ok).toBe(false)
     expect(store.entries).toHaveLength(1) // restored
+  })
+})
+
+describe('useLogStore.setReviewState', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    append.mockImplementation(async (_key: string, entry: { id: number }) => ({ ...entry, id: 42 }))
+    upsertOne.mockClear()
+    upsertOne.mockResolvedValue(undefined)
+  })
+
+  it('upserts one journal row instead of rewriting the full history', async () => {
+    const store = useLogStore()
+    const entry = await store.add(payload)
+    const ok = await store.setReviewState(entry.id, 'correct')
+
+    expect(ok).toBe(true)
+    expect(store.entries[0]?.reviewState).toBe('correct')
+    expect(upsertOne).toHaveBeenCalledWith(
+      STORAGE_KEYS.log,
+      expect.objectContaining({ id: entry.id }),
+    )
+    expect(write).not.toHaveBeenCalled()
+  })
+
+  it('rolls the optimistic review state back when the cloud update fails', async () => {
+    const store = useLogStore()
+    const entry = await store.add(payload)
+    upsertOne.mockRejectedValueOnce(new Error('offline'))
+
+    await expect(store.setReviewState(entry.id, 'correct')).resolves.toBe(false)
+    expect(store.entries[0]?.reviewState).toBe('unreviewed')
   })
 })

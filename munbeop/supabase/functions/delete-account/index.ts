@@ -3,7 +3,7 @@
 // delete the auth.users row; ON DELETE CASCADE wipes the user_* tables.
 // Deploy: `supabase functions deploy delete-account` (SUPABASE_URL,
 // SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY are auto-injected).
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.107.0'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -38,6 +38,13 @@ Deno.serve(async (req) => {
     if (userErr || !user) return json({ error: 'Invalid session' }, 401)
 
     const admin = createClient(url, serviceKey)
+    // Revoke every refresh session before deleting the user. Existing access
+    // JWTs remain valid until their short expiry by design, but they can no
+    // longer be refreshed from another device after account deletion.
+    const jwt = authHeader.replace(/^Bearer\s+/i, '')
+    const { error: revokeErr } = await admin.auth.admin.signOut(jwt, 'global')
+    if (revokeErr) console.warn('delete-account: session revocation failed', revokeErr.message)
+
     const { error: delErr } = await admin.auth.admin.deleteUser(user.id)
     if (delErr) return json({ error: delErr.message }, 500)
 

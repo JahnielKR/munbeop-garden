@@ -25,7 +25,7 @@ describe('useAuth().deleteAccount', () => {
     invoke.mockResolvedValue({ data: { ok: true }, error: null })
     const result = await useAuth().deleteAccount()
     expect(invoke).toHaveBeenCalledWith('delete-account')
-    expect(signOut).toHaveBeenCalled()
+    expect(signOut).toHaveBeenCalledWith({ scope: 'local' })
     expect(push).toHaveBeenCalledWith('/welcome')
     expect(result.error).toBe(null)
   })

@@ -29,16 +29,8 @@ export const useCustomDecksStore = defineStore('customDecks', () => {
     decks.value = await storage.read(STORAGE_KEYS.customDecks, [] as CustomDeck[])
   }
 
-  async function persist() {
-    const storage = useStorageAdapter()
-    await storage.write(STORAGE_KEYS.customDecks, decks.value)
-  }
-
-  // The Supabase write is delete-then-upsert ('replace the user's set'): a
-  // network drop between the two halves leaves the cloud EMPTY while local state
-  // still looks fine — every deck silently gone on the next hydrate. Snapshot +
-  // rollback + rethrow (same discipline as the contexts store) keeps local in
-  // sync and lets the caller surface a retry instead of losing the decks.
+  // Normal mutations persist one row at a time. Snapshot + rollback keeps the
+  // optimistic UI aligned if that atomic cloud operation fails.
   async function addDeck(input: NewCustomDeck): Promise<CustomDeck> {
     const deck: CustomDeck = {
       id: crypto.randomUUID(),
@@ -52,8 +44,9 @@ export const useCustomDecksStore = defineStore('customDecks', () => {
     }
     const snapshot = decks.value
     decks.value = [...decks.value, deck]
+    const storage = useStorageAdapter()
     try {
-      await persist()
+      await storage.upsertOne(STORAGE_KEYS.customDecks, { id: deck.id, value: deck })
     } catch (e) {
       decks.value = snapshot
       throw e
@@ -69,8 +62,9 @@ export const useCustomDecksStore = defineStore('customDecks', () => {
     if (patch.grammarKos !== undefined) next.grammarKos = [...patch.grammarKos]
     const snapshot = decks.value
     decks.value = decks.value.map((d, i) => (i === idx ? next : d))
+    const storage = useStorageAdapter()
     try {
-      await persist()
+      await storage.upsertOne(STORAGE_KEYS.customDecks, { id, value: next })
     } catch (e) {
       decks.value = snapshot
       throw e
@@ -81,8 +75,9 @@ export const useCustomDecksStore = defineStore('customDecks', () => {
     if (!decks.value.some((d) => d.id === id)) return
     const snapshot = decks.value
     decks.value = decks.value.filter((d) => d.id !== id)
+    const storage = useStorageAdapter()
     try {
-      await persist()
+      await storage.deleteOne(STORAGE_KEYS.customDecks, id)
     } catch (e) {
       decks.value = snapshot
       throw e

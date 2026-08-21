@@ -4,82 +4,57 @@ import { setActivePinia, createPinia } from 'pinia'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { APP_ID } from '~/lib/data-transfer/keys'
 
-const write = vi.fn(async () => {})
-const read = vi.fn(async () => null as unknown)
-const remove = vi.fn(async () => {})
+const restore = vi.fn(async () => {})
 vi.mock('~/composables/useStorageAdapter', () => ({
-  useStorageAdapter: () => ({ read, write, remove, clear: vi.fn() }),
+  useStorageAdapter: () => ({ restore }),
 }))
-vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (k: string) => k }) }))
+vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
 
-const payload = (data: Record<string, unknown>) => ({ exportedAt: 'x', app: APP_ID, data }) as never
+const payload = (data: Record<string, unknown>) =>
+  ({ exportedAt: 'x', app: APP_ID, data }) as never
 
 beforeEach(() => {
   setActivePinia(createPinia())
-  write.mockReset()
-  write.mockResolvedValue(undefined)
-  read.mockReset()
-  read.mockResolvedValue(null)
-  remove.mockReset()
-  remove.mockResolvedValue(undefined)
+  restore.mockReset()
+  restore.mockResolvedValue(undefined)
 })
 
 describe('useDataImport.applyImport', () => {
-  it('writes each present export key, skips absent and unknown keys, returns true', async () => {
+  it('restores all present known keys in one call and skips unknown keys', async () => {
     const { applyImport } = useDataImport()
-    const ok = await applyImport(payload({ [STORAGE_KEYS.log]: [1], 'totally.unknown': 9 }))
+    const ok = await applyImport(
+      payload({
+        [STORAGE_KEYS.srs]: { A: { easyCount: 1 } },
+        [STORAGE_KEYS.log]: [{ id: 1 }],
+        'totally.unknown': 9,
+      }),
+    )
+
     expect(ok).toBe(true)
-    expect(write).toHaveBeenCalledWith(STORAGE_KEYS.log, [1])
-    expect(write).not.toHaveBeenCalledWith('totally.unknown', 9)
-    expect(write).not.toHaveBeenCalledWith(STORAGE_KEYS.grammar, expect.anything())
-  })
-  it('returns false when a write throws', async () => {
-    write.mockRejectedValueOnce(new Error('boom'))
-    const { applyImport } = useDataImport()
-    const ok = await applyImport(payload({ [STORAGE_KEYS.log]: [1] }))
-    expect(ok).toBe(false)
+    expect(restore).toHaveBeenCalledTimes(1)
+    expect(restore).toHaveBeenCalledWith({
+      [STORAGE_KEYS.srs]: { A: { easyCount: 1 } },
+      [STORAGE_KEYS.log]: [{ id: 1 }],
+    })
   })
 
-  it('rolls an already-written key back to its snapshot when a later write fails', async () => {
-    // srs is written before log (EXPORT_KEYS order). srs has a pre-import value;
-    // its write succeeds, then log's write fails → srs must be restored.
-    read.mockImplementation(async (key: string) =>
-      key === STORAGE_KEYS.srs ? { mastered: 1 } : null,
-    )
-    write
-      .mockResolvedValueOnce(undefined) // srs write succeeds
-      .mockRejectedValueOnce(new Error('net drop')) // log write fails
-
+  it('passes null through so the transaction clears that collection', async () => {
     const { applyImport } = useDataImport()
-    const ok = await applyImport(
-      payload({ [STORAGE_KEYS.srs]: { mastered: 2 }, [STORAGE_KEYS.log]: ['x'] }),
-    )
-
-    expect(ok).toBe(false)
-    // srs rolled back to the pre-import snapshot — not left at the imported value.
-    expect(write).toHaveBeenCalledWith(STORAGE_KEYS.srs, { mastered: 1 })
+    await expect(
+      applyImport(payload({ [STORAGE_KEYS.customDecks]: null })),
+    ).resolves.toBe(true)
+    expect(restore).toHaveBeenCalledWith({ [STORAGE_KEYS.customDecks]: null })
   })
 
-  it('removes a key on rollback when it had no pre-import value (snapshot null)', async () => {
-    read.mockResolvedValue(null) // nothing existed before
-    write
-      .mockResolvedValueOnce(undefined) // srs write succeeds
-      .mockRejectedValueOnce(new Error('net drop')) // log write fails
-
+  it('returns false when the transactional restore fails', async () => {
+    restore.mockRejectedValueOnce(new Error('transaction aborted'))
     const { applyImport } = useDataImport()
-    const ok = await applyImport(
-      payload({ [STORAGE_KEYS.srs]: { mastered: 2 }, [STORAGE_KEYS.log]: ['x'] }),
-    )
-
-    expect(ok).toBe(false)
-    expect(remove).toHaveBeenCalledWith(STORAGE_KEYS.srs)
+    await expect(applyImport(payload({ [STORAGE_KEYS.log]: [] }))).resolves.toBe(false)
   })
 
-  it('aborts untouched when a snapshot read fails (nothing written)', async () => {
-    read.mockRejectedValueOnce(new Error('net drop'))
+  it('does not call storage when the backup has no known keys', async () => {
     const { applyImport } = useDataImport()
-    const ok = await applyImport(payload({ [STORAGE_KEYS.log]: ['x'] }))
-    expect(ok).toBe(false)
-    expect(write).not.toHaveBeenCalled()
+    await expect(applyImport(payload({ unknown: 1 }))).resolves.toBe(true)
+    expect(restore).not.toHaveBeenCalled()
   })
 })

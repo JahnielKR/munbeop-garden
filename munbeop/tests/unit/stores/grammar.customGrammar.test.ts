@@ -9,7 +9,13 @@ let failNextWrite = false
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({
     read: async () => [],
-    write: async () => {
+    upsertOne: async () => {
+      if (failNextWrite) {
+        failNextWrite = false
+        throw new Error('cloud write failed')
+      }
+    },
+    deleteOne: async () => {
       if (failNextWrite) {
         failNextWrite = false
         throw new Error('cloud write failed')
@@ -52,9 +58,7 @@ describe('grammar store custom grammars', () => {
     expect(store.customGrammars).toHaveLength(0)
   })
 
-  // The Supabase grammar write is delete-then-upsert (user_custom_grammars), so
-  // a mid-write failure could wipe the user's custom grammars. Roll back +
-  // rethrow so local state stays in sync and the caller can offer a retry.
+  // A failed atomic row mutation rolls the optimistic local state back.
   it('addCustomGrammar rolls back and rethrows on a failed cloud write', async () => {
     const store = useGrammarStore()
     failNextWrite = true

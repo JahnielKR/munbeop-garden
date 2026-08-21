@@ -1,4 +1,4 @@
-import type { StorageAdapter } from './adapter'
+import type { StorageAdapter, StorageRestore } from './adapter'
 import type { StorageKey } from './keys'
 
 /**
@@ -26,9 +26,21 @@ export class NoopStorageAdapter implements StorageAdapter {
 
   async write<T>(_key: StorageKey, _value: T): Promise<void> {}
 
-  async append<T>(_key: StorageKey, _item: T): Promise<void> {}
+  async append<T>(_key: StorageKey, item: T): Promise<T> {
+    return item
+  }
 
-  async upsertOne<V>(_key: StorageKey, _entry: { id: string; value: V }): Promise<void> {}
+  async upsertOne<V>(_key: StorageKey, _entry: { id: string | number; value: V }): Promise<void> {}
+
+  async increment(
+    _key: StorageKey,
+    _id: string | number,
+    _amount = 1,
+  ): Promise<number | null> {
+    return null
+  }
+
+  async restore(_data: StorageRestore): Promise<void> {}
 
   async deleteOne(_key: StorageKey, _id: string | number): Promise<void> {}
 

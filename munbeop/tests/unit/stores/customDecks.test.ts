@@ -8,12 +8,21 @@ let failNextWrite = false
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({
     read: async (key: string, fallback: unknown) => (key in stored ? stored[key] : fallback),
-    write: async (key: string, value: unknown) => {
+    upsertOne: async (key: string, entry: { id: string; value: unknown }) => {
       if (failNextWrite) {
         failNextWrite = false
         throw new Error('cloud write failed')
       }
-      stored[key] = value
+      const rows = (stored[key] as Array<{ id: string }> | undefined) ?? []
+      stored[key] = [...rows.filter((row) => row.id !== entry.id), entry.value]
+    },
+    deleteOne: async (key: string, id: string) => {
+      if (failNextWrite) {
+        failNextWrite = false
+        throw new Error('cloud write failed')
+      }
+      const rows = (stored[key] as Array<{ id: string }> | undefined) ?? []
+      stored[key] = rows.filter((row) => row.id !== id)
     },
   }),
 }))
@@ -78,9 +87,7 @@ describe('useCustomDecksStore', () => {
     expect(s.deckById('x')!.name).toBe('seed')
   })
 
-  // The Supabase write is delete-then-upsert, so a mid-write failure could wipe
-  // every deck in the cloud. The store must roll back + rethrow so local state
-  // stays in sync and the caller can offer a retry.
+  // A failed atomic row mutation rolls the optimistic local state back.
   it('addDeck rolls back and rethrows when the cloud write fails', async () => {
     const s = useCustomDecksStore()
     failNextWrite = true

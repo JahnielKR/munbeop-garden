@@ -40,7 +40,7 @@ const { t } = useI18n()
           @click="$emit('select', o.id)"
         >
           <span class="custom-mat__cover" aria-hidden="true" :style="{ '--mat-color': o.colors[0] }">
-            <img v-if="o.imageUrl" :src="o.imageUrl" alt="" class="custom-mat__img" />
+            <img v-if="o.imageUrl" :src="o.imageUrl" alt="" class="custom-mat__img" >
             <Icon v-else :name="(o.icon as IconName)" :size="34" />
           </span>
           <span class="custom-mat__name">{{ o.name }}</span>

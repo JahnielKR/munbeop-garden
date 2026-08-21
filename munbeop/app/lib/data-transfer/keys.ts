@@ -9,10 +9,12 @@ export const EXPORT_KEYS = [
   STORAGE_KEYS.srs,
   STORAGE_KEYS.log,
   STORAGE_KEYS.decks,
+  STORAGE_KEYS.customDecks,
   STORAGE_KEYS.customContexts,
   STORAGE_KEYS.inactiveContextIds,
   STORAGE_KEYS.settings,
   STORAGE_KEYS.escapeRoom,
+  STORAGE_KEYS.activity,
 ] as const
 
 export interface ExportPayload {

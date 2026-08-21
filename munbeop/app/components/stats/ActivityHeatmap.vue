@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import {
   yearGrid,
   intensityBucket,
@@ -65,6 +65,14 @@ const weekdayLabels = computed(() => {
 const yearCells = computed(() => grid.value.weeks.flat().filter((c) => c.inYear && !c.future))
 const yearActiveDays = computed(() => yearCells.value.filter((c) => c.count > 0).length)
 const yearTotal = computed(() => yearCells.value.reduce((s, c) => s + c.count, 0))
+const focusedDay = ref(todayKey.value)
+
+watch([year, todayKey], ([selectedYear, today]) => {
+  focusedDay.value = selectedYear === maxYear.value
+    ? today
+    : (yearCells.value[0]?.dayKey ?? '')
+}, { immediate: true })
+
 const gridSummary = computed(() =>
   t('stats.activity.grid_summary', { year: year.value, days: yearActiveDays.value, total: yearTotal.value }),
 )
@@ -83,6 +91,40 @@ function cellLabel(cell: { dayKey: string; count: number }): string {
 }
 function inspectable(cell: { inYear: boolean; future: boolean }): boolean {
   return cell.inYear && !cell.future
+}
+
+function onCellFocus(
+  event: FocusEvent,
+  cell: { dayKey: string; count: number; inYear: boolean; future: boolean },
+) {
+  focusedDay.value = cell.dayKey
+  showTip(event, cell.dayKey, cell.count, cell.inYear, cell.future)
+}
+
+async function moveCellFocus(event: KeyboardEvent, dayKey: string) {
+  const cells = yearCells.value
+  const current = cells.findIndex((cell) => cell.dayKey === dayKey)
+  if (current < 0) return
+
+  let target = current
+  if (event.key === 'ArrowUp') target--
+  else if (event.key === 'ArrowDown') target++
+  else if (event.key === 'ArrowLeft') target -= 7
+  else if (event.key === 'ArrowRight') target += 7
+  else if (event.key === 'Home') target = 0
+  else if (event.key === 'End') target = cells.length - 1
+  else return
+
+  event.preventDefault()
+  target = Math.max(0, Math.min(cells.length - 1, target))
+  const targetCell = cells[target]
+  const gridElement = (event.currentTarget as HTMLElement).closest('.heat-grid')
+  if (!targetCell || !gridElement) return
+
+  focusedDay.value = targetCell.dayKey
+  await nextTick()
+  const element = gridElement.querySelector<HTMLElement>(`[data-day="${targetCell.dayKey}"]`)
+  element?.focus()
 }
 </script>
 
@@ -123,9 +165,10 @@ function inspectable(cell: { inYear: boolean; future: boolean }): boolean {
               :role="inspectable(cell) ? 'img' : undefined"
               :aria-label="inspectable(cell) ? cellLabel(cell) : undefined"
               :aria-hidden="inspectable(cell) ? undefined : 'true'"
-              :tabindex="inspectable(cell) ? 0 : -1"
+              :tabindex="inspectable(cell) && cell.dayKey === focusedDay ? 0 : -1"
               @mouseenter="showTip($event, cell.dayKey, cell.count, cell.inYear, cell.future)"
-              @focus="showTip($event, cell.dayKey, cell.count, cell.inYear, cell.future)"
+              @focus="onCellFocus($event, cell)"
+              @keydown="moveCellFocus($event, cell.dayKey)"
               @mouseleave="hideTip"
               @blur="hideTip"
             />

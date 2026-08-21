@@ -1,5 +1,28 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd munbeop && npm install --legacy-peer-deps --no-package-lock && npm run build && cd .. && rm -rf .vercel/output && cp -r munbeop/.vercel/output .vercel/output",
-  "installCommand": "echo 'install handled by buildCommand'"
+  "installCommand": "cd munbeop && corepack pnpm install --frozen-lockfile",
+  "buildCommand": "cd munbeop && corepack pnpm build && cd .. && rm -rf .vercel/output && cp -r munbeop/.vercel/output .vercel/output",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    }
+  ]
 }

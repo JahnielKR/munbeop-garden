@@ -76,12 +76,21 @@ export const useGrammarStore = defineStore('grammar', () => {
   async function toggleDeckCollapsed(deckId: string) {
     const idx = decks.value.findIndex((d) => d.id === deckId)
     if (idx === -1) return
+    const snapshot = decks.value
     // Re-assign to a new array so reactivity fires reliably across adapters.
     decks.value = decks.value.map((d, i) =>
       i === idx ? { ...d, collapsed: !d.collapsed } : d,
     )
     const storage = useStorageAdapter()
-    await storage.write(STORAGE_KEYS.decks, decks.value)
+    try {
+      await storage.upsertOne(STORAGE_KEYS.decks, {
+        id: deckId,
+        value: decks.value[idx]!,
+      })
+    } catch (error) {
+      decks.value = snapshot
+      throw error
+    }
   }
 
   /**
@@ -104,15 +113,13 @@ export const useGrammarStore = defineStore('grammar', () => {
       deckId: CUSTOM_DECK_ID,
       ...(example ? { example } : {}),
     }
-    // Snapshot + rollback + rethrow: the Supabase write is delete-then-upsert,
-    // so a mid-write network drop could wipe the user's custom grammars in the
-    // cloud while local state looked fine. Mirror the contexts/customDecks
-    // discipline so the caller can surface a retry instead of losing data.
+    // Persist just the new custom row. Snapshot + rollback keeps the local list
+    // aligned if the atomic upsert fails.
     const snapshot = items.value
     items.value = [...items.value, grammar]
     const storage = useStorageAdapter()
     try {
-      await storage.write(STORAGE_KEYS.grammar, items.value)
+      await storage.upsertOne(STORAGE_KEYS.grammar, { id: grammar.ko, value: grammar })
     } catch (e) {
       items.value = snapshot
       throw e
@@ -128,7 +135,7 @@ export const useGrammarStore = defineStore('grammar', () => {
     items.value = items.value.filter((g) => g !== target)
     const storage = useStorageAdapter()
     try {
-      await storage.write(STORAGE_KEYS.grammar, items.value)
+      await storage.deleteOne(STORAGE_KEYS.grammar, ko)
     } catch (e) {
       items.value = snapshot
       throw e

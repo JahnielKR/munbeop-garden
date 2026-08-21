@@ -27,7 +27,7 @@ export const useLogStore = defineStore('log', () => {
     contextName: string
   }): Promise<LogEntry> {
     const storage = useStorageAdapter()
-    const entry: LogEntry = {
+    const optimisticEntry: LogEntry = {
       id: Date.now() + Math.random(),
       date: new Date().toISOString(),
       ...p,
@@ -36,12 +36,18 @@ export const useLogStore = defineStore('log', () => {
     // back cleanly. A reference filter wouldn't work here: Vue re-proxies the
     // pushed object, so the proxy read back !== the raw entry.
     const snapshot = entries.value
-    entries.value = [entry, ...entries.value]
+    entries.value = [optimisticEntry, ...entries.value]
     // Append the one new row instead of re-writing the whole log — an add is
     // O(1), not O(history). (setReviewState still does a full write; it edits
     // an existing row and fires rarely.)
     try {
-      await storage.append(STORAGE_KEYS.log, entry)
+      const savedEntry = await storage.append(STORAGE_KEYS.log, optimisticEntry)
+      // Supabase returns the Postgres-generated bigserial. Replace the
+      // temporary optimistic id before any review/delete action can use it.
+      entries.value = entries.value.map((entry) =>
+        entry.id === optimisticEntry.id ? savedEntry : entry,
+      )
+      return savedEntry
     } catch (e) {
       // Roll back the optimistic insert so a failed cloud write doesn't leave a
       // phantom entry in memory — that would duplicate on retry and inflate the
@@ -50,7 +56,6 @@ export const useLogStore = defineStore('log', () => {
       entries.value = snapshot
       throw e
     }
-    return entry
   }
 
   /** Delete one journal entry by id. Optimistic with snapshot + rollback (one
@@ -74,13 +79,20 @@ export const useLogStore = defineStore('log', () => {
     id: number,
     reviewState: ReviewState,
     errorNote: string | null = null,
-  ) {
+  ): Promise<boolean> {
     const storage = useStorageAdapter()
     const entry = entries.value.find((e) => e.id === id)
-    if (!entry) return
-    entry.reviewState = reviewState
-    entry.errorNote = errorNote
-    await storage.write(STORAGE_KEYS.log, entries.value)
+    if (!entry) return false
+    const snapshot = entries.value
+    const next = { ...entry, reviewState, errorNote }
+    entries.value = entries.value.map((value) => (value.id === id ? next : value))
+    try {
+      await storage.upsertOne(STORAGE_KEYS.log, { id, value: next })
+      return true
+    } catch {
+      entries.value = snapshot
+      return false
+    }
   }
 
   return { entries, hydrate, add, deleteEntry, setReviewState }

@@ -7,6 +7,14 @@ import { useAppStatus } from '~/stores/appStatus'
 // Supabase would fire (INITIAL_SESSION on a hard reload, SIGNED_IN, etc.).
 let authCallback: (event: string, session: unknown) => Promise<void> | void = () => {}
 
+async function fireAuth(event: string, session: unknown): Promise<void> {
+  authCallback(event, session)
+  // Auth side effects deliberately leave onAuthStateChange via setTimeout(0)
+  // before making any Supabase query (avoids the supabase-js auth deadlock).
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  await new Promise((resolve) => setTimeout(resolve, 0))
+}
+
 const getSession = vi.fn(async () => ({ data: { session: null } }))
 const signInWithPassword = vi.fn(async () => ({ error: null as { message: string } | null }))
 const onAuthStateChange = vi.fn((cb: typeof authCallback) => {
@@ -52,7 +60,7 @@ describe('useAuth().init — session restored on reload', () => {
   // later write could overwrite the account's real cloud data with seeds).
   it('re-hydrates the data stores on INITIAL_SESSION, not just settings', async () => {
     await useAuth().init()
-    await authCallback('INITIAL_SESSION', { user: { id: 'u' } })
+    await fireAuth('INITIAL_SESSION', { user: { id: 'u' } })
 
     expect(settingsHydrate).toHaveBeenCalled()
     expect(grammarHydrate).toHaveBeenCalled()
@@ -64,7 +72,7 @@ describe('useAuth().init — session restored on reload', () => {
 
   it('does not hydrate data stores on INITIAL_SESSION when there is no session', async () => {
     await useAuth().init()
-    await authCallback('INITIAL_SESSION', null)
+    await fireAuth('INITIAL_SESSION', null)
 
     expect(grammarHydrate).not.toHaveBeenCalled()
     expect(settingsHydrate).not.toHaveBeenCalled()
@@ -77,7 +85,7 @@ describe('useAuth().init — session restored on reload', () => {
   it('swallows a data-store hydrate failure on INITIAL_SESSION', async () => {
     grammarHydrate.mockRejectedValueOnce(new Error('rls denied'))
     await useAuth().init()
-    await expect(authCallback('INITIAL_SESSION', { user: { id: 'u' } })).resolves.toBeUndefined()
+    await expect(fireAuth('INITIAL_SESSION', { user: { id: 'u' } })).resolves.toBeUndefined()
   })
 
   it('signIn resolves error:null even if post-auth data hydration fails', async () => {
@@ -93,13 +101,13 @@ describe('useAuth().init — session restored on reload', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
     grammarHydrate.mockRejectedValueOnce(new Error('rls denied'))
     await useAuth().init()
-    await authCallback('INITIAL_SESSION', { user: { id: 'u' } })
+    await fireAuth('INITIAL_SESSION', { user: { id: 'u' } })
     expect(useAppStatus().status).toBe('error')
   })
 
   it('marks app data status ready when INITIAL_SESSION hydration succeeds', async () => {
     await useAuth().init()
-    await authCallback('INITIAL_SESSION', { user: { id: 'u' } })
+    await fireAuth('INITIAL_SESSION', { user: { id: 'u' } })
     expect(useAppStatus().status).toBe('ready')
   })
 })

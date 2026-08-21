@@ -3,7 +3,9 @@ import { setActivePinia, createPinia } from 'pinia'
 import { useLogStore } from '~/stores/log'
 
 vi.mock('~/composables/useStorageAdapter', () => ({
-  useStorageAdapter: () => ({ append: vi.fn().mockResolvedValue(undefined) }),
+  useStorageAdapter: () => ({
+    append: vi.fn(async (_key: string, value: Record<string, unknown>) => ({ ...value, id: 1 })),
+  }),
 }))
 
 describe('logStore.add errorDimension', () => {

@@ -8,6 +8,7 @@ interface Props {
 }
 defineProps<Props>()
 defineEmits<{ restart: []; 'replay-failed': [] }>()
+const { t } = useI18n()
 
 /** Move focus into the summary when it replaces the card (orientation). */
 const root = ref<HTMLElement | null>(null)
@@ -16,10 +17,10 @@ onMounted(() => root.value?.focus())
 
 <template>
   <section ref="root" tabindex="-1" class="summary">
-    <p class="summary__score" role="status">{{ $t('conjugation.summary_score', { correct: score.correct, total: score.total }) }}</p>
+    <p class="summary__score" role="status">{{ t('conjugation.summary_score', { correct: score.correct, total: score.total }) }}</p>
 
     <div v-if="failedItems.length" class="summary__review">
-      <h3 class="summary__review-title">{{ $t('conjugation.replay_failed', { n: failedItems.length }) }}</h3>
+      <h3 class="summary__review-title">{{ t('conjugation.replay_failed', { n: failedItems.length }) }}</h3>
       <ul class="summary__list">
         <li v-for="f in failedItems" :key="f.id" lang="ko">{{ f.dict }} {{ f.ending }} → {{ f.correct }}</li>
       </ul>
@@ -33,10 +34,10 @@ onMounted(() => root.value?.focus())
         data-testid="conj-replay"
         @click="$emit('replay-failed')"
       >
-        <span aria-hidden="true">🔁</span> {{ $t('conjugation.replay_failed', { n: failedItems.length }) }}
+        <span aria-hidden="true">🔁</span> {{ t('conjugation.replay_failed', { n: failedItems.length }) }}
       </button>
       <button type="button" class="summary__btn" data-testid="conj-restart" @click="$emit('restart')">
-        {{ $t('conjugation.restart') }}
+        {{ t('conjugation.restart') }}
       </button>
     </div>
   </section>

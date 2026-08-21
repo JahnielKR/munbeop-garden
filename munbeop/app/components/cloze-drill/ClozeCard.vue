@@ -14,6 +14,7 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits<{ answer: [choice: string]; next: [] }>()
 const { tl } = useLocalized()
+const { t } = useI18n()
 
 const card = ref<HTMLDivElement | null>(null)
 const revealed = computed(() => props.phase === 'right' || props.phase === 'wrong')
@@ -48,7 +49,7 @@ watch(
       <span>{{ parts[1] }}</span>
     </p>
 
-    <p v-if="phase === 'question'" class="card__hint">{{ $t('cloze.pick_hint') }}</p>
+    <p v-if="phase === 'question'" class="card__hint">{{ t('cloze.pick_hint') }}</p>
 
     <div class="card__options">
       <ClozeOption
@@ -65,12 +66,12 @@ watch(
     <div v-if="revealed" class="card__feedback" role="status">
       <p class="card__verdict" :class="verdict ? 'card__verdict--ok' : 'card__verdict--no'">
         <span aria-hidden="true">{{ verdict ? '✅' : '✏️' }}</span>
-        {{ verdict ? $t('cloze.correct') : $t('cloze.wrong') }}
+        {{ verdict ? t('cloze.correct') : t('cloze.wrong') }}
       </p>
-      <p v-if="!verdict" class="card__correct" lang="ko">{{ $t('cloze.reveal_correct', { correct: item.answer }) }}</p>
+      <p v-if="!verdict" class="card__correct" lang="ko">{{ t('cloze.reveal_correct', { correct: item.answer }) }}</p>
       <p class="card__why">{{ tl(item.why) }}</p>
       <p class="card__trans">{{ tl(item.trans) }}</p>
-      <button type="button" class="card__next" :aria-label="$t('cloze.next')" @click="emit('next')">
+      <button type="button" class="card__next" :aria-label="t('cloze.next')" @click="emit('next')">
         <span aria-hidden="true">→</span>
       </button>
     </div>

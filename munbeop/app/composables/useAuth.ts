@@ -10,6 +10,7 @@ import { useActivityStore } from '~/stores/activity'
 import { useSettingsStore } from '~/stores/settings'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 import { useCustomDecksStore } from '~/stores/customDecks'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 
 /**
  * Thin wrapper around supabase.auth.* with three responsibilities:
@@ -43,8 +44,8 @@ export function useAuth() {
     const router = useRouter()
     const { data } = await $supabase.auth.getSession()
     authStore.setSession(data.session ?? null)
-    $supabase.auth.onAuthStateChange(async (event, session) => {
-      authStore.setSession(session)
+
+    async function applyAuthStateChange(event: AuthChangeEvent, session: Session | null) {
       // Pull the account's synced preferences once a session exists. Theme
       // applies immediately (DOM write); locale re-applies when default.vue
       // (re)mounts on the post-sign-in navigation from /welcome.
@@ -73,7 +74,9 @@ export function useAuth() {
       // clears the UI. (Handled here rather than inside signOutAndExit()
       // so token-expiry sign-outs flow through the same code.)
       if (event === 'SIGNED_OUT') {
-        await hydrateDataStores()
+        // Keep sign-out cleanup moving even if an unexpected adapter failure
+        // occurs. The route and account-scoped settings must still be cleared.
+        await useAppStatus().track(() => hydrateDataStores())
         // hydrateDataStores() clears the data stores against the noop adapter,
         // but the settings store isn't in that set (it hydrates on SIGNED_IN /
         // INITIAL_SESSION). Reset its account-scoped prefs here so the next user
@@ -87,6 +90,20 @@ export function useAuth() {
           await router.push('/welcome')
         }
       }
+    }
+
+    // Supabase documents a client deadlock when another async Supabase call is
+    // awaited from inside onAuthStateChange. Keep the callback synchronous and
+    // defer cloud hydration until the auth callback has fully returned. The
+    // promise chain also preserves event order during rapid sign-in/sign-out.
+    let authWork = Promise.resolve()
+    $supabase.auth.onAuthStateChange((event, session) => {
+      authStore.setSession(session)
+      setTimeout(() => {
+        authWork = authWork
+          .then(() => applyAuthStateChange(event, session))
+          .catch((err) => console.error('auth state sync failed', err))
+      }, 0)
     })
   }
 
@@ -132,7 +149,9 @@ export function useAuth() {
    * fires the pan-left camera move automatically.
    */
   async function signOutAndExit() {
-    const { error } = await $supabase.auth.signOut()
+    // A normal sign-out should affect this browser session only. Supabase's
+    // default is global, which unexpectedly signs the learner out everywhere.
+    const { error } = await $supabase.auth.signOut({ scope: 'local' })
     const router = useRouter()
     if (!error) await router.push('/welcome')
     return { error }
@@ -146,7 +165,13 @@ export function useAuth() {
   async function deleteAccount() {
     const { error } = await $supabase.functions.invoke('delete-account')
     if (error) return { error }
-    return signOutAndExit()
+    // The account is already gone. Clear this browser's persisted session and
+    // leave even if Auth can no longer acknowledge a logout for the deleted
+    // user; reporting deletion as failed at this point would be misleading.
+    await $supabase.auth.signOut({ scope: 'local' })
+    authStore.setSession(null)
+    await useRouter().push('/welcome')
+    return { error: null }
   }
 
   /**

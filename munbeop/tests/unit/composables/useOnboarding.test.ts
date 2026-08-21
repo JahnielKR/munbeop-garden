@@ -14,7 +14,7 @@ vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({
     read: vi.fn().mockResolvedValue(undefined),
     write: vi.fn().mockResolvedValue(undefined),
-    append: vi.fn().mockResolvedValue(undefined),
+    append: vi.fn(async (_key: string, value: Record<string, unknown>) => ({ ...value, id: 1 })),
     upsertOne: vi.fn().mockResolvedValue(undefined),
   }),
 }))

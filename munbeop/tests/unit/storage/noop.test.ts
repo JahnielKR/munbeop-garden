@@ -24,7 +24,7 @@ describe('NoopStorageAdapter', () => {
 
   it('append drops the item silently like write', async () => {
     const adapter = new NoopStorageAdapter()
-    await expect(adapter.append(STORAGE_KEYS.log, { id: 1 })).resolves.toBeUndefined()
+    await expect(adapter.append(STORAGE_KEYS.log, { id: 1 })).resolves.toEqual({ id: 1 })
     await expect(adapter.read(STORAGE_KEYS.log, [])).resolves.toEqual([])
   })
 
@@ -32,5 +32,16 @@ describe('NoopStorageAdapter', () => {
     const adapter = new NoopStorageAdapter()
     await expect(adapter.upsertOne(STORAGE_KEYS.srs, { id: 'A', value: { n: 1 } })).resolves.toBeUndefined()
     await expect(adapter.read(STORAGE_KEYS.srs, {})).resolves.toEqual({})
+  })
+
+  it('increment reports that the signed-out adapter has no persistent counter', async () => {
+    const adapter = new NoopStorageAdapter()
+    await expect(adapter.increment(STORAGE_KEYS.activity, '2026-08-21')).resolves.toBeNull()
+  })
+
+  it('restore drops the backup silently while signed out', async () => {
+    const adapter = new NoopStorageAdapter()
+    await expect(adapter.restore({ [STORAGE_KEYS.log]: [{ id: 1 }] })).resolves.toBeUndefined()
+    await expect(adapter.read(STORAGE_KEYS.log, [])).resolves.toEqual([])
   })
 })

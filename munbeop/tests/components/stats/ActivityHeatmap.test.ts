@@ -60,6 +60,18 @@ describe('ActivityHeatmap', () => {
     expect(cell.attributes('tabindex')).toBe('0')
   })
 
+  it('uses one tab stop and supports arrow-key navigation between days', async () => {
+    const w = mount(ActivityHeatmap, { props: { counts, now } })
+    const inspectable = w.findAll('[data-test="heat-cell"]').filter((cell) => cell.attributes('role') === 'img')
+    expect(inspectable.filter((cell) => cell.attributes('tabindex') === '0')).toHaveLength(1)
+
+    const today = inspectable.find((cell) => cell.attributes('data-day') === '2026-06-26')!
+    await today.trigger('keydown', { key: 'ArrowUp' })
+    const previousDay = w.findAll('[data-test="heat-cell"]').find((cell) => cell.attributes('data-day') === '2026-06-25')!
+    expect(previousDay.attributes('tabindex')).toBe('0')
+    expect(today.attributes('tabindex')).toBe('-1')
+  })
+
   it('hides padding / future cells from assistive tech', () => {
     const w = mount(ActivityHeatmap, { props: { counts, now } })
     // A day after "today" (2026-06-26) is a future cell: masked, not focusable.

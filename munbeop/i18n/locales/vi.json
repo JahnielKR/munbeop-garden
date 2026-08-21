@@ -1103,6 +1103,8 @@
   "paths": {
     "title": "Lộ trình TOPIK của bạn",
     "lead": "Từng cấp độ theo thứ tự — xem bạn đã đi tới đâu và học gì tiếp theo.",
+    "loading": "Đang tải lộ trình TOPIK...",
+    "empty": "Chưa có lộ trình TOPIK nào.",
     "progress_label": "{learned} / {total}",
     "next_label": "Tiếp theo",
     "practice_cta": "Luyện ngay",

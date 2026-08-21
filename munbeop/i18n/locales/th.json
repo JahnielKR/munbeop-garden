@@ -1103,6 +1103,8 @@
   "paths": {
     "title": "เส้นทาง TOPIK ของคุณ",
     "lead": "แต่ละระดับตามลำดับ — ดูความคืบหน้าและสิ่งที่ควรเรียนต่อ",
+    "loading": "กำลังโหลดเส้นทาง TOPIK...",
+    "empty": "ยังไม่มีเส้นทาง TOPIK ที่พร้อมใช้งาน",
     "progress_label": "{learned} / {total}",
     "next_label": "ถัดไป",
     "practice_cta": "ฝึกเลย",

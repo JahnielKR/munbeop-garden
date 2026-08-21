@@ -9,6 +9,7 @@ interface Props {
 }
 defineProps<Props>()
 defineEmits<{ restart: []; 'replay-failed': [] }>()
+const { t } = useI18n()
 
 const root = ref<HTMLElement | null>(null)
 onMounted(() => root.value?.focus())
@@ -16,10 +17,10 @@ onMounted(() => root.value?.focus())
 
 <template>
   <section ref="root" tabindex="-1" class="summary">
-    <p class="summary__score" role="status">{{ $t('register.summary_score', { correct: score.correct, total: score.total }) }}</p>
+    <p class="summary__score" role="status">{{ t('register.summary_score', { correct: score.correct, total: score.total }) }}</p>
 
     <div v-if="failedItems.length" class="summary__review">
-      <h3 class="summary__review-title">{{ $t('register.replay_failed', { n: failedItems.length }) }}</h3>
+      <h3 class="summary__review-title">{{ t('register.replay_failed', { n: failedItems.length }) }}</h3>
       <ul class="summary__list">
         <li v-for="f in failedItems" :key="`${f.source}=>${f.answer}`" lang="ko">{{ f.source }} → {{ f.answer }}</li>
       </ul>
@@ -27,10 +28,10 @@ onMounted(() => root.value?.focus())
 
     <div class="summary__actions">
       <button v-if="failedItems.length" type="button" class="summary__btn summary__btn--primary" data-testid="register-replay" @click="$emit('replay-failed')">
-        <span aria-hidden="true">🔁</span> {{ $t('register.replay_failed', { n: failedItems.length }) }}
+        <span aria-hidden="true">🔁</span> {{ t('register.replay_failed', { n: failedItems.length }) }}
       </button>
       <button type="button" class="summary__btn" data-testid="register-restart" @click="$emit('restart')">
-        {{ $t('register.restart') }}
+        {{ t('register.restart') }}
       </button>
     </div>
   </section>

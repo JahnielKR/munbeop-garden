@@ -1103,6 +1103,8 @@
   "paths": {
     "title": "Tus rutas TOPIK",
     "lead": "Cada nivel en orden: mira cuánto llevas y qué estudiar a continuación.",
+    "loading": "Cargando tus rutas TOPIK...",
+    "empty": "Todavía no hay rutas TOPIK disponibles.",
     "progress_label": "{learned} / {total}",
     "next_label": "Siguiente",
     "practice_cta": "Practícalo",

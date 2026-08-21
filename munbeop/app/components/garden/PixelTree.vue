@@ -115,7 +115,7 @@ watch(visibleLayers, (now, before) => {
         :width="pxWidth"
         :height="pxHeight"
         draggable="false"
-      />
+      >
       <img
         v-for="layer in visibleLayers"
         :key="layer"
@@ -126,7 +126,7 @@ watch(visibleLayers, (now, before) => {
         :width="pxWidth"
         :height="pxHeight"
         draggable="false"
-      />
+      >
     </template>
   </div>
 </template>

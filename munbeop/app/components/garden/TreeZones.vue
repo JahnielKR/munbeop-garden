@@ -98,7 +98,7 @@ function onClick(n: ZoneNode) {
           width="16"
           height="16"
           draggable="false"
-        />
+        >
         <span v-else class="zones__num font-pixel">{{ n.overflow ? `+${n.overflow}` : n.index + 1 }}</span>
       </span>
       <span class="zones__tip" role="tooltip">{{ labelFor(n) }}</span>

@@ -1103,6 +1103,8 @@
   "paths": {
     "title": "あなたのTOPIKパス",
     "lead": "各レベルを順番に — どこまで進んだか、次に何を学ぶかが分かります。",
+    "loading": "TOPIKパスを読み込んでいます...",
+    "empty": "利用できるTOPIKパスはまだありません。",
     "progress_label": "{learned} / {total}",
     "next_label": "次は",
     "practice_cta": "練習する",
