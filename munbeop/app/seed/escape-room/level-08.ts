@@ -4,7 +4,7 @@ import type {
   Level,
   SelectionCandidate,
 } from '~/lib/domain'
-import { t } from './locale'
+import { t } from './translations/levels/level-08'
 
 /**
  * Level 8 — El palacio de las linternas (등불 궁궐)

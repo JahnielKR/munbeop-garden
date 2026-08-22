@@ -5,7 +5,7 @@ import type {
   ScriptedBeat,
   SelectionCandidate,
 } from '~/lib/domain'
-import { t } from './locale'
+import { t } from './translations/levels/level-02'
 
 /**
  * Level 2 — "El templo de la lluvia (청우사)"

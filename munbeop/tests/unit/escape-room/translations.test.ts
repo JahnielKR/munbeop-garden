@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { LOCALE_CODES, localized, type LocalizedString } from '~/lib/domain'
 import { TRANSLATIONS } from '~/seed/escape-room/translations'
-import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
+import { ESCAPE_LEVEL_CATALOG } from '~/seed/escape-room/catalog'
+import { loadAllPlayableLevels } from '~/seed/escape-room/load-level'
 import { report as qualityReport } from '../../../tools/audit-escape-translations'
 
 /**
@@ -13,6 +14,7 @@ import { report as qualityReport } from '../../../tools/audit-escape-translation
  */
 
 const TARGET = LOCALE_CODES.filter((c) => c !== 'es')
+const PLAYABLE_LEVELS = await loadAllPlayableLevels()
 
 /** Does this string carry real prose (a Latin letter) vs. being Korean-only? */
 const hasLatin = (s: string) => /[A-Za-zÀ-ÖØ-öø-ÿ]/.test(s)
@@ -109,7 +111,7 @@ describe('escape-room translations', () => {
   })
 
   it('fully localizes every translatable string in levels 1–10', () => {
-    for (const ls of walkLocalized(LEVEL_REGISTRY)) {
+    for (const ls of walkLocalized([ESCAPE_LEVEL_CATALOG, PLAYABLE_LEVELS])) {
       const es = ls.es
       if (!es || !hasLatin(es)) continue
 
@@ -141,7 +143,7 @@ describe('escape-room translations', () => {
   })
 
   it('renders real, non-Spanish text for the level-01 opening story in every locale', () => {
-    const intro = LEVEL_REGISTRY[0]!.level!.intro
+    const intro = PLAYABLE_LEVELS[0]!.intro
     for (const loc of TARGET) {
       const rendered = localized(intro, loc)
       expect(rendered, loc).not.toBe(intro.es)
@@ -150,7 +152,7 @@ describe('escape-room translations', () => {
   })
 
   it('renders real, non-Spanish text for the meaning-selection options in every locale', () => {
-    const level = LEVEL_REGISTRY[0]!.level!
+    const level = PLAYABLE_LEVELS[0]!
     const slot = level.slots[0]!
     if (slot.type !== 'selection') throw new Error('expected slot-1 to be selection')
     const candidate = slot.candidates[0]!

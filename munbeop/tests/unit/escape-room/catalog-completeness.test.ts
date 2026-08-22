@@ -2,7 +2,15 @@ import { existsSync, readFileSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { validateLevel } from '~/lib/escape-room/rules'
-import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
+import { ESCAPE_LEVEL_CATALOG } from '~/seed/escape-room/catalog'
+import { loadAllPlayableLevels } from '~/seed/escape-room/load-level'
+
+const loadedLevels = await loadAllPlayableLevels()
+const levelsById = new Map(loadedLevels.map((level) => [level.id, level]))
+const LEVEL_REGISTRY = ESCAPE_LEVEL_CATALOG.map((entry) => ({
+  ...entry,
+  level: levelsById.get(entry.id),
+}))
 
 const publicAsset = (url: string) => resolve(process.cwd(), 'public', url.replace(/^\/+/, ''))
 const levelAsset = (levelId: string, relative: string) =>

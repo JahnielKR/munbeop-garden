@@ -5,7 +5,7 @@ import type {
   ScriptedBeat,
   SelectionCandidate,
 } from '~/lib/domain'
-import { t } from './locale'
+import { t } from './translations/levels/level-04'
 
 /**
  * Level 4 — "El último tren a Seúl (서울행 막차)"

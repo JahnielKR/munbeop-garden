@@ -4,7 +4,7 @@ import type {
   Level,
   SelectionCandidate,
 } from '~/lib/domain'
-import { t } from './locale'
+import { t } from './translations/levels/level-07'
 
 /**
  * Level 7 — El retiro de la empresa. A formal TOPIK 4 teamwork mystery:

@@ -36,7 +36,7 @@ El selector de niveles es una **libreta hojeable** (`LevelBook.vue` + `LevelPage
 
 Cada hoja muestra: **cover** (foto pegada con cinta), número de nivel + badge TOPIK, **título**, **mood**, **tagline narrativo** (el hook), las **4 recompensas por tier**, los **intentos disponibles** (♥♥♥ = maxErrors + 1) y el botón **▶ START** que entra al juego (`/escape-room/play?level=<id>`). El componente conserva soporte para futuras entradas con sello "Próximamente", aunque el catálogo actual está completamente abierto.
 
-El registry vive en `app/seed/escape-room/registry.ts` (`LEVEL_REGISTRY`): **10 entradas y las 10 son jugables**. El catálogo suma 59 slots y 295 candidatos de puzzle; cada run toma una variante distinta por slot.
+El catálogo ligero vive en `app/seed/escape-room/catalog.ts`; `registry.ts` mantiene la fachada `LEVEL_REGISTRY` sin importar historias completas. Hay **10 entradas y las 10 son jugables**. Cada historia se carga bajo demanda mediante `loadPlayableLevel()`; en conjunto suman 59 slots y 295 candidatos de puzzle, y cada run toma una variante distinta por slot.
 
 ### Sistema narrativo
 
@@ -1133,6 +1133,9 @@ El motor, el catálogo, el arte y la localización ya están entregados. El trab
 
 ## Histórico de cambios
 
+- **2026-08-22 (v6)** — Carga progresiva del contenido:
+  - La libreta usa un catálogo ligero y cada historia carga únicamente su nivel y su shard de traducciones.
+  - Las notas de uso N2–N6 se dividen por gramática; abrir una ficha descarga solo el shard correspondiente.
 - **2026-08-15 (v5)** — Localización completa y endurecimiento de calidad:
   - Narrativa, gameplay, pistas, salas, recompensas y desenlaces de los niveles 1-10 disponibles en los 8 locales de producto.
   - Auditoría estructural automática para cobertura, comillas, tokens coreanos y espaciado Hangul/latino.

@@ -3,7 +3,8 @@ import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { LOCALE_CODES, type LocalizedString } from '~/lib/domain'
-import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
+import { ESCAPE_LEVEL_CATALOG } from '~/seed/escape-room/catalog'
+import { loadAllPlayableLevels } from '~/seed/escape-room/load-level'
 import { en } from '~/seed/escape-room/translations/en'
 import { fr } from '~/seed/escape-room/translations/fr'
 import { id } from '~/seed/escape-room/translations/id'
@@ -31,6 +32,7 @@ import {
 
 const SEED_DIR = resolve(process.cwd(), 'app/seed/escape-room')
 const hasLatin = (value: string) => /\p{Script=Latin}/u.test(value)
+const PLAYABLE_LEVELS = await loadAllPlayableLevels()
 
 const translationLayers = {
   en: [en, enLevels04To10],
@@ -63,7 +65,7 @@ function sorted(values: Iterable<string>) {
 
 function runtimeSources() {
   return new Set(
-    [...walkLocalized(LEVEL_REGISTRY)]
+    [...walkLocalized([ESCAPE_LEVEL_CATALOG, PLAYABLE_LEVELS])]
       .map((localized) => localized.es)
       .filter((source) => source.length > 0 && hasLatin(source)),
   )

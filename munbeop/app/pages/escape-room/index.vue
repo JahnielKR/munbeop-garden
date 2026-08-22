@@ -3,7 +3,7 @@ import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import LevelBook from '~/components/escape-room/LevelBook.vue'
 import GameExitButton from '~/components/games/GameExitButton.vue'
 import PracticeHelp from '~/components/practice/PracticeHelp.vue'
-import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
+import { ESCAPE_LEVEL_CATALOG } from '~/seed/escape-room/catalog'
 
 /**
  * Escape Room — level notebook (libreta).
@@ -28,7 +28,7 @@ function onStart(levelId: string) {
     <BilingualTitle ko="탈출" latin="Escape Room" />
     <PracticeHelp mode="escape-room" />
     <p class="er-index__lead">{{ t('escape.book_lead') }}</p>
-    <LevelBook :entries="LEVEL_REGISTRY" @start="onStart" />
+    <LevelBook :entries="ESCAPE_LEVEL_CATALOG" @start="onStart" />
   </div>
 </template>
 

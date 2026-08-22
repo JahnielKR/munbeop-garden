@@ -4,7 +4,7 @@ import type {
   Level,
   SelectionCandidate,
 } from '~/lib/domain'
-import { t } from './locale'
+import { t } from './translations/levels/level-01'
 
 /**
  * Level 1 — "Una mañana en el minbak (민박)"
