@@ -31,21 +31,17 @@ const TIER_DOTS: Record<RewardTier, string> = {
 }
 
 const rewards = computed(() => {
-  if (props.entry.status !== 'playable' || !props.entry.level) return []
+  if (props.entry.status !== 'playable') return []
   return REWARD_TIERS.map((tier) => ({
     tier,
     dot: TIER_DOTS[tier],
     label: t(`escape.tier_${tier}`),
-    name: tl(props.entry.level!.rewards[tier].name),
+    name: tl(props.entry.rewards[tier].name),
   }))
 })
 
 /** Hearts = mistakes you can survive + the final fatal one = maxErrors + 1. */
-const hearts = computed(() =>
-  props.entry.status === 'playable' && props.entry.level
-    ? props.entry.level.rules.maxErrors + 1
-    : 0,
-)
+const hearts = computed(() => (props.entry.status === 'playable' ? props.entry.maxErrors + 1 : 0))
 </script>
 
 <template>

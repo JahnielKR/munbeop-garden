@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import type { LocalizedString, RewardTier } from '~/lib/domain'
 import { REWARD_TIERS } from '~/lib/domain'
-import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
+import { ESCAPE_LEVEL_CATALOG } from '~/seed/escape-room/catalog'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import {
   AVATARS,
@@ -22,7 +22,7 @@ import { useSettingsStore } from '~/stores/settings'
  * portrait's cosmetic layers — so AccountMenu.vue and Premios.vue never
  * recompute the same thing twice (DRY; no god component).
  *
- * The "premios" are escape-room cosmetics: each playable Level defines one
+ * The "premios" are escape-room cosmetics: each playable catalog entry exposes one
  * Reward per tier (common/rare/epic/legendary), and beating a run unlocks
  * the matching cosmetic id into the escape-room store's `unlockedCosmetics`
  * (persisted per-account by useEscapeRoomProgress). The player equips which
@@ -67,14 +67,15 @@ export interface DetailLevel {
 export function usePremios() {
   const store = useEscapeRoomStore()
 
-  // Static: every playable level carries its full definition + rewards.
-  const playable = LEVEL_REGISTRY.filter((e) => e.status === 'playable' && e.level)
+  // Static and lightweight: rooms, puzzle pools and story prose stay outside
+  // the account/trophies chunks until gameplay explicitly loads one level.
+  const playable = ESCAPE_LEVEL_CATALOG.filter((entry) => entry.status === 'playable')
 
   // Reactive over the store: flat list of every reward across every level.
   const all = computed<Premio[]>(() =>
     playable.flatMap((entry) =>
       REWARD_TIERS.map((tier) => {
-        const reward = entry.level!.rewards[tier]
+        const reward = entry.rewards[tier]
         // 'cosmetic-frame-apron' -> 'frame'; 'cosmetic-set-complete' -> 'set'.
         const type = (reward.id.split('-')[1] ?? 'set') as CosmeticType
         return {

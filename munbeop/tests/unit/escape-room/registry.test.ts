@@ -1,5 +1,12 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { describe, it, expect } from 'vitest'
-import { LEVEL_REGISTRY, playableLevel } from '~/seed/escape-room/registry'
+import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
+import {
+  loadAllPlayableLevels,
+  loadPlayableLevel,
+  PLAYABLE_LEVEL_IDS,
+} from '~/seed/escape-room/load-level'
 import { validateLevel } from '~/lib/escape-room/rules'
 
 describe('LEVEL_REGISTRY', () => {
@@ -21,12 +28,20 @@ describe('LEVEL_REGISTRY', () => {
     }
   })
 
-  it('playable entries embed a Level that passes validateLevel', () => {
+  it('keeps full stories behind async level loaders', async () => {
     const playable = LEVEL_REGISTRY.filter((e) => e.status === 'playable')
     expect(playable).toHaveLength(10)
-    for (const e of playable) {
-      expect(e.level).toBeDefined()
-      expect(validateLevel(e.level!)).toEqual([])
+    const levels = await loadAllPlayableLevels()
+    for (const level of levels) {
+      expect(validateLevel(level)).toEqual([])
+      const entry = LEVEL_REGISTRY.find((candidate) => candidate.id === level.id)
+      expect(entry).toMatchObject({
+        title: level.title,
+        tagline: level.tagline,
+        topikLevel: level.topikLevel,
+        maxErrors: level.rules.maxErrors,
+        rewards: level.rewards,
+      })
     }
   })
 
@@ -37,11 +52,25 @@ describe('LEVEL_REGISTRY', () => {
     }
   })
 
-  it('playableLevel resolves all ten levels and rejects unknown ids', () => {
-    for (let n = 1; n <= 10; n++) {
-      const id = `level-${String(n).padStart(2, '0')}`
-      expect(playableLevel(id)?.id).toBe(id)
+  it('loadPlayableLevel resolves all ten levels and rejects unknown ids', async () => {
+    expect(PLAYABLE_LEVEL_IDS).toEqual(LEVEL_REGISTRY.map((entry) => entry.id))
+    for (const id of PLAYABLE_LEVEL_IDS) {
+      expect((await loadPlayableLevel(id))?.id).toBe(id)
     }
-    expect(playableLevel('nope')).toBeNull()
+    expect(await loadPlayableLevel('nope')).toBeNull()
+  })
+
+  it('has no static dependency on full levels or narrative translations', () => {
+    const files = [
+      'app/seed/escape-room/catalog.ts',
+      'app/seed/escape-room/registry.ts',
+      'app/pages/escape-room/index.vue',
+      'app/composables/usePremios.ts',
+    ]
+    for (const file of files) {
+      const source = readFileSync(resolve(process.cwd(), file), 'utf8')
+      expect(source, file).not.toMatch(/(?:from|import\()\s*['"].*level-\d{2}/)
+      expect(source, file).not.toContain('/translations')
+    }
   })
 })

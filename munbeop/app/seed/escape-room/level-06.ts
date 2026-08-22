@@ -4,7 +4,7 @@ import type {
   Level,
   SelectionCandidate,
 } from '~/lib/domain'
-import { t } from './locale'
+import { t } from './translations/levels/level-06'
 
 /**
  * Level 6 — El estudio de K-drama. Six language locks turn a ruined finale

@@ -19,7 +19,15 @@ const LEVEL_LOADERS: Readonly<Record<string, LevelLoader>> = {
   'level-10': () => import('./level-10').then((module) => module.LEVEL_10),
 }
 
+/** Stable ids without evaluating any story module. */
+export const PLAYABLE_LEVEL_IDS = Object.freeze(Object.keys(LEVEL_LOADERS))
+
 export async function loadPlayableLevel(id: string): Promise<Level | null> {
   const loader = LEVEL_LOADERS[id]
   return loader ? loader() : null
+}
+
+/** Test/tooling helper; app routes should load only the selected level. */
+export async function loadAllPlayableLevels(): Promise<Level[]> {
+  return Promise.all(PLAYABLE_LEVEL_IDS.map((id) => LEVEL_LOADERS[id]!()))
 }

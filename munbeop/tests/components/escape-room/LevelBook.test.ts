@@ -12,7 +12,6 @@ describe('LevelPage', () => {
     ...playable,
     id: 'future-level',
     status: 'coming-soon',
-    level: undefined,
   } satisfies LevelBookEntry
 
   it('renders cover, title, tagline and TOPIK badge', () => {

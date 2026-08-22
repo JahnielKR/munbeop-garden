@@ -5,7 +5,7 @@ import type {
   ScriptedBeat,
   SelectionCandidate,
 } from '~/lib/domain'
-import { t } from './locale'
+import { t } from './translations/levels/level-03'
 
 /**
  * Level 3 — "El mercado nocturno (달빛시장)"

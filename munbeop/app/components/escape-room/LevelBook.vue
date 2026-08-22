@@ -12,7 +12,7 @@ import LevelPage from './LevelPage.vue'
  */
 
 interface Props {
-  entries: LevelBookEntry[]
+  entries: readonly LevelBookEntry[]
 }
 
 const props = defineProps<Props>()

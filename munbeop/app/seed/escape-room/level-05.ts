@@ -5,7 +5,7 @@ import type {
   ScriptedBeat,
   SelectionCandidate,
 } from '~/lib/domain'
-import { t } from './locale'
+import { t } from './translations/levels/level-05'
 
 /**
  * Level 5 — "La cocina del abuelo (할아버지의 부엌)"

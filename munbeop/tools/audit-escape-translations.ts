@@ -1,7 +1,8 @@
 import { writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { LOCALE_CODES, type LocalizedString } from '~/lib/domain'
-import { LEVEL_REGISTRY } from '~/seed/escape-room/registry'
+import { ESCAPE_LEVEL_CATALOG } from '~/seed/escape-room/catalog'
+import { loadAllPlayableLevels } from '~/seed/escape-room/load-level'
 import { TRANSLATIONS } from '~/seed/escape-room/translations'
 
 type TargetLocale = Exclude<(typeof LOCALE_CODES)[number], 'es'>
@@ -65,7 +66,8 @@ function collectLocalizedStrings(
 }
 
 const sources = new Map<string, Set<string>>()
-for (const entry of LEVEL_REGISTRY) {
+const playableLevels = await loadAllPlayableLevels()
+for (const entry of [...ESCAPE_LEVEL_CATALOG, ...playableLevels]) {
   collectLocalizedStrings(entry, entry.id, sources)
 }
 

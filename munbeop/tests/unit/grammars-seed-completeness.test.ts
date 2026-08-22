@@ -11,7 +11,7 @@ const LOCALES = ['en', 'es', 'fr', 'pt-BR', 'th', 'id', 'vi', 'ja'] as const
 
 describe('usageNotes seed completeness', () => {
   // COMPLETE: every catalog grammar (TOPIK 1–6) has a detailed usage note in all
-  // 8 locales, looked up by ko from app/seed/usage-notes (NOT off the Grammar
+  // 8 locales, looked up by ko from the indexed usage-note shards (NOT off the Grammar
   // object — the Supabase catalog doesn't carry them). A new grammar shipped
   // without a matching note fails here.
   const all = [
