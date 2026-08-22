@@ -6,6 +6,10 @@ import EscapeRoom from '~/components/escape-room/EscapeRoom.vue'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import { makeLevel, ls } from '../../unit/escape-room/_fixture'
 
+vi.mock('~/stores/activity', () => ({
+  useActivityStore: () => ({ record: vi.fn() }),
+}))
+
 /**
  * Wiring tests for EscapeRoom ↔ useEscapeRoomAudio. We STUB the composable so
  * the assertions are about *which calls EscapeRoom makes* (room change → ambient

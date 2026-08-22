@@ -6,6 +6,7 @@
  * `rescue` to the guided rescue drill on the worst grammar.
  */
 import Button from '~/components/ui/Button.vue'
+import Card from '~/components/ui/Card.vue'
 
 defineProps<{ count: number }>()
 defineEmits<{ view: []; rescue: [] }>()
@@ -14,7 +15,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="weak" role="region" :aria-label="t('library.weak.label')">
+  <Card accent="red" class="weak" role="region" :aria-label="t('library.weak.label')">
     <p class="weak__text">{{ t('library.weak.summary', { n: count }) }}</p>
     <div class="weak__actions">
       <Button variant="secondary" size="sm" data-testid="weak-view" @click="$emit('view')">
@@ -24,7 +25,7 @@ const { t } = useI18n()
         {{ t('library.weak.rescue') }}
       </Button>
     </div>
-  </div>
+  </Card>
 </template>
 
 <style scoped>
@@ -34,14 +35,10 @@ const { t } = useI18n()
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  background: var(--paper-warm);
-  border: 2px solid var(--border);
-  border-left: 6px solid var(--red);
-  padding: 12px 16px;
 }
 .weak__text {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-ui);
   font-size: 14px;
   font-weight: 600;
   color: var(--ink);

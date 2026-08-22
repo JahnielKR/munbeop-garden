@@ -27,11 +27,22 @@ describe('LogEntryRow', () => {
   it('shows the reviewed badge instead of the button once reviewed', () => {
     const w = mount(LogEntryRow, { props: { entry: entry({ reviewState: 'correct' }) } })
     expect(w.find('[data-testid="mark-reviewed"]').exists()).toBe(false)
-    expect(w.find('[data-testid="reviewed-badge"]').exists()).toBe(true)
+    const badge = w.get('[data-testid="reviewed-badge"]')
+    expect(badge.attributes('data-variant')).toBe('jade')
+    expect(badge.find('svg').exists()).toBe(true)
+    expect(badge.text()).not.toContain('✓')
   })
   it('emits delete with the entry id when the delete control is clicked', async () => {
     const w = mount(LogEntryRow, { props: { entry: entry() } })
     await w.find('[data-testid="delete-entry"]').trigger('click')
     expect(w.emitted('delete')?.[0]?.[0]).toBe(7)
+  })
+
+  it('uses canonical pixel controls for review and delete', () => {
+    const w = mount(LogEntryRow, { props: { entry: entry() } })
+
+    expect(w.get('[data-testid="mark-reviewed"]').attributes('data-variant')).toBe('secondary')
+    expect(w.get('[data-testid="delete-entry"]').find('svg').exists()).toBe(true)
+    expect(w.text()).not.toContain('✕')
   })
 })

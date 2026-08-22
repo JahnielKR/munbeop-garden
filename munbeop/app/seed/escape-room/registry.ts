@@ -36,7 +36,7 @@ export interface LevelBookEntry {
   tagline: LocalizedString
   /** Short mood descriptor, e.g. "Slice of life · Cálido". */
   mood: LocalizedString
-  /** Cover image path under `/escape-room/covers/`. */
+  /** Cover image path under `/escape-room/`. */
   cover: string
   topikLevel: TopikLevel
   status: LevelStatus
@@ -51,7 +51,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_01.title,
     tagline: LEVEL_01.tagline,
     mood: t('Slice of life · Cálido'),
-    cover: '/escape-room/covers/level-01-v2.webp',
+    cover: '/escape-room/level-01/rooms/cinematic-intro-v2.webp',
     topikLevel: 1,
     status: 'playable',
     level: LEVEL_01,
@@ -62,7 +62,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_02.title,
     tagline: LEVEL_02.tagline,
     mood: t('Místico · Contemplativo'),
-    cover: '/escape-room/covers/level-02-v2.webp',
+    cover: '/escape-room/level-02/rooms/cinematic-intro-v2.webp',
     topikLevel: 2,
     status: 'playable',
     level: LEVEL_02,
@@ -73,7 +73,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_03.title,
     tagline: LEVEL_03.tagline,
     mood: t('Energético · Callejero'),
-    cover: '/escape-room/covers/level-03-v2.webp',
+    cover: '/escape-room/level-03/rooms/cinematic-intro-v2.webp',
     topikLevel: 2,
     status: 'playable',
     level: LEVEL_03,
@@ -84,7 +84,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_04.title,
     tagline: LEVEL_04.tagline,
     mood: t('Urgente · Contemporáneo'),
-    cover: '/escape-room/covers/level-04-v2.webp',
+    cover: '/escape-room/level-04/rooms/cinematic-intro-v2.webp',
     topikLevel: 3,
     status: 'playable',
     level: LEVEL_04,
@@ -95,7 +95,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_05.title,
     tagline: LEVEL_05.tagline,
     mood: t('Nostálgico · Familiar'),
-    cover: '/escape-room/covers/level-05-v2.webp',
+    cover: '/escape-room/level-05/rooms/cinematic-intro-v2.webp',
     topikLevel: 3,
     status: 'playable',
     level: LEVEL_05,
@@ -106,7 +106,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_06.title,
     tagline: LEVEL_06.tagline,
     mood: t('Meta-pop · Divertido'),
-    cover: '/escape-room/covers/level-06-v2.webp',
+    cover: '/escape-room/level-06/rooms/cinematic-intro-v2.webp',
     topikLevel: 4,
     status: 'playable',
     level: LEVEL_06,
@@ -117,7 +117,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_07.title,
     tagline: LEVEL_07.tagline,
     mood: t('Corporativo · Nocturno'),
-    cover: '/escape-room/covers/level-07-v2.webp',
+    cover: '/escape-room/level-07/rooms/cinematic-intro-v2.webp',
     topikLevel: 4,
     status: 'playable',
     level: LEVEL_07,
@@ -128,7 +128,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_08.title,
     tagline: LEVEL_08.tagline,
     mood: t('Histórico · Misterioso'),
-    cover: '/escape-room/covers/level-08-v2.webp',
+    cover: '/escape-room/level-08/rooms/cinematic-intro-v2.webp',
     topikLevel: 5,
     status: 'playable',
     level: LEVEL_08,
@@ -139,7 +139,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_09.title,
     tagline: LEVEL_09.tagline,
     mood: t('Intriga · Denso'),
-    cover: '/escape-room/covers/level-09-v2.webp',
+    cover: '/escape-room/level-09/rooms/cinematic-intro-v2.webp',
     topikLevel: 5,
     status: 'playable',
     level: LEVEL_09,
@@ -150,7 +150,7 @@ export const LEVEL_REGISTRY: LevelBookEntry[] = [
     title: LEVEL_10.title,
     tagline: LEVEL_10.tagline,
     mood: t('Diplomático · Tenso'),
-    cover: '/escape-room/covers/level-10-v2.webp',
+    cover: '/escape-room/level-10/rooms/cinematic-intro-v2.webp',
     topikLevel: 6,
     status: 'playable',
     level: LEVEL_10,

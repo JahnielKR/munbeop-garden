@@ -5,6 +5,7 @@ import type { MarketItem, NumberDomain } from '~/lib/domain'
 import { useActivityStore } from '~/stores/activity'
 import { useSettingsStore } from '~/stores/settings'
 import { useAuthStore } from '~/stores/auth'
+import { useStudySession } from '~/composables/useStudySession'
 import { useNumberMarketMaster } from '~/composables/useNumberMarketMaster'
 import type { PracticeSaveStatus } from '~/lib/practice/persistence'
 
@@ -36,6 +37,7 @@ export function useNumberSpeed(master = useNumberMarketMaster()) {
   // across accounts on a shared device).
   const settings = useSettingsStore()
   const auth = useAuthStore()
+  const studySession = useStudySession()
 
   const deckId = ref<SpeedDeckId>('mixed')
   const queue = ref<MarketItem[]>([])
@@ -75,6 +77,7 @@ export function useNumberSpeed(master = useNumberMarketMaster()) {
   }
 
   function start(id: SpeedDeckId) {
+    studySession.begin()
     if (locked.value || !master.resetSaveStatus()) return false
     deckId.value = id
     runOwnerUserId = auth.user?.id ?? null
@@ -111,7 +114,9 @@ export function useNumberSpeed(master = useNumberMarketMaster()) {
     } else {
       combo.value = 0
     }
-    if ((auth.user?.id ?? null) === runOwnerUserId) void activity.record()
+    if ((auth.user?.id ?? null) === runOwnerUserId && studySession.isCurrent()) {
+      void activity.record('number-speed')
+    }
     advance()
   }
 
@@ -122,9 +127,10 @@ export function useNumberSpeed(master = useNumberMarketMaster()) {
     phase.value = 'done'
     const accuracy = answered.value > 0 ? score.value / answered.value : 0
     const isRecord = score.value > 0 && score.value > bestScore.value
-    const qualifiesForMastery = deckId.value !== 'mixed'
-      && answered.value >= MIN_SPEED_MASTERY_ATTEMPTS
-      && accuracy >= MASTERY_ACCURACY
+    const qualifiesForMastery =
+      deckId.value !== 'mixed' &&
+      answered.value >= MIN_SPEED_MASTERY_ATTEMPTS &&
+      accuracy >= MASTERY_ACCURACY
 
     pendingSave = {
       ownerUserId: runOwnerUserId,
@@ -150,7 +156,8 @@ export function useNumberSpeed(master = useNumberMarketMaster()) {
     const task = pendingSave
     if (!task) return Promise.resolve(true)
 
-    const taskStillOwned = () => (auth.user?.id ?? null) === task.ownerUserId
+    const taskStillOwned = () =>
+      (auth.user?.id ?? null) === task.ownerUserId && studySession.isCurrent()
     const abandonStaleTask = () => {
       if (pendingSave === task) pendingSave = null
       saveStatus.value = 'idle'
@@ -165,9 +172,10 @@ export function useNumberSpeed(master = useNumberMarketMaster()) {
         // Both operations update one settings blob. Awaiting them in sequence,
         // together with the store's FIFO snapshot queue, prevents clobbering.
         if (!task.masterySaved) {
-          const mastered = master.saveStatus.value === 'error'
-            ? await master.retrySave()
-            : await master.recordRound(task.deckId, task.accuracy)
+          const mastered =
+            master.saveStatus.value === 'error'
+              ? await master.retrySave()
+              : await master.recordRound(task.deckId, task.accuracy)
           if (!taskStillOwned()) return abandonStaleTask()
           if (!mastered) {
             saveStatus.value = 'error'

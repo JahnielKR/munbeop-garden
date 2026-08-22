@@ -1,9 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { staticPoseGroup, POSES } from '~/lib/bomi/poses'
 
-// Bomi animates via motion-v (WAAPI), which CSS `prefers-reduced-motion` rules
-// can't stop — so the component collapses each pose group with staticPoseGroup()
-// when the user asked for reduced motion. Test that pure reduction here.
+// Bomi animates with CSS and exposes a deterministic resting frame for each
+// pose so the reduced-motion presentation remains independently testable.
 describe('staticPoseGroup (Bomi reduced-motion)', () => {
   it('collapses keyframe arrays to their resting (last) value', () => {
     const idleBee = POSES.idle.bee!

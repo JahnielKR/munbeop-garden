@@ -130,7 +130,7 @@
   "stats": {
     "empty": "まだ統計はありません — 練習で文をいくつか書くと、ここにあなたの庭の物語が始まります。",
     "hero": {
-      "sentences": "書いた文の数",
+      "sentences": "学習記録",
       "streak": "連続日数",
       "mastered": "習得した文法",
       "pending": "未復習"
@@ -138,14 +138,35 @@
     "activity": {
       "title": "あなたの庭、日々の記録",
       "sub": "練習した日はマスが緑に変わります。",
-      "tooltip": "{count} 回答",
-      "avg": "1日の平均",
+      "tooltip": "学習アクション: {count}",
+      "avg": "活動日あたり平均",
       "days_active": "アクティブ日数",
       "streak_current": "現在の連続日数",
       "streak_longest": "最長連続日数",
       "year_prev": "前の年",
       "year_next": "次の年",
-      "grid_summary": "{year}年の活動: アクティブな日数 {days} 日、回答 {total} 件。"
+      "legend_less": "少",
+      "legend_more": "多",
+      "grid_summary": "{year}年の活動: アクティブな日数 {days} 日、学習アクション {total} 件。"
+    },
+    "period": {
+      "title": "期間のペース",
+      "sub": "最近の学習ペースをコンパクトに確認できます。",
+      "filter_label": "表示期間を選択",
+      "range_7": "7日",
+      "range_30": "30日",
+      "range_90": "90日",
+      "range_all": "すべて",
+      "actions": "学習アクション",
+      "active_days": "学習した日",
+      "goal_days": "目標達成日",
+      "average": "学習日平均",
+      "change": "前期間との差",
+      "comparison_none": "比較できる前期間はありません",
+      "goal": "累積目標",
+      "goal_progress": "{current} / {target} アクション",
+      "goal_aria": "累積目標：{target}アクション中{current}（{percent}%）。",
+      "scope": "このフィルターで変わるのは期間のペースだけです。ヒートマップ、習熟度、履歴統計は全期間のままです。"
     },
     "mastery": {
       "title": "TOPIK 1〜6の習得度",
@@ -153,16 +174,16 @@
     },
     "rhythm": {
       "title": "練習のリズム",
-      "sub": "週ごとの文の数 · 直近8週間",
+      "sub": "週ごとの学習記録 · 直近8週間",
       "easy": "簡単だった",
       "hard": "難しかった",
-      "aria": "過去{weeks}週間で{total}文。",
+      "aria": "過去{weeks}週間で学習記録{total}件。",
       "axis_oldest": "以前",
       "axis_newest": "今週"
     },
     "contexts": {
       "title": "よく使う文脈",
-      "sub": "最もよく書く場面"
+      "sub": "最もよく使う場面"
     },
     "achievements": {
       "title": "実績",
@@ -655,7 +676,12 @@
       "use_initial": "イニシャルを使う",
       "owned": "{owned}/{total} 収集済み",
       "locked": "ロック中",
-      "tier": { "common": "コモン", "rare": "レア", "epic": "エピック", "legendary": "レジェンダリー" },
+      "tier": {
+        "common": "コモン",
+        "rare": "レア",
+        "epic": "エピック",
+        "legendary": "レジェンダリー"
+      },
       "req": {
         "trees": "文法ポイントを {n} 個マスターする",
         "mastered_pct": "カタログの {pct}% をマスターする",

@@ -1,12 +1,28 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { LocalStorageAdapter } from '~/lib/storage/localStorage'
 import { STORAGE_KEYS } from '~/lib/storage/keys'
+import type { LogEntry } from '~/lib/domain'
 
 describe('LocalStorageAdapter (async)', () => {
   let adapter: LocalStorageAdapter
 
   beforeEach(() => {
+    localStorage.clear()
     adapter = new LocalStorageAdapter()
+  })
+
+  const journalEntry = (over: Partial<LogEntry> = {}): LogEntry => ({
+    id: 41,
+    ko: 'A',
+    sentence: 'sentence',
+    feedback: 'easy',
+    errorNote: null,
+    reviewState: 'unreviewed',
+    contextId: 'banmal',
+    contextName: 'banmal',
+    date: '2026-08-22T00:00:00.000Z',
+    revision: 0,
+    ...over,
   })
 
   it('returns fallback when missing', async () => {
@@ -68,7 +84,10 @@ describe('LocalStorageAdapter (async)', () => {
   })
 
   it('updateOne replaces only an existing collection row and never inserts a missing id', async () => {
-    await adapter.write(STORAGE_KEYS.log, [{ id: 1, state: 'old' }, { id: 2, state: 'keep' }])
+    await adapter.write(STORAGE_KEYS.log, [
+      { id: 1, state: 'old' },
+      { id: 2, state: 'keep' },
+    ])
     await expect(
       adapter.updateOne(STORAGE_KEYS.log, { id: 1, value: { id: 1, state: 'new' } }),
     ).resolves.toBe(true)
@@ -79,6 +98,83 @@ describe('LocalStorageAdapter (async)', () => {
       { id: 1, state: 'new' },
       { id: 2, state: 'keep' },
     ])
+  })
+
+  it('atomically saves/reviews/deletes a journal row with authoritative SRS revisions', async () => {
+    const saved = await adapter.saveJournalEntry(journalEntry())
+    expect(saved).toMatchObject({
+      entry: { id: 41, revision: 0 },
+      progress: { ko: 'A', easyCount: 1, hardCount: 0, revision: 1 },
+    })
+    expect(
+      await adapter.read<Record<string, Record<string, unknown>>>(STORAGE_KEYS.srs, {}),
+    ).toEqual({
+      A: expect.not.objectContaining({ ko: expect.anything() }),
+    })
+
+    const reviewed = await adapter.setJournalReview({
+      id: 41,
+      reviewState: 'incorrect',
+      errorNote: 'particle',
+      expectedRevision: 0,
+    })
+    expect(reviewed).toMatchObject({
+      entry: { reviewState: 'incorrect', errorNote: 'particle', revision: 1 },
+      progress: { easyCount: 0, hardCount: 0, revision: 2 },
+    })
+
+    // A lost response retry acknowledges the already-applied pair without
+    // incrementing the entry revision a second time.
+    const retried = await adapter.setJournalReview({
+      id: 41,
+      reviewState: 'incorrect',
+      errorNote: 'particle',
+      expectedRevision: 0,
+    })
+    expect(retried.entry.revision).toBe(1)
+
+    const deleted = await adapter.deleteJournalEntry({
+      id: 41,
+      expectedKo: 'A',
+      expectedRevision: 1,
+    })
+    expect(deleted).toMatchObject({ deleted: true, id: 41, progress: { easyCount: 0 } })
+    expect(await adapter.read(STORAGE_KEYS.log, [])).toEqual([])
+  })
+
+  it('rejects reuse of a stable journal id with different immutable content', async () => {
+    await adapter.saveJournalEntry(journalEntry())
+    await expect(adapter.saveJournalEntry(journalEntry({ sentence: 'different' }))).rejects.toThrow(
+      /different payload/i,
+    )
+  })
+
+  it('treats reordered but equal journal objects as the same idempotent payload', async () => {
+    const first = journalEntry()
+    await adapter.saveJournalEntry(first)
+    const reordered: LogEntry = {
+      revision: 0,
+      date: first.date,
+      contextName: first.contextName,
+      contextId: first.contextId,
+      reviewState: first.reviewState,
+      errorNote: first.errorNote,
+      feedback: first.feedback,
+      sentence: first.sentence,
+      ko: first.ko,
+      id: first.id,
+    }
+    await expect(adapter.saveJournalEntry(reordered)).resolves.toMatchObject({
+      entry: { id: first.id },
+    })
+  })
+
+  it('never moves lastSeen backwards', async () => {
+    const newest = await adapter.markProgressSeen('A', 2000)
+    const lateRetry = await adapter.markProgressSeen('A', 1000)
+    expect(newest.lastSeen).toBe(2000)
+    expect(lateRetry.lastSeen).toBe(2000)
+    expect(lateRetry.revision).toBe(newest.revision)
   })
 
   it('clear wipes known keys only', async () => {

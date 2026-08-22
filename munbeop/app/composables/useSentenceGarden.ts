@@ -9,23 +9,31 @@ import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useActivityStore } from '~/stores/activity'
 import { useAuthStore } from '~/stores/auth'
+import { useStudySession } from '~/composables/useStudySession'
 
 export type SGPhase = 'placing' | 'right' | 'wrong' | 'done'
 export type SGRunMode = 'normal' | 'replay'
-export interface SGCard { id: number; text: string }
+export interface SGCard {
+  id: number
+  text: string
+}
 
 const LAB_CONTEXT = { id: 'sentence-garden-lab', name: '문장 정원 LAB' }
 const ROUND_SIZE = 8
 const CREDIT_THRESHOLD = 0.7
 const POOL = SENTENCE_GARDEN_POOL
 
-interface SGResult { index: number; sentence: string; ko: string; correct: boolean }
+interface SGResult {
+  index: number
+  sentence: string
+  ko: string
+  correct: boolean
+}
 
 interface PendingMistakeWrite {
   logId: number
   round: SentenceGardenRound
   logSaved: boolean
-  recalculated: boolean
 }
 
 interface PendingCreditWrite {
@@ -33,7 +41,6 @@ interface PendingCreditWrite {
   ko: string
   firstCorrect: SentenceGardenRound | null
   logSaved: boolean
-  recalculated: boolean
 }
 
 export function useSentenceGarden() {
@@ -41,6 +48,7 @@ export function useSentenceGarden() {
   const srsStore = useSrsStore()
   const activity = useActivityStore()
   const auth = useAuthStore()
+  const studySession = useStudySession()
   const { playExample } = useExampleAudio()
 
   const sessionItems = ref<SentenceGardenRound[]>([])
@@ -63,7 +71,11 @@ export function useSentenceGarden() {
   let runGeneration = 0
 
   function runStillOwned(ownerUserId = runOwnerUserId, generation = runGeneration): boolean {
-    return (auth.user?.id ?? null) === ownerUserId && runGeneration === generation
+    return (
+      (auth.user?.id ?? null) === ownerUserId &&
+      runGeneration === generation &&
+      studySession.isCurrent()
+    )
   }
 
   const item = computed<SentenceGardenRound>(() => sessionItems.value[index.value]!)
@@ -72,12 +84,12 @@ export function useSentenceGarden() {
     total: results.value.length,
   }))
   const failedItems = computed(() => {
-    const failed = new Set(results.value.filter((result) => !result.correct).map((result) => result.index))
+    const failed = new Set(
+      results.value.filter((result) => !result.correct).map((result) => result.index),
+    )
     return sessionItems.value.filter((_round, roundIndex) => failed.has(roundIndex))
   })
-  const canCheck = computed(
-    () => !!item.value && placed.value.length === item.value.answer.length,
-  )
+  const canCheck = computed(() => !!item.value && placed.value.length === item.value.answer.length)
 
   function loadRound() {
     tray.value = item.value.cards.map((text, id) => ({ id, text }))
@@ -127,6 +139,7 @@ export function useSentenceGarden() {
   }
 
   function start(kos: string[]) {
+    studySession.begin()
     runGeneration += 1
     runOwnerUserId = auth.user?.id ?? null
     runMode.value = 'normal'
@@ -179,7 +192,7 @@ export function useSentenceGarden() {
       correct,
     })
     phase.value = correct ? 'right' : 'wrong'
-    if (runStillOwned()) void activity.record()
+    if (runStillOwned()) void activity.record('sentence-garden')
     if (correct) {
       playExample(item.value.sentence)
     } else if (runMode.value === 'normal') {
@@ -187,7 +200,6 @@ export function useSentenceGarden() {
         logId: logStore.createEntryId(),
         round: item.value,
         logSaved: false,
-        recalculated: false,
       }
       void persistPending()
     }
@@ -235,29 +247,31 @@ export function useSentenceGarden() {
     }
 
     for (const [ko, group] of byKo) {
-      const shouldCredit = !!group.firstCorrect
-        && group.total > 0
-        && group.correct / group.total >= CREDIT_THRESHOLD
+      const shouldCredit =
+        !!group.firstCorrect && group.total > 0 && group.correct / group.total >= CREDIT_THRESHOLD
       pendingCredits.set(ko, {
         logId: shouldCredit ? logStore.createEntryId() : null,
         ko,
         firstCorrect: group.firstCorrect,
         logSaved: !shouldCredit,
-        recalculated: false,
       })
     }
   }
 
   async function logMistake(round: SentenceGardenRound, stableId: number) {
-    await logStore.add({
-      ko: round.ko,
-      sentence: round.sentence,
-      feedback: 'hard',
-      errorNote: null,
-      reviewState: 'incorrect',
-      contextId: LAB_CONTEXT.id,
-      contextName: LAB_CONTEXT.name,
-    }, stableId)
+    await logStore.add(
+      {
+        ko: round.ko,
+        sentence: round.sentence,
+        feedback: 'hard',
+        errorNote: round.answer.join(' '),
+        errorDimension: 'word_order',
+        reviewState: 'incorrect',
+        contextId: LAB_CONTEXT.id,
+        contextName: LAB_CONTEXT.name,
+      },
+      stableId,
+    )
   }
 
   async function saveMistakeWrite(ownerUserId: string | null, generation: number) {
@@ -268,11 +282,6 @@ export function useSentenceGarden() {
       if (!runStillOwned(ownerUserId, generation)) return
       pendingMistake.logSaved = true
     }
-    if (!pendingMistake.recalculated) {
-      await srsStore.recalculate(pendingMistake.round.ko)
-      if (!runStillOwned(ownerUserId, generation)) return
-      pendingMistake.recalculated = true
-    }
     pendingMistake = null
   }
 
@@ -282,22 +291,20 @@ export function useSentenceGarden() {
       if (!runStillOwned(ownerUserId, generation)) return
       try {
         if (!task.logSaved && task.firstCorrect && task.logId !== null) {
-          await logStore.add({
-            ko,
-            sentence: task.firstCorrect.sentence,
-            feedback: 'easy',
-            errorNote: null,
-            reviewState: 'correct',
-            contextId: LAB_CONTEXT.id,
-            contextName: LAB_CONTEXT.name,
-          }, task.logId)
+          await logStore.add(
+            {
+              ko,
+              sentence: task.firstCorrect.sentence,
+              feedback: 'easy',
+              errorNote: null,
+              reviewState: 'correct',
+              contextId: LAB_CONTEXT.id,
+              contextName: LAB_CONTEXT.name,
+            },
+            task.logId,
+          )
           if (!runStillOwned(ownerUserId, generation)) return
           task.logSaved = true
-        }
-        if (!task.recalculated) {
-          await srsStore.recalculate(ko)
-          if (!runStillOwned(ownerUserId, generation)) return
-          task.recalculated = true
         }
         pendingCredits.delete(ko)
       } catch (error) {
@@ -315,8 +322,8 @@ export function useSentenceGarden() {
     saving.value = true
     saveError.value = false
     try {
-      // Preserve write order: markSeen carries a pre-round SRS snapshot and
-      // must settle before any recalculation. Only failed stages remain pending.
+      // Preserve write order so exposure timestamps settle before atomic diary
+      // writes return their authoritative progress snapshots.
       await saveMarkSeenPending(ownerUserId, generation)
       if (!runStillOwned(ownerUserId, generation)) return false
       await saveMistakeWrite(ownerUserId, generation)

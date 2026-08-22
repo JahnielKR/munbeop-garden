@@ -9,4 +9,6 @@ export interface SrsState {
   hardCount: number
   /** Current mastery level. */
   mastery: MasteryLevel
+  /** Server-authoritative version. Legacy/local snapshots hydrate as revision 0. */
+  revision?: number
 }

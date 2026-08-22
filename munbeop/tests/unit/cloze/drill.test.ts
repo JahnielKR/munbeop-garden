@@ -1,6 +1,7 @@
 // tests/unit/cloze/drill.test.ts
 import { describe, it, expect } from 'vitest'
-import { itemsForKos, optionsFor, buildRound, scoreOf, itemId, kosForDeck } from '~/lib/cloze'
+import { itemsForKos, optionsFor, buildRound, scoreOf, itemId } from '~/lib/cloze'
+import { kosForDeck } from '~/lib/cloze/deck'
 import type { ClozeItem } from '~/lib/domain'
 
 const fx: ClozeItem[] = [

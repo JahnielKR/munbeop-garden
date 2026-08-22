@@ -1,5 +1,14 @@
 import type { StorageAdapter, StorageRestore } from './adapter'
 import type { StorageKey } from './keys'
+import type { ActivityBatchResult, ActivityEvent } from '~/lib/activity/event'
+import type { LogEntry } from '~/lib/domain'
+import type {
+  JournalDeleteMutation,
+  JournalDeleteMutationResult,
+  JournalEntryMutationResult,
+  JournalReviewMutation,
+  ProgressRecord,
+} from './journal'
 
 /**
  * Adapter for the unauthenticated state. Accounts are mandatory
@@ -32,11 +41,37 @@ export class NoopStorageAdapter implements StorageAdapter {
 
   async upsertOne<V>(_key: StorageKey, _entry: { id: string | number; value: V }): Promise<void> {}
 
-  async increment(
-    _key: StorageKey,
-    _id: string | number,
-    _amount = 1,
-  ): Promise<number | null> {
+  async increment(_key: StorageKey, _id: string | number, _amount = 1): Promise<number | null> {
+    return null
+  }
+
+  async recordActivityEvents(
+    _events: readonly ActivityEvent[],
+  ): Promise<ActivityBatchResult | null> {
+    return null
+  }
+
+  async saveJournalEntry(_entry: LogEntry): Promise<JournalEntryMutationResult | null> {
+    return null
+  }
+
+  async setJournalReview(
+    _mutation: JournalReviewMutation,
+  ): Promise<JournalEntryMutationResult | null> {
+    return null
+  }
+
+  async deleteJournalEntry(
+    _mutation: JournalDeleteMutation,
+  ): Promise<JournalDeleteMutationResult | null> {
+    return null
+  }
+
+  async markProgressSeen(_ko: string, _seenAt: number): Promise<ProgressRecord | null> {
+    return null
+  }
+
+  async recalculateProgress(_ko: string): Promise<ProgressRecord | null> {
     return null
   }
 
@@ -45,7 +80,9 @@ export class NoopStorageAdapter implements StorageAdapter {
   async updateOne<V>(
     _key: StorageKey,
     _entry: { id: string | number; value: V },
-  ): Promise<boolean> { return true }
+  ): Promise<boolean> {
+    return true
+  }
 
   async deleteOne(_key: StorageKey, _id: string | number): Promise<void> {}
 

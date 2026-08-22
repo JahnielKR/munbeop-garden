@@ -46,6 +46,7 @@
   /* ---- Aliases that re-point ---- */
   --bg: var(--paper);
   --surface: var(--paper-warm);
+  --surface-muted: #151f31;               /* quiet inset tier — charts / filters */
   --surface-elevated: var(--paper-deep);  /* raised focal tier — midnight card floats over the abyssal panel */
   --surface-hover: var(--hover-bg);
   --text: var(--ink);

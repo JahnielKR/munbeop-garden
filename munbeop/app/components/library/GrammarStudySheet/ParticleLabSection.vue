@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import type { Grammar } from '~/lib/domain'
 import { PARTICLES } from '~/seed/particles'
+import Icon from '~/components/ui/Icon.vue'
 
 /** Shown only for grammars that exist in the Particle Lab catalog. */
 interface Props {
@@ -27,7 +28,8 @@ async function open() {
     <h3 class="lab-cta__title">{{ t('particles.sheet_section_title') }}</h3>
     <p class="lab-cta__body">{{ t('particles.sheet_section_body') }}</p>
     <button type="button" class="lab-cta__btn" data-testid="open-particle-lab" @click="open">
-      🧩 {{ t('particles.sheet_section_cta') }}
+      <Icon name="puzzle" :size="16" />
+      <span>{{ t('particles.sheet_section_cta') }}</span>
     </button>
   </section>
 </template>
@@ -56,6 +58,10 @@ async function open() {
 }
 .lab-cta__btn {
   width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   padding: 10px 14px;
   background: var(--gold);
   color: var(--always-dark);
@@ -72,6 +78,10 @@ async function open() {
 .lab-cta__btn:hover {
   transform: translate(-1px, -1px);
   box-shadow: 5px 5px 0 var(--shadow-cream);
+}
+.lab-cta__btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--shadow-cream);
 }
 .lab-cta__btn:focus-visible {
   outline: 2px solid var(--focus-ring);

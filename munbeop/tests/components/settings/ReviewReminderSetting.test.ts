@@ -10,8 +10,9 @@ vi.mock('~/stores/settings', () => ({
 describe('ReviewReminderSetting', () => {
   it('calls setReviewReminders(true) when toggled on', async () => {
     const w = mount(ReviewReminderSetting)
-    const box = w.find('input[type="checkbox"]')
-    await box.setValue(true)
+    const toggle = w.get('[role="switch"]')
+    expect(toggle.attributes('aria-checked')).toBe('false')
+    await toggle.trigger('click')
     expect(setReviewReminders).toHaveBeenCalledWith(true)
   })
 })

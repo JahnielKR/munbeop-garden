@@ -13,8 +13,8 @@ import { globalAchievementsFor, type DeckMastery } from '~/lib/achievements/glob
  * `now` is injected (default Date.now()) so the streak window is deterministic
  * in tests, mirroring useStats.
  */
-export function useGlobalAchievements(now: number = Date.now()) {
-  const { sentences, streak, masteredCount, catalogTotal } = useStats(now)
+export function useGlobalAchievements(now?: number) {
+  const { sentences, longestStreak, masteredCount, catalogTotal } = useStats(now)
   const { leeches } = useLeeches()
   const srs = useSrsStore()
   const grammar = useGrammarStore()
@@ -38,7 +38,7 @@ export function useGlobalAchievements(now: number = Date.now()) {
       trees: masteredCount.value,
       catalogTotal: catalogTotal.value,
       byLevel: byLevel.value,
-      streak: streak.value,
+      streak: longestStreak.value,
       leeches: leeches.value.length,
     }),
   )

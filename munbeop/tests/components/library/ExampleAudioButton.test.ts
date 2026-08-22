@@ -9,11 +9,17 @@ class FakeAudio {
   play = vi.fn(async () => {})
   pause = vi.fn()
   addEventListener = vi.fn()
-  constructor(src?: string) { this.src = src ?? ''; created.push(this) }
+  constructor(src?: string) {
+    this.src = src ?? ''
+    created.push(this)
+  }
 }
 
 describe('ExampleAudioButton', () => {
-  beforeEach(() => { created.length = 0; vi.stubGlobal('Audio', FakeAudio) })
+  beforeEach(() => {
+    created.length = 0
+    vi.stubGlobal('Audio', FakeAudio)
+  })
   afterEach(() => vi.unstubAllGlobals())
 
   it('renders a labelled button and plays the example on click', async () => {
@@ -23,6 +29,8 @@ describe('ExampleAudioButton', () => {
     })
     const btn = w.find('button')
     expect(btn.attributes('aria-label')).toBe('library.examples.play_audio')
+    expect(btn.find('svg').exists()).toBe(true)
+    expect(btn.text()).not.toContain('🔊')
     await btn.trigger('click')
     expect(created.length).toBe(1)
     expect(created[0]!.src).toContain('/grammar-examples/audio/')

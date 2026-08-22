@@ -149,7 +149,7 @@ export interface Room {
   /** Stable id within the level, e.g. "bedroom". */
   id: string
   title: LocalizedString
-  /** Path relative to `public/escape-room/<level-id>/`, e.g. "rooms/room-01-bedroom.png". */
+  /** Path relative to `public/escape-room/<level-id>/`, e.g. "rooms/room-01-bedroom-v2.webp". */
   image: string
   /** Looping ambient track, same path convention as `image`. */
   ambientAudio: string

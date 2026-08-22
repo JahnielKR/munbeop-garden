@@ -7,5 +7,7 @@ describe('GardenSkeleton', () => {
     const w = mount(GardenSkeleton, { global: { mocks: { $t: (k: string) => k } } })
     const status = w.get('[role="status"]')
     expect(status.attributes('aria-label')).toBe('garden.loading')
+    expect(status.find('svg.garden-skeleton__seed').exists()).toBe(true)
+    expect(w.text()).not.toContain('🌱')
   })
 })

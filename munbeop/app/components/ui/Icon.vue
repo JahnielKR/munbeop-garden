@@ -36,6 +36,10 @@ export type IconName =
   | 'deck-bolt'
   | 'deck-edit'
   | 'moon'
+  | 'check'
+  | 'close'
+  | 'speaker'
+  | 'puzzle'
 
 interface Props {
   name: IconName
@@ -65,10 +69,7 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
       <!-- chimney (2x2) at upper-right of roof -->
       <path d="M11 2h2v2h-2z" fill="currentColor" />
       <!-- red roof: stepped triangle, 5 rows -->
-      <path
-        d="M8 3h1v1H8z M7 4h3v1H7z M6 5h5v1H6z M5 6h7v1H5z M4 7h9v1H4z"
-        fill="var(--red)"
-      />
+      <path d="M8 3h1v1H8z M7 4h3v1H7z M6 5h5v1H6z M5 6h7v1H5z M4 7h9v1H4z" fill="var(--red)" />
       <!-- walls: 9x6 rectangle below roof -->
       <path d="M4 8h9v6H4z" fill="currentColor" />
       <!-- sky-blue window (left of door) -->
@@ -80,10 +81,7 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
     <!-- practice: 6-sided die showing the "5" face -->
     <template v-if="name === 'practice'">
       <!-- die outer outline (10x10 box) -->
-      <path
-        d="M3 3h10v1H3z M3 12h10v1H3z M3 4h1v8H3z M12 4h1v8h-1z"
-        fill="currentColor"
-      />
+      <path d="M3 3h10v1H3z M3 12h10v1H3z M3 4h1v8H3z M12 4h1v8h-1z" fill="currentColor" />
       <!-- five pips: 4 corners + center -->
       <path
         d="M5 5h1v1H5z M10 5h1v1h-1z M7 7h1v1H7z M5 10h1v1H5z M10 10h1v1h-1z"
@@ -122,24 +120,15 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
     <!-- log: rolled scroll with text lines -->
     <template v-if="name === 'log'">
       <!-- top rolled end ring (currentColor) -->
-      <path
-        d="M4 3h8v1H4z M3 4h1v2H3z M12 4h1v2h-1z M4 5h8v1H4z"
-        fill="currentColor"
-      />
+      <path d="M4 3h8v1H4z M3 4h1v2H3z M12 4h1v2h-1z M4 5h8v1H4z" fill="currentColor" />
       <!-- scroll body fill (paper-deep) -->
       <path d="M4 6h8v6H4z" fill="var(--paper-deep)" />
       <!-- scroll body side rails (currentColor) -->
       <path d="M3 6h1v6H3z M12 6h1v6h-1z" fill="currentColor" />
       <!-- text lines on scroll (ink-soft) -->
-      <path
-        d="M5 7h5v1H5z M5 9h5v1H5z M5 11h3v1H5z"
-        fill="var(--ink-soft)"
-      />
+      <path d="M5 7h5v1H5z M5 9h5v1H5z M5 11h3v1H5z" fill="var(--ink-soft)" />
       <!-- bottom rolled end ring -->
-      <path
-        d="M4 12h8v1H4z M3 13h1v1H3z M12 13h1v1h-1z M4 13h8v1H4z"
-        fill="currentColor"
-      />
+      <path d="M4 12h8v1H4z M3 13h1v1H3z M12 13h1v1h-1z M4 13h8v1H4z" fill="currentColor" />
     </template>
 
     <!-- settings: 4-tooth cog with center hole -->
@@ -156,10 +145,7 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
       <path d="M12 7h2v2h-2z" fill="currentColor" />
       <!-- right tooth -->
       <!-- chamfer the 4 outer corners (surface bg "perforates" toward the sidebar) -->
-      <path
-        d="M4 4h1v1H4z M11 4h1v1h-1z M4 11h1v1H4z M11 11h1v1h-1z"
-        fill="var(--surface)"
-      />
+      <path d="M4 4h1v1H4z M11 4h1v1h-1z M4 11h1v1H4z M11 11h1v1h-1z" fill="var(--surface)" />
       <!-- center hole punched out (paper) -->
       <path d="M7 7h2v2H7z" fill="var(--surface)" />
     </template>
@@ -186,7 +172,10 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
       <path d="M5 11h7v1H5z" fill="var(--ink-line)" />
       <path d="M7 14h3v1H7z" fill="var(--ink-soft)" />
       <path d="M8 7h1v1H8z M8 8h1v1H8z M8 9h1v1H8z M8 10h1v1H8z" fill="var(--jade-deep)" />
-      <path d="M6 5h5v1H6z M5 6h7v1H5z M6 7h2v1H6z M9 7h2v1H9z M7 8h1v1H7z M9 8h1v1H9z" fill="var(--jade)" />
+      <path
+        d="M6 5h5v1H6z M5 6h7v1H5z M6 7h2v1H6z M9 7h2v1H9z M7 8h1v1H7z M9 8h1v1H9z"
+        fill="var(--jade)"
+      />
       <path d="M5 6h1v1H5z M11 6h1v1H11z M7 7h1v1H7z M9 7h1v1H9z" fill="var(--jade-deep)" />
       <path d="M8 4h1v1H8z" fill="var(--jade)" />
     </template>
@@ -196,8 +185,14 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
          theme-invariant so the highlights stay light in dark mode. -->
     <template v-if="name === 'mastery-tree'">
       <path d="M7 10h1v1H7z M7 11h1v1H7z M7 12h1v1H7z M7 13h1v1H7z" fill="var(--ink-line)" />
-      <path d="M8 10h1v1H8z M8 11h1v1H8z M8 12h1v1H8z M8 13h1v1H8z M6 14h4v1H6z" fill="var(--ink-soft)" />
-      <path d="M6 2h4v1H6z M4 3h8v1H4z M3 4h10v1H3z M3 5h10v1H3z M3 6h10v1H3z M4 7h8v1H4z M5 8h6v1H5z M6 9h4v1H6z" fill="var(--rose)" />
+      <path
+        d="M8 10h1v1H8z M8 11h1v1H8z M8 12h1v1H8z M8 13h1v1H8z M6 14h4v1H6z"
+        fill="var(--ink-soft)"
+      />
+      <path
+        d="M6 2h4v1H6z M4 3h8v1H4z M3 4h10v1H3z M3 5h10v1H3z M3 6h10v1H3z M4 7h8v1H4z M5 8h6v1H5z M6 9h4v1H6z"
+        fill="var(--rose)"
+      />
       <path d="M5 4h2v1H5z M4 5h2v1H4z" fill="var(--always-cream)" />
       <path d="M10 4h1v1H10z M8 5h1v1H8z M9 6h1v1H9z M6 7h1v1H6z" fill="var(--gold)" />
     </template>
@@ -221,7 +216,10 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
 
     <!-- deck-heart -->
     <template v-if="name === 'deck-heart'">
-      <path d="M3 4h3v1h1V4h2v1h1V4h3v5h-1v1h-1v1h-1v1h-1v1H8v-1H7v-1H6v-1H5V9H4V4z" fill="currentColor" />
+      <path
+        d="M3 4h3v1h1V4h2v1h1V4h3v5h-1v1h-1v1h-1v1h-1v1H8v-1H7v-1H6v-1H5V9H4V4z"
+        fill="currentColor"
+      />
     </template>
 
     <!-- deck-book -->
@@ -236,15 +234,52 @@ const props = withDefaults(defineProps<Props>(), { size: 16, label: '' })
 
     <!-- deck-edit: pencil -->
     <template v-if="name === 'deck-edit'">
-      <path d="M10 2h2v2h-2z M8 4h2v2H8z M6 6h2v2H6z M4 8h2v2H4z M3 11h2v2H3z M2 13h2v1H2z" fill="currentColor" />
+      <path
+        d="M10 2h2v2h-2z M8 4h2v2H8z M6 6h2v2H6z M4 8h2v2H4z M3 11h2v2H3z M2 13h2v1H2z"
+        fill="currentColor"
+      />
     </template>
 
     <!-- moon: a resting crescent (deck focus "off" state). Amber so it reads on
          both the light and dark button surfaces; cream rim + gold-shadow inner. -->
     <template v-if="name === 'moon'">
-      <path d="M8 2h1v1H8z M6 3h2v1H6z M5 4h2v1H5z M4 5h3v1H4z M4 6h3v1H4z M4 7h2v1H4z M4 8h2v1H4z M4 9h3v1H4z M4 10h3v1H4z M5 11h2v1H5z M6 12h2v1H6z M8 13h1v1H8z" fill="var(--gold)" />
-      <path d="M9 2h1v1H9z M8 3h1v1H8z M7 4h1v1H7z M7 5h1v1H7z M7 6h1v1H7z M6 7h1v1H6z M6 8h1v1H6z M7 9h1v1H7z M7 10h1v1H7z M7 11h1v1H7z M8 12h1v1H8z M9 13h1v1H9z" fill="var(--gold-shadow)" />
-      <path d="M7 2h1v1H7z M5 3h1v1H5z M4 4h1v1H4z M3 5h1v1H3z M3 6h1v1H3z M3 7h1v1H3z M3 8h1v1H3z M3 9h1v1H3z M3 10h1v1H3z M4 11h1v1H4z M5 12h1v1H5z M7 13h1v1H7z" fill="var(--always-cream)" />
+      <path
+        d="M8 2h1v1H8z M6 3h2v1H6z M5 4h2v1H5z M4 5h3v1H4z M4 6h3v1H4z M4 7h2v1H4z M4 8h2v1H4z M4 9h3v1H4z M4 10h3v1H4z M5 11h2v1H5z M6 12h2v1H6z M8 13h1v1H8z"
+        fill="var(--gold)"
+      />
+      <path
+        d="M9 2h1v1H9z M8 3h1v1H8z M7 4h1v1H7z M7 5h1v1H7z M7 6h1v1H7z M6 7h1v1H6z M6 8h1v1H6z M7 9h1v1H7z M7 10h1v1H7z M7 11h1v1H7z M8 12h1v1H8z M9 13h1v1H9z"
+        fill="var(--gold-shadow)"
+      />
+      <path
+        d="M7 2h1v1H7z M5 3h1v1H5z M4 4h1v1H4z M3 5h1v1H3z M3 6h1v1H3z M3 7h1v1H3z M3 8h1v1H3z M3 9h1v1H3z M3 10h1v1H3z M4 11h1v1H4z M5 12h1v1H5z M7 13h1v1H7z"
+        fill="var(--always-cream)"
+      />
+    </template>
+
+    <!-- Small utility glyphs use the same 2px stair-step construction as the
+         navigation registry, avoiding OS-dependent ✓ / ✕ / emoji rendering. -->
+    <template v-if="name === 'check'">
+      <path
+        d="M3 8h2v2H3z M5 10h2v2H5z M7 8h2v2H7z M9 6h2v2H9z M11 4h2v2h-2z"
+        fill="currentColor"
+      />
+    </template>
+
+    <template v-if="name === 'close'">
+      <path
+        d="M3 3h2v2H3z M5 5h2v2H5z M7 7h2v2H7z M9 9h2v2H9z M11 11h2v2h-2z M11 3h2v2h-2z M9 5h2v2H9z M5 9h2v2H5z M3 11h2v2H3z"
+        fill="currentColor"
+      />
+    </template>
+
+    <template v-if="name === 'speaker'">
+      <path d="M3 6h3V5h1V4h2v8H7v-1H6v-1H3z" fill="currentColor" />
+      <path d="M10 6h1v4h-1z M12 4h1v8h-1z" fill="currentColor" />
+    </template>
+
+    <template v-if="name === 'puzzle'">
+      <path d="M4 4h3V3h1V2h2v1h1v1h2v4h-2v2h2v3H9v-2H7v2H4v-3h2V8H4z" fill="currentColor" />
     </template>
   </svg>
 </template>

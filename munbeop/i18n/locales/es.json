@@ -130,7 +130,7 @@
   "stats": {
     "empty": "Aún no hay estadísticas — escribe unas frases en Práctica y la historia de tu jardín empieza aquí.",
     "hero": {
-      "sentences": "Frases escritas",
+      "sentences": "Entradas del diario",
       "streak": "Racha de días",
       "mastered": "Gramáticas dominadas",
       "pending": "Repasos pendientes"
@@ -138,14 +138,35 @@
     "activity": {
       "title": "Tu jardín, día a día",
       "sub": "Cada día que cultivas, una celda se vuelve verde.",
-      "tooltip": "{count} respondidas",
-      "avg": "Promedio diario",
+      "tooltip": "Acciones de estudio: {count}",
+      "avg": "Promedio / día activo",
       "days_active": "Días activos",
       "streak_current": "Racha actual",
       "streak_longest": "Racha más larga",
       "year_prev": "Año anterior",
       "year_next": "Año siguiente",
-      "grid_summary": "Actividad en {year}: {days} días activos, {total} respondidas."
+      "legend_less": "Menos",
+      "legend_more": "Más",
+      "grid_summary": "Actividad en {year}: {days} días activos, {total} acciones de estudio."
+    },
+    "period": {
+      "title": "Pulso del período",
+      "sub": "Un resumen compacto de tu ritmo de estudio reciente.",
+      "filter_label": "Elige el período del pulso",
+      "range_7": "7 d",
+      "range_30": "30 d",
+      "range_90": "90 d",
+      "range_all": "Todo",
+      "actions": "Acciones de estudio",
+      "active_days": "Días activos",
+      "goal_days": "Días con meta cumplida",
+      "average": "Prom. / día activo",
+      "change": "Cambio vs. período anterior",
+      "comparison_none": "Sin período comparable",
+      "goal": "Meta acumulada",
+      "goal_progress": "{current} / {target} acciones",
+      "goal_aria": "Meta acumulada: {current} de {target} acciones ({percent} %).",
+      "scope": "Este filtro solo cambia el pulso del período. El mapa de actividad, el dominio y las métricas históricas conservan todo su alcance."
     },
     "mastery": {
       "title": "Dominio por TOPIK 1–6",
@@ -153,16 +174,16 @@
     },
     "rhythm": {
       "title": "Ritmo de práctica",
-      "sub": "Frases por semana · últimas 8 semanas",
+      "sub": "Entradas por semana · últimas 8 semanas",
       "easy": "Fácil",
       "hard": "Difícil",
-      "aria": "{total} frases en las últimas {weeks} semanas.",
+      "aria": "{total} entradas del diario en las últimas {weeks} semanas.",
       "axis_oldest": "Antes",
       "axis_newest": "Esta semana"
     },
     "contexts": {
       "title": "Contextos top",
-      "sub": "Donde más escribes"
+      "sub": "Tus contextos más frecuentes"
     },
     "achievements": {
       "title": "Logros",
@@ -1239,6 +1260,11 @@
   "practiceHelp": {
     "button": "Explicación",
     "close": "Cerrar",
-    "section": { "concept": "¿Qué es?", "types": "Sus tipos", "howToPlay": "Cómo se juega", "tip": "Truco" }
+    "section": {
+      "concept": "¿Qué es?",
+      "types": "Sus tipos",
+      "howToPlay": "Cómo se juega",
+      "tip": "Truco"
+    }
   }
 }

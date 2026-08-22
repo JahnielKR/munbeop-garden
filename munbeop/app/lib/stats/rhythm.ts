@@ -8,11 +8,18 @@ import { localDayKey, ordinalOf } from './activity'
  * epoch-week (Thursday-UTC) boundary. `now` is injected for deterministic
  * tests. Entries outside the window are ignored.
  */
-export function weeklyCounts(dateMs: number[], now: number, weeks = 8): number[] {
+export function weeklyCounts(dates: Array<number | string>, now: number, weeks = 8): number[] {
   const todayOrd = ordinalOf(localDayKey(now))
   const out = new Array<number>(weeks).fill(0)
-  for (const ms of dateMs) {
-    const weeksAgo = Math.floor((todayOrd - ordinalOf(localDayKey(ms))) / 7)
+  for (const value of dates) {
+    const day =
+      typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
+        ? value
+        : typeof value === 'number' && Number.isFinite(value)
+          ? localDayKey(value)
+          : null
+    if (!day) continue
+    const weeksAgo = Math.floor((todayOrd - ordinalOf(day)) / 7)
     if (weeksAgo >= 0 && weeksAgo < weeks) {
       const idx = weeks - 1 - weeksAgo
       out[idx] = (out[idx] ?? 0) + 1

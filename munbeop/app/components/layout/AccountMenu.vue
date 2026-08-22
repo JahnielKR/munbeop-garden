@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useElementBounding, useWindowSize } from '@vueuse/core'
 import LocaleSwitcher from '~/components/layout/LocaleSwitcher.vue'
-import Premios from '~/components/layout/Premios.vue'
+import PremiosStrip from '~/components/layout/PremiosStrip.vue'
 import Field from '~/components/ui/Field.vue'
 import Toggle from '~/components/ui/Toggle.vue'
 import { NuxtLink } from '#components'
-import { usePremios } from '~/composables/usePremios'
+import { usePremioSummary } from '~/composables/usePremioSummary'
 import { useAuthStore } from '~/stores/auth'
+import { useAppStatus } from '~/stores/appStatus'
 import { useSettingsStore } from '~/stores/settings'
 import { useToast } from '~/composables/useToast'
 
@@ -34,10 +35,28 @@ const props = defineProps<{ collapsed?: boolean }>()
 const { t } = useI18n()
 const { resolved } = useTheme()
 const authStore = useAuthStore()
+const appStatus = useAppStatus()
 const settings = useSettingsStore()
 const { signOutAndExit } = useAuth()
 const toast = useToast()
-const { unlockedCount, totalCount, portrait } = usePremios()
+const { unlockedCount, totalCount, portrait } = usePremioSummary()
+
+const EMPTY_PORTRAIT = Object.freeze({
+  setUrl: undefined,
+  avatarUrl: undefined,
+  frameUrl: undefined,
+  bgUrl: undefined,
+  avatarTier: null,
+  chipColor: undefined,
+})
+const accountDataReady = computed(
+  () => authStore.ready && !!authStore.user && appStatus.status === 'ready',
+)
+// Account stores intentionally retain their last good snapshot while a cloud
+// read is pending or failed. That is useful for recovery, but the shared shell
+// must never render that snapshot after Auth has already published a different
+// user. Only expose account-derived portrait/reward state through this gate.
+const visiblePortrait = computed(() => (accountDataReady.value ? portrait.value : EMPTY_PORTRAIT))
 
 const open = ref(false)
 const rootRef = ref<HTMLElement | null>(null)
@@ -123,9 +142,7 @@ watch(open, async (isOpen) => {
   if (isOpen) {
     await nextTick()
     menuRef.value
-      ?.querySelector<HTMLElement>(
-        'button, [href], select, input, [tabindex]:not([tabindex="-1"])',
-      )
+      ?.querySelector<HTMLElement>('button, [href], select, input, [tabindex]:not([tabindex="-1"])')
       ?.focus()
   } else {
     avatarRef.value?.focus()
@@ -139,6 +156,14 @@ watch(
   () => {
     open.value = false
   },
+)
+
+// A teleported menu would otherwise remain visible across a direct account
+// switch, carrying A's reward count/settings controls beside B's identity.
+watch(
+  () => authStore.user?.id ?? null,
+  () => close(),
+  { flush: 'sync' },
 )
 
 onMounted(() => {
@@ -158,37 +183,48 @@ onUnmounted(() => {
       type="button"
       class="acct__avatar"
       :class="{
-        'acct__avatar--framed': !!portrait.frameUrl,
-        'acct__avatar--set': !!portrait.setUrl,
-        'acct__avatar--epic': portrait.avatarTier === 'epic',
-        'acct__avatar--legendary': portrait.avatarTier === 'legendary',
+        'acct__avatar--framed': !!visiblePortrait.frameUrl,
+        'acct__avatar--set': !!visiblePortrait.setUrl,
+        'acct__avatar--epic': visiblePortrait.avatarTier === 'epic',
+        'acct__avatar--legendary': visiblePortrait.avatarTier === 'legendary',
       }"
       aria-haspopup="true"
       :aria-expanded="open"
       :aria-label="email || t('settings.menu.account')"
       @click.stop="toggle"
     >
-      <span v-if="portrait.bgUrl" class="acct__avatar-bgclip" aria-hidden="true">
-        <span class="acct__avatar-bg" :style="{ backgroundImage: `url(${portrait.bgUrl})` }" />
+      <span v-if="visiblePortrait.bgUrl" class="acct__avatar-bgclip" aria-hidden="true">
+        <span
+          class="acct__avatar-bg"
+          :style="{ backgroundImage: `url(${visiblePortrait.bgUrl})` }"
+        />
       </span>
       <span
         class="acct__inner"
-        :style="portrait.chipColor ? { background: portrait.chipColor } : undefined"
+        :style="visiblePortrait.chipColor ? { background: visiblePortrait.chipColor } : undefined"
       >
-        <img v-if="portrait.avatarUrl" class="acct__inner-img" :src="portrait.avatarUrl" alt="" >
+        <!-- prettier-ignore -->
+        <img
+          v-if="visiblePortrait.avatarUrl"
+          class="acct__inner-img"
+          :src="visiblePortrait.avatarUrl"
+          alt=""
+        >
         <template v-else>{{ initial }}</template>
       </span>
+      <!-- prettier-ignore -->
       <img
-        v-if="portrait.frameUrl"
+        v-if="visiblePortrait.frameUrl"
         class="acct__avatar-frame"
-        :src="portrait.frameUrl"
+        :src="visiblePortrait.frameUrl"
         alt=""
         aria-hidden="true"
       >
+      <!-- prettier-ignore -->
       <img
-        v-if="portrait.setUrl"
+        v-if="visiblePortrait.setUrl"
         class="acct__avatar-set"
-        :src="portrait.setUrl"
+        :src="visiblePortrait.setUrl"
         alt=""
         aria-hidden="true"
       >
@@ -196,34 +232,36 @@ onUnmounted(() => {
 
     <p v-if="!collapsed" class="acct__identity">{{ localPart }}</p>
 
-    <Premios v-if="!collapsed" variant="strip" />
+    <PremiosStrip v-if="!collapsed && accountDataReady" />
 
     <Teleport to="body">
       <Transition name="acct-pop">
         <div v-if="open" ref="menuRef" class="acct__menu" role="menu" :style="menuStyle">
           <p class="acct__email">{{ email }}</p>
-          <div class="acct__row">
-            <Field :label="t('settings.dark_mode')" html-for="acct-dark" orientation="horizontal">
-              <Toggle id="acct-dark" v-model="isDark" :label="t('settings.dark_mode')" />
-            </Field>
-          </div>
-          <div class="acct__row">
-            <LocaleSwitcher />
-          </div>
-          <NuxtLink
-            to="/trophies"
-            class="acct__item acct__item--row"
-            role="menuitem"
-            @click="close"
-          >
-            <span>{{ t('escape.premios_title') }}</span>
-            <span class="acct__item-meta" :class="{ 'acct__item-meta--has': unlockedCount > 0 }">
-              {{ unlockedCount }}/{{ totalCount }} ▸
-            </span>
-          </NuxtLink>
-          <NuxtLink to="/settings" class="acct__item" role="menuitem" @click="close">
-            {{ t('nav.settings') }}
-          </NuxtLink>
+          <template v-if="accountDataReady">
+            <div class="acct__row">
+              <Field :label="t('settings.dark_mode')" html-for="acct-dark" orientation="horizontal">
+                <Toggle id="acct-dark" v-model="isDark" :label="t('settings.dark_mode')" />
+              </Field>
+            </div>
+            <div class="acct__row">
+              <LocaleSwitcher />
+            </div>
+            <NuxtLink
+              to="/trophies"
+              class="acct__item acct__item--row"
+              role="menuitem"
+              @click="close"
+            >
+              <span>{{ t('escape.premios_title') }}</span>
+              <span class="acct__item-meta" :class="{ 'acct__item-meta--has': unlockedCount > 0 }">
+                {{ unlockedCount }}/{{ totalCount }} ▸
+              </span>
+            </NuxtLink>
+            <NuxtLink to="/settings" class="acct__item" role="menuitem" @click="close">
+              {{ t('nav.settings') }}
+            </NuxtLink>
+          </template>
           <button type="button" class="acct__item acct__signout" role="menuitem" @click="onSignOut">
             {{ t('auth.sign_out') }}
           </button>
@@ -278,7 +316,6 @@ onUnmounted(() => {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
-
 .acct__inner {
   position: relative;
   z-index: 1;
@@ -349,7 +386,10 @@ onUnmounted(() => {
 /* ---- RARITY EFFECTS for the chosen garden avatar ---- */
 .acct__avatar--epic {
   --epic-glow: #8a5cd0;
-  box-shadow: var(--bevel), var(--shadow-pixel-md), 0 0 8px 1px var(--epic-glow);
+  box-shadow:
+    var(--bevel),
+    var(--shadow-pixel-md),
+    0 0 8px 1px var(--epic-glow);
 }
 [data-theme='dark'] .acct__avatar--epic {
   --epic-glow: #a982f0;
@@ -358,13 +398,27 @@ onUnmounted(() => {
   animation: acct-aura 2.4s ease-in-out infinite;
 }
 @keyframes acct-aura {
-  0%, 100% { box-shadow: var(--bevel), var(--shadow-pixel-md), 0 0 6px 1px var(--gold); }
-  50% { box-shadow: var(--bevel), var(--shadow-pixel-md), 0 0 13px 3px var(--gold); }
+  0%,
+  100% {
+    box-shadow:
+      var(--bevel),
+      var(--shadow-pixel-md),
+      0 0 6px 1px var(--gold);
+  }
+  50% {
+    box-shadow:
+      var(--bevel),
+      var(--shadow-pixel-md),
+      0 0 13px 3px var(--gold);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .acct__avatar--legendary {
     animation: none;
-    box-shadow: var(--bevel), var(--shadow-pixel-md), 0 0 10px 2px var(--gold);
+    box-shadow:
+      var(--bevel),
+      var(--shadow-pixel-md),
+      0 0 10px 2px var(--gold);
   }
 }
 /* collapsed 64px rail: keep the tile clean (cosmetics are already hidden) */

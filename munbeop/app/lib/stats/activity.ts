@@ -31,20 +31,42 @@ export function keyOfOrdinal(ord: number): string {
  * days have an activity tick per answer (>= log), so max never double-counts.
  */
 export function mergedDailyCounts(
-  logDateMs: number[],
+  logDates: Array<number | string>,
   activity: Record<string, ActivityDay>,
 ): Map<string, number> {
   const log = new Map<string, number>()
-  for (const ms of logDateMs) {
-    const k = localDayKey(ms)
+  for (const value of logDates) {
+    const k =
+      typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
+        ? value
+        : typeof value === 'number' && Number.isFinite(value)
+          ? localDayKey(value)
+          : null
+    if (!k) continue
     log.set(k, (log.get(k) ?? 0) + 1)
   }
   const out = new Map<string, number>()
   for (const [k, v] of log) out.set(k, v)
   for (const k of Object.keys(activity)) {
-    out.set(k, Math.max(out.get(k) ?? 0, activity[k]!.count))
+    const count = activity[k]!.count
+    // Imported/backfilled rows may legitimately contain zero. They are not
+    // study days and must not fabricate a streak or a non-empty Stats page.
+    if (!Number.isFinite(count) || count <= 0) continue
+    out.set(k, Math.max(out.get(k) ?? 0, count))
   }
   return out
+}
+
+/** Positive activity no later than `todayKey` (future/corrupt rows excluded). */
+export function boundedActivityCounts(
+  counts: Map<string, number>,
+  todayKey: string,
+): Map<string, number> {
+  return new Map(
+    [...counts].filter(
+      ([dayKey, count]) => Number.isFinite(count) && count > 0 && dayKey <= todayKey,
+    ),
+  )
 }
 
 /** Ramp level 0..4 for a day's count. */
@@ -67,7 +89,7 @@ export function dailyAverage(counts: Map<string, number>): number {
   const active = daysActive(counts)
   if (active === 0) return 0
   let total = 0
-  for (const v of counts.values()) total += v
+  for (const v of counts.values()) if (v > 0) total += v
   return Math.round(total / active)
 }
 
@@ -106,7 +128,6 @@ export function yearGrid(counts: Map<string, number>, year: number, todayKey: st
 
   const weeks: HeatCell[][] = []
   const months: MonthLabel[] = []
-  let lastMonth = -1
   for (let col = 0; col < numWeeks; col++) {
     const week: HeatCell[] = []
     for (let row = 0; row < 7; row++) {
@@ -120,13 +141,13 @@ export function yearGrid(counts: Map<string, number>, year: number, todayKey: st
         future: ord > todayOrd,
       })
     }
-    const firstInYear = week.find((c) => c.inYear)
-    if (firstInYear) {
-      const mo = Number(firstInYear.dayKey.slice(5, 7)) - 1
-      if (mo !== lastMonth) {
-        months.push({ col, label: MONTHS[mo]! })
-        lastMonth = mo
-      }
+    // Anchor the label to the week that actually contains the first of the
+    // month. Looking only at the week's first in-year day shifted labels by a
+    // full column whenever a month began mid-week.
+    const monthStart = week.find((c) => c.inYear && c.dayKey.endsWith('-01'))
+    if (monthStart) {
+      const mo = Number(monthStart.dayKey.slice(5, 7)) - 1
+      months.push({ col, label: MONTHS[mo]! })
     }
     weeks.push(week)
   }

@@ -1,13 +1,20 @@
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useNow } from '@vueuse/core'
 import { isPendingReview } from '~/lib/domain'
 import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useGrammarStore } from '~/stores/grammar'
 import { useActivityStore } from '~/stores/activity'
-import { currentStreak, longestStreak as longestStreakOf, STREAK_GRACE_DAYS } from '~/lib/stats/streak'
-import { mergedDailyCounts, localDayKey } from '~/lib/stats/activity'
+import { useSettingsStore } from '~/stores/settings'
+import {
+  currentStreak,
+  longestStreak as longestStreakOf,
+  STREAK_GRACE_DAYS,
+} from '~/lib/stats/streak'
+import { boundedActivityCounts, mergedDailyCounts, localDayKey } from '~/lib/stats/activity'
 import { weeklyCounts, easyHardSplit } from '~/lib/stats/rhythm'
 import { masteryByLevel, toughestGrammar } from '~/lib/stats/mastery'
+import { periodInsights as calculatePeriodInsights, type StatsPeriod } from '~/lib/stats/period'
 
 /**
  * useStats — the reactive source for the /stats page. Everything is derived
@@ -16,34 +23,49 @@ import { masteryByLevel, toughestGrammar } from '~/lib/stats/mastery'
  * streak/rhythm windows are deterministic in tests — same pattern as the srs
  * store's markSeen and the escape-room state machine.
  */
-export function useStats(now: number = Date.now()) {
+export function useStats(now?: number) {
   const log = useLogStore()
   const srs = useSrsStore()
   const grammar = useGrammarStore()
   const activity = useActivityStore()
+  const settings = useSettingsStore()
 
-  const dateMs = computed(() => log.entries.map((e) => new Date(e.date).getTime()))
+  const liveNow = now === undefined ? useNow({ interval: 60_000 }) : null
+  const nowMs = computed(() => now ?? liveNow!.value.getTime())
+  const todayKey = computed(() => localDayKey(nowMs.value))
+
+  const logDays = computed(() =>
+    log.entries.map((entry) => entry.localDay ?? localDayKey(new Date(entry.date).getTime())),
+  )
 
   const sentences = computed(() => log.entries.length)
 
-  const dailyCounts = computed(() => mergedDailyCounts(dateMs.value, activity.map))
-  const activityCounts = computed(() =>
-    Object.fromEntries(dailyCounts.value.entries()),
+  const dailyCounts = computed(() =>
+    boundedActivityCounts(mergedDailyCounts(logDays.value, activity.map), todayKey.value),
   )
+  const activityCounts = computed(() => Object.fromEntries(dailyCounts.value.entries()))
   const dayKeys = computed(() => new Set(dailyCounts.value.keys()))
-  const todayKey = computed(() => localDayKey(now))
+  const insightPeriod = ref<StatsPeriod>(7)
+  const periodInsights = computed(() =>
+    calculatePeriodInsights(
+      dailyCounts.value,
+      todayKey.value,
+      settings.dailyGoal,
+      insightPeriod.value,
+    ),
+  )
 
   const streak = computed(() => currentStreak(dayKeys.value, todayKey.value, STREAK_GRACE_DAYS))
-  const longestStreak = computed(() => longestStreakOf(dayKeys.value))
+  const longestStreak = computed(() => longestStreakOf(dayKeys.value, STREAK_GRACE_DAYS))
 
   const masteredCount = computed(
-    () => Object.values(srs.map).filter((s) => s.mastery === 'tree').length,
+    () => grammar.catalogItems.filter((g) => srs.map[g.ko]?.mastery === 'tree').length,
   )
-  const catalogTotal = computed(() => grammar.items.length)
+  const catalogTotal = computed(() => grammar.catalogItems.length)
   const pendingReviews = computed(() => log.entries.filter(isPendingReview).length)
 
   const masteryLevels = computed(() => masteryByLevel(grammar.items, srs.map))
-  const weekly = computed(() => weeklyCounts(dateMs.value, now, 8))
+  const weekly = computed(() => weeklyCounts(logDays.value, nowMs.value, 8))
   const split = computed(() => easyHardSplit(log.entries))
   const toughest = computed(() => toughestGrammar(srs.map, grammar.items, 5))
 
@@ -57,7 +79,10 @@ export function useStats(now: number = Date.now()) {
   })
 
   const hasData = computed(
-    () => sentences.value > 0 || Object.keys(srs.map).length > 0 || dayKeys.value.size > 0,
+    () =>
+      sentences.value > 0 ||
+      grammar.items.some((g) => srs.map[g.ko] !== undefined) ||
+      dayKeys.value.size > 0,
   )
 
   return {
@@ -75,5 +100,7 @@ export function useStats(now: number = Date.now()) {
     hasData,
     activityCounts,
     dailyCounts,
+    insightPeriod,
+    periodInsights,
   }
 }

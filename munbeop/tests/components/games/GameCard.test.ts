@@ -23,6 +23,7 @@ describe('GameCard', () => {
     const a = w.find('a')
     expect(a.exists()).toBe(true)
     expect(a.attributes('href')).toBe('/escape-room')
+    expect(a.attributes('prefetch-on')).toBe('interaction')
   })
 
   it('locked: renders a <div>, no anchor, with the ribbon', () => {
@@ -35,7 +36,13 @@ describe('GameCard', () => {
 
   it('shows the image cover when given, emoji otherwise', () => {
     const withImg = mount(GameCard, { props: { ...base, image: '/x.png' } })
-    expect(withImg.find('img').attributes('src')).toBe('/x.png')
+    expect(withImg.find('img').attributes()).toMatchObject({
+      src: '/x.png',
+      width: '320',
+      height: '180',
+      loading: 'lazy',
+      decoding: 'async',
+    })
     const withEmoji = mount(GameCard, { props: { ...base, emoji: '🎲' } })
     expect(withEmoji.text()).toContain('🎲')
   })

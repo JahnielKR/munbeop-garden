@@ -4,7 +4,7 @@ import { useLogStore } from '~/stores/log'
 
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({
-    append: vi.fn(async (_key: string, value: Record<string, unknown>) => ({ ...value, id: 1 })),
+    saveJournalEntry: vi.fn().mockResolvedValue(null),
   }),
 }))
 

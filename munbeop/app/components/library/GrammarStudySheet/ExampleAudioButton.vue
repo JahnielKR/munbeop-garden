@@ -1,8 +1,9 @@
 <!-- app/components/library/GrammarStudySheet/ExampleAudioButton.vue -->
 <script setup lang="ts">
 import { useExampleAudio } from '~/composables/useExampleAudio'
+import Icon from '~/components/ui/Icon.vue'
 
-/** 🔊 button that plays a grammar example's pre-generated TTS clip. */
+/** Pixel speaker button that plays a grammar example's pre-generated TTS clip. */
 interface Props {
   sentence: string
 }
@@ -19,7 +20,7 @@ const { playExample } = useExampleAudio()
     data-testid="example-audio"
     @click="playExample(props.sentence)"
   >
-    <span aria-hidden="true">🔊</span>
+    <Icon name="speaker" :size="16" />
   </button>
 </template>
 
@@ -32,14 +33,26 @@ const { playExample } = useExampleAudio()
   width: 28px;
   height: 28px;
   background: var(--paper-deep, var(--surface));
-  border: 1px solid var(--ink-line);
-  font-size: 13px;
+  color: var(--text);
+  border: 2px solid var(--ink-line);
+  box-shadow: var(--shadow-pixel-sm);
   cursor: pointer;
   transition:
     transform var(--motion-quick) var(--ease-out),
+    box-shadow var(--motion-quick) var(--ease-out),
     border-color var(--motion-quick) var(--ease-out);
 }
-.audio-btn:hover { transform: translate(-1px, -1px); border-color: var(--ink); }
-.audio-btn:active { transform: translate(0, 0); }
-.audio-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.audio-btn:hover {
+  transform: translate(-1px, -1px);
+  border-color: var(--ink);
+  box-shadow: var(--shadow-pixel-md);
+}
+.audio-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--shadow-color);
+}
+.audio-btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
 </style>

@@ -12,6 +12,7 @@ import {
 } from '~/lib/particle-lab'
 import { PARTICLE_SENTENCES } from '~/seed/particle-sentences'
 import { useActivityStore } from '~/stores/activity'
+import { useStudySession } from '~/composables/useStudySession'
 
 export type SpacingPhase = 'question' | 'answered' | 'done'
 export type SpacingMode = 'normal' | 'replay'
@@ -23,6 +24,7 @@ export type SpacingMode = 'normal' | 'replay'
  */
 export function useParticleSpacing() {
   const activity = useActivityStore()
+  const studySession = useStudySession()
   const level = ref<SpacingLevel>(1)
   const sessionItems = ref<LabSentence[]>([])
   const mode = ref<SpacingMode>('normal')
@@ -58,6 +60,7 @@ export function useParticleSpacing() {
   }
 
   function start() {
+    studySession.begin()
     mode.value = 'normal'
     sessionItems.value = shuffle(PARTICLE_SENTENCES)
     resetRound()
@@ -71,6 +74,7 @@ export function useParticleSpacing() {
 
   /** Re-drill only the missed sentences from the round just finished. */
   function replayFailed() {
+    if (!studySession.isCurrent()) return
     const failed = failedItems.value
     if (failed.length === 0) return
     mode.value = 'replay'
@@ -86,12 +90,12 @@ export function useParticleSpacing() {
   }
 
   function check() {
-    if (phase.value !== 'question') return
+    if (phase.value !== 'question' || !studySession.isCurrent()) return
     const r = gradePuzzle(puzzle.value, answers.value)
     result.value = r
     results.value.push({ itemId: sentence.value.id, correct: r.correct, batchimSlips: 0 })
     phase.value = 'answered'
-    void activity.record()
+    void activity.record('particle-spacing')
   }
 
   function next() {

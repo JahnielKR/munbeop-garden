@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '~/components/ui/Button.vue'
 import { useAppStatus } from '~/stores/appStatus'
 
 const appStatus = useAppStatus()
@@ -14,9 +15,15 @@ const { t } = useI18n()
     data-test="data-error"
   >
     <span class="banner__msg">{{ t('errors.data_failed') }}</span>
-    <button type="button" class="banner__retry" data-test="data-retry" @click="appStatus.retry()">
+    <Button
+      class="banner__retry"
+      variant="danger"
+      size="sm"
+      data-test="data-retry"
+      @click="appStatus.retry()"
+    >
       {{ t('errors.retry') }}
-    </button>
+    </Button>
   </div>
 </template>
 
@@ -27,35 +34,19 @@ const { t } = useI18n()
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  background: var(--paper-warm);
-  border: 1.5px solid var(--danger, #c0392b);
-  border-radius: 8px;
-  padding: 10px 14px;
+  padding: 12px 14px;
   margin-bottom: 16px;
+  background: var(--surface);
+  border: 2px solid var(--danger);
+  box-shadow: var(--bevel), var(--shadow-pixel-md);
 }
 .banner__msg {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: var(--danger, #c0392b);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--danger);
 }
 .banner__retry {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink);
-  background: var(--paper);
-  border: 1.5px solid var(--danger, #c0392b);
-  border-radius: 999px;
-  padding: 4px 14px;
-  cursor: pointer;
   flex-shrink: 0;
-  transition: background var(--motion-quick, 120ms) ease;
-}
-.banner__retry:hover {
-  background: var(--paper-deep);
-}
-.banner__retry:focus-visible {
-  outline: 2px solid var(--focus-ring, var(--sky));
-  outline-offset: 2px;
 }
 </style>

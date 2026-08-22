@@ -11,6 +11,7 @@ import { useSettingsStore } from '~/stores/settings'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 import { useCustomDecksStore } from '~/stores/customDecks'
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
+import { clearActivityOutbox } from '~/lib/activity/outbox'
 
 /**
  * Thin wrapper around supabase.auth.* with three responsibilities:
@@ -55,8 +56,8 @@ export function useAuth() {
       nextUserId: string | null,
     ) {
       if (
-        (event === 'INITIAL_SESSION' && session)
-        || (event === 'SIGNED_IN' && session && previousUserId !== nextUserId)
+        (event === 'INITIAL_SESSION' && session) ||
+        (event === 'SIGNED_IN' && session && previousUserId !== nextUserId)
       ) {
         await useAppStatus().track(() => hydrateDataStores())
       }
@@ -74,8 +75,17 @@ export function useAuth() {
 
     $supabase.auth.onAuthStateChange((event, session) => {
       const previousUserId = authStore.user?.id ?? null
+      const nextUserId = session?.user?.id ?? null
+      const startsAccountHydration =
+        (event === 'INITIAL_SESSION' && !!session) ||
+        (event === 'SIGNED_IN' && !!session && previousUserId !== nextUserId) ||
+        event === 'SIGNED_OUT'
+      // Close the visible account-data gate in this synchronous callback,
+      // before publishing the new identity or starting the deferred I/O below.
+      // Otherwise a direct A -> B SIGNED_IN can expose A's still-hydrated
+      // page/portrait beside B's email for one frame.
+      if (startsAccountHydration) useAppStatus().beginAccountTransition()
       authStore.setSession(session)
-      const nextUserId = authStore.user?.id ?? null
       // Supabase auth callbacks must stay synchronous: awaiting another client
       // call here can hold the auth lock indefinitely. Defer all data I/O until
       // the callback has returned, and ignore an event superseded meanwhile.
@@ -164,12 +174,14 @@ export function useAuth() {
    * On success, sign out + leave to /welcome via the existing flow.
    */
   async function deleteAccount() {
+    const deletedUserId = authStore.user?.id ?? null
     const { error } = await $supabase.functions.invoke('delete-account')
     if (error) return { error }
     // The account is already gone. Clear this browser's persisted session and
     // leave even if Auth can no longer acknowledge a logout for the deleted
     // user; reporting deletion as failed at this point would be misleading.
     await $supabase.auth.signOut({ scope: 'local' })
+    if (deletedUserId) clearActivityOutbox(deletedUserId)
     authStore.setSession(null)
     await useRouter().push('/welcome')
     return { error: null }

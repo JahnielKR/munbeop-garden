@@ -4,6 +4,7 @@ import { useGrammarStore } from '~/stores/grammar'
 import { useToast } from '~/composables/useToast'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Button from '~/components/ui/Button.vue'
+import Icon from '~/components/ui/Icon.vue'
 import Modal from '~/components/ui/Modal.vue'
 import CustomGrammarAddForm from '~/components/settings/CustomGrammarAddForm.vue'
 
@@ -53,14 +54,15 @@ function onCreated() {
           <span class="cg-row__ko">{{ g.ko }}</span>
           <span class="cg-row__meaning">{{ tl(g.meaning) }}</span>
         </div>
-        <button
-          type="button"
+        <Button
+          variant="secondary"
+          size="sm"
           class="cg-row__delete"
           :aria-label="t('settings.custom_grammar.delete')"
           @click="askDelete(g)"
         >
-          ✕
-        </button>
+          <Icon name="close" :size="12" />
+        </Button>
       </li>
     </ul>
 
@@ -89,17 +91,70 @@ function onCreated() {
 </template>
 
 <style scoped>
-.cg-mgr { display: flex; flex-direction: column; gap: 12px; }
-.cg-mgr__subtitle, .cg-mgr__empty { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text-soft); margin: 0; }
-.cg-mgr__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.cg-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 10px; background: var(--surface); border: 2px solid var(--border); }
-.cg-row__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.cg-row__ko { font-family: 'Noto Sans KR', sans-serif; font-weight: 700; font-size: 15px; color: var(--text); }
-.cg-row__meaning { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-soft); }
-.cg-row__delete { background: none; border: none; cursor: pointer; color: var(--text-soft); font-size: 14px; padding: 4px; line-height: 1; }
-.cg-row__delete:hover { color: var(--danger); }
-.cg-row__delete:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-.cg-del__title { font-family: 'Press Start 2P', 'Noto Sans KR', monospace; font-size: 13px; margin: 0 0 12px; color: var(--ink); }
-.cg-del__body { font-family: 'Inter', sans-serif; font-size: 14px; margin: 0 0 20px; color: var(--ink); }
-.cg-del__actions { display: flex; justify-content: flex-end; gap: 10px; }
+.cg-mgr {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cg-mgr__subtitle,
+.cg-mgr__empty {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text-soft);
+  margin: 0;
+}
+.cg-mgr__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cg-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+}
+.cg-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.cg-row__ko {
+  font-family: var(--font-ko);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+}
+.cg-row__meaning {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-soft);
+}
+.cg-row__delete {
+  color: var(--danger);
+}
+.cg-del__title {
+  font-family: var(--font-pixel-small);
+  font-size: 13px;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+.cg-del__body {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  margin: 0 0 20px;
+  color: var(--ink);
+}
+.cg-del__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
 </style>

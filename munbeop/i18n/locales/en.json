@@ -130,7 +130,7 @@
   "stats": {
     "empty": "No stats yet — write a few sentences in Practice and your garden's story starts here.",
     "hero": {
-      "sentences": "Sentences written",
+      "sentences": "Journal entries",
       "streak": "Day streak",
       "mastered": "Grammars mastered",
       "pending": "Pending reviews"
@@ -138,14 +138,35 @@
     "activity": {
       "title": "Your garden, day by day",
       "sub": "Every day you cultivate, a cell turns green.",
-      "tooltip": "{count} answered",
-      "avg": "Daily average",
+      "tooltip": "Study actions: {count}",
+      "avg": "Avg / active day",
       "days_active": "Days active",
       "streak_current": "Current streak",
       "streak_longest": "Longest streak",
       "year_prev": "Previous year",
       "year_next": "Next year",
-      "grid_summary": "Activity in {year}: {days} active days, {total} answered."
+      "legend_less": "Less",
+      "legend_more": "More",
+      "grid_summary": "Activity in {year}: {days} active days, {total} study actions."
+    },
+    "period": {
+      "title": "Period pulse",
+      "sub": "A compact view of your recent study rhythm.",
+      "filter_label": "Choose the pulse period",
+      "range_7": "7d",
+      "range_30": "30d",
+      "range_90": "90d",
+      "range_all": "All",
+      "actions": "Study actions",
+      "active_days": "Active days",
+      "goal_days": "Goal days",
+      "average": "Avg / active day",
+      "change": "Vs previous period",
+      "comparison_none": "No comparable period",
+      "goal": "Accumulated goal",
+      "goal_progress": "{current} / {target} actions",
+      "goal_aria": "Accumulated goal: {current} of {target} actions ({percent}%).",
+      "scope": "This filter only changes this pulse. The heatmap, mastery and historical metrics keep their full range."
     },
     "mastery": {
       "title": "Mastery across TOPIK 1–6",
@@ -153,16 +174,16 @@
     },
     "rhythm": {
       "title": "Practice rhythm",
-      "sub": "Sentences per week · last 8 weeks",
+      "sub": "Journal entries per week · last 8 weeks",
       "easy": "Felt easy",
       "hard": "Felt hard",
-      "aria": "{total} sentences over the last {weeks} weeks.",
+      "aria": "{total} journal entries over the last {weeks} weeks.",
       "axis_oldest": "Earlier",
       "axis_newest": "This week"
     },
     "contexts": {
       "title": "Top contexts",
-      "sub": "Where you write most"
+      "sub": "Your most frequent contexts"
     },
     "achievements": {
       "title": "Achievements",
@@ -1239,6 +1260,11 @@
   "practiceHelp": {
     "button": "Explanation",
     "close": "Close",
-    "section": { "concept": "What is it?", "types": "Its types", "howToPlay": "How to play", "tip": "Tip" }
+    "section": {
+      "concept": "What is it?",
+      "types": "Its types",
+      "howToPlay": "How to play",
+      "tip": "Tip"
+    }
   }
 }

@@ -65,7 +65,9 @@ vi.mock('~/composables/useLeeches', () => ({
   useLeeches: () => ({ leechKos: { value: new Set<string>() } }),
 }))
 
-vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
+vi.mock('~/stores/activity', () => ({
+  useActivityStore: () => ({ record: vi.fn(async () => {}) }),
+}))
 
 // ---------------------------------------------------------------------------
 // Nuxt auto-import stubs — useRoute + useI18n.
@@ -253,7 +255,7 @@ describe('usePractice', () => {
       feedback: 'hard',
       reviewState: 'incorrect',
     })
-    expect(recalculate).toHaveBeenCalledTimes(1)
+    expect(recalculate).not.toHaveBeenCalled()
   })
 
   // -------------------------------------------------------------------------
@@ -270,7 +272,7 @@ describe('usePractice', () => {
     })
     expect(result).not.toBeNull()
     expect(add.mock.calls[0][0]).toMatchObject({ feedback: 'easy', reviewState: 'unreviewed' })
-    expect(recalculate).toHaveBeenCalledTimes(1)
+    expect(recalculate).not.toHaveBeenCalled()
   })
 
   // -------------------------------------------------------------------------
@@ -356,11 +358,10 @@ describe('usePractice', () => {
   // the recalc throws, we must NOT lose the saved entry or block the card —
   // it returns the entry and advances; SRS self-heals next answer.
   // -------------------------------------------------------------------------
-  it('persistEntry keeps the saved entry and advances even if the SRS recalc fails', async () => {
+  it('persistEntry keeps the saved entry and advances without a second SRS write', async () => {
     const p = usePractice()
     await p.start()
     const before = p.session.value!.picks[0]!.progress
-    recalculate.mockRejectedValueOnce(new Error('srs unavailable'))
 
     const result = await p.persistEntry({
       pickIndex: 0,
@@ -371,15 +372,21 @@ describe('usePractice', () => {
 
     expect(result).not.toBeNull()
     expect(add).toHaveBeenCalledTimes(1)
+    expect(recalculate).not.toHaveBeenCalled()
     expect(p.session.value!.picks[0]!.progress).toBe(before + 1)
   })
 
-  it('serializes cross-card save pipelines so SRS never sees a rollback-pending sibling', async () => {
+  it('serializes cross-card atomic save pipelines', async () => {
     const p = usePractice()
     await p.start()
     let releaseFirst!: (entry: { id: number }) => void
     add
-      .mockImplementationOnce(() => new Promise((resolve) => { releaseFirst = resolve }))
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            releaseFirst = resolve
+          }),
+      )
       .mockResolvedValueOnce({ id: 2 })
 
     const first = p.persistEntry({
@@ -401,7 +408,7 @@ describe('usePractice', () => {
     await first
     await second
     expect(add).toHaveBeenCalledTimes(2)
-    expect(recalculate).toHaveBeenCalledTimes(2)
+    expect(recalculate).not.toHaveBeenCalled()
   })
 
   it('drops queued account-A cards after account B signs in', async () => {
@@ -410,7 +417,12 @@ describe('usePractice', () => {
     const beforeFirst = p.session.value!.picks[0]!.progress
     const beforeSecond = p.session.value!.picks[1]!.progress
     let releaseFirst!: (entry: { id: number }) => void
-    add.mockImplementationOnce(() => new Promise((resolve) => { releaseFirst = resolve }))
+    add.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          releaseFirst = resolve
+        }),
+    )
 
     const first = p.persistEntry({
       pickIndex: 0,

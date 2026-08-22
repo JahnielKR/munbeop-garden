@@ -66,7 +66,7 @@ export function toughestGrammar(
 ): ToughGrammar[] {
   const meaningOf = new Map(grammars.map((g) => [g.ko, g.meaning]))
   return Object.entries(srsMap)
-    .filter(([, s]) => s.hardCount > 0)
+    .filter(([ko, s]) => meaningOf.has(ko) && s.hardCount > 0)
     .sort((a, b) => b[1].hardCount - a[1].hardCount || a[0].localeCompare(b[0]))
     .slice(0, n)
     .map(([ko, s]) => ({ ko, meaning: meaningOf.get(ko), hardCount: s.hardCount }))

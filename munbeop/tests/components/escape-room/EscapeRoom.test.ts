@@ -1,9 +1,14 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
 import EscapeRoom from '~/components/escape-room/EscapeRoom.vue'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import { makeLevel } from '../../unit/escape-room/_fixture'
+
+const recordActivity = vi.fn()
+vi.mock('~/stores/activity', () => ({
+  useActivityStore: () => ({ record: recordActivity }),
+}))
 
 /** Mount and skip the intro cinematic so the scene is interactive. */
 async function mountPlaying(level = makeLevel(), seed = 'seed-test') {
@@ -32,6 +37,7 @@ async function solveAll() {
 describe('EscapeRoom (integration with store)', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    recordActivity.mockClear()
   })
 
   it('opens on the intro cinematic; the scene appears after skipping', async () => {
@@ -155,6 +161,7 @@ describe('EscapeRoom (integration with store)', () => {
     expect(nudge.text()).toContain('escape.wrong_nudge')
     // hearts are exposed to AT (was aria-hidden with no label)
     expect(w.get('[data-testid="er-hearts"]').attributes('aria-label')).toContain('escape.hearts_status')
+    expect(recordActivity).toHaveBeenCalledTimes(1)
   })
 
   it('answering correctly resolves the slot and closes the panel', async () => {
@@ -164,6 +171,7 @@ describe('EscapeRoom (integration with store)', () => {
     const store = useEscapeRoomStore()
     expect(store.resolvedSlots).toContain('slot-1')
     expect(w.find('[data-testid="slot-selection"]').exists()).toBe(false)
+    expect(recordActivity).toHaveBeenCalledTimes(1)
   })
 
   it('completing every slot computes a tier and shows the victory screen', async () => {

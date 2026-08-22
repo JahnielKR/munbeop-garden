@@ -8,7 +8,7 @@ import { useNumberMarketMaster } from '~/composables/useNumberMarketMaster'
 import { useParticleMaster } from '~/composables/useParticleMaster'
 import { useRegisterMaster } from '~/composables/useRegisterMaster'
 import { useLeeches } from '~/composables/useLeeches'
-import { usePremios } from '~/composables/usePremios'
+import { usePremioSummary } from '~/composables/usePremioSummary'
 import { useEscapeRoomStore } from '~/stores/escape-room'
 import { useSettingsStore } from '~/stores/settings'
 
@@ -26,13 +26,14 @@ export function useAvatars() {
   const particle = useParticleMaster()
   const register = useRegisterMaster()
   const { leeches } = useLeeches()
-  const { totalCount: escapeTotal } = usePremios()
+  const { totalCount: escapeTotal } = usePremioSummary()
   const escape = useEscapeRoomStore()
   const settings = useSettingsStore()
 
   const state = computed<AvatarState>(() => {
     const byLevel: AvatarState['byLevel'] = {}
-    for (const l of stats.masteryLevels.value) byLevel[l.level] = { mastered: l.tree, total: l.total }
+    for (const l of stats.masteryLevels.value)
+      byLevel[l.level] = { mastered: l.tree, total: l.total }
     return {
       trees: stats.masteredCount.value,
       catalogTotal: stats.catalogTotal.value,
@@ -56,10 +57,9 @@ export function useAvatars() {
   const avatars = computed<DecoratedAvatar[]>(() => evaluateAvatars(state.value, storedSet.value))
 
   const byTier = computed<Record<AvatarTier, DecoratedAvatar[]>>(() => {
-    const groups = Object.fromEntries(AVATAR_TIERS.map((t) => [t, [] as DecoratedAvatar[]])) as Record<
-      AvatarTier,
-      DecoratedAvatar[]
-    >
+    const groups = Object.fromEntries(
+      AVATAR_TIERS.map((t) => [t, [] as DecoratedAvatar[]]),
+    ) as Record<AvatarTier, DecoratedAvatar[]>
     for (const a of avatars.value) groups[a.tier].push(a)
     return groups
   })
@@ -86,5 +86,15 @@ export function useAvatars() {
     if (fresh.length) await settings.unlockAvatars(fresh)
   }
 
-  return { avatars, byTier, totalCount, ownedCount, chosenId, chosen, choose, syncUnlocks, avatarUrl }
+  return {
+    avatars,
+    byTier,
+    totalCount,
+    ownedCount,
+    chosenId,
+    chosen,
+    choose,
+    syncUnlocks,
+    avatarUrl,
+  }
 }

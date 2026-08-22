@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useLogStore } from '~/stores/log'
-import { STORAGE_KEYS } from '~/lib/storage'
+import { useSrsStore } from '~/stores/srs'
 import { useAuthStore } from '~/stores/auth'
 
 // Spy on the adapter so we can assert add() uses the one-row append path rather
@@ -10,9 +10,17 @@ const append = vi.fn(async () => {})
 const write = vi.fn(async () => {})
 const read = vi.fn(async (_key: string, fallback: unknown) => fallback)
 const deleteOne = vi.fn(async () => {})
-const updateOne = vi.fn(async () => true)
+const updateOne = vi.fn(async () => undefined)
 vi.mock('~/composables/useStorageAdapter', () => ({
-  useStorageAdapter: () => ({ read, write, append, updateOne, deleteOne, remove: async () => {}, clear: async () => {} }),
+  useStorageAdapter: () => ({
+    read,
+    write,
+    saveJournalEntry: append,
+    setJournalReview: updateOne,
+    deleteJournalEntry: deleteOne,
+    remove: async () => {},
+    clear: async () => {},
+  }),
 }))
 
 const payload = {
@@ -40,7 +48,12 @@ describe('useLogStore hydration safety', () => {
   it('does not apply account A journal rows after account B signs in', async () => {
     useAuthStore().user = { id: 'a' } as never
     let resolveRead!: (value: unknown) => void
-    read.mockImplementationOnce(() => new Promise((resolve) => { resolveRead = resolve }))
+    read.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveRead = resolve
+        }),
+    )
     const store = useLogStore()
     const hydration = store.hydrate()
 
@@ -55,7 +68,12 @@ describe('useLogStore hydration safety', () => {
   it('queues an add behind hydration so the read cannot erase the new row', async () => {
     useAuthStore().user = { id: 'a' } as never
     let resolveRead!: (value: unknown) => void
-    read.mockImplementationOnce(() => new Promise((resolve) => { resolveRead = resolve }))
+    read.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveRead = resolve
+        }),
+    )
     const store = useLogStore()
     const hydration = store.hydrate()
     const addition = store.add(payload, 7001)
@@ -79,7 +97,7 @@ describe('useLogStore.add — delta append', () => {
     append.mockResolvedValue(undefined)
     write.mockClear()
     updateOne.mockClear()
-    updateOne.mockResolvedValue(true)
+    updateOne.mockResolvedValue(undefined)
     deleteOne.mockClear()
     deleteOne.mockResolvedValue(undefined)
   })
@@ -89,7 +107,7 @@ describe('useLogStore.add — delta append', () => {
     const entry = await store.add(payload)
 
     expect(append).toHaveBeenCalledTimes(1)
-    expect(append).toHaveBeenCalledWith(STORAGE_KEYS.log, entry)
+    expect(append).toHaveBeenCalledWith(entry)
     expect(write).not.toHaveBeenCalled()
     // still unshifted into memory, newest first (reactive proxy → structural eq)
     expect(store.entries).toHaveLength(1)
@@ -118,6 +136,26 @@ describe('useLogStore.add — delta append', () => {
     expect(retried.id).toBe(stableId)
     expect(store.entries.filter((entry) => entry.id === stableId)).toHaveLength(1)
     expect(append).toHaveBeenCalledTimes(2)
+    expect(append.mock.calls[1]![0]).toStrictEqual(append.mock.calls[0]![0])
+  })
+
+  it('replaces optimistic state with authoritative entry and progress revisions', async () => {
+    append.mockImplementationOnce(async (entry: Record<string, unknown>) => ({
+      entry: { ...entry, revision: 4 },
+      progress: {
+        ko: 'A',
+        lastSeen: Date.parse(String(entry.date)),
+        easyCount: 0,
+        hardCount: 1,
+        mastery: 'seedling',
+        revision: 7,
+      },
+    }))
+    const store = useLogStore()
+    const entry = await store.add(payload)
+
+    expect(entry.revision).toBe(4)
+    expect(useSrsStore().map.A).toMatchObject({ hardCount: 1, revision: 7 })
   })
 
   it('rolls back the optimistic insert and rethrows when the cloud append fails', async () => {
@@ -136,8 +174,18 @@ describe('useLogStore.add — delta append', () => {
     let rejectFirst!: (error: Error) => void
     let resolveSecond!: () => void
     append
-      .mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectFirst = reject }))
-      .mockImplementationOnce(() => new Promise<void>((resolve) => { resolveSecond = resolve }))
+      .mockImplementationOnce(
+        () =>
+          new Promise((_resolve, reject) => {
+            rejectFirst = reject
+          }),
+      )
+      .mockImplementationOnce(
+        () =>
+          new Promise<void>((resolve) => {
+            resolveSecond = resolve
+          }),
+      )
 
     const first = store.add({ ...payload, ko: 'A' })
     const second = store.add({ ...payload, ko: 'B' })
@@ -150,6 +198,38 @@ describe('useLogStore.add — delta append', () => {
 
     expect(store.entries.map((entry) => entry.ko)).toEqual(['B'])
   })
+
+  it('does not let a failed A write remove current state after an A to B to A switch', async () => {
+    const auth = useAuthStore()
+    auth.setSession({ user: { id: 'a' } } as never)
+    const store = useLogStore()
+    await store.hydrate()
+
+    let rejectOldWrite!: (error: Error) => void
+    append.mockImplementationOnce(
+      () =>
+        new Promise((_resolve, reject) => {
+          rejectOldWrite = reject
+        }),
+    )
+    const staleWrite = store.add(payload, 7007)
+    await vi.waitFor(() => expect(append).toHaveBeenCalledTimes(1))
+
+    auth.setSession({ user: { id: 'b' } } as never)
+    auth.setSession({ user: { id: 'a' } } as never)
+    const currentEntry = {
+      ...payload,
+      id: 7007,
+      sentence: 'current account snapshot',
+      date: '2026-08-22T00:00:00.000Z',
+      revision: 4,
+    }
+    store.entries = [currentEntry]
+
+    rejectOldWrite(new Error('late network failure'))
+    await expect(staleWrite).rejects.toThrow('late network failure')
+    expect(store.entries).toEqual([currentEntry])
+  })
 })
 
 describe('useLogStore.setReviewState', () => {
@@ -160,7 +240,7 @@ describe('useLogStore.setReviewState', () => {
     write.mockClear()
     write.mockResolvedValue(undefined)
     updateOne.mockClear()
-    updateOne.mockResolvedValue(true)
+    updateOne.mockResolvedValue(undefined)
   })
 
   it('flips the state with a one-row update and reports success', async () => {
@@ -170,9 +250,11 @@ describe('useLogStore.setReviewState', () => {
     const ok = await store.setReviewState(e.id, 'correct', 'note')
     expect(ok).toBe(true)
     expect(store.entries[0]).toMatchObject({ reviewState: 'correct', errorNote: 'note' })
-    expect(updateOne).toHaveBeenCalledWith(STORAGE_KEYS.log, {
+    expect(updateOne).toHaveBeenCalledWith({
       id: e.id,
-      value: expect.objectContaining({ id: e.id, reviewState: 'correct', errorNote: 'note' }),
+      reviewState: 'correct',
+      errorNote: 'note',
+      expectedRevision: 0,
     })
     expect(write).not.toHaveBeenCalled()
   })
@@ -182,6 +264,15 @@ describe('useLogStore.setReviewState', () => {
     const ok = await store.setReviewState(999, 'correct')
     expect(ok).toBe(false)
     expect(updateOne).not.toHaveBeenCalled()
+  })
+
+  it('acknowledges an unchanged state + note without inventing a revision', async () => {
+    const store = useLogStore()
+    const entry = await store.add(payload)
+
+    await expect(store.setReviewState(entry.id, 'unreviewed', null)).resolves.toBe(true)
+    expect(updateOne).not.toHaveBeenCalled()
+    expect(store.entries[0]?.revision).toBe(0)
   })
 
   it('rolls the flip back when the cloud write fails — the UI must not claim reviewed', async () => {
@@ -205,7 +296,10 @@ describe('useLogStore.setReviewState', () => {
 
     let rejectA!: (e: Error) => void
     updateOne.mockImplementationOnce(
-      () => new Promise((_resolve, reject) => { rejectA = reject }),
+      () =>
+        new Promise((_resolve, reject) => {
+          rejectA = reject
+        }),
     )
     const flipA = store.setReviewState(a.id, 'correct')
     const okB = await store.setReviewState(b.id, 'correct')
@@ -223,34 +317,42 @@ describe('useLogStore.setReviewState', () => {
   it('serializes two flips of the same row so an older response cannot win', async () => {
     const store = useLogStore()
     const entry = await store.add(payload)
-    let resolveFirst!: (updated: boolean) => void
+    let resolveFirst!: () => void
     updateOne.mockImplementationOnce(
-      () => new Promise<boolean>((resolve) => { resolveFirst = resolve }),
+      () =>
+        new Promise<undefined>((resolve) => {
+          resolveFirst = () => resolve(undefined)
+        }),
     )
 
     const first = store.setReviewState(entry.id, 'correct', 'first')
     const second = store.setReviewState(entry.id, 'incorrect', 'latest')
     expect(updateOne).toHaveBeenCalledTimes(1)
 
-    resolveFirst(true)
+    resolveFirst()
     await first
     await second
 
     expect(updateOne).toHaveBeenCalledTimes(2)
     expect(store.entries[0]).toMatchObject({ reviewState: 'incorrect', errorNote: 'latest' })
-    expect(updateOne.mock.calls[1]![1]).toMatchObject({
+    expect(updateOne.mock.calls[1]![0]).toMatchObject({
       id: entry.id,
-      value: { reviewState: 'incorrect', errorNote: 'latest' },
+      reviewState: 'incorrect',
+      errorNote: 'latest',
+      expectedRevision: 1,
     })
   })
 
-  it('removes a local ghost when the cloud row was deleted in another tab', async () => {
+  it('rolls back when another tab deleted the cloud row', async () => {
     const store = useLogStore()
     const entry = await store.add(payload)
-    updateOne.mockResolvedValueOnce(false)
+    updateOne.mockRejectedValueOnce(new Error('row missing'))
 
     await expect(store.setReviewState(entry.id, 'correct')).resolves.toBe(false)
-    expect(store.entries.find((candidate) => candidate.id === entry.id)).toBeUndefined()
+    expect(store.entries.find((candidate) => candidate.id === entry.id)).toMatchObject({
+      reviewState: 'unreviewed',
+      revision: 0,
+    })
   })
 })
 
@@ -261,7 +363,7 @@ describe('useLogStore.deleteEntry', () => {
     deleteOne.mockClear()
     deleteOne.mockResolvedValue(undefined)
     updateOne.mockClear()
-    updateOne.mockResolvedValue(true)
+    updateOne.mockResolvedValue(undefined)
   })
 
   it('removes the entry and deletes its cloud row by id', async () => {
@@ -272,7 +374,7 @@ describe('useLogStore.deleteEntry', () => {
     const ok = await store.deleteEntry(e.id)
     expect(ok).toBe(true)
     expect(store.entries).toHaveLength(0)
-    expect(deleteOne).toHaveBeenCalledWith(STORAGE_KEYS.log, e.id)
+    expect(deleteOne).toHaveBeenCalledWith({ id: e.id, expectedKo: 'A', expectedRevision: 0 })
   })
 
   it('returns false for an unknown id and never touches the adapter', async () => {
@@ -299,13 +401,16 @@ describe('useLogStore.deleteEntry', () => {
     // aliasing that used to mask this) — only A may be re-inserted.
     const store = useLogStore()
     updateOne.mockClear()
-    updateOne.mockResolvedValue(true)
+    updateOne.mockResolvedValue(undefined)
     const a = await store.add(payload)
     const b = await store.add({ ...payload, ko: 'B' })
 
     let rejectDelete!: (e: Error) => void
     deleteOne.mockImplementationOnce(
-      () => new Promise((_resolve, reject) => { rejectDelete = reject }),
+      () =>
+        new Promise((_resolve, reject) => {
+          rejectDelete = reject
+        }),
     )
     const del = store.deleteEntry(a.id)
     const okFlip = await store.setReviewState(b.id, 'correct')

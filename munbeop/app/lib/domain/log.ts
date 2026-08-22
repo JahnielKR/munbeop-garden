@@ -25,6 +25,16 @@ export interface LogEntry {
   contextName: string
   /** ISO date string. */
   date: string
+  /** Calendar day captured when the answer occurred; stable across later travel. */
+  localDay?: string | null
+  /** IANA timezone captured with `localDay` (legacy rows may omit it). */
+  timeZone?: string | null
+  /** UTC offset at answer time, in minutes. */
+  utcOffsetMinutes?: number | null
+  /** Shared immutable activity receipt when the answer also ticks activity. */
+  activityEventId?: string | null
+  /** Optimistic-concurrency version. Legacy exports hydrate as revision 0. */
+  revision?: number
 }
 
 /**

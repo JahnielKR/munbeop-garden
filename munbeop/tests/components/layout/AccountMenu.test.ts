@@ -4,6 +4,8 @@ import { setActivePinia, createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import AccountMenu from '~/components/layout/AccountMenu.vue'
 import { useAuthStore } from '~/stores/auth'
+import { useAppStatus } from '~/stores/appStatus'
+import { useSettingsStore } from '~/stores/settings'
 import { useToast } from '~/composables/useToast'
 
 // The teleported popover wires window-level observers (useElementBounding /
@@ -34,7 +36,10 @@ describe('AccountMenu', () => {
     signOutAndExit.mockResolvedValue({ error: null })
     useToast().dismiss()
     document.body.innerHTML = ''
-    useAuthStore().user = { email: 'sol@example.com' } as never
+    const auth = useAuthStore()
+    auth.user = { id: 'account-a', email: 'sol@example.com' } as never
+    auth.ready = true
+    useAppStatus().status = 'ready'
   })
 
   it('shows the email initial on the framed portrait', () => {
@@ -48,6 +53,36 @@ describe('AccountMenu', () => {
     const wrapper = mountMenu()
     expect(wrapper.find('.premios').exists()).toBe(true)
     expect(wrapper.find('.acct__identity').exists()).toBe(true)
+  })
+
+  it('hides stale account data on A to B and keeps sign-out available on hydrate error', async () => {
+    useSettingsStore().chosenAvatarId = 'seed'
+    const wrapper = mountMenu()
+    expect(wrapper.get('.acct__inner-img').attributes('src')).toBe('/img/avatars/seed.png')
+    expect(wrapper.find('.premios').exists()).toBe(true)
+    await openMenu(wrapper)
+    expect(document.querySelector('[role="menu"]')).not.toBeNull()
+
+    const auth = useAuthStore()
+    auth.setSession({ user: { id: 'account-b', email: 'luna@example.com' } } as never)
+    useAppStatus().beginAccountTransition()
+    await nextTick()
+
+    expect(document.querySelector('[role="menu"]')).toBeNull()
+    expect(wrapper.find('.acct__inner-img').exists()).toBe(false)
+    expect(wrapper.get('.acct__inner').text()).toBe('L')
+    expect(wrapper.find('.premios').exists()).toBe(false)
+    useAppStatus().status = 'error'
+    await nextTick()
+    await wrapper.get('.acct__avatar').trigger('click')
+    await nextTick()
+    const degradedMenu = document.querySelector('[role="menu"]') as HTMLElement
+    expect(degradedMenu).not.toBeNull()
+    expect(degradedMenu.textContent).toContain('luna@example.com')
+    expect(degradedMenu.querySelector('.acct__signout')).not.toBeNull()
+    expect(degradedMenu.querySelector('#acct-dark')).toBeNull()
+    expect(degradedMenu.querySelector('a[href="/trophies"]')).toBeNull()
+    expect(degradedMenu.querySelector('a[href="/settings"]')).toBeNull()
   })
 
   it('collapses to just the framed portrait box (no strip, no identity, no pip)', () => {

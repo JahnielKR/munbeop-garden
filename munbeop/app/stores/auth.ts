@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { AuthUser, AuthSession } from '~/lib/auth/types'
+import { publishAccountIdentity } from '~/lib/auth/account-epoch'
 
 /**
  * Holds the current Supabase auth state. Populated by useAuth().init()
@@ -12,12 +13,15 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<AuthUser | null>(null)
   const session = ref<AuthSession | null>(null)
   const ready = ref(false)
+  const accountEpoch = ref(0)
 
   function setSession(next: AuthSession | null) {
+    const nextUserId = next?.user?.id ?? null
+    accountEpoch.value = publishAccountIdentity(nextUserId).epoch
     session.value = next
     user.value = next?.user ?? null
     ready.value = true
   }
 
-  return { user, session, ready, setSession }
+  return { user, session, ready, accountEpoch, setSession }
 })

@@ -9,9 +9,11 @@ import type {
   CreationCandidate,
 } from '~/lib/domain'
 import { useEscapeRoomStore } from '~/stores/escape-room'
+import { useActivityStore } from '~/stores/activity'
 import { useEscapeRoomProgress } from '~/composables/useEscapeRoomProgress'
 import { useLocalized } from '~/composables/useLocalized'
 import { useEscapeRoomAudio } from '~/composables/useEscapeRoomAudio'
+import { useStudySession } from '~/composables/useStudySession'
 import PracticeSaveStatus from '~/components/practice/PracticeSaveStatus.vue'
 import Scene from './Scene.vue'
 import IntroCinematic from './IntroCinematic.vue'
@@ -38,6 +40,8 @@ const props = defineProps<Props>()
 const emit = defineEmits<{ exit: [] }>()
 
 const store = useEscapeRoomStore()
+const activity = useActivityStore()
+const studySession = useStudySession()
 // Persistence half of the store (it stays a pure state machine): write the
 // run's outcome — unlocked cosmetic + racha — back to the account on run end.
 const { persist, retrySave, saveStatus } = useEscapeRoomProgress()
@@ -180,13 +184,7 @@ watch([() => store.currentRoomId, phase], ([roomId], [prevRoomId, prevPhase]) =>
   audio.playAmbient(url(activeRoom.value.ambientAudio))
 })
 
-type AnswerOutcome =
-  | 'correct'
-  | 'wrong'
-  | 'game-over'
-  | 'level-complete'
-  | 'soft-reject'
-  | 'locked'
+type AnswerOutcome = 'correct' | 'wrong' | 'game-over' | 'level-complete' | 'soft-reject' | 'locked'
 
 function onHotspot(hotspotId: string) {
   const h = activeRoom.value?.hotspots.find((x) => x.id === hotspotId)
@@ -247,6 +245,9 @@ function candidateSoftRejectVoiceAudio(slotId: string): string | null {
  */
 function handleResult(slotId: string, result: AnswerOutcome) {
   if (result === 'locked') return
+  // One tick per terminal answer. Creation soft-rejects are validation nudges,
+  // not submitted answers; locked slots likewise do not count.
+  if (result !== 'soft-reject') void activity.record('escape-room')
   // 'game-over' is the run-ending mistake: it must play the WRONG feedback and
   // return, exactly like a non-fatal 'wrong'. Falling through to the correct/
   // level-complete branch would play the success chime + reaction voice and fire
@@ -284,18 +285,18 @@ function handleResult(slotId: string, result: AnswerOutcome) {
 }
 
 function onSelectionAnswer(idx: number) {
-  if (!activeSlotId.value) return
+  if (!activeSlotId.value || !studySession.isCurrent()) return
   wrongNudge.value = null
   handleResult(activeSlotId.value, store.answerSelection(activeSlotId.value, idx))
 }
 function onCompletionAnswer(text: string) {
-  if (!activeSlotId.value) return
+  if (!activeSlotId.value || !studySession.isCurrent()) return
   wrongNudge.value = null
   handleResult(activeSlotId.value, store.answerCompletion(activeSlotId.value, text))
 }
 function onCreationAnswer(order: number[]) {
   const slotId = activeSlotId.value
-  if (!slotId) return
+  if (!slotId || !studySession.isCurrent()) return
   softMessage.value = null
   wrongNudge.value = null
   const result = store.answerCreation(slotId, order)
@@ -313,6 +314,7 @@ function onUsePremiumHint() {
 }
 
 function retry() {
+  if (!studySession.isCurrent()) return
   retryCount.value++
   earnedTier.value = null
   activeSlotId.value = null
@@ -535,10 +537,7 @@ function exitToBook() {
     />
 
     <!-- End screens -->
-    <PracticeSaveStatus
-      :status="saveStatus"
-      @retry="retrySave"
-    />
+    <PracticeSaveStatus :status="saveStatus" @retry="retrySave" />
     <GameOverScreen v-if="store.status === 'gameover'" @retry="retry" @exit="exitToBook" />
     <VictoryScreen
       v-if="store.status === 'completed' && earnedTier && !activeBeat"

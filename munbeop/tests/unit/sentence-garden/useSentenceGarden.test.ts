@@ -13,25 +13,43 @@ const addFn = vi.fn(async (e: unknown, stableId: number) => {
   added.push(e)
   addIds.push(stableId)
 })
-const markSeen = vi.fn(async (ko: string) => { seen.push(ko) })
+const markSeen = vi.fn(async (ko: string) => {
+  seen.push(ko)
+})
 const recalculateFn = vi.fn(async () => {})
 vi.stubGlobal('useNuxtApp', () => ({ $supabase: null }))
 vi.mock('~/stores/log', () => ({ useLogStore: () => ({ add: addFn, createEntryId }) }))
 vi.mock('~/stores/srs', () => ({ useSrsStore: () => ({ markSeen, recalculate: recalculateFn }) }))
 vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: async () => {} }) }))
-vi.mock('~/composables/useExampleAudio', () => ({ useExampleAudio: () => ({ playExample: (s: string) => { played.push(s) }, stop: () => {} }) }))
+vi.mock('~/composables/useExampleAudio', () => ({
+  useExampleAudio: () => ({
+    playExample: (s: string) => {
+      played.push(s)
+    },
+    stop: () => {},
+  }),
+}))
 
 describe('useSentenceGarden', () => {
   beforeEach(() => {
-    setActivePinia(createPinia()); added.length = 0; addIds.length = 0; seen.length = 0; played.length = 0
+    setActivePinia(createPinia())
+    added.length = 0
+    addIds.length = 0
+    seen.length = 0
+    played.length = 0
     nextEntryId = 6000
     createEntryId.mockClear()
-    addFn.mockReset(); addFn.mockImplementation(async (e: unknown, stableId: number) => {
+    addFn.mockReset()
+    addFn.mockImplementation(async (e: unknown, stableId: number) => {
       added.push(e)
       addIds.push(stableId)
     })
-    markSeen.mockReset(); markSeen.mockImplementation(async (ko: string) => { seen.push(ko) })
-    recalculateFn.mockReset(); recalculateFn.mockResolvedValue(undefined)
+    markSeen.mockReset()
+    markSeen.mockImplementation(async (ko: string) => {
+      seen.push(ko)
+    })
+    recalculateFn.mockReset()
+    recalculateFn.mockResolvedValue(undefined)
   })
 
   it('start seeds a session and marks each grammar seen', async () => {
@@ -67,7 +85,9 @@ describe('useSentenceGarden', () => {
     await new Promise((resolve) => setTimeout(resolve, 0))
     expect(sg.saveError.value).toBe(true)
 
-    markSeen.mockImplementation(async (ko: string) => { seen.push(ko) })
+    markSeen.mockImplementation(async (ko: string) => {
+      seen.push(ko)
+    })
     await expect(sg.retrySave()).resolves.toBe(true)
     expect(sg.saveError.value).toBe(false)
     expect(markSeen).toHaveBeenCalledTimes(2)
@@ -158,7 +178,7 @@ describe('useSentenceGarden', () => {
     errSpy.mockRestore()
   })
 
-  it('retry does not duplicate a log that saved before SRS recalculation failed', async () => {
+  it('a saved log needs no secondary SRS retry', async () => {
     const errSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     const sg = useSentenceGarden()
     sg.start(['-아/어요'])
@@ -172,13 +192,13 @@ describe('useSentenceGarden', () => {
       await sg.next()
     }
 
-    recalculateFn.mockRejectedValueOnce(new Error('recalculate failed'))
-    await expect(sg.finish()).resolves.toBe(false)
-    const easyWrites = () => added.filter((entry) => (entry as { feedback: string }).feedback === 'easy')
+    await expect(sg.finish()).resolves.toBe(true)
+    const easyWrites = () =>
+      added.filter((entry) => (entry as { feedback: string }).feedback === 'easy')
     expect(easyWrites()).toHaveLength(1)
     await expect(sg.retrySave()).resolves.toBe(true)
     expect(easyWrites()).toHaveLength(1)
-    expect(recalculateFn).toHaveBeenCalledTimes(2)
+    expect(recalculateFn).not.toHaveBeenCalled()
     errSpy.mockRestore()
   })
 
@@ -214,14 +234,14 @@ describe('useSentenceGarden', () => {
     errSpy.mockRestore()
   })
 
-  it('finish waits for the session\'s mark-seen writes before crediting (write ordering)', async () => {
-    // A mark-seen upsert carries pre-session SRS state; if it landed AFTER
-    // finish()'s recalculate on a stalled connection it would clobber the
-    // credited cloud row, with no self-heal until that grammar's next answer.
+  it("finish waits for the session's mark-seen writes before crediting (write ordering)", async () => {
+    // Exposure timestamps settle before the atomic diary/progress credit.
     let releaseMarkSeen!: () => void
     markSeen.mockImplementation((ko: string) => {
       seen.push(ko)
-      return new Promise<void>((resolve) => { releaseMarkSeen = resolve })
+      return new Promise<void>((resolve) => {
+        releaseMarkSeen = resolve
+      })
     })
     const sg = useSentenceGarden()
     sg.start(['-아/어요'])
@@ -279,7 +299,10 @@ describe('useSentenceGarden', () => {
     useAuthStore().user = { id: 'account-a' } as never
     let releaseMarkSeen!: () => void
     markSeen.mockImplementationOnce(
-      () => new Promise<void>((resolve) => { releaseMarkSeen = resolve }),
+      () =>
+        new Promise<void>((resolve) => {
+          releaseMarkSeen = resolve
+        }),
     )
     const sg = useSentenceGarden()
     sg.start(['-아/어요'])

@@ -14,7 +14,7 @@ const aria = computed(() => t('garden.goal.aria', { count: props.count, goal: pr
 
 <template>
   <div class="ring" role="img" :aria-label="aria">
-    <svg class="ring__svg" viewBox="0 0 40 40" aria-hidden="true">
+    <svg class="ring__svg" viewBox="0 0 40 40" aria-hidden="true" shape-rendering="crispEdges">
       <circle class="ring__track" cx="20" cy="20" :r="R" />
       <circle
         class="ring__fill"
@@ -42,6 +42,9 @@ const aria = computed(() => t('garden.goal.aria', { count: props.count, goal: pr
   width: 40px;
   height: 40px;
   flex-shrink: 0;
+  background: var(--surface-elevated);
+  border: 2px solid var(--border-strong);
+  box-shadow: var(--shadow-pixel-sm);
 }
 .ring__track {
   fill: none;
@@ -50,20 +53,23 @@ const aria = computed(() => t('garden.goal.aria', { count: props.count, goal: pr
 }
 .ring__fill {
   fill: none;
-  stroke: var(--accent, var(--gold, #d4a017));
+  stroke: var(--accent);
   stroke-width: 4;
-  stroke-linecap: round;
-  transition: stroke-dasharray var(--motion-slow, 400ms) var(--ease-out, ease);
+  stroke-linecap: butt;
+  transition: stroke-dasharray var(--motion-slow) var(--ease-step-5);
 }
 .ring__fill--done {
-  stroke: var(--jade, #3f9d6b);
+  stroke: var(--jade);
 }
 .ring__label {
-  font-family: 'Inter', 'Noto Sans KR', sans-serif;
-  font-size: 13px;
-  color: var(--text-soft);
+  font-family: var(--font-pixel-small);
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  color: var(--text);
 }
 @media (prefers-reduced-motion: reduce) {
-  .ring__fill { transition: none; }
+  .ring__fill {
+    transition: none;
+  }
 }
 </style>

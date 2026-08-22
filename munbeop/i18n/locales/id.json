@@ -130,7 +130,7 @@
   "stats": {
     "empty": "Belum ada statistik — tulis beberapa kalimat di Latihan dan kisah kebunmu dimulai di sini.",
     "hero": {
-      "sentences": "Kalimat ditulis",
+      "sentences": "Entri jurnal",
       "streak": "Rentetan hari",
       "mastered": "Tata bahasa dikuasai",
       "pending": "Tinjauan tertunda"
@@ -138,14 +138,35 @@
     "activity": {
       "title": "Kebunmu, hari demi hari",
       "sub": "Setiap hari kamu berlatih, satu sel berubah menjadi hijau.",
-      "tooltip": "{count} dijawab",
-      "avg": "Rata-rata harian",
+      "tooltip": "Aktivitas belajar: {count}",
+      "avg": "Rata-rata / hari aktif",
       "days_active": "Hari aktif",
       "streak_current": "Rentetan saat ini",
       "streak_longest": "Rentetan terpanjang",
       "year_prev": "Tahun sebelumnya",
       "year_next": "Tahun berikutnya",
-      "grid_summary": "Aktivitas pada {year}: {days} hari aktif, {total} dijawab."
+      "legend_less": "Lebih sedikit",
+      "legend_more": "Lebih banyak",
+      "grid_summary": "Aktivitas pada {year}: {days} hari aktif, {total} aktivitas belajar."
+    },
+    "period": {
+      "title": "Denyut periode",
+      "sub": "Ringkasan ritme belajar terbaru Anda.",
+      "filter_label": "Pilih periode denyut",
+      "range_7": "7 hari",
+      "range_30": "30 hari",
+      "range_90": "90 hari",
+      "range_all": "Semua",
+      "actions": "Aktivitas belajar",
+      "active_days": "Hari aktif",
+      "goal_days": "Hari mencapai target",
+      "average": "Rata-rata / hari aktif",
+      "change": "Perubahan vs. periode sebelumnya",
+      "comparison_none": "Tidak ada periode pembanding",
+      "goal": "Target kumulatif",
+      "goal_progress": "{current} / {target} aktivitas",
+      "goal_aria": "Target kumulatif: {current} dari {target} aktivitas ({percent}%).",
+      "scope": "Filter ini hanya mengubah denyut periode. Peta aktivitas, penguasaan, dan metrik historis tetap memakai rentang penuh."
     },
     "mastery": {
       "title": "Penguasaan TOPIK 1–6",
@@ -153,16 +174,16 @@
     },
     "rhythm": {
       "title": "Ritme latihan",
-      "sub": "Kalimat per minggu · 8 minggu terakhir",
+      "sub": "Entri per minggu · 8 minggu terakhir",
       "easy": "Mudah",
       "hard": "Sulit",
-      "aria": "{total} kalimat dalam {weeks} minggu terakhir.",
+      "aria": "{total} entri jurnal dalam {weeks} minggu terakhir.",
       "axis_oldest": "Sebelumnya",
       "axis_newest": "Minggu ini"
     },
     "contexts": {
       "title": "Konteks teratas",
-      "sub": "Tempat kamu paling banyak menulis"
+      "sub": "Konteks yang paling sering kamu gunakan"
     },
     "achievements": {
       "title": "Pencapaian",
@@ -1239,6 +1260,11 @@
   "practiceHelp": {
     "button": "Penjelasan",
     "close": "Tutup",
-    "section": { "concept": "Apa itu?", "types": "Jenis-jenisnya", "howToPlay": "Cara bermain", "tip": "Tips" }
+    "section": {
+      "concept": "Apa itu?",
+      "types": "Jenis-jenisnya",
+      "howToPlay": "Cara bermain",
+      "tip": "Tips"
+    }
   }
 }

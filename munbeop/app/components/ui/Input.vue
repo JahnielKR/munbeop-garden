@@ -12,7 +12,7 @@
  */
 interface Props {
   modelValue: string
-  type?: 'text' | 'email' | 'password' | 'number'
+  type?: 'text' | 'email' | 'password' | 'number' | 'search'
   placeholder?: string
   multiline?: boolean
   rows?: number

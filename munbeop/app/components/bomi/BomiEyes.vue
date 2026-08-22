@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import { inject, type ComputedRef } from 'vue'
-import { motion } from 'motion-v'
-import type { PoseGroupAnimation } from '~/lib/bomi/poses'
-
-const eyesAnim = inject<ComputedRef<PoseGroupAnimation | undefined>>('bomi:eyesAnim')
-
 const LEFT_CX = 11
 const RIGHT_CX = 19
 const CY = 18
@@ -25,21 +19,9 @@ function spY(mul: number) {
 </script>
 
 <template>
-  <motion.g
-    id="eyes"
-    shape-rendering="auto"
-    :animate="eyesAnim?.animate"
-    :transition="eyesAnim?.transition"
-    style="transform-origin: 15px 18px"
-  >
+  <g id="eyes" shape-rendering="auto" style="transform-origin: 15px 18px">
     <!-- LEFT eye body (square ink) -->
-    <rect
-      :x="LEFT_CX - EYE_RX"
-      :y="CY - EYE_RY"
-      :width="EYE_W"
-      :height="EYE_H"
-      fill="#1a1f1a"
-    />
+    <rect :x="LEFT_CX - EYE_RX" :y="CY - EYE_RY" :width="EYE_W" :height="EYE_H" fill="#1a1f1a" />
     <!-- LEFT sparkle grande (top-inner: dir = -1 reversed to +1 for "inner") -->
     <rect
       :x="spX(LEFT_CX, +1, 0.25) - SPARKLE_BIG / 2"
@@ -50,8 +32,8 @@ function spY(mul: number) {
     />
     <!-- LEFT sparkle medio (bottom-outer: dir = -1 outer is to the LEFT) -->
     <rect
-      :x="spX(LEFT_CX, -1, 0.30) - SPARKLE_SM / 2"
-      :y="spY(0.30) - SPARKLE_SM / 2"
+      :x="spX(LEFT_CX, -1, 0.3) - SPARKLE_SM / 2"
+      :y="spY(0.3) - SPARKLE_SM / 2"
       :width="SPARKLE_SM"
       :height="SPARKLE_SM"
       fill="#ffffff"
@@ -68,13 +50,7 @@ function spY(mul: number) {
     />
 
     <!-- RIGHT eye body -->
-    <rect
-      :x="RIGHT_CX - EYE_RX"
-      :y="CY - EYE_RY"
-      :width="EYE_W"
-      :height="EYE_H"
-      fill="#1a1f1a"
-    />
+    <rect :x="RIGHT_CX - EYE_RX" :y="CY - EYE_RY" :width="EYE_W" :height="EYE_H" fill="#1a1f1a" />
     <!-- RIGHT sparkle grande (top-inner: dir = +1 reversed to -1) -->
     <rect
       :x="spX(RIGHT_CX, -1, 0.25) - SPARKLE_BIG / 2"
@@ -85,8 +61,8 @@ function spY(mul: number) {
     />
     <!-- RIGHT sparkle medio (bottom-outer: dir = +1 outer is to the RIGHT) -->
     <rect
-      :x="spX(RIGHT_CX, +1, 0.30) - SPARKLE_SM / 2"
-      :y="spY(0.30) - SPARKLE_SM / 2"
+      :x="spX(RIGHT_CX, +1, 0.3) - SPARKLE_SM / 2"
+      :y="spY(0.3) - SPARKLE_SM / 2"
       :width="SPARKLE_SM"
       :height="SPARKLE_SM"
       fill="#ffffff"
@@ -101,5 +77,5 @@ function spY(mul: number) {
       stroke-linecap="round"
       fill="none"
     />
-  </motion.g>
+  </g>
 </template>

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ActivityHeatmap from '~/components/stats/ActivityHeatmap.vue'
 
@@ -17,7 +17,7 @@ describe('ActivityHeatmap', () => {
   })
 
   it('moves to the previous year when the prev arrow is clicked', async () => {
-    const w = mount(ActivityHeatmap, { props: { counts, now } })
+    const w = mount(ActivityHeatmap, { props: { counts: { ...counts, '2025-12-31': 1 }, now } })
     expect(w.find('[data-test="heat-year"]').text()).toContain('2026')
     await w.find('[data-test="heat-year-prev"]').trigger('click')
     expect(w.find('[data-test="heat-year"]').text()).toContain('2025')
@@ -27,7 +27,9 @@ describe('ActivityHeatmap', () => {
     const w = mount(ActivityHeatmap, { props: { counts, now } })
     const cell = w.findAll('[data-test="heat-cell"]').find((c) => c.attributes('data-day') === '2026-06-26')!
     await cell.trigger('mouseenter')
-    expect(w.find('[data-test="heat-tip"]').text()).toContain('2026-06-26')
+    const text = w.find('[data-test="heat-tip"]').text()
+    expect(text).toContain('2026')
+    expect(text).not.toContain('2026-06-26')
   })
 
   it('hides the tooltip when the cell is left', async () => {
@@ -43,6 +45,16 @@ describe('ActivityHeatmap', () => {
     const w = mount(ActivityHeatmap, { props: { counts: {}, now } })
     expect(w.find('[data-test="heat-streak-current"]').text()).toContain('0')
     expect(w.find('[data-test="heat-streak-longest"]').text()).toContain('0')
+    expect(w.find('[data-test="heat-year-prev"]').attributes('disabled')).toBeDefined()
+  })
+
+  it('does not count zero or future rows and renders the intensity legend', () => {
+    const w = mount(ActivityHeatmap, {
+      props: { counts: { '2026-06-26': 0, '2026-06-27': 8 }, now },
+    })
+    expect(w.find('[data-test="heat-streak-current"]').text()).toContain('0')
+    expect(w.find('[data-test="heat-streak-longest"]').text()).toContain('0')
+    expect(w.find('[data-test="heat-legend"]').exists()).toBe(true)
   })
 
   it('exposes an accessible group summary on the grid', () => {
@@ -79,5 +91,23 @@ describe('ActivityHeatmap', () => {
     expect(future.attributes('aria-hidden')).toBe('true')
     expect(future.attributes('tabindex')).toBe('-1')
     expect(future.attributes('role')).toBeUndefined()
+  })
+
+  it('unmasks the new day after midnight without a remount', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 5, 26, 23, 59, 30))
+    let wrapper: ReturnType<typeof mount> | undefined
+    try {
+      wrapper = mount(ActivityHeatmap, { props: { counts: { '2026-06-27': 1 } } })
+      const findDay = () => wrapper!.findAll('[data-test="heat-cell"]')
+        .find((cell) => cell.attributes('data-day') === '2026-06-27')!
+      expect(findDay().attributes('role')).toBeUndefined()
+
+      await vi.advanceTimersByTimeAsync(60_000)
+      expect(findDay().attributes('role')).toBe('img')
+    } finally {
+      wrapper?.unmount()
+      vi.useRealTimers()
+    }
   })
 })

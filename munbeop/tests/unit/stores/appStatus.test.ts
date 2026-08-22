@@ -42,12 +42,49 @@ describe('appStatus', () => {
     expect(s.status).toBe('idle')
   })
 
+  it('closes the gate immediately for an account transition', async () => {
+    const s = useAppStatus()
+    await s.track(async () => {})
+    expect(s.status).toBe('ready')
+
+    s.beginAccountTransition()
+
+    expect(s.status).toBe('loading')
+  })
+
+  it('does not let an old hydration reopen the gate after an account transition', async () => {
+    const s = useAppStatus()
+    let finishOld!: () => void
+    const oldHydration = s.track(
+      () =>
+        new Promise<void>((resolve) => {
+          finishOld = resolve
+        }),
+    )
+
+    s.beginAccountTransition()
+    finishOld()
+    await oldHydration
+
+    expect(s.status).toBe('loading')
+  })
+
   it('ignores an older completion while the latest hydration is still loading', async () => {
     const s = useAppStatus()
     let finishFirst!: () => void
     let finishSecond!: () => void
-    const first = s.track(() => new Promise<void>((resolve) => { finishFirst = resolve }))
-    const second = s.track(() => new Promise<void>((resolve) => { finishSecond = resolve }))
+    const first = s.track(
+      () =>
+        new Promise<void>((resolve) => {
+          finishFirst = resolve
+        }),
+    )
+    const second = s.track(
+      () =>
+        new Promise<void>((resolve) => {
+          finishSecond = resolve
+        }),
+    )
 
     finishFirst()
     await first
@@ -61,7 +98,12 @@ describe('appStatus', () => {
   it('ignores an older failure after a newer hydration succeeds', async () => {
     const s = useAppStatus()
     let failFirst!: (error: Error) => void
-    const first = s.track(() => new Promise<void>((_resolve, reject) => { failFirst = reject }))
+    const first = s.track(
+      () =>
+        new Promise<void>((_resolve, reject) => {
+          failFirst = reject
+        }),
+    )
     await s.track(async () => {})
 
     failFirst(new Error('stale failure'))

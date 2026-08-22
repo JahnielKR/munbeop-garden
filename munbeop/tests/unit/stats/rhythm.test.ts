@@ -38,11 +38,19 @@ describe('weeklyCounts', () => {
     const out = weeklyCounts([daysAgoMs(20 * 7)], now, 8)
     expect(out.reduce((a, b) => a + b, 0)).toBe(0)
   })
+
+  it('accepts stable calendar keys captured in another timezone', () => {
+    const today = new Date(now)
+    const day = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+    expect(weeklyCounts([day], now, 2)).toEqual([0, 1])
+  })
 })
 
 describe('easyHardSplit', () => {
   it('counts easy/hard and rounds the easy percentage', () => {
-    expect(easyHardSplit([{ feedback: 'easy' }, { feedback: 'easy' }, { feedback: 'hard' }])).toEqual({
+    expect(
+      easyHardSplit([{ feedback: 'easy' }, { feedback: 'easy' }, { feedback: 'hard' }]),
+    ).toEqual({
       easy: 2,
       hard: 1,
       easyPct: 67,

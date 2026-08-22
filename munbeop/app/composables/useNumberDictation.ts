@@ -6,6 +6,7 @@ import type { MarketItem, NumberDomain } from '~/lib/domain'
 import { useNumberMarketAudio } from '~/composables/useNumberMarketAudio'
 import { useActivityStore } from '~/stores/activity'
 import { useNumberMarketMaster } from '~/composables/useNumberMarketMaster'
+import { useStudySession } from '~/composables/useStudySession'
 
 export type DictationPhase = 'input' | 'right' | 'wrong' | 'done'
 export type DictationRunMode = 'normal' | 'replay'
@@ -28,6 +29,7 @@ export function normalizeValue(s: string): string {
 export function useNumberDictation(master = useNumberMarketMaster()) {
   const audio = useNumberMarketAudio()
   const activity = useActivityStore()
+  const studySession = useStudySession()
 
   const selectedDomain = ref<NumberDomain>(NUMBER_DOMAINS[0]!.id)
   const sessionItems = ref<MarketItem[]>([])
@@ -40,7 +42,9 @@ export function useNumberDictation(master = useNumberMarketMaster()) {
   const item = computed<MarketItem>(() => sessionItems.value[index.value]!)
   const score = computed(() => scoreOf(results.value))
   const failedItems = computed(() =>
-    sessionItems.value.filter((i) => results.value.some((r) => r.itemId === itemId(i) && !r.correct)),
+    sessionItems.value.filter((i) =>
+      results.value.some((r) => r.itemId === itemId(i) && !r.correct),
+    ),
   )
 
   function play() {
@@ -59,6 +63,7 @@ export function useNumberDictation(master = useNumberMarketMaster()) {
 
   function start() {
     if (!master.resetSaveStatus()) return false
+    studySession.begin()
     runMode.value = 'normal'
     sessionItems.value = buildRound(selectedDomain.value, ROUND_SIZE, shuffle)
     resetRound()
@@ -67,6 +72,7 @@ export function useNumberDictation(master = useNumberMarketMaster()) {
   }
 
   function replayFailed() {
+    if (!studySession.isCurrent()) return false
     if (!master.resetSaveStatus()) return false
     const failed = failedItems.value
     if (failed.length === 0) return false
@@ -78,12 +84,12 @@ export function useNumberDictation(master = useNumberMarketMaster()) {
   }
 
   function submit() {
-    if (phase.value !== 'input') return
+    if (phase.value !== 'input' || !studySession.isCurrent()) return
     const correct = normalizeValue(entry.value) === item.value.valueKey
     results.value.push({ itemId: itemId(item.value), correct })
     phase.value = correct ? 'right' : 'wrong'
     // Fire-and-forget heatmap tick; record() swallows transient cloud errors.
-    void activity.record()
+    void activity.record('dictation')
   }
 
   async function next() {
@@ -103,8 +109,20 @@ export function useNumberDictation(master = useNumberMarketMaster()) {
 
   return {
     master,
-    selectedDomain, sessionItems, runMode, index, phase, entry,
-    item, score, failedItems,
-    selectDomain, start, replayFailed, play, submit, next,
+    selectedDomain,
+    sessionItems,
+    runMode,
+    index,
+    phase,
+    entry,
+    item,
+    score,
+    failedItems,
+    selectDomain,
+    start,
+    replayFailed,
+    play,
+    submit,
+    next,
   }
 }

@@ -27,16 +27,19 @@ export function currentStreak(dayKeys: Set<string>, todayKey: string, graceDays 
   return streak
 }
 
-/** The longest run of consecutive active days (record streak). */
-export function longestStreak(dayKeys: Set<string>): number {
+/**
+ * Best historical run, using the same grace budget as currentStreak.
+ * Keeping both metrics on one rule prevents impossible UI such as current 2 /
+ * record 1 when mulch bridges a single missed day.
+ */
+export function longestStreak(dayKeys: Set<string>, graceDays = 0): number {
   const ords = [...dayKeys].map(ordinalOf).sort((a, b) => a - b)
+  if (ords.length === 0) return 0
   let best = 0
-  let run = 0
-  let prev = Number.NEGATIVE_INFINITY
-  for (const o of ords) {
-    run = o === prev + 1 ? run + 1 : 1
-    if (run > best) best = run
-    prev = o
+  let left = 0
+  for (let right = 0; right < ords.length; right++) {
+    while (ords[right]! - ords[left]! + 1 - (right - left + 1) > graceDays) left++
+    best = Math.max(best, right - left + 1)
   }
   return best
 }

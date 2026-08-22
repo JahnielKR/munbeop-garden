@@ -9,6 +9,7 @@ import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useActivityStore } from '~/stores/activity'
 import { useAuthStore } from '~/stores/auth'
+import { useStudySession } from '~/composables/useStudySession'
 
 const ONBOARDED_KEY = 'munbeop.onboarded'
 
@@ -29,6 +30,7 @@ export function useOnboarding() {
   const grammarStore = useGrammarStore()
   const contextsStore = useContextsStore()
   const auth = useAuthStore()
+  const studySession = useStudySession()
 
   const onboarded = ref(readFlag(auth.user?.id ?? null))
   const open = ref(false)
@@ -41,19 +43,24 @@ export function useOnboarding() {
     },
   )
 
+  const hasStudyData = computed(() => {
+    if (logStore.entries.length > 0) return true
+    if (Object.values(activity.map).some((day) => day.count > 0)) return true
+    const currentGrammar = new Set(grammarStore.items.map((grammar) => grammar.ko))
+    return Object.keys(srsStore.map).some((ko) => currentGrammar.has(ko))
+  })
+
   const shouldShow = computed(() =>
     shouldShowOnboarding({
       ready: appStatus.status === 'ready',
-      logEmpty: logStore.entries.length === 0,
+      logEmpty: !hasStudyData.value,
       onboarded: onboarded.value,
     }),
   )
 
   // The persistent zero-state stays available as a manual entry point even
   // after the user skips (flag set), as long as they have no entries yet.
-  const showEmptyPlot = computed(
-    () => appStatus.status === 'ready' && logStore.entries.length === 0,
-  )
+  const showEmptyPlot = computed(() => appStatus.status === 'ready' && !hasStudyData.value)
 
   function markOnboarded() {
     const userId = auth.user?.id
@@ -63,6 +70,7 @@ export function useOnboarding() {
   }
 
   function start() {
+    studySession.begin()
     open.value = true
   }
 
@@ -74,7 +82,7 @@ export function useOnboarding() {
   /** Write the guided sentence as a real diary entry + SRS row, then close. */
   async function complete(sentence: string): Promise<LogEntry | null> {
     const ownerUserId = auth.user?.id
-    if (!ownerUserId) return null
+    if (!ownerUserId || !studySession.isCurrent()) return null
     const grammar = grammarStore.items.find((g) => g.ko === STARTER.grammarKo)
     const ctx = contextsStore.active[0]
     if (!grammar || !ctx) {
@@ -92,16 +100,14 @@ export function useOnboarding() {
       contextId: ctx.id,
       contextName: ctx.name,
     })
-    if (auth.user?.id !== ownerUserId) return null
-    void activity.record()
+    if (auth.user?.id !== ownerUserId || !studySession.isCurrent()) return null
+    void activity.record('onboarding')
     await srsStore.markSeen(grammar.ko)
-    if (auth.user?.id !== ownerUserId) return null
-    await srsStore.recalculate(grammar.ko)
-    if (auth.user?.id !== ownerUserId) return null
+    if (auth.user?.id !== ownerUserId || !studySession.isCurrent()) return null
     markOnboarded()
     open.value = false
     return entry
   }
 
-  return { open, shouldShow, showEmptyPlot, start, skip, complete }
+  return { open, shouldShow, showEmptyPlot, hasStudyData, start, skip, complete }
 }

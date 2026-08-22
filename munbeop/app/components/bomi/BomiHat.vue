@@ -1,19 +1,5 @@
-<script setup lang="ts">
-import { inject, type ComputedRef } from 'vue'
-import { motion } from 'motion-v'
-import type { PoseGroupAnimation } from '~/lib/bomi/poses'
-
-const hatAnim = inject<ComputedRef<PoseGroupAnimation | undefined>>('bomi:hatAnim')
-</script>
-
 <template>
-  <motion.g
-    id="hat"
-    shape-rendering="crispEdges"
-    :animate="hatAnim?.animate"
-    :transition="hatAnim?.transition"
-    style="transform-origin: 16px 14px"
-  >
+  <g id="hat" shape-rendering="crispEdges" style="transform-origin: 16px 14px">
     <!-- Crown: rows 5-9 -->
     <rect x="11" y="5" width="10" height="1" fill="#f0c84a" />
     <rect x="10" y="6" width="12" height="2" fill="#f0c84a" />
@@ -33,5 +19,5 @@ const hatAnim = inject<ComputedRef<PoseGroupAnimation | undefined>>('bomi:hatAni
     <!-- Crown side outlines -->
     <rect x="9" y="6" width="1" height="4" fill="#c89030" />
     <rect x="22" y="6" width="1" height="4" fill="#c89030" />
-  </motion.g>
+  </g>
 </template>
