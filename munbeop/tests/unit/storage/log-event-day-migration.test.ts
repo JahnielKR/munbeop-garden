@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 
 const sql = readFileSync(
   fileURLToPath(
-    new URL('../../../supabase/migrations/20260822075432_log_event_day.sql', import.meta.url),
+    new URL('../../../supabase/migrations/20260822235047_log_event_day.sql', import.meta.url),
   ),
   'utf8',
 )
