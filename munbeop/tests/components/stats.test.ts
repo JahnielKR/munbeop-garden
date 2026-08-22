@@ -11,7 +11,13 @@ vi.stubGlobal('useNuxtApp', () => ({ $supabase: null }))
 
 const L = (en: string) => ({ en, es: '', fr: '', 'pt-BR': '', th: '', id: '', vi: '', ja: '' })
 const g = (ko: string, deckId: string): Grammar => ({ ko, meaning: L(ko), deckId })
-const srs = (over: Partial<SrsState>): SrsState => ({ lastSeen: null, easyCount: 0, hardCount: 0, mastery: 'seedling', ...over })
+const srs = (over: Partial<SrsState>): SrsState => ({
+  lastSeen: null,
+  easyCount: 0,
+  hardCount: 0,
+  mastery: 'seedling',
+  ...over,
+})
 let nextId = 1
 const entry = (over: Partial<LogEntry>): LogEntry => ({
   id: nextId++,
@@ -28,7 +34,10 @@ const entry = (over: Partial<LogEntry>): LogEntry => ({
 
 function seedWithData() {
   useGrammarStore().items = [g('koA', 'topik-1'), g('koB', 'topik-2')]
-  useSrsStore().map = { koA: srs({ hardCount: 9, mastery: 'tree' }), koB: srs({ hardCount: 2, mastery: 'plant' }) }
+  useSrsStore().map = {
+    koA: srs({ hardCount: 9, mastery: 'tree' }),
+    koB: srs({ hardCount: 2, mastery: 'plant' }),
+  }
   useLogStore().entries = [entry({ feedback: 'easy' }), entry({ feedback: 'hard' })]
 }
 
@@ -49,6 +58,36 @@ describe('stats page', () => {
     expect(w.findAll('[data-test="mastery-row"]')).toHaveLength(6)
     expect(w.find('[data-test="rhythm"]').exists()).toBe(true)
     expect(w.findAll('[data-test="tough-row"]').length).toBeGreaterThan(0)
+  })
+
+  it('switches the accessible period pulse without changing the four hero cards', async () => {
+    seedWithData()
+    const w = mount(StatsPage)
+    const options = w.findAll('[data-test="period-option"]')
+    const group = w.find('.period__ranges')
+
+    expect(w.find('[data-test="period-pulse"]').exists()).toBe(true)
+    expect(group.attributes('role')).toBe('group')
+    expect(group.attributes('aria-label')).toBeTruthy()
+    expect(options).toHaveLength(4)
+    expect(options.every((option) => option.element.tagName === 'BUTTON')).toBe(true)
+    expect(options.every((option) => option.attributes('type') === 'button')).toBe(true)
+    expect(options[0]!.attributes('aria-pressed')).toBe('true')
+    expect(w.findAll('[data-test="period-metric"]')).toHaveLength(5)
+    expect(w.find('[data-test="period-goal"]').exists()).toBe(true)
+    const progress = w.find('[role="progressbar"]')
+    expect(progress.attributes('aria-valuemin')).toBe('0')
+    expect(progress.attributes('aria-valuemax')).toBe('100')
+    expect(progress.attributes('aria-valuenow')).toBeTruthy()
+    expect(progress.attributes('aria-label')).toBeTruthy()
+
+    await options[3]!.trigger('click')
+    expect(options[0]!.attributes('aria-pressed')).toBe('false')
+    expect(options[3]!.attributes('aria-pressed')).toBe('true')
+    expect(w.find('[data-test="period-goal"]').exists()).toBe(false)
+    expect(w.findAll('[data-test="hero-card"]')).toHaveLength(4)
+    expect(w.find('.heat-block').exists()).toBe(true)
+    expect(w.findAll('[data-test="mastery-row"]')).toHaveLength(6)
   })
 
   it('renders the global trophy wall with earned + locked states', () => {

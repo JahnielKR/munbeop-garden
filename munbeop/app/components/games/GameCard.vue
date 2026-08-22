@@ -41,12 +41,22 @@ const tag = computed(() => (props.locked ? 'div' : NuxtLink))
   <component
     :is="tag"
     :to="locked ? undefined : to"
+    :prefetch-on="locked ? undefined : 'interaction'"
     class="game-card"
     :class="{ 'game-card--locked': locked }"
     :data-testid="`game-card-${to.replaceAll('/', '-')}`"
   >
     <div class="game-card__cover">
-      <img v-if="image" :src="image" alt="" class="game-card__img" >
+      <img
+        v-if="image"
+        :src="image"
+        alt=""
+        class="game-card__img"
+        width="320"
+        height="180"
+        loading="lazy"
+        decoding="async"
+      >
       <span v-else class="game-card__emoji" aria-hidden="true">{{ emoji }}</span>
       <span v-if="locked" class="game-card__ribbon">{{ lockedLabel }}</span>
     </div>

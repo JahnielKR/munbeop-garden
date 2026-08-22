@@ -130,7 +130,7 @@
   "stats": {
     "empty": "Pas encore de stats — écris quelques phrases dans Pratique et l'histoire de ton jardin commence ici.",
     "hero": {
-      "sentences": "Phrases écrites",
+      "sentences": "Entrées du journal",
       "streak": "Série de jours",
       "mastered": "Grammaires maîtrisées",
       "pending": "Révisions en attente"
@@ -138,14 +138,35 @@
     "activity": {
       "title": "Ton jardin, jour après jour",
       "sub": "Chaque jour de pratique, une cellule vire au vert.",
-      "tooltip": "{count} réponses",
-      "avg": "Moyenne quotidienne",
+      "tooltip": "Activités d’étude : {count}",
+      "avg": "Moyenne / jour actif",
       "days_active": "Jours actifs",
       "streak_current": "Série en cours",
       "streak_longest": "Série la plus longue",
       "year_prev": "Année précédente",
       "year_next": "Année suivante",
-      "grid_summary": "Activité en {year} : {days} jours actifs, {total} répondues."
+      "legend_less": "Moins",
+      "legend_more": "Plus",
+      "grid_summary": "Activité en {year} : {days} jours actifs, {total} activités d’étude."
+    },
+    "period": {
+      "title": "Pouls de la période",
+      "sub": "Une vue synthétique de votre rythme d'étude récent.",
+      "filter_label": "Choisir la période du pouls",
+      "range_7": "7 j",
+      "range_30": "30 j",
+      "range_90": "90 j",
+      "range_all": "Tout",
+      "actions": "Actions d'étude",
+      "active_days": "Jours actifs",
+      "goal_days": "Jours avec objectif atteint",
+      "average": "Moy. / jour actif",
+      "change": "Écart avec la période précédente",
+      "comparison_none": "Aucune période comparable",
+      "goal": "Objectif cumulé",
+      "goal_progress": "{current} / {target} actions",
+      "goal_aria": "Objectif cumulé : {current} actions sur {target} ({percent} %).",
+      "scope": "Ce filtre modifie uniquement ce pouls. La carte d'activité, la maîtrise et les statistiques historiques conservent toute leur période."
     },
     "mastery": {
       "title": "Maîtrise par TOPIK 1–6",
@@ -153,16 +174,16 @@
     },
     "rhythm": {
       "title": "Rythme de pratique",
-      "sub": "Phrases par semaine · 8 dernières semaines",
+      "sub": "Entrées par semaine · 8 dernières semaines",
       "easy": "Facile",
       "hard": "Difficile",
-      "aria": "{total} phrases sur les {weeks} dernières semaines.",
+      "aria": "{total} entrées du journal sur les {weeks} dernières semaines.",
       "axis_oldest": "Avant",
       "axis_newest": "Cette semaine"
     },
     "contexts": {
       "title": "Contextes principaux",
-      "sub": "Où tu écris le plus"
+      "sub": "Tes contextes les plus fréquents"
     },
     "achievements": {
       "title": "Succès",
@@ -1239,6 +1260,11 @@
   "practiceHelp": {
     "button": "Explication",
     "close": "Fermer",
-    "section": { "concept": "Qu'est-ce que c'est ?", "types": "Ses types", "howToPlay": "Comment jouer", "tip": "Astuce" }
+    "section": {
+      "concept": "Qu'est-ce que c'est ?",
+      "types": "Ses types",
+      "howToPlay": "Comment jouer",
+      "tip": "Astuce"
+    }
   }
 }

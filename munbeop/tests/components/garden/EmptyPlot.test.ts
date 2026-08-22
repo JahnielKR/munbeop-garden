@@ -7,6 +7,8 @@ describe('EmptyPlot', () => {
     const w = mount(EmptyPlot)
     expect(w.text()).toContain('onboarding.empty.title') // key-echo stub
     expect(w.find('button').exists()).toBe(true)
+    expect(w.find('svg.plot__seed').exists()).toBe(true)
+    expect(w.text()).not.toContain('🌱')
   })
   it('emits "start" when the CTA is clicked', async () => {
     const w = mount(EmptyPlot)

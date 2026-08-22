@@ -3,74 +3,130 @@ import { setActivePinia, createPinia } from 'pinia'
 import { useSrsStore } from '~/stores/srs'
 import { useAppStatus } from '~/stores/appStatus'
 import { useAuthStore } from '~/stores/auth'
-import { STORAGE_KEYS } from '~/lib/storage'
 
-// Spy on the adapter: a per-card SRS update should be a single-row upsertOne,
-// not a full-map write (the O(catalog) cost the delta fix kills).
-const upsertOne = vi.fn(async () => {})
+const progress = (ko: string, lastSeen: number | null = null) => ({
+  ko,
+  lastSeen,
+  easyCount: 0,
+  hardCount: 0,
+  mastery: 'seedling' as const,
+  revision: 0,
+})
+const markProgressSeen = vi.fn(async (ko: string, now: number) => progress(ko, now))
+const recalculateProgress = vi.fn(async (ko: string) => progress(ko))
 const write = vi.fn(async () => {})
 const read = vi.fn(async (_key: string, fallback: unknown) => fallback)
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({
     read,
     write,
-    upsertOne,
+    markProgressSeen,
+    recalculateProgress,
     append: async () => {},
     remove: async () => {},
     clear: async () => {},
   }),
 }))
-// recalculate reads useLogStore().entries
-vi.mock('~/stores/log', () => ({ useLogStore: () => ({ entries: [] }) }))
-
-describe('useSrsStore — delta upsert', () => {
+describe('useSrsStore — authoritative progress RPCs', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    upsertOne.mockClear()
+    markProgressSeen.mockClear()
+    markProgressSeen.mockImplementation(async (ko, now) => progress(ko, now))
+    recalculateProgress.mockClear()
+    recalculateProgress.mockImplementation(async (ko) => progress(ko))
     write.mockClear()
     read.mockClear()
   })
 
-  it('markSeen upserts only the touched ko, not the whole map', async () => {
+  it('markSeen asks the server to advance only the touched ko', async () => {
     const store = useSrsStore()
     await store.markSeen('A', 1717200000000)
 
-    expect(upsertOne).toHaveBeenCalledTimes(1)
+    expect(markProgressSeen).toHaveBeenCalledWith('A', 1717200000000)
     expect(write).not.toHaveBeenCalled()
-    const [key, entry] = upsertOne.mock.calls[0] as [string, { id: string; value: { lastSeen: number | null } }]
-    expect(key).toBe(STORAGE_KEYS.srs)
-    expect(entry.id).toBe('A')
-    expect(entry.value.lastSeen).toBe(1717200000000)
+    expect(store.map.A?.lastSeen).toBe(1717200000000)
   })
 
-  it('recalculate upserts only the recomputed ko', async () => {
+  it('recalculate applies the server-derived row', async () => {
     const store = useSrsStore()
     await store.recalculate('A')
 
-    expect(upsertOne).toHaveBeenCalledTimes(1)
+    expect(recalculateProgress).toHaveBeenCalledWith('A')
     expect(write).not.toHaveBeenCalled()
-    const [key, entry] = upsertOne.mock.calls[0] as [string, { id: string }]
-    expect(key).toBe(STORAGE_KEYS.srs)
-    expect(entry.id).toBe('A')
+    expect(store.map.A).toMatchObject({ revision: 0, mastery: 'seedling' })
   })
 
   it('serializes markSeen before a later recalculation for the same grammar', async () => {
     let resolveMarkSeen!: () => void
-    upsertOne
-      .mockImplementationOnce(() => new Promise<void>((resolve) => { resolveMarkSeen = resolve }))
-      .mockResolvedValueOnce(undefined)
+    markProgressSeen.mockImplementationOnce(
+      (ko, now) =>
+        new Promise((resolve) => {
+          resolveMarkSeen = () => resolve(progress(ko, now))
+        }),
+    )
     const store = useSrsStore()
 
     const marking = store.markSeen('A', 1717200000000)
     const recalculating = store.recalculate('A')
-    await vi.waitFor(() => expect(upsertOne).toHaveBeenCalledTimes(1))
+    await vi.waitFor(() => expect(markProgressSeen).toHaveBeenCalledTimes(1))
+    expect(recalculateProgress).not.toHaveBeenCalled()
 
     resolveMarkSeen()
     await marking
     await recalculating
 
-    expect(upsertOne).toHaveBeenCalledTimes(2)
-    expect(upsertOne.mock.calls.map((call) => call[1].id)).toEqual(['A', 'A'])
+    expect(recalculateProgress).toHaveBeenCalledTimes(1)
+  })
+
+  it('queues a write started while hydration is replacing the map', async () => {
+    let resolveRead!: (value: unknown) => void
+    read.mockImplementationOnce(() => new Promise((resolve) => (resolveRead = resolve)))
+    const store = useSrsStore()
+    const hydration = store.hydrate()
+    await vi.waitFor(() => expect(read).toHaveBeenCalledTimes(1))
+
+    const marking = store.markSeen('A', 1717200000000)
+    expect(markProgressSeen).not.toHaveBeenCalled()
+    resolveRead({})
+    await hydration
+    await marking
+
+    expect(markProgressSeen).toHaveBeenCalledTimes(1)
+  })
+
+  it('ignores an old A response after an A to B to A account epoch change', async () => {
+    const auth = useAuthStore()
+    auth.setSession({ user: { id: 'a' } } as never)
+    const appStatus = useAppStatus()
+    appStatus.status = 'ready'
+    const store = useSrsStore()
+    await store.hydrate()
+
+    let resolveOldWrite!: () => void
+    markProgressSeen.mockImplementationOnce(
+      (ko, now) =>
+        new Promise((resolve) => {
+          resolveOldWrite = () => resolve({ ...progress(ko, now), easyCount: 1, revision: 1 })
+        }),
+    )
+    const staleWrite = store.markSeen('A', 1717200000000)
+    await vi.waitFor(() => expect(markProgressSeen).toHaveBeenCalledTimes(1))
+
+    auth.setSession({ user: { id: 'b' } } as never)
+    auth.setSession({ user: { id: 'a' } } as never)
+    store.map = {
+      A: {
+        lastSeen: 1717300000000,
+        easyCount: 9,
+        hardCount: 2,
+        mastery: 'tree',
+        revision: 8,
+      },
+    }
+    resolveOldWrite()
+    await staleWrite
+
+    expect(store.map.A).toMatchObject({ easyCount: 9, mastery: 'tree', revision: 8 })
   })
 })
 
@@ -82,7 +138,10 @@ describe('useSrsStore — no writes while the data load failed (clobber guard)',
   // main loop and all labs) with one check.
   beforeEach(() => {
     setActivePinia(createPinia())
-    upsertOne.mockClear()
+    markProgressSeen.mockClear()
+    markProgressSeen.mockImplementation(async (ko, now) => progress(ko, now))
+    recalculateProgress.mockClear()
+    recalculateProgress.mockImplementation(async (ko) => progress(ko))
     write.mockClear()
     read.mockClear()
   })
@@ -91,7 +150,7 @@ describe('useSrsStore — no writes while the data load failed (clobber guard)',
     useAppStatus().status = 'error'
     const store = useSrsStore()
     await store.markSeen('A')
-    expect(upsertOne).not.toHaveBeenCalled()
+    expect(markProgressSeen).not.toHaveBeenCalled()
     expect(store.map['A']).toBeUndefined() // never fabricated a zeroed row
   })
 
@@ -100,7 +159,8 @@ describe('useSrsStore — no writes while the data load failed (clobber guard)',
     const store = useSrsStore()
     await store.markSeen('A')
     await store.recalculate('A')
-    expect(upsertOne).not.toHaveBeenCalled()
+    expect(markProgressSeen).not.toHaveBeenCalled()
+    expect(recalculateProgress).not.toHaveBeenCalled()
     expect(store.map['A']).toBeUndefined()
   })
 
@@ -108,7 +168,7 @@ describe('useSrsStore — no writes while the data load failed (clobber guard)',
     useAppStatus().status = 'error'
     const store = useSrsStore()
     await store.recalculate('A')
-    expect(upsertOne).not.toHaveBeenCalled()
+    expect(recalculateProgress).not.toHaveBeenCalled()
     expect(store.map['A']).toBeUndefined()
   })
 
@@ -117,11 +177,11 @@ describe('useSrsStore — no writes while the data load failed (clobber guard)',
     appStatus.status = 'error'
     const store = useSrsStore()
     await store.markSeen('A')
-    expect(upsertOne).not.toHaveBeenCalled()
+    expect(markProgressSeen).not.toHaveBeenCalled()
 
     appStatus.status = 'ready'
     await store.markSeen('A')
-    expect(upsertOne).toHaveBeenCalledTimes(1)
+    expect(markProgressSeen).toHaveBeenCalledTimes(1)
   })
 
   it('writes proceed against the retained map when a page-level re-hydrate fails WITHOUT tracking (status stays ready)', async () => {
@@ -133,6 +193,6 @@ describe('useSrsStore — no writes while the data load failed (clobber guard)',
     await expect(store.hydrate()).rejects.toThrow('network down')
     // appStatus never set to error → writes proceed.
     await store.markSeen('A')
-    expect(upsertOne).toHaveBeenCalledTimes(1)
+    expect(markProgressSeen).toHaveBeenCalledTimes(1)
   })
 })

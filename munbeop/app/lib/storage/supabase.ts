@@ -5,6 +5,17 @@ import { STORAGE_KEYS, type StorageKey } from './keys'
 import type { Grammar, Context, Deck, CustomDeck, LogEntry, SrsState } from '~/lib/domain'
 import type { ActivityDay } from '~/lib/stats/activity'
 import { CUSTOM_DECK_ID } from '~/lib/domain'
+import type { ActivityBatchResult, ActivityEvent } from '~/lib/activity/event'
+import {
+  parseJournalDeleteMutationResult,
+  parseJournalEntryMutationResult,
+  parseProgressRecord,
+  type JournalDeleteMutation,
+  type JournalDeleteMutationResult,
+  type JournalEntryMutationResult,
+  type JournalReviewMutation,
+  type ProgressRecord,
+} from './journal'
 
 /**
  * Surface a Supabase error instead of swallowing it. Every read/write goes
@@ -12,7 +23,11 @@ import { CUSTOM_DECK_ID } from '~/lib/domain'
  * (show a toast, skip a destructive re-seed) rather than silently resolving to
  * an empty fallback — which the stores would misread as "the user has no data".
  */
-function assertOk(op: 'read' | 'write', key: StorageKey, error: { message?: string } | null | undefined): void {
+function assertOk(
+  op: 'read' | 'write',
+  key: StorageKey,
+  error: { message?: string } | null | undefined,
+): void {
   if (error) {
     throw new Error(`SupabaseAdapter.${op}(${key}) failed: ${error.message ?? 'unknown error'}`)
   }
@@ -82,6 +97,11 @@ export class SupabaseAdapter implements StorageAdapter {
       context_id: e.contextId,
       context_name: e.contextName,
       created_at: e.date,
+      local_day: e.localDay ?? null,
+      time_zone: e.timeZone ?? null,
+      utc_offset_minutes: e.utcOffsetMinutes ?? null,
+      activity_event_id: e.activityEventId ?? null,
+      revision: e.revision ?? 0,
     }
   }
 
@@ -176,6 +196,7 @@ export class SupabaseAdapter implements StorageAdapter {
       easy_count: s.easyCount,
       hard_count: s.hardCount,
       mastery: s.mastery,
+      revision: s.revision ?? 0,
       updated_at: new Date().toISOString(),
     }
   }
@@ -214,7 +235,7 @@ export class SupabaseAdapter implements StorageAdapter {
       case STORAGE_KEYS.srs: {
         const { data, error } = await this.client
           .from('user_progress')
-          .select('ko, last_seen, easy_count, hard_count, mastery')
+          .select('ko, last_seen, easy_count, hard_count, mastery, revision')
           .eq('user_id', this.userId)
         assertOk('read', key, error)
         const map: Record<string, SrsState> = {}
@@ -224,6 +245,7 @@ export class SupabaseAdapter implements StorageAdapter {
             easyCount: row.easy_count,
             hardCount: row.hard_count,
             mastery: row.mastery as SrsState['mastery'],
+            revision: row.revision,
           }
         }
         return (Object.keys(map).length ? map : fallback) as T
@@ -247,6 +269,11 @@ export class SupabaseAdapter implements StorageAdapter {
           contextId: r.context_id,
           contextName: r.context_name,
           date: r.created_at,
+          localDay: r.local_day,
+          timeZone: r.time_zone,
+          utcOffsetMinutes: r.utc_offset_minutes,
+          activityEventId: r.activity_event_id,
+          revision: r.revision,
         }))
         return (entries.length ? entries : fallback) as T
       }
@@ -367,7 +394,12 @@ export class SupabaseAdapter implements StorageAdapter {
           )
           assertOk('write', key, error)
         }
-        await this.pruneOrphans(key, 'user_custom_grammars', 'ko', new Set(customs.map((g) => g.ko)))
+        await this.pruneOrphans(
+          key,
+          'user_custom_grammars',
+          'ko',
+          new Set(customs.map((g) => g.ko)),
+        )
         return
       }
 
@@ -404,9 +436,9 @@ export class SupabaseAdapter implements StorageAdapter {
       case STORAGE_KEYS.decks: {
         const decks = value as Deck[]
         if (decks.length) {
-          const { error } = await this.client.from('user_decks').upsert(
-            decks.map((d) => this.deckRow(d)),
-          )
+          const { error } = await this.client
+            .from('user_decks')
+            .upsert(decks.map((d) => this.deckRow(d)))
           assertOk('write', key, error)
         }
         await this.pruneOrphans(key, 'user_decks', 'id', new Set(decks.map((d) => d.id)))
@@ -416,9 +448,9 @@ export class SupabaseAdapter implements StorageAdapter {
       case STORAGE_KEYS.customDecks: {
         const decks = value as CustomDeck[]
         if (decks.length) {
-          const { error } = await this.client.from('user_custom_decks').upsert(
-            decks.map((d) => this.customDeckRow(d)),
-          )
+          const { error } = await this.client
+            .from('user_custom_decks')
+            .upsert(decks.map((d) => this.customDeckRow(d)))
           assertOk('write', key, error)
         }
         await this.pruneOrphans(key, 'user_custom_decks', 'id', new Set(decks.map((d) => d.id)))
@@ -428,12 +460,17 @@ export class SupabaseAdapter implements StorageAdapter {
       case STORAGE_KEYS.customContexts: {
         const contexts = value as Context[]
         if (contexts.length) {
-          const { error } = await this.client.from('user_custom_contexts').upsert(
-            contexts.map((c) => this.customContextRow(c)),
-          )
+          const { error } = await this.client
+            .from('user_custom_contexts')
+            .upsert(contexts.map((c) => this.customContextRow(c)))
           assertOk('write', key, error)
         }
-        await this.pruneOrphans(key, 'user_custom_contexts', 'id', new Set(contexts.map((c) => c.id)))
+        await this.pruneOrphans(
+          key,
+          'user_custom_contexts',
+          'id',
+          new Set(contexts.map((c) => c.id)),
+        )
         return
       }
 
@@ -511,10 +548,7 @@ export class SupabaseAdapter implements StorageAdapter {
     }
   }
 
-  async upsertOne<V>(
-    key: StorageKey,
-    entry: { id: string | number; value: V },
-  ): Promise<void> {
+  async upsertOne<V>(key: StorageKey, entry: { id: string | number; value: V }): Promise<void> {
     switch (key) {
       case STORAGE_KEYS.srs: {
         // One-row upsert instead of re-upserting the whole SRS map per card.
@@ -593,11 +627,7 @@ export class SupabaseAdapter implements StorageAdapter {
     }
   }
 
-  async increment(
-    key: StorageKey,
-    id: string | number,
-    amount = 1,
-  ): Promise<number | null> {
+  async increment(key: StorageKey, id: string | number, amount = 1): Promise<number | null> {
     if (key !== STORAGE_KEYS.activity) {
       throw new Error(`SupabaseAdapter.increment(${key}) is not supported`)
     }
@@ -615,8 +645,96 @@ export class SupabaseAdapter implements StorageAdapter {
     return data
   }
 
+  async recordActivityEvents(events: readonly ActivityEvent[]): Promise<ActivityBatchResult> {
+    if (events.length < 1 || events.length > 100) {
+      throw new Error('SupabaseAdapter.recordActivityEvents expects 1 to 100 events')
+    }
+    const { data, error } = await this.client.rpc('record_user_activity_events_v2', {
+      p_expected_user_id: this.userId,
+      p_events: events as unknown as Json,
+    })
+    assertOk('write', STORAGE_KEYS.activity, error)
+
+    if (!data || typeof data !== 'object' || Array.isArray(data)) {
+      throw new Error('SupabaseAdapter.recordActivityEvents returned an invalid result')
+    }
+    const result = data as Record<string, Json | undefined>
+    const acknowledged = result.acknowledgedIds
+    const totals = result.totalsByDay
+    if (
+      !Array.isArray(acknowledged) ||
+      !acknowledged.every((id) => typeof id === 'string') ||
+      !totals ||
+      typeof totals !== 'object' ||
+      Array.isArray(totals)
+    ) {
+      throw new Error('SupabaseAdapter.recordActivityEvents returned an invalid result')
+    }
+    const totalsByDay: Record<string, number> = {}
+    for (const [day, count] of Object.entries(totals)) {
+      if (typeof count !== 'number' || !Number.isInteger(count) || count < 0) {
+        throw new Error('SupabaseAdapter.recordActivityEvents returned an invalid total')
+      }
+      totalsByDay[day] = count
+    }
+    return { acknowledgedIds: acknowledged as string[], totalsByDay }
+  }
+
+  async saveJournalEntry(entry: LogEntry): Promise<JournalEntryMutationResult> {
+    const { data, error } = await this.client.rpc('save_user_log_entry_v2', {
+      p_expected_user_id: this.userId,
+      p_entry: entry as unknown as Json,
+    })
+    assertOk('write', STORAGE_KEYS.log, error)
+    return parseJournalEntryMutationResult(data)
+  }
+
+  async setJournalReview(mutation: JournalReviewMutation): Promise<JournalEntryMutationResult> {
+    const { data, error } = await this.client.rpc('set_user_log_review_v2', {
+      p_expected_user_id: this.userId,
+      p_id: mutation.id,
+      p_review_state: mutation.reviewState,
+      p_error_note: mutation.errorNote,
+      p_expected_revision: mutation.expectedRevision,
+    })
+    assertOk('write', STORAGE_KEYS.log, error)
+    return parseJournalEntryMutationResult(data)
+  }
+
+  async deleteJournalEntry(mutation: JournalDeleteMutation): Promise<JournalDeleteMutationResult> {
+    const { data, error } = await this.client.rpc('delete_user_log_entry_v2', {
+      p_expected_user_id: this.userId,
+      p_id: mutation.id,
+      p_expected_ko: mutation.expectedKo,
+      p_expected_revision: mutation.expectedRevision,
+    })
+    assertOk('write', STORAGE_KEYS.log, error)
+    return parseJournalDeleteMutationResult(data)
+  }
+
+  async markProgressSeen(ko: string, seenAt: number): Promise<ProgressRecord> {
+    if (!Number.isFinite(seenAt)) throw new TypeError('seenAt must be a finite timestamp')
+    const { data, error } = await this.client.rpc('mark_user_progress_seen_v2', {
+      p_expected_user_id: this.userId,
+      p_ko: ko,
+      p_seen_at: new Date(seenAt).toISOString(),
+    })
+    assertOk('write', STORAGE_KEYS.srs, error)
+    return parseProgressRecord(data)
+  }
+
+  async recalculateProgress(ko: string): Promise<ProgressRecord> {
+    const { data, error } = await this.client.rpc('recalculate_user_progress_v2', {
+      p_expected_user_id: this.userId,
+      p_ko: ko,
+    })
+    assertOk('write', STORAGE_KEYS.srs, error)
+    return parseProgressRecord(data)
+  }
+
   async restore(data: StorageRestore): Promise<void> {
-    const { data: restored, error } = await this.client.rpc('restore_user_backup', {
+    const { data: restored, error } = await this.client.rpc('restore_user_backup_v2', {
+      p_expected_user_id: this.userId,
       p_data: data as Json,
     })
     if (error) {
@@ -625,10 +743,7 @@ export class SupabaseAdapter implements StorageAdapter {
     if (restored !== true) throw new Error('SupabaseAdapter.restore returned no confirmation')
   }
 
-  async updateOne<V>(
-    key: StorageKey,
-    entry: { id: string | number; value: V },
-  ): Promise<boolean> {
+  async updateOne<V>(key: StorageKey, entry: { id: string | number; value: V }): Promise<boolean> {
     switch (key) {
       case STORAGE_KEYS.log: {
         const row = this.logRow(entry.value as LogEntry)

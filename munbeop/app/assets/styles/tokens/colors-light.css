@@ -62,6 +62,7 @@
   /* ---- 3. Semantic aliases ---- */
   --bg: var(--paper);
   --surface: var(--paper-warm);
+  --surface-muted: #e9deca;               /* quiet inset tier — charts / filters */
   --surface-elevated: var(--paper-deep);  /* raised focal tier — puzzle prompt card, input, tiles */
   --surface-hover: var(--hover-bg);
   --text: var(--ink);

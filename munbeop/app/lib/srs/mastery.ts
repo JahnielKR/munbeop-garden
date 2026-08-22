@@ -12,6 +12,7 @@ export function freshSrs(): SrsState {
     easyCount: 0,
     hardCount: 0,
     mastery: 'seedling',
+    revision: 0,
   }
 }
 
@@ -45,7 +46,7 @@ export function recalculateMastery(ko: string, log: readonly LogEntry[]): SrsSta
     mastery = 'plant'
   }
 
-  return { lastSeen, easyCount, hardCount, mastery }
+  return { lastSeen, easyCount, hardCount, mastery, revision: 0 }
 }
 
 export interface MasteryInfo {

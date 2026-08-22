@@ -1,9 +1,15 @@
-import { describe, it, expect, afterEach } from 'vitest'
-import { mount, enableAutoUnmount } from '@vue/test-utils'
+import { describe, it, expect, afterEach, vi } from 'vitest'
+import { mount, enableAutoUnmount, flushPromises } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import PracticeHelp from '~/components/practice/PracticeHelp.vue'
 
+vi.mock('~/lib/practice-help/load', async () => {
+  const { REGISTER_HELP } = await import('~/seed/practice-help/register')
+  return { loadHelpFor: async () => REGISTER_HELP }
+})
+
 async function flushTransitions() {
+  await flushPromises()
   await nextTick()
   await nextTick()
 }

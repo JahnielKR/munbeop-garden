@@ -25,6 +25,7 @@ describe('CustomGrammarManager', () => {
     await store.addCustomGrammar({ ko: '-거든요', meaning: L('reason') })
     await nextTick()
     expect(w.findAll('.cg-row')).toHaveLength(1)
+    expect(w.get('.cg-row__delete').find('svg').exists()).toBe(true)
     await w.get('.cg-row__delete').trigger('click')
     await nextTick()
     expect(document.body.querySelector('.modal-overlay')).not.toBeNull()

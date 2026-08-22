@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NuxtLink } from '#components'
+import Icon from '~/components/ui/Icon.vue'
 import type { Leech } from '~/lib/srs'
 
 interface Props {
@@ -14,8 +15,13 @@ const careLink = (ko: string) => `/practice/rescue?ko=${encodeURIComponent(ko)}`
 
 <template>
   <section v-if="leeches.length" class="block" data-testid="struggling-plants">
-    <h2 class="block__title">{{ t('stats.struggling.title') }}</h2>
-    <p class="block__sub">{{ t('stats.struggling.sub') }}</p>
+    <div class="block__head">
+      <span class="block__icon" aria-hidden="true"><Icon name="deck-heart" :size="24" /></span>
+      <div>
+        <h2 class="block__title">{{ t('stats.struggling.title') }}</h2>
+        <p class="block__sub">{{ t('stats.struggling.sub') }}</p>
+      </div>
+    </div>
     <div class="care">
       <div v-for="l in leeches" :key="l.ko" class="care__row" data-test="struggling-row">
         <div class="care__grammar">
@@ -39,78 +45,125 @@ const careLink = (ko: string) => `/practice/rescue?ko=${encodeURIComponent(ko)}`
 .block {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--surface-elevated);
+  border: 2px solid var(--border);
+  border-left: 6px solid var(--jade);
+  box-shadow: var(--bevel), var(--shadow-card);
+}
+.block__head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+.block__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  color: var(--text);
+  background: var(--surface-muted);
+  border: 2px solid var(--border);
 }
 .block__title {
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--ink);
   margin: 0;
+  color: var(--text);
+  font-family: var(--font-pixel-display);
+  font-size: var(--text-md);
+  line-height: 1.6;
 }
 .block__sub {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: var(--ink-soft);
-  margin: 0 0 8px;
+  margin: var(--space-1) 0 0;
+  color: var(--text-soft);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
 }
 .care {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-3);
 }
 .care__row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  background: var(--paper-warm);
-  border: 1.5px solid var(--jade, #3f9d6b);
-  border-radius: 8px;
-  padding: 9px 12px;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-pixel-sm);
+}
+.care__grammar {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
 }
 .care__ko {
-  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text);
+  font-family: var(--font-ko);
   font-weight: 700;
-  font-size: 14px;
-  color: var(--ink);
+  font-size: var(--text-base);
 }
 .care__meaning {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: var(--ink-soft);
-  margin-left: 4px;
+  color: var(--text-soft);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
 }
 .care__right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-3);
   flex-shrink: 0;
 }
 .care__chip {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 11px;
-  color: var(--ink-soft);
-  border: 1px solid var(--ink-line, var(--border));
-  border-radius: 6px;
-  padding: 2px 7px;
+  padding: 6px 8px;
+  color: var(--text);
+  background: var(--surface-muted);
+  border: 2px solid var(--border-strong);
+  font-family: var(--font-ko);
+  font-size: var(--text-xs);
 }
 .care__cta {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 8px 12px;
+  color: var(--text-on-accent);
+  background: var(--accent);
+  border: 2px solid var(--border-strong);
+  box-shadow: var(--shadow-button);
+  font-family: var(--font-pixel-small);
+  font-size: 9px;
+  line-height: 1.5;
   text-decoration: none;
-  background: var(--paper);
-  border: 1.5px solid var(--jade, #3f9d6b);
-  border-radius: 999px;
-  padding: 4px 12px;
+  transition: transform var(--motion-quick) var(--ease-out), box-shadow var(--motion-quick) var(--ease-out);
 }
 .care__cta:hover {
-  background: var(--paper-deep);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-button-hover);
+}
+.care__cta:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-button-pressed);
 }
 .care__cta:focus-visible {
-  outline: 2px solid var(--focus-ring, var(--sky));
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .block { padding: var(--space-4); }
+  .care__row { align-items: stretch; flex-direction: column; }
+  .care__right { justify-content: space-between; flex-wrap: wrap; }
+  .care__cta { flex: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .care__cta { transition: none; }
 }
 </style>

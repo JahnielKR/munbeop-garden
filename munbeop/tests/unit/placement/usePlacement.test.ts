@@ -3,8 +3,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 
 const setStartingDeck = vi.fn()
+const recordActivity = vi.fn()
 vi.mock('~/stores/settings', () => ({ useSettingsStore: () => ({ setStartingDeck }) }))
-vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: vi.fn(async () => {}) }) }))
+vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ record: recordActivity }) }))
 
 vi.mock('~/seed/placement', () => {
   const mk = (ko: string, level: number, correct: string) => ({
@@ -23,6 +24,7 @@ vi.mock('~/seed/placement', () => {
 beforeEach(() => {
   setActivePinia(createPinia())
   setStartingDeck.mockClear()
+  recordActivity.mockClear()
   setStartingDeck.mockResolvedValue(true)
 })
 
@@ -57,6 +59,15 @@ describe('usePlacement', () => {
     p.start()
     expect(p.displayOptions.value).toHaveLength(4)
     expect(p.displayOptions.value).toContain(p.item.value.answer)
+  })
+
+  it('records activity as soon as an answer is committed', () => {
+    const p = usePlacement()
+    p.start()
+    p.answer(p.item.value.answer)
+    expect(recordActivity).toHaveBeenCalledTimes(1)
+    p.answer(p.item.value.answer)
+    expect(recordActivity).toHaveBeenCalledTimes(1)
   })
 
   it('surfaces a failed recommendation save and retries it', async () => {

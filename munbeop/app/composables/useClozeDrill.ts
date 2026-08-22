@@ -7,6 +7,7 @@ import { useLogStore } from '~/stores/log'
 import { useSrsStore } from '~/stores/srs'
 import { useActivityStore } from '~/stores/activity'
 import { useAuthStore } from '~/stores/auth'
+import { useStudySession } from '~/composables/useStudySession'
 import type { PracticeSaveStatus } from '~/lib/practice/persistence'
 
 export type ClozePhase = 'question' | 'right' | 'wrong' | 'done'
@@ -21,6 +22,7 @@ export function useClozeDrill() {
   const srsStore = useSrsStore()
   const activity = useActivityStore()
   const auth = useAuthStore()
+  const studySession = useStudySession()
   const { t } = useI18n()
 
   const sessionItems = ref<ClozeItem[]>([])
@@ -38,13 +40,19 @@ export function useClozeDrill() {
   let runGeneration = 0
 
   function runStillOwned(ownerUserId = runOwnerUserId, generation = runGeneration): boolean {
-    return (auth.user?.id ?? null) === ownerUserId && runGeneration === generation
+    return (
+      (auth.user?.id ?? null) === ownerUserId &&
+      runGeneration === generation &&
+      studySession.isCurrent()
+    )
   }
 
   const item = computed<ClozeItem>(() => sessionItems.value[index.value]!)
   const score = computed(() => scoreOf(results.value))
   const failedItems = computed(() =>
-    sessionItems.value.filter((i) => results.value.some((r) => r.itemId === itemId(i) && !r.correct)),
+    sessionItems.value.filter((i) =>
+      results.value.some((r) => r.itemId === itemId(i) && !r.correct),
+    ),
   )
   const saveBlocked = computed(() => saveStatus.value === 'saving' || saveStatus.value === 'error')
 
@@ -63,6 +71,7 @@ export function useClozeDrill() {
   }
 
   async function start(kos: string[]) {
+    studySession.begin()
     if (saveBlocked.value) return
     runGeneration += 1
     runOwnerUserId = auth.user?.id ?? null
@@ -99,7 +108,7 @@ export function useClozeDrill() {
     const correct = choice === item.value.answer
     results.value.push({ itemId: itemId(item.value), ko: item.value.ko, correct })
     phase.value = correct ? 'right' : 'wrong'
-    if (runStillOwned()) void activity.record()
+    if (runStillOwned()) void activity.record('cloze')
     if (!correct && runMode.value === 'normal') {
       pendingMistake.value = { id: logStore.createEntryId(), item: item.value, choice }
       await persistPendingMistake()
@@ -112,7 +121,8 @@ export function useClozeDrill() {
       phase.value === 'done' ||
       saveStatus.value === 'saving' ||
       saveStatus.value === 'error'
-    ) return
+    )
+      return
     if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
       return
@@ -136,7 +146,10 @@ export function useClozeDrill() {
     // retrying after a partial failure cannot duplicate earlier credits.
     if (!completionPrepared.value) {
       const credits: Array<{ id: number; item: ClozeItem }> = []
-      const byKo = new Map<string, { correct: number; total: number; firstCorrect: ClozeItem | null }>()
+      const byKo = new Map<
+        string,
+        { correct: number; total: number; firstCorrect: ClozeItem | null }
+      >()
       for (const it of sessionItems.value) {
         const r = results.value.find((x) => x.itemId === itemId(it))
         if (!r) continue
@@ -166,15 +179,18 @@ export function useClozeDrill() {
       if (!runStillOwned(ownerUserId, generation)) return
       const credit = pendingCredits.value[0]!
       try {
-        await logStore.add({
-          ko: credit.item.ko,
-          sentence: credit.item.sentence.replace('{}', credit.item.answer),
-          feedback: 'easy',
-          errorNote: null,
-          reviewState: 'correct',
-          contextId: LAB_CONTEXT.id,
-          contextName: LAB_CONTEXT.name,
-        }, credit.id)
+        await logStore.add(
+          {
+            ko: credit.item.ko,
+            sentence: credit.item.sentence.replace('{}', credit.item.answer),
+            feedback: 'easy',
+            errorNote: null,
+            reviewState: 'correct',
+            contextId: LAB_CONTEXT.id,
+            contextName: LAB_CONTEXT.name,
+          },
+          credit.id,
+        )
         if (!runStillOwned(ownerUserId, generation)) return
       } catch (error) {
         console.error('cloze: round credit write failed', error)
@@ -182,13 +198,6 @@ export function useClozeDrill() {
         return
       }
       pendingCredits.value.shift()
-      try {
-        await srsStore.recalculate(credit.item.ko)
-        if (!runStillOwned(ownerUserId, generation)) return
-      } catch (error) {
-        // The diary row is durable; the next recalculation self-heals SRS.
-        console.error('cloze: SRS recalculation failed', error)
-      }
     }
     saveStatus.value = 'saved'
   }
@@ -201,19 +210,22 @@ export function useClozeDrill() {
     if (!runStillOwned(ownerUserId, generation)) return false
     saveStatus.value = 'saving'
     try {
-      await logStore.add({
-        ko: pending.item.ko,
-        sentence: pending.item.sentence.replace('{}', pending.item.answer),
-        feedback: 'hard',
-        errorNote: t('cloze.diary_note', {
-          chosen: pending.choice,
-          correct: pending.item.answer,
-        }),
-        errorDimension: pending.item.errorDimension ?? 'other',
-        reviewState: 'incorrect',
-        contextId: LAB_CONTEXT.id,
-        contextName: LAB_CONTEXT.name,
-      }, pending.id)
+      await logStore.add(
+        {
+          ko: pending.item.ko,
+          sentence: pending.item.sentence.replace('{}', pending.item.answer),
+          feedback: 'hard',
+          errorNote: t('cloze.diary_note', {
+            chosen: pending.choice,
+            correct: pending.item.answer,
+          }),
+          errorDimension: pending.item.errorDimension ?? 'other',
+          reviewState: 'incorrect',
+          contextId: LAB_CONTEXT.id,
+          contextName: LAB_CONTEXT.name,
+        },
+        pending.id,
+      )
       if (!runStillOwned(ownerUserId, generation)) return false
     } catch (error) {
       console.error('cloze: diary write failed', error)
@@ -221,12 +233,6 @@ export function useClozeDrill() {
       return false
     }
     pendingMistake.value = null
-    try {
-      await srsStore.recalculate(pending.item.ko)
-      if (!runStillOwned(ownerUserId, generation)) return false
-    } catch (error) {
-      console.error('cloze: SRS recalculation failed', error)
-    }
     saveStatus.value = 'saved'
     return true
   }
@@ -238,8 +244,22 @@ export function useClozeDrill() {
   }
 
   return {
-    sessionItems, displayOptions, runMode, index, phase, picked,
-    item, score, failedItems, saveStatus, saveBlocked,
-    start, replayFailed, answer, next, finish, retrySave,
+    sessionItems,
+    displayOptions,
+    runMode,
+    index,
+    phase,
+    picked,
+    item,
+    score,
+    failedItems,
+    saveStatus,
+    saveBlocked,
+    start,
+    replayFailed,
+    answer,
+    next,
+    finish,
+    retrySave,
   }
 }

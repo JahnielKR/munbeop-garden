@@ -1,4 +1,4 @@
-import { localDayKey } from './activity'
+import { localDayKey, mergedDailyCounts, type ActivityDay } from './activity'
 
 /** Default plants-per-day goal for a new user. */
 export const DEFAULT_DAILY_GOAL = 3
@@ -15,7 +15,11 @@ export function clampGoal(n: number): number {
  * which also bucket by local calendar day — otherwise a Korea (UTC+9) user's
  * ring would disagree with the heatmap for the first 9h of each day.
  */
-export function todayCount(dateMs: number[], now: number): number {
+export function todayCount(
+  dateMs: number[],
+  now: number,
+  activity: Record<string, ActivityDay> = {},
+): number {
   const today = localDayKey(now)
-  return dateMs.filter((ms) => localDayKey(ms) === today).length
+  return mergedDailyCounts(dateMs, activity).get(today) ?? 0
 }

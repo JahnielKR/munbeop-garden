@@ -130,7 +130,7 @@
   "stats": {
     "empty": "Chưa có thống kê — viết vài câu trong phần Luyện tập và câu chuyện khu vườn của bạn bắt đầu từ đây.",
     "hero": {
-      "sentences": "Số câu đã viết",
+      "sentences": "Mục nhật ký",
       "streak": "Chuỗi ngày",
       "mastered": "Ngữ pháp đã thành thạo",
       "pending": "Chờ ôn lại"
@@ -138,14 +138,35 @@
     "activity": {
       "title": "Khu vườn của bạn, từng ngày",
       "sub": "Mỗi ngày bạn luyện tập, một ô sẽ chuyển sang màu xanh.",
-      "tooltip": "{count} câu trả lời",
-      "avg": "Trung bình mỗi ngày",
+      "tooltip": "Hoạt động học: {count}",
+      "avg": "TB / ngày hoạt động",
       "days_active": "Ngày hoạt động",
       "streak_current": "Chuỗi hiện tại",
       "streak_longest": "Chuỗi dài nhất",
       "year_prev": "Năm trước",
       "year_next": "Năm tiếp theo",
-      "grid_summary": "Hoạt động trong năm {year}: {days} ngày hoạt động, {total} câu đã trả lời."
+      "legend_less": "Ít",
+      "legend_more": "Nhiều",
+      "grid_summary": "Hoạt động trong năm {year}: {days} ngày hoạt động, {total} hoạt động học."
+    },
+    "period": {
+      "title": "Nhịp theo giai đoạn",
+      "sub": "Tổng quan gọn về nhịp học gần đây của bạn.",
+      "filter_label": "Chọn giai đoạn hiển thị",
+      "range_7": "7 ngày",
+      "range_30": "30 ngày",
+      "range_90": "90 ngày",
+      "range_all": "Tất cả",
+      "actions": "Hoạt động học",
+      "active_days": "Ngày hoạt động",
+      "goal_days": "Ngày đạt mục tiêu",
+      "average": "TB / ngày hoạt động",
+      "change": "So với giai đoạn trước",
+      "comparison_none": "Không có giai đoạn để so sánh",
+      "goal": "Mục tiêu tích lũy",
+      "goal_progress": "{current} / {target} hoạt động",
+      "goal_aria": "Mục tiêu tích lũy: {current} trên {target} hoạt động ({percent}%).",
+      "scope": "Bộ lọc này chỉ thay đổi nhịp theo giai đoạn. Bản đồ hoạt động, mức thành thạo và số liệu lịch sử vẫn giữ toàn bộ phạm vi."
     },
     "mastery": {
       "title": "Mức thành thạo TOPIK 1–6",
@@ -153,16 +174,16 @@
     },
     "rhythm": {
       "title": "Nhịp luyện tập",
-      "sub": "Số câu mỗi tuần · 8 tuần gần nhất",
+      "sub": "Mục nhật ký mỗi tuần · 8 tuần gần nhất",
       "easy": "Thấy dễ",
       "hard": "Thấy khó",
-      "aria": "{total} câu trong {weeks} tuần qua.",
+      "aria": "{total} mục nhật ký trong {weeks} tuần qua.",
       "axis_oldest": "Trước đây",
       "axis_newest": "Tuần này"
     },
     "contexts": {
       "title": "Ngữ cảnh hàng đầu",
-      "sub": "Nơi bạn viết nhiều nhất"
+      "sub": "Những ngữ cảnh thường gặp nhất"
     },
     "achievements": {
       "title": "Thành tựu",

@@ -12,7 +12,7 @@
  * same page — no new route; picking a tree pins it and returns here.
  */
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useElementSize } from '@vueuse/core'
+import { useElementSize, useNow } from '@vueuse/core'
 import Bomi from '~/components/bomi/Bomi.vue'
 import type { Pose } from '~/lib/bomi/poses'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
@@ -35,6 +35,7 @@ import ReadyToRevisit from '~/components/garden/ReadyToRevisit.vue'
 import { useReadyCount } from '~/composables/useReadyCount'
 import { useSettingsStore } from '~/stores/settings'
 import { useLogStore } from '~/stores/log'
+import { useActivityStore } from '~/stores/activity'
 import { todayCount } from '~/lib/stats/goal'
 import EmptyPlot from '~/components/garden/EmptyPlot.vue'
 import GardenSkeleton from '~/components/garden/GardenSkeleton.vue'
@@ -62,10 +63,17 @@ const {
 // Daily goal ring (today's practiced count vs the user's goal).
 const settings = useSettingsStore()
 const logStore = useLogStore()
+const activityStore = useActivityStore()
 const appStatus = useAppStatus()
-const hero = computed(() => heroState(appStatus.status, logStore.entries.length === 0))
+const onboarding = useOnboarding()
+const hero = computed(() => heroState(appStatus.status, !onboarding.hasStudyData.value))
+const goalClock = useNow({ interval: 60_000 })
 const goalCount = computed(() =>
-  todayCount(logStore.entries.map((e) => new Date(e.date).getTime()), Date.now()),
+  todayCount(
+    logStore.entries.map((e) => new Date(e.date).getTime()),
+    goalClock.value.getTime(),
+    activityStore.map,
+  ),
 )
 
 // "N plants ready to revisit" — forward-looking SRS-due nudge, distinct from
@@ -75,7 +83,6 @@ const { displayCount, hasMore, readyCount } = useReadyCount()
 // First-run onboarding: a distinct empty plot + one guided sentence. The
 // overlay auto-opens once data is ready for a brand-new (empty-log) user;
 // the empty plot doubles as the manual entry point after a skip.
-const onboarding = useOnboarding()
 watch(
   () => onboarding.shouldShow.value,
   (show) => {

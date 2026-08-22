@@ -2,11 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { freshSrs, recalculateMastery, getMasteryInfo } from '~/lib/srs/mastery'
 import type { LogEntry, ReviewState, Feedback } from '~/lib/domain'
 
-function entry(
-  ko: string,
-  feedback: Feedback,
-  reviewState: ReviewState = 'unreviewed',
-): LogEntry {
+function entry(ko: string, feedback: Feedback, reviewState: ReviewState = 'unreviewed'): LogEntry {
   return {
     id: Math.random(),
     ko,
@@ -27,6 +23,7 @@ describe('freshSrs', () => {
       easyCount: 0,
       hardCount: 0,
       mastery: 'seedling',
+      revision: 0,
     })
   })
 })

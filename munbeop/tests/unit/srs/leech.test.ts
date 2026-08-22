@@ -96,11 +96,15 @@ describe('detectLeeches', () => {
     expect(out.map((l) => l.ko)).toEqual(['B', 'C', 'A'])
   })
 
-  it('returns undefined meaning for a ko not in the catalog (custom grammar), without throwing', () => {
+  it('excludes a historical ko whose grammar was deleted', () => {
     const log = Array.from({ length: 4 }, () => e({ ko: '내문법', feedback: 'hard' }))
-    const out = detectLeeches(log, [])
-    expect(out[0]!.ko).toBe('내문법')
-    expect(out[0]!.meaning).toBeUndefined()
+    expect(detectLeeches(log, [])).toEqual([])
+  })
+
+  it('keeps a current custom grammar actionable', () => {
+    const log = Array.from({ length: 4 }, () => e({ ko: '내문법', feedback: 'hard' }))
+    const custom: Grammar = { ko: '내문법', meaning: L('custom'), deckId: 'custom' }
+    expect(detectLeeches(log, [custom])[0]).toMatchObject({ ko: '내문법', meaning: L('custom') })
   })
 
   it('empty log → empty list', () => {

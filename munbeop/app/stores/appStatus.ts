@@ -14,6 +14,20 @@ export const useAppStatus = defineStore('appStatus', () => {
   let lastRun: (() => Promise<unknown>) | null = null
   let generation = 0
 
+  /**
+   * Close the account-data gate synchronously when Auth publishes a different
+   * identity. Supabase asks auth callbacks to return without awaiting client
+   * I/O, so the real hydration starts on the next task; without this boundary
+   * the shell could paint the new email beside the previous account's data for
+   * one frame. Advancing the generation also prevents an older hydration from
+   * reopening the gate after the identity changed.
+   */
+  function beginAccountTransition() {
+    generation++
+    lastRun = null
+    status.value = 'loading'
+  }
+
   async function track(run: () => Promise<unknown>) {
     const runGeneration = ++generation
     lastRun = run
@@ -35,5 +49,5 @@ export const useAppStatus = defineStore('appStatus', () => {
     if (lastRun) await track(lastRun)
   }
 
-  return { status, track, retry }
+  return { status, beginAccountTransition, track, retry }
 })

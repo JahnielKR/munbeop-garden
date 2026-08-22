@@ -10,8 +10,8 @@ export const LEECH_HARD_RATIO = 0.5
 
 export interface Leech {
   ko: string
-  /** Catalog meaning for display; undefined for custom/unknown grammar. */
-  meaning: LocalizedString | undefined
+  /** Meaning from the current catalog or custom-grammar collection. */
+  meaning: LocalizedString
   /** hard / (easy + hard) within the recent window, 0..1. */
   recentHardRatio: number
   /** Window size actually used (>= LEECH_MIN_REVIEWS). */
@@ -46,6 +46,9 @@ export function detectLeeches(
   const leeches: Leech[] = []
 
   for (const [ko, entries] of byKo) {
+    // A deleted custom grammar may leave historical journal rows behind. It is
+    // no longer actionable, so do not surface a Rescue link that opens empty.
+    if (!meaningOf.has(ko)) continue
     const windowEntries = entries
       .slice()
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
@@ -77,7 +80,7 @@ export function detectLeeches(
 
     leeches.push({
       ko,
-      meaning: meaningOf.get(ko),
+      meaning: meaningOf.get(ko)!,
       recentHardRatio,
       recentReviews: windowEntries.length,
       dominantDimension,

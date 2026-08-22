@@ -9,7 +9,11 @@ describe('MasteryBar', () => {
     })
     expect(w.text()).toContain('TOPIK 1')
     expect(w.text()).toContain('50%')
+    expect(w.text()).toContain('2/4')
     expect(w.findAll('[data-test="bar-seg"]').length).toBe(3)
+    const bar = w.find('[role="progressbar"]')
+    expect(bar.attributes('aria-valuenow')).toBe('50')
+    expect(bar.attributes('aria-valuetext')).toContain('2/4')
   })
 
   it('segment widths never exceed 100% (no clip from independent rounding)', () => {

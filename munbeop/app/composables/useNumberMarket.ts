@@ -5,6 +5,7 @@ import { NUMBER_DOMAINS } from '~/lib/numbers-market/sets'
 import type { MarketItem, NumberDomain } from '~/lib/domain'
 import { useNumberMarketMaster } from '~/composables/useNumberMarketMaster'
 import { useActivityStore } from '~/stores/activity'
+import { useStudySession } from '~/composables/useStudySession'
 
 export type MarketPhase = 'building' | 'right' | 'wrong' | 'done'
 export type MarketRunMode = 'normal' | 'replay'
@@ -12,6 +13,7 @@ const ROUND_SIZE = 8
 
 export function useNumberMarket(master = useNumberMarketMaster()) {
   const activity = useActivityStore()
+  const studySession = useStudySession()
 
   const selectedDomain = ref<NumberDomain>(NUMBER_DOMAINS[0]!.id)
   const sessionItems = ref<MarketItem[]>([])
@@ -25,7 +27,9 @@ export function useNumberMarket(master = useNumberMarketMaster()) {
   const item = computed<MarketItem>(() => sessionItems.value[index.value]!)
   const score = computed(() => scoreOf(results.value))
   const failedItems = computed(() =>
-    sessionItems.value.filter((i) => results.value.some((r) => r.itemId === itemId(i) && !r.correct)),
+    sessionItems.value.filter((i) =>
+      results.value.some((r) => r.itemId === itemId(i) && !r.correct),
+    ),
   )
 
   function loadTiles() {
@@ -44,6 +48,7 @@ export function useNumberMarket(master = useNumberMarketMaster()) {
 
   function start() {
     if (!master.resetSaveStatus()) return false
+    studySession.begin()
     runMode.value = 'normal'
     // A freshly generated round each time → variety never feels predictable.
     sessionItems.value = generateItems(selectedDomain.value, ROUND_SIZE)
@@ -53,6 +58,7 @@ export function useNumberMarket(master = useNumberMarketMaster()) {
   }
 
   function replayFailed() {
+    if (!studySession.isCurrent()) return false
     if (!master.resetSaveStatus()) return false
     const failed = failedItems.value
     if (failed.length === 0) return false
@@ -87,11 +93,11 @@ export function useNumberMarket(master = useNumberMarketMaster()) {
   }
 
   function submit() {
-    if (phase.value !== 'building') return
+    if (phase.value !== 'building' || !studySession.isCurrent()) return
     const correct = built.value.join(' ') === item.value.answer
     results.value.push({ itemId: itemId(item.value), correct })
     phase.value = correct ? 'right' : 'wrong'
-    void activity.record()
+    void activity.record('number-market')
   }
 
   async function next() {
@@ -110,8 +116,23 @@ export function useNumberMarket(master = useNumberMarketMaster()) {
 
   return {
     master,
-    selectedDomain, sessionItems, runMode, index, phase, pool, built,
-    item, score, failedItems,
-    selectDomain, start, replayFailed, placeTile, undoTile, clearTiles, submit, next,
+    selectedDomain,
+    sessionItems,
+    runMode,
+    index,
+    phase,
+    pool,
+    built,
+    item,
+    score,
+    failedItems,
+    selectDomain,
+    start,
+    replayFailed,
+    placeTile,
+    undoTile,
+    clearTiles,
+    submit,
+    next,
   }
 }

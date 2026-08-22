@@ -11,28 +11,50 @@ const stats = {
   masteryLevels: ref([] as { level: number; tree: number; total: number }[]),
 }
 const labs = {
-  conjugation: ref(false), counter: ref(false), number: ref(false),
-  particle: ref(false), register: ref(false),
+  conjugation: ref(false),
+  counter: ref(false),
+  number: ref(false),
+  particle: ref(false),
+  register: ref(false),
 }
 const leechesRef = ref<unknown[]>([])
 const unlockedCosmetics = ref<string[]>([])
 const premiosTotal = ref(16)
 const setChosenAvatar = vi.fn()
 const unlockAvatars = vi.fn()
-const settingsState = { chosenAvatarId: ref<string | null>(null), unlockedAvatarIds: ref<string[]>([]) }
+const settingsState = {
+  chosenAvatarId: ref<string | null>(null),
+  unlockedAvatarIds: ref<string[]>([]),
+}
 
 vi.mock('~/composables/useStats', () => ({ useStats: () => stats }))
-vi.mock('~/composables/useConjugationMaster', () => ({ useConjugationMaster: () => ({ earned: labs.conjugation }) }))
-vi.mock('~/composables/useCounterMaster', () => ({ useCounterMaster: () => ({ earned: labs.counter }) }))
-vi.mock('~/composables/useNumberMarketMaster', () => ({ useNumberMarketMaster: () => ({ earned: labs.number }) }))
-vi.mock('~/composables/useParticleMaster', () => ({ useParticleMaster: () => ({ earned: labs.particle }) }))
-vi.mock('~/composables/useRegisterMaster', () => ({ useRegisterMaster: () => ({ earned: labs.register }) }))
+vi.mock('~/composables/useConjugationMaster', () => ({
+  useConjugationMaster: () => ({ earned: labs.conjugation }),
+}))
+vi.mock('~/composables/useCounterMaster', () => ({
+  useCounterMaster: () => ({ earned: labs.counter }),
+}))
+vi.mock('~/composables/useNumberMarketMaster', () => ({
+  useNumberMarketMaster: () => ({ earned: labs.number }),
+}))
+vi.mock('~/composables/useParticleMaster', () => ({
+  useParticleMaster: () => ({ earned: labs.particle }),
+}))
+vi.mock('~/composables/useRegisterMaster', () => ({
+  useRegisterMaster: () => ({ earned: labs.register }),
+}))
 vi.mock('~/composables/useLeeches', () => ({ useLeeches: () => ({ leeches: leechesRef }) }))
-vi.mock('~/composables/usePremios', () => ({ usePremios: () => ({ totalCount: premiosTotal }) }))
-vi.mock('~/stores/escape-room', () => ({ useEscapeRoomStore: () => ({ unlockedCosmetics: unlockedCosmetics.value }) }))
+vi.mock('~/composables/usePremioSummary', () => ({
+  usePremioSummary: () => ({ totalCount: premiosTotal }),
+}))
+vi.mock('~/stores/escape-room', () => ({
+  useEscapeRoomStore: () => ({ unlockedCosmetics: unlockedCosmetics.value }),
+}))
 vi.mock('~/stores/settings', () => ({
   useSettingsStore: () => ({
-    get chosenAvatarId() { return settingsState.chosenAvatarId.value },
+    get chosenAvatarId() {
+      return settingsState.chosenAvatarId.value
+    },
     unlockedAvatarIds: settingsState.unlockedAvatarIds.value,
     setChosenAvatar,
     unlockAvatars,

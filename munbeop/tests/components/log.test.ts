@@ -34,7 +34,9 @@ describe('log page — review loop', () => {
   })
 
   it('does not show it on an easy, unnoted entry (not pending)', () => {
-    useLogStore().entries = [entry({ id: 2, feedback: 'easy', errorNote: null, reviewState: 'unreviewed' })]
+    useLogStore().entries = [
+      entry({ id: 2, feedback: 'easy', errorNote: null, reviewState: 'unreviewed' }),
+    ]
     const w = mount(LogPage)
     expect(w.find('[data-test="mark-reviewed"]').exists()).toBe(false)
   })
@@ -62,5 +64,19 @@ describe('log page — review loop', () => {
     const w = mount(LogPage)
     expect(w.find('[data-test="mark-reviewed"]').exists()).toBe(true)
     expect(w.text()).toContain('mixed up 이/가')
+  })
+
+  it('uses the shared pixel primitives for empty, search and pagination states', () => {
+    const store = useLogStore()
+    store.entries = []
+    const empty = mount(LogPage)
+    expect(empty.get('.empty').classes()).toContain('card--none')
+
+    store.entries = Array.from({ length: 21 }, (_, index) =>
+      entry({ id: index + 1, feedback: 'easy', sentence: `sentence ${index + 1}` }),
+    )
+    const populated = mount(LogPage)
+    expect(populated.get('[data-testid="journal-search"]').classes()).toContain('input')
+    expect(populated.get('[data-testid="load-more"]').attributes('data-variant')).toBe('secondary')
   })
 })

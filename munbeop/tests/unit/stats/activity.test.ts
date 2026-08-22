@@ -3,6 +3,7 @@ import {
   localDayKey,
   ordinalOf,
   mergedDailyCounts,
+  boundedActivityCounts,
   intensityBucket,
   daysActive,
   dailyAverage,
@@ -36,6 +37,31 @@ describe('mergedDailyCounts', () => {
     expect(m.get('2026-06-25')).toBe(1) // log only
     expect(m.get('2026-06-24')).toBe(3) // activity only (pre-/post backfill)
   })
+
+  it('drops zero, negative and non-finite activity rows', () => {
+    const m = mergedDailyCounts([], {
+      '2026-06-24': { count: 0 },
+      '2026-06-25': { count: -2 },
+      '2026-06-26': { count: Number.NaN },
+    })
+    expect(m.size).toBe(0)
+  })
+
+  it('uses a captured local day without reinterpreting its timestamp', () => {
+    const m = mergedDailyCounts(['2026-08-23'], {})
+    expect([...m]).toEqual([['2026-08-23', 1]])
+  })
+})
+
+describe('boundedActivityCounts', () => {
+  it('keeps only positive counts through today', () => {
+    const counts = new Map([
+      ['2026-06-24', 2],
+      ['2026-06-25', 0],
+      ['2026-06-27', 9],
+    ])
+    expect([...boundedActivityCounts(counts, '2026-06-26')]).toEqual([['2026-06-24', 2]])
+  })
 })
 
 describe('intensityBucket', () => {
@@ -45,10 +71,23 @@ describe('intensityBucket', () => {
 })
 
 describe('daysActive / dailyAverage', () => {
-  const m = new Map([['2026-06-26', 4], ['2026-06-25', 2]])
+  const m = new Map([
+    ['2026-06-26', 4],
+    ['2026-06-25', 2],
+  ])
   it('counts active days', () => expect(daysActive(m)).toBe(2))
   it('averages over active days, rounded', () => expect(dailyAverage(m)).toBe(3))
   it('is 0 over no active days', () => expect(dailyAverage(new Map())).toBe(0))
+  it('does not add non-positive rows to the average numerator', () => {
+    expect(
+      dailyAverage(
+        new Map([
+          ['a', 4],
+          ['b', -20],
+        ]),
+      ),
+    ).toBe(4)
+  })
 })
 
 describe('yearGrid', () => {
@@ -64,5 +103,13 @@ describe('yearGrid', () => {
     expect(cells.find((c) => c.dayKey === '2026-12-31')!.future).toBe(true)
     expect(grid.months.some((mo) => mo.label.length > 0)).toBe(true)
     expect(grid.weeks.every((w) => w.length === 7)).toBe(true)
+  })
+
+  it('anchors each month label to the week containing its first day', () => {
+    const grid = yearGrid(new Map(), 2026, '2026-12-31')
+    for (const month of grid.months) {
+      expect(grid.weeks[month.col]!.some((cell) => cell.dayKey.endsWith('-01'))).toBe(true)
+    }
+    expect(grid.months).toHaveLength(12)
   })
 })

@@ -68,6 +68,15 @@ describe('toughestGrammar', () => {
   it('is empty when nothing has been found hard', () => {
     expect(toughestGrammar({}, [], 5)).toEqual([])
   })
+
+  it('excludes stale srs rows whose grammar no longer exists', () => {
+    const grammars = [g('kept', 'topik-1')]
+    const map = {
+      kept: srs({ hardCount: 2 }),
+      deleted: srs({ hardCount: 99 }),
+    }
+    expect(toughestGrammar(map, grammars).map((item) => item.ko)).toEqual(['kept'])
+  })
 })
 
 describe('masteryByLevel ↔ pathProgress parity', () => {

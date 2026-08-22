@@ -2,19 +2,27 @@
 import { computed, ref } from 'vue'
 import { shuffle } from '~/lib/particle-lab/shuffle'
 import {
-  createLadder, recordAnswer, ladderOutcome,
-  itemsForLevel, selectItems, optionsFor, Q_PER_LEVEL,
-  type LadderState, type PlacementOutcome,
+  createLadder,
+  recordAnswer,
+  ladderOutcome,
+  itemsForLevel,
+  selectItems,
+  optionsFor,
+  Q_PER_LEVEL,
+  type LadderState,
+  type PlacementOutcome,
 } from '~/lib/placement'
 import type { PlacementItem, TopikLevel } from '~/lib/domain'
 import { useSettingsStore } from '~/stores/settings'
 import { useActivityStore } from '~/stores/activity'
+import { useStudySession } from '~/composables/useStudySession'
 
 export type PlacementPhase = 'question' | 'right' | 'wrong' | 'done'
 
 export function usePlacement() {
   const settings = useSettingsStore()
   const activity = useActivityStore()
+  const studySession = useStudySession()
 
   const ladder = ref<LadderState>(createLadder())
   const levelItems = ref<PlacementItem[]>([])
@@ -40,6 +48,7 @@ export function usePlacement() {
     // Do not let a retake replace the outcome while its recommendation write is
     // still in flight; the late response would otherwise mutate the new run.
     if (saving.value || saveError.value) return false
+    studySession.begin()
     ladder.value = createLadder()
     outcome.value = null
     saving.value = false
@@ -65,9 +74,12 @@ export function usePlacement() {
   }
 
   function answer(choice: string) {
-    if (phase.value !== 'question') return
+    if (phase.value !== 'question' || !studySession.isCurrent()) return
     picked.value = choice
     phase.value = choice === item.value.answer ? 'right' : 'wrong'
+    // Count when the answer is committed, not on the optional “next” click;
+    // leaving the result screen must not make the answer disappear from Stats.
+    void activity.record('placement')
   }
 
   async function next() {
@@ -75,8 +87,6 @@ export function usePlacement() {
     const correct = phase.value === 'right'
     const prevLevel = ladder.value.currentLevel
     ladder.value = recordAnswer(ladder.value, correct)
-    void activity.record()
-
     if (ladder.value.done) {
       outcome.value = ladderOutcome(ladder.value)
       phase.value = 'done'

@@ -46,4 +46,8 @@ describe('longestStreak', () => {
   it('counts a run across a month boundary', () => {
     expect(longestStreak(new Set(['2026-06-30', '2026-07-01', '2026-07-02']))).toBe(3)
   })
+  it('uses the same optional grace rule as the current streak', () => {
+    expect(longestStreak(new Set([k(24), k(26)]), 1)).toBe(2)
+    expect(longestStreak(new Set([k(24), k(26)]))).toBe(1)
+  })
 })

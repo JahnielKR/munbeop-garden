@@ -118,6 +118,7 @@ const active = ref('account')
   gap: 16px;
   background: var(--paper-warm);
   border: 2px solid var(--border);
+  box-shadow: var(--bevel), var(--shadow-card);
   padding: 20px;
 }
 .appearance-field {
@@ -126,7 +127,7 @@ const active = ref('account')
   gap: 6px;
 }
 .appearance-field__label {
-  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
+  font-family: var(--font-pixel-small);
   font-size: 8px;
   letter-spacing: 0.15em;
   color: var(--text-soft);

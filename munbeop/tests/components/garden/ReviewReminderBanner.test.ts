@@ -7,6 +7,8 @@ describe('ReviewReminderBanner', () => {
     const w = mount(ReviewReminderBanner, { props: { count: 4 } })
     expect(w.text()).toContain('4')
     expect(w.find('a').attributes('href')).toBe('/practice/ruleta?revisit=due')
+    expect(w.find('svg.reminder__seed').exists()).toBe(true)
+    expect(w.text()).not.toContain('🌱')
   })
 
   it('emits dismiss when the dismiss control is clicked', async () => {

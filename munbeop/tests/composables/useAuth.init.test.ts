@@ -46,8 +46,12 @@ vi.mock('~/stores/settings', () => ({ useSettingsStore: () => ({ hydrate: settin
 vi.mock('~/composables/useEscapeRoomProgress', () => ({
   useEscapeRoomProgress: () => ({ hydrate: escapeRoomHydrate }),
 }))
-vi.mock('~/stores/customDecks', () => ({ useCustomDecksStore: () => ({ hydrate: vi.fn(async () => {}) }) }))
-vi.mock('~/stores/activity', () => ({ useActivityStore: () => ({ hydrate: vi.fn(async () => {}) }) }))
+vi.mock('~/stores/customDecks', () => ({
+  useCustomDecksStore: () => ({ hydrate: vi.fn(async () => {}) }),
+}))
+vi.mock('~/stores/activity', () => ({
+  useActivityStore: () => ({ hydrate: vi.fn(async () => {}) }),
+}))
 
 describe('useAuth().init — session restored on reload', () => {
   beforeEach(() => {
@@ -136,6 +140,10 @@ describe('useAuth().init — session restored on reload', () => {
     expect(authStoreMock.user?.id).toBe('account-a')
 
     authCallback('SIGNED_IN', { user: { id: 'account-b' } })
+    // The callback itself must close the shell before deferred cloud reads
+    // begin, so no frame can combine B's identity with A's hydrated data.
+    expect(useAppStatus().status).toBe('loading')
+    expect(grammarHydrate).not.toHaveBeenCalled()
     await flushAuthEvent()
 
     expect(authStoreMock.user?.id).toBe('account-b')

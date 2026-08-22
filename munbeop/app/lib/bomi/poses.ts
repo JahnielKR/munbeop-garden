@@ -1,15 +1,13 @@
 /**
  * Bomi pose registry — Plan 4 spec §3.
  *
- * Each pose is a record keyed by SVG group id (`bee`, `wings`, `eyes`,
- * `hat`). The value is `{ animate, transition }` ready to pass to
- * motion-v's `<motion.g>`.
+ * Each pose keeps the original animation targets as the single timing
+ * reference used by the store and tests. Bomi renders the corresponding
+ * transforms with CSS, so this module has no animation-runtime dependency.
  *
  * Inactivity thresholds (§3.11) are exported as constants — tweakable
  * for future A/B testing without code edits to the store.
  */
-
-import type { Transition } from 'motion-v'
 
 export type Pose =
   | 'idle'
@@ -23,11 +21,15 @@ export type Pose =
   | 'play-hat'
 
 export interface PoseGroupAnimation {
-  // Each value is whatever motion-v's `:animate` accepts.
-  // Arrays become keyframes; scalars become target values.
+  // Arrays represent keyframes; scalars represent target values.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   animate: Record<string, any>
-  transition?: Transition
+  transition?: {
+    duration?: number
+    repeat?: number
+    repeatDelay?: number
+    ease?: string
+  }
 }
 
 export interface PoseDefinition {
@@ -40,10 +42,9 @@ export interface PoseDefinition {
 }
 
 /**
- * Reduce a pose group to a static frame for `prefers-reduced-motion`: collapse
- * every keyframe array to its resting value (the last frame) and drop the
- * looping transition. motion-v animates via WAAPI, which CSS reduced-motion
- * rules can't stop, so Bomi applies this itself. Returns undefined passthrough.
+ * Reduce a pose group to its resting frame. This keeps the pose registry easy
+ * to validate even though the rendered mascot now handles reduced motion in
+ * CSS. Returns undefined passthrough.
  */
 export function staticPoseGroup(g: PoseGroupAnimation | undefined): PoseGroupAnimation | undefined {
   if (!g) return g
@@ -58,7 +59,7 @@ export const POSES: Record<Pose, PoseDefinition> = {
   idle: {
     // idle is also the "reset all properties to defaults" pose. Every
     // property any other pose can mutate is explicitly set here so
-    // motion-v transitions cleanly back when a pose returns/clears.
+    // CSS transitions cleanly back when a pose returns/clears.
     // Without this, properties like wings.opacity (sleep), eyes.y
     // (play-hat), hat.y/rotate (play-hat), bee.rotate (thinking/cheer/
     // fly) get stuck at their last value when transitioning to idle.
@@ -118,8 +119,7 @@ export const POSES: Record<Pose, PoseDefinition> = {
       animate: { rotate: [0, -3, 3, 0] },
       transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
     },
-    // Eyes look side-to-side handled visually via sparkle position;
-    // motion-v doesn't need to animate the eyes here.
+    // Eyes look side-to-side is handled visually via sparkle position.
   },
 
   cheer: {

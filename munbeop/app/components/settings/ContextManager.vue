@@ -5,6 +5,7 @@ import { useToast } from '~/composables/useToast'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
 import Toggle from '~/components/ui/Toggle.vue'
 import Button from '~/components/ui/Button.vue'
+import Icon from '~/components/ui/Icon.vue'
 import Modal from '~/components/ui/Modal.vue'
 import ContextAddForm from '~/components/settings/ContextAddForm.vue'
 
@@ -69,7 +70,9 @@ function onCreated() {
   <section class="ctx-mgr" :aria-label="t('settings.contexts.title')">
     <BilingualTitle ko="연습 상황" :latin="t('settings.contexts.title')" level="h2" />
     <p class="ctx-mgr__subtitle">{{ t('settings.contexts.subtitle') }}</p>
-    <p class="ctx-mgr__count">{{ t('settings.contexts.active_count', { count: store.active.length }) }}</p>
+    <p class="ctx-mgr__count">
+      {{ t('settings.contexts.active_count', { count: store.active.length }) }}
+    </p>
 
     <template v-for="cat in CATEGORIES" :key="cat">
       <div v-if="group(cat).length" class="ctx-mgr__group">
@@ -81,15 +84,16 @@ function onCreated() {
               <span class="ctx-row__scene">{{ tl(ctx.scene) }}</span>
             </div>
             <div class="ctx-row__actions">
-              <button
+              <Button
                 v-if="!ctx.builtin"
-                type="button"
+                variant="secondary"
+                size="sm"
                 class="ctx-row__delete"
                 :aria-label="t('settings.contexts.delete')"
                 @click="askDelete(ctx)"
               >
-                ✕
-              </button>
+                <Icon name="close" :size="12" />
+              </Button>
               <Toggle
                 :model-value="isActive(ctx.id)"
                 :disabled="toggleLocked(ctx.id)"
@@ -138,7 +142,7 @@ function onCreated() {
 }
 .ctx-mgr__subtitle,
 .ctx-mgr__count {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-ui);
   font-size: 13px;
   color: var(--text-soft);
   margin: 0;
@@ -150,7 +154,7 @@ function onCreated() {
   margin-top: 8px;
 }
 .ctx-mgr__group-title {
-  font-family: 'Press Start 2P', 'Noto Sans KR', system-ui, monospace;
+  font-family: var(--font-pixel-small);
   font-size: 9px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -181,13 +185,13 @@ function onCreated() {
   min-width: 0;
 }
 .ctx-row__name {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: var(--font-ko);
   font-weight: 700;
   font-size: 15px;
   color: var(--text);
 }
 .ctx-row__scene {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-ui);
   font-size: 12px;
   color: var(--text-soft);
 }
@@ -198,35 +202,22 @@ function onCreated() {
   flex-shrink: 0;
 }
 .ctx-row__delete {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--text-soft);
-  font-size: 14px;
-  padding: 4px;
-  line-height: 1;
-}
-.ctx-row__delete:hover {
   color: var(--danger);
 }
-.ctx-row__delete:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
 .ctx-mgr__hint {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-ui);
   font-size: 12px;
   color: var(--danger);
   margin: 0;
 }
 .ctx-del__title {
-  font-family: 'Press Start 2P', 'Noto Sans KR', monospace;
+  font-family: var(--font-pixel-small);
   font-size: 13px;
   margin: 0 0 12px;
   color: var(--ink);
 }
 .ctx-del__body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-ui);
   font-size: 14px;
   margin: 0 0 20px;
   color: var(--ink);

@@ -25,6 +25,7 @@ const { t } = useI18n()
       v-for="item in items"
       :key="item.to"
       :to="item.to"
+      prefetch-on="interaction"
       :aria-label="t(item.labelKey)"
       class="mobile-nav__link"
       active-class="mobile-nav__link--active"

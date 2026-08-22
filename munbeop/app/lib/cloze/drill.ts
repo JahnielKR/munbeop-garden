@@ -1,5 +1,5 @@
 // app/lib/cloze/drill.ts
-import type { ClozeItem, Grammar } from '~/lib/domain'
+import type { ClozeItem } from '~/lib/domain'
 import { CLOZE_ITEMS } from '~/seed/cloze'
 
 /** Stable per-item id (ClozeItem has no id field). */
@@ -34,16 +34,4 @@ export function scoreOf(results: DrillResult[]): DrillScore {
   const correct = results.filter((r) => r.correct).length
   const total = results.length
   return { correct, total, accuracy: total === 0 ? 0 : correct / total }
-}
-
-/** Resolve a deck choice to grammar kos. deckId null = all non-excluded decks. */
-export function kosForDeck(
-  items: readonly Pick<Grammar, 'ko' | 'deckId'>[],
-  excludedDeckIds: readonly string[],
-  deckId: string | null,
-): string[] {
-  const rows = deckId === null
-    ? items.filter((g) => !excludedDeckIds.includes(g.deckId))
-    : items.filter((g) => g.deckId === deckId)
-  return rows.map((g) => g.ko)
 }

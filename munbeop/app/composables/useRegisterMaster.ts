@@ -1,6 +1,7 @@
 // app/composables/useRegisterMaster.ts
 import { computed } from 'vue'
-import { masteryOf, masteryKey, isMasterySet } from '~/lib/register-transform'
+import { masteryOf, masteryKey } from '~/lib/register-transform/master'
+import { isMasterySet } from '~/lib/register-transform/sets'
 import { useLabMastery } from '~/composables/useLabMastery'
 import type { RegisterMode } from '~/lib/domain'
 

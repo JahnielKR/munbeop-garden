@@ -12,6 +12,16 @@ export default defineNuxtConfig({
   ssr: false,
   modules: ['@pinia/nuxt', '@nuxt/eslint', '@nuxtjs/i18n', '@nuxtjs/tailwindcss'],
   css: ['~/assets/styles/main.css'],
+  // These audio filenames are content hashes, so they can be cached forever.
+  // Escape-room media keeps normal revalidation because those names are mutable.
+  routeRules: {
+    '/grammar-examples/audio/**': {
+      headers: { 'cache-control': 'public, max-age=31536000, immutable' },
+    },
+    '/pronunciation/audio/**': {
+      headers: { 'cache-control': 'public, max-age=31536000, immutable' },
+    },
+  },
   // Values default to empty strings here; Nuxt overrides them at runtime
   // from environment variables (NUXT_PUBLIC_* on the client, others server-only).
   runtimeConfig: {
@@ -63,6 +73,16 @@ export default defineNuxtConfig({
         // and abisal (dark --paper).
         { name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#f4ecd8' },
         { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#0c1220' },
+      ],
+      // A stylesheet link can use the preconnected font origins immediately;
+      // the former CSS @import introduced an additional render-blocking hop.
+      link: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Inter:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;700;900&family=JetBrains+Mono:wght@400;500&display=swap',
+        },
       ],
     },
   },

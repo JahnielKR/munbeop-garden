@@ -6,6 +6,7 @@ import { COUNTERS } from '~/seed/counters'
 import type { CountItem } from '~/lib/domain'
 import { useCounterMaster } from '~/composables/useCounterMaster'
 import { useActivityStore } from '~/stores/activity'
+import { useStudySession } from '~/composables/useStudySession'
 
 export type CounterPhase = 'question' | 'right' | 'wrong' | 'done'
 export type CounterRunMode = 'normal' | 'replay'
@@ -14,6 +15,7 @@ const ROUND_SIZE = 8
 export function useCounterDrill() {
   const master = useCounterMaster()
   const activity = useActivityStore()
+  const studySession = useStudySession()
 
   const selectedSetId = ref<string>(COUNTER_SETS[0]!.id)
   const sessionItems = ref<CountItem[]>([])
@@ -27,7 +29,9 @@ export function useCounterDrill() {
   const item = computed<CountItem>(() => sessionItems.value[index.value]!)
   const score = computed(() => scoreOf(results.value))
   const failedItems = computed(() =>
-    sessionItems.value.filter((i) => results.value.some((r) => r.itemId === itemId(i) && !r.correct)),
+    sessionItems.value.filter((i) =>
+      results.value.some((r) => r.itemId === itemId(i) && !r.correct),
+    ),
   )
   const counterIdsOf = (setId: string) => COUNTER_SETS.find((s) => s.id === setId)?.counterIds ?? []
 
@@ -47,6 +51,7 @@ export function useCounterDrill() {
 
   function start() {
     if (!master.resetSaveStatus()) return false
+    studySession.begin()
     runMode.value = 'normal'
     sessionItems.value = buildRound(counterIdsOf(selectedSetId.value), ROUND_SIZE, shuffle)
     resetRound()
@@ -55,6 +60,7 @@ export function useCounterDrill() {
   }
 
   function replayFailed() {
+    if (!studySession.isCurrent()) return false
     if (!master.resetSaveStatus()) return false
     const failed = failedItems.value
     if (failed.length === 0) return false
@@ -66,12 +72,12 @@ export function useCounterDrill() {
   }
 
   async function answer(choice: string) {
-    if (phase.value !== 'question') return
+    if (phase.value !== 'question' || !studySession.isCurrent()) return
     picked.value = choice
     const correct = choice === item.value.answer
     results.value.push({ itemId: itemId(item.value), correct })
     phase.value = correct ? 'right' : 'wrong'
-    void activity.record()
+    void activity.record('counter')
   }
 
   async function next() {
@@ -91,8 +97,20 @@ export function useCounterDrill() {
 
   return {
     master,
-    selectedSetId, sessionItems, displayOptions, runMode, index, phase, picked,
-    item, score, failedItems,
-    selectSet, start, replayFailed, answer, next,
+    selectedSetId,
+    sessionItems,
+    displayOptions,
+    runMode,
+    index,
+    phase,
+    picked,
+    item,
+    score,
+    failedItems,
+    selectSet,
+    start,
+    replayFailed,
+    answer,
+    next,
   }
 }

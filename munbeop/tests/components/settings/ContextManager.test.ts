@@ -28,7 +28,8 @@ describe('ContextManager', () => {
     const wrapper = mountManager()
     const store = useContextsStore()
     const ids = store.all.map((c) => c.id)
-    for (const id of ids.slice(0, store.all.length - MIN_ACTIVE_CONTEXTS)) await store.toggleActive(id)
+    for (const id of ids.slice(0, store.all.length - MIN_ACTIVE_CONTEXTS))
+      await store.toggleActive(id)
     await nextTick()
     const switches = wrapper.findAll('[role="switch"]')
     const checkedDisabled = switches.filter(
@@ -45,6 +46,7 @@ describe('ContextManager', () => {
     await store.addCustom('우리집', store.all[0]!.scene) // reuse a valid LocalizedString
     await nextTick()
     expect(wrapper.findAll('.ctx-row__delete')).toHaveLength(1)
+    expect(wrapper.get('.ctx-row__delete').find('svg').exists()).toBe(true)
   })
 
   it('opens the confirm modal when a custom delete is clicked', async () => {

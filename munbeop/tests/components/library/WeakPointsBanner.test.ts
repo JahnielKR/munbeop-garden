@@ -7,7 +7,9 @@ const mountBanner = (count = 3) => mount(WeakPointsBanner, { props: { count } })
 describe('WeakPointsBanner', () => {
   it('shows the localized summary with the count', () => {
     // i18n stub echoes "<key> <json-params>"; assert the count is interpolated.
-    expect(mountBanner(3).text()).toContain('library.weak.summary')
+    const banner = mountBanner(3)
+    expect(banner.text()).toContain('library.weak.summary')
+    expect(banner.get('[role="region"]').classes()).toContain('card--red')
   })
 
   it('emits view when "show them" is clicked', async () => {

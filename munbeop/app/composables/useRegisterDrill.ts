@@ -13,6 +13,7 @@ import type { RegisterItem, RegisterMode } from '~/lib/domain'
 import { useLogStore } from '~/stores/log'
 import { useActivityStore } from '~/stores/activity'
 import type { PracticeSaveStatus } from '~/lib/practice/persistence'
+import { useStudySession } from '~/composables/useStudySession'
 
 export type RegisterPhase = 'question' | 'right' | 'wrong' | 'done'
 export type RegisterRunMode = 'normal' | 'replay'
@@ -23,6 +24,7 @@ const ROUND_SIZE = 8
 export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet = 'mixed') {
   const logStore = useLogStore()
   const activity = useActivityStore()
+  const studySession = useStudySession()
   const { t } = useI18n()
 
   const mode = ref<RegisterMode>(initialMode)
@@ -42,7 +44,9 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
   const item = computed<RegisterItem>(() => sessionItems.value[index.value]!)
   const score = computed(() => scoreOf(results.value))
   const failedItems = computed(() =>
-    sessionItems.value.filter((i) => results.value.some((r) => r.itemId === itemId(i) && !r.correct)),
+    sessionItems.value.filter((i) =>
+      results.value.some((r) => r.itemId === itemId(i) && !r.correct),
+    ),
   )
 
   function shuffleOptions() {
@@ -64,12 +68,14 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
     pendingMistake = null
   }
   function start() {
+    studySession.begin()
     runMode.value = 'normal'
     sessionItems.value = buildRound(mode.value, selectedSet.value, ROUND_SIZE, shuffle)
     resetRound()
     shuffleOptions()
   }
   function replayFailed() {
+    if (!studySession.isCurrent()) return
     const failed = failedItems.value
     if (failed.length === 0) return
     runMode.value = 'replay'
@@ -78,19 +84,20 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
     shuffleOptions()
   }
   async function answer(choice: string) {
-    if (phase.value !== 'question' || saving.value) return
+    if (phase.value !== 'question' || saving.value || !studySession.isCurrent()) return
     picked.value = choice
     const correct = choice === item.value.answer
     results.value.push({ itemId: itemId(item.value), correct })
     phase.value = correct ? 'right' : 'wrong'
-    void activity.record()
+    void activity.record('register')
     if (!correct && runMode.value === 'normal') {
       pendingMistake = { id: logStore.createEntryId(), item: item.value, choice }
       await savePendingMistake()
     }
   }
   async function next() {
-    if (phase.value === 'question' || phase.value === 'done' || saving.value || saveError.value) return
+    if (phase.value === 'question' || phase.value === 'done' || saving.value || saveError.value)
+      return
     if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
       return
@@ -103,16 +110,19 @@ export function useRegisterDrill(initialMode: RegisterMode = 'level', initialSet
     shuffleOptions()
   }
   async function logMistake(it: RegisterItem, choice: string, stableId: number) {
-    await logStore.add({
-      ko: it.source,
-      sentence: `${it.source} → ${it.answer}`,
-      feedback: 'hard',
-      errorNote: t('register.diary_note', { chosen: choice, correct: it.answer }),
-      errorDimension: 'register',
-      reviewState: 'incorrect',
-      contextId: LAB_CONTEXT.id,
-      contextName: LAB_CONTEXT.name,
-    }, stableId)
+    await logStore.add(
+      {
+        ko: it.source,
+        sentence: `${it.source} → ${it.answer}`,
+        feedback: 'hard',
+        errorNote: t('register.diary_note', { chosen: choice, correct: it.answer }),
+        errorDimension: 'register',
+        reviewState: 'incorrect',
+        contextId: LAB_CONTEXT.id,
+        contextName: LAB_CONTEXT.name,
+      },
+      stableId,
+    )
   }
 
   /** Persist the one outstanding diary entry. A failed request stays pending so

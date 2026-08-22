@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import BilingualTitle from '~/components/ui/BilingualTitle.vue'
+import Card from '~/components/ui/Card.vue'
 import Button from '~/components/ui/Button.vue'
+import Input from '~/components/ui/Input.vue'
 import Modal from '~/components/ui/Modal.vue'
 import MistakeFeed from '~/components/log/MistakeFeed.vue'
 import LogEntryRow from '~/components/log/LogEntryRow.vue'
@@ -64,30 +66,39 @@ async function confirmDelete() {
   if (id === null) return
   pendingDelete.value = null
   const ok = await logStore.deleteEntry(id)
-  if (ok) toast.success(t('journal.deleted'))
-  else toast.error(t('errors.save_failed'))
+  if (!ok) {
+    toast.error(t('errors.save_failed'))
+    return
+  }
+  // The journal RPC deletes and recalculates SRS in one database transaction.
+  toast.success(t('journal.deleted'))
 }
 </script>
 
 <template>
   <div class="page">
     <BilingualTitle ko="일기" :latin="t('title.log')" />
-    <div v-if="logStore.entries.length === 0" class="empty">{{ t('empty.log') }}</div>
+    <Card v-if="logStore.entries.length === 0" accent="none" class="empty">
+      {{ t('empty.log') }}
+    </Card>
     <template v-else>
       <!-- Mistakes summary stays for browsing; hidden while searching so the
            query owns the view. -->
       <MistakeFeed v-if="!search.trim()" :entries="logStore.entries" @review="markReviewed" />
 
-      <input
+      <Input
         v-model="search"
         type="search"
+        inputmode="search"
         class="search"
         :placeholder="t('journal.search_placeholder')"
         :aria-label="t('journal.search_placeholder')"
         data-testid="journal-search"
-      >
+      />
 
-      <p v-if="filtered.length === 0" class="empty">{{ t('journal.no_results') }}</p>
+      <Card v-if="filtered.length === 0" accent="none" class="empty">
+        {{ t('journal.no_results') }}
+      </Card>
       <template v-else>
         <ul class="list">
           <LogEntryRow
@@ -98,9 +109,16 @@ async function confirmDelete() {
             @delete="askDelete"
           />
         </ul>
-        <button v-if="hasMore" type="button" class="load-more" data-testid="load-more" @click="loadMore">
+        <Button
+          v-if="hasMore"
+          variant="secondary"
+          size="sm"
+          class="load-more"
+          data-testid="load-more"
+          @click="loadMore"
+        >
           {{ t('journal.load_more') }}
-        </button>
+        </Button>
       </template>
     </template>
 
@@ -113,7 +131,9 @@ async function confirmDelete() {
       <h2 class="del__title">{{ t('journal.delete_confirm_title') }}</h2>
       <p class="del__body">{{ t('journal.delete_confirm_body') }}</p>
       <div class="del__actions">
-        <Button variant="secondary" size="sm" @click="cancelDelete">{{ t('journal.cancel') }}</Button>
+        <Button variant="secondary" size="sm" @click="cancelDelete">{{
+          t('journal.cancel')
+        }}</Button>
         <Button variant="danger" size="sm" @click="confirmDelete">{{ t('journal.delete') }}</Button>
       </div>
     </Modal>
@@ -127,26 +147,12 @@ async function confirmDelete() {
   gap: 20px;
 }
 .empty {
-  background: var(--paper-warm);
-  border: 2px solid var(--border);
-  padding: 32px;
-  font-family: 'Inter', sans-serif;
-  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  color: var(--text-soft);
+  text-align: center;
 }
 .search {
-  width: 100%;
-  background: var(--surface);
-  color: var(--text);
-  border: 2px solid var(--border);
-  padding: 10px 12px;
-  font-family: 'Noto Sans KR', 'Inter', sans-serif;
-  font-size: var(--text-md);
-  line-height: 1.5;
-}
-.search:focus-visible {
-  border-color: var(--border-strong);
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
+  display: block;
 }
 .list {
   list-style: none;
@@ -157,31 +163,15 @@ async function confirmDelete() {
 }
 .load-more {
   align-self: center;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink);
-  background: var(--paper);
-  border: 2px solid var(--border-strong, var(--border));
-  border-radius: 999px;
-  padding: 8px 20px;
-  cursor: pointer;
-}
-.load-more:hover {
-  background: var(--paper-deep, var(--paper-warm));
-}
-.load-more:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
 }
 .del__title {
-  font-family: 'Press Start 2P', 'Noto Sans KR', monospace;
+  font-family: var(--font-pixel-small);
   font-size: 13px;
   margin: 0 0 12px;
   color: var(--ink);
 }
 .del__body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-ui);
   font-size: 14px;
   margin: 0 0 20px;
   color: var(--ink);

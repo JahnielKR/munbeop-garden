@@ -1,26 +1,63 @@
 import { defineStore } from 'pinia'
 import type { SrsState } from '~/lib/domain'
-import { freshSrs, getWeight, recalculateMastery } from '~/lib/srs'
+import { freshSrs, getWeight } from '~/lib/srs'
 import { STORAGE_KEYS } from '~/lib/storage'
+import type { ProgressRecord } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
 import { useAppStatus } from '~/stores/appStatus'
 import { useAuthStore } from '~/stores/auth'
-import { useLogStore } from './log'
 
 type SrsMap = Record<string, SrsState>
 
 export const useSrsStore = defineStore('srs', () => {
   const map = ref<SrsMap>({})
+  const authStore = useAuthStore()
   const writeQueues = new Map<string, Promise<void>>()
+  let hydrationBarrier: Promise<void> = Promise.resolve()
+  let hydrationPending = 0
   let hydratedUserId: string | null = null
+  let hydratedAccountEpoch = -1
 
-  async function hydrate() {
-    const userId = useAuthStore().user?.id ?? null
-    const storage = useStorageAdapter()
-    const cloud = await storage.read(STORAGE_KEYS.srs, {} as SrsMap)
-    if ((useAuthStore().user?.id ?? null) !== userId) return
-    map.value = cloud
-    hydratedUserId = userId
+  function hydrate(): Promise<void> {
+    const userId = authStore.user?.id ?? null
+    const accountEpoch = authStore.accountEpoch
+    hydrationPending += 1
+    const priorWrites = [...writeQueues.values()]
+    const hydration = hydrationBarrier
+      .catch(() => undefined)
+      .then(() => Promise.allSettled(priorWrites))
+      .then(async () => {
+        if ((authStore.user?.id ?? null) !== userId || authStore.accountEpoch !== accountEpoch)
+          return
+        const storage = useStorageAdapter()
+        const cloud = await storage.read(STORAGE_KEYS.srs, {} as SrsMap)
+        if ((authStore.user?.id ?? null) !== userId || authStore.accountEpoch !== accountEpoch)
+          return
+        map.value = Object.fromEntries(
+          Object.entries(cloud).map(([ko, state]) => [
+            ko,
+            { ...state, revision: state.revision ?? 0 },
+          ]),
+        )
+        hydratedUserId = userId
+        hydratedAccountEpoch = accountEpoch
+      })
+      .finally(() => {
+        hydrationPending -= 1
+      })
+    hydrationBarrier = hydration.then(
+      () => undefined,
+      () => undefined,
+    )
+    return hydration
+  }
+
+  /** Merge only a response at least as new as what this tab already knows. */
+  function applyAuthoritative(progress: ProgressRecord): void {
+    const current = map.value[progress.ko]
+    if (current && (current.revision ?? 0) > (progress.revision ?? 0)) return
+    const { ko, ...state } = progress
+    map.value = { ...map.value, [ko]: state }
   }
 
   function ensure(ko: string): SrsState {
@@ -57,10 +94,14 @@ export const useSrsStore = defineStore('srs', () => {
    * writes correctly proceed against the retained real data.
    */
   function writesBlocked(): boolean {
-    const userId = useAuthStore().user?.id
+    const userId = authStore.user?.id
     const dataStatus = useAppStatus().status
-    return dataStatus === 'error' || (
-      !!userId && (hydratedUserId !== userId || dataStatus !== 'ready')
+    return (
+      dataStatus === 'error' ||
+      (!!userId &&
+        (hydratedUserId !== userId ||
+          hydratedAccountEpoch !== authStore.accountEpoch ||
+          dataStatus !== 'ready'))
     )
   }
 
@@ -72,43 +113,67 @@ export const useSrsStore = defineStore('srs', () => {
    * independent and can persist in parallel.
    */
   function enqueueWrite(ko: string, write: () => Promise<void>): Promise<void> {
-    const queuedUserId = useAuthStore().user?.id ?? null
+    const queuedUserId = authStore.user?.id ?? null
+    const queuedAccountEpoch = authStore.accountEpoch
     const previous = writeQueues.get(ko) ?? Promise.resolve()
-    const task = previous.catch(() => undefined).then(async () => {
-      if ((useAuthStore().user?.id ?? null) !== queuedUserId) return
-      if (writesBlocked()) return
-      await write()
-    })
+    const run = () =>
+      previous
+        .catch(() => undefined)
+        .then(async () => {
+          if (
+            (authStore.user?.id ?? null) !== queuedUserId ||
+            authStore.accountEpoch !== queuedAccountEpoch
+          )
+            return
+          if (writesBlocked()) return
+          await write()
+        })
+    const task = hydrationPending > 0 ? hydrationBarrier.then(run) : run()
     writeQueues.set(ko, task)
     void task.then(
-      () => { if (writeQueues.get(ko) === task) writeQueues.delete(ko) },
-      () => { if (writeQueues.get(ko) === task) writeQueues.delete(ko) },
+      () => {
+        if (writeQueues.get(ko) === task) writeQueues.delete(ko)
+      },
+      () => {
+        if (writeQueues.get(ko) === task) writeQueues.delete(ko)
+      },
     )
     return task
   }
 
   async function markSeen(ko: string, now: number = Date.now()) {
     if (writesBlocked()) return
+    const ownerUserId = authStore.user?.id ?? null
+    const ownerAccountEpoch = authStore.accountEpoch
     await enqueueWrite(ko, async () => {
       const storage = useStorageAdapter()
-      const next = { ...ensure(ko), lastSeen: now }
-      map.value[ko] = next
-      // Upsert just this ko's row, not the whole map (the session start fires
-      // several markSeen in parallel; a full-map write each time is O(catalog)).
-      await storage.upsertOne(STORAGE_KEYS.srs, { id: ko, value: next })
+      const progress = await storage.markProgressSeen(ko, now)
+      if (
+        progress &&
+        (authStore.user?.id ?? null) === ownerUserId &&
+        authStore.accountEpoch === ownerAccountEpoch
+      ) {
+        applyAuthoritative(progress)
+      }
     })
   }
 
   async function recalculate(ko: string) {
     if (writesBlocked()) return
+    const ownerUserId = authStore.user?.id ?? null
+    const ownerAccountEpoch = authStore.accountEpoch
     await enqueueWrite(ko, async () => {
       const storage = useStorageAdapter()
-      const log = useLogStore().entries
-      const next = recalculateMastery(ko, log)
-      map.value[ko] = next
-      await storage.upsertOne(STORAGE_KEYS.srs, { id: ko, value: next })
+      const progress = await storage.recalculateProgress(ko)
+      if (
+        progress &&
+        (authStore.user?.id ?? null) === ownerUserId &&
+        authStore.accountEpoch === ownerAccountEpoch
+      ) {
+        applyAuthoritative(progress)
+      }
     })
   }
 
-  return { map, hydrate, ensure, peek, weightFor, markSeen, recalculate }
+  return { map, hydrate, ensure, peek, weightFor, applyAuthoritative, markSeen, recalculate }
 })

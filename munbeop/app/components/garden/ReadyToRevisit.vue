@@ -26,21 +26,33 @@ const shown = computed(() => `${props.count}${props.hasMore ? '+' : ''}`)
 <style scoped>
 .ready {
   align-self: center;
-  font-family: 'Inter', 'Noto Sans KR', sans-serif;
-  font-size: 13px;
-  color: var(--ink);
+  padding: 8px 12px;
+  font-family: var(--font-pixel-small);
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  color: var(--text);
   text-decoration: none;
-  background: var(--paper-warm);
-  border: 1.5px solid var(--jade, #3f9d6b);
-  border-radius: 999px;
-  padding: 6px 14px;
-  transition: background var(--motion-quick, 120ms) ease;
+  background: var(--surface-elevated);
+  border: 2px solid var(--jade);
+  box-shadow: var(--shadow-pixel-sm);
+  transform: translate(0, 0);
+  transition:
+    background-color var(--motion-quick) var(--ease-out),
+    box-shadow var(--motion-quick) var(--ease-out),
+    transform var(--motion-quick) var(--ease-out);
 }
 .ready:hover {
-  background: var(--paper-deep);
+  background: var(--surface-hover);
+  box-shadow: var(--shadow-pixel-md);
+  transform: translate(-1px, -1px);
+}
+.ready:active {
+  box-shadow: none;
+  transform: translate(2px, 2px);
 }
 .ready:focus-visible {
-  outline: 2px solid var(--focus-ring, var(--sky));
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 </style>

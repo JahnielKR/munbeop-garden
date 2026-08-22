@@ -1,4 +1,5 @@
 export * from './adapter'
 export * from './keys'
+export * from './journal'
 export * from './localStorage'
 export * from './noop'

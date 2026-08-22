@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { ConfusablePair } from '~/lib/domain'
+import { useActivityStore } from '~/stores/activity'
+import { useStudySession } from '~/composables/useStudySession'
 
 interface Props {
   pair: ConfusablePair
@@ -8,6 +10,8 @@ interface Props {
 const props = defineProps<Props>()
 const { t } = useI18n()
 const { tl } = useLocalized()
+const activity = useActivityStore()
+const studySession = useStudySession()
 
 const index = ref(0)
 const picked = ref<'a' | 'b' | null>(null)
@@ -30,9 +34,10 @@ function optionState(side: 'a' | 'b'): 'idle' | 'correct' | 'wrong' | 'muted' {
   return 'muted'
 }
 function pick(side: 'a' | 'b') {
-  if (revealed.value) return
+  if (revealed.value || !studySession.isCurrent()) return
   picked.value = side
   if (side === item.value.answer) correctCount.value += 1
+  void activity.record('pair-drill')
 }
 function next() {
   if (index.value + 1 >= total.value) {
@@ -43,6 +48,7 @@ function next() {
   picked.value = null
 }
 function restart() {
+  studySession.begin()
   index.value = 0
   picked.value = null
   correctCount.value = 0
@@ -55,7 +61,9 @@ function restart() {
     <template v-if="!done">
       <p class="pair-drill__sentence" lang="ko">
         <span>{{ parts[0] }}</span>
-        <span class="pair-drill__blank" :class="{ 'pair-drill__blank--filled': revealed }">{{ filled ?? '____' }}</span>
+        <span class="pair-drill__blank" :class="{ 'pair-drill__blank--filled': revealed }">{{
+          filled ?? '____'
+        }}</span>
         <span>{{ parts[1] }}</span>
       </p>
       <div class="pair-drill__options">
@@ -94,7 +102,9 @@ function restart() {
       </div>
     </template>
     <div v-else class="pair-drill__score" role="status">
-      <p class="pair-drill__score-text">{{ t('library.confused.score', { correct: correctCount, total }) }}</p>
+      <p class="pair-drill__score-text">
+        {{ t('library.confused.score', { correct: correctCount, total }) }}
+      </p>
       <button type="button" class="pair-drill__btn" data-testid="pair-restart" @click="restart">
         {{ t('library.confused.restart') }}
       </button>

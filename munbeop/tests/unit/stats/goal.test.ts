@@ -31,4 +31,9 @@ describe('todayCount', () => {
   it('is 0 with no entries today', () => {
     expect(todayCount([dayMs(1), dayMs(2)], now)).toBe(0)
   })
+  it('uses the higher all-mode activity tally without double counting log rows', () => {
+    const day = new Date(now)
+    const key = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`
+    expect(todayCount([dayMs(0), dayMs(0)], now, { [key]: { count: 5 } })).toBe(5)
+  })
 })

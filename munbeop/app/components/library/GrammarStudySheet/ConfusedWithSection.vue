@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { Grammar } from '~/lib/domain'
-import { pairsFor } from '~/lib/grammar-pairs'
+import { pairsForGrammar } from '~/lib/grammar-pairs/load'
+import type { PairRow } from '~/lib/grammar-pairs/select'
 import PairDrill from './PairDrill.vue'
 
 interface Props {
@@ -12,8 +13,27 @@ const emit = defineEmits<{ navigate: [ko: string] }>()
 const { t } = useI18n()
 const { tl } = useLocalized()
 
-const rows = computed(() => pairsFor(props.grammar.ko))
+const rows = ref<PairRow[]>([])
 const openId = ref<string | null>(null)
+let requestId = 0
+
+watch(
+  () => [props.grammar.ko, props.grammar.deckId] as const,
+  async ([ko, deckId]) => {
+    const id = ++requestId
+    rows.value = []
+    openId.value = null
+    try {
+      const loaded = await pairsForGrammar(ko, deckId)
+      if (id === requestId && props.grammar.ko === ko && props.grammar.deckId === deckId) {
+        rows.value = loaded
+      }
+    } catch (error) {
+      console.error(`grammar-pairs: failed to load ${deckId}`, error)
+    }
+  },
+  { immediate: true },
+)
 function toggle(id: string) {
   openId.value = openId.value === id ? null : id
 }
@@ -30,7 +50,9 @@ function toggle(id: string) {
           lang="ko"
           :title="t('library.confused.open_hint')"
           @click="emit('navigate', row.otherKo)"
-        >{{ row.otherKo }}</button>
+        >
+          {{ row.otherKo }}
+        </button>
       </p>
       <p class="confused__note">{{ tl(row.pair.note) }}</p>
       <button

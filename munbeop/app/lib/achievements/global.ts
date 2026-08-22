@@ -43,7 +43,7 @@ export interface GlobalState {
   catalogTotal: number
   /** Per-TOPIK-level mastered/total, keyed by level number (1–6). */
   byLevel: Record<number, DeckMastery>
-  /** Current streak in days. */
+  /** Best historical streak in days (trophies never relock after a break). */
   streak: number
   /** Number of struggling grammars right now. */
   leeches: number

@@ -1,17 +1,22 @@
 import { defineStore } from 'pinia'
 import type { LogEntry, Feedback, ReviewState, ErrorDimension } from '~/lib/domain'
+import { captureLocalTime } from '~/lib/activity/event'
 import { STORAGE_KEYS } from '~/lib/storage'
 import { useStorageAdapter } from '~/composables/useStorageAdapter'
 import { useAuthStore } from '~/stores/auth'
+import { useSrsStore } from '~/stores/srs'
+import { broadcastAccountSync } from '~/lib/sync/channel'
 
 export const useLogStore = defineStore('log', () => {
   const entries = ref<LogEntry[]>([])
   const entryMutationTails = new Map<number, Promise<void>>()
   const activeMutations = new Set<Promise<unknown>>()
+  const retryEntries = new Map<string, LogEntry>()
   const authStore = useAuthStore()
   let hydrationBarrier: Promise<void> = Promise.resolve()
   let hydrationPending = 0
   let hydratedUserId: string | null = null
+  let hydratedAccountEpoch = -1
 
   /** Serialize mutations of the same journal row while allowing unrelated rows
    * to save concurrently. This makes rapid review flips deterministic and
@@ -19,10 +24,13 @@ export const useLogStore = defineStore('log', () => {
   function enqueueEntryMutation<T>(id: number, run: () => Promise<T>): Promise<T> {
     const previous = entryMutationTails.get(id)
     const barrier = hydrationBarrier
-    const afterHydration = () => previous ? previous.then(run) : run()
+    const afterHydration = () => (previous ? previous.then(run) : run())
     const job = hydrationPending > 0 ? barrier.then(afterHydration) : afterHydration()
     activeMutations.add(job)
-    const settled = job.then(() => undefined, () => undefined)
+    const settled = job.then(
+      () => undefined,
+      () => undefined,
+    )
     entryMutationTails.set(id, settled)
     void settled.then(() => {
       activeMutations.delete(job)
@@ -52,6 +60,8 @@ export const useLogStore = defineStore('log', () => {
 
   function hydrate(): Promise<void> {
     const userId = authStore.user?.id ?? null
+    const accountEpoch = authStore.accountEpoch
+    if (hydratedUserId !== userId || hydratedAccountEpoch !== accountEpoch) retryEntries.clear()
     hydrationPending += 1
     const previousBarrier = hydrationBarrier
     const priorMutations = [...activeMutations]
@@ -59,68 +69,130 @@ export const useLogStore = defineStore('log', () => {
       .catch(() => undefined)
       .then(() => Promise.allSettled(priorMutations))
       .then(async () => {
-        if ((authStore.user?.id ?? null) !== userId) return
+        if ((authStore.user?.id ?? null) !== userId || authStore.accountEpoch !== accountEpoch)
+          return
         const storage = useStorageAdapter()
         const raw = await storage.read(STORAGE_KEYS.log, [] as LogEntry[])
-        if ((authStore.user?.id ?? null) !== userId) return
+        if ((authStore.user?.id ?? null) !== userId || authStore.accountEpoch !== accountEpoch)
+          return
         entries.value = raw.map((entry) => ({
           ...entry,
           reviewState: (entry.reviewState ?? 'unreviewed') as ReviewState,
           errorNote: entry.errorNote ?? null,
+          revision: entry.revision ?? 0,
         }))
         hydratedUserId = userId
+        hydratedAccountEpoch = accountEpoch
       })
-      .finally(() => { hydrationPending -= 1 })
-    hydrationBarrier = hydration.then(() => undefined, () => undefined)
+      .finally(() => {
+        hydrationPending -= 1
+      })
+    hydrationBarrier = hydration.then(
+      () => undefined,
+      () => undefined,
+    )
     return hydration
   }
 
-  function safeForUser(userId: string | null): boolean {
-    return (authStore.user?.id ?? null) === userId
-      && (!userId || hydratedUserId === userId)
+  function safeForUser(userId: string | null, accountEpoch: number): boolean {
+    return (
+      (authStore.user?.id ?? null) === userId &&
+      authStore.accountEpoch === accountEpoch &&
+      (!userId || (hydratedUserId === userId && hydratedAccountEpoch === accountEpoch))
+    )
   }
 
-  function add(p: {
-    ko: string
-    sentence: string
-    feedback: Feedback
-    errorNote: string | null
-    errorDimension?: ErrorDimension | null
-    reviewState: ReviewState
-    contextId: string
-    contextName: string
-  }, stableId: number = createEntryId()): Promise<LogEntry> {
+  function retryKey(userId: string | null, accountEpoch: number, id: number): string {
+    return `${userId ?? 'signed-out'}:${accountEpoch}:${id}`
+  }
+
+  function sameDraft(entry: LogEntry, draft: Parameters<typeof add>[0]): boolean {
+    return (
+      entry.ko === draft.ko &&
+      entry.sentence === draft.sentence &&
+      entry.feedback === draft.feedback &&
+      entry.errorNote === draft.errorNote &&
+      (entry.errorDimension ?? null) === (draft.errorDimension ?? null) &&
+      entry.reviewState === draft.reviewState &&
+      entry.contextId === draft.contextId &&
+      entry.contextName === draft.contextName
+    )
+  }
+
+  function applyAuthoritativeEntry(entry: LogEntry): void {
+    const current = entries.value.find((candidate) => candidate.id === entry.id)
+    if (current && (current.revision ?? 0) > (entry.revision ?? 0)) return
+    entries.value = entries.value.map((candidate) =>
+      candidate.id === entry.id ? { ...entry, revision: entry.revision ?? 0 } : candidate,
+    )
+  }
+
+  function add(
+    p: {
+      ko: string
+      sentence: string
+      feedback: Feedback
+      errorNote: string | null
+      errorDimension?: ErrorDimension | null
+      reviewState: ReviewState
+      contextId: string
+      contextName: string
+    },
+    stableId: number = createEntryId(),
+  ): Promise<LogEntry> {
     if (!Number.isSafeInteger(stableId) || stableId <= 0) {
       return Promise.reject(new TypeError('Journal id must be a positive safe integer'))
     }
     const userId = authStore.user?.id ?? null
+    const accountEpoch = authStore.accountEpoch
     return enqueueEntryMutation(stableId, async () => {
-      if (!safeForUser(userId)) {
+      if (!safeForUser(userId, accountEpoch)) {
         throw new Error('Journal data is unavailable until account data loads')
       }
       const storage = useStorageAdapter()
       const existing = entries.value.find((candidate) => candidate.id === stableId)
-      // Re-send an existing stable id to confirm an ambiguous prior request.
-      // The adapter's append path is an idempotent one-row upsert.
-      if (existing) {
-        await storage.append(STORAGE_KEYS.log, existing)
-        return existing
+      const key = retryKey(userId, accountEpoch, stableId)
+      const retry = retryEntries.get(key)
+      if (existing && !sameDraft(existing, p)) {
+        throw new Error('A journal id was reused with different content')
       }
-      const entry: LogEntry = {
-        id: stableId,
-        date: new Date().toISOString(),
-        ...p,
+      if (retry && !sameDraft(retry, p)) {
+        throw new Error('A journal retry id was reused with different content')
       }
-      entries.value = [entry, ...entries.value]
+      const localTime = captureLocalTime()
+      // Keep the complete first payload (including occurredAt) across an
+      // ambiguous response loss. Idempotency requires stable content as well
+      // as a stable id; recreating Date.now() on retry would be a conflict.
+      const entry: LogEntry = existing ??
+        retry ?? {
+          id: stableId,
+          date: localTime.occurredAt,
+          localDay: localTime.localDay,
+          timeZone: localTime.timeZone,
+          utcOffsetMinutes: localTime.utcOffsetMinutes,
+          revision: 0,
+          ...p,
+        }
+      const insertedOptimistically = !existing
+      if (insertedOptimistically) entries.value = [entry, ...entries.value]
       try {
-        await storage.append(STORAGE_KEYS.log, entry)
+        const result = await storage.saveJournalEntry(entry)
+        if (safeForUser(userId, accountEpoch) && result) {
+          applyAuthoritativeEntry(result.entry)
+          useSrsStore().applyAuthoritative(result.progress)
+          if (userId) broadcastAccountSync({ type: 'journal-mutated', userId })
+        }
+        retryEntries.delete(key)
       } catch (e) {
-        // Remove ONLY this failed optimistic row. A caller can retry with the
-        // same stableId without duplicating a remotely committed event.
-        entries.value = entries.value.filter((candidate) => candidate.id !== entry.id)
+        if (safeForUser(userId, accountEpoch)) {
+          if (insertedOptimistically) {
+            entries.value = entries.value.filter((candidate) => candidate.id !== entry.id)
+          }
+          retryEntries.set(key, entry)
+        }
         throw e
       }
-      return entry
+      return entries.value.find((candidate) => candidate.id === stableId) ?? entry
     })
   }
 
@@ -129,21 +201,32 @@ export const useLogStore = defineStore('log', () => {
    *  isn't present or the cloud delete fails. */
   function deleteEntry(id: number): Promise<boolean> {
     const userId = authStore.user?.id ?? null
+    const accountEpoch = authStore.accountEpoch
     return enqueueEntryMutation(id, async () => {
-      if (!safeForUser(userId)) return false
+      if (!safeForUser(userId, accountEpoch)) return false
       const idx = entries.value.findIndex((e) => e.id === id)
       if (idx === -1) return false
       const removed = entries.value[idx]!
       entries.value = entries.value.filter((e) => e.id !== id)
       const storage = useStorageAdapter()
       try {
-        await storage.deleteOne(STORAGE_KEYS.log, id)
+        const result = await storage.deleteJournalEntry({
+          id,
+          expectedKo: removed.ko,
+          expectedRevision: removed.revision ?? 0,
+        })
+        if (safeForUser(userId, accountEpoch) && result) {
+          useSrsStore().applyAuthoritative(result.progress)
+          if (userId) broadcastAccountSync({ type: 'journal-mutated', userId })
+        }
       } catch {
         // Re-insert ONLY the removed row into the CURRENT array. Same-row
         // mutations are queued; mutations of sibling rows remain untouched.
-        const next = [...entries.value]
-        next.splice(Math.min(idx, next.length), 0, removed)
-        entries.value = next
+        if (safeForUser(userId, accountEpoch)) {
+          const next = [...entries.value]
+          next.splice(Math.min(idx, next.length), 0, removed)
+          entries.value = next
+        }
         return false
       }
       return true
@@ -161,25 +244,37 @@ export const useLogStore = defineStore('log', () => {
     errorNote: string | null = null,
   ): Promise<boolean> {
     const userId = authStore.user?.id ?? null
+    const accountEpoch = authStore.accountEpoch
     return enqueueEntryMutation(id, async () => {
-      if (!safeForUser(userId)) return false
+      if (!safeForUser(userId, accountEpoch)) return false
       const prev = entries.value.find((e) => e.id === id)
       if (!prev) return false
+      const changed = prev.reviewState !== reviewState || prev.errorNote !== errorNote
+      if (!changed) return true
       const storage = useStorageAdapter()
-      const next = { ...prev, reviewState, errorNote }
+      const next = {
+        ...prev,
+        reviewState,
+        errorNote,
+        revision: (prev.revision ?? 0) + 1,
+      }
       entries.value = entries.value.map((e) => (e.id === id ? next : e))
       try {
-        // A one-row UPDATE cannot prune siblings or resurrect a concurrently
-        // deleted row. Same-row requests are serialized by the queue above.
-        const updated = await storage.updateOne(STORAGE_KEYS.log, { id, value: next })
-        if (!updated) {
-          // Another tab deleted the row. Reconcile local state to that winning
-          // delete instead of reporting a successful review of a ghost entry.
-          entries.value = entries.value.filter((entry) => entry.id !== id)
-          return false
+        const result = await storage.setJournalReview({
+          id,
+          reviewState,
+          errorNote,
+          expectedRevision: prev.revision ?? 0,
+        })
+        if (safeForUser(userId, accountEpoch) && result) {
+          applyAuthoritativeEntry(result.entry)
+          useSrsStore().applyAuthoritative(result.progress)
+          if (userId) broadcastAccountSync({ type: 'journal-mutated', userId })
         }
       } catch {
-        entries.value = entries.value.map((e) => (e.id === id ? prev : e))
+        if (safeForUser(userId, accountEpoch)) {
+          entries.value = entries.value.map((e) => (e.id === id ? prev : e))
+        }
         return false
       }
       return true

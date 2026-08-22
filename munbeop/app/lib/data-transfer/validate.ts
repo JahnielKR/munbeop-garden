@@ -16,9 +16,9 @@ const isRecord = (value: unknown): value is UnknownRecord =>
 const isString = (value: unknown): value is string => typeof value === 'string'
 const isFiniteNumber = (value: unknown): value is number =>
   typeof value === 'number' && Number.isFinite(value)
-const isInteger = (value: unknown): value is number => isFiniteNumber(value) && Number.isInteger(value)
-const isNonNegativeInteger = (value: unknown): value is number =>
-  isInteger(value) && value >= 0
+const isInteger = (value: unknown): value is number =>
+  isFiniteNumber(value) && Number.isSafeInteger(value)
+const isNonNegativeInteger = (value: unknown): value is number => isInteger(value) && value >= 0
 const isStringArray = (value: unknown): value is string[] =>
   Array.isArray(value) && value.every(isString)
 const optional = (value: unknown, check: (candidate: unknown) => boolean): boolean =>
@@ -50,7 +50,8 @@ function isSrsMap(value: unknown): boolean {
       nullable(state.lastSeen, isFiniteNumber) &&
       isNonNegativeInteger(state.easyCount) &&
       isNonNegativeInteger(state.hardCount) &&
-      (state.mastery === 'seedling' || state.mastery === 'plant' || state.mastery === 'tree')
+      (state.mastery === 'seedling' || state.mastery === 'plant' || state.mastery === 'tree') &&
+      optional(state.revision, isNonNegativeInteger)
     )
   })
 }
@@ -61,18 +62,47 @@ function isLogEntry(value: unknown): boolean {
     value.errorDimension === undefined ||
     value.errorDimension === null ||
     ['particle', 'ending', 'register', 'word_order', 'other'].includes(String(value.errorDimension))
+  const localDay = value.localDay ?? null
+  const timeZone = value.timeZone ?? null
+  const utcOffset = value.utcOffsetMinutes ?? null
+  const hasNoLocalTime = localDay === null && timeZone === null && utcOffset === null
+  const hasCompleteLocalTime =
+    isString(localDay) &&
+    /^\d{4}-\d{2}-\d{2}$/.test(localDay) &&
+    Number.isFinite(Date.parse(`${localDay}T00:00:00.000Z`)) &&
+    new Date(`${localDay}T00:00:00.000Z`).toISOString().slice(0, 10) === localDay &&
+    isString(timeZone) &&
+    /^[A-Za-z0-9._+/-]{1,64}$/.test(timeZone) &&
+    isInteger(utcOffset) &&
+    utcOffset >= -840 &&
+    utcOffset <= 840
+  const validActivityEventId =
+    value.activityEventId === undefined ||
+    value.activityEventId === null ||
+    (isString(value.activityEventId) &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+        value.activityEventId,
+      ))
+  const validReviewNote =
+    value.reviewState !== 'incorrect' ||
+    (isString(value.errorNote) && value.errorNote.trim().length > 0)
   return (
     isNonNegativeInteger(value.id) &&
+    value.id > 0 &&
     isString(value.ko) &&
     isString(value.sentence) &&
     (value.feedback === 'easy' || value.feedback === 'hard') &&
     optional(value.errorNote, (note) => nullable(note, isString)) &&
+    validReviewNote &&
     validDimension &&
     ['unreviewed', 'correct', 'incorrect'].includes(String(value.reviewState)) &&
     isString(value.contextId) &&
     isString(value.contextName) &&
     isString(value.date) &&
-    Number.isFinite(Date.parse(value.date))
+    Number.isFinite(Date.parse(value.date)) &&
+    (hasNoLocalTime || hasCompleteLocalTime) &&
+    validActivityEventId &&
+    optional(value.revision, isNonNegativeInteger)
   )
 }
 

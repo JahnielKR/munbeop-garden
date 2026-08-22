@@ -56,7 +56,16 @@ function toggleEquip(row: Premio) {
           ]"
         >
           <div class="trophy__art">
-            <img v-if="row.unlocked" class="trophy__img" :src="row.url" :alt="tl(row.name)" >
+            <img
+              v-if="row.unlocked"
+              class="trophy__img"
+              :src="row.url"
+              :alt="tl(row.name)"
+              width="116"
+              height="116"
+              loading="lazy"
+              decoding="async"
+            >
             <span v-else class="trophy__lock" aria-hidden="true">
               <svg viewBox="0 0 16 16" width="26" height="26" shape-rendering="crispEdges">
                 <path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2" />

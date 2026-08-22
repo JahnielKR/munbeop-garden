@@ -12,6 +12,7 @@ import {
 import { useLogStore } from '~/stores/log'
 import { useActivityStore } from '~/stores/activity'
 import type { PracticeSaveStatus } from '~/lib/practice/persistence'
+import { useStudySession } from '~/composables/useStudySession'
 
 export type ConjPhase = 'question' | 'right' | 'wrong' | 'done'
 export type ConjMode = 'normal' | 'replay'
@@ -22,6 +23,7 @@ const ROUND_SIZE = 8
 export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
   const logStore = useLogStore()
   const activity = useActivityStore()
+  const studySession = useStudySession()
   const { t } = useI18n()
 
   const selectedClassId = ref<DrillClassId>(classById(initialClassId) ? initialClassId : 'mixed')
@@ -59,6 +61,7 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
   }
 
   function start() {
+    studySession.begin()
     mode.value = 'normal'
     sessionItems.value = buildRound(selectedClassId.value, ROUND_SIZE, shuffle)
     resetRound()
@@ -66,6 +69,7 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
   }
 
   function replayFailed() {
+    if (!studySession.isCurrent()) return
     const failed = failedItems.value
     if (failed.length === 0) return
     mode.value = 'replay'
@@ -75,12 +79,13 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
   }
 
   async function answer(choice: string) {
-    if (phase.value !== 'question' || saveStatus.value === 'saving') return
+    if (phase.value !== 'question' || saveStatus.value === 'saving' || !studySession.isCurrent())
+      return
     picked.value = choice
     const correct = choice === item.value.correct
     results.value.push({ itemId: item.value.id, correct })
     phase.value = correct ? 'right' : 'wrong'
-    void activity.record()
+    void activity.record('conjugation')
     if (!correct && mode.value === 'normal') {
       pendingMistake.value = { id: logStore.createEntryId(), item: item.value, choice }
       await persistPendingMistake()
@@ -93,7 +98,8 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
       phase.value === 'done' ||
       saveStatus.value === 'saving' ||
       saveStatus.value === 'error'
-    ) return
+    )
+      return
     if (index.value + 1 >= sessionItems.value.length) {
       phase.value = 'done'
       return
@@ -111,19 +117,22 @@ export function useConjugationDrill(initialClassId: DrillClassId = 'mixed') {
     if (!pending || saveStatus.value === 'saving') return false
     saveStatus.value = 'saving'
     try {
-      await logStore.add({
-        ko: pending.item.dict,
-        sentence: `${pending.item.dict} + ${pending.item.ending} → ${pending.item.correct}`,
-        feedback: 'hard',
-        errorNote: t('conjugation.diary_note', {
-          chosen: pending.choice,
-          correct: pending.item.correct,
-        }),
-        errorDimension: 'ending',
-        reviewState: 'incorrect',
-        contextId: LAB_CONTEXT.id,
-        contextName: LAB_CONTEXT.name,
-      }, pending.id)
+      await logStore.add(
+        {
+          ko: pending.item.dict,
+          sentence: `${pending.item.dict} + ${pending.item.ending} → ${pending.item.correct}`,
+          feedback: 'hard',
+          errorNote: t('conjugation.diary_note', {
+            chosen: pending.choice,
+            correct: pending.item.correct,
+          }),
+          errorDimension: 'ending',
+          reviewState: 'incorrect',
+          contextId: LAB_CONTEXT.id,
+          contextName: LAB_CONTEXT.name,
+        },
+        pending.id,
+      )
     } catch (error) {
       console.error('conjugation: diary write failed', error)
       saveStatus.value = 'error'

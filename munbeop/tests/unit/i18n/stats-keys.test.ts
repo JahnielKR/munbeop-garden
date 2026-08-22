@@ -20,6 +20,23 @@ const KEYS = [
   'stats.hero.streak',
   'stats.hero.mastered',
   'stats.hero.pending',
+  'stats.period.title',
+  'stats.period.sub',
+  'stats.period.filter_label',
+  'stats.period.range_7',
+  'stats.period.range_30',
+  'stats.period.range_90',
+  'stats.period.range_all',
+  'stats.period.actions',
+  'stats.period.active_days',
+  'stats.period.goal_days',
+  'stats.period.average',
+  'stats.period.change',
+  'stats.period.comparison_none',
+  'stats.period.goal',
+  'stats.period.goal_progress',
+  'stats.period.goal_aria',
+  'stats.period.scope',
   'stats.mastery.title',
   'stats.mastery.sub',
   'stats.rhythm.title',
@@ -57,6 +74,40 @@ describe('stats.* i18n parity', () => {
       const aria = dig(msgs, 'stats.rhythm.aria') as string
       expect(aria, code).toContain('{total}')
       expect(aria, code).toContain('{weeks}')
+    }
+  })
+  it('every locale keeps the period goal placeholders', () => {
+    for (const [code, msgs] of Object.entries(locales)) {
+      const progress = dig(msgs, 'stats.period.goal_progress') as string
+      const aria = dig(msgs, 'stats.period.goal_aria') as string
+      expect(progress, code).toContain('{current}')
+      expect(progress, code).toContain('{target}')
+      expect(aria, code).toContain('{current}')
+      expect(aria, code).toContain('{target}')
+      expect(aria, code).toContain('{percent}')
+    }
+  })
+
+  it('translates period copy instead of falling back to English', () => {
+    const paths = [
+      'stats.period.title',
+      'stats.period.sub',
+      'stats.period.filter_label',
+      'stats.period.range_all',
+      'stats.period.actions',
+      'stats.period.active_days',
+      'stats.period.goal_days',
+      'stats.period.average',
+      'stats.period.change',
+      'stats.period.comparison_none',
+      'stats.period.goal',
+      'stats.period.scope',
+    ]
+    for (const [code, msgs] of Object.entries(locales)) {
+      if (code === 'en') continue
+      for (const path of paths) {
+        expect(dig(msgs, path), `${code} ${path}`).not.toBe(dig(en, path))
+      }
     }
   })
 })

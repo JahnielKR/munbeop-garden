@@ -28,6 +28,7 @@ function makeMockClient() {
   }> = []
   const rpcCalls: Array<{ name: string; args: Record<string, unknown> }> = []
   const rpcCounts: Record<string, number> = {}
+  const rpcResults: Record<string, unknown> = {}
   // Per-table injected error: when set, reads/writes for that table resolve
   // with { error } the way @supabase/supabase-js does on an RLS denial or a
   // network/PostgREST failure (it does NOT throw — it returns the error).
@@ -49,11 +50,15 @@ function makeMockClient() {
     data,
     writes,
     rpcCalls,
+    rpcResults,
     errors,
     rpc(name: string, args: Record<string, unknown>) {
       rpcCalls.push({ name, args })
       if (errors[name]) return Promise.resolve({ data: null, error: errors[name] })
-      if (name === 'restore_user_backup') {
+      if (Object.prototype.hasOwnProperty.call(rpcResults, name)) {
+        return Promise.resolve({ data: rpcResults[name], error: null })
+      }
+      if (name === 'restore_user_backup_v2') {
         return Promise.resolve({ data: true, error: null })
       }
       const day = String(args.p_day)
@@ -96,7 +101,8 @@ function makeMockClient() {
               ? [keyCol[table]]
               : null
           if (conflictCols) {
-            const keyOf = (r: Record<string, unknown>) => conflictCols.map((c) => r[c]).join('\u0000')
+            const keyOf = (r: Record<string, unknown>) =>
+              conflictCols.map((c) => r[c]).join('\u0000')
             const incoming = new Set(arr.map(keyOf))
             data[table] = [
               ...(data[table] ?? []).filter(
@@ -787,6 +793,106 @@ describe('SupabaseAdapter', () => {
     })
   })
 
+  describe('authoritative journal/progress RPCs', () => {
+    const entry = {
+      id: 42,
+      ko: 'A',
+      sentence: 'sentence',
+      feedback: 'hard' as const,
+      errorNote: 'note',
+      errorDimension: 'particle' as const,
+      reviewState: 'incorrect' as const,
+      contextId: 'banmal',
+      contextName: 'banmal',
+      date: '2026-08-22T00:00:00.000Z',
+      localDay: '2026-08-22',
+      timeZone: 'Asia/Seoul',
+      utcOffsetMinutes: 540,
+      activityEventId: null,
+      revision: 0,
+    }
+    const progress = {
+      ko: 'A',
+      lastSeen: 1787356800000,
+      easyCount: 0,
+      hardCount: 0,
+      mastery: 'seedling',
+      revision: 3,
+    }
+
+    it('saves an entry and returns validated authoritative entry + progress', async () => {
+      client.rpcResults.save_user_log_entry_v2 = { entry, progress }
+      await expect(adapter.saveJournalEntry(entry)).resolves.toEqual({ entry, progress })
+      expect(client.rpcCalls.at(-1)).toEqual({
+        name: 'save_user_log_entry_v2',
+        args: { p_expected_user_id: USER, p_entry: entry },
+      })
+    })
+
+    it('sends review state, note and expected revision together', async () => {
+      const reviewed = { ...entry, reviewState: 'correct', errorNote: null, revision: 1 }
+      client.rpcResults.set_user_log_review_v2 = { entry: reviewed, progress }
+      await expect(
+        adapter.setJournalReview({
+          id: entry.id,
+          reviewState: 'correct',
+          errorNote: null,
+          expectedRevision: 0,
+        }),
+      ).resolves.toEqual({ entry: reviewed, progress })
+      expect(client.rpcCalls.at(-1)).toEqual({
+        name: 'set_user_log_review_v2',
+        args: {
+          p_expected_user_id: USER,
+          p_id: 42,
+          p_review_state: 'correct',
+          p_error_note: null,
+          p_expected_revision: 0,
+        },
+      })
+    })
+
+    it('deletes idempotently with ko + revision and accepts the authoritative projection', async () => {
+      client.rpcResults.delete_user_log_entry_v2 = { deleted: true, id: 42, progress }
+      await expect(
+        adapter.deleteJournalEntry({ id: 42, expectedKo: 'A', expectedRevision: 1 }),
+      ).resolves.toEqual({ deleted: true, id: 42, progress })
+      expect(client.rpcCalls.at(-1)).toEqual({
+        name: 'delete_user_log_entry_v2',
+        args: {
+          p_expected_user_id: USER,
+          p_id: 42,
+          p_expected_ko: 'A',
+          p_expected_revision: 1,
+        },
+      })
+    })
+
+    it('uses server progress for markSeen/recalculate and rejects malformed jsonb', async () => {
+      client.rpcResults.mark_user_progress_seen_v2 = progress
+      client.rpcResults.recalculate_user_progress_v2 = progress
+      await expect(adapter.markProgressSeen('A', 1787356800000)).resolves.toEqual(progress)
+      await expect(adapter.recalculateProgress('A')).resolves.toEqual(progress)
+      expect(client.rpcCalls.slice(-2)).toEqual([
+        {
+          name: 'mark_user_progress_seen_v2',
+          args: {
+            p_expected_user_id: USER,
+            p_ko: 'A',
+            p_seen_at: '2026-08-22T00:00:00.000Z',
+          },
+        },
+        {
+          name: 'recalculate_user_progress_v2',
+          args: { p_expected_user_id: USER, p_ko: 'A' },
+        },
+      ])
+
+      client.rpcResults.recalculate_user_progress_v2 = { ...progress, mastery: 'invalid' }
+      await expect(adapter.recalculateProgress('A')).rejects.toThrow(/mastery/i)
+    })
+  })
+
   describe('restore', () => {
     it('sends the complete backup data in one RPC call', async () => {
       const data = {
@@ -796,15 +902,15 @@ describe('SupabaseAdapter', () => {
       await adapter.restore(data)
       expect(client.rpcCalls).toEqual([
         {
-          name: 'restore_user_backup',
-          args: { p_data: data },
+          name: 'restore_user_backup_v2',
+          args: { p_expected_user_id: USER, p_data: data },
         },
       ])
       expect(client.writes).toHaveLength(0)
     })
 
     it('surfaces restore RPC errors', async () => {
-      client.errors.restore_user_backup = { message: 'transaction aborted' }
+      client.errors.restore_user_backup_v2 = { message: 'transaction aborted' }
       await expect(adapter.restore({ [STORAGE_KEYS.log]: [] })).rejects.toThrow(
         'transaction aborted',
       )

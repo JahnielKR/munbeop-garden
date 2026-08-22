@@ -8,22 +8,42 @@ import { useAppStatus } from '~/stores/appStatus'
 import { useAuthStore } from '~/stores/auth'
 import type { Grammar } from '~/lib/domain'
 
-// Deterministic, storage-free adapter so add()/markSeen()/recalculate() resolve
+// Deterministic, storage-free adapter so atomic journal/progress RPCs resolve
 // without touching real storage. Assertions read store state instead.
 // (vi.mock is hoisted above the imports by Vitest, so the stores pick it up.)
 vi.mock('~/composables/useStorageAdapter', () => ({
   useStorageAdapter: () => ({
     read: vi.fn(async (_key: string, fallback: unknown) => fallback),
     write: vi.fn().mockResolvedValue(undefined),
-    append: vi.fn(async (_key: string, value: Record<string, unknown>) => ({ ...value, id: 1 })),
-    upsertOne: vi.fn().mockResolvedValue(undefined),
+    saveJournalEntry: vi.fn(async (entry: Record<string, unknown>) => ({
+      entry,
+      progress: {
+        ko: entry.ko,
+        lastSeen: Date.parse(String(entry.date)),
+        easyCount: 1,
+        hardCount: 0,
+        mastery: 'seedling',
+        revision: 0,
+      },
+    })),
+    markProgressSeen: vi.fn(async (ko: string, seenAt: number) => ({
+      ko,
+      lastSeen: seenAt,
+      easyCount: 1,
+      hardCount: 0,
+      mastery: 'seedling',
+      revision: 1,
+    })),
+    recalculateProgress: vi.fn().mockResolvedValue(null),
   }),
 }))
 
 const L = (s: string) => ({ en: s, es: s, fr: s, 'pt-BR': s, th: s, id: s, vi: s, ja: s })
 const STARTER_KO = '-아/어서'
 function seedStarterGrammar() {
-  useGrammarStore().items = [{ ko: STARTER_KO, meaning: L('because'), deckId: 'topik-1' } as Grammar]
+  useGrammarStore().items = [
+    { ko: STARTER_KO, meaning: L('because'), deckId: 'topik-1' } as Grammar,
+  ]
 }
 
 describe('useOnboarding', () => {

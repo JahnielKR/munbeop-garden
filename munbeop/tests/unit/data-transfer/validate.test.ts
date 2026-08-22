@@ -27,6 +27,28 @@ describe('parseImportPayload', () => {
     if (result.ok) expect(result.payload.data[STORAGE_KEYS.log]).toEqual([logEntry])
   })
 
+  it('accepts stable local-day metadata and rejects malformed offsets', () => {
+    const enriched = {
+      ...logEntry,
+      localDay: '2026-01-01',
+      timeZone: 'Asia/Seoul',
+      utcOffsetMinutes: 540,
+      activityEventId: null,
+    }
+    expect(
+      parseImportPayload(JSON.stringify({ app: APP_ID, data: { [STORAGE_KEYS.log]: [enriched] } }))
+        .ok,
+    ).toBe(true)
+    expect(
+      parseImportPayload(
+        JSON.stringify({
+          app: APP_ID,
+          data: { [STORAGE_KEYS.log]: [{ ...enriched, utcOffsetMinutes: 1.5 }] },
+        }),
+      ),
+    ).toEqual({ ok: false, reason: 'shape' })
+  })
+
   it('rejects non-JSON with reason json', () => {
     expect(parseImportPayload('not json{')).toEqual({ ok: false, reason: 'json' })
   })
@@ -93,7 +115,9 @@ describe('parseImportPayload', () => {
     )
   })
   it('rejects a key whose value has the wrong shape (srs as a string) with reason shape', () => {
-    const r = parseImportPayload(JSON.stringify({ app: APP_ID, data: { [STORAGE_KEYS.srs]: 'hello' } }))
+    const r = parseImportPayload(
+      JSON.stringify({ app: APP_ID, data: { [STORAGE_KEYS.srs]: 'hello' } }),
+    )
     expect(r).toEqual({ ok: false, reason: 'shape' })
   })
   it('rejects an array where an object is expected (srs as an array)', () => {
@@ -105,7 +129,9 @@ describe('parseImportPayload', () => {
     expect(r).toEqual({ ok: false, reason: 'shape' })
   })
   it('tolerates a null value for an object-shaped key (treated as absent)', () => {
-    const r = parseImportPayload(JSON.stringify({ app: APP_ID, data: { [STORAGE_KEYS.settings]: null } }))
+    const r = parseImportPayload(
+      JSON.stringify({ app: APP_ID, data: { [STORAGE_KEYS.settings]: null } }),
+    )
     expect(r.ok).toBe(true)
   })
 })
