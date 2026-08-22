@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { createActivityEvent, isActivityEvent } from '~/lib/activity/event'
 
 describe('activity events', () => {
@@ -17,5 +17,17 @@ describe('activity events', () => {
     expect(isActivityEvent({ ...event, eventId: 'not-a-uuid' })).toBe(false)
     expect(isActivityEvent({ ...event, source: 'mystery-mode' })).toBe(false)
     expect(isActivityEvent({ ...event, utcOffsetMinutes: 9999 })).toBe(false)
+  })
+
+  it('canonicalizes a UTC offset as positive zero before persistence', () => {
+    const offsetSpy = vi.spyOn(Date.prototype, 'getTimezoneOffset').mockReturnValue(0)
+
+    try {
+      const event = createActivityEvent('practice', Date.UTC(2026, 7, 22, 12))
+      expect(event.utcOffsetMinutes).toBe(0)
+      expect(Object.is(event.utcOffsetMinutes, -0)).toBe(false)
+    } finally {
+      offsetSpy.mockRestore()
+    }
   })
 })

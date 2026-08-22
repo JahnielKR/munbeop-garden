@@ -61,6 +61,8 @@ export function captureLocalTime(now: number = Date.now()): LocalTimeMetadata {
   const date = new Date(now)
   if (!Number.isFinite(date.getTime())) throw new Error('Activity timestamp must be valid')
 
+  const browserOffsetMinutes = date.getTimezoneOffset()
+
   let timeZone = 'UTC'
   try {
     timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
@@ -72,7 +74,9 @@ export function captureLocalTime(now: number = Date.now()): LocalTimeMetadata {
     localDay: localDayKey(now),
     occurredAt: date.toISOString(),
     timeZone,
-    utcOffsetMinutes: -date.getTimezoneOffset(),
+    // JSON round-trips -0 as 0. Canonicalizing here keeps durable events
+    // byte-for-byte stable in UTC environments such as Linux CI.
+    utcOffsetMinutes: browserOffsetMinutes === 0 ? 0 : -browserOffsetMinutes,
   }
 }
 
