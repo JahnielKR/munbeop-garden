@@ -24,61 +24,61 @@ const { t } = useI18n()
         to="/practice/ruleta"
         :name="t('games.ruleta.name')"
         :description="t('games.ruleta.desc')"
-        image="/games/ruleta-cover.svg"
+        image="/games/ruleta-cover-v2.webp"
       />
       <GameCard
         to="/escape-room"
         :name="t('games.escape.name')"
         :description="t('games.escape.desc')"
-        image="/games/escape-cover.png"
+        image="/games/escape-cover-v2.webp"
       />
       <GameCard
         to="/practice/particles"
         :name="t('games.particles.name')"
         :description="t('games.particles.desc')"
-        image="/games/particles-cover.png"
+        image="/games/particles-cover-v2.webp"
       />
       <GameCard
         to="/practice/conjugation"
         :name="t('games.conjugation.name')"
         :description="t('games.conjugation.desc')"
-        image="/games/conjugation-cover.png"
+        image="/games/conjugation-cover-v2.webp"
       />
       <GameCard
         to="/practice/register"
         :name="t('games.register.name')"
         :description="t('games.register.desc')"
-        image="/games/register-cover.png"
+        image="/games/register-cover-v2.webp"
       />
       <GameCard
         to="/practice/cloze"
         :name="t('games.cloze.name')"
         :description="t('games.cloze.desc')"
-        image="/games/cloze-cover.png"
+        image="/games/cloze-cover-v2.webp"
       />
       <GameCard
         to="/practice/counters"
         :name="t('games.counters.name')"
         :description="t('games.counters.desc')"
-        image="/games/counters-cover.png"
+        image="/games/counters-cover-v2.webp"
       />
       <GameCard
         to="/practice/placement"
         :name="t('games.placement.name')"
         :description="t('games.placement.desc')"
-        image="/games/placement-cover.png"
+        image="/games/placement-cover-v2.webp"
       />
       <GameCard
         to="/practice/number-market"
         :name="t('games.numberMarket.name')"
         :description="t('games.numberMarket.desc')"
-        image="/games/number-market-cover.png"
+        image="/games/number-market-cover-v2.webp"
       />
       <GameCard
         to="/practice/sentence-garden"
         :name="t('games.sentenceGarden.name')"
         :description="t('games.sentenceGarden.desc')"
-        image="/games/sentence-garden-cover.png"
+        image="/games/sentence-garden-cover-v2.webp"
       />
     </div>
   </div>
