@@ -7,7 +7,7 @@ import { ACTIVITY_SOURCES } from '~/lib/activity/event'
 const sql = readFileSync(
   fileURLToPath(
     new URL(
-      '../../../supabase/migrations/20260822074808_activity_events_exactly_once.sql',
+      '../../../supabase/migrations/20260822235014_activity_events_exactly_once.sql',
       import.meta.url,
     ),
   ),

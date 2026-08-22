@@ -12,7 +12,7 @@ import {
 const sql = readFileSync(
   fileURLToPath(
     new URL(
-      '../../../supabase/migrations/20260822080452_journal_progress_transactions.sql',
+      '../../../supabase/migrations/20260822235055_journal_progress_transactions.sql',
       import.meta.url,
     ),
   ),
